@@ -1,0 +1,8 @@
+{
+  "ENVIRONMENT": "production",
+  "SUPABASE_URL": "https://<project-ref>.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "<publishable-key>",
+  "APP_LINK_HOST": "<dominio-a-definir>",
+  "FIREBASE_ENABLED": false,
+  "VERBOSE_LOGGING": false
+}

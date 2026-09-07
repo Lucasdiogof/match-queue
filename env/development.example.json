@@ -1,0 +1,8 @@
+{
+  "ENVIRONMENT": "development",
+  "SUPABASE_URL": "",
+  "SUPABASE_PUBLISHABLE_KEY": "",
+  "APP_LINK_HOST": "",
+  "FIREBASE_ENABLED": false,
+  "VERBOSE_LOGGING": true
+}
