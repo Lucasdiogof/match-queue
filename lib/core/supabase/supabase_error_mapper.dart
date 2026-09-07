@@ -52,6 +52,21 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
+  // FQ003 (autenticacao ausente) nao aparece aqui de proposito: as RPCs de
+  // convite so sao chamadas pela UI quando ja ha sessao, entao esse caso e
+  // inalcancavel na pratica -- se algum dia o Postgres devolver FQ003 por um
+  // caminho que nao passa pela UI normal, cai em _teamReasonFrom (checado
+  // antes deste) e vira TeamFailure(permissionDenied), o que ja e uma
+  // classificacao razoavel.
+  InviteFailureReason? _inviteReasonFrom(String? code) => switch (code) {
+    'FQ012' => InviteFailureReason.permissionDenied,
+    'FQ008' => InviteFailureReason.notFound,
+    'FQ009' => InviteFailureReason.notActive,
+    'FQ010' => InviteFailureReason.expired,
+    'FQ011' => InviteFailureReason.exhausted,
+    _ => null,
+  };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -80,6 +95,10 @@ class SupabaseErrorMapper {
     final teamReason = _teamReasonFrom(error.code);
     if (teamReason != null) {
       return TeamFailure(reason: teamReason, debugMessage: error.message);
+    }
+    final inviteReason = _inviteReasonFrom(error.code);
+    if (inviteReason != null) {
+      return InviteFailure(reason: inviteReason, debugMessage: error.message);
     }
     switch (error.code) {
       case '23505':

@@ -27,7 +27,7 @@ Future<void> registerDependencies({
   registerAuthModule(getIt, supabaseClient: supabaseClient);
   registerProfileModule(getIt, supabaseClient: supabaseClient);
   registerTeamsModule(getIt, supabaseClient: supabaseClient);
-  registerInvitationsModule(getIt);
+  registerInvitationsModule(getIt, supabaseClient: supabaseClient);
 
   await getIt.allReady();
 }

@@ -20,6 +20,14 @@ enum TeamFailureReason {
   profileMissing,
 }
 
+enum InviteFailureReason {
+  notFound,
+  notActive,
+  expired,
+  exhausted,
+  permissionDenied,
+}
+
 sealed class AppFailure extends Equatable implements Exception {
   const AppFailure({this.debugMessage});
 
@@ -53,6 +61,15 @@ final class TeamFailure extends AppFailure {
   const TeamFailure({required this.reason, super.debugMessage});
 
   final TeamFailureReason reason;
+
+  @override
+  List<Object?> get props => <Object?>[reason, debugMessage];
+}
+
+final class InviteFailure extends AppFailure {
+  const InviteFailure({required this.reason, super.debugMessage});
+
+  final InviteFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];

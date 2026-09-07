@@ -34,5 +34,13 @@ extension AppFailureL10n on AppFailure {
       TeamFailureReason.permissionDenied => l10n.errorTeamPermissionDenied,
       TeamFailureReason.profileMissing => l10n.errorTeamProfileMissing,
     },
+    InviteFailure(:final reason) => switch (reason) {
+      InviteFailureReason.notFound => l10n.errorInviteNotFound,
+      InviteFailureReason.notActive => l10n.errorInviteNotActive,
+      InviteFailureReason.expired => l10n.errorInviteExpired,
+      InviteFailureReason.exhausted => l10n.errorInviteExhausted,
+      InviteFailureReason.permissionDenied =>
+        l10n.errorInvitePermissionDenied,
+    },
   };
 }
