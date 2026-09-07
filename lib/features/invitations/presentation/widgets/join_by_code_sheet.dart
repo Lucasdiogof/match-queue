@@ -5,10 +5,11 @@ import 'package:fifa_queue/features/invitations/domain/entities/pending_invite.d
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-Future<void> showJoinByCodeSheet(BuildContext context) => showAppBottomSheet<void>(
-  context: context,
-  builder: (sheetContext) => const _JoinByCodeForm(),
-);
+Future<void> showJoinByCodeSheet(BuildContext context) =>
+    showAppBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => const _JoinByCodeForm(),
+    );
 
 class _JoinByCodeForm extends StatefulWidget {
   const _JoinByCodeForm();

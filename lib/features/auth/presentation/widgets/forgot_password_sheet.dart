@@ -60,9 +60,7 @@ class _ForgotPasswordSheetBodyState extends State<_ForgotPasswordSheetBody> {
     }
     FocusScope.of(context).unfocus();
     final email = AppValidators.normalizeEmail(_email.text);
-    final succeeded = await context.read<AuthCubit>().sendPasswordReset(
-      email,
-    );
+    final succeeded = await context.read<AuthCubit>().sendPasswordReset(email);
     if (!mounted) {
       return;
     }
@@ -221,7 +219,11 @@ class _SheetHeader extends StatelessWidget {
           child: Icon(icon, size: AppSizing.iconLg, color: colors.textPrimary),
         ),
         const SizedBox(height: AppSpacing.lg),
-        Text(title, textAlign: TextAlign.center, style: context.textStyles.headlineSmall),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: context.textStyles.headlineSmall,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Text(
           description,

@@ -68,7 +68,10 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
 
   Future<void> _showSheet() async {
     final cubit = context.read<InviteResolutionCubit>();
-    final outcome = await showInvitePreviewSheet(context: context, cubit: cubit);
+    final outcome = await showInvitePreviewSheet(
+      context: context,
+      cubit: cubit,
+    );
     if (!mounted) {
       return;
     }

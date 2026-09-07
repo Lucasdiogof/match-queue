@@ -12,7 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InviteSection extends StatelessWidget {
-  const InviteSection({required this.teamId, required this.canManage, super.key});
+  const InviteSection({
+    required this.teamId,
+    required this.canManage,
+    super.key,
+  });
 
   final String teamId;
   final bool canManage;
@@ -20,8 +24,9 @@ class InviteSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider<InviteManagementCubit>(
     key: ValueKey(teamId),
-    create: (_) => InviteManagementCubit(getIt<InviteRepository>(), teamId: teamId)
-      ..load(),
+    create: (_) =>
+        InviteManagementCubit(getIt<InviteRepository>(), teamId: teamId)
+          ..load(),
     child: _InviteSectionBody(canManage: canManage),
   );
 }
@@ -161,7 +166,10 @@ class _InviteLinkBody extends StatelessWidget {
               icon: Icons.add_link,
               onPressed: () => context.read<InviteManagementCubit>().load(),
             )
-          : Text(l10n.inviteUnavailableMessage, style: context.textStyles.bodyMedium);
+          : Text(
+              l10n.inviteUnavailableMessage,
+              style: context.textStyles.bodyMedium,
+            );
     }
 
     return Column(
@@ -179,13 +187,19 @@ class _InviteLinkBody extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              Icon(Icons.link, color: context.colors.textSecondary, size: AppSizing.iconMd),
+              Icon(
+                Icons.link,
+                color: context.colors.textSecondary,
+                size: AppSizing.iconMd,
+              ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
                   currentCode,
                   style: context.textStyles.bodyLarge?.copyWith(
-                    fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                    fontFeatures: const <FontFeature>[
+                      FontFeature.tabularFigures(),
+                    ],
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -215,7 +229,10 @@ class _InviteLinkBody extends StatelessWidget {
         ),
         if (canManage) ...<Widget>[
           const AppDivider(spacing: AppSpacing.xl),
-          Text(l10n.inviteManageTitle.toUpperCase(), style: context.textStyles.labelSmall),
+          Text(
+            l10n.inviteManageTitle.toUpperCase(),
+            style: context.textStyles.labelSmall,
+          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: <Widget>[

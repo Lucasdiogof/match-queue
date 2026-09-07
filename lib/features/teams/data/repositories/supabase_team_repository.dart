@@ -46,10 +46,7 @@ class SupabaseTeamRepository implements TeamRepository {
   }) => _guard(() async {
     final values = <String, dynamic>{
       TeamModel.columnName: ?name,
-      if (clearTag)
-        TeamModel.columnTag: null
-      else
-        TeamModel.columnTag: ?tag,
+      if (clearTag) TeamModel.columnTag: null else TeamModel.columnTag: ?tag,
       if (defaultSearchDuration != null)
         TeamModel.columnSearchDuration: defaultSearchDuration.inSeconds,
     };

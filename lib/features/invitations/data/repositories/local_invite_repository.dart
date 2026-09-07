@@ -247,9 +247,7 @@ class _LocalInviteRecord {
         teamId: '${json['team_id']}',
         code: '${json['code']}',
         isActive: json['is_active'] == true,
-        usageCount: json['usage_count'] is int
-            ? json['usage_count'] as int
-            : 0,
+        usageCount: json['usage_count'] is int ? json['usage_count'] as int : 0,
         createdAt:
             DateTime.tryParse('${json['created_at']}')?.toUtc() ??
             DateTime.now().toUtc(),

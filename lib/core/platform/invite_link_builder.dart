@@ -32,7 +32,9 @@ class InviteLinkBuilder {
 
   InviteShareTarget build(String inviteCode) {
     if (_config.hasAppLinkHost) {
-      return InviteShareUrl('https://${_config.appLinkHost}$_joinPath/$inviteCode');
+      return InviteShareUrl(
+        'https://${_config.appLinkHost}$_joinPath/$inviteCode',
+      );
     }
     if (kIsWeb) {
       return InviteShareUrl('${Uri.base.origin}$_joinPath/$inviteCode');

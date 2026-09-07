@@ -90,10 +90,26 @@ class BrandWordmark extends StatelessWidget {
   // transparente. So usado no dark mode; no light a arte ja funciona como
   // veio (tinta escura sobre qualquer superficie clara).
   static const ColorFilter _invertForDark = ColorFilter.matrix(<double>[
-    -1, 0, 0, 0, 255,
-    0, -1, 0, 0, 255,
-    0, 0, -1, 0, 255,
-    0, 0, 0, 1, 0,
+    -1,
+    0,
+    0,
+    0,
+    255,
+    0,
+    -1,
+    0,
+    0,
+    255,
+    0,
+    0,
+    -1,
+    0,
+    255,
+    0,
+    0,
+    0,
+    1,
+    0,
   ]);
 
   @override

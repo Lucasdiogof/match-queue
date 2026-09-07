@@ -12,9 +12,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const ColoredBox(
     color: Colors.white,
-    child: Center(
-      child: _SplashContent(),
-    ),
+    child: Center(child: _SplashContent()),
   );
 }
 

@@ -245,10 +245,7 @@ class _MemberRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
-          AppBadge(
-            label: member.role.label(l10n),
-            tone: member.role.badgeTone,
-          ),
+          AppBadge(label: member.role.label(l10n), tone: member.role.badgeTone),
         ],
       ),
     );

@@ -3,7 +3,11 @@ import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:flutter/material.dart';
 
 class TeamAvatar extends StatelessWidget {
-  const TeamAvatar({required this.team, this.size = AppSizing.avatarLg, super.key});
+  const TeamAvatar({
+    required this.team,
+    this.size = AppSizing.avatarLg,
+    super.key,
+  });
 
   final Team team;
   final double size;
@@ -57,7 +61,11 @@ class TeamAvatar extends StatelessWidget {
 }
 
 class _Initials extends StatelessWidget {
-  const _Initials({required this.team, required this.size, required this.color});
+  const _Initials({
+    required this.team,
+    required this.size,
+    required this.color,
+  });
 
   final Team team;
   final double size;

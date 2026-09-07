@@ -12,7 +12,10 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-void registerInvitationsModule(GetIt sl, {required SupabaseClient? supabaseClient}) {
+void registerInvitationsModule(
+  GetIt sl, {
+  required SupabaseClient? supabaseClient,
+}) {
   sl
     ..registerLazySingleton<PendingInviteRepository>(
       () => LocalPendingInviteRepository(sl<SharedPreferences>()),
@@ -23,7 +26,8 @@ void registerInvitationsModule(GetIt sl, {required SupabaseClient? supabaseClien
 
   if (supabaseClient == null) {
     sl.registerLazySingleton<InviteRepository>(
-      () => LocalInviteRepository(sl<TeamRepository>(), sl<SharedPreferences>()),
+      () =>
+          LocalInviteRepository(sl<TeamRepository>(), sl<SharedPreferences>()),
     );
   } else {
     sl

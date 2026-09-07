@@ -14,7 +14,12 @@ class InviteManagementCubit extends Cubit<InviteManagementState> {
   final String teamId;
 
   Future<void> load() async {
-    emit(state.copyWith(status: InviteManagementStatus.loading, clearFailure: true));
+    emit(
+      state.copyWith(
+        status: InviteManagementStatus.loading,
+        clearFailure: true,
+      ),
+    );
     try {
       final invite = await _repository.getOrCreateActiveInvite(teamId);
       emit(
@@ -26,7 +31,12 @@ class InviteManagementCubit extends Cubit<InviteManagementState> {
       );
     } on AppFailure catch (failure) {
       if (!isClosed) {
-        emit(state.copyWith(status: InviteManagementStatus.failure, failure: failure));
+        emit(
+          state.copyWith(
+            status: InviteManagementStatus.failure,
+            failure: failure,
+          ),
+        );
       }
     }
   }

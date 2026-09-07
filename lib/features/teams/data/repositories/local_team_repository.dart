@@ -30,10 +30,9 @@ class LocalTeamRepository implements TeamRepository {
   @override
   Future<List<UserTeam>> fetchMyTeams() async {
     final userId = _requireUserId();
-    final records = _readRecords()
-        .where((record) => record.ownerId == userId)
-        .toList()
-      ..sort((a, b) => a.team.createdAt.compareTo(b.team.createdAt));
+    final records =
+        _readRecords().where((record) => record.ownerId == userId).toList()
+          ..sort((a, b) => a.team.createdAt.compareTo(b.team.createdAt));
     return records
         .map(
           (record) => UserTeam(

@@ -20,9 +20,10 @@ class SupabaseInviteRemoteDataSource implements InviteRemoteDataSource {
   @override
   Future<Map<String, dynamic>> resolveInvite(String code) async {
     final response = await _client
-        .rpc<dynamic>('resolve_team_invite', params: <String, dynamic>{
-          'p_code': code,
-        })
+        .rpc<dynamic>(
+          'resolve_team_invite',
+          params: <String, dynamic>{'p_code': code},
+        )
         .single();
     return Map<String, dynamic>.from(response as Map);
   }
@@ -30,9 +31,10 @@ class SupabaseInviteRemoteDataSource implements InviteRemoteDataSource {
   @override
   Future<Map<String, dynamic>> joinTeam(String code) async {
     final response = await _client
-        .rpc<dynamic>('join_team_by_invite', params: <String, dynamic>{
-          'p_code': code,
-        })
+        .rpc<dynamic>(
+          'join_team_by_invite',
+          params: <String, dynamic>{'p_code': code},
+        )
         .single();
     return Map<String, dynamic>.from(response as Map);
   }

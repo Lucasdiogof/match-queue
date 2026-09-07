@@ -49,13 +49,11 @@ class _InvitePreviewSheetBody extends StatelessWidget {
                   child: _Content(
                     state: state,
                     isAuthenticated: authState.isAuthenticated,
-                    onJoin: () =>
-                        context.read<InviteResolutionCubit>().join(),
+                    onJoin: () => context.read<InviteResolutionCubit>().join(),
                     onOpenTeam: () =>
                         _pop(context, InviteSheetOutcome.joinedOrOpened),
                     onNotNow: () => _pop(context, InviteSheetOutcome.dismissed),
-                    onSignIn: () =>
-                        _goToAuth(context, AppRoutes.login.path),
+                    onSignIn: () => _goToAuth(context, AppRoutes.login.path),
                     onCreateAccount: () =>
                         _goToAuth(context, AppRoutes.signUp.path),
                   ),
@@ -272,7 +270,9 @@ class _PreviewAvatar extends StatelessWidget {
       return '?';
     }
     if (words.length == 1) {
-      return words.first.substring(0, words.first.length.clamp(0, 2)).toUpperCase();
+      return words.first
+          .substring(0, words.first.length.clamp(0, 2))
+          .toUpperCase();
     }
     return '${words.first.substring(0, 1)}${words.last.substring(0, 1)}'
         .toUpperCase();
