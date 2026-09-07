@@ -1,0 +1,39 @@
+definitions:
+  base: &base
+    instance_type: linux_x2
+    max_build_duration: 45
+    environment:
+      flutter: stable
+
+workflows:
+  quality:
+    <<: *base
+    name: FIFA Queue - quality
+    triggering:
+      events:
+        - push
+        - pull_request
+    scripts:
+      - name: Dependencies
+        script: flutter pub get
+      - name: Localizations
+        script: flutter gen-l10n
+      - name: Format
+        script: dart format --output=none --set-exit-if-changed .
+      - name: Analyze
+        script: flutter analyze
+
+  web-preview:
+    <<: *base
+    name: FIFA Queue - web preview
+    scripts:
+      - name: Dependencies
+        script: flutter pub get
+      - name: Build web
+        script: |
+          flutter build web --release \
+            --dart-define=ENVIRONMENT=staging \
+            --dart-define=SUPABASE_URL=$SUPABASE_URL \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY=$SUPABASE_PUBLISHABLE_KEY
+    artifacts:
+      - build/web/**
