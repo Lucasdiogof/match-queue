@@ -1,0 +1,9 @@
+# Config minima do Supabase CLI, usada apenas para versionar migrations
+# contra o projeto remoto. Nao usamos `supabase start` (ambiente local via
+# Docker) neste projeto, por isso as secoes [api]/[db]/[studio]/[auth] que
+# `supabase init` gera para o ambiente local foram omitidas.
+#
+# O project_id abaixo ainda NAO foi preenchido porque o projeto Supabase do
+# FIFA Queue ainda nao existe. Rodar `supabase link --project-ref <ref>`
+# preenche este arquivo automaticamente.
+project_id = ""
