@@ -28,6 +28,13 @@ enum InviteFailureReason {
   permissionDenied,
 }
 
+enum MatchmakingFailureReason {
+  noActiveSearch,
+  notCurrentSearcher,
+  alreadyInOtherState,
+  teamInactive,
+}
+
 sealed class AppFailure extends Equatable implements Exception {
   const AppFailure({this.debugMessage});
 
@@ -70,6 +77,15 @@ final class InviteFailure extends AppFailure {
   const InviteFailure({required this.reason, super.debugMessage});
 
   final InviteFailureReason reason;
+
+  @override
+  List<Object?> get props => <Object?>[reason, debugMessage];
+}
+
+final class MatchmakingFailure extends AppFailure {
+  const MatchmakingFailure({required this.reason, super.debugMessage});
+
+  final MatchmakingFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];

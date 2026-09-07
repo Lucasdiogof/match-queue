@@ -67,6 +67,20 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
+  // FQ012 (nao e membro do time) nao aparece aqui: as RPCs de matchmaking
+  // so sao chamadas pela UI para o SelectedTeam, do qual o usuario sempre e
+  // membro, entao esse caminho e inalcancavel na pratica -- e _inviteReasonFrom
+  // (checado antes deste) ja o classifica como InviteFailure(permissionDenied),
+  // uma classificacao razoavel mesmo que o texto nao seja especifico de fila.
+  MatchmakingFailureReason? _matchmakingReasonFrom(String? code) =>
+      switch (code) {
+        'FQ015' => MatchmakingFailureReason.noActiveSearch,
+        'FQ016' => MatchmakingFailureReason.notCurrentSearcher,
+        'FQ017' => MatchmakingFailureReason.alreadyInOtherState,
+        'FQ018' => MatchmakingFailureReason.teamInactive,
+        _ => null,
+      };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -99,6 +113,13 @@ class SupabaseErrorMapper {
     final inviteReason = _inviteReasonFrom(error.code);
     if (inviteReason != null) {
       return InviteFailure(reason: inviteReason, debugMessage: error.message);
+    }
+    final matchmakingReason = _matchmakingReasonFrom(error.code);
+    if (matchmakingReason != null) {
+      return MatchmakingFailure(
+        reason: matchmakingReason,
+        debugMessage: error.message,
+      );
     }
     switch (error.code) {
       case '23505':

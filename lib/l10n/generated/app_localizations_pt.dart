@@ -575,13 +575,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamSwitchAction => 'Trocar de time';
 
   @override
-  String get teamNoActiveSearchTitle => 'Nenhuma busca ativa';
-
-  @override
-  String get teamNoActiveSearchMessage =>
-      'A fila de partidas chega em breve. Aqui é onde o time vai coordenar quem procura agora.';
-
-  @override
   String get teamSearchDurationLabel => 'Duração padrão da busca';
 
   @override
@@ -672,4 +665,74 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get errorInvitePermissionDenied =>
       'Você não tem permissão para gerenciar o convite deste time.';
+
+  @override
+  String get errorMatchmakingNoActiveSearch => 'Não há busca ativa no momento.';
+
+  @override
+  String get errorMatchmakingNotCurrentSearcher =>
+      'Você não é mais quem está buscando partida.';
+
+  @override
+  String get errorMatchmakingAlreadyInOtherState =>
+      'Você já está em outro estado da fila.';
+
+  @override
+  String get errorMatchmakingTeamInactive =>
+      'Este time está inativo no momento.';
+
+  @override
+  String get matchmakingIdleTitle => 'Ninguém está buscando partida';
+
+  @override
+  String get matchmakingIdleMessage =>
+      'Toque em buscar partida para começar. O time inteiro vê assim que alguém entra na fila.';
+
+  @override
+  String get matchmakingSearchAction => 'Buscar partida';
+
+  @override
+  String get matchmakingJoinQueueAction => 'Entrar na fila';
+
+  @override
+  String get matchmakingCancelAction => 'Cancelar busca';
+
+  @override
+  String get matchmakingLeaveQueueAction => 'Sair da fila';
+
+  @override
+  String get matchmakingMatchFoundAction => 'Partida encontrada';
+
+  @override
+  String get matchmakingSearchingSelfTitle => 'Buscando partida';
+
+  @override
+  String get matchmakingSearchingSelfMessage =>
+      'Assim que a partida começar, toque em partida encontrada.';
+
+  @override
+  String matchmakingSearchingOtherTitle(String name) {
+    return '$name está buscando partida';
+  }
+
+  @override
+  String matchmakingQueuePositionLabel(int position) {
+    return 'Posição $position na fila';
+  }
+
+  @override
+  String get matchmakingQueueSectionTitle => 'Fila de espera';
+
+  @override
+  String get matchmakingQueueEmptyMessage => 'Ninguém na fila.';
+
+  @override
+  String get matchmakingYouBadge => 'Você';
+
+  @override
+  String get matchmakingCancelConfirmTitle => 'Cancelar busca?';
+
+  @override
+  String get matchmakingCancelConfirmMessage =>
+      'Você vai perder sua posição na busca atual.';
 }

@@ -292,8 +292,6 @@
   "teamEditTitle": "Editar time",
   "teamSwitchTitle": "Seus times",
   "teamSwitchAction": "Trocar de time",
-  "teamNoActiveSearchTitle": "Nenhuma busca ativa",
-  "teamNoActiveSearchMessage": "A fila de partidas chega em breve. Aqui é onde o time vai coordenar quem procura agora.",
   "teamSearchDurationLabel": "Duração padrão da busca",
   "teamSearchDurationHelper": "Tempo que cada jogador fica na frente da fila.",
   "teamDurationSeconds": "{seconds} s",
@@ -364,5 +362,41 @@
   "errorInviteNotActive": "Este convite não é mais válido.",
   "errorInviteExpired": "Este convite expirou.",
   "errorInviteExhausted": "Este convite atingiu o limite de usos.",
-  "errorInvitePermissionDenied": "Você não tem permissão para gerenciar o convite deste time."
+  "errorInvitePermissionDenied": "Você não tem permissão para gerenciar o convite deste time.",
+  "errorMatchmakingNoActiveSearch": "Não há busca ativa no momento.",
+  "errorMatchmakingNotCurrentSearcher": "Você não é mais quem está buscando partida.",
+  "errorMatchmakingAlreadyInOtherState": "Você já está em outro estado da fila.",
+  "errorMatchmakingTeamInactive": "Este time está inativo no momento.",
+  "matchmakingIdleTitle": "Ninguém está buscando partida",
+  "matchmakingIdleMessage": "Toque em buscar partida para começar. O time inteiro vê assim que alguém entra na fila.",
+  "matchmakingSearchAction": "Buscar partida",
+  "matchmakingJoinQueueAction": "Entrar na fila",
+  "matchmakingCancelAction": "Cancelar busca",
+  "matchmakingLeaveQueueAction": "Sair da fila",
+  "matchmakingMatchFoundAction": "Partida encontrada",
+  "matchmakingSearchingSelfTitle": "Buscando partida",
+  "matchmakingSearchingSelfMessage": "Assim que a partida começar, toque em partida encontrada.",
+  "matchmakingSearchingOtherTitle": "{name} está buscando partida",
+  "@matchmakingSearchingOtherTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucas"
+      }
+    }
+  },
+  "matchmakingQueuePositionLabel": "Posição {position} na fila",
+  "@matchmakingQueuePositionLabel": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "matchmakingQueueSectionTitle": "Fila de espera",
+  "matchmakingQueueEmptyMessage": "Ninguém na fila.",
+  "matchmakingYouBadge": "Você",
+  "matchmakingCancelConfirmTitle": "Cancelar busca?",
+  "matchmakingCancelConfirmMessage": "Você vai perder sua posição na busca atual."
 }

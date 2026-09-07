@@ -1102,18 +1102,6 @@ abstract class AppLocalizations {
   /// **'Trocar de time'**
   String get teamSwitchAction;
 
-  /// No description provided for @teamNoActiveSearchTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma busca ativa'**
-  String get teamNoActiveSearchTitle;
-
-  /// No description provided for @teamNoActiveSearchMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'A fila de partidas chega em breve. Aqui é onde o time vai coordenar quem procura agora.'**
-  String get teamNoActiveSearchMessage;
-
   /// No description provided for @teamSearchDurationLabel.
   ///
   /// In pt, this message translates to:
@@ -1251,6 +1239,126 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Você não tem permissão para gerenciar o convite deste time.'**
   String get errorInvitePermissionDenied;
+
+  /// No description provided for @errorMatchmakingNoActiveSearch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não há busca ativa no momento.'**
+  String get errorMatchmakingNoActiveSearch;
+
+  /// No description provided for @errorMatchmakingNotCurrentSearcher.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você não é mais quem está buscando partida.'**
+  String get errorMatchmakingNotCurrentSearcher;
+
+  /// No description provided for @errorMatchmakingAlreadyInOtherState.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você já está em outro estado da fila.'**
+  String get errorMatchmakingAlreadyInOtherState;
+
+  /// No description provided for @errorMatchmakingTeamInactive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este time está inativo no momento.'**
+  String get errorMatchmakingTeamInactive;
+
+  /// No description provided for @matchmakingIdleTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém está buscando partida'**
+  String get matchmakingIdleTitle;
+
+  /// No description provided for @matchmakingIdleMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque em buscar partida para começar. O time inteiro vê assim que alguém entra na fila.'**
+  String get matchmakingIdleMessage;
+
+  /// No description provided for @matchmakingSearchAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar partida'**
+  String get matchmakingSearchAction;
+
+  /// No description provided for @matchmakingJoinQueueAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrar na fila'**
+  String get matchmakingJoinQueueAction;
+
+  /// No description provided for @matchmakingCancelAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar busca'**
+  String get matchmakingCancelAction;
+
+  /// No description provided for @matchmakingLeaveQueueAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair da fila'**
+  String get matchmakingLeaveQueueAction;
+
+  /// No description provided for @matchmakingMatchFoundAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partida encontrada'**
+  String get matchmakingMatchFoundAction;
+
+  /// No description provided for @matchmakingSearchingSelfTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscando partida'**
+  String get matchmakingSearchingSelfTitle;
+
+  /// No description provided for @matchmakingSearchingSelfMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assim que a partida começar, toque em partida encontrada.'**
+  String get matchmakingSearchingSelfMessage;
+
+  /// No description provided for @matchmakingSearchingOtherTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} está buscando partida'**
+  String matchmakingSearchingOtherTitle(String name);
+
+  /// No description provided for @matchmakingQueuePositionLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Posição {position} na fila'**
+  String matchmakingQueuePositionLabel(int position);
+
+  /// No description provided for @matchmakingQueueSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fila de espera'**
+  String get matchmakingQueueSectionTitle;
+
+  /// No description provided for @matchmakingQueueEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém na fila.'**
+  String get matchmakingQueueEmptyMessage;
+
+  /// No description provided for @matchmakingYouBadge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você'**
+  String get matchmakingYouBadge;
+
+  /// No description provided for @matchmakingCancelConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar busca?'**
+  String get matchmakingCancelConfirmTitle;
+
+  /// No description provided for @matchmakingCancelConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você vai perder sua posição na busca atual.'**
+  String get matchmakingCancelConfirmMessage;
 }
 
 class _AppLocalizationsDelegate

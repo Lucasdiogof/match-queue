@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_section.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
@@ -67,7 +68,7 @@ class _HomeBody extends StatelessWidget {
           teams: state.teams,
         ),
         const SizedBox(height: AppSpacing.xl),
-        const _QueuePlaceholderCard(),
+        MatchmakingSection(teamId: selected!.id),
       ],
     );
   }
@@ -128,48 +129,6 @@ class _TeamContextCard extends StatelessWidget {
                 selectedTeamId: selectedTeamId,
               ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-class _QueuePlaceholderCard extends StatelessWidget {
-  const _QueuePlaceholderCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final colors = context.colors;
-
-    return AppCard(
-      variant: AppCardVariant.elevated,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Icon(
-                Icons.sports_esports_outlined,
-                size: AppSizing.iconLg,
-                color: colors.textSecondary,
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Text(
-                  l10n.teamNoActiveSearchTitle,
-                  style: context.textStyles.titleMedium,
-                ),
-              ),
-            ],
-          ),
-          const AppDivider(spacing: AppSpacing.xl),
-          Text(
-            l10n.teamNoActiveSearchMessage,
-            style: context.textStyles.bodyMedium?.copyWith(
-              color: colors.textSecondary,
-            ),
-          ),
         ],
       ),
     );

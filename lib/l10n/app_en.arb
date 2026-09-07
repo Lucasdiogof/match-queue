@@ -292,8 +292,6 @@
   "teamEditTitle": "Edit team",
   "teamSwitchTitle": "Your teams",
   "teamSwitchAction": "Switch team",
-  "teamNoActiveSearchTitle": "No active search",
-  "teamNoActiveSearchMessage": "The match queue is coming soon. This is where the team will coordinate who searches now.",
   "teamSearchDurationLabel": "Default search duration",
   "teamSearchDurationHelper": "How long each player stays at the front of the queue.",
   "teamDurationSeconds": "{seconds} s",
@@ -364,5 +362,41 @@
   "errorInviteNotActive": "This invite is no longer valid.",
   "errorInviteExpired": "This invite has expired.",
   "errorInviteExhausted": "This invite reached its usage limit.",
-  "errorInvitePermissionDenied": "You do not have permission to manage this team's invite."
+  "errorInvitePermissionDenied": "You do not have permission to manage this team's invite.",
+  "errorMatchmakingNoActiveSearch": "There is no active search right now.",
+  "errorMatchmakingNotCurrentSearcher": "You are no longer the one searching for a match.",
+  "errorMatchmakingAlreadyInOtherState": "You are already in another queue state.",
+  "errorMatchmakingTeamInactive": "This team is currently inactive.",
+  "matchmakingIdleTitle": "No one is searching for a match",
+  "matchmakingIdleMessage": "Tap search for a match to start. The whole team sees it as soon as someone joins the queue.",
+  "matchmakingSearchAction": "Search for a match",
+  "matchmakingJoinQueueAction": "Join the queue",
+  "matchmakingCancelAction": "Cancel search",
+  "matchmakingLeaveQueueAction": "Leave the queue",
+  "matchmakingMatchFoundAction": "Match found",
+  "matchmakingSearchingSelfTitle": "Searching for a match",
+  "matchmakingSearchingSelfMessage": "As soon as the match starts, tap match found.",
+  "matchmakingSearchingOtherTitle": "{name} is searching for a match",
+  "@matchmakingSearchingOtherTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucas"
+      }
+    }
+  },
+  "matchmakingQueuePositionLabel": "Position {position} in the queue",
+  "@matchmakingQueuePositionLabel": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "matchmakingQueueSectionTitle": "Waiting queue",
+  "matchmakingQueueEmptyMessage": "No one in the queue.",
+  "matchmakingYouBadge": "You",
+  "matchmakingCancelConfirmTitle": "Cancel search?",
+  "matchmakingCancelConfirmMessage": "You will lose your spot in the current search."
 }

@@ -292,8 +292,6 @@
   "teamEditTitle": "Editar equipo",
   "teamSwitchTitle": "Tus equipos",
   "teamSwitchAction": "Cambiar de equipo",
-  "teamNoActiveSearchTitle": "Sin búsqueda activa",
-  "teamNoActiveSearchMessage": "La cola de partidos llega pronto. Aquí es donde el equipo coordinará quién busca ahora.",
   "teamSearchDurationLabel": "Duración de búsqueda predeterminada",
   "teamSearchDurationHelper": "Tiempo que cada jugador permanece al frente de la cola.",
   "teamDurationSeconds": "{seconds} s",
@@ -364,5 +362,41 @@
   "errorInviteNotActive": "Esta invitación ya no es válida.",
   "errorInviteExpired": "Esta invitación ha expirado.",
   "errorInviteExhausted": "Esta invitación alcanzó su límite de usos.",
-  "errorInvitePermissionDenied": "No tienes permiso para gestionar la invitación de este equipo."
+  "errorInvitePermissionDenied": "No tienes permiso para gestionar la invitación de este equipo.",
+  "errorMatchmakingNoActiveSearch": "No hay ninguna búsqueda activa en este momento.",
+  "errorMatchmakingNotCurrentSearcher": "Ya no eres quien está buscando partida.",
+  "errorMatchmakingAlreadyInOtherState": "Ya estás en otro estado de la cola.",
+  "errorMatchmakingTeamInactive": "Este equipo está inactivo en este momento.",
+  "matchmakingIdleTitle": "Nadie está buscando partida",
+  "matchmakingIdleMessage": "Toca buscar partida para empezar. Todo el equipo lo ve en cuanto alguien entra en la cola.",
+  "matchmakingSearchAction": "Buscar partida",
+  "matchmakingJoinQueueAction": "Entrar en la cola",
+  "matchmakingCancelAction": "Cancelar búsqueda",
+  "matchmakingLeaveQueueAction": "Salir de la cola",
+  "matchmakingMatchFoundAction": "Partida encontrada",
+  "matchmakingSearchingSelfTitle": "Buscando partida",
+  "matchmakingSearchingSelfMessage": "En cuanto empiece la partida, toca partida encontrada.",
+  "matchmakingSearchingOtherTitle": "{name} está buscando partida",
+  "@matchmakingSearchingOtherTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucas"
+      }
+    }
+  },
+  "matchmakingQueuePositionLabel": "Posición {position} en la cola",
+  "@matchmakingQueuePositionLabel": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "matchmakingQueueSectionTitle": "Cola de espera",
+  "matchmakingQueueEmptyMessage": "Nadie en la cola.",
+  "matchmakingYouBadge": "Tú",
+  "matchmakingCancelConfirmTitle": "¿Cancelar búsqueda?",
+  "matchmakingCancelConfirmMessage": "Vas a perder tu lugar en la búsqueda actual."
 }

@@ -575,13 +575,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamSwitchAction => 'Switch team';
 
   @override
-  String get teamNoActiveSearchTitle => 'No active search';
-
-  @override
-  String get teamNoActiveSearchMessage =>
-      'The match queue is coming soon. This is where the team will coordinate who searches now.';
-
-  @override
   String get teamSearchDurationLabel => 'Default search duration';
 
   @override
@@ -672,4 +665,74 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorInvitePermissionDenied =>
       'You do not have permission to manage this team\'s invite.';
+
+  @override
+  String get errorMatchmakingNoActiveSearch =>
+      'There is no active search right now.';
+
+  @override
+  String get errorMatchmakingNotCurrentSearcher =>
+      'You are no longer the one searching for a match.';
+
+  @override
+  String get errorMatchmakingAlreadyInOtherState =>
+      'You are already in another queue state.';
+
+  @override
+  String get errorMatchmakingTeamInactive => 'This team is currently inactive.';
+
+  @override
+  String get matchmakingIdleTitle => 'No one is searching for a match';
+
+  @override
+  String get matchmakingIdleMessage =>
+      'Tap search for a match to start. The whole team sees it as soon as someone joins the queue.';
+
+  @override
+  String get matchmakingSearchAction => 'Search for a match';
+
+  @override
+  String get matchmakingJoinQueueAction => 'Join the queue';
+
+  @override
+  String get matchmakingCancelAction => 'Cancel search';
+
+  @override
+  String get matchmakingLeaveQueueAction => 'Leave the queue';
+
+  @override
+  String get matchmakingMatchFoundAction => 'Match found';
+
+  @override
+  String get matchmakingSearchingSelfTitle => 'Searching for a match';
+
+  @override
+  String get matchmakingSearchingSelfMessage =>
+      'As soon as the match starts, tap match found.';
+
+  @override
+  String matchmakingSearchingOtherTitle(String name) {
+    return '$name is searching for a match';
+  }
+
+  @override
+  String matchmakingQueuePositionLabel(int position) {
+    return 'Position $position in the queue';
+  }
+
+  @override
+  String get matchmakingQueueSectionTitle => 'Waiting queue';
+
+  @override
+  String get matchmakingQueueEmptyMessage => 'No one in the queue.';
+
+  @override
+  String get matchmakingYouBadge => 'You';
+
+  @override
+  String get matchmakingCancelConfirmTitle => 'Cancel search?';
+
+  @override
+  String get matchmakingCancelConfirmMessage =>
+      'You will lose your spot in the current search.';
 }

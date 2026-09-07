@@ -42,5 +42,15 @@ extension AppFailureL10n on AppFailure {
       InviteFailureReason.permissionDenied =>
         l10n.errorInvitePermissionDenied,
     },
+    MatchmakingFailure(:final reason) => switch (reason) {
+      MatchmakingFailureReason.noActiveSearch =>
+        l10n.errorMatchmakingNoActiveSearch,
+      MatchmakingFailureReason.notCurrentSearcher =>
+        l10n.errorMatchmakingNotCurrentSearcher,
+      MatchmakingFailureReason.alreadyInOtherState =>
+        l10n.errorMatchmakingAlreadyInOtherState,
+      MatchmakingFailureReason.teamInactive =>
+        l10n.errorMatchmakingTeamInactive,
+    },
   };
 }
