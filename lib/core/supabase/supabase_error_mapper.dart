@@ -42,6 +42,16 @@ class SupabaseErrorMapper {
     return transportErrorTypes.contains(error.runtimeType.toString());
   }
 
+  TeamFailureReason? _teamReasonFrom(String? code) => switch (code) {
+    'FQ001' => TeamFailureReason.invalidName,
+    'FQ002' => TeamFailureReason.invalidTag,
+    'FQ003' => TeamFailureReason.permissionDenied,
+    'FQ004' || 'FQ005' => TeamFailureReason.permissionDenied,
+    'FQ006' => TeamFailureReason.profileMissing,
+    'FQ007' => TeamFailureReason.invalidSearchDuration,
+    _ => null,
+  };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -67,6 +77,10 @@ class SupabaseErrorMapper {
   }
 
   AppFailure _fromPostgrest(PostgrestException error) {
+    final teamReason = _teamReasonFrom(error.code);
+    if (teamReason != null) {
+      return TeamFailure(reason: teamReason, debugMessage: error.message);
+    }
     switch (error.code) {
       case '23505':
         return ConflictFailure(debugMessage: error.message);

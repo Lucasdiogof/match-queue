@@ -6,15 +6,24 @@ enum PasswordConfirmationError { empty, mismatch }
 
 enum DisplayNameValidationError { empty, tooShort, tooLong }
 
+enum TeamNameValidationError { empty, tooShort, tooLong }
+
+enum TeamTagValidationError { tooShort, tooLong, invalidCharacters }
+
 class AppValidators {
   const AppValidators._();
 
   static const int displayNameMinLength = 2;
   static const int displayNameMaxLength = 32;
   static const int passwordMinLength = 8;
+  static const int teamNameMinLength = 2;
+  static const int teamNameMaxLength = 40;
+  static const int teamTagMinLength = 2;
+  static const int teamTagMaxLength = 6;
 
   static final RegExp _email = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]{2,}$');
   static final RegExp _whitespaceRun = RegExp(r'\s+');
+  static final RegExp _teamTag = RegExp(r'^[A-Z0-9]+$');
 
   static String normalizeEmail(String value) => value.trim().toLowerCase();
 
@@ -53,6 +62,45 @@ class AppValidators {
     }
     if (confirmation != password) {
       return PasswordConfirmationError.mismatch;
+    }
+    return null;
+  }
+
+  static String normalizeTeamName(String value) =>
+      value.trim().replaceAll(_whitespaceRun, ' ');
+
+  static String? normalizeTeamTag(String? value) {
+    final normalized = (value ?? '').trim().toUpperCase().replaceAll(' ', '');
+    return normalized.isEmpty ? null : normalized;
+  }
+
+  static TeamNameValidationError? teamName(String? value) {
+    final normalized = normalizeTeamName(value ?? '');
+    if (normalized.isEmpty) {
+      return TeamNameValidationError.empty;
+    }
+    if (normalized.runes.length < teamNameMinLength) {
+      return TeamNameValidationError.tooShort;
+    }
+    if (normalized.runes.length > teamNameMaxLength) {
+      return TeamNameValidationError.tooLong;
+    }
+    return null;
+  }
+
+  static TeamTagValidationError? teamTag(String? value) {
+    final normalized = normalizeTeamTag(value);
+    if (normalized == null) {
+      return null;
+    }
+    if (normalized.length < teamTagMinLength) {
+      return TeamTagValidationError.tooShort;
+    }
+    if (normalized.length > teamTagMaxLength) {
+      return TeamTagValidationError.tooLong;
+    }
+    if (!_teamTag.hasMatch(normalized)) {
+      return TeamTagValidationError.invalidCharacters;
     }
     return null;
   }

@@ -16,6 +16,7 @@ import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invit
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,12 +67,14 @@ Future<void> bootstrap() async {
       final authCubit = getIt<AuthCubit>()..initialize();
       final pendingInviteCubit = getIt<PendingInviteCubit>()..restore();
       final profileCubit = getIt<ProfileCubit>();
+      final teamsCubit = getIt<TeamsCubit>();
 
       final restoredUser = authCubit.state.user;
       if (restoredUser != null) {
         unawaited(
           profileCubit.load(fallbackDisplayName: restoredUser.shortName),
         );
+        unawaited(teamsCubit.load(userId: restoredUser.id));
       }
 
       logger.info('FIFA Queue iniciado em ${config.environment.key}.');
@@ -85,6 +88,7 @@ Future<void> bootstrap() async {
           localeCubit: getIt<LocaleCubit>(),
           pendingInviteCubit: pendingInviteCubit,
           profileCubit: profileCubit,
+          teamsCubit: teamsCubit,
         ),
       );
     },

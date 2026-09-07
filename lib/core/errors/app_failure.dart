@@ -11,6 +11,15 @@ enum AuthFailureReason {
   unknown,
 }
 
+enum TeamFailureReason {
+  invalidName,
+  invalidTag,
+  invalidSearchDuration,
+  notFound,
+  permissionDenied,
+  profileMissing,
+}
+
 sealed class AppFailure extends Equatable implements Exception {
   const AppFailure({this.debugMessage});
 
@@ -35,6 +44,15 @@ final class AuthFailure extends AppFailure {
   const AuthFailure({required this.reason, super.debugMessage});
 
   final AuthFailureReason reason;
+
+  @override
+  List<Object?> get props => <Object?>[reason, debugMessage];
+}
+
+final class TeamFailure extends AppFailure {
+  const TeamFailure({required this.reason, super.debugMessage});
+
+  final TeamFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];

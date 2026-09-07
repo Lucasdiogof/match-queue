@@ -6,6 +6,7 @@ import 'package:fifa_queue/features/auth/auth_module.dart';
 import 'package:fifa_queue/features/invitations/invitations_module.dart';
 import 'package:fifa_queue/features/profile/profile_module.dart';
 import 'package:fifa_queue/features/settings/settings_module.dart';
+import 'package:fifa_queue/features/teams/teams_module.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,6 +26,7 @@ Future<void> registerDependencies({
   registerSettingsModule(getIt);
   registerAuthModule(getIt, supabaseClient: supabaseClient);
   registerProfileModule(getIt, supabaseClient: supabaseClient);
+  registerTeamsModule(getIt, supabaseClient: supabaseClient);
   registerInvitationsModule(getIt);
 
   await getIt.allReady();

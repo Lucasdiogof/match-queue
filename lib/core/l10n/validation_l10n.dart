@@ -37,3 +37,27 @@ extension DisplayNameValidationErrorL10n on DisplayNameValidationError {
     ),
   };
 }
+
+extension TeamNameValidationErrorL10n on TeamNameValidationError {
+  String message(AppLocalizations l10n) => switch (this) {
+    TeamNameValidationError.empty => l10n.validationTeamNameRequired,
+    TeamNameValidationError.tooShort => l10n.validationTeamNameTooShort(
+      AppValidators.teamNameMinLength,
+    ),
+    TeamNameValidationError.tooLong => l10n.validationTeamNameTooLong(
+      AppValidators.teamNameMaxLength,
+    ),
+  };
+}
+
+extension TeamTagValidationErrorL10n on TeamTagValidationError {
+  String message(AppLocalizations l10n) => switch (this) {
+    TeamTagValidationError.tooShort => l10n.validationTeamTagTooShort(
+      AppValidators.teamTagMinLength,
+    ),
+    TeamTagValidationError.tooLong => l10n.validationTeamTagTooLong(
+      AppValidators.teamTagMaxLength,
+    ),
+    TeamTagValidationError.invalidCharacters => l10n.validationTeamTagInvalid,
+  };
+}

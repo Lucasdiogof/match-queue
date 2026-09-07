@@ -25,5 +25,14 @@ extension AppFailureL10n on AppFailure {
       AuthFailureReason.tooManyRequests => l10n.errorTooManyRequests,
       AuthFailureReason.unknown => l10n.errorAuthUnknown,
     },
+    TeamFailure(:final reason) => switch (reason) {
+      TeamFailureReason.invalidName => l10n.errorTeamNameInvalid,
+      TeamFailureReason.invalidTag => l10n.errorTeamTagInvalid,
+      TeamFailureReason.invalidSearchDuration =>
+        l10n.errorTeamSearchDurationInvalid,
+      TeamFailureReason.notFound => l10n.errorTeamNotFound,
+      TeamFailureReason.permissionDenied => l10n.errorTeamPermissionDenied,
+      TeamFailureReason.profileMissing => l10n.errorTeamProfileMissing,
+    },
   };
 }
