@@ -32,11 +32,28 @@ class BrandMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const logo = BrandAssets.logo;
+    final colors = context.colors;
+
     if (logo != null) {
-      return Image.asset(logo, width: _side, height: _side);
+      // A arte tem fundo branco solido (nao e um simbolo com alpha) --
+      // um badge arredondado com borda sutil deixa isso coerente tanto no
+      // tema claro quanto no escuro, em vez de um quadrado branco cru sobre
+      // fundo escuro.
+      return Semantics(
+        excludeSemantics: true,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_radius),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(color: colors.borderSubtle),
+              borderRadius: BorderRadius.circular(_radius),
+            ),
+            child: Image.asset(logo, width: _side, height: _side),
+          ),
+        ),
+      );
     }
 
-    final colors = context.colors;
     return Semantics(
       label: BrandAssets.productName,
       child: Container(
@@ -63,15 +80,40 @@ class BrandMark extends StatelessWidget {
 }
 
 class BrandWordmark extends StatelessWidget {
-  const BrandWordmark({this.style, super.key});
+  const BrandWordmark({this.style, this.height = 24, super.key});
 
   final TextStyle? style;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     const wordmark = BrandAssets.wordmark;
     if (wordmark != null) {
-      return Image.asset(wordmark, height: 24);
+      // Ink-on-paper artwork, not a themeable asset: the letterforms are
+      // themselves near-black, so cutting the background to transparent
+      // makes it unreadable in dark mode instead of fixing anything. It
+      // gets its own fixed light card -- deliberately not context.colors --
+      // so it stays legible regardless of the app's ThemeMode.
+      return Semantics(
+        label: BrandAssets.productName,
+        image: true,
+        child: ExcludeSemantics(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(AppRadii.md),
+              border: Border.all(color: context.colors.borderSubtle),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: height * 0.55,
+                vertical: height * 0.35,
+              ),
+              child: Image.asset(wordmark, height: height),
+            ),
+          ),
+        ),
+      );
     }
 
     return Text(
