@@ -5,6 +5,8 @@ import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/widgets/pending_invite_listener.dart';
+import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fifa_queue/features/profile/presentation/widgets/profile_session_listener.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
@@ -20,6 +22,7 @@ class FifaQueueApp extends StatelessWidget {
     required this.themeCubit,
     required this.localeCubit,
     required this.pendingInviteCubit,
+    required this.profileCubit,
     super.key,
   });
 
@@ -29,6 +32,7 @@ class FifaQueueApp extends StatelessWidget {
   final ThemeCubit themeCubit;
   final LocaleCubit localeCubit;
   final PendingInviteCubit pendingInviteCubit;
+  final ProfileCubit profileCubit;
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -37,6 +41,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<ThemeCubit>.value(value: themeCubit),
       BlocProvider<LocaleCubit>.value(value: localeCubit),
       BlocProvider<PendingInviteCubit>.value(value: pendingInviteCubit),
+      BlocProvider<ProfileCubit>.value(value: profileCubit),
     ],
     child: AppConfigScope(
       config: config,
@@ -54,8 +59,11 @@ class FifaQueueApp extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             localeResolutionCallback: (deviceLocale, supportedLocales) =>
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
-            builder: (context, child) =>
-                PendingInviteListener(child: child ?? const SizedBox.shrink()),
+            builder: (context, child) => ProfileSessionListener(
+              child: PendingInviteListener(
+                child: child ?? const SizedBox.shrink(),
+              ),
+            ),
           ),
         ),
       ),
