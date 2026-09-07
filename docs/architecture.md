@@ -56,7 +56,8 @@ Um Cubit por domínio, nenhum `AppCubit` global:
 
 | Cubit | Responsabilidade |
 | --- | --- |
-| `AuthCubit` | sessão, login, cadastro, logout |
+| `AuthCubit` | sessão, login, cadastro, logout, recuperação de senha |
+| `ProfileCubit` | profile do usuário logado, edição do nome |
 | `ThemeCubit` | `ThemeMode` persistido |
 | `LocaleCubit` | idioma persistido (`null` = idioma do dispositivo) |
 | `PendingInviteCubit` | convite capturado antes da autenticação |
@@ -129,3 +130,39 @@ Mais adiante, provavelmente: `matches`, `player_statistics`,
   dispositivo, voltar do background ou reconectar não muda nada.
 - **Papéis (`OWNER`, `ADMIN`, `PLAYER`) e RLS** decidem o que cada membro
   pode fazer. A UI só esconde botão; a garantia é no banco.
+
+
+## Decisões da Etapa 2
+
+**O domínio não conhece o `User` do Supabase.** `AuthRepository` fala em
+`AuthUser` e `AuthSnapshot`. `AuthSnapshot` existe porque o app precisa saber
+*por que* a sessão mudou — sem ele, `AuthChangeEvent.passwordRecovery`
+(evento do gotrue) teria que vazar até a Presentation só para o router
+descobrir que deve mandar o usuário para `/reset-password`. O mapeamento de
+`AuthChangeEvent` para `AuthSessionEvent` acontece uma única vez, no
+`SupabaseAuthRepository`.
+
+**O ciclo de vida do `ProfileCubit` é explícito, não implícito.** Ele é
+app-scoped e reage à sessão por meio do `ProfileSessionListener`, um
+`BlocListener<AuthCubit>` na raiz da árvore: entra sessão, carrega o profile;
+sai sessão, limpa. A alternativa seria registrar o repositório no
+`SessionScope` do get_it e reprovisionar os cubits na árvore a cada troca de
+sessão — mais cerimônia e mais chances de erro para o mesmo resultado.
+`SessionScope` continua existindo, ainda vazio, para os repositórios da
+Etapa 3 que realmente só fazem sentido com um time carregado.
+
+O primeiro carregamento não vem do listener: quando o app abre com sessão
+restaurada, o `AuthCubit` já resolveu antes da árvore existir e nenhuma
+transição acontece. Por isso o `bootstrap` dispara `profileCubit.load()`
+diretamente quando encontra um usuário restaurado.
+
+**Validação mora em um lugar só.** `AppValidators` é Dart puro e devolve
+enums (`EmailValidationError`, `PasswordValidationError`, ...), não texto —
+quem traduz é `validation_l10n.dart`. Assim a regra é testável sem
+`BuildContext` e os limites (`displayNameMinLength`, `passwordMinLength`)
+ficam no mesmo lugar que as constraints do banco espelham.
+
+**Repositórios locais não são mock de teste, são o modo development.**
+`LocalAuthRepository` e `LocalProfileRepository` entram quando não há
+Supabase configurado. Isso mantém o app inteiro navegável sem backend e, de
+quebra, deixa um fake pronto para quando a etapa de testes chegar.
