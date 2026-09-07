@@ -1359,6 +1359,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Você vai perder sua posição na busca atual.'**
   String get matchmakingCancelConfirmMessage;
+
+  /// No description provided for @matchmakingYourTurnTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua vez de buscar!'**
+  String get matchmakingYourTurnTitle;
+
+  /// No description provided for @matchmakingReconnecting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reconectando…'**
+  String get matchmakingReconnecting;
 }
 
 class _AppLocalizationsDelegate

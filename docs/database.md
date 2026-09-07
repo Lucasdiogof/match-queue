@@ -104,8 +104,76 @@ leitura por time entra junto com a tabela que a define.
 
 ## O que ainda não existe
 
-`teams`, `team_members`, `team_invites`, `team_invite_links`,
-`match_search_sessions`, `match_search_queue`, `match_search_events`,
-`devices`, `notification_preferences`, `user_settings`. Nenhuma decisão desta
-etapa conflita com eles — em particular, participação em time continua sendo
-N:N via `team_members`, nunca `profiles.team_id`.
+`match_search_events`, `devices`, `notification_preferences` e
+`user_settings`. `teams`, `team_members`, `team_invite_links`,
+`match_search_sessions` e `match_search_queue` já existem — foram criadas
+nas Etapas 3 a 5.
+
+## Realtime: `public.team_matchmaking_revisions`
+
+| Coluna | Tipo | Notas |
+| --- | --- | --- |
+| `team_id` | `uuid` | PK e FK para `teams(id)`, `on delete cascade` |
+| `revision` | `bigint` | Contador monotonico. Diagnostico, nao estado |
+| `updated_at` | `timestamptz` | `now()` a cada incremento |
+
+### Por que ela existe
+
+A Etapa 5 deixou `match_search_sessions` e `match_search_queue` com RLS
+ativa, **zero policies e zero grants** — todo acesso passa por RPC. Postgres
+Changes so entrega linha que o assinante consegue `SELECT`, entao assinar
+aquelas tabelas exigiria abrir leitura direta nelas: a fila e os horarios de
+busca do time passariam a ser legiveis por PostgREST, fora do read model
+controlado, so para ganhar um "algo mudou".
+
+Esta tabela e o contrario: existe para ser lida, e nao carrega estado
+nenhum. O maximo que revela e "houve atividade neste time" — e so para quem
+ja e membro dele.
+
+**O estado oficial continua vindo apenas de `get_team_matchmaking_state`.**
+Nenhum evento e aplicado como patch local no cliente.
+
+### Policies e grants
+
+| Regra | Efeito |
+| --- | --- |
+| `team_matchmaking_revisions_select_member` (`select`, `authenticated`) | So membros do time enxergam a linha, via `public.is_team_member(team_id)` |
+| Sem policy de `insert`/`update`/`delete` | O cliente nunca escreve: ninguem forja um evento |
+| `revoke all ... from anon` | Anonimo toma `42501` antes de qualquer RLS |
+| `grant select ... to authenticated` | Unico privilegio concedido |
+
+A tabela esta na publication `supabase_realtime` (adicionada por migration,
+nao pelo Dashboard).
+
+### Quem emite
+
+`public._notify_matchmaking_changed(team_id)` faz um upsert incrementando
+`revision`. E chamada **so** de dentro das RPCs security definer, sempre
+depois que o estado final da operacao ja foi escrito.
+
+Como e um write comum, participa da transacao: **se a RPC falhar e der
+rollback, o evento nao acontece** — nenhum cliente e avisado de uma mudanca
+que nao existiu.
+
+Regra de emissao — no maximo uma notificacao por transacao, e so quando algo
+mudou de verdade:
+
+| Origem | Notifica? |
+| --- | --- |
+| `request_match_search` que criou sessao ou entrada de fila | sim |
+| `request_match_search` repetido de quem ja esta no estado | nao |
+| `cancel_match_search` / `report_match_found` | sim |
+| `get_team_matchmaking_state` (leitura pura) | **nao** |
+| Qualquer RPC cuja expiracao lazy corrigiu uma sessao vencida | sim |
+| `process_expired_searches` (pg_cron) por time expirado | sim |
+
+A linha de baixo dessa tabela e a mais importante: se a leitura notificasse,
+cada refresh de um cliente viraria evento para todos os outros, que leriam de
+novo, que notificariam de novo. Por isso `_expire_team_search_if_needed`
+passou a devolver `boolean` — o chamador so avisa quando ela realmente agiu.
+
+### Ordem e duplicidade
+
+O cliente nunca deriva estado do evento, entao evento repetido, fora de
+ordem ou atrasado e inofensivo: no pior caso provoca uma releitura
+redundante, que o debounce de 200ms do cubit ainda agrupa.

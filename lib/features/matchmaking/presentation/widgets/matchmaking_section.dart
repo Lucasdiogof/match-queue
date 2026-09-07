@@ -4,6 +4,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_cubit.dart';
@@ -11,9 +12,14 @@ import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_s
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_queue_list.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_timer_ring.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const Duration _refreshInterval = Duration(seconds: 18);
+/// Com o Realtime no ar, isto deixou de ser o mecanismo de atualizacao e
+/// virou so uma rede de seguranca: cobre o intervalo em que o canal caiu
+/// mas o app ainda nao percebeu. Espacado de proposito -- quem atualiza a
+/// tela e o evento, nao o relogio.
+const Duration _safetyRefreshInterval = Duration(seconds: 90);
 
 class MatchmakingSection extends StatelessWidget {
   const MatchmakingSection({required this.teamId, super.key});
@@ -23,9 +29,11 @@ class MatchmakingSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider<MatchmakingCubit>(
     key: ValueKey(teamId),
-    create: (_) =>
-        MatchmakingCubit(getIt<MatchmakingRepository>(), teamId: teamId)
-          ..load(),
+    create: (_) => MatchmakingCubit(
+      getIt<MatchmakingRepository>(),
+      getIt<AppLogger>(),
+      teamId: teamId,
+    )..start(),
     child: const _MatchmakingSectionBody(),
   );
 }
@@ -47,13 +55,16 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _refreshTimer = Timer.periodic(
-      _refreshInterval,
+      _safetyRefreshInterval,
       (_) => context.read<MatchmakingCubit>().refreshSilently(),
     );
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Vale tanto pro app voltar do background no mobile quanto pra aba
+    // voltar a ficar visivel na Web: o Flutter mapeia visibilitychange
+    // para o mesmo ciclo de vida.
     if (state == AppLifecycleState.resumed) {
       context.read<MatchmakingCubit>().refreshSilently();
     }
@@ -66,24 +77,38 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
     super.dispose();
   }
 
+  void _announceYourTurn(BuildContext context) {
+    unawaited(HapticFeedback.mediumImpact());
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(context.l10n.matchmakingYourTurnTitle)),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<MatchmakingCubit, MatchmakingState>(
-      builder: (context, state) => switch (state.status) {
-        MatchmakingStatus.loading => const AppCard(
-          child: SizedBox(height: 220, child: AppLoading.inline()),
-        ),
-        MatchmakingStatus.failure => AppCard(
-          child: AppBanner(
-            tone: AppBannerTone.danger,
-            message: state.failure?.localizedMessage(l10n) ??
-                l10n.errorUnexpected,
+    return BlocListener<MatchmakingCubit, MatchmakingState>(
+      listenWhen: (previous, current) =>
+          previous.promotionNonce != current.promotionNonce,
+      listener: (context, state) => _announceYourTurn(context),
+      child: BlocBuilder<MatchmakingCubit, MatchmakingState>(
+        builder: (context, state) => switch (state.status) {
+          MatchmakingStatus.loading => const AppCard(
+            child: SizedBox(height: 220, child: AppLoading.inline()),
           ),
-        ),
-        MatchmakingStatus.ready => _MatchmakingReadyBody(state: state),
-      },
+          MatchmakingStatus.failure => AppCard(
+            child: AppBanner(
+              tone: AppBannerTone.danger,
+              message:
+                  state.failure?.localizedMessage(l10n) ?? l10n.errorUnexpected,
+            ),
+          ),
+          MatchmakingStatus.ready => _MatchmakingReadyBody(state: state),
+        },
+      ),
     );
   }
 }
@@ -100,15 +125,63 @@ class _MatchmakingReadyBody extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    if (snapshot.isSearchingByMe) {
-      return _SearchingSelfCard(state: state, snapshot: snapshot);
+    final card = switch (snapshot) {
+      _ when snapshot.isSearchingByMe => _SearchingSelfCard(
+        state: state,
+        snapshot: snapshot,
+      ),
+      _ when snapshot.searching != null => _SearchingOtherCard(
+        state: state,
+        snapshot: snapshot,
+      ),
+      _ => _IdleCard(state: state),
+    };
+
+    if (state.connection != MatchmakingConnection.disconnected) {
+      return card;
     }
 
-    if (snapshot.searching != null) {
-      return _SearchingOtherCard(state: state, snapshot: snapshot);
-    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        const _ReconnectingIndicator(),
+        const SizedBox(height: AppSpacing.sm),
+        card,
+      ],
+    );
+  }
+}
 
-    return _IdleCard(state: state);
+/// Aparece so quando o canal realmente caiu -- oscilacao curta nao chega
+/// aqui, porque o proprio cliente do Supabase reconecta sozinho antes de
+/// reportar queda. O estado na tela continua valido e utilizavel: e um
+/// aviso, nao um bloqueio.
+class _ReconnectingIndicator extends StatelessWidget {
+  const _ReconnectingIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return Row(
+      children: <Widget>[
+        SizedBox(
+          width: 12,
+          height: 12,
+          child: CircularProgressIndicator(
+            strokeWidth: 1.5,
+            color: colors.textTertiary,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Text(
+          context.l10n.matchmakingReconnecting,
+          style: context.textStyles.bodySmall?.copyWith(
+            color: colors.textTertiary,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -210,6 +283,8 @@ class _SearchingSelfCard extends StatelessWidget {
             startedAt: searching.startedAt,
             expiresAt: searching.expiresAt,
             estimatedServerNow: state.estimatedServerNow,
+            onReachedZero: () =>
+                context.read<MatchmakingCubit>().refreshSilently(),
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
@@ -330,13 +405,15 @@ class _SearchingOtherCard extends StatelessWidget {
                 ? l10n.matchmakingLeaveQueueAction
                 : l10n.matchmakingJoinQueueAction,
             icon: isQueued ? Icons.close : Icons.playlist_add,
-            variant: isQueued ? AppButtonVariant.secondary : AppButtonVariant.primary,
+            variant: isQueued
+                ? AppButtonVariant.secondary
+                : AppButtonVariant.primary,
             isLoading: state.isActionPending,
             onPressed: state.isActionPending
                 ? null
                 : () => isQueued
-                    ? context.read<MatchmakingCubit>().cancel()
-                    : context.read<MatchmakingCubit>().startSearch(),
+                      ? context.read<MatchmakingCubit>().cancel()
+                      : context.read<MatchmakingCubit>().startSearch(),
           ),
         ],
       ),

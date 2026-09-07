@@ -14,6 +14,7 @@ class MatchmakingTimerRing extends StatefulWidget {
     required this.startedAt,
     required this.expiresAt,
     required this.estimatedServerNow,
+    this.onReachedZero,
     this.size = 168,
     super.key,
   });
@@ -21,6 +22,12 @@ class MatchmakingTimerRing extends StatefulWidget {
   final DateTime startedAt;
   final DateTime expiresAt;
   final DateTime Function() estimatedServerNow;
+
+  /// Disparado uma unica vez por sessao quando o contador chega a zero na
+  /// tela. Serve so pra pedir uma releitura antes do cron/evento chegar --
+  /// quem marca a sessao como expirada continua sendo o servidor.
+  final VoidCallback? onReachedZero;
+
   final double size;
 
   @override
@@ -29,6 +36,7 @@ class MatchmakingTimerRing extends StatefulWidget {
 
 class _MatchmakingTimerRingState extends State<MatchmakingTimerRing> {
   Timer? _ticker;
+  bool _notifiedZero = false;
 
   @override
   void initState() {
@@ -41,9 +49,35 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing> {
   }
 
   @override
+  void didUpdateWidget(MatchmakingTimerRing oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.expiresAt != widget.expiresAt) {
+      _notifiedZero = false;
+    }
+  }
+
+  @override
   void dispose() {
     _ticker?.cancel();
     super.dispose();
+  }
+
+  void _maybeNotifyZero(Duration remaining) {
+    if (_notifiedZero || remaining > Duration.zero) {
+      return;
+    }
+    _notifiedZero = true;
+    final callback = widget.onReachedZero;
+    if (callback == null) {
+      return;
+    }
+    // Fora do build: chamar direto aqui emitiria estado durante a fase de
+    // construcao do frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        callback();
+      }
+    });
   }
 
   @override
@@ -54,6 +88,7 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing> {
       widget.estimatedServerNow(),
     );
     final remaining = rawRemaining.isNegative ? Duration.zero : rawRemaining;
+    _maybeNotifyZero(remaining);
     final fraction = total.inMilliseconds <= 0
         ? 0.0
         : (remaining.inMilliseconds / total.inMilliseconds).clamp(0.0, 1.0);

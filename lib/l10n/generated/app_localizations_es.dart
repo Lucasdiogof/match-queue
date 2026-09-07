@@ -740,4 +740,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get matchmakingCancelConfirmMessage =>
       'Vas a perder tu lugar en la búsqueda actual.';
+
+  @override
+  String get matchmakingYourTurnTitle => '¡Tu turno de buscar!';
+
+  @override
+  String get matchmakingReconnecting => 'Reconectando…';
 }

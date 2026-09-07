@@ -4,11 +4,7 @@ import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snap
 import 'package:flutter/material.dart';
 
 class MatchmakingQueueList extends StatelessWidget {
-  const MatchmakingQueueList({
-    required this.queue,
-    this.myPosition,
-    super.key,
-  });
+  const MatchmakingQueueList({required this.queue, this.myPosition, super.key});
 
   final List<MatchmakingQueueEntry> queue;
   final int? myPosition;
