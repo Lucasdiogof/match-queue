@@ -1,0 +1,138 @@
+{
+  "@@locale": "en",
+
+  "appName": "FIFA Queue",
+  "appTagline": "One at a time in the queue.",
+
+  "actionContinue": "Continue",
+  "actionCancel": "Cancel",
+  "actionRetry": "Try again",
+  "actionClose": "Close",
+  "actionSave": "Save",
+  "actionBack": "Back",
+  "actionNotNow": "Not now",
+  "actionSignOut": "Sign out",
+
+  "navSearch": "Search",
+  "navTeam": "Team",
+  "navHistory": "History",
+  "navProfile": "Profile",
+
+  "comingSoonTitle": "Under construction",
+  "comingSoonMessage": "This area will be built in the upcoming stages of the project.",
+  "comingSoonStage": "Planned for {stage}",
+  "@comingSoonStage": {
+    "placeholders": {
+      "stage": { "type": "String", "example": "Stage 2" }
+    }
+  },
+
+  "homeTitle": "Find a match",
+  "homeSubtitle": "Coordinate who is searching right now.",
+  "teamTitle": "My team",
+  "teamSubtitle": "Players, roles and invites.",
+  "historyTitle": "History",
+  "historySubtitle": "Searches, matches found and expirations.",
+  "profileTitle": "Profile",
+  "profileSubtitle": "Account, appearance and language.",
+
+  "authSignIn": "Sign in",
+  "authSignUp": "Create account",
+  "authForgotPassword": "Forgot my password",
+  "authEmail": "Email",
+  "authPassword": "Password",
+  "authRevealPassword": "Show password",
+  "authHidePassword": "Hide password",
+  "authWelcomeTitle": "Sign in to coordinate your team",
+  "authWelcomeMessage": "The authentication screens will be built in the next stage. The auth architecture is already in place.",
+  "authLocalModeTitle": "Local development mode",
+  "authLocalModeMessage": "No Supabase project is configured. You can sign in with a local session to browse the app structure.",
+  "authLocalModeAction": "Sign in locally",
+  "authSignedInAs": "Signed in as {email}",
+  "@authSignedInAs": {
+    "placeholders": {
+      "email": { "type": "String", "example": "player@fifaqueue.app" }
+    }
+  },
+
+  "settingsAppearance": "Appearance",
+  "settingsLanguage": "Language",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "languageSystem": "Device language",
+  "languagePortuguese": "Portuguese (Brazil)",
+  "languageEnglish": "English",
+  "languageSpanish": "Spanish",
+
+  "inviteTitle": "You were invited to",
+  "inviteJoinTeam": "Join team",
+  "inviteCodeLabel": "Invite code: {code}",
+  "@inviteCodeLabel": {
+    "placeholders": {
+      "code": { "type": "String", "example": "X7K2P9" }
+    }
+  },
+  "inviteSignInRequiredTitle": "Sign in to accept the invite",
+  "inviteSignInRequiredMessage": "We saved this invite. As soon as you sign in it will resume automatically.",
+  "invitePendingRestored": "Pending invite restored.",
+  "inviteResolutionComingSoon": "Joining a team will be implemented in the next stage.",
+  "invitePlayersCount": "{count, plural, =0{No players} =1{1 player} other{{count} players}}",
+  "@invitePlayersCount": {
+    "placeholders": {
+      "count": { "type": "int", "example": "8" }
+    }
+  },
+  "inviteReceivedAt": "Invite received on {date}",
+  "@inviteReceivedAt": {
+    "placeholders": {
+      "date": { "type": "DateTime", "format": "yMMMd" }
+    }
+  },
+
+  "queuePositionLabel": "#{position} in queue",
+  "@queuePositionLabel": {
+    "placeholders": {
+      "position": { "type": "int", "format": "decimalPattern", "example": "2" }
+    }
+  },
+
+  "errorNetwork": "No connection. Check your internet and try again.",
+  "errorTimeout": "The operation took too long. Try again.",
+  "errorServer": "Something went wrong on the server. Try again shortly.",
+  "errorPermission": "You do not have permission to do that.",
+  "errorNotFound": "We could not find what you were looking for.",
+  "errorConflict": "This action conflicts with the current state. Refresh and try again.",
+  "errorUnexpected": "Unexpected error. Try again.",
+  "errorConfiguration": "Missing configuration: {keys}",
+  "@errorConfiguration": {
+    "placeholders": {
+      "keys": { "type": "String", "example": "SUPABASE_URL" }
+    }
+  },
+  "errorInvalidCredentials": "Incorrect email or password.",
+  "errorEmailAlreadyRegistered": "This email is already registered.",
+  "errorWeakPassword": "Choose a stronger password.",
+  "errorUserNotFound": "Account not found.",
+  "errorSessionExpired": "Your session expired. Please sign in again.",
+  "errorAuthUnknown": "We could not complete the authentication.",
+
+  "startupErrorTitle": "FIFA Queue could not start",
+  "startupErrorMessage": "Required environment variables are missing: {keys}",
+  "@startupErrorMessage": {
+    "placeholders": {
+      "keys": { "type": "String", "example": "SUPABASE_URL, SUPABASE_ANON_KEY" }
+    }
+  },
+
+  "environmentBadge": "Environment: {environment}",
+  "@environmentBadge": {
+    "placeholders": {
+      "environment": { "type": "String", "example": "development" }
+    }
+  },
+
+  "notFoundTitle": "Page not found",
+  "notFoundMessage": "The address you opened does not exist in this app.",
+  "notFoundAction": "Go to start"
+}

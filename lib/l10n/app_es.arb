@@ -1,0 +1,138 @@
+{
+  "@@locale": "es",
+
+  "appName": "FIFA Queue",
+  "appTagline": "Uno a la vez en la fila.",
+
+  "actionContinue": "Continuar",
+  "actionCancel": "Cancelar",
+  "actionRetry": "Intentar de nuevo",
+  "actionClose": "Cerrar",
+  "actionSave": "Guardar",
+  "actionBack": "Volver",
+  "actionNotNow": "Ahora no",
+  "actionSignOut": "Salir",
+
+  "navSearch": "Buscar",
+  "navTeam": "Equipo",
+  "navHistory": "Historial",
+  "navProfile": "Perfil",
+
+  "comingSoonTitle": "En construcción",
+  "comingSoonMessage": "Esta área se construirá en las próximas etapas del proyecto.",
+  "comingSoonStage": "Previsto para la {stage}",
+  "@comingSoonStage": {
+    "placeholders": {
+      "stage": { "type": "String", "example": "Etapa 2" }
+    }
+  },
+
+  "homeTitle": "Buscar partido",
+  "homeSubtitle": "Coordina quién está buscando ahora.",
+  "teamTitle": "Mi equipo",
+  "teamSubtitle": "Jugadores, roles e invitaciones.",
+  "historyTitle": "Historial",
+  "historySubtitle": "Búsquedas, partidos encontrados y expiraciones.",
+  "profileTitle": "Perfil",
+  "profileSubtitle": "Cuenta, apariencia e idioma.",
+
+  "authSignIn": "Entrar",
+  "authSignUp": "Crear cuenta",
+  "authForgotPassword": "Olvidé mi contraseña",
+  "authEmail": "Correo electrónico",
+  "authPassword": "Contraseña",
+  "authRevealPassword": "Mostrar contraseña",
+  "authHidePassword": "Ocultar contraseña",
+  "authWelcomeTitle": "Entra para coordinar tu equipo",
+  "authWelcomeMessage": "Las pantallas de autenticación se construirán en la próxima etapa. La arquitectura de auth ya está lista.",
+  "authLocalModeTitle": "Modo local de desarrollo",
+  "authLocalModeMessage": "No hay ningún proyecto de Supabase configurado. Puedes entrar con una sesión local para navegar por la estructura de la app.",
+  "authLocalModeAction": "Entrar en modo local",
+  "authSignedInAs": "Conectado como {email}",
+  "@authSignedInAs": {
+    "placeholders": {
+      "email": { "type": "String", "example": "player@fifaqueue.app" }
+    }
+  },
+
+  "settingsAppearance": "Apariencia",
+  "settingsLanguage": "Idioma",
+  "themeSystem": "Sistema",
+  "themeLight": "Claro",
+  "themeDark": "Oscuro",
+  "languageSystem": "Idioma del dispositivo",
+  "languagePortuguese": "Portugués (Brasil)",
+  "languageEnglish": "Inglés",
+  "languageSpanish": "Español",
+
+  "inviteTitle": "Te invitaron a",
+  "inviteJoinTeam": "Entrar al equipo",
+  "inviteCodeLabel": "Código de invitación: {code}",
+  "@inviteCodeLabel": {
+    "placeholders": {
+      "code": { "type": "String", "example": "X7K2P9" }
+    }
+  },
+  "inviteSignInRequiredTitle": "Entra para aceptar la invitación",
+  "inviteSignInRequiredMessage": "Guardamos esta invitación. En cuanto entres, se retomará automáticamente.",
+  "invitePendingRestored": "Invitación pendiente retomada.",
+  "inviteResolutionComingSoon": "La entrada al equipo se implementará en la próxima etapa.",
+  "invitePlayersCount": "{count, plural, =0{Ningún jugador} =1{1 jugador} other{{count} jugadores}}",
+  "@invitePlayersCount": {
+    "placeholders": {
+      "count": { "type": "int", "example": "8" }
+    }
+  },
+  "inviteReceivedAt": "Invitación recibida el {date}",
+  "@inviteReceivedAt": {
+    "placeholders": {
+      "date": { "type": "DateTime", "format": "yMMMd" }
+    }
+  },
+
+  "queuePositionLabel": "#{position} en la fila",
+  "@queuePositionLabel": {
+    "placeholders": {
+      "position": { "type": "int", "format": "decimalPattern", "example": "2" }
+    }
+  },
+
+  "errorNetwork": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "errorTimeout": "La operación tardó demasiado. Intenta de nuevo.",
+  "errorServer": "Algo falló en el servidor. Intenta de nuevo en unos instantes.",
+  "errorPermission": "No tienes permiso para hacer esto.",
+  "errorNotFound": "No encontramos lo que buscabas.",
+  "errorConflict": "Esta acción entra en conflicto con el estado actual. Actualiza e intenta de nuevo.",
+  "errorUnexpected": "Error inesperado. Intenta de nuevo.",
+  "errorConfiguration": "Falta configuración: {keys}",
+  "@errorConfiguration": {
+    "placeholders": {
+      "keys": { "type": "String", "example": "SUPABASE_URL" }
+    }
+  },
+  "errorInvalidCredentials": "Correo o contraseña incorrectos.",
+  "errorEmailAlreadyRegistered": "Este correo ya está registrado.",
+  "errorWeakPassword": "Elige una contraseña más fuerte.",
+  "errorUserNotFound": "Cuenta no encontrada.",
+  "errorSessionExpired": "Tu sesión expiró. Entra de nuevo.",
+  "errorAuthUnknown": "No fue posible completar la autenticación.",
+
+  "startupErrorTitle": "No se pudo iniciar FIFA Queue",
+  "startupErrorMessage": "Faltan variables de entorno obligatorias: {keys}",
+  "@startupErrorMessage": {
+    "placeholders": {
+      "keys": { "type": "String", "example": "SUPABASE_URL, SUPABASE_ANON_KEY" }
+    }
+  },
+
+  "environmentBadge": "Entorno: {environment}",
+  "@environmentBadge": {
+    "placeholders": {
+      "environment": { "type": "String", "example": "development" }
+    }
+  },
+
+  "notFoundTitle": "Página no encontrada",
+  "notFoundMessage": "La dirección abierta no existe en esta aplicación.",
+  "notFoundAction": "Ir al inicio"
+}
