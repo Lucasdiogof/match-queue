@@ -2,6 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:fifa_queue/features/invitations/presentation/widgets/invite_section.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
@@ -86,7 +87,7 @@ class _TeamBody extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         _MembersSection(state: state),
         const SizedBox(height: AppSpacing.lg),
-        _InviteCard(canManage: userTeam.canManageTeam),
+        InviteSection(teamId: userTeam.id, canManage: userTeam.canManageTeam),
       ],
     );
   }
@@ -247,41 +248,6 @@ class _MemberRow extends StatelessWidget {
           AppBadge(
             label: member.role.label(l10n),
             tone: member.role.badgeTone,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InviteCard extends StatelessWidget {
-  const _InviteCard({required this.canManage});
-
-  final bool canManage;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!canManage) {
-      return const SizedBox.shrink();
-    }
-    final l10n = context.l10n;
-
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          AppButton.secondary(
-            label: l10n.teamInvitePlayers,
-            icon: Icons.person_add_alt,
-            onPressed: null,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.teamInvitePlayersHint,
-            textAlign: TextAlign.center,
-            style: context.textStyles.bodySmall?.copyWith(
-              color: context.colors.textTertiary,
-            ),
           ),
         ],
       ),

@@ -1,40 +1,11 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/invitations/presentation/widgets/join_by_code_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/create_team_sheet.dart';
 import 'package:flutter/material.dart';
 
 class TeamEmptyState extends StatelessWidget {
   const TeamEmptyState({super.key});
-
-  Future<void> _openInviteInfo(BuildContext context) async {
-    final l10n = context.l10n;
-    await showAppBottomSheet<void>(
-      context: context,
-      builder: (sheetContext) => AppBottomSheet(
-        title: l10n.teamInviteComingSoonTitle,
-        actions: <Widget>[
-          AppButton(
-            label: l10n.teamCreateCta,
-            icon: Icons.add,
-            onPressed: () async {
-              Navigator.of(sheetContext).pop();
-              await showCreateTeamSheet(context);
-            },
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          AppButton.ghost(
-            label: l10n.actionClose,
-            expanded: true,
-            onPressed: () => Navigator.of(sheetContext).pop(),
-          ),
-        ],
-        child: Text(
-          l10n.teamInviteComingSoonMessage,
-          style: context.textStyles.bodyMedium,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +60,7 @@ class TeamEmptyState extends StatelessWidget {
               AppButton.ghost(
                 label: l10n.teamHaveInviteCode,
                 expanded: true,
-                onPressed: () => _openInviteInfo(context),
+                onPressed: () => showJoinByCodeSheet(context),
               ),
             ],
           ),

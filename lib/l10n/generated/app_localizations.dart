@@ -142,6 +142,18 @@ abstract class AppLocalizations {
   /// **'Salvar'**
   String get actionSave;
 
+  /// No description provided for @actionCopy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar'**
+  String get actionCopy;
+
+  /// No description provided for @actionShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar'**
+  String get actionShare;
+
   /// No description provided for @actionBack.
   ///
   /// In pt, this message translates to:
@@ -352,59 +364,173 @@ abstract class AppLocalizations {
   /// **'Espanhol'**
   String get languageSpanish;
 
-  /// No description provided for @inviteTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você foi convidado para'**
-  String get inviteTitle;
-
   /// No description provided for @inviteJoinTeam.
   ///
   /// In pt, this message translates to:
   /// **'Entrar no time'**
   String get inviteJoinTeam;
 
-  /// No description provided for @inviteCodeLabel.
+  /// No description provided for @inviteOpenTeam.
   ///
   /// In pt, this message translates to:
-  /// **'Código do convite: {code}'**
-  String inviteCodeLabel(String code);
+  /// **'Abrir time'**
+  String get inviteOpenTeam;
 
-  /// No description provided for @inviteSignInRequiredTitle.
+  /// No description provided for @inviteJoinMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Entre para aceitar o convite'**
-  String get inviteSignInRequiredTitle;
+  /// **'Você foi convidado para entrar neste time.'**
+  String get inviteJoinMessage;
 
-  /// No description provided for @inviteSignInRequiredMessage.
+  /// No description provided for @inviteAlreadyMemberMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Guardamos este convite. Assim que você entrar, ele será retomado automaticamente.'**
-  String get inviteSignInRequiredMessage;
+  /// **'Você já faz parte deste time.'**
+  String get inviteAlreadyMemberMessage;
 
-  /// No description provided for @invitePendingRestored.
+  /// No description provided for @inviteSignInToAccept.
   ///
   /// In pt, this message translates to:
-  /// **'Convite pendente retomado.'**
-  String get invitePendingRestored;
+  /// **'Entrar para aceitar'**
+  String get inviteSignInToAccept;
 
-  /// No description provided for @inviteResolutionComingSoon.
+  /// No description provided for @inviteCreateAccount.
   ///
   /// In pt, this message translates to:
-  /// **'A entrada no time será implementada na próxima etapa.'**
-  String get inviteResolutionComingSoon;
+  /// **'Criar conta'**
+  String get inviteCreateAccount;
 
-  /// No description provided for @invitePlayersCount.
+  /// No description provided for @inviteInvalidTitle.
   ///
   /// In pt, this message translates to:
-  /// **'{count, plural, =0{Nenhum jogador} =1{1 jogador} other{{count} jogadores}}'**
-  String invitePlayersCount(int count);
+  /// **'Convite não encontrado'**
+  String get inviteInvalidTitle;
 
-  /// No description provided for @inviteReceivedAt.
+  /// No description provided for @inviteRevokedTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Convite recebido em {date}'**
-  String inviteReceivedAt(DateTime date);
+  /// **'Este link não está mais ativo'**
+  String get inviteRevokedTitle;
+
+  /// No description provided for @inviteExpiredTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este link expirou'**
+  String get inviteExpiredTitle;
+
+  /// No description provided for @inviteExhaustedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este link atingiu o limite de usos'**
+  String get inviteExhaustedTitle;
+
+  /// No description provided for @inviteEnterCodeMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cole ou digite o código que você recebeu.'**
+  String get inviteEnterCodeMessage;
+
+  /// No description provided for @inviteCodeFieldLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código do convite'**
+  String get inviteCodeFieldLabel;
+
+  /// No description provided for @inviteCodeFieldInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código inválido.'**
+  String get inviteCodeFieldInvalid;
+
+  /// No description provided for @inviteSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidar jogadores'**
+  String get inviteSectionTitle;
+
+  /// No description provided for @inviteSectionSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhe este link com quem você quer adicionar ao time.'**
+  String get inviteSectionSubtitle;
+
+  /// No description provided for @inviteLinkCopied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Link copiado.'**
+  String get inviteLinkCopied;
+
+  /// No description provided for @inviteShareSubject.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite para o time no FIFA Queue'**
+  String get inviteShareSubject;
+
+  /// No description provided for @inviteShareMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre no meu time pelo FIFA Queue: {url}'**
+  String inviteShareMessage(String url);
+
+  /// No description provided for @inviteShareMessageCodeOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre no meu time pelo FIFA Queue com o código: {code}'**
+  String inviteShareMessageCodeOnly(String code);
+
+  /// No description provided for @inviteManageTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerenciar link'**
+  String get inviteManageTitle;
+
+  /// No description provided for @inviteCreateLinkAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar link de convite'**
+  String get inviteCreateLinkAction;
+
+  /// No description provided for @inviteUnavailableMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'O link de convite deste time ainda não está disponível.'**
+  String get inviteUnavailableMessage;
+
+  /// No description provided for @inviteRotateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar novo link'**
+  String get inviteRotateAction;
+
+  /// No description provided for @inviteRotateConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar um novo link?'**
+  String get inviteRotateConfirmTitle;
+
+  /// No description provided for @inviteRotateConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'O link atual deixará de funcionar imediatamente.'**
+  String get inviteRotateConfirmMessage;
+
+  /// No description provided for @inviteRevokeAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desativar link'**
+  String get inviteRevokeAction;
+
+  /// No description provided for @inviteRevokeConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desativar link?'**
+  String get inviteRevokeConfirmTitle;
+
+  /// No description provided for @inviteRevokeConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém poderá entrar no time usando o link atual.'**
+  String get inviteRevokeConfirmMessage;
 
   /// No description provided for @queuePositionLabel.
   ///
@@ -850,18 +976,6 @@ abstract class AppLocalizations {
   /// **'Tenho um código de convite'**
   String get teamHaveInviteCode;
 
-  /// No description provided for @teamInviteComingSoonTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Convites chegam na próxima etapa'**
-  String get teamInviteComingSoonTitle;
-
-  /// No description provided for @teamInviteComingSoonMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'A entrada por link e código será liberada em breve. Por enquanto, crie um time para começar.'**
-  String get teamInviteComingSoonMessage;
-
   /// No description provided for @teamCreateTitle.
   ///
   /// In pt, this message translates to:
@@ -963,18 +1077,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Editar time'**
   String get teamEditTitle;
-
-  /// No description provided for @teamInvitePlayers.
-  ///
-  /// In pt, this message translates to:
-  /// **'Convidar jogadores'**
-  String get teamInvitePlayers;
-
-  /// No description provided for @teamInvitePlayersHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Disponível na próxima etapa.'**
-  String get teamInvitePlayersHint;
 
   /// No description provided for @teamSwitchTitle.
   ///
@@ -1107,6 +1209,36 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Finalize seu perfil antes de criar um time.'**
   String get errorTeamProfileMissing;
+
+  /// No description provided for @errorInviteNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite não encontrado.'**
+  String get errorInviteNotFound;
+
+  /// No description provided for @errorInviteNotActive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este convite não é mais válido.'**
+  String get errorInviteNotActive;
+
+  /// No description provided for @errorInviteExpired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este convite expirou.'**
+  String get errorInviteExpired;
+
+  /// No description provided for @errorInviteExhausted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este convite atingiu o limite de usos.'**
+  String get errorInviteExhausted;
+
+  /// No description provided for @errorInvitePermissionDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você não tem permissão para gerenciar o convite deste time.'**
+  String get errorInvitePermissionDenied;
 }
 
 class _AppLocalizationsDelegate

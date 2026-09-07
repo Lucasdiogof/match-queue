@@ -30,6 +30,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionSave => 'Save';
 
   @override
+  String get actionCopy => 'Copy';
+
+  @override
+  String get actionShare => 'Share';
+
+  @override
   String get actionBack => 'Back';
 
   @override
@@ -138,49 +144,96 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageSpanish => 'Spanish';
 
   @override
-  String get inviteTitle => 'You were invited to';
-
-  @override
   String get inviteJoinTeam => 'Join team';
 
   @override
-  String inviteCodeLabel(String code) {
-    return 'Invite code: $code';
+  String get inviteOpenTeam => 'Open team';
+
+  @override
+  String get inviteJoinMessage => 'You were invited to join this team.';
+
+  @override
+  String get inviteAlreadyMemberMessage => 'You are already part of this team.';
+
+  @override
+  String get inviteSignInToAccept => 'Sign in to accept';
+
+  @override
+  String get inviteCreateAccount => 'Create account';
+
+  @override
+  String get inviteInvalidTitle => 'Invite not found';
+
+  @override
+  String get inviteRevokedTitle => 'This link is no longer active';
+
+  @override
+  String get inviteExpiredTitle => 'This link has expired';
+
+  @override
+  String get inviteExhaustedTitle => 'This link reached its usage limit';
+
+  @override
+  String get inviteEnterCodeMessage => 'Paste or type the code you received.';
+
+  @override
+  String get inviteCodeFieldLabel => 'Invite code';
+
+  @override
+  String get inviteCodeFieldInvalid => 'Invalid code.';
+
+  @override
+  String get inviteSectionTitle => 'Invite players';
+
+  @override
+  String get inviteSectionSubtitle =>
+      'Share this link with whoever you want to add to the team.';
+
+  @override
+  String get inviteLinkCopied => 'Link copied.';
+
+  @override
+  String get inviteShareSubject => 'Team invite on FIFA Queue';
+
+  @override
+  String inviteShareMessage(String url) {
+    return 'Join my team on FIFA Queue: $url';
   }
 
   @override
-  String get inviteSignInRequiredTitle => 'Sign in to accept the invite';
-
-  @override
-  String get inviteSignInRequiredMessage =>
-      'We saved this invite. As soon as you sign in it will resume automatically.';
-
-  @override
-  String get invitePendingRestored => 'Pending invite restored.';
-
-  @override
-  String get inviteResolutionComingSoon =>
-      'Joining a team will be implemented in the next stage.';
-
-  @override
-  String invitePlayersCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count players',
-      one: '1 player',
-      zero: 'No players',
-    );
-    return '$_temp0';
+  String inviteShareMessageCodeOnly(String code) {
+    return 'Join my team on FIFA Queue with the code: $code';
   }
 
   @override
-  String inviteReceivedAt(DateTime date) {
-    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
-    final String dateString = dateDateFormat.format(date);
+  String get inviteManageTitle => 'Manage link';
 
-    return 'Invite received on $dateString';
-  }
+  @override
+  String get inviteCreateLinkAction => 'Create invite link';
+
+  @override
+  String get inviteUnavailableMessage =>
+      'This team\'s invite link is not available yet.';
+
+  @override
+  String get inviteRotateAction => 'Generate new link';
+
+  @override
+  String get inviteRotateConfirmTitle => 'Generate a new link?';
+
+  @override
+  String get inviteRotateConfirmMessage =>
+      'The current link will stop working immediately.';
+
+  @override
+  String get inviteRevokeAction => 'Disable link';
+
+  @override
+  String get inviteRevokeConfirmTitle => 'Disable link?';
+
+  @override
+  String get inviteRevokeConfirmMessage =>
+      'No one will be able to join the team using the current link.';
 
   @override
   String queuePositionLabel(int position) {
@@ -450,13 +503,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamHaveInviteCode => 'I have an invite code';
 
   @override
-  String get teamInviteComingSoonTitle => 'Invites arrive in the next stage';
-
-  @override
-  String get teamInviteComingSoonMessage =>
-      'Joining by link and code is coming soon. For now, create a team to get started.';
-
-  @override
   String get teamCreateTitle => 'Create your team';
 
   @override
@@ -516,12 +562,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get teamEditTitle => 'Edit team';
-
-  @override
-  String get teamInvitePlayers => 'Invite players';
-
-  @override
-  String get teamInvitePlayersHint => 'Available in the next stage.';
 
   @override
   String get teamSwitchTitle => 'Your teams';
@@ -611,4 +651,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorTeamProfileMissing =>
       'Finish your profile before creating a team.';
+
+  @override
+  String get errorInviteNotFound => 'Invite not found.';
+
+  @override
+  String get errorInviteNotActive => 'This invite is no longer valid.';
+
+  @override
+  String get errorInviteExpired => 'This invite has expired.';
+
+  @override
+  String get errorInviteExhausted => 'This invite reached its usage limit.';
+
+  @override
+  String get errorInvitePermissionDenied =>
+      'You do not have permission to manage this team\'s invite.';
 }

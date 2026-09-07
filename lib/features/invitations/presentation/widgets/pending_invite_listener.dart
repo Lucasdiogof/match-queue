@@ -22,7 +22,18 @@ class PendingInviteListener extends StatelessWidget {
       if (invite == null) {
         return;
       }
-      GoRouter.of(context).go(AppRoutes.joinTeamLocation(invite.code));
+      // O redirect do GoRouter para a rota autenticada (ex.: /signup ->
+      // /app/home) roda de forma sincrona assim que o AuthCubit emite, antes
+      // deste listener disparar. Nesse momento o BuildContext do
+      // BlocListener pode ficar momentaneamente fora da arvore do Router
+      // ("No GoRouter found in context"), entao navegamos pela navigatorKey
+      // raiz -- estavel e sempre dentro da arvore do Router -- em vez de
+      // GoRouter.of(context).
+      final rootContext = AppRoutes.rootNavigatorKey.currentContext;
+      if (rootContext == null) {
+        return;
+      }
+      GoRouter.of(rootContext).go(AppRoutes.joinTeamLocation(invite.code));
     },
     child: child,
   );

@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class AppRoute {
   const AppRoute(this.name, this.path);
 
@@ -7,6 +9,13 @@ class AppRoute {
 
 class AppRoutes {
   const AppRoutes._();
+
+  /// Vive aqui (nao em app/router/app_router.dart) para que widgets fora do
+  /// app-shell -- como PendingInviteListener -- consigam navegar sem
+  /// depender do BuildContext de um BlocListener, que pode ficar orfao de
+  /// GoRouter logo apos um redirect (ver PendingInviteListener).
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'root');
 
   static const String inviteCodeParam = 'inviteCode';
 

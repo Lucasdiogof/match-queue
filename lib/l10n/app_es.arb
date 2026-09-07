@@ -7,6 +7,8 @@
   "actionRetry": "Intentar de nuevo",
   "actionClose": "Cerrar",
   "actionSave": "Guardar",
+  "actionCopy": "Copiar",
+  "actionShare": "Compartir",
   "actionBack": "Volver",
   "actionNotNow": "Ahora no",
   "actionSignOut": "Salir",
@@ -50,39 +52,50 @@
   "languagePortuguese": "Portugués (Brasil)",
   "languageEnglish": "Inglés",
   "languageSpanish": "Español",
-  "inviteTitle": "Te invitaron a",
   "inviteJoinTeam": "Entrar al equipo",
-  "inviteCodeLabel": "Código de invitación: {code}",
-  "@inviteCodeLabel": {
+  "inviteOpenTeam": "Abrir equipo",
+  "inviteJoinMessage": "Te invitaron a entrar en este equipo.",
+  "inviteAlreadyMemberMessage": "Ya formas parte de este equipo.",
+  "inviteSignInToAccept": "Entrar para aceptar",
+  "inviteCreateAccount": "Crear cuenta",
+  "inviteInvalidTitle": "Invitación no encontrada",
+  "inviteRevokedTitle": "Este enlace ya no está activo",
+  "inviteExpiredTitle": "Este enlace ha expirado",
+  "inviteExhaustedTitle": "Este enlace alcanzó su límite de usos",
+  "inviteEnterCodeMessage": "Pega o escribe el código que recibiste.",
+  "inviteCodeFieldLabel": "Código de invitación",
+  "inviteCodeFieldInvalid": "Código inválido.",
+  "inviteSectionTitle": "Invitar jugadores",
+  "inviteSectionSubtitle": "Comparte este enlace con quien quieras agregar al equipo.",
+  "inviteLinkCopied": "Enlace copiado.",
+  "inviteShareSubject": "Invitación al equipo en FIFA Queue",
+  "inviteShareMessage": "Entra a mi equipo en FIFA Queue: {url}",
+  "@inviteShareMessage": {
+    "placeholders": {
+      "url": {
+        "type": "String",
+        "example": "https://fifaqueue.app/join/A7K2PQ9XM4V8"
+      }
+    }
+  },
+  "inviteShareMessageCodeOnly": "Entra a mi equipo en FIFA Queue con el código: {code}",
+  "@inviteShareMessageCodeOnly": {
     "placeholders": {
       "code": {
         "type": "String",
-        "example": "X7K2P9"
+        "example": "A7K2PQ9XM4V8"
       }
     }
   },
-  "inviteSignInRequiredTitle": "Entra para aceptar la invitación",
-  "inviteSignInRequiredMessage": "Guardamos esta invitación. En cuanto entres, se retomará automáticamente.",
-  "invitePendingRestored": "Invitación pendiente retomada.",
-  "inviteResolutionComingSoon": "La entrada al equipo se implementará en la próxima etapa.",
-  "invitePlayersCount": "{count, plural, =0{Ningún jugador} =1{1 jugador} other{{count} jugadores}}",
-  "@invitePlayersCount": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
-  "inviteReceivedAt": "Invitación recibida el {date}",
-  "@inviteReceivedAt": {
-    "placeholders": {
-      "date": {
-        "type": "DateTime",
-        "format": "yMMMd"
-      }
-    }
-  },
+  "inviteManageTitle": "Gestionar enlace",
+  "inviteCreateLinkAction": "Crear enlace de invitación",
+  "inviteUnavailableMessage": "El enlace de invitación de este equipo aún no está disponible.",
+  "inviteRotateAction": "Generar nuevo enlace",
+  "inviteRotateConfirmTitle": "¿Generar un nuevo enlace?",
+  "inviteRotateConfirmMessage": "El enlace actual dejará de funcionar de inmediato.",
+  "inviteRevokeAction": "Desactivar enlace",
+  "inviteRevokeConfirmTitle": "¿Desactivar enlace?",
+  "inviteRevokeConfirmMessage": "Nadie podrá entrar al equipo usando el enlace actual.",
   "queuePositionLabel": "#{position} en la fila",
   "@queuePositionLabel": {
     "placeholders": {
@@ -250,8 +263,6 @@
   "teamNoTeamMessage": "Crea tu equipo o únete con un código de invitación para empezar.",
   "teamCreateCta": "Crear equipo",
   "teamHaveInviteCode": "Tengo un código de invitación",
-  "teamInviteComingSoonTitle": "Las invitaciones llegan en la próxima etapa",
-  "teamInviteComingSoonMessage": "Unirse por enlace y código llegará pronto. Por ahora, crea un equipo para empezar.",
   "teamCreateTitle": "Crea tu equipo",
   "teamCreateSubtitle": "Podrás ajustar colores, logo y duración de la búsqueda después.",
   "teamNameLabel": "Nombre del equipo",
@@ -277,8 +288,6 @@
   "teamYou": "Tú",
   "teamManageAction": "Ajustes del equipo",
   "teamEditTitle": "Editar equipo",
-  "teamInvitePlayers": "Invitar jugadores",
-  "teamInvitePlayersHint": "Disponible en la próxima etapa.",
   "teamSwitchTitle": "Tus equipos",
   "teamSwitchAction": "Cambiar de equipo",
   "teamNoActiveSearchTitle": "Sin búsqueda activa",
@@ -348,5 +357,10 @@
   "errorTeamSearchDurationInvalid": "Elige una duración de búsqueda válida.",
   "errorTeamNotFound": "Equipo no encontrado.",
   "errorTeamPermissionDenied": "No tienes permiso para gestionar este equipo.",
-  "errorTeamProfileMissing": "Completa tu perfil antes de crear un equipo."
+  "errorTeamProfileMissing": "Completa tu perfil antes de crear un equipo.",
+  "errorInviteNotFound": "Invitación no encontrada.",
+  "errorInviteNotActive": "Esta invitación ya no es válida.",
+  "errorInviteExpired": "Esta invitación ha expirado.",
+  "errorInviteExhausted": "Esta invitación alcanzó su límite de usos.",
+  "errorInvitePermissionDenied": "No tienes permiso para gestionar la invitación de este equipo."
 }

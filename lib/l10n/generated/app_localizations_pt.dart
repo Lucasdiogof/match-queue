@@ -30,6 +30,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionSave => 'Salvar';
 
   @override
+  String get actionCopy => 'Copiar';
+
+  @override
+  String get actionShare => 'Compartilhar';
+
+  @override
   String get actionBack => 'Voltar';
 
   @override
@@ -138,49 +144,97 @@ class AppLocalizationsPt extends AppLocalizations {
   String get languageSpanish => 'Espanhol';
 
   @override
-  String get inviteTitle => 'Você foi convidado para';
-
-  @override
   String get inviteJoinTeam => 'Entrar no time';
 
   @override
-  String inviteCodeLabel(String code) {
-    return 'Código do convite: $code';
+  String get inviteOpenTeam => 'Abrir time';
+
+  @override
+  String get inviteJoinMessage => 'Você foi convidado para entrar neste time.';
+
+  @override
+  String get inviteAlreadyMemberMessage => 'Você já faz parte deste time.';
+
+  @override
+  String get inviteSignInToAccept => 'Entrar para aceitar';
+
+  @override
+  String get inviteCreateAccount => 'Criar conta';
+
+  @override
+  String get inviteInvalidTitle => 'Convite não encontrado';
+
+  @override
+  String get inviteRevokedTitle => 'Este link não está mais ativo';
+
+  @override
+  String get inviteExpiredTitle => 'Este link expirou';
+
+  @override
+  String get inviteExhaustedTitle => 'Este link atingiu o limite de usos';
+
+  @override
+  String get inviteEnterCodeMessage =>
+      'Cole ou digite o código que você recebeu.';
+
+  @override
+  String get inviteCodeFieldLabel => 'Código do convite';
+
+  @override
+  String get inviteCodeFieldInvalid => 'Código inválido.';
+
+  @override
+  String get inviteSectionTitle => 'Convidar jogadores';
+
+  @override
+  String get inviteSectionSubtitle =>
+      'Compartilhe este link com quem você quer adicionar ao time.';
+
+  @override
+  String get inviteLinkCopied => 'Link copiado.';
+
+  @override
+  String get inviteShareSubject => 'Convite para o time no FIFA Queue';
+
+  @override
+  String inviteShareMessage(String url) {
+    return 'Entre no meu time pelo FIFA Queue: $url';
   }
 
   @override
-  String get inviteSignInRequiredTitle => 'Entre para aceitar o convite';
-
-  @override
-  String get inviteSignInRequiredMessage =>
-      'Guardamos este convite. Assim que você entrar, ele será retomado automaticamente.';
-
-  @override
-  String get invitePendingRestored => 'Convite pendente retomado.';
-
-  @override
-  String get inviteResolutionComingSoon =>
-      'A entrada no time será implementada na próxima etapa.';
-
-  @override
-  String invitePlayersCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count jogadores',
-      one: '1 jogador',
-      zero: 'Nenhum jogador',
-    );
-    return '$_temp0';
+  String inviteShareMessageCodeOnly(String code) {
+    return 'Entre no meu time pelo FIFA Queue com o código: $code';
   }
 
   @override
-  String inviteReceivedAt(DateTime date) {
-    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
-    final String dateString = dateDateFormat.format(date);
+  String get inviteManageTitle => 'Gerenciar link';
 
-    return 'Convite recebido em $dateString';
-  }
+  @override
+  String get inviteCreateLinkAction => 'Criar link de convite';
+
+  @override
+  String get inviteUnavailableMessage =>
+      'O link de convite deste time ainda não está disponível.';
+
+  @override
+  String get inviteRotateAction => 'Gerar novo link';
+
+  @override
+  String get inviteRotateConfirmTitle => 'Gerar um novo link?';
+
+  @override
+  String get inviteRotateConfirmMessage =>
+      'O link atual deixará de funcionar imediatamente.';
+
+  @override
+  String get inviteRevokeAction => 'Desativar link';
+
+  @override
+  String get inviteRevokeConfirmTitle => 'Desativar link?';
+
+  @override
+  String get inviteRevokeConfirmMessage =>
+      'Ninguém poderá entrar no time usando o link atual.';
 
   @override
   String queuePositionLabel(int position) {
@@ -449,13 +503,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamHaveInviteCode => 'Tenho um código de convite';
 
   @override
-  String get teamInviteComingSoonTitle => 'Convites chegam na próxima etapa';
-
-  @override
-  String get teamInviteComingSoonMessage =>
-      'A entrada por link e código será liberada em breve. Por enquanto, crie um time para começar.';
-
-  @override
   String get teamCreateTitle => 'Crie seu time';
 
   @override
@@ -515,12 +562,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get teamEditTitle => 'Editar time';
-
-  @override
-  String get teamInvitePlayers => 'Convidar jogadores';
-
-  @override
-  String get teamInvitePlayersHint => 'Disponível na próxima etapa.';
 
   @override
   String get teamSwitchTitle => 'Seus times';
@@ -610,4 +651,20 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get errorTeamProfileMissing =>
       'Finalize seu perfil antes de criar um time.';
+
+  @override
+  String get errorInviteNotFound => 'Convite não encontrado.';
+
+  @override
+  String get errorInviteNotActive => 'Este convite não é mais válido.';
+
+  @override
+  String get errorInviteExpired => 'Este convite expirou.';
+
+  @override
+  String get errorInviteExhausted => 'Este convite atingiu o limite de usos.';
+
+  @override
+  String get errorInvitePermissionDenied =>
+      'Você não tem permissão para gerenciar o convite deste time.';
 }

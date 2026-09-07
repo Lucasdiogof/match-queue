@@ -7,6 +7,8 @@
   "actionRetry": "Tentar novamente",
   "actionClose": "Fechar",
   "actionSave": "Salvar",
+  "actionCopy": "Copiar",
+  "actionShare": "Compartilhar",
   "actionBack": "Voltar",
   "actionNotNow": "Agora não",
   "actionSignOut": "Sair",
@@ -50,39 +52,50 @@
   "languagePortuguese": "Português (Brasil)",
   "languageEnglish": "Inglês",
   "languageSpanish": "Espanhol",
-  "inviteTitle": "Você foi convidado para",
   "inviteJoinTeam": "Entrar no time",
-  "inviteCodeLabel": "Código do convite: {code}",
-  "@inviteCodeLabel": {
+  "inviteOpenTeam": "Abrir time",
+  "inviteJoinMessage": "Você foi convidado para entrar neste time.",
+  "inviteAlreadyMemberMessage": "Você já faz parte deste time.",
+  "inviteSignInToAccept": "Entrar para aceitar",
+  "inviteCreateAccount": "Criar conta",
+  "inviteInvalidTitle": "Convite não encontrado",
+  "inviteRevokedTitle": "Este link não está mais ativo",
+  "inviteExpiredTitle": "Este link expirou",
+  "inviteExhaustedTitle": "Este link atingiu o limite de usos",
+  "inviteEnterCodeMessage": "Cole ou digite o código que você recebeu.",
+  "inviteCodeFieldLabel": "Código do convite",
+  "inviteCodeFieldInvalid": "Código inválido.",
+  "inviteSectionTitle": "Convidar jogadores",
+  "inviteSectionSubtitle": "Compartilhe este link com quem você quer adicionar ao time.",
+  "inviteLinkCopied": "Link copiado.",
+  "inviteShareSubject": "Convite para o time no FIFA Queue",
+  "inviteShareMessage": "Entre no meu time pelo FIFA Queue: {url}",
+  "@inviteShareMessage": {
+    "placeholders": {
+      "url": {
+        "type": "String",
+        "example": "https://fifaqueue.app/join/A7K2PQ9XM4V8"
+      }
+    }
+  },
+  "inviteShareMessageCodeOnly": "Entre no meu time pelo FIFA Queue com o código: {code}",
+  "@inviteShareMessageCodeOnly": {
     "placeholders": {
       "code": {
         "type": "String",
-        "example": "X7K2P9"
+        "example": "A7K2PQ9XM4V8"
       }
     }
   },
-  "inviteSignInRequiredTitle": "Entre para aceitar o convite",
-  "inviteSignInRequiredMessage": "Guardamos este convite. Assim que você entrar, ele será retomado automaticamente.",
-  "invitePendingRestored": "Convite pendente retomado.",
-  "inviteResolutionComingSoon": "A entrada no time será implementada na próxima etapa.",
-  "invitePlayersCount": "{count, plural, =0{Nenhum jogador} =1{1 jogador} other{{count} jogadores}}",
-  "@invitePlayersCount": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
-  "inviteReceivedAt": "Convite recebido em {date}",
-  "@inviteReceivedAt": {
-    "placeholders": {
-      "date": {
-        "type": "DateTime",
-        "format": "yMMMd"
-      }
-    }
-  },
+  "inviteManageTitle": "Gerenciar link",
+  "inviteCreateLinkAction": "Criar link de convite",
+  "inviteUnavailableMessage": "O link de convite deste time ainda não está disponível.",
+  "inviteRotateAction": "Gerar novo link",
+  "inviteRotateConfirmTitle": "Gerar um novo link?",
+  "inviteRotateConfirmMessage": "O link atual deixará de funcionar imediatamente.",
+  "inviteRevokeAction": "Desativar link",
+  "inviteRevokeConfirmTitle": "Desativar link?",
+  "inviteRevokeConfirmMessage": "Ninguém poderá entrar no time usando o link atual.",
   "queuePositionLabel": "#{position} na fila",
   "@queuePositionLabel": {
     "placeholders": {
@@ -250,8 +263,6 @@
   "teamNoTeamMessage": "Crie o seu time ou entre com um código de convite para começar.",
   "teamCreateCta": "Criar time",
   "teamHaveInviteCode": "Tenho um código de convite",
-  "teamInviteComingSoonTitle": "Convites chegam na próxima etapa",
-  "teamInviteComingSoonMessage": "A entrada por link e código será liberada em breve. Por enquanto, crie um time para começar.",
   "teamCreateTitle": "Crie seu time",
   "teamCreateSubtitle": "Dá para ajustar cores, logo e duração da busca depois.",
   "teamNameLabel": "Nome do time",
@@ -277,8 +288,6 @@
   "teamYou": "Você",
   "teamManageAction": "Configurações do time",
   "teamEditTitle": "Editar time",
-  "teamInvitePlayers": "Convidar jogadores",
-  "teamInvitePlayersHint": "Disponível na próxima etapa.",
   "teamSwitchTitle": "Seus times",
   "teamSwitchAction": "Trocar de time",
   "teamNoActiveSearchTitle": "Nenhuma busca ativa",
@@ -348,5 +357,10 @@
   "errorTeamSearchDurationInvalid": "Escolha uma duração de busca válida.",
   "errorTeamNotFound": "Time não encontrado.",
   "errorTeamPermissionDenied": "Você não tem permissão para gerenciar este time.",
-  "errorTeamProfileMissing": "Finalize seu perfil antes de criar um time."
+  "errorTeamProfileMissing": "Finalize seu perfil antes de criar um time.",
+  "errorInviteNotFound": "Convite não encontrado.",
+  "errorInviteNotActive": "Este convite não é mais válido.",
+  "errorInviteExpired": "Este convite expirou.",
+  "errorInviteExhausted": "Este convite atingiu o limite de usos.",
+  "errorInvitePermissionDenied": "Você não tem permissão para gerenciar o convite deste time."
 }

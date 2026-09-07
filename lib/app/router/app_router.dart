@@ -22,11 +22,8 @@ class AppRouter {
 
   final AuthCubit authCubit;
 
-  static final GlobalKey<NavigatorState> rootNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'root');
-
   GoRouter build() => GoRouter(
-    navigatorKey: rootNavigatorKey,
+    navigatorKey: AppRoutes.rootNavigatorKey,
     initialLocation: AppRoutes.splash.path,
     debugLogDiagnostics: false,
     refreshListenable: GoRouterRefreshStream(authCubit.stream),

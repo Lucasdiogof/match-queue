@@ -1,68 +1,113 @@
+import 'dart:async';
+
 import 'package:fifa_queue/core/design_system/design_system.dart';
-import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
+import 'package:fifa_queue/core/observability/analytics_service.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
-import 'package:fifa_queue/features/invitations/domain/entities/pending_invite.dart';
+import 'package:fifa_queue/features/invitations/domain/repositories/invite_repository.dart';
+import 'package:fifa_queue/features/invitations/domain/usecases/resolve_team_invite.dart';
+import 'package:fifa_queue/features/invitations/presentation/cubit/invite_resolution_cubit.dart';
+import 'package:fifa_queue/features/invitations/presentation/cubit/invite_resolution_state.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
+import 'package:fifa_queue/features/invitations/presentation/widgets/invite_preview_sheet.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class JoinTeamPage extends StatefulWidget {
+class JoinTeamPage extends StatelessWidget {
   const JoinTeamPage({required this.inviteCode, super.key});
 
   final String inviteCode;
 
   @override
-  State<JoinTeamPage> createState() => _JoinTeamPageState();
+  Widget build(BuildContext context) => BlocProvider<InviteResolutionCubit>(
+    create: (_) => InviteResolutionCubit(
+      getIt<ResolveTeamInvite>(),
+      getIt<InviteRepository>(),
+    ),
+    child: _JoinTeamView(inviteCode: inviteCode),
+  );
 }
 
-class _JoinTeamPageState extends State<JoinTeamPage> {
+class _JoinTeamView extends StatefulWidget {
+  const _JoinTeamView({required this.inviteCode});
+
+  final String inviteCode;
+
+  @override
+  State<_JoinTeamView> createState() => _JoinTeamViewState();
+}
+
+class _JoinTeamViewState extends State<_JoinTeamView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _handleInvite());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _start());
   }
 
-  Future<void> _handleInvite() async {
+  Future<void> _start() async {
     if (!mounted) {
       return;
     }
     final isAuthenticated = context.read<AuthCubit>().state.isAuthenticated;
     if (!isAuthenticated) {
       await context.read<PendingInviteCubit>().capture(widget.inviteCode);
+    }
+    if (!mounted) {
       return;
     }
-    await _showInviteSheet();
+    await context.read<InviteResolutionCubit>().resolve(widget.inviteCode);
+    if (!mounted) {
+      return;
+    }
+    await getIt<AnalyticsService>().logEvent('invite_opened');
+    await _showSheet();
   }
 
-  Future<void> _showInviteSheet() async {
-    final l10n = context.l10n;
-    await showAppBottomSheet<void>(
-      context: context,
-      builder: (sheetContext) => AppBottomSheet(
-        title: l10n.inviteTitle,
-        subtitle: l10n.inviteCodeLabel(InviteCode.normalize(widget.inviteCode)),
-        actions: <Widget>[
-          AppButton(
-            label: l10n.inviteJoinTeam,
-            onPressed: () => Navigator.of(sheetContext).pop(),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          AppButton.ghost(
-            label: l10n.actionNotNow,
-            expanded: true,
-            onPressed: () => Navigator.of(sheetContext).pop(),
-          ),
-        ],
-        child: Text(
-          l10n.inviteResolutionComingSoon,
-          style: sheetContext.textStyles.bodyMedium,
-        ),
-      ),
-    );
+  Future<void> _showSheet() async {
+    final cubit = context.read<InviteResolutionCubit>();
+    final outcome = await showInvitePreviewSheet(context: context, cubit: cubit);
+    if (!mounted) {
+      return;
+    }
+    await _handleOutcome(outcome, cubit.state);
+  }
 
+  Future<void> _handleOutcome(
+    InviteSheetOutcome? outcome,
+    InviteResolutionState state,
+  ) async {
+    switch (outcome) {
+      case InviteSheetOutcome.joinedOrOpened:
+        await _openTeam(state);
+      case InviteSheetOutcome.dismissed:
+        await context.read<PendingInviteCubit>().consume();
+        if (mounted) {
+          _leaveInvitePage();
+        }
+      case InviteSheetOutcome.navigatedToAuth:
+      case null:
+        break;
+    }
+  }
+
+  Future<void> _openTeam(InviteResolutionState state) async {
+    final joinResult = state.joinResult;
+    final teamId = joinResult?.teamId ?? state.preview?.teamId;
+    if (teamId == null) {
+      return;
+    }
+    final userId = context.read<AuthCubit>().state.user?.id;
+    if (userId != null) {
+      final teamsCubit = context.read<TeamsCubit>();
+      await teamsCubit.load(userId: userId);
+      await teamsCubit.selectTeam(teamId);
+    }
+    if (joinResult != null && !joinResult.alreadyMember) {
+      await getIt<AnalyticsService>().logEvent('invite_accepted');
+    }
     if (!mounted) {
       return;
     }
@@ -72,52 +117,13 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final code = InviteCode.normalize(widget.inviteCode);
-
-    return AppScaffold(
-      maxContentWidth: AppBreakpoints.maxFormWidth,
-      body: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (!state.isResolved) {
-            return const AppLoading();
-          }
-          if (state.isAuthenticated) {
-            return AppLoading(message: l10n.inviteTitle);
-          }
-          return ListView(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxl),
-            children: <Widget>[
-              const BrandMark(size: BrandMarkSize.large),
-              const SizedBox(height: AppSpacing.xxl),
-              Text(
-                l10n.inviteSignInRequiredTitle,
-                style: context.textStyles.headlineMedium,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                l10n.inviteSignInRequiredMessage,
-                style: context.textStyles.bodyMedium,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AppBadge(
-                  label: code,
-                  icon: Icons.confirmation_number_outlined,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-              AppButton(
-                label: l10n.authSignIn,
-                onPressed: () => context.go(AppRoutes.login.path),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+  void _leaveInvitePage() {
+    final isAuthenticated = context.read<AuthCubit>().state.isAuthenticated;
+    context.go(isAuthenticated ? AppRoutes.home.path : AppRoutes.login.path);
   }
+
+  @override
+  Widget build(BuildContext context) => const AppScaffold(
+    body: Center(child: BrandMark(size: BrandMarkSize.large)),
+  );
 }
