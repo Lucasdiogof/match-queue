@@ -825,6 +825,288 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'No FIFA Queue desde {date}'**
   String profileMemberSince(DateTime date);
+
+  /// No description provided for @teamNoTeamTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você ainda não faz parte de um time'**
+  String get teamNoTeamTitle;
+
+  /// No description provided for @teamNoTeamMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie o seu time ou entre com um código de convite para começar.'**
+  String get teamNoTeamMessage;
+
+  /// No description provided for @teamCreateCta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar time'**
+  String get teamCreateCta;
+
+  /// No description provided for @teamHaveInviteCode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tenho um código de convite'**
+  String get teamHaveInviteCode;
+
+  /// No description provided for @teamInviteComingSoonTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convites chegam na próxima etapa'**
+  String get teamInviteComingSoonTitle;
+
+  /// No description provided for @teamInviteComingSoonMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A entrada por link e código será liberada em breve. Por enquanto, crie um time para começar.'**
+  String get teamInviteComingSoonMessage;
+
+  /// No description provided for @teamCreateTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie seu time'**
+  String get teamCreateTitle;
+
+  /// No description provided for @teamCreateSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dá para ajustar cores, logo e duração da busca depois.'**
+  String get teamCreateSubtitle;
+
+  /// No description provided for @teamNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do time'**
+  String get teamNameLabel;
+
+  /// No description provided for @teamNameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Falcons FC'**
+  String get teamNameHint;
+
+  /// No description provided for @teamTagLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tag (opcional)'**
+  String get teamTagLabel;
+
+  /// No description provided for @teamTagHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'FLC'**
+  String get teamTagHint;
+
+  /// No description provided for @teamTagHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'2 a 6 letras ou números'**
+  String get teamTagHelper;
+
+  /// No description provided for @teamCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar time'**
+  String get teamCreateAction;
+
+  /// No description provided for @teamCreateAnother.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar outro time'**
+  String get teamCreateAnother;
+
+  /// No description provided for @teamMembersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Membros'**
+  String get teamMembersTitle;
+
+  /// No description provided for @teamMembersCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhum jogador} =1{1 jogador} other{{count} jogadores}}'**
+  String teamMembersCount(int count);
+
+  /// No description provided for @teamRoleOwner.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dono'**
+  String get teamRoleOwner;
+
+  /// No description provided for @teamRoleAdmin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Admin'**
+  String get teamRoleAdmin;
+
+  /// No description provided for @teamRolePlayer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogador'**
+  String get teamRolePlayer;
+
+  /// No description provided for @teamYou.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você'**
+  String get teamYou;
+
+  /// No description provided for @teamManageAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações do time'**
+  String get teamManageAction;
+
+  /// No description provided for @teamEditTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar time'**
+  String get teamEditTitle;
+
+  /// No description provided for @teamInvitePlayers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidar jogadores'**
+  String get teamInvitePlayers;
+
+  /// No description provided for @teamInvitePlayersHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Disponível na próxima etapa.'**
+  String get teamInvitePlayersHint;
+
+  /// No description provided for @teamSwitchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus times'**
+  String get teamSwitchTitle;
+
+  /// No description provided for @teamSwitchAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar de time'**
+  String get teamSwitchAction;
+
+  /// No description provided for @teamNoActiveSearchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma busca ativa'**
+  String get teamNoActiveSearchTitle;
+
+  /// No description provided for @teamNoActiveSearchMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A fila de partidas chega em breve. Aqui é onde o time vai coordenar quem procura agora.'**
+  String get teamNoActiveSearchMessage;
+
+  /// No description provided for @teamSearchDurationLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Duração padrão da busca'**
+  String get teamSearchDurationLabel;
+
+  /// No description provided for @teamSearchDurationHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tempo que cada jogador fica na frente da fila.'**
+  String get teamSearchDurationHelper;
+
+  /// No description provided for @teamDurationSeconds.
+  ///
+  /// In pt, this message translates to:
+  /// **'{seconds} s'**
+  String teamDurationSeconds(int seconds);
+
+  /// No description provided for @teamDurationMinutes.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 min} other{{count} min}}'**
+  String teamDurationMinutes(int count);
+
+  /// No description provided for @teamLoadErrorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar seus times'**
+  String get teamLoadErrorTitle;
+
+  /// No description provided for @teamMembersErrorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar os membros'**
+  String get teamMembersErrorTitle;
+
+  /// No description provided for @validationTeamNameRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o nome do time.'**
+  String get validationTeamNameRequired;
+
+  /// No description provided for @validationTeamNameTooShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use pelo menos {count} caracteres.'**
+  String validationTeamNameTooShort(int count);
+
+  /// No description provided for @validationTeamNameTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use no máximo {count} caracteres.'**
+  String validationTeamNameTooLong(int count);
+
+  /// No description provided for @validationTeamTagTooShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'A tag precisa ter pelo menos {count} caracteres.'**
+  String validationTeamTagTooShort(int count);
+
+  /// No description provided for @validationTeamTagTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'A tag pode ter no máximo {count} caracteres.'**
+  String validationTeamTagTooLong(int count);
+
+  /// No description provided for @validationTeamTagInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use apenas letras e números.'**
+  String get validationTeamTagInvalid;
+
+  /// No description provided for @errorTeamNameInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha um nome de time válido.'**
+  String get errorTeamNameInvalid;
+
+  /// No description provided for @errorTeamTagInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha uma tag válida.'**
+  String get errorTeamTagInvalid;
+
+  /// No description provided for @errorTeamSearchDurationInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha uma duração de busca válida.'**
+  String get errorTeamSearchDurationInvalid;
+
+  /// No description provided for @errorTeamNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Time não encontrado.'**
+  String get errorTeamNotFound;
+
+  /// No description provided for @errorTeamPermissionDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você não tem permissão para gerenciar este time.'**
+  String get errorTeamPermissionDenied;
+
+  /// No description provided for @errorTeamProfileMissing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalize seu perfil antes de criar um time.'**
+  String get errorTeamProfileMissing;
 }
 
 class _AppLocalizationsDelegate

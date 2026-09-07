@@ -245,5 +245,108 @@
         "format": "yMMMM"
       }
     }
-  }
+  },
+  "teamNoTeamTitle": "You are not part of a team yet",
+  "teamNoTeamMessage": "Create your team or join with an invite code to get started.",
+  "teamCreateCta": "Create team",
+  "teamHaveInviteCode": "I have an invite code",
+  "teamInviteComingSoonTitle": "Invites arrive in the next stage",
+  "teamInviteComingSoonMessage": "Joining by link and code is coming soon. For now, create a team to get started.",
+  "teamCreateTitle": "Create your team",
+  "teamCreateSubtitle": "You can tweak colors, logo and search duration later.",
+  "teamNameLabel": "Team name",
+  "teamNameHint": "Falcons FC",
+  "teamTagLabel": "Tag (optional)",
+  "teamTagHint": "FLC",
+  "teamTagHelper": "2 to 6 letters or digits",
+  "teamCreateAction": "Create team",
+  "teamCreateAnother": "Create another team",
+  "teamMembersTitle": "Members",
+  "teamMembersCount": "{count, plural, =0{No players} =1{1 player} other{{count} players}}",
+  "@teamMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "teamRoleOwner": "Owner",
+  "teamRoleAdmin": "Admin",
+  "teamRolePlayer": "Player",
+  "teamYou": "You",
+  "teamManageAction": "Team settings",
+  "teamEditTitle": "Edit team",
+  "teamInvitePlayers": "Invite players",
+  "teamInvitePlayersHint": "Available in the next stage.",
+  "teamSwitchTitle": "Your teams",
+  "teamSwitchAction": "Switch team",
+  "teamNoActiveSearchTitle": "No active search",
+  "teamNoActiveSearchMessage": "The match queue is coming soon. This is where the team will coordinate who searches now.",
+  "teamSearchDurationLabel": "Default search duration",
+  "teamSearchDurationHelper": "How long each player stays at the front of the queue.",
+  "teamDurationSeconds": "{seconds} s",
+  "@teamDurationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "teamDurationMinutes": "{count, plural, =1{1 min} other{{count} min}}",
+  "@teamDurationMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "teamLoadErrorTitle": "We could not load your teams",
+  "teamMembersErrorTitle": "We could not load the members",
+  "validationTeamNameRequired": "Enter the team name.",
+  "validationTeamNameTooShort": "Use at least {count} characters.",
+  "@validationTeamNameTooShort": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "validationTeamNameTooLong": "Use at most {count} characters.",
+  "@validationTeamNameTooLong": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "validationTeamTagTooShort": "The tag needs at least {count} characters.",
+  "@validationTeamTagTooShort": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "validationTeamTagTooLong": "The tag can have at most {count} characters.",
+  "@validationTeamTagTooLong": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "validationTeamTagInvalid": "Use letters and digits only.",
+  "errorTeamNameInvalid": "Choose a valid team name.",
+  "errorTeamTagInvalid": "Choose a valid tag.",
+  "errorTeamSearchDurationInvalid": "Choose a valid search duration.",
+  "errorTeamNotFound": "Team not found.",
+  "errorTeamPermissionDenied": "You do not have permission to manage this team.",
+  "errorTeamProfileMissing": "Finish your profile before creating a team."
 }

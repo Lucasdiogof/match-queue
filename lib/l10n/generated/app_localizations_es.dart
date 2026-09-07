@@ -437,4 +437,181 @@ class AppLocalizationsEs extends AppLocalizations {
 
     return 'En FIFA Queue desde $dateString';
   }
+
+  @override
+  String get teamNoTeamTitle => 'Todavía no formas parte de un equipo';
+
+  @override
+  String get teamNoTeamMessage =>
+      'Crea tu equipo o únete con un código de invitación para empezar.';
+
+  @override
+  String get teamCreateCta => 'Crear equipo';
+
+  @override
+  String get teamHaveInviteCode => 'Tengo un código de invitación';
+
+  @override
+  String get teamInviteComingSoonTitle =>
+      'Las invitaciones llegan en la próxima etapa';
+
+  @override
+  String get teamInviteComingSoonMessage =>
+      'Unirse por enlace y código llegará pronto. Por ahora, crea un equipo para empezar.';
+
+  @override
+  String get teamCreateTitle => 'Crea tu equipo';
+
+  @override
+  String get teamCreateSubtitle =>
+      'Podrás ajustar colores, logo y duración de la búsqueda después.';
+
+  @override
+  String get teamNameLabel => 'Nombre del equipo';
+
+  @override
+  String get teamNameHint => 'Falcons FC';
+
+  @override
+  String get teamTagLabel => 'Tag (opcional)';
+
+  @override
+  String get teamTagHint => 'FLC';
+
+  @override
+  String get teamTagHelper => '2 a 6 letras o números';
+
+  @override
+  String get teamCreateAction => 'Crear equipo';
+
+  @override
+  String get teamCreateAnother => 'Crear otro equipo';
+
+  @override
+  String get teamMembersTitle => 'Miembros';
+
+  @override
+  String teamMembersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jugadores',
+      one: '1 jugador',
+      zero: 'Ningún jugador',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get teamRoleOwner => 'Dueño';
+
+  @override
+  String get teamRoleAdmin => 'Admin';
+
+  @override
+  String get teamRolePlayer => 'Jugador';
+
+  @override
+  String get teamYou => 'Tú';
+
+  @override
+  String get teamManageAction => 'Ajustes del equipo';
+
+  @override
+  String get teamEditTitle => 'Editar equipo';
+
+  @override
+  String get teamInvitePlayers => 'Invitar jugadores';
+
+  @override
+  String get teamInvitePlayersHint => 'Disponible en la próxima etapa.';
+
+  @override
+  String get teamSwitchTitle => 'Tus equipos';
+
+  @override
+  String get teamSwitchAction => 'Cambiar de equipo';
+
+  @override
+  String get teamNoActiveSearchTitle => 'Sin búsqueda activa';
+
+  @override
+  String get teamNoActiveSearchMessage =>
+      'La cola de partidos llega pronto. Aquí es donde el equipo coordinará quién busca ahora.';
+
+  @override
+  String get teamSearchDurationLabel => 'Duración de búsqueda predeterminada';
+
+  @override
+  String get teamSearchDurationHelper =>
+      'Tiempo que cada jugador permanece al frente de la cola.';
+
+  @override
+  String teamDurationSeconds(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String teamDurationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count min',
+      one: '1 min',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get teamLoadErrorTitle => 'No fue posible cargar tus equipos';
+
+  @override
+  String get teamMembersErrorTitle => 'No fue posible cargar los miembros';
+
+  @override
+  String get validationTeamNameRequired => 'Ingresa el nombre del equipo.';
+
+  @override
+  String validationTeamNameTooShort(int count) {
+    return 'Usa al menos $count caracteres.';
+  }
+
+  @override
+  String validationTeamNameTooLong(int count) {
+    return 'Usa como máximo $count caracteres.';
+  }
+
+  @override
+  String validationTeamTagTooShort(int count) {
+    return 'La tag necesita al menos $count caracteres.';
+  }
+
+  @override
+  String validationTeamTagTooLong(int count) {
+    return 'La tag puede tener como máximo $count caracteres.';
+  }
+
+  @override
+  String get validationTeamTagInvalid => 'Usa solo letras y números.';
+
+  @override
+  String get errorTeamNameInvalid => 'Elige un nombre de equipo válido.';
+
+  @override
+  String get errorTeamTagInvalid => 'Elige una tag válida.';
+
+  @override
+  String get errorTeamSearchDurationInvalid =>
+      'Elige una duración de búsqueda válida.';
+
+  @override
+  String get errorTeamNotFound => 'Equipo no encontrado.';
+
+  @override
+  String get errorTeamPermissionDenied =>
+      'No tienes permiso para gestionar este equipo.';
+
+  @override
+  String get errorTeamProfileMissing =>
+      'Completa tu perfil antes de crear un equipo.';
 }

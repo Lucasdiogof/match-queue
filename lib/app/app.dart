@@ -9,6 +9,8 @@ import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dar
 import 'package:fifa_queue/features/profile/presentation/widgets/profile_session_listener.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/teams_session_listener.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +25,7 @@ class FifaQueueApp extends StatelessWidget {
     required this.localeCubit,
     required this.pendingInviteCubit,
     required this.profileCubit,
+    required this.teamsCubit,
     super.key,
   });
 
@@ -33,6 +36,7 @@ class FifaQueueApp extends StatelessWidget {
   final LocaleCubit localeCubit;
   final PendingInviteCubit pendingInviteCubit;
   final ProfileCubit profileCubit;
+  final TeamsCubit teamsCubit;
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -42,6 +46,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<LocaleCubit>.value(value: localeCubit),
       BlocProvider<PendingInviteCubit>.value(value: pendingInviteCubit),
       BlocProvider<ProfileCubit>.value(value: profileCubit),
+      BlocProvider<TeamsCubit>.value(value: teamsCubit),
     ],
     child: AppConfigScope(
       config: config,
@@ -60,8 +65,10 @@ class FifaQueueApp extends StatelessWidget {
             localeResolutionCallback: (deviceLocale, supportedLocales) =>
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
             builder: (context, child) => ProfileSessionListener(
-              child: PendingInviteListener(
-                child: child ?? const SizedBox.shrink(),
+              child: TeamsSessionListener(
+                child: PendingInviteListener(
+                  child: child ?? const SizedBox.shrink(),
+                ),
               ),
             ),
           ),
