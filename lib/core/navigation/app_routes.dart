@@ -22,10 +22,6 @@ class AppRoutes {
   static const AppRoute splash = AppRoute('splash', '/');
   static const AppRoute login = AppRoute('login', '/login');
   static const AppRoute signUp = AppRoute('signup', '/signup');
-  static const AppRoute forgotPassword = AppRoute(
-    'forgot-password',
-    '/forgot-password',
-  );
   static const AppRoute resetPassword = AppRoute(
     'reset-password',
     '/reset-password',
@@ -48,7 +44,6 @@ class AppRoutes {
   static const Set<String> unauthenticatedPaths = <String>{
     '/login',
     '/signup',
-    '/forgot-password',
     '/onboarding',
   };
 

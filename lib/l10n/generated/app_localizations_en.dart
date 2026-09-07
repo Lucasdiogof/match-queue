@@ -326,13 +326,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginNoAccount => 'Don\'t have an account yet?';
 
   @override
-  String get loginLocalModeBadge => 'Local mode';
-
-  @override
-  String get loginLocalModeMessage =>
-      'No Supabase project configured. Accounts created here live on this device only.';
-
-  @override
   String get signUpTitle => 'Create your account';
 
   @override
@@ -377,6 +370,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPasswordBackToLogin => 'Back to sign in';
+
+  @override
+  String get forgotPasswordResend => 'Resend';
+
+  @override
+  String get forgotPasswordNotReceived => 'Didn\'t get the email?';
+
+  @override
+  String get forgotPasswordResending => 'Resending...';
+
+  @override
+  String get forgotPasswordResendSuccess => 'Email resent.';
 
   @override
   String get resetPasswordTitle => 'Set a new password';

@@ -676,18 +676,6 @@ abstract class AppLocalizations {
   /// **'Ainda não tem uma conta?'**
   String get loginNoAccount;
 
-  /// No description provided for @loginLocalModeBadge.
-  ///
-  /// In pt, this message translates to:
-  /// **'Modo local'**
-  String get loginLocalModeBadge;
-
-  /// No description provided for @loginLocalModeMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum projeto Supabase configurado. As contas criadas aqui existem só neste dispositivo.'**
-  String get loginLocalModeMessage;
-
   /// No description provided for @signUpTitle.
   ///
   /// In pt, this message translates to:
@@ -771,6 +759,30 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Voltar para o login'**
   String get forgotPasswordBackToLogin;
+
+  /// No description provided for @forgotPasswordResend.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reenviar'**
+  String get forgotPasswordResend;
+
+  /// No description provided for @forgotPasswordNotReceived.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não recebeu o e-mail?'**
+  String get forgotPasswordNotReceived;
+
+  /// No description provided for @forgotPasswordResending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reenviando...'**
+  String get forgotPasswordResending;
+
+  /// No description provided for @forgotPasswordResendSuccess.
+  ///
+  /// In pt, this message translates to:
+  /// **'E-mail reenviado.'**
+  String get forgotPasswordResendSuccess;
 
   /// No description provided for @resetPasswordTitle.
   ///

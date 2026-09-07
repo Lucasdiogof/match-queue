@@ -11,6 +11,7 @@ So faz resize/pad sobre fundo branco identico ao das artes originais -- nunca
 recorta, redesenha ou distorce o desenho.
 """
 from PIL import Image
+import numpy as np
 import os
 
 BRAND_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +37,21 @@ def pad_to_square_white(im, canvas_size, content_fraction):
     offset = ((canvas_size - new_w) // 2, (canvas_size - new_h) // 2)
     canvas.paste(resized, offset)
     return canvas
+
+
+def remove_white_background(im_rgb, low=200, high=250):
+    """So usada no wordmark: letras quase pretas sobre fundo quase branco,
+    com um vao limpo entre as duas faixas de brilho (confirmado por
+    histograma) -- corte de alpha por brilho fica limpo aqui. NUNCA usar no
+    controle: o corpo dele e branco, o mesmo truque comeria a propria arte.
+    Ficar transparente sozinho deixaria as letras pretas invisiveis no dark
+    mode -- por isso BrandWordmark aplica um ColorFiltered de inversao so
+    no dark, em vez de nao remover o fundo."""
+    arr = np.array(im_rgb).astype(np.float64)
+    brightness = arr.min(axis=2)
+    alpha = np.clip((high - brightness) / (high - low), 0.0, 1.0) * 255.0
+    rgba = np.dstack([arr, alpha]).astype(np.uint8)
+    return Image.fromarray(rgba, mode="RGBA")
 
 
 def fit_width_white(im, canvas_w, canvas_h, target_w):
@@ -64,13 +80,12 @@ logo = load("logo.png")
 # PNG just to show it at 32-72dp.
 controle.resize((512, 512), Image.LANCZOS).save(os.path.join(ASSETS_DIR, "icon.png"), optimize=True)
 
-# Wordmark: tried cutting the white background to transparent, but the
-# letterforms themselves are near-black -- on a dark surface that leaves
-# black-on-transparent, i.e. invisible. This mark is ink-on-paper, not
-# theme-agnostic, so it keeps its own white background; BrandWordmark
-# wraps it in a light card instead so it stays legible in dark mode too.
-# Already small (808x302, 278KB), keep native resolution.
-escrito_rgba.save(os.path.join(ASSETS_DIR, "wordmark.png"), optimize=True)
+# Wordmark: background cut to transparent (histogram-verified clean gap
+# between the near-black letterforms and the near-white background --
+# see remove_white_background). BrandWordmark handles dark-mode legibility
+# with a ColorFiltered invert instead of keeping a background card.
+escrito_transparent = remove_white_background(escrito_rgba.convert("RGB"))
+escrito_transparent.save(os.path.join(ASSETS_DIR, "wordmark.png"), optimize=True)
 
 # Splash lockup shown by the in-app SplashPage widget (not full-bleed native
 # splash) -- 640px is comfortable for the size it's actually displayed at.

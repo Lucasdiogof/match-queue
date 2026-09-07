@@ -4,7 +4,6 @@ import 'package:fifa_queue/app/pages/splash_page.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/core/navigation/go_router_refresh_stream.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:fifa_queue/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/login_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
@@ -44,11 +43,6 @@ class AppRouter {
         path: AppRoutes.signUp.path,
         name: AppRoutes.signUp.name,
         builder: (context, state) => const SignUpPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.forgotPassword.path,
-        name: AppRoutes.forgotPassword.name,
-        builder: (context, state) => const ForgotPasswordPage(),
       ),
       GoRoute(
         path: AppRoutes.resetPassword.path,
