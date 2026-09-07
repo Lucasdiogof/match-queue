@@ -58,9 +58,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This area will be built in the upcoming stages of the project.';
 
   @override
-  String comingSoonStage(String stage) {
-    return 'Planned for $stage';
-  }
+  String get comingSoonNextStage => 'Stage 3';
 
   @override
   String get homeTitle => 'Find a match';
@@ -106,23 +104,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authHidePassword => 'Hide password';
-
-  @override
-  String get authWelcomeTitle => 'Sign in to coordinate your team';
-
-  @override
-  String get authWelcomeMessage =>
-      'The authentication screens will be built in the next stage. The auth architecture is already in place.';
-
-  @override
-  String get authLocalModeTitle => 'Local development mode';
-
-  @override
-  String get authLocalModeMessage =>
-      'No Supabase project is configured. You can sign in with a local session to browse the app structure.';
-
-  @override
-  String get authLocalModeAction => 'Sign in locally';
 
   @override
   String authSignedInAs(String email) {
@@ -256,6 +237,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session expired. Please sign in again.';
 
   @override
+  String get errorEmailConfirmationRequired =>
+      'We sent a confirmation link to your email. Confirm the address to sign in.';
+
+  @override
   String get errorAuthUnknown => 'We could not complete the authentication.';
 
   @override
@@ -280,4 +265,174 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notFoundAction => 'Go to start';
+
+  @override
+  String get loginTitle => 'Sign in to your account';
+
+  @override
+  String get loginNoAccount => 'Don\'t have an account yet?';
+
+  @override
+  String get loginLocalModeBadge => 'Local mode';
+
+  @override
+  String get loginLocalModeMessage =>
+      'No Supabase project configured. Accounts created here live on this device only.';
+
+  @override
+  String get signUpTitle => 'Create your account';
+
+  @override
+  String get signUpSubtitle => 'Choose how your team will call you.';
+
+  @override
+  String get signUpHaveAccount => 'Already have an account?';
+
+  @override
+  String get authDisplayName => 'Name or nickname';
+
+  @override
+  String get authDisplayNameHint => 'Lucas, ratowrld, Panda...';
+
+  @override
+  String get authEmailHint => 'you@example.com';
+
+  @override
+  String get authConfirmPassword => 'Confirm password';
+
+  @override
+  String authPasswordHelper(int count) {
+    return 'At least $count characters';
+  }
+
+  @override
+  String get forgotPasswordTitle => 'Recover access';
+
+  @override
+  String get forgotPasswordMessage =>
+      'Enter your account email and we will send the link to create a new password.';
+
+  @override
+  String get forgotPasswordAction => 'Send instructions';
+
+  @override
+  String get forgotPasswordSentTitle => 'Check your email';
+
+  @override
+  String get forgotPasswordSentMessage =>
+      'If there is an account for this email, you will receive the instructions to reset your password.';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Back to sign in';
+
+  @override
+  String get resetPasswordTitle => 'Set a new password';
+
+  @override
+  String get resetPasswordMessage =>
+      'Choose a new password to get back into FIFA Queue.';
+
+  @override
+  String get resetPasswordNewPassword => 'New password';
+
+  @override
+  String get resetPasswordAction => 'Save new password';
+
+  @override
+  String get resetPasswordSuccess => 'Password updated. Welcome back.';
+
+  @override
+  String get resetPasswordInvalidTitle => 'Expired or invalid link';
+
+  @override
+  String get resetPasswordInvalidMessage =>
+      'Request a new recovery link to set your password.';
+
+  @override
+  String get validationEmailRequired => 'Enter your email.';
+
+  @override
+  String get validationEmailInvalid => 'Enter a valid email.';
+
+  @override
+  String get validationPasswordRequired => 'Enter your password.';
+
+  @override
+  String validationPasswordTooShort(int count) {
+    return 'The password needs at least $count characters.';
+  }
+
+  @override
+  String get validationPasswordConfirmationRequired => 'Confirm your password.';
+
+  @override
+  String get validationPasswordConfirmationMismatch =>
+      'The passwords do not match.';
+
+  @override
+  String get validationDisplayNameRequired => 'Enter a name or nickname.';
+
+  @override
+  String validationDisplayNameTooShort(int count) {
+    return 'Use at least $count characters.';
+  }
+
+  @override
+  String validationDisplayNameTooLong(int count) {
+    return 'Use at most $count characters.';
+  }
+
+  @override
+  String get errorTooManyRequests =>
+      'Too many attempts. Wait a moment and try again.';
+
+  @override
+  String get errorSignUpFailed => 'We could not create your account.';
+
+  @override
+  String homeGreeting(String name) {
+    return 'Hi, $name';
+  }
+
+  @override
+  String get homeSearchPlaceholderTitle =>
+      'Coordinated search arrives in Stage 3';
+
+  @override
+  String get homeSearchPlaceholderMessage =>
+      'First we build teams and members. After that, only one player per team searches at a time.';
+
+  @override
+  String get profileAccountSection => 'Account';
+
+  @override
+  String get profileDisplayNameLabel => 'Name or nickname';
+
+  @override
+  String get profileEmailLabel => 'Email';
+
+  @override
+  String get profileEditName => 'Edit name';
+
+  @override
+  String get profileEditNameTitle => 'What should we call you?';
+
+  @override
+  String profileDisplayNameCounter(int count, int max) {
+    return '$count/$max';
+  }
+
+  @override
+  String get profileSaved => 'Name updated.';
+
+  @override
+  String get profileLoadErrorTitle => 'We could not load your profile';
+
+  @override
+  String profileMemberSince(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMM(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'On FIFA Queue since $dateString';
+  }
 }

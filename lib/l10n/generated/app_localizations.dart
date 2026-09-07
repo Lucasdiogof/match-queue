@@ -196,11 +196,11 @@ abstract class AppLocalizations {
   /// **'Esta área será construída nas próximas etapas do projeto.'**
   String get comingSoonMessage;
 
-  /// No description provided for @comingSoonStage.
+  /// No description provided for @comingSoonNextStage.
   ///
   /// In pt, this message translates to:
-  /// **'Previsto para a {stage}'**
-  String comingSoonStage(String stage);
+  /// **'Etapa 3'**
+  String get comingSoonNextStage;
 
   /// No description provided for @homeTitle.
   ///
@@ -291,36 +291,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ocultar senha'**
   String get authHidePassword;
-
-  /// No description provided for @authWelcomeTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Entre para coordenar seu time'**
-  String get authWelcomeTitle;
-
-  /// No description provided for @authWelcomeMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'As telas de autenticação serão construídas na próxima etapa. A arquitetura de auth já está pronta.'**
-  String get authWelcomeMessage;
-
-  /// No description provided for @authLocalModeTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Modo local de desenvolvimento'**
-  String get authLocalModeTitle;
-
-  /// No description provided for @authLocalModeMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum projeto Supabase foi configurado. Você pode entrar com uma sessão local para navegar pela estrutura do app.'**
-  String get authLocalModeMessage;
-
-  /// No description provided for @authLocalModeAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Entrar em modo local'**
-  String get authLocalModeAction;
 
   /// No description provided for @authSignedInAs.
   ///
@@ -520,6 +490,12 @@ abstract class AppLocalizations {
   /// **'Sua sessão expirou. Entre novamente.'**
   String get errorSessionExpired;
 
+  /// No description provided for @errorEmailConfirmationRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviamos um link de confirmação para o seu e-mail. Confirme o endereço para entrar.'**
+  String get errorEmailConfirmationRequired;
+
   /// No description provided for @errorAuthUnknown.
   ///
   /// In pt, this message translates to:
@@ -561,6 +537,294 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ir para o início'**
   String get notFoundAction;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre na sua conta'**
+  String get loginTitle;
+
+  /// No description provided for @loginNoAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não tem uma conta?'**
+  String get loginNoAccount;
+
+  /// No description provided for @loginLocalModeBadge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo local'**
+  String get loginLocalModeBadge;
+
+  /// No description provided for @loginLocalModeMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum projeto Supabase configurado. As contas criadas aqui existem só neste dispositivo.'**
+  String get loginLocalModeMessage;
+
+  /// No description provided for @signUpTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie sua conta'**
+  String get signUpTitle;
+
+  /// No description provided for @signUpSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha como o seu time vai te chamar.'**
+  String get signUpSubtitle;
+
+  /// No description provided for @signUpHaveAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já tem uma conta?'**
+  String get signUpHaveAccount;
+
+  /// No description provided for @authDisplayName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome ou apelido'**
+  String get authDisplayName;
+
+  /// No description provided for @authDisplayNameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lucas, ratowrld, Panda...'**
+  String get authDisplayNameHint;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'voce@exemplo.com'**
+  String get authEmailHint;
+
+  /// No description provided for @authConfirmPassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar senha'**
+  String get authConfirmPassword;
+
+  /// No description provided for @authPasswordHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mínimo de {count} caracteres'**
+  String authPasswordHelper(int count);
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recuperar acesso'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o e-mail da sua conta e enviaremos o link para criar uma nova senha.'**
+  String get forgotPasswordMessage;
+
+  /// No description provided for @forgotPasswordAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviar instruções'**
+  String get forgotPasswordAction;
+
+  /// No description provided for @forgotPasswordSentTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confira seu e-mail'**
+  String get forgotPasswordSentTitle;
+
+  /// No description provided for @forgotPasswordSentMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se houver uma conta associada a este e-mail, você vai receber as instruções para redefinir a senha.'**
+  String get forgotPasswordSentMessage;
+
+  /// No description provided for @forgotPasswordBackToLogin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar para o login'**
+  String get forgotPasswordBackToLogin;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Definir nova senha'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha uma nova senha para voltar a usar o FIFA Queue.'**
+  String get resetPasswordMessage;
+
+  /// No description provided for @resetPasswordNewPassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova senha'**
+  String get resetPasswordNewPassword;
+
+  /// No description provided for @resetPasswordAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar nova senha'**
+  String get resetPasswordAction;
+
+  /// No description provided for @resetPasswordSuccess.
+  ///
+  /// In pt, this message translates to:
+  /// **'Senha atualizada. Bem-vindo de volta.'**
+  String get resetPasswordSuccess;
+
+  /// No description provided for @resetPasswordInvalidTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Link expirado ou inválido'**
+  String get resetPasswordInvalidTitle;
+
+  /// No description provided for @resetPasswordInvalidMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Peça um novo link de recuperação para definir sua senha.'**
+  String get resetPasswordInvalidMessage;
+
+  /// No description provided for @validationEmailRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe seu e-mail.'**
+  String get validationEmailRequired;
+
+  /// No description provided for @validationEmailInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um e-mail válido.'**
+  String get validationEmailInvalid;
+
+  /// No description provided for @validationPasswordRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe sua senha.'**
+  String get validationPasswordRequired;
+
+  /// No description provided for @validationPasswordTooShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'A senha precisa ter pelo menos {count} caracteres.'**
+  String validationPasswordTooShort(int count);
+
+  /// No description provided for @validationPasswordConfirmationRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirme sua senha.'**
+  String get validationPasswordConfirmationRequired;
+
+  /// No description provided for @validationPasswordConfirmationMismatch.
+  ///
+  /// In pt, this message translates to:
+  /// **'As senhas não coincidem.'**
+  String get validationPasswordConfirmationMismatch;
+
+  /// No description provided for @validationDisplayNameRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um nome ou apelido.'**
+  String get validationDisplayNameRequired;
+
+  /// No description provided for @validationDisplayNameTooShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use pelo menos {count} caracteres.'**
+  String validationDisplayNameTooShort(int count);
+
+  /// No description provided for @validationDisplayNameTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use no máximo {count} caracteres.'**
+  String validationDisplayNameTooLong(int count);
+
+  /// No description provided for @errorTooManyRequests.
+  ///
+  /// In pt, this message translates to:
+  /// **'Muitas tentativas. Espere um instante e tente de novo.'**
+  String get errorTooManyRequests;
+
+  /// No description provided for @errorSignUpFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível criar sua conta.'**
+  String get errorSignUpFailed;
+
+  /// No description provided for @homeGreeting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Olá, {name}'**
+  String homeGreeting(String name);
+
+  /// No description provided for @homeSearchPlaceholderTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'A busca coordenada chega na Etapa 3'**
+  String get homeSearchPlaceholderTitle;
+
+  /// No description provided for @homeSearchPlaceholderMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Primeiro vamos criar times e membros. Depois disso, só um jogador do time procura partida por vez.'**
+  String get homeSearchPlaceholderMessage;
+
+  /// No description provided for @profileAccountSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta'**
+  String get profileAccountSection;
+
+  /// No description provided for @profileDisplayNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome ou apelido'**
+  String get profileDisplayNameLabel;
+
+  /// No description provided for @profileEmailLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'E-mail'**
+  String get profileEmailLabel;
+
+  /// No description provided for @profileEditName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar nome'**
+  String get profileEditName;
+
+  /// No description provided for @profileEditNameTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como podemos te chamar?'**
+  String get profileEditNameTitle;
+
+  /// No description provided for @profileDisplayNameCounter.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count}/{max}'**
+  String profileDisplayNameCounter(int count, int max);
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome atualizado.'**
+  String get profileSaved;
+
+  /// No description provided for @profileLoadErrorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar seu perfil'**
+  String get profileLoadErrorTitle;
+
+  /// No description provided for @profileMemberSince.
+  ///
+  /// In pt, this message translates to:
+  /// **'No FIFA Queue desde {date}'**
+  String profileMemberSince(DateTime date);
 }
 
 class _AppLocalizationsDelegate

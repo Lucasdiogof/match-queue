@@ -14,7 +14,9 @@ class PendingInviteListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocListener<AuthCubit, AuthState>(
     listenWhen: (previous, current) =>
-        !previous.isAuthenticated && current.isAuthenticated,
+        !previous.isAuthenticated &&
+        current.isAuthenticated &&
+        !current.isPasswordRecovery,
     listener: (context, state) {
       final invite = context.read<PendingInviteCubit>().state;
       if (invite == null) {

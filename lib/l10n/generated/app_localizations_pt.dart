@@ -58,9 +58,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Esta área será construída nas próximas etapas do projeto.';
 
   @override
-  String comingSoonStage(String stage) {
-    return 'Previsto para a $stage';
-  }
+  String get comingSoonNextStage => 'Etapa 3';
 
   @override
   String get homeTitle => 'Buscar partida';
@@ -106,23 +104,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get authHidePassword => 'Ocultar senha';
-
-  @override
-  String get authWelcomeTitle => 'Entre para coordenar seu time';
-
-  @override
-  String get authWelcomeMessage =>
-      'As telas de autenticação serão construídas na próxima etapa. A arquitetura de auth já está pronta.';
-
-  @override
-  String get authLocalModeTitle => 'Modo local de desenvolvimento';
-
-  @override
-  String get authLocalModeMessage =>
-      'Nenhum projeto Supabase foi configurado. Você pode entrar com uma sessão local para navegar pela estrutura do app.';
-
-  @override
-  String get authLocalModeAction => 'Entrar em modo local';
 
   @override
   String authSignedInAs(String email) {
@@ -255,6 +236,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get errorSessionExpired => 'Sua sessão expirou. Entre novamente.';
 
   @override
+  String get errorEmailConfirmationRequired =>
+      'Enviamos um link de confirmação para o seu e-mail. Confirme o endereço para entrar.';
+
+  @override
   String get errorAuthUnknown => 'Não foi possível concluir a autenticação.';
 
   @override
@@ -279,4 +264,174 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get notFoundAction => 'Ir para o início';
+
+  @override
+  String get loginTitle => 'Entre na sua conta';
+
+  @override
+  String get loginNoAccount => 'Ainda não tem uma conta?';
+
+  @override
+  String get loginLocalModeBadge => 'Modo local';
+
+  @override
+  String get loginLocalModeMessage =>
+      'Nenhum projeto Supabase configurado. As contas criadas aqui existem só neste dispositivo.';
+
+  @override
+  String get signUpTitle => 'Crie sua conta';
+
+  @override
+  String get signUpSubtitle => 'Escolha como o seu time vai te chamar.';
+
+  @override
+  String get signUpHaveAccount => 'Já tem uma conta?';
+
+  @override
+  String get authDisplayName => 'Nome ou apelido';
+
+  @override
+  String get authDisplayNameHint => 'Lucas, ratowrld, Panda...';
+
+  @override
+  String get authEmailHint => 'voce@exemplo.com';
+
+  @override
+  String get authConfirmPassword => 'Confirmar senha';
+
+  @override
+  String authPasswordHelper(int count) {
+    return 'Mínimo de $count caracteres';
+  }
+
+  @override
+  String get forgotPasswordTitle => 'Recuperar acesso';
+
+  @override
+  String get forgotPasswordMessage =>
+      'Informe o e-mail da sua conta e enviaremos o link para criar uma nova senha.';
+
+  @override
+  String get forgotPasswordAction => 'Enviar instruções';
+
+  @override
+  String get forgotPasswordSentTitle => 'Confira seu e-mail';
+
+  @override
+  String get forgotPasswordSentMessage =>
+      'Se houver uma conta associada a este e-mail, você vai receber as instruções para redefinir a senha.';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Voltar para o login';
+
+  @override
+  String get resetPasswordTitle => 'Definir nova senha';
+
+  @override
+  String get resetPasswordMessage =>
+      'Escolha uma nova senha para voltar a usar o FIFA Queue.';
+
+  @override
+  String get resetPasswordNewPassword => 'Nova senha';
+
+  @override
+  String get resetPasswordAction => 'Salvar nova senha';
+
+  @override
+  String get resetPasswordSuccess => 'Senha atualizada. Bem-vindo de volta.';
+
+  @override
+  String get resetPasswordInvalidTitle => 'Link expirado ou inválido';
+
+  @override
+  String get resetPasswordInvalidMessage =>
+      'Peça um novo link de recuperação para definir sua senha.';
+
+  @override
+  String get validationEmailRequired => 'Informe seu e-mail.';
+
+  @override
+  String get validationEmailInvalid => 'Informe um e-mail válido.';
+
+  @override
+  String get validationPasswordRequired => 'Informe sua senha.';
+
+  @override
+  String validationPasswordTooShort(int count) {
+    return 'A senha precisa ter pelo menos $count caracteres.';
+  }
+
+  @override
+  String get validationPasswordConfirmationRequired => 'Confirme sua senha.';
+
+  @override
+  String get validationPasswordConfirmationMismatch =>
+      'As senhas não coincidem.';
+
+  @override
+  String get validationDisplayNameRequired => 'Informe um nome ou apelido.';
+
+  @override
+  String validationDisplayNameTooShort(int count) {
+    return 'Use pelo menos $count caracteres.';
+  }
+
+  @override
+  String validationDisplayNameTooLong(int count) {
+    return 'Use no máximo $count caracteres.';
+  }
+
+  @override
+  String get errorTooManyRequests =>
+      'Muitas tentativas. Espere um instante e tente de novo.';
+
+  @override
+  String get errorSignUpFailed => 'Não foi possível criar sua conta.';
+
+  @override
+  String homeGreeting(String name) {
+    return 'Olá, $name';
+  }
+
+  @override
+  String get homeSearchPlaceholderTitle =>
+      'A busca coordenada chega na Etapa 3';
+
+  @override
+  String get homeSearchPlaceholderMessage =>
+      'Primeiro vamos criar times e membros. Depois disso, só um jogador do time procura partida por vez.';
+
+  @override
+  String get profileAccountSection => 'Conta';
+
+  @override
+  String get profileDisplayNameLabel => 'Nome ou apelido';
+
+  @override
+  String get profileEmailLabel => 'E-mail';
+
+  @override
+  String get profileEditName => 'Editar nome';
+
+  @override
+  String get profileEditNameTitle => 'Como podemos te chamar?';
+
+  @override
+  String profileDisplayNameCounter(int count, int max) {
+    return '$count/$max';
+  }
+
+  @override
+  String get profileSaved => 'Nome atualizado.';
+
+  @override
+  String get profileLoadErrorTitle => 'Não foi possível carregar seu perfil';
+
+  @override
+  String profileMemberSince(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMM(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'No FIFA Queue desde $dateString';
+  }
 }

@@ -2,6 +2,7 @@ export 'package:fifa_queue/core/design_system/branding/brand_assets.dart';
 export 'package:fifa_queue/core/design_system/branding/brand_mark.dart';
 export 'package:fifa_queue/core/design_system/components/app_app_bar.dart';
 export 'package:fifa_queue/core/design_system/components/app_avatar.dart';
+export 'package:fifa_queue/core/design_system/components/app_banner.dart';
 export 'package:fifa_queue/core/design_system/components/app_badge.dart';
 export 'package:fifa_queue/core/design_system/components/app_bottom_sheet.dart';
 export 'package:fifa_queue/core/design_system/components/app_button.dart';

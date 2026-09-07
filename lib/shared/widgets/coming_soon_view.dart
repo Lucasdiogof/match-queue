@@ -7,14 +7,12 @@ class ComingSoonView extends StatelessWidget {
     required this.title,
     required this.description,
     this.icon = Icons.construction_outlined,
-    this.stage = 'Etapa 2',
     super.key,
   });
 
   final String title;
   final String description;
   final IconData icon;
-  final String stage;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,7 @@ class ComingSoonView extends StatelessWidget {
                       style: context.textStyles.titleMedium,
                     ),
                   ),
-                  AppBadge(label: stage),
+                  AppBadge(label: l10n.comingSoonNextStage),
                 ],
               ),
               const AppDivider(spacing: AppSpacing.xl),

@@ -1,9 +1,7 @@
 {
   "@@locale": "pt",
-
   "appName": "FIFA Queue",
   "appTagline": "Um de cada vez na fila.",
-
   "actionContinue": "Continuar",
   "actionCancel": "Cancelar",
   "actionRetry": "Tentar novamente",
@@ -12,21 +10,13 @@
   "actionBack": "Voltar",
   "actionNotNow": "Agora não",
   "actionSignOut": "Sair",
-
   "navSearch": "Buscar",
   "navTeam": "Time",
   "navHistory": "Histórico",
   "navProfile": "Perfil",
-
   "comingSoonTitle": "Em construção",
   "comingSoonMessage": "Esta área será construída nas próximas etapas do projeto.",
-  "comingSoonStage": "Previsto para a {stage}",
-  "@comingSoonStage": {
-    "placeholders": {
-      "stage": { "type": "String", "example": "Etapa 2" }
-    }
-  },
-
+  "comingSoonNextStage": "Etapa 3",
   "homeTitle": "Buscar partida",
   "homeSubtitle": "Coordene quem está procurando agora.",
   "teamTitle": "Meu time",
@@ -35,7 +25,6 @@
   "historySubtitle": "Buscas, partidas encontradas e expirações.",
   "profileTitle": "Perfil",
   "profileSubtitle": "Conta, aparência e idioma.",
-
   "authSignIn": "Entrar",
   "authSignUp": "Criar conta",
   "authForgotPassword": "Esqueci minha senha",
@@ -43,18 +32,15 @@
   "authPassword": "Senha",
   "authRevealPassword": "Mostrar senha",
   "authHidePassword": "Ocultar senha",
-  "authWelcomeTitle": "Entre para coordenar seu time",
-  "authWelcomeMessage": "As telas de autenticação serão construídas na próxima etapa. A arquitetura de auth já está pronta.",
-  "authLocalModeTitle": "Modo local de desenvolvimento",
-  "authLocalModeMessage": "Nenhum projeto Supabase foi configurado. Você pode entrar com uma sessão local para navegar pela estrutura do app.",
-  "authLocalModeAction": "Entrar em modo local",
   "authSignedInAs": "Conectado como {email}",
   "@authSignedInAs": {
     "placeholders": {
-      "email": { "type": "String", "example": "player@fifaqueue.app" }
+      "email": {
+        "type": "String",
+        "example": "player@fifaqueue.app"
+      }
     }
   },
-
   "settingsAppearance": "Aparência",
   "settingsLanguage": "Idioma",
   "themeSystem": "Sistema",
@@ -64,13 +50,15 @@
   "languagePortuguese": "Português (Brasil)",
   "languageEnglish": "Inglês",
   "languageSpanish": "Espanhol",
-
   "inviteTitle": "Você foi convidado para",
   "inviteJoinTeam": "Entrar no time",
   "inviteCodeLabel": "Código do convite: {code}",
   "@inviteCodeLabel": {
     "placeholders": {
-      "code": { "type": "String", "example": "X7K2P9" }
+      "code": {
+        "type": "String",
+        "example": "X7K2P9"
+      }
     }
   },
   "inviteSignInRequiredTitle": "Entre para aceitar o convite",
@@ -80,23 +68,31 @@
   "invitePlayersCount": "{count, plural, =0{Nenhum jogador} =1{1 jogador} other{{count} jogadores}}",
   "@invitePlayersCount": {
     "placeholders": {
-      "count": { "type": "int", "example": "8" }
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
     }
   },
   "inviteReceivedAt": "Convite recebido em {date}",
   "@inviteReceivedAt": {
     "placeholders": {
-      "date": { "type": "DateTime", "format": "yMMMd" }
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      }
     }
   },
-
   "queuePositionLabel": "#{position} na fila",
   "@queuePositionLabel": {
     "placeholders": {
-      "position": { "type": "int", "format": "decimalPattern", "example": "2" }
+      "position": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "2"
+      }
     }
   },
-
   "errorNetwork": "Sem conexão. Verifique sua internet e tente novamente.",
   "errorTimeout": "A operação demorou demais. Tente novamente.",
   "errorServer": "Algo deu errado no servidor. Tente novamente em instantes.",
@@ -107,7 +103,10 @@
   "errorConfiguration": "Configuração ausente: {keys}",
   "@errorConfiguration": {
     "placeholders": {
-      "keys": { "type": "String", "example": "SUPABASE_URL" }
+      "keys": {
+        "type": "String",
+        "example": "SUPABASE_URL"
+      }
     }
   },
   "errorInvalidCredentials": "E-mail ou senha incorretos.",
@@ -115,24 +114,136 @@
   "errorWeakPassword": "Escolha uma senha mais forte.",
   "errorUserNotFound": "Conta não encontrada.",
   "errorSessionExpired": "Sua sessão expirou. Entre novamente.",
+  "errorEmailConfirmationRequired": "Enviamos um link de confirmação para o seu e-mail. Confirme o endereço para entrar.",
   "errorAuthUnknown": "Não foi possível concluir a autenticação.",
-
   "startupErrorTitle": "Não foi possível iniciar o FIFA Queue",
   "startupErrorMessage": "Faltam variáveis de ambiente obrigatórias: {keys}",
   "@startupErrorMessage": {
     "placeholders": {
-      "keys": { "type": "String", "example": "SUPABASE_URL, SUPABASE_ANON_KEY" }
+      "keys": {
+        "type": "String",
+        "example": "SUPABASE_URL, SUPABASE_ANON_KEY"
+      }
     }
   },
-
   "environmentBadge": "Ambiente: {environment}",
   "@environmentBadge": {
     "placeholders": {
-      "environment": { "type": "String", "example": "development" }
+      "environment": {
+        "type": "String",
+        "example": "development"
+      }
     }
   },
-
   "notFoundTitle": "Página não encontrada",
   "notFoundMessage": "O endereço acessado não existe neste aplicativo.",
-  "notFoundAction": "Ir para o início"
+  "notFoundAction": "Ir para o início",
+  "loginTitle": "Entre na sua conta",
+  "loginNoAccount": "Ainda não tem uma conta?",
+  "loginLocalModeBadge": "Modo local",
+  "loginLocalModeMessage": "Nenhum projeto Supabase configurado. As contas criadas aqui existem só neste dispositivo.",
+  "signUpTitle": "Crie sua conta",
+  "signUpSubtitle": "Escolha como o seu time vai te chamar.",
+  "signUpHaveAccount": "Já tem uma conta?",
+  "authDisplayName": "Nome ou apelido",
+  "authDisplayNameHint": "Lucas, ratowrld, Panda...",
+  "authEmailHint": "voce@exemplo.com",
+  "authConfirmPassword": "Confirmar senha",
+  "authPasswordHelper": "Mínimo de {count} caracteres",
+  "@authPasswordHelper": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "forgotPasswordTitle": "Recuperar acesso",
+  "forgotPasswordMessage": "Informe o e-mail da sua conta e enviaremos o link para criar uma nova senha.",
+  "forgotPasswordAction": "Enviar instruções",
+  "forgotPasswordSentTitle": "Confira seu e-mail",
+  "forgotPasswordSentMessage": "Se houver uma conta associada a este e-mail, você vai receber as instruções para redefinir a senha.",
+  "forgotPasswordBackToLogin": "Voltar para o login",
+  "resetPasswordTitle": "Definir nova senha",
+  "resetPasswordMessage": "Escolha uma nova senha para voltar a usar o FIFA Queue.",
+  "resetPasswordNewPassword": "Nova senha",
+  "resetPasswordAction": "Salvar nova senha",
+  "resetPasswordSuccess": "Senha atualizada. Bem-vindo de volta.",
+  "resetPasswordInvalidTitle": "Link expirado ou inválido",
+  "resetPasswordInvalidMessage": "Peça um novo link de recuperação para definir sua senha.",
+  "validationEmailRequired": "Informe seu e-mail.",
+  "validationEmailInvalid": "Informe um e-mail válido.",
+  "validationPasswordRequired": "Informe sua senha.",
+  "validationPasswordTooShort": "A senha precisa ter pelo menos {count} caracteres.",
+  "@validationPasswordTooShort": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "validationPasswordConfirmationRequired": "Confirme sua senha.",
+  "validationPasswordConfirmationMismatch": "As senhas não coincidem.",
+  "validationDisplayNameRequired": "Informe um nome ou apelido.",
+  "validationDisplayNameTooShort": "Use pelo menos {count} caracteres.",
+  "@validationDisplayNameTooShort": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "validationDisplayNameTooLong": "Use no máximo {count} caracteres.",
+  "@validationDisplayNameTooLong": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "32"
+      }
+    }
+  },
+  "errorTooManyRequests": "Muitas tentativas. Espere um instante e tente de novo.",
+  "errorSignUpFailed": "Não foi possível criar sua conta.",
+  "homeGreeting": "Olá, {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucas"
+      }
+    }
+  },
+  "homeSearchPlaceholderTitle": "A busca coordenada chega na Etapa 3",
+  "homeSearchPlaceholderMessage": "Primeiro vamos criar times e membros. Depois disso, só um jogador do time procura partida por vez.",
+  "profileAccountSection": "Conta",
+  "profileDisplayNameLabel": "Nome ou apelido",
+  "profileEmailLabel": "E-mail",
+  "profileEditName": "Editar nome",
+  "profileEditNameTitle": "Como podemos te chamar?",
+  "profileDisplayNameCounter": "{count}/{max}",
+  "@profileDisplayNameCounter": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "32"
+      }
+    }
+  },
+  "profileSaved": "Nome atualizado.",
+  "profileLoadErrorTitle": "Não foi possível carregar seu perfil",
+  "profileMemberSince": "No FIFA Queue desde {date}",
+  "@profileMemberSince": {
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMM"
+      }
+    }
+  }
 }

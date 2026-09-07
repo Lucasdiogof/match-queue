@@ -13,6 +13,7 @@ class AppTextField extends StatelessWidget {
     this.errorText,
     this.keyboardType,
     this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
     this.autofillHints,
     this.inputFormatters,
     this.prefixIcon,
@@ -35,6 +36,7 @@ class AppTextField extends StatelessWidget {
   final String? errorText;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final TextCapitalization textCapitalization;
   final Iterable<String>? autofillHints;
   final List<TextInputFormatter>? inputFormatters;
   final IconData? prefixIcon;
@@ -70,6 +72,7 @@ class AppTextField extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
           autofillHints: autofillHints,
           inputFormatters: inputFormatters,
           maxLength: maxLength,
@@ -105,6 +108,7 @@ class AppPasswordField extends StatefulWidget {
     required this.hideTooltip,
     this.controller,
     this.hintText,
+    this.helperText,
     this.errorText,
     this.textInputAction,
     this.autofillHints,
@@ -121,6 +125,7 @@ class AppPasswordField extends StatefulWidget {
   final String hideTooltip;
   final TextEditingController? controller;
   final String? hintText;
+  final String? helperText;
   final String? errorText;
   final TextInputAction? textInputAction;
   final Iterable<String>? autofillHints;
@@ -143,6 +148,7 @@ class _AppPasswordFieldState extends State<AppPasswordField> {
     controller: widget.controller,
     focusNode: widget.focusNode,
     hintText: widget.hintText,
+    helperText: widget.helperText,
     errorText: widget.errorText,
     enabled: widget.enabled,
     obscureText: _obscured,

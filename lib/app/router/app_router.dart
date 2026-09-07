@@ -6,6 +6,7 @@ import 'package:fifa_queue/core/navigation/go_router_refresh_stream.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/login_page.dart';
+import 'package:fifa_queue/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
@@ -51,6 +52,11 @@ class AppRouter {
         path: AppRoutes.forgotPassword.path,
         name: AppRoutes.forgotPassword.name,
         builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.resetPassword.path,
+        name: AppRoutes.resetPassword.name,
+        builder: (context, state) => const ResetPasswordPage(),
       ),
       GoRoute(
         path: AppRoutes.onboarding.path,
@@ -117,13 +123,18 @@ class AppRouter {
     final isUnauthenticatedArea = AppRoutes.unauthenticatedPaths.contains(
       location,
     );
+    final isResetPassword = location == AppRoutes.resetPassword.path;
 
     if (!authState.isResolved) {
       return isSplash ? null : AppRoutes.splash.path;
     }
 
+    if (authState.isPasswordRecovery) {
+      return isResetPassword ? null : AppRoutes.resetPassword.path;
+    }
+
     if (!authState.isAuthenticated) {
-      if (isJoinTeam || isUnauthenticatedArea) {
+      if (isJoinTeam || isUnauthenticatedArea || isResetPassword) {
         return null;
       }
       return AppRoutes.login.path;

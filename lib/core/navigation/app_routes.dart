@@ -17,6 +17,10 @@ class AppRoutes {
     'forgot-password',
     '/forgot-password',
   );
+  static const AppRoute resetPassword = AppRoute(
+    'reset-password',
+    '/reset-password',
+  );
   static const AppRoute onboarding = AppRoute('onboarding', '/onboarding');
   static const AppRoute joinTeam = AppRoute('join-team', '/join/:inviteCode');
 
