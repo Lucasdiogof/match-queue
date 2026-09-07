@@ -1,4 +1,4 @@
-package com.fifaqueue.app
+package com.lucasdiogof.fifaqueue
 
 import io.flutter.embedding.android.FlutterActivity
 

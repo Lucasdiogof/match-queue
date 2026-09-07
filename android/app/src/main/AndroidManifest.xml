@@ -26,6 +26,19 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- Callback do Supabase Auth (recuperacao de senha). Scheme
+                 proprio, nao depende de dominio. Os App Links https://
+                 de /join/:inviteCode entram aqui quando o dominio existir
+                 (ver docs/deep_links.md). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="com.lucasdiogof.fifaqueue"
+                    android:host="auth-callback"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
