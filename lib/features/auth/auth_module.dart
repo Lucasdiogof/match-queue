@@ -1,3 +1,4 @@
+import 'package:fifa_queue/core/config/app_config.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:fifa_queue/features/auth/data/repositories/local_auth_repository.dart';
@@ -13,7 +14,7 @@ void registerAuthModule(GetIt sl, {required SupabaseClient? supabaseClient}) {
   } else {
     sl
       ..registerLazySingleton<AuthRemoteDataSource>(
-        () => SupabaseAuthRemoteDataSource(supabaseClient),
+        () => SupabaseAuthRemoteDataSource(supabaseClient, sl<AppConfig>()),
       )
       ..registerLazySingleton<AuthRepository>(
         () => SupabaseAuthRepository(

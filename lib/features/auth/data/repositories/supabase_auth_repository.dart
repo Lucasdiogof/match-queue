@@ -1,8 +1,10 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:fifa_queue/features/auth/data/models/auth_user_model.dart';
+import 'package:fifa_queue/features/auth/domain/entities/auth_snapshot.dart';
 import 'package:fifa_queue/features/auth/domain/entities/auth_user.dart';
 import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthChangeEvent;
 
 class SupabaseAuthRepository implements AuthRepository {
   const SupabaseAuthRepository(this._dataSource, this._errorMapper);
@@ -17,9 +19,14 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Stream<AuthUser?> watchCurrentUser() => _dataSource.watchCurrentUser().map(
-    (user) => user == null ? null : AuthUserModel.fromSupabase(user),
-  );
+  Stream<AuthSnapshot> watchAuthState() =>
+      _dataSource.watchAuthState().map((state) {
+        final user = state.session?.user;
+        return AuthSnapshot(
+          event: _mapEvent(state.event),
+          user: user == null ? null : AuthUserModel.fromSupabase(user),
+        );
+      });
 
   @override
   Future<AuthUser> signInWithEmail({
@@ -35,7 +42,7 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<AuthUser> signUpWithEmail({
     required String email,
     required String password,
-    String? displayName,
+    required String displayName,
   }) => _guard(
     () async => AuthUserModel.fromSupabase(
       await _dataSource.signUpWithEmail(
@@ -51,10 +58,25 @@ class SupabaseAuthRepository implements AuthRepository {
       _guard(() => _dataSource.sendPasswordReset(email));
 
   @override
+  Future<void> updatePassword(String newPassword) =>
+      _guard(() => _dataSource.updatePassword(newPassword));
+
+  @override
   Future<void> signOut() => _guard(_dataSource.signOut);
 
   @override
   Future<void> dispose() async {}
+
+  AuthSessionEvent _mapEvent(AuthChangeEvent event) => switch (event) {
+    AuthChangeEvent.initialSession => AuthSessionEvent.initial,
+    AuthChangeEvent.signedIn => AuthSessionEvent.signedIn,
+    AuthChangeEvent.signedOut => AuthSessionEvent.signedOut,
+    AuthChangeEvent.tokenRefreshed => AuthSessionEvent.tokenRefreshed,
+    AuthChangeEvent.userUpdated => AuthSessionEvent.userUpdated,
+    AuthChangeEvent.passwordRecovery => AuthSessionEvent.passwordRecovery,
+    AuthChangeEvent.mfaChallengeVerified => AuthSessionEvent.signedIn,
+    _ => AuthSessionEvent.unknown,
+  };
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

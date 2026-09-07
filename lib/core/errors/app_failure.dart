@@ -6,6 +6,8 @@ enum AuthFailureReason {
   weakPassword,
   userNotFound,
   sessionExpired,
+  emailConfirmationRequired,
+  tooManyRequests,
   unknown,
 }
 

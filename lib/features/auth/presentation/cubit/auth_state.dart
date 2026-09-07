@@ -10,12 +10,14 @@ class AuthState extends Equatable {
     this.user,
     this.failure,
     this.isSubmitting = false,
+    this.isPasswordRecovery = false,
   });
 
   final AuthStatus status;
   final AuthUser? user;
   final AppFailure? failure;
   final bool isSubmitting;
+  final bool isPasswordRecovery;
 
   bool get isAuthenticated => status == AuthStatus.authenticated;
 
@@ -28,13 +30,21 @@ class AuthState extends Equatable {
     AppFailure? failure,
     bool clearFailure = false,
     bool? isSubmitting,
+    bool? isPasswordRecovery,
   }) => AuthState(
     status: status ?? this.status,
     user: clearUser ? null : (user ?? this.user),
     failure: clearFailure ? null : (failure ?? this.failure),
     isSubmitting: isSubmitting ?? this.isSubmitting,
+    isPasswordRecovery: isPasswordRecovery ?? this.isPasswordRecovery,
   );
 
   @override
-  List<Object?> get props => <Object?>[status, user, failure, isSubmitting];
+  List<Object?> get props => <Object?>[
+    status,
+    user,
+    failure,
+    isSubmitting,
+    isPasswordRecovery,
+  ];
 }

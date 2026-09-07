@@ -20,6 +20,9 @@ extension AppFailureL10n on AppFailure {
       AuthFailureReason.weakPassword => l10n.errorWeakPassword,
       AuthFailureReason.userNotFound => l10n.errorUserNotFound,
       AuthFailureReason.sessionExpired => l10n.errorSessionExpired,
+      AuthFailureReason.emailConfirmationRequired =>
+        l10n.errorEmailConfirmationRequired,
+      AuthFailureReason.tooManyRequests => l10n.errorTooManyRequests,
       AuthFailureReason.unknown => l10n.errorAuthUnknown,
     },
   };
