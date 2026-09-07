@@ -78,8 +78,7 @@ class MatchmakingSnapshot extends Equatable {
 
   bool get isQueuedByMe => myStatus == MyMatchmakingStatus.queued;
 
-  bool get isIdle =>
-      myStatus == MyMatchmakingStatus.none && searching == null;
+  bool get isIdle => myStatus == MyMatchmakingStatus.none && searching == null;
 
   @override
   List<Object?> get props => <Object?>[

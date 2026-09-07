@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
@@ -27,6 +28,14 @@ class LocalMatchmakingRepository implements MatchmakingRepository {
 
   static const String _storageKeyPrefix = 'matchmaking.local.session.';
   final Random _random = Random();
+
+  /// Sem backend nao ha um segundo dispositivo pra gerar evento nenhum.
+  /// Em vez de fingir um canal vivo (ou de deixar a UI achando que caiu a
+  /// conexao), o stream so anuncia que esta "no ar" uma vez e nunca mais
+  /// emite -- e a verdade do modo local.
+  @override
+  Stream<MatchmakingRealtimeEvent> watchTeam(String teamId) =>
+      Stream<MatchmakingRealtimeEvent>.value(const MatchmakingSubscribed());
 
   @override
   Future<MatchmakingSnapshot> getState(String teamId) async =>

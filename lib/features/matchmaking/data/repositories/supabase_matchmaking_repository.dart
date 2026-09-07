@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/matchmaking/data/datasources/matchmaking_remote_data_source.dart';
 import 'package:fifa_queue/features/matchmaking/data/models/matchmaking_snapshot_model.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 
@@ -9,6 +10,10 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
 
   final MatchmakingRemoteDataSource _dataSource;
   final SupabaseErrorMapper _errorMapper;
+
+  @override
+  Stream<MatchmakingRealtimeEvent> watchTeam(String teamId) =>
+      _dataSource.watchTeam(teamId);
 
   @override
   Future<MatchmakingSnapshot> getState(String teamId) => _guard(() async {
