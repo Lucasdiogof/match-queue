@@ -3,7 +3,6 @@
 # Docker) neste projeto, por isso as secoes [api]/[db]/[studio]/[auth] que
 # `supabase init` gera para o ambiente local foram omitidas.
 #
-# O project_id abaixo ainda NAO foi preenchido porque o projeto Supabase do
-# FIFA Queue ainda nao existe. Rodar `supabase link --project-ref <ref>`
-# preenche este arquivo automaticamente.
-project_id = ""
+# project_id e o ref publico do projeto remoto (nao e secret). Usado pela CLI
+# para versionar migrations contra o projeto do FIFA Queue no Supabase.
+project_id = "lteujeclnhmurcewurkg"
