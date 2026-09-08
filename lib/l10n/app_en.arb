@@ -413,5 +413,7 @@
   "notificationsPermissionDeniedHint": "Notifications are blocked. Turn them on in your system settings.",
   "notificationsUnsupportedHint": "This device does not receive push notifications yet.",
   "notificationsEnableTitle": "Don't miss your turn",
-  "notificationsEnableMessage": "Turn on notifications to know the moment it's your turn to search — even with the app closed."
+  "notificationsEnableMessage": "Turn on notifications to know the moment it's your turn to search — even with the app closed.",
+  "notificationsChannelQueueAlertsName": "Queue alerts",
+  "notificationsChannelQueueAlertsDescription": "Alerts about your turn to search and how your search is going."
 }

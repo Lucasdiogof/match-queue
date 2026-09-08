@@ -7,6 +7,7 @@ import 'package:fifa_queue/app/startup_failure_app.dart';
 import 'package:fifa_queue/core/config/app_config.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/firebase/firebase_bootstrap.dart';
+import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/url_strategy/url_strategy.dart';
 import 'package:fifa_queue/core/observability/crash_reporter.dart';
@@ -14,6 +15,7 @@ import 'package:fifa_queue/core/supabase/supabase_initializer.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fifa_queue/features/settings/data/repositories/local_settings_repository.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -55,9 +57,19 @@ Future<void> bootstrap() async {
       final supabaseClient = await SupabaseInitializer(
         logger,
       ).initialize(config);
+      // Mesma resolucao de locale efetivo do LocaleSyncListener: preferencia
+      // explicita do usuario, senao o locale do aparelho. Precisa ser
+      // calculado aqui porque o canal de notificacao Android e criado dentro
+      // do FirebaseBootstrap, antes do DI (e portanto do LocaleCubit) existir.
+      final effectiveLocale =
+          LocalSettingsRepository(preferences).readLocale() ??
+          AppLocales.resolve(
+            WidgetsBinding.instance.platformDispatcher.locale,
+            AppLocales.supported,
+          );
       final firebaseAvailability = await FirebaseBootstrap(
         logger,
-      ).initialize(config);
+      ).initialize(config, locale: effectiveLocale);
 
       await registerDependencies(
         config: config,

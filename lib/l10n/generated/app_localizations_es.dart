@@ -792,4 +792,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get notificationsEnableMessage =>
       'Activa las notificaciones para saber al instante cuándo es tu turno de buscar partido, incluso con la app cerrada.';
+
+  @override
+  String get notificationsChannelQueueAlertsName => 'Alertas de la cola';
+
+  @override
+  String get notificationsChannelQueueAlertsDescription =>
+      'Avisos sobre tu turno de buscar y el progreso de tu búsqueda.';
 }

@@ -787,4 +787,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationsEnableMessage =>
       'Turn on notifications to know the moment it\'s your turn to search — even with the app closed.';
+
+  @override
+  String get notificationsChannelQueueAlertsName => 'Queue alerts';
+
+  @override
+  String get notificationsChannelQueueAlertsDescription =>
+      'Alerts about your turn to search and how your search is going.';
 }

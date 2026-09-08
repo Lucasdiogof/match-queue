@@ -1449,6 +1449,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.'**
   String get notificationsEnableMessage;
+
+  /// No description provided for @notificationsChannelQueueAlertsName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alertas da fila'**
+  String get notificationsChannelQueueAlertsName;
+
+  /// No description provided for @notificationsChannelQueueAlertsDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisos sobre a sua vez de buscar e o andamento da sua busca.'**
+  String get notificationsChannelQueueAlertsDescription;
 }
 
 class _AppLocalizationsDelegate

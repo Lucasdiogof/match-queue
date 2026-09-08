@@ -413,5 +413,7 @@
   "notificationsPermissionDeniedHint": "As notificações estão bloqueadas. Ative-as nas configurações do sistema.",
   "notificationsUnsupportedHint": "Este dispositivo ainda não recebe notificações push.",
   "notificationsEnableTitle": "Não perca a sua vez",
-  "notificationsEnableMessage": "Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado."
+  "notificationsEnableMessage": "Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.",
+  "notificationsChannelQueueAlertsName": "Alertas da fila",
+  "notificationsChannelQueueAlertsDescription": "Avisos sobre a sua vez de buscar e o andamento da sua busca."
 }

@@ -413,5 +413,7 @@
   "notificationsPermissionDeniedHint": "Las notificaciones están bloqueadas. Actívalas en los ajustes del sistema.",
   "notificationsUnsupportedHint": "Este dispositivo aún no recibe notificaciones push.",
   "notificationsEnableTitle": "No te pierdas tu turno",
-  "notificationsEnableMessage": "Activa las notificaciones para saber al instante cuándo es tu turno de buscar partido, incluso con la app cerrada."
+  "notificationsEnableMessage": "Activa las notificaciones para saber al instante cuándo es tu turno de buscar partido, incluso con la app cerrada.",
+  "notificationsChannelQueueAlertsName": "Alertas de la cola",
+  "notificationsChannelQueueAlertsDescription": "Avisos sobre tu turno de buscar y el progreso de tu búsqueda."
 }

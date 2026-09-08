@@ -787,4 +787,11 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get notificationsEnableMessage =>
       'Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.';
+
+  @override
+  String get notificationsChannelQueueAlertsName => 'Alertas da fila';
+
+  @override
+  String get notificationsChannelQueueAlertsDescription =>
+      'Avisos sobre a sua vez de buscar e o andamento da sua busca.';
 }
