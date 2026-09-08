@@ -288,8 +288,12 @@
   "playerProfileCompletenessLabel": "{count}/{total} starters",
   "@playerProfileCompletenessLabel": {
     "placeholders": {
-      "count": {"type": "int"},
-      "total": {"type": "int"}
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "playerProfileSelectAccountTitle": "This player has more than one account on this team",
@@ -297,8 +301,12 @@
   "playerProfileWeekendLeagueRecordLabel": "{wins}W–{losses}L",
   "@playerProfileWeekendLeagueRecordLabel": {
     "placeholders": {
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "teamMembersCount": "{count, plural, =0{No players} =1{1 player} other{{count} players}}",
@@ -873,8 +881,12 @@
   "statsTopScorerInlineLabel": "{name} · {goals} goals",
   "@statsTopScorerInlineLabel": {
     "placeholders": {
-      "name": {"type": "String"},
-      "goals": {"type": "int"}
+      "name": {
+        "type": "String"
+      },
+      "goals": {
+        "type": "int"
+      }
     }
   },
   "fcAccountStatsTitle": "Stats",
@@ -885,5 +897,66 @@
   "rivalsAllTimeNote": "Stats from all recorded matches (no season/week breakdown yet).",
   "playerProfileSportSummaryTitle": "Sport summary",
   "playerProfileRivalsLabel": "Division Rivals",
-  "playerProfileNoStatsMessage": "No detailed matches yet."
+  "playerProfileNoStatsMessage": "No detailed matches yet.",
+  "squadChemistryDetailTitle": "Squad chemistry",
+  "squadChemistryPlayerTitle": "Player chemistry",
+  "squadChemistrySourceClub": "Club",
+  "squadChemistrySourceLeague": "League",
+  "squadChemistrySourceNation": "Nation",
+  "squadChemistrySourceManager": "Manager",
+  "squadChemistryNoSources": "This player shares no club, league or nation with any other starter.",
+  "squadChemistryOutOfPositionExplain": "Out of position: scores nothing and does not count toward teammates' chemistry.",
+  "squadChemistryCappedNote": "Already at the maximum of 3.",
+  "squadChemistryRuleNote": "Rule {version}.",
+  "@squadChemistryRuleNote": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "squadChemistryFullPlayers": "{count, plural, =0{No player at full chemistry} =1{1 player at full chemistry} other{{count} players at full chemistry}}",
+  "@squadChemistryFullPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadChemistryLowPlayers": "{count, plural, =0{No player at zero chemistry} =1{1 player at zero chemistry} other{{count} players at zero chemistry}}",
+  "@squadChemistryLowPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadChemistryOutOfPositionCount": "{count, plural, =0{Nobody out of position} =1{1 player out of position} other{{count} players out of position}}",
+  "@squadChemistryOutOfPositionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadChemistryEmptySlotsNote": "{count, plural, =1{1 empty slot} other{{count} empty slots}}",
+  "@squadChemistryEmptySlotsNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadPrimaryLineupTitle": "Main lineup",
+  "squadPrimaryLineupEditAction": "Edit lineup",
+  "squadPrimaryLineupCreateAction": "Build lineup",
+  "squadPrimaryLineupEmpty": "You have not built a lineup for this account yet.",
+  "squadOtherLineupsAction": "{count, plural, =1{See another lineup} other{See {count} other lineups}}",
+  "@squadOtherLineupsAction": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

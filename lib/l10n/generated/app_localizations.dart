@@ -3093,6 +3093,120 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ainda sem partidas detalhadas.'**
   String get playerProfileNoStatsMessage;
+
+  /// No description provided for @squadChemistryDetailTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Química da escalação'**
+  String get squadChemistryDetailTitle;
+
+  /// No description provided for @squadChemistryPlayerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Química do jogador'**
+  String get squadChemistryPlayerTitle;
+
+  /// No description provided for @squadChemistrySourceClub.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clube'**
+  String get squadChemistrySourceClub;
+
+  /// No description provided for @squadChemistrySourceLeague.
+  ///
+  /// In pt, this message translates to:
+  /// **'Liga'**
+  String get squadChemistrySourceLeague;
+
+  /// No description provided for @squadChemistrySourceNation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nação'**
+  String get squadChemistrySourceNation;
+
+  /// No description provided for @squadChemistrySourceManager.
+  ///
+  /// In pt, this message translates to:
+  /// **'Técnico'**
+  String get squadChemistrySourceManager;
+
+  /// No description provided for @squadChemistryNoSources.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este jogador não compartilha clube, liga nem nação com nenhum outro titular.'**
+  String get squadChemistryNoSources;
+
+  /// No description provided for @squadChemistryOutOfPositionExplain.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fora de posição: não pontua e não conta para a química dos companheiros.'**
+  String get squadChemistryOutOfPositionExplain;
+
+  /// No description provided for @squadChemistryCappedNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já está no máximo de 3.'**
+  String get squadChemistryCappedNote;
+
+  /// No description provided for @squadChemistryRuleNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Regra {version}.'**
+  String squadChemistryRuleNote(String version);
+
+  /// No description provided for @squadChemistryFullPlayers.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhum jogador com química cheia} =1{1 jogador com química cheia} other{{count} jogadores com química cheia}}'**
+  String squadChemistryFullPlayers(int count);
+
+  /// No description provided for @squadChemistryLowPlayers.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhum jogador com química zero} =1{1 jogador com química zero} other{{count} jogadores com química zero}}'**
+  String squadChemistryLowPlayers(int count);
+
+  /// No description provided for @squadChemistryOutOfPositionCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Ninguém fora de posição} =1{1 jogador fora de posição} other{{count} jogadores fora de posição}}'**
+  String squadChemistryOutOfPositionCount(int count);
+
+  /// No description provided for @squadChemistryEmptySlotsNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 posição vazia} other{{count} posições vazias}}'**
+  String squadChemistryEmptySlotsNote(int count);
+
+  /// No description provided for @squadPrimaryLineupTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escalação Principal'**
+  String get squadPrimaryLineupTitle;
+
+  /// No description provided for @squadPrimaryLineupEditAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar escalação'**
+  String get squadPrimaryLineupEditAction;
+
+  /// No description provided for @squadPrimaryLineupCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Montar escalação'**
+  String get squadPrimaryLineupCreateAction;
+
+  /// No description provided for @squadPrimaryLineupEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você ainda não montou uma escalação para este elenco.'**
+  String get squadPrimaryLineupEmpty;
+
+  /// No description provided for @squadOtherLineupsAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Ver outra escalação} other{Ver outras {count} escalações}}'**
+  String squadOtherLineupsAction(int count);
 }
 
 class _AppLocalizationsDelegate

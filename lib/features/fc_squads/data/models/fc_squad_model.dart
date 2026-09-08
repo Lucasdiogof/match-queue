@@ -24,6 +24,25 @@ class FcSquadModel {
       ? value.map((e) => '$e').toList(growable: false)
       : const <String>[];
 
+  static ChemistrySources? _sourcesFromJson(Object? json) {
+    if (json is! Map) {
+      return null;
+    }
+    final m = Map<String, dynamic>.from(json);
+    return ChemistrySources(
+      total: _toInt(m['total']),
+      eligible: m['eligible'] as bool? ?? true,
+      capped: m['capped'] as bool? ?? false,
+      club: _toInt(m['club']),
+      league: _toInt(m['league']),
+      nation: _toInt(m['nation']),
+      manager: _toInt(m['manager']),
+      clubCount: _toInt(m['club_count']),
+      leagueCount: _toInt(m['league_count']),
+      nationCount: _toInt(m['nation_count']),
+    );
+  }
+
   static PlayerCard cardFromJson(Map<String, dynamic> json) => PlayerCard(
     id: '${json['id']}',
     provider: '${json['provider'] ?? 'LOCAL'}',
@@ -194,6 +213,7 @@ class FcSquadModel {
                     ? null
                     : _toInt(item['chemistry']),
                 positionEligible: item['position_eligible'] as bool? ?? true,
+                chemistrySources: _sourcesFromJson(item['chemistry_sources']),
               ),
       ],
       isDefault: json['is_default'] as bool? ?? false,

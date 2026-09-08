@@ -1722,4 +1722,109 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get playerProfileNoStatsMessage =>
       'Todavía no hay partidos detallados.';
+
+  @override
+  String get squadChemistryDetailTitle => 'Química de la alineación';
+
+  @override
+  String get squadChemistryPlayerTitle => 'Química del jugador';
+
+  @override
+  String get squadChemistrySourceClub => 'Club';
+
+  @override
+  String get squadChemistrySourceLeague => 'Liga';
+
+  @override
+  String get squadChemistrySourceNation => 'Nación';
+
+  @override
+  String get squadChemistrySourceManager => 'Entrenador';
+
+  @override
+  String get squadChemistryNoSources =>
+      'Este jugador no comparte club, liga ni nación con ningún otro titular.';
+
+  @override
+  String get squadChemistryOutOfPositionExplain =>
+      'Fuera de posición: no puntúa ni cuenta para la química de sus compañeros.';
+
+  @override
+  String get squadChemistryCappedNote => 'Ya está en el máximo de 3.';
+
+  @override
+  String squadChemistryRuleNote(String version) {
+    return 'Regla $version.';
+  }
+
+  @override
+  String squadChemistryFullPlayers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jugadores con química completa',
+      one: '1 jugador con química completa',
+      zero: 'Ningún jugador con química completa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String squadChemistryLowPlayers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jugadores con química cero',
+      one: '1 jugador con química cero',
+      zero: 'Ningún jugador con química cero',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String squadChemistryOutOfPositionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jugadores fuera de posición',
+      one: '1 jugador fuera de posición',
+      zero: 'Nadie fuera de posición',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String squadChemistryEmptySlotsNote(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count posiciones vacías',
+      one: '1 posición vacía',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get squadPrimaryLineupTitle => 'Alineación principal';
+
+  @override
+  String get squadPrimaryLineupEditAction => 'Editar alineación';
+
+  @override
+  String get squadPrimaryLineupCreateAction => 'Armar alineación';
+
+  @override
+  String get squadPrimaryLineupEmpty =>
+      'Aún no has armado una alineación para este elenco.';
+
+  @override
+  String squadOtherLineupsAction(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ver otras $count alineaciones',
+      one: 'Ver otra alineación',
+    );
+    return '$_temp0';
+  }
 }

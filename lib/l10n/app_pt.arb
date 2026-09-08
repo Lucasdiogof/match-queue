@@ -288,8 +288,12 @@
   "playerProfileCompletenessLabel": "{count}/{total} titulares",
   "@playerProfileCompletenessLabel": {
     "placeholders": {
-      "count": {"type": "int"},
-      "total": {"type": "int"}
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "playerProfileSelectAccountTitle": "Este jogador tem mais de uma conta neste time",
@@ -297,8 +301,12 @@
   "playerProfileWeekendLeagueRecordLabel": "{wins}V–{losses}D",
   "@playerProfileWeekendLeagueRecordLabel": {
     "placeholders": {
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "teamMembersCount": "{count, plural, =0{Nenhum jogador} =1{1 jogador} other{{count} jogadores}}",
@@ -873,8 +881,12 @@
   "statsTopScorerInlineLabel": "{name} · {goals} gols",
   "@statsTopScorerInlineLabel": {
     "placeholders": {
-      "name": {"type": "String"},
-      "goals": {"type": "int"}
+      "name": {
+        "type": "String"
+      },
+      "goals": {
+        "type": "int"
+      }
     }
   },
   "fcAccountStatsTitle": "Estatísticas",
@@ -885,5 +897,66 @@
   "rivalsAllTimeNote": "Estatísticas de todas as partidas registradas (ainda sem separação por season/semana).",
   "playerProfileSportSummaryTitle": "Resumo esportivo",
   "playerProfileRivalsLabel": "Division Rivals",
-  "playerProfileNoStatsMessage": "Ainda sem partidas detalhadas."
+  "playerProfileNoStatsMessage": "Ainda sem partidas detalhadas.",
+  "squadChemistryDetailTitle": "Química da escalação",
+  "squadChemistryPlayerTitle": "Química do jogador",
+  "squadChemistrySourceClub": "Clube",
+  "squadChemistrySourceLeague": "Liga",
+  "squadChemistrySourceNation": "Nação",
+  "squadChemistrySourceManager": "Técnico",
+  "squadChemistryNoSources": "Este jogador não compartilha clube, liga nem nação com nenhum outro titular.",
+  "squadChemistryOutOfPositionExplain": "Fora de posição: não pontua e não conta para a química dos companheiros.",
+  "squadChemistryCappedNote": "Já está no máximo de 3.",
+  "squadChemistryRuleNote": "Regra {version}.",
+  "@squadChemistryRuleNote": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "squadChemistryFullPlayers": "{count, plural, =0{Nenhum jogador com química cheia} =1{1 jogador com química cheia} other{{count} jogadores com química cheia}}",
+  "@squadChemistryFullPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadChemistryLowPlayers": "{count, plural, =0{Nenhum jogador com química zero} =1{1 jogador com química zero} other{{count} jogadores com química zero}}",
+  "@squadChemistryLowPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadChemistryOutOfPositionCount": "{count, plural, =0{Ninguém fora de posição} =1{1 jogador fora de posição} other{{count} jogadores fora de posição}}",
+  "@squadChemistryOutOfPositionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadChemistryEmptySlotsNote": "{count, plural, =1{1 posição vazia} other{{count} posições vazias}}",
+  "@squadChemistryEmptySlotsNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "squadPrimaryLineupTitle": "Escalação Principal",
+  "squadPrimaryLineupEditAction": "Editar escalação",
+  "squadPrimaryLineupCreateAction": "Montar escalação",
+  "squadPrimaryLineupEmpty": "Você ainda não montou uma escalação para este elenco.",
+  "squadOtherLineupsAction": "{count, plural, =1{Ver outra escalação} other{Ver outras {count} escalações}}",
+  "@squadOtherLineupsAction": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

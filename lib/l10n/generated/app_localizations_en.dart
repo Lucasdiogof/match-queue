@@ -1709,4 +1709,109 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playerProfileNoStatsMessage => 'No detailed matches yet.';
+
+  @override
+  String get squadChemistryDetailTitle => 'Squad chemistry';
+
+  @override
+  String get squadChemistryPlayerTitle => 'Player chemistry';
+
+  @override
+  String get squadChemistrySourceClub => 'Club';
+
+  @override
+  String get squadChemistrySourceLeague => 'League';
+
+  @override
+  String get squadChemistrySourceNation => 'Nation';
+
+  @override
+  String get squadChemistrySourceManager => 'Manager';
+
+  @override
+  String get squadChemistryNoSources =>
+      'This player shares no club, league or nation with any other starter.';
+
+  @override
+  String get squadChemistryOutOfPositionExplain =>
+      'Out of position: scores nothing and does not count toward teammates\' chemistry.';
+
+  @override
+  String get squadChemistryCappedNote => 'Already at the maximum of 3.';
+
+  @override
+  String squadChemistryRuleNote(String version) {
+    return 'Rule $version.';
+  }
+
+  @override
+  String squadChemistryFullPlayers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players at full chemistry',
+      one: '1 player at full chemistry',
+      zero: 'No player at full chemistry',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String squadChemistryLowPlayers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players at zero chemistry',
+      one: '1 player at zero chemistry',
+      zero: 'No player at zero chemistry',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String squadChemistryOutOfPositionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players out of position',
+      one: '1 player out of position',
+      zero: 'Nobody out of position',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String squadChemistryEmptySlotsNote(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count empty slots',
+      one: '1 empty slot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get squadPrimaryLineupTitle => 'Main lineup';
+
+  @override
+  String get squadPrimaryLineupEditAction => 'Edit lineup';
+
+  @override
+  String get squadPrimaryLineupCreateAction => 'Build lineup';
+
+  @override
+  String get squadPrimaryLineupEmpty =>
+      'You have not built a lineup for this account yet.';
+
+  @override
+  String squadOtherLineupsAction(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'See $count other lineups',
+      one: 'See another lineup',
+    );
+    return '$_temp0';
+  }
 }

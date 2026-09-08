@@ -19,6 +19,57 @@ enum SquadSlotType {
   };
 }
 
+/// De onde vieram os pontos de química de um titular.
+///
+/// Vem pronto do backend porque os limiares moram na regra versionada -- se o
+/// cliente recalculasse a explicação, ela poderia divergir do número na
+/// próxima versão da regra.
+class ChemistrySources extends Equatable {
+  const ChemistrySources({
+    required this.total,
+    required this.eligible,
+    required this.capped,
+    required this.club,
+    required this.league,
+    required this.nation,
+    required this.manager,
+    required this.clubCount,
+    required this.leagueCount,
+    required this.nationCount,
+  });
+
+  final int total;
+  final bool eligible;
+
+  /// A soma bruta passou de 3 e foi capada.
+  final bool capped;
+
+  final int club;
+  final int league;
+  final int nation;
+  final int manager;
+
+  /// Quantos titulares na posição compartilham cada vínculo -- é o que
+  /// permite dizer "3 do mesmo clube" em vez de só "+1".
+  final int clubCount;
+  final int leagueCount;
+  final int nationCount;
+
+  @override
+  List<Object?> get props => <Object?>[
+    total,
+    eligible,
+    capped,
+    club,
+    league,
+    nation,
+    manager,
+    clubCount,
+    leagueCount,
+    nationCount,
+  ];
+}
+
 /// Slot PREENCHIDO. Slot vazio não existe como dado -- é a ausência desta
 /// entrada, exatamente como no banco.
 ///
@@ -32,6 +83,7 @@ class SquadSlot extends Equatable {
     required this.card,
     this.chemistry,
     this.positionEligible = true,
+    this.chemistrySources,
   });
 
   final SquadSlotType type;
@@ -39,6 +91,7 @@ class SquadSlot extends Equatable {
   final PlayerCard card;
   final int? chemistry;
   final bool positionEligible;
+  final ChemistrySources? chemistrySources;
 
   @override
   List<Object?> get props => <Object?>[
@@ -47,6 +100,7 @@ class SquadSlot extends Equatable {
     card,
     chemistry,
     positionEligible,
+    chemistrySources,
   ];
 }
 

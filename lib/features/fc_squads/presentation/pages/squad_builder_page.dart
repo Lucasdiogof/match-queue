@@ -7,6 +7,7 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/fc_squad_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/squad_builder_cubit.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/chemistry_sheets.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/formation_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/manager_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_detail_sheet.dart';
@@ -232,13 +233,20 @@ class _Body extends StatelessWidget {
                   : l10n.squadOverallValue(squad.overall!),
             ),
             const SizedBox(width: AppSpacing.sm),
-            AppBadge(
-              label: l10n.squadChemistryValue(squad.chemistry),
-              tone: squad.chemistry >= 24
-                  ? AppBadgeTone.success
-                  : squad.chemistry >= 12
-                  ? AppBadgeTone.warning
-                  : AppBadgeTone.neutral,
+            // Tocar na química abre o detalhe: o número sozinho não diz o que
+            // fazer para melhorá-lo.
+            InkWell(
+              onTap: () =>
+                  showSquadChemistrySheet(context: context, squad: squad),
+              child: AppBadge(
+                label: l10n.squadChemistryValue(squad.chemistry),
+                icon: Icons.info_outline,
+                tone: squad.chemistry >= 24
+                    ? AppBadgeTone.success
+                    : squad.chemistry >= 12
+                    ? AppBadgeTone.warning
+                    : AppBadgeTone.neutral,
+              ),
             ),
           ],
         ),
@@ -263,6 +271,8 @@ class _Body extends StatelessWidget {
                 slotCode: slot.slotCode,
                 positionCode: slot.positionCode,
                 card: card,
+                slot: squad.slotAt(SquadSlotType.starting, slot.slotCode),
+                chemistryRuleVersion: squad.chemistryRuleVersion,
               );
             }
           },
@@ -359,6 +369,8 @@ class _Body extends StatelessWidget {
         slotCode: slot.slotCode,
         positionCode: slot.positionCode,
         card: card,
+        slot: squad.slotAt(SquadSlotType.starting, slot.slotCode),
+        chemistryRuleVersion: squad.chemistryRuleVersion,
       );
       return;
     }
@@ -387,6 +399,8 @@ Future<void> _showSlotActionsSheet({
   required String slotCode,
   required PlayerCard card,
   String? positionCode,
+  SquadSlot? slot,
+  String? chemistryRuleVersion,
 }) async {
   final l10n = context.l10n;
   final cubit = context.read<SquadBuilderCubit>();
@@ -406,6 +420,23 @@ Future<void> _showSlotActionsSheet({
               showPlayerCardDetailSheet(context: context, card: card);
             },
           ),
+          // Só titular tem química -- banco e reserva não pontuam, então
+          // oferecer a explicação neles seria mentira.
+          if (slot != null && type == SquadSlotType.starting) ...<Widget>[
+            const SizedBox(height: AppSpacing.sm),
+            AppButton.secondary(
+              label: l10n.squadChemistryPlayerTitle,
+              icon: Icons.bolt_outlined,
+              onPressed: () {
+                Navigator.of(sheetContext).pop();
+                showPlayerChemistrySheet(
+                  context: context,
+                  slot: slot,
+                  ruleVersion: chemistryRuleVersion,
+                );
+              },
+            ),
+          ],
           const SizedBox(height: AppSpacing.sm),
           AppButton.secondary(
             label: l10n.squadSlotChangeAction,
