@@ -3,8 +3,13 @@
 Documento de continuidade. Vive no repositório de propósito: sobrevive a troca
 de conta e de máquina, coisa que a memória local do assistente não faz.
 
-**Estado:** backend completo e validado; **camada Flutter (client) completa,
-já com Firebase real**; falta apenas o lado servidor da entrega do push.
+**Estado (2026-09-08): Etapa 7 FECHADA.** Backend completo e validado; client
+completo com Firebase real; canal Android `queue_alerts` registrado; secrets
+da Edge Function e Vault configurados; `process-notification-outbox`
+deployada e ACTIVE; QA ponta a ponta rodado contra o projeto real e passou
+(ver `docs/etapa7_server_setup.md`, seção 6). Só ficam pendentes, por
+limitação de ambiente e não por defeito: a APNs key pro iOS (precisa de Mac)
+e a confirmação visual da notificação chegando num device Android/iOS real.
 
 ---
 

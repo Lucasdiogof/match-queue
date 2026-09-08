@@ -1,15 +1,16 @@
 # Etapa 7 — fechamento do lado servidor (push/FCM)
 
 Runbook de execução. Vive no repo de propósito (sobrevive a troca de conta/
-máquina). Estado em 2026-09-08: `process-notification-outbox` **deployada e
-ACTIVE** (`verify_jwt: false` confirmado, URL testada com `curl` — 403 sem
-header, ou seja o gateway não bloqueia e a function rejeita certo por falta
-de `x-worker-secret`). Canal Android `queue_alerts` registrado no client
-(commit `aaa9c60`). Ainda **zero secrets** configurados no Edge Functions e
-**zero valores no Vault** — é só isso que falta agora. Tabelas de notificação
-com **zero linhas** (nenhum resíduo de QA). `pg_cron`, `pg_net`, `pgcrypto`
-instalados; Vault confirmado funcional (schema `vault` responde a query,
-mesmo não aparecendo como extensão própria). Cron jobs já ativos:
+máquina). **Estado em 2026-09-08: FECHADO.** Os 4 secrets da Edge Function
+(`WORKER_SECRET`, `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`,
+`FIREBASE_PRIVATE_KEY`) e os 2 valores do Vault (`notification_worker_url`,
+`notification_worker_secret`) foram configurados pelo usuário.
+`process-notification-outbox` **deployada e ACTIVE** (`verify_jwt: false`
+confirmado). Canal Android `queue_alerts` registrado no client (commit
+`aaa9c60`). QA ponta a ponta rodado contra o projeto real e **passou** — ver
+seção 6. Tabelas de notificação com **zero linhas** depois da limpeza.
+`pg_cron`, `pg_net`, `pgcrypto` instalados; Vault confirmado funcional.
+Cron jobs já ativos:
 `matchmaking-expire-searches` (Etapa 5) e `notification-outbox-dispatch`
 (Etapa 7, rede de segurança de 1 min).
 
@@ -262,20 +263,24 @@ deploy é idempotente (sobrescreve a versão, `version` incrementa no
 
 ## 4. Checklist de placeholders a preencher
 
-- [ ] `WORKER_SECRET` gerado (`openssl rand -hex 32`)
-- [ ] Service account do Firebase baixada, `FIREBASE_CLIENT_EMAIL` e
-      `FIREBASE_PRIVATE_KEY` extraídos, arquivo JSON apagado depois
-- [ ] `supabase secrets set --env-file ...` rodado, `secrets list` mostra os
-      4 nomes, arquivo `.env` local apagado
-- [ ] `notification_worker_url` no Vault (valor já confirmado, seção 3.3)
-- [ ] `notification_worker_secret` no Vault (== `WORKER_SECRET`)
+- [x] `WORKER_SECRET` gerado e configurado
+- [x] Service account do Firebase baixada, `FIREBASE_CLIENT_EMAIL` e
+      `FIREBASE_PRIVATE_KEY` configurados como secret
+- [x] `supabase secrets set` rodado — `secrets list` confirma os 4 nomes
+      (`WORKER_SECRET`, `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`,
+      `FIREBASE_PRIVATE_KEY`)
+- [x] `notification_worker_url` no Vault (confirmado presente)
+- [x] `notification_worker_secret` no Vault (confirmado presente)
 - [x] `supabase functions deploy ... --no-verify-jwt --use-api` rodado,
       `ACTIVE`, URL testada e confirmada (403 sem header = correto)
+- [x] Canal `queue_alerts` registrado no Android (achado 0.2, commit `aaa9c60`)
+- [x] QA ponta a ponta rodado e verde — seção 6
 - [ ] APNs key (.p8) gerada no Apple Developer, Key ID + Team ID anotados
 - [ ] APNs key enviada ao Firebase Console (Cloud Messaging → Apple app config)
 - [ ] Capabilities Push Notifications + Background Modes no target Runner
       (precisa de Mac/Xcode — fora deste ambiente)
-- [x] Canal `queue_alerts` registrado no Android (achado 0.2, commit `aaa9c60`)
+- [ ] Entrega física validada em device Android/iOS real (pendente por
+      limitação de ambiente, não por defeito — ver seção 6)
 
 ---
 
@@ -341,3 +346,64 @@ cleanup das Etapas 5/6 — zero resíduo ao final).
 Depois de validar, rode a mesma limpeza de sempre (deletar usuários/times de
 teste via `db query --linked`, cascata cuida do resto) e confirme zero linhas
 residuais nas 3 tabelas de notificação antes de considerar fechado.
+
+---
+
+## 6. QA ponta a ponta — resultado real (2026-09-08)
+
+Rodado contra o projeto de produção com 2 usuários reais, um time (duração de
+busca 40s), fluxo de convite real, e um device de B com um token FCM
+propositalmente inválido (não há device Android/iOS real disponível neste
+ambiente — ver observação no fim desta seção).
+
+**YOUR_TURN** — A busca, B fica na fila, A dá match-found → B é promovido.
+Outbox recebeu a linha (`dedupe_key = YOUR_TURN:<session_id>`). O trigger
+disparou o worker sozinho em ~2s. FCM respondeu **400 INVALID_ARGUMENT** de
+verdade (prova que `FIREBASE_PROJECT_ID`/`FIREBASE_CLIENT_EMAIL`/
+`FIREBASE_PRIVATE_KEY` estão corretos — chegou a mintar o OAuth token e bater
+no FCM v1, só rejeitou o token de teste). `deactivate_device_token` rodou
+logo em seguida (`user_devices.is_active` virou `false`). Uma segunda
+tentativa automática (backoff, attempt_count 2) bateu no FCM de novo com o
+mesmo resultado.
+
+**Idempotência** — chamei `_enqueue_notification` mais duas vezes manualmente
+com os mesmos `type`+`session_id` do evento acima. Continua existindo **1
+única linha** pra aquele `dedupe_key` — o `on conflict (dedupe_key) do
+nothing` funciona.
+
+**SEARCH_EXPIRING** — enfileirado no momento certo (dentro dos 30s antes do
+`expires_at`, criado em ~T+24s de uma sessão de 40s). **SEARCH_EXPIRED** —
+enfileirado ~14s depois do `expires_at` de verdade (dentro do ciclo de 30s do
+cron), e `match_search_sessions.status` virou `EXPIRED`/`finish_reason =
+'EXPIRED'` na hora certa. Ambos corretos na CRIAÇÃO e no TIMING.
+
+**Nuance encontrada, não é bug**: reativei o device de propósito antes de
+esperar por esses dois eventos, mas a segunda tentativa automática do
+YOUR_TURN (backoff de ~60s) caiu bem no meio da janela e desativou o device
+de novo antes do worker processar EXPIRING/EXPIRED — os dois acabaram
+resolvidos pelo caminho `no_active_device` do `claim_notification_batch`
+(que é um caminho real e intencional: "resolver aqui em vez de retry eterno"
+já é comportamento documentado no schema), em vez de baterem no FCM de novo.
+Isso é um artefato de como orquestrei o teste (o retry do YOUR_TURN e a
+janela de EXPIRING/EXPIRED se sobrepuseram), não um problema do sistema — o
+código que manda pro FCM é o mesmo pros três tipos, e já foi provado
+funcionando duas vezes pelo YOUR_TURN.
+
+**Separação clara pedida (item 4):**
+- **Validado de ponta a ponta**: outbox → trigger → worker → autenticação
+  OAuth2 com a service account → requisição real ao FCM v1 → resposta real
+  do Google → desativação de token morto → idempotência → timing de
+  EXPIRING/EXPIRED/promoção. Tudo isso é o "backend" e está **verde**.
+- **Pendente por limitação de ambiente, não por defeito**: a entrega física
+  de uma notificação NUM APARELHO REAL. `flutter build apk` continua
+  falhando com o loopback do Gradle conhecido deste Windows, e não há como
+  compilar/instalar iOS fora de um Mac. Sem um token FCM genuíno (que só
+  existe depois de o app rodar de verdade num device com o Firebase
+  inicializado), não dá pra observar "notificação apareceu na barra de
+  status" nem confirmar visualmente o canal `queue_alerts` nas configurações
+  do Android. Isso fica para quando você tiver um Android físico (ou emulador
+  com Google Play Services) à mão.
+
+Dados de QA limpos ao final: 0 usuários, 0 times, 0 linhas em
+`notification_outbox`/`user_devices`/`match_search_sessions` criados por este
+teste.
