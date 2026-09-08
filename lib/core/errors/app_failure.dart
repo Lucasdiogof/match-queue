@@ -25,6 +25,7 @@ enum InviteFailureReason {
   notActive,
   expired,
   exhausted,
+  generationFailed,
   permissionDenied,
 }
 

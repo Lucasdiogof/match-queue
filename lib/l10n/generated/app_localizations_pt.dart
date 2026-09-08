@@ -663,6 +663,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get errorInviteExhausted => 'Este convite atingiu o limite de usos.';
 
   @override
+  String get errorInviteGenerationFailed =>
+      'Não foi possível gerar o link de convite. Tente novamente.';
+
+  @override
   String get errorInvitePermissionDenied =>
       'Você não tem permissão para gerenciar o convite deste time.';
 

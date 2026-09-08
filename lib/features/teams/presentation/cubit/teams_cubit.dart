@@ -23,7 +23,7 @@ class TeamsCubit extends Cubit<TeamsState> {
     emit(state.copyWith(status: TeamsStatus.loading, clearFailure: true));
     try {
       final teams = await _repository.fetchMyTeams();
-      final selectedId = _resolveSelectedId(teams, userId);
+      final selectedId = await _resolveSelectedId(teams, userId);
       emit(
         state.copyWith(
           status: TeamsStatus.ready,
@@ -191,15 +191,37 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
-  String? _resolveSelectedId(List<UserTeam> teams, String userId) {
+  /// Ordem: preferencia persistida que ainda vale > time mais antigo.
+  ///
+  /// A escolha resolvida e gravada mesmo quando veio do fallback. Sem isso a
+  /// selecao ficava sendo recalculada a cada abertura, e entrar num time
+  /// novo movia o usuario sozinho -- foi exatamente o que apareceu no QA da
+  /// Etapa 6. Persistir na primeira resolucao torna a selecao estavel.
+  Future<String?> _resolveSelectedId(
+    List<UserTeam> teams,
+    String userId,
+  ) async {
     if (teams.isEmpty) {
+      // Sem times nao ha o que preservar, e uma preferencia orfa so
+      // atrapalharia se o usuario entrasse noutro time depois.
+      await _selectedTeamStore.write(userId, null);
       return null;
     }
+
     final persisted = _selectedTeamStore.read(userId);
     if (persisted != null && teams.any((team) => team.id == persisted)) {
       return persisted;
     }
-    return teams.first.id;
+
+    // Preferencia apontando pra time do qual o usuario nao faz mais parte
+    // (saiu, foi removido, ou e resquicio de outra conta): descarta.
+    if (persisted != null) {
+      await _selectedTeamStore.write(userId, null);
+    }
+
+    final fallback = teams.first.id;
+    await _selectedTeamStore.write(userId, fallback);
+    return fallback;
   }
 
   Future<void> _persistSelected(String? teamId) async {

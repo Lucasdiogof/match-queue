@@ -362,6 +362,7 @@
   "errorInviteNotActive": "Este convite não é mais válido.",
   "errorInviteExpired": "Este convite expirou.",
   "errorInviteExhausted": "Este convite atingiu o limite de usos.",
+  "errorInviteGenerationFailed": "Não foi possível gerar o link de convite. Tente novamente.",
   "errorInvitePermissionDenied": "Você não tem permissão para gerenciar o convite deste time.",
   "errorMatchmakingNoActiveSearch": "Não há busca ativa no momento.",
   "errorMatchmakingNotCurrentSearcher": "Você não é mais quem está buscando partida.",

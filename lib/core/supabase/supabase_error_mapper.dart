@@ -64,6 +64,10 @@ class SupabaseErrorMapper {
     'FQ009' => InviteFailureReason.notActive,
     'FQ010' => InviteFailureReason.expired,
     'FQ011' => InviteFailureReason.exhausted,
+    // Colisao persistente ao sortear codigo novo. Com 60 bits de entropia
+    // isso e praticamente inalcancavel, mas quando acontece a saida certa e
+    // pedir pra tentar de novo, nao mostrar erro generico.
+    'FQ013' => InviteFailureReason.generationFailed,
     _ => null,
   };
 

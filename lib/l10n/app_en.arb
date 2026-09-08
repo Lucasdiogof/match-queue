@@ -362,6 +362,7 @@
   "errorInviteNotActive": "This invite is no longer valid.",
   "errorInviteExpired": "This invite has expired.",
   "errorInviteExhausted": "This invite reached its usage limit.",
+  "errorInviteGenerationFailed": "We could not generate the invite link. Please try again.",
   "errorInvitePermissionDenied": "You do not have permission to manage this team's invite.",
   "errorMatchmakingNoActiveSearch": "There is no active search right now.",
   "errorMatchmakingNotCurrentSearcher": "You are no longer the one searching for a match.",

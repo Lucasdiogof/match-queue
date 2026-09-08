@@ -1234,6 +1234,12 @@ abstract class AppLocalizations {
   /// **'Este convite atingiu o limite de usos.'**
   String get errorInviteExhausted;
 
+  /// No description provided for @errorInviteGenerationFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível gerar o link de convite. Tente novamente.'**
+  String get errorInviteGenerationFailed;
+
   /// No description provided for @errorInvitePermissionDenied.
   ///
   /// In pt, this message translates to:

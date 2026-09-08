@@ -39,6 +39,7 @@ extension AppFailureL10n on AppFailure {
       InviteFailureReason.notActive => l10n.errorInviteNotActive,
       InviteFailureReason.expired => l10n.errorInviteExpired,
       InviteFailureReason.exhausted => l10n.errorInviteExhausted,
+      InviteFailureReason.generationFailed => l10n.errorInviteGenerationFailed,
       InviteFailureReason.permissionDenied => l10n.errorInvitePermissionDenied,
     },
     MatchmakingFailure(:final reason) => switch (reason) {

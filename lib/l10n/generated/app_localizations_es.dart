@@ -667,6 +667,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Esta invitación alcanzó su límite de usos.';
 
   @override
+  String get errorInviteGenerationFailed =>
+      'No fue posible generar el enlace de invitación. Inténtalo de nuevo.';
+
+  @override
   String get errorInvitePermissionDenied =>
       'No tienes permiso para gestionar la invitación de este equipo.';
 

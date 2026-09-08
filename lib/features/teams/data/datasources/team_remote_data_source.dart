@@ -45,7 +45,11 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
           '${TeamMemberModel.embeddedTeam}:${TeamModel.table}(*)',
         )
         .eq(TeamMemberModel.columnUserId, userId)
-        .order(TeamMemberModel.columnJoinedAt);
+        // ascending: true explicito -- o default do postgrest-dart e
+        // DESCENDENTE. Sem isto "meus times" vinha do mais novo pro mais
+        // antigo e o fallback de selecao pulava para o time recem-criado.
+        .order(TeamMemberModel.columnJoinedAt, ascending: true)
+        .order(TeamMemberModel.columnTeamId, ascending: true);
     return List<Map<String, dynamic>>.from(rows);
   }
 
@@ -90,8 +94,11 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
           '${TeamMemberModel.embeddedProfile}:${ProfileModel.table}(*)',
         )
         .eq(TeamMemberModel.columnTeamId, teamId)
-        .order(TeamMemberModel.columnRole)
-        .order(TeamMemberModel.columnJoinedAt);
+        // A ordem do enum team_role e OWNER, ADMIN, PLAYER; ascendente
+        // coloca o dono no topo. Com o default descendente do
+        // postgrest-dart a lista vinha invertida, com o OWNER por ultimo.
+        .order(TeamMemberModel.columnRole, ascending: true)
+        .order(TeamMemberModel.columnJoinedAt, ascending: true);
     return List<Map<String, dynamic>>.from(rows);
   }
 }

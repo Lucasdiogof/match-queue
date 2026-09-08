@@ -362,6 +362,7 @@
   "errorInviteNotActive": "Esta invitación ya no es válida.",
   "errorInviteExpired": "Esta invitación ha expirado.",
   "errorInviteExhausted": "Esta invitación alcanzó su límite de usos.",
+  "errorInviteGenerationFailed": "No fue posible generar el enlace de invitación. Inténtalo de nuevo.",
   "errorInvitePermissionDenied": "No tienes permiso para gestionar la invitación de este equipo.",
   "errorMatchmakingNoActiveSearch": "No hay ninguna búsqueda activa en este momento.",
   "errorMatchmakingNotCurrentSearcher": "Ya no eres quien está buscando partida.",

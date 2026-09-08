@@ -663,6 +663,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorInviteExhausted => 'This invite reached its usage limit.';
 
   @override
+  String get errorInviteGenerationFailed =>
+      'We could not generate the invite link. Please try again.';
+
+  @override
   String get errorInvitePermissionDenied =>
       'You do not have permission to manage this team\'s invite.';
 
