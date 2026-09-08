@@ -31,25 +31,21 @@ verify_jwt = false
 O comando de deploy abaixo também passa `--no-verify-jwt` como reforço, caso
 sua versão da CLI não leia essa seção do `config.toml`.
 
-### 0.2 Canal de notificação Android — ENCONTRADO, NÃO CORRIGIDO (decisão sua)
-O worker manda toda notificação Android no canal `android.notification.channel_id
-= 'queue_alerts'` (`supabase/functions/process-notification-outbox/index.ts:155`).
-Procurei em todo o client Flutter/Android por `queue_alerts`/
-`NotificationChannel`/`createNotificationChannel` e **não existe em lugar
-nenhum** — nem no `FirebaseBootstrap`, nem no manifest Android. A partir do
-Android 8 (API 26), o sistema **derruba silenciosamente** qualquer
-notificação endereçada a um canal que o app nunca registrou — nem aparece
-erro, o FCM aceita a entrega (HTTP 200) e o aparelho simplesmente não mostra
-nada. Isso vai quebrar exatamente o passo "FCM aceitar → token receber" da
-sequência de validação (seção 5) se não for corrigido antes do teste em
-device real.
-
-Isto é código Flutter, fora do escopo "só servidor" que você pediu agora —
-**não mexi**. Precisa de um pequeno ajuste em `FirebaseBootstrap`/DI Android
-(criar o `AndroidNotificationChannel` com id `queue_alerts` antes do primeiro
-`FirebaseMessaging.instance` uso). Me avise quando quiser que eu faça isso;
-até lá, deixe registrado que o teste em device real vai falhar sem essa
-correção.
+### 0.2 Canal de notificação Android — ENCONTRADO E CORRIGIDO
+Commit `aaa9c60`. O worker sempre mandou notificação Android no canal
+`queue_alerts`, mas nada no client criava esse canal — a partir do Android 8
+o sistema derruba isso em silêncio. `FirebaseBootstrap._ensureAndroidNotificationChannel`
+agora cria o canal (`Importance.high`, som e vibração ligados) logo após
+`Firebase.initializeApp`, antes do handler de background, usando
+`flutter_local_notifications` (dependência nova, só usada por isso). Nome e
+descrição vêm de `AppLocalizations`, resolvidos pelo mesmo locale efetivo que
+`LocaleSyncListener` já calculava (preferência explícita, senão o locale do
+aparelho). Protocolo do backend **não mudou** — `channel_id` continua
+`queue_alerts` dos dois lados. `flutter analyze`/`dart format`/`flutter build
+web --release` verdes; `flutter build apk` bateu no mesmo loopback do Gradle
+de sempre (ambiente, não o código). Sem device Android real aqui pra
+confirmar visualmente que o canal aparece em Config → Apps → FIFA Queue →
+Notificações — isso fica pra quando você tiver um aparelho em mãos.
 
 ### 0.3 Consistência de nomes — CONFERIDA, tudo bate
 | Nome | Onde aparece | Confere com |
@@ -262,7 +258,7 @@ divergir, atualize o valor no Vault (Dashboard → Vault → editar o secret).
 - [ ] APNs key enviada ao Firebase Console (Cloud Messaging → Apple app config)
 - [ ] Capabilities Push Notifications + Background Modes no target Runner
       (precisa de Mac/Xcode — fora deste ambiente)
-- [ ] Decisão sobre o canal `queue_alerts` no Android (achado 0.2 acima)
+- [x] Canal `queue_alerts` registrado no Android (achado 0.2, commit `aaa9c60`)
 
 ---
 
@@ -303,9 +299,9 @@ select id, processed_at, last_error from public.notification_outbox order by cre
 
 **4. Token receber** — precisa de um device real com o app instalado,
 logado, com um `user_devices.fcm_token` ativo (`is_active = true`) e
-notificações permitidas no sistema. **No Android, confirme antes o achado
-0.2** (canal `queue_alerts` registrado) — sem isso este passo falha em
-silêncio mesmo com tudo acima verde. Confirme o device ativo:
+notificações permitidas no sistema (o canal `queue_alerts` já é criado
+automaticamente pelo app no Android, achado 0.2 corrigido). Confirme o
+device ativo:
 ```sql
 select user_id, platform, is_active, updated_at from public.user_devices order by updated_at desc limit 5;
 ```
