@@ -4,59 +4,45 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
-import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Estado de matchmaking de um time. Escopado por instancia a um teamId
-/// (recriado pela Home quando o time selecionado muda), igual ao
-/// InviteManagementCubit -- nunca um singleton do app.
-///
-/// O Realtime aqui e apenas um sino: nenhum evento carrega estado e nenhum
-/// evento e aplicado como patch local. Todo evento provoca uma releitura de
-/// get_team_matchmaking_state, que continua sendo a unica fonte de verdade.
-/// Isso e o que torna evento duplicado, fora de ordem ou atrasado
-/// inofensivo -- no pior caso vira uma releitura redundante.
+/// Estado de matchmaking de uma CONTA (Etapa 11) -- escopado por instancia a
+/// um fcAccountId (recriado pela tela Jogar quando a conta selecionada
+/// muda), igual ao antigo escopo por time. Uma conta pode estar vinculada a
+/// varios times: o realtime assina a revisao de CADA time vinculado e
+/// qualquer um deles disparando invalidacao provoca uma releitura do read
+/// model da conta inteira -- nunca um patch local.
 class MatchmakingCubit extends Cubit<MatchmakingState> {
-  MatchmakingCubit(this._repository, this._logger, {required this.teamId})
+  MatchmakingCubit(this._repository, this._logger, {required this.fcAccountId})
     : super(const MatchmakingState());
 
-  /// Uma transacao do servidor pode mexer em sessao, fila e promocao de
-  /// uma vez so. Como todas viram uma unica revisao, na pratica chega um
-  /// evento -- mas a janela curta tambem agrupa rajadas legitimas (varias
-  /// pessoas agindo ao mesmo tempo) numa releitura so.
   static const Duration invalidationDebounce = Duration(milliseconds: 200);
 
   final MatchmakingRepository _repository;
   final AppLogger _logger;
-  final String teamId;
+  final String fcAccountId;
 
-  StreamSubscription<MatchmakingRealtimeEvent>? _events;
+  final List<StreamSubscription<MatchmakingRealtimeEvent>> _events =
+      <StreamSubscription<MatchmakingRealtimeEvent>>[];
+  List<String> _watchedTeamIds = <String>[];
   Timer? _debounce;
-
-  /// Toda leitura recebe um numero. Se a resposta chegar depois de outra
-  /// leitura ter comecado, ela e descartada -- e o que impede a resposta
-  /// lenta de um refresh antigo sobrescrever o resultado fresco de uma
-  /// acao que o usuario acabou de fazer.
   int _loadGeneration = 0;
 
-  Future<void> start() {
-    _events ??= _repository
-        .watchTeam(teamId)
-        .listen(_onRealtimeEvent, onError: _onRealtimeError);
-    return load();
-  }
+  Future<void> start() => load();
 
   Future<void> load() async {
     final generation = ++_loadGeneration;
     emit(state.copyWith(status: MatchmakingStatus.loading, clearFailure: true));
     try {
-      final snapshot = await _repository.getState(teamId);
+      final snapshot = await _repository.getMyStatus(fcAccountId);
       if (_isStale(generation)) {
         return;
       }
       _emitSnapshot(snapshot, status: MatchmakingStatus.ready);
+      _resubscribeIfNeeded(snapshot.linkedTeamIds);
     } on AppFailure catch (failure) {
       if (_isStale(generation)) {
         return;
@@ -66,14 +52,12 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   }
 
   /// Usado por invalidacao do Realtime, refresh de seguranca, retorno de
-  /// foreground e fim do timer: nunca volta pro estado de loading (evitaria
-  /// um flash de skeleton) e nunca propaga falha pra UI -- se a rede falhar
-  /// por um instante o ultimo snapshot bom continua na tela.
+  /// foreground e fim do timer.
   Future<void> refreshSilently() async {
     final generation = ++_loadGeneration;
     emit(state.copyWith(isRefreshing: true));
     try {
-      final snapshot = await _repository.getState(teamId);
+      final snapshot = await _repository.getMyStatus(fcAccountId);
       if (_isStale(generation)) {
         return;
       }
@@ -82,6 +66,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         status: MatchmakingStatus.ready,
         isRefreshing: false,
       );
+      _resubscribeIfNeeded(snapshot.linkedTeamIds);
     } on AppFailure {
       if (_isStale(generation)) {
         return;
@@ -90,22 +75,48 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     }
   }
 
-  Future<bool> startSearch(
-    String fcAccountId,
-    GameMode mode, {
-    String? fcSquadId,
-  }) => _runAction(
-    (teamId) => _repository.requestSearch(
-      teamId,
+  Future<bool> startSearch(GameMode mode, {String? fcSquadId}) => _runAction(
+    () => _repository.requestSearch(
       fcAccountId: fcAccountId,
       fcSquadId: fcSquadId,
       mode: mode,
     ),
   );
 
-  Future<bool> cancel() => _runAction(_repository.cancelSearch);
+  Future<bool> cancel() =>
+      _runAction(() => _repository.cancelSearch(fcAccountId));
 
-  Future<bool> matchFound() => _runAction(_repository.reportMatchFound);
+  Future<bool> matchFound() =>
+      _runAction(() => _repository.reportMatchFound(fcAccountId));
+
+  /// Reabre a assinatura Realtime so quando o conjunto de times vinculados
+  /// muda de verdade (raro) -- nunca a cada snapshot, senao um refresh
+  /// silencioso ficaria cancelando e reabrindo canal sem necessidade.
+  void _resubscribeIfNeeded(List<String> teamIds) {
+    if (_sameIds(_watchedTeamIds, teamIds)) {
+      return;
+    }
+    _watchedTeamIds = List<String>.from(teamIds);
+    for (final sub in _events) {
+      unawaited(sub.cancel());
+    }
+    _events.clear();
+    for (final teamId in _watchedTeamIds) {
+      _events.add(
+        _repository
+            .watchTeam(teamId)
+            .listen(_onRealtimeEvent, onError: _onRealtimeError),
+      );
+    }
+  }
+
+  bool _sameIds(List<String> a, List<String> b) {
+    if (a.length != b.length) {
+      return false;
+    }
+    final setA = a.toSet();
+    return setA.length == b.toSet().length && setA.containsAll(b);
+  }
 
   void _onRealtimeEvent(MatchmakingRealtimeEvent event) {
     if (isClosed) {
@@ -113,22 +124,19 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     }
     switch (event) {
       case MatchmakingSubscribed():
-        // Voltar de uma queda significa que eventos podem ter passado
-        // enquanto estivemos fora: reconcilia com o servidor em vez de
-        // confiar no que ficou na tela.
         final wasDisconnected =
             state.connection == MatchmakingConnection.disconnected;
-        _logger.info('realtime subscribed (team $teamId)');
+        _logger.info('realtime subscribed (fc account $fcAccountId)');
         emit(state.copyWith(connection: MatchmakingConnection.connected));
         if (wasDisconnected) {
           unawaited(refreshSilently());
         }
       case MatchmakingRealtimeLost():
-        _logger.info('realtime disconnected (team $teamId)');
+        _logger.info('realtime disconnected (fc account $fcAccountId)');
         emit(state.copyWith(connection: MatchmakingConnection.disconnected));
       case MatchmakingStateInvalidated(:final revision):
         _logger.debug(
-          'matchmaking state invalidated (team $teamId, revision '
+          'matchmaking state invalidated (fc account $fcAccountId, revision '
           '${revision ?? '-'})',
         );
         _scheduleRefresh();
@@ -137,7 +145,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
 
   void _onRealtimeError(Object error, StackTrace stackTrace) {
     _logger.warning(
-      'realtime channel error (team $teamId)',
+      'realtime channel error (fc account $fcAccountId)',
       error: error,
       stackTrace: stackTrace,
     );
@@ -156,7 +164,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   }
 
   Future<bool> _runAction(
-    Future<MatchmakingSnapshot> Function(String teamId) action,
+    Future<MyMatchmakingSnapshot> Function() action,
   ) async {
     if (state.isActionPending) {
       return false;
@@ -164,19 +172,17 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     final generation = ++_loadGeneration;
     emit(state.copyWith(isActionPending: true, clearFailure: true));
     try {
-      final snapshot = await action(teamId);
+      final snapshot = await action();
       if (isClosed) {
         return true;
       }
-      // A resposta da acao e sempre um estado valido; so nao pode
-      // sobrescrever uma leitura ainda mais recente que tenha comecado
-      // depois dela.
       if (generation == _loadGeneration) {
         _emitSnapshot(
           snapshot,
           status: MatchmakingStatus.ready,
           isActionPending: false,
         );
+        _resubscribeIfNeeded(snapshot.linkedTeamIds);
       } else {
         emit(state.copyWith(isActionPending: false));
       }
@@ -192,7 +198,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   bool _isStale(int generation) => isClosed || generation != _loadGeneration;
 
   void _emitSnapshot(
-    MatchmakingSnapshot snapshot, {
+    MyMatchmakingSnapshot snapshot, {
     required MatchmakingStatus status,
     bool? isActionPending,
     bool? isRefreshing,
@@ -223,8 +229,10 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   Future<void> close() async {
     _debounce?.cancel();
     _debounce = null;
-    await _events?.cancel();
-    _events = null;
+    for (final sub in _events) {
+      await sub.cancel();
+    }
+    _events.clear();
     return super.close();
   }
 }

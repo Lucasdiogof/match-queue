@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
-import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
 
 enum MatchmakingStatus { loading, ready, failure }
 
@@ -23,7 +23,7 @@ class MatchmakingState extends Equatable {
   });
 
   final MatchmakingStatus status;
-  final MatchmakingSnapshot? snapshot;
+  final MyMatchmakingSnapshot? snapshot;
   final AppFailure? failure;
   final bool isActionPending;
 
@@ -51,7 +51,7 @@ class MatchmakingState extends Equatable {
 
   MatchmakingState copyWith({
     MatchmakingStatus? status,
-    MatchmakingSnapshot? snapshot,
+    MyMatchmakingSnapshot? snapshot,
     AppFailure? failure,
     bool clearFailure = false,
     bool? isActionPending,

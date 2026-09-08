@@ -14,9 +14,7 @@ import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_empty_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_selector_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -70,107 +68,56 @@ class _HomeBody extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
       children: <Widget>[
-        _TeamContextCard(
-          userTeam: selected!,
-          showSwitch: state.hasMultipleTeams,
-          selectedTeamId: state.selectedTeamId,
-          teams: state.teams,
-        ),
-        const SizedBox(height: AppSpacing.xl),
         BlocBuilder<FcAccountsCubit, FcAccountsState>(
           buildWhen: (previous, current) =>
               previous.status != current.status ||
-              previous.accounts != current.accounts,
+              previous.accounts != current.accounts ||
+              previous.selectedAccountId != current.selectedAccountId,
           builder: (context, fcState) {
             if (fcState.isLoading && fcState.accounts.isEmpty) {
               return const SizedBox.shrink();
             }
             if (!fcState.hasAccounts) {
-              return const Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.lg),
-                child: FcAccountOnboardingCard(),
-              );
+              return const FcAccountOnboardingCard();
             }
+            final account = fcState.selectedAccount;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                // Bloco Conta -- nunca mais um seletor de Time nesta tela
+                // (item 3 da Etapa 11): quem busca escolhe Conta, Modo e
+                // Escalacao, e a conta ja sabe quais times ocupar.
                 const FcAccountSelectorRow(),
-                const SquadSelectorRow(),
-                const GameModeSelector(),
                 const SizedBox(height: AppSpacing.lg),
+                AppCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        l10n.gameModeSectionTitle,
+                        style: context.textStyles.labelSmall,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      const GameModeSelector(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                const AppCard(child: SquadSelectorRow()),
+                const SizedBox(height: AppSpacing.xl),
                 const WeekendLeagueCard(),
                 const PendingMatchCard(),
-                MatchmakingSection(
-                  teamId: selected!.id,
-                  onMatchFound: () =>
-                      context.read<PendingMatchCubit>().refreshSilently(),
-                ),
+                if (account != null)
+                  MatchmakingSection(
+                    fcAccountId: account.id,
+                    onMatchFound: () =>
+                        context.read<PendingMatchCubit>().refreshSilently(),
+                  ),
               ],
             );
           },
         ),
       ],
-    );
-  }
-}
-
-class _TeamContextCard extends StatelessWidget {
-  const _TeamContextCard({
-    required this.userTeam,
-    required this.showSwitch,
-    required this.selectedTeamId,
-    required this.teams,
-  });
-
-  final UserTeam userTeam;
-  final bool showSwitch;
-  final String? selectedTeamId;
-  final List<UserTeam> teams;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final team = userTeam.team;
-
-    return AppCard(
-      child: Row(
-        children: <Widget>[
-          TeamAvatar(team: team, size: AppSizing.avatarLg),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  team.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textStyles.titleLarge,
-                ),
-                if (team.tag != null) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    team.tag!,
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: context.colors.textSecondary,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          if (showSwitch)
-            AppIconButton(
-              icon: Icons.swap_horiz,
-              tooltip: l10n.teamSwitchAction,
-              variant: AppIconButtonVariant.surface,
-              onPressed: () => showTeamSelectorSheet(
-                context: context,
-                teams: teams,
-                selectedTeamId: selectedTeamId,
-              ),
-            ),
-        ],
-      ),
     );
   }
 }

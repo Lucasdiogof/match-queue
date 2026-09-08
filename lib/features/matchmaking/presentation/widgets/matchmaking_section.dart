@@ -5,19 +5,18 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
-import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
+import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
-import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_queue_list.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_timer_ring.dart';
-import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 /// Com o Realtime no ar, isto deixou de ser o mecanismo de atualizacao e
 /// virou so uma rede de seguranca: cobre o intervalo em que o canal caiu
@@ -25,27 +24,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// tela e o evento, nao o relogio.
 const Duration _safetyRefreshInterval = Duration(seconds: 90);
 
+/// Bloco "Buscar partida" da tela Jogar (Etapa 11) -- centrado na CONTA
+/// selecionada, nunca num time. O card de Conta/Modo/Escalacao ficam acima
+/// dele, em blocos separados: este widget so cuida do estado de
+/// busca/fila/CTA.
 class MatchmakingSection extends StatelessWidget {
   const MatchmakingSection({
-    required this.teamId,
+    required this.fcAccountId,
     this.onMatchFound,
     super.key,
   });
 
-  final String teamId;
+  final String fcAccountId;
 
-  /// Chamado depois de um "Encontrei" bem-sucedido -- serve pra quem mostra
-  /// o card de partida pendente pedir uma releitura na hora, em vez de
-  /// esperar o próximo load espontâneo.
+  /// Chamado depois de um "Encontrei" bem-sucedido.
   final VoidCallback? onMatchFound;
 
   @override
   Widget build(BuildContext context) => BlocProvider<MatchmakingCubit>(
-    key: ValueKey(teamId),
+    key: ValueKey(fcAccountId),
     create: (_) => MatchmakingCubit(
       getIt<MatchmakingRepository>(),
       getIt<AppLogger>(),
-      teamId: teamId,
+      fcAccountId: fcAccountId,
     )..start(),
     child: _MatchmakingSectionBody(onMatchFound: onMatchFound),
   );
@@ -77,9 +78,6 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Vale tanto pro app voltar do background no mobile quanto pra aba
-    // voltar a ficar visivel na Web: o Flutter mapeia visibilitychange
-    // para o mesmo ciclo de vida.
     if (state == AppLifecycleState.resumed) {
       context.read<MatchmakingCubit>().refreshSilently();
     }
@@ -150,11 +148,9 @@ class _MatchmakingReadyBody extends StatelessWidget {
         snapshot: snapshot,
         onMatchFound: onMatchFound,
       ),
-      _ when snapshot.searching != null => _SearchingOtherCard(
-        state: state,
-        snapshot: snapshot,
-      ),
-      _ => _IdleCard(state: state),
+      _ when snapshot.isQueuedByMe || snapshot.blockingSearch != null =>
+        _BlockedCard(state: state, snapshot: snapshot),
+      _ => _IdleCard(state: state, snapshot: snapshot),
     };
 
     if (state.connection != MatchmakingConnection.disconnected) {
@@ -172,10 +168,6 @@ class _MatchmakingReadyBody extends StatelessWidget {
   }
 }
 
-/// Aparece so quando o canal realmente caiu -- oscilacao curta nao chega
-/// aqui, porque o proprio cliente do Supabase reconecta sozinho antes de
-/// reportar queda. O estado na tela continua valido e utilizavel: e um
-/// aviso, nao um bloqueio.
 class _ReconnectingIndicator extends StatelessWidget {
   const _ReconnectingIndicator();
 
@@ -206,14 +198,38 @@ class _ReconnectingIndicator extends StatelessWidget {
 }
 
 class _IdleCard extends StatelessWidget {
-  const _IdleCard({required this.state});
+  const _IdleCard({required this.state, required this.snapshot});
 
   final MatchmakingState state;
+  final MyMatchmakingSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
+
+    if (snapshot.hasNoLinkedTeam) {
+      return AppCard(
+        variant: AppCardVariant.elevated,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            AppBanner(
+              tone: AppBannerTone.warning,
+              message: l10n.errorFcAccountNotLinkedToAnyTeam,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            AppButton.secondary(
+              label: l10n.fcAccountLinkedTeamsTitle,
+              icon: Icons.link,
+              onPressed: () => context.push(
+                AppRoutes.fcAccountDetailLocation(snapshot.fcAccountId),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return AppCard(
       variant: AppCardVariant.elevated,
@@ -256,10 +272,6 @@ class _IdleCard extends StatelessWidget {
   }
 }
 
-/// Botão de buscar partida, mas ciente do Elenco selecionado: sem elenco
-/// selecionado o botão fica desabilitado, e se o elenco não estiver
-/// vinculado ao time atual vira um CTA de vínculo em vez de buscar
-/// silenciosamente sem associação (Etapa 9).
 class _StartSearchButton extends StatelessWidget {
   const _StartSearchButton({
     required this.isActionPending,
@@ -274,64 +286,20 @@ class _StartSearchButton extends StatelessWidget {
   final AppButtonVariant variant;
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final fcState = context.watch<FcAccountsCubit>().state;
-    final teamId = context.read<MatchmakingCubit>().teamId;
-    final teamName = context.watch<TeamsCubit>().state.selectedTeam?.team.name;
-    final account = fcState.selectedAccount;
-
-    if (account == null) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            l10n.fcAccountRequiredToSearch,
-            style: context.textStyles.bodySmall?.copyWith(
-              color: context.colors.textSecondary,
-            ),
+  Widget build(BuildContext context) => AppButton(
+    label: label,
+    icon: icon,
+    variant: variant,
+    isLoading: isActionPending,
+    onPressed: isActionPending
+        ? null
+        // O squad e opcional: sem nenhum configurado a busca acontece
+        // igual, so sem escalacao associada (item 63).
+        : () => context.read<MatchmakingCubit>().startSearch(
+            context.read<GameModeCubit>().state,
+            fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
           ),
-          const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            label: label,
-            icon: icon,
-            variant: variant,
-            onPressed: null,
-          ),
-        ],
-      );
-    }
-
-    if (!account.isLinkedTo(teamId)) {
-      return AppButton.secondary(
-        label: l10n.fcAccountLinkCta(account.name, teamName ?? ''),
-        icon: Icons.link,
-        isLoading: fcState.isSaving,
-        onPressed: fcState.isSaving
-            ? null
-            : () => context.read<FcAccountsCubit>().linkToTeam(
-                accountId: account.id,
-                teamId: teamId,
-              ),
-      );
-    }
-
-    return AppButton(
-      label: label,
-      icon: icon,
-      variant: variant,
-      isLoading: isActionPending,
-      onPressed: isActionPending
-          ? null
-          // O squad é opcional: sem nenhum configurado a busca acontece
-          // igual, só sem escalação associada (item 63).
-          : () => context.read<MatchmakingCubit>().startSearch(
-              account.id,
-              context.read<GameModeCubit>().state,
-              fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
-            ),
-    );
-  }
+  );
 }
 
 class _SearchingSelfCard extends StatelessWidget {
@@ -342,7 +310,7 @@ class _SearchingSelfCard extends StatelessWidget {
   });
 
   final MatchmakingState state;
-  final MatchmakingSnapshot snapshot;
+  final MyMatchmakingSnapshot snapshot;
   final VoidCallback? onMatchFound;
 
   Future<void> _matchFound(BuildContext context) async {
@@ -402,18 +370,6 @@ class _SearchingSelfCard extends StatelessWidget {
               color: colors.textSecondary,
             ),
           ),
-          if (snapshot.queue.isNotEmpty) ...<Widget>[
-            const AppDivider(spacing: AppSpacing.xl),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                l10n.matchmakingQueueSectionTitle.toUpperCase(),
-                style: context.textStyles.labelSmall,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            MatchmakingQueueList(queue: snapshot.queue),
-          ],
           const SizedBox(height: AppSpacing.xl),
           Row(
             children: <Widget>[
@@ -445,17 +401,19 @@ class _SearchingSelfCard extends StatelessWidget {
   }
 }
 
-class _SearchingOtherCard extends StatelessWidget {
-  const _SearchingOtherCard({required this.state, required this.snapshot});
+/// Fila ou bloqueio: alguem mais esta buscando com um dos meus times
+/// vinculados, ou eu mesmo entrei na fila esperando a vez.
+class _BlockedCard extends StatelessWidget {
+  const _BlockedCard({required this.state, required this.snapshot});
 
   final MatchmakingState state;
-  final MatchmakingSnapshot snapshot;
+  final MyMatchmakingSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
-    final searching = snapshot.searching!;
+    final blocking = snapshot.blockingSearch;
     final isQueued = snapshot.isQueuedByMe;
 
     return AppCard(
@@ -463,22 +421,28 @@ class _SearchingOtherCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              AppAvatar(
-                label: searching.displayName,
-                imageUrl: searching.avatarUrl,
-                size: AppSizing.avatarMd,
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Text(
-                  l10n.matchmakingSearchingOtherTitle(searching.displayName),
-                  style: context.textStyles.titleMedium,
+          if (blocking != null)
+            Row(
+              children: <Widget>[
+                AppAvatar(
+                  label: blocking.displayName,
+                  imageUrl: blocking.avatarUrl,
+                  size: AppSizing.avatarMd,
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Text(
+                    l10n.matchmakingSearchingOtherTitle(blocking.displayName),
+                    style: context.textStyles.titleMedium,
+                  ),
+                ),
+              ],
+            )
+          else
+            Text(
+              l10n.matchmakingQueueSectionTitle,
+              style: context.textStyles.titleMedium,
+            ),
           if (isQueued && snapshot.myPosition != null) ...<Widget>[
             const SizedBox(height: AppSpacing.md),
             AppBadge(
@@ -486,27 +450,15 @@ class _SearchingOtherCard extends StatelessWidget {
               tone: AppBadgeTone.info,
             ),
           ],
-          const AppDivider(spacing: AppSpacing.xl),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              l10n.matchmakingQueueSectionTitle.toUpperCase(),
-              style: context.textStyles.labelSmall,
+          const SizedBox(height: AppSpacing.lg),
+          Text(
+            isQueued
+                ? l10n.matchmakingSearchingSelfMessage
+                : l10n.matchmakingQueueEmptyMessage,
+            style: context.textStyles.bodySmall?.copyWith(
+              color: colors.textSecondary,
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
-          if (snapshot.queue.isEmpty)
-            Text(
-              l10n.matchmakingQueueEmptyMessage,
-              style: context.textStyles.bodySmall?.copyWith(
-                color: colors.textSecondary,
-              ),
-            )
-          else
-            MatchmakingQueueList(
-              queue: snapshot.queue,
-              myPosition: snapshot.myPosition,
-            ),
           const SizedBox(height: AppSpacing.xl),
           if (isQueued)
             AppButton.secondary(

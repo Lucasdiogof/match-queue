@@ -1804,6 +1804,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 busca} other{{count} buscas}}'**
   String statsPlayerSearches(int count);
 
+  /// No description provided for @gameModeSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo'**
+  String get gameModeSectionTitle;
+
   /// No description provided for @gameModeWeekendLeague.
   ///
   /// In pt, this message translates to:
@@ -2259,6 +2265,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Squads'**
   String get squadsSectionTitle;
+
+  /// No description provided for @squadBuilderSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvo'**
+  String get squadBuilderSaved;
+
+  /// No description provided for @squadBuilderSaving.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvando…'**
+  String get squadBuilderSaving;
 
   /// No description provided for @squadsEmptyTitle.
   ///

@@ -521,6 +521,7 @@
       }
     }
   },
+  "gameModeSectionTitle": "Modo",
   "gameModeWeekendLeague": "Weekend League",
   "gameModeDivisionRivals": "Division Rivals",
   "pendingMatchTitle": "Tienes una partida sin resultado",
@@ -685,6 +686,8 @@
   "rivalsDivisionDiv1": "División 1",
   "rivalsDivisionElite": "Elite",
   "squadsSectionTitle": "Squads",
+  "squadBuilderSaved": "Guardado",
+  "squadBuilderSaving": "Guardando…",
   "squadsEmptyTitle": "Ningun equipo configurado",
   "squadsEmptyMessage": "Crea un equipo para armar tu alineación. Puedes buscar partida incluso sin uno.",
   "squadCreateAction": "Crear equipo",

@@ -6,7 +6,6 @@ import 'package:fifa_queue/features/matchmaking/data/repositories/supabase_match
 import 'package:fifa_queue/features/matchmaking/data/selected_game_mode_store.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
-import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,7 +26,6 @@ void registerMatchmakingModule(
     sl.registerLazySingleton<MatchmakingRepository>(
       () => LocalMatchmakingRepository(
         sl<AuthRepository>(),
-        sl<TeamRepository>(),
         sl<SharedPreferences>(),
       ),
     );

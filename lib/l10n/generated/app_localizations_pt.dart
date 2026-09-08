@@ -1002,6 +1002,9 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get gameModeSectionTitle => 'Modo';
+
+  @override
   String get gameModeWeekendLeague => 'Weekend League';
 
   @override
@@ -1255,6 +1258,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get squadsSectionTitle => 'Squads';
+
+  @override
+  String get squadBuilderSaved => 'Salvo';
+
+  @override
+  String get squadBuilderSaving => 'Salvando…';
 
   @override
   String get squadsEmptyTitle => 'Nenhum squad configurado';

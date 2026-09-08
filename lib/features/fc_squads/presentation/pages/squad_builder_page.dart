@@ -57,13 +57,16 @@ class _SquadBuilderView extends StatelessWidget {
             title: squad?.name ?? l10n.squadsSectionTitle,
             subtitle: squad?.formation.displayName,
             actions: <Widget>[
-              if (squad != null)
+              if (squad != null) ...<Widget>[
+                _SaveStatusBadge(isSaving: state.isSaving),
+                const SizedBox(width: AppSpacing.sm),
                 AppIconButton(
                   icon: Icons.more_horiz,
                   tooltip: l10n.actionMore,
                   variant: AppIconButtonVariant.surface,
                   onPressed: () => _showActions(context, squad, state),
                 ),
+              ],
             ],
           ),
           body: switch (state.status) {
@@ -125,6 +128,33 @@ class _SquadBuilderView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Indicador de estado de salvamento no header do builder. A persistência já
+/// é por ação (cada toque chama a RPC na hora) -- este badge só reflete o
+/// estado da última chamada, nunca cria um segundo "salvar" concorrente.
+class _SaveStatusBadge extends StatelessWidget {
+  const _SaveStatusBadge({required this.isSaving});
+
+  final bool isSaving;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    if (isSaving) {
+      return AppBadge(
+        label: l10n.squadBuilderSaving,
+        tone: AppBadgeTone.info,
+        icon: Icons.sync,
+      );
+    }
+    return AppBadge(
+      label: l10n.squadBuilderSaved,
+      tone: AppBadgeTone.success,
+      icon: Icons.check_circle_outline,
     );
   }
 }

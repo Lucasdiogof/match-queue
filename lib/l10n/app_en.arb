@@ -521,6 +521,7 @@
       }
     }
   },
+  "gameModeSectionTitle": "Mode",
   "gameModeWeekendLeague": "Weekend League",
   "gameModeDivisionRivals": "Division Rivals",
   "pendingMatchTitle": "You have a match without a result",
@@ -685,6 +686,8 @@
   "rivalsDivisionDiv1": "Division 1",
   "rivalsDivisionElite": "Elite",
   "squadsSectionTitle": "Squads",
+  "squadBuilderSaved": "Saved",
+  "squadBuilderSaving": "Saving…",
   "squadsEmptyTitle": "No squad yet",
   "squadsEmptyMessage": "Create a squad to set up your lineup. You can still search for a match without one.",
   "squadCreateAction": "Create squad",
