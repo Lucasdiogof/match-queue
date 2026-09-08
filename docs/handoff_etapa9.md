@@ -9,7 +9,7 @@ há mais trabalho pendente da Etapa 9.
 ## O que já está fechado (backend)
 
 6 migrations novas, todas aplicadas em produção (`supabase db push`
-confirmado, 43 migrations no remoto), commit `38b957e` já em `origin/main`:
+confirmado, 44 migrations no remoto), commit `38b957e` já em `origin/main`:
 
 - `20260916100000_create_fc_accounts.sql` — `user_fc_accounts` +
   `fc_account_teams` (N:N puro, nunca `teams.fc_account_id`).
