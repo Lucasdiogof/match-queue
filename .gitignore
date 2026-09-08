@@ -74,3 +74,4 @@ supabase/.branches/
 # Dataset de terceiro baixado a mao para o importer de cartas (Etapa 11) --
 # nunca versionar arquivo de dados de outra licenca dentro do nosso repo.
 tool/data/
+

@@ -8,7 +8,7 @@
 -- ESCOPO: so modelagem/importer. Nenhum coletor de rede novo -- o importer
 -- continua so aceitando arquivo local (CSV/JSON), nunca acessando fut.gg/
 -- futbin/futwiz/wefut. Decisao de nao usar WeFUT ja foi tomada e comunicada
--- (robots.txt desautoriza crawlers nominalmente) e nao e reaberta aqui.
+-- (robots.txt desautoriza crawlers automatizados) e nao e reaberta aqui.
 
 create table public.fc_players (
     id uuid primary key default gen_random_uuid(),

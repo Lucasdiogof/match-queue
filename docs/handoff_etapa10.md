@@ -4,7 +4,7 @@ Status em 2026-09-08: **Etapa 10 funcionalmente fechada.** Backend aplicado
 (52 migrations no remoto), camada Flutter completa, `flutter analyze` limpo,
 tudo commitado e pushado em `origin/main`.
 
-Vale como continuidade entre máquinas — o contexto local não atravessa
+Vale como registro de continuidade — anotação local não atravessa
 troca de conta nem de máquina, este arquivo sim.
 
 ## Modelo

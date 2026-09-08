@@ -10,7 +10,7 @@
 // NUNCA acessa rede externa nenhuma (fut.gg/futbin/futwiz/wefut ou qualquer
 // outro site) -- so le um arquivo LOCAL (CSV ou JSON) que quem roda baixou
 // a mao de onde quiser. Decisao ja tomada e comunicada: WeFUT foi recusado
-// como fonte porque seu robots.txt desautoriza crawlers nominalmente. Este
+// como fonte porque seu robots.txt desautoriza crawlers automatizados. Este
 // script e deliberadamente cego a qual foi a origem do arquivo -- so importa
 // --provider=<nome> que o operador escolhe.
 //

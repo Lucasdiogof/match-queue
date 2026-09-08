@@ -18,13 +18,13 @@ Sete candidatos investigados, nenhum sobrou.
 
 | Candidato | URL | Tipo | FC27? | Base ou carta UT | robots.txt | ToS/licença | Bloqueio técnico | Veredito |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| FUTWIZ | futwiz.com | HTML+API interna | Sim (`/fc27/players`) | Carta UT (rarity/versão reais) | **`Disallow: /` explícito para crawlers** | Parceiro EA Community API | N/A — bloqueado por política, nem cheguei a testar tecnicamente | **Descartado** |
-| WeFUT | wefut.com | HTML | Sim (20k+ jogadores) | Carta UT | **`Disallow: /` explícito para crawlers** (já achado na rodada anterior) | Não é parceiro EA aprovado | N/A | **Descartado** |
-| SoFIFA (base FC27) | sofifa.com | HTML | Sim — shortlists/squads FC27 já existem no site (confirmado por resultado de busca) | Base jogador (histórico da fonte) | **`Disallow: /` explícito para crawlers** (2 vezes no arquivo) + `Disallow: /api/` geral | Sem ToS anti-scraping explícito achado, mas o robots.txt já resolve | N/A | **Descartado** |
+| FUTWIZ | futwiz.com | HTML+API interna | Sim (`/fc27/players`) | Carta UT (rarity/versão reais) | **`robots.txt` desautoriza crawlers automatizados → `Disallow: /` explícito** | Parceiro EA Community API | N/A — bloqueado por política, nem cheguei a testar tecnicamente | **Descartado** |
+| WeFUT | wefut.com | HTML | Sim (20k+ jogadores) | Carta UT | **`robots.txt` desautoriza crawlers automatizados → `Disallow: /` explícito** (já achado na rodada anterior) | Não é parceiro EA aprovado | N/A | **Descartado** |
+| SoFIFA (base FC27) | sofifa.com | HTML | Sim — shortlists/squads FC27 já existem no site (confirmado por resultado de busca) | Base jogador (histórico da fonte) | **`robots.txt` desautoriza crawlers automatizados → `Disallow: /` explícito** (2 vezes no arquivo) + `Disallow: /api/` geral | Sem ToS anti-scraping explícito achado, mas o robots.txt já resolve | N/A | **Descartado** |
 | EA oficial (`ea.com/games/ea-sports-fc/ratings`) | ea.com | HTML (primeira parte, marketing) | Sim | Base "ratings reveal" (não é catálogo UT) | Sem disallow específico da página, **mas reserva de direitos explícita no topo do robots.txt**: proíbe "web scraping, machine learning, or any form of text or data mining" de qualquer conteúdo EA sem autorização escrita | Reserva de direitos = ToS de fato | Nenhum (é o robots.txt/reserva que bloqueia, não Cloudflare) | **Descartado** — primeira-parte não significa livre de restrição |
 | Kaggle/GitHub — dataset FC27 dedicado | — | dataset | — | — | — | — | — | **Não existe ainda.** Busca dedicada não achou nenhum dataset FC27 (só FC26/FC24/FIFA23 e anteriores) — o jogo é recente demais para a comunidade já ter publicado um equivalente ao dataset FC26 escolhido antes. Reavaliar daqui a algumas semanas/meses. |
 | Fut-Api / fifa-FUT-Data (GitHub, comunidade) | github.com/MrNaughtZero/Fut-Api, github.com/kafagy/fifa-FUT-Data | API/scraper self-hosted | Não | Carta UT (quando funcionava) | N/A (código, não site) | Fut-Api sem license (`license: null` na API do GitHub), abandonado desde 2022-11; fifa-FUT-Data é MIT mas abandonado desde 2019-11 e mira exatamente FutHead/FutBin, hoje parceiros protegidos | Alvo do scraper (FutBin) está bloqueado | **Descartados** — nenhum é FC27, nenhum é mantido, e o alvo de um deles já é outro item descartado desta lista |
-| fcratings.com | fcratings.com | HTML (WordPress) | Sim | Base "ratings" (WP fan site, não UT) | **Nenhum disallow para crawlers** — o único candidato desta rodada que passa no robots.txt | **ToS proíbe explicitamente**: "Use automated tools (scrapers, bots, crawlers, downloaders) to access or collect data" sem permissão escrita. Site declara "não afiliado a EA/FIFA", é fã-site independente. | Nenhum observado (200 OK, sem Cloudflare challenge) | **Descartado por ToS explícito**, apesar de tecnicamente acessível — é exatamente o caso que a regra dura cobre (nunca automação sem permissão, mesmo sem barreira técnica) |
+| fcratings.com | fcratings.com | HTML (WordPress) | Sim | Base "ratings" (WP fan site, não UT) | **Nenhum disallow, sem bloqueio a crawlers automatizados** — o único candidato desta rodada que passa no robots.txt | **ToS proíbe explicitamente**: "Use automated tools (scrapers, bots, crawlers, downloaders) to access or collect data" sem permissão escrita. Site declara "não afiliado a EA/FIFA", é fã-site independente. | Nenhum observado (200 OK, sem Cloudflare challenge) | **Descartado por ToS explícito**, apesar de tecnicamente acessível — é exatamente o caso que a regra dura cobre (nunca automação sem permissão, mesmo sem barreira técnica) |
 | recharge.com (blog, "FC 27 Player Ratings Database") | recharge.com/blog/en-gb/fc-27-player-ratings-database | HTML, alega "capturado automaticamente do ratings público da EA" | Sim, 20.689 jogadores alegados | Base "ratings" (empresa de gift cards, não fã-site de FUT) | Sem disallow bloqueando esta página especificamente | Página de Termos retornou 404 nesta pesquisa — não verificável | Nenhum JSON/API/iframe encontrado no HTML estático — o widget "buscável" provavelmente carrega via JS não capturado por uma busca estática simples | **Inconclusivo, não adotado**: mesmo que fosse tecnicamente acessível, é o blog de uma empresa de gift cards revendendo dado de terceiro (a própria EA) sem confirmar direito de redistribuição, e sem nenhuma garantia de manutenção — sustentabilidade ruim como fonte de produto mesmo se o bloqueio de ToS não existisse |
 
 ### Conclusão da quarta rodada
@@ -130,7 +130,7 @@ aprovados. Isso significa duas coisas:
 | **futbin.com** | ToS (`futbin.com/tos`) proíbe explicitamente "unauthorized access to the Website... or any server, computer, or database connected". Tem endpoints de terceiros (Apify, Parse.bot) fazendo scraping por fora, o que não muda o ToS do site em si. Também virou parceiro da EA Community API. | Rating, posições, preço de mercado, SBCs, playstyles — boa cobertura, mas parte fica atrás de assinatura premium no próprio site. | Alto risco/descartado: ToS proíbe explicitamente, e contornar isso seria a exata prática que a regra dura veta. | **Descartado por ToS explícito.** |
 | **futwiz.com** | Não foi encontrado endpoint público documentado; mesmo padrão dos outros dois (site com proteção anti-bot, dados via scraping não-oficial). | Provavelmente comparável a fut.gg/futbin (não verificado a fundo, descartado antes por causa do padrão de acesso). | Alto risco — mesmo raciocínio dos outros dois. | Descartado pelo mesmo motivo estrutural. |
 | **Datasets comunitários (GitHub/Kaggle)** — ex. `EAFC26-DataHub` (Kaggle "FC 26 Player Data", ~18k jogadores, 110+ atributos), `sofifa-web-scraper` (scrape do SoFIFA, ~18k jogadores), `FC25-Players-ETL` | Download direto de arquivo CSV/JSON versionado — **sem scraping ao vivo, sem bot, sem CAPTCHA**. Atualização é manual (baixar o CSV mais novo), não um endpoint. | Ampla (rating, posições, stats, nação, liga, clube, altura, pé) — GK stats e playstyles variam por dataset, precisam de validação campo a campo antes do import. | Baixo risco operacional (arquivo estático, licença geralmente aberta/CC), mas **não é tempo real** — cada atualização de patch da EA exige baixar um CSV novo manualmente. | Depende da licença específica do dataset (verificar antes de redistribuir imagens). |
-| **SoFIFA.com** | ~~HTML público, tabelas simples, sem login, historicamente tolerante a scraping pontual e de baixo volume~~ **[SUPERADO — ver quarta rodada abaixo]: `robots.txt` desautoriza crawlers explicitamente (`Disallow: /`) + `Disallow: /api/` geral.** Esta linha refletia uma avaliação inicial sem checar `robots.txt`; a checagem real veio depois e descartou a fonte. | Rating, posições, stats completos, nação, liga, clube, altura, pé — GK stats e playstyles mais limitados que fut.gg/futbin. | N/A — descartado por política do site, não por risco técnico. | **Descartado**, não mais cogitado como fallback (ver correção na seção "Decisão" abaixo). |
+| **SoFIFA.com** | ~~HTML público, tabelas simples, sem login, historicamente tolerante a scraping pontual e de baixo volume~~ **[SUPERADO — ver quarta rodada abaixo]: `robots.txt` desautoriza crawlers automatizados explicitamente (`Disallow: /`) + `Disallow: /api/` geral.** Esta linha refletia uma avaliação inicial sem checar `robots.txt`; a checagem real veio depois e descartou a fonte. | Rating, posições, stats completos, nação, liga, clube, altura, pé — GK stats e playstyles mais limitados que fut.gg/futbin. | N/A — descartado por política do site, não por risco técnico. | **Descartado**, não mais cogitado como fallback (ver correção na seção "Decisão" abaixo). |
 
 ## Decisão — dataset concreto, não "tipo X ou equivalente"
 
@@ -175,7 +175,7 @@ Justificativa geral (mantida do texto original desta seção):
 **Sem fallback de scraping direto para nenhum site.** Uma avaliação
 anterior nesta mesma pesquisa cogitou SoFIFA como fallback pontual para
 campos isolados — **superada pela quarta rodada** (seção acima), que
-confirmou `robots.txt` do SoFIFA desautorizando crawlers explicitamente
+confirmou `robots.txt` do SoFIFA desautorizando crawlers automatizados explicitamente
 (`Disallow: /`, duas vezes no arquivo) + `Disallow: /api/` geral. Não
 existe fallback de scraping para nenhuma fonte nesta pesquisa — só o
 dataset estático com licença aberta (CC BY 4.0) é usado como fonte, e
@@ -304,7 +304,7 @@ parceiro aprovado da EA.** Pesquisa dedicada rodada em 2026-09-08:
   visível. **Descartado por dois motivos**: (1) não está na lista de
   parceiros aprovados da EA Community API (só FUT.GG/FUTBIN/FUTWIZ estão);
   (2) `robots.txt` do próprio site declara explicitamente
-  `Disallow: /` para crawlers sob Cloudflare — um sinal direto e
+  `User-agent: <crawler automatizado> / Disallow: /` sob Cloudflare — um sinal direto e
   inequívoco de que a automação não deve acessar o conteúdo dele, então
   nem tentamos além de ler o `robots.txt` público.
 - **FifaRosters.com / recharge.com / outros agregadores de squad builder**:
@@ -315,7 +315,7 @@ parceiro aprovado da EA.** Pesquisa dedicada rodada em 2026-09-08:
   protegido/parceiro EA) já se repetiu em todos os candidatos anteriores.
   A quarta rodada (seção acima) foi além disso e confirmou o mesmo padrão
   também para bases (não só cartas UT): FUTWIZ/WeFUT/SoFIFA bloqueiam
-  crawlers por nome no `robots.txt`, o site oficial da EA reserva
+  crawlers automatizados por nome no `robots.txt`, o site oficial da EA reserva
   direitos contra scraping/mineração de dados, `fcratings.com` proíbe
   automação no próprio ToS, e `recharge.com` é tecnicamente inconclusivo
   além de ter baixa sustentabilidade como fonte de produto.

@@ -12,7 +12,7 @@ Flutter e importer, para que o catálogo de cartas passe a distinguir
 "atleta base" (Mbappé) de "carta/item específico" (Mbappé Gold, Mbappé
 TOTW, Mbappé TOTS...). **Nenhum coletor/scraper contra WeFUT, FUT.GG,
 FUTBIN, FUTWIZ ou qualquer site externo foi criado** — a decisão de não
-usar WeFUT (robots.txt desautoriza crawlers nominalmente) já tinha sido
+usar WeFUT (robots.txt desautoriza crawlers automatizados) já tinha sido
 tomada e comunicada na Etapa 11 e não foi reaberta. O importer continua
 lendo só arquivo local (CSV, e agora também JSON), nunca rede.
 
