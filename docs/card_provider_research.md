@@ -165,11 +165,53 @@ ofereceu como alternativa aceitável. Motivos:
 
 ## Pendência explícita: FC27 UT catalog source
 
-**Ainda não resolvida.** Pesquisa dedicada rodada em 2026-09-08 (mesma
-sessão) não encontrou uma fonte gratuita de cartas Ultimate Team FC27 reais
-(com `card_type`/rarity, múltiplas versões por jogador, rating por versão)
-que não exija contornar proteção ou virar parceiro aprovado da EA. Ver
-seção dedicada mais abaixo para o detalhamento completo dessa segunda
-rodada — **a Etapa 11 não fecha 100% enquanto este item não virar A
-(fonte encontrada) ou B (confirmado documentadamente que não existe fonte
-adequada ainda)**, conforme pedido do dono do produto.
+**Situação B confirmada: não existe, hoje, fonte gratuita adequada de
+cartas Ultimate Team FC27 reais que não exija contornar proteção ou virar
+parceiro aprovado da EA.** Pesquisa dedicada rodada em 2026-09-08:
+
+- **EA FC Community API está fechada para novos parceiros.** Confirmado no
+  próprio comunicado oficial da EA
+  (`ea.com/games/ea-sports-fc/fc-26/news/pitch-notes-fc26-community-api-update`):
+  "these are the only three approved websites at this time" e "we are not
+  accepting requests at this time" — FUT.GG, FUTBIN e FUTWIZ são os únicos
+  parceiros, sem processo de inscrição aberto e sem prazo anunciado para
+  abrir. Não há caminho legítimo para o FIFA Queue virar parceiro hoje.
+- **`MrNaughtZero/Fut-Api`** (GitHub): API JSON com dados de UT (clubes,
+  jogadores, ligas, card types). **Descartado**: sem license (GitHub API
+  confirma `license: null`, ou seja copyright padrão, sem permissão de uso
+  concedida), e último commit em 2022-11-21 — abandonado, não cobre FC27.
+- **`kafagy/fifa-FUT-Data`** (GitHub): scraper de FutHead/FutBin para CSV.
+  License MIT (permissiva), mas último commit em 2019-11-26 — abandonado, e
+  o alvo do scraping (FutHead/FutBin) é exatamente um dos três parceiros
+  hoje protegidos por Cloudflare/ToS reforçado. Rodar isso hoje contra
+  FutBin cairia na mesma proteção que a regra dura proíbe contornar.
+  **Descartado**.
+- **WeFUT.com**: base de dados FC27 UT (20k+ jogadores) publicamente
+  visível. **Descartado por dois motivos**: (1) não está na lista de
+  parceiros aprovados da EA Community API (só FUT.GG/FUTBIN/FUTWIZ estão);
+  (2) `robots.txt` do próprio site declara explicitamente
+  `Disallow: /` para crawlers sob Cloudflare — um sinal direto e
+  inequívoco de que a automação não deve acessar o conteúdo dele, então
+  nem tentamos além de ler o `robots.txt` público.
+- **FifaRosters.com / recharge.com / outros agregadores de squad builder**:
+  mesma categoria estrutural dos três parceiros — sites comerciais com
+  banco de dados UT, sem indicação de licença aberta para os dados, todos
+  atrás de proteção anti-bot padrão da indústria. Não investigados a fundo
+  individualmente porque o padrão (site comercial de squad builder = dado
+  protegido/parceiro EA) já se repetiu em todos os candidatos anteriores.
+
+**Conclusão**: a única fonte de cartas UT com `card_type`/rarity real e
+múltiplas versões por jogador hoje é FUT.GG/FUTBIN/FUTWIZ, todas atrás da
+EA Community API fechada. Isso deixa o FIFA Queue sem fonte gratuita e
+compatível com a regra dura para cartas UT especiais de FC27 **por
+enquanto**. Reavaliar quando: (a) a EA reabrir o programa de parceiros, ou
+(b) surgir um dataset estático versionado (mesmo padrão do FC26 escolhido
+acima) que alguém publique com licença aberta cobrindo card types reais de
+FC27 — nenhum foi encontrado nesta pesquisa.
+
+**A Etapa 11 fecha na situação B**: pipeline pronto (importer + schema +
+Flutter), base FC26 provisória populada (`KAGGLE_ROVNEZ_FC26`,
+`card_type = 'BASE_DATASET'`), abstração de provider pronta para acoplar
+uma fonte real assim que existir, e esta pendência documentada
+explicitamente: **`FC27 UT catalog source` — sem fonte gratuita disponível
+em 2026-09-08, reavaliar periodicamente.**
