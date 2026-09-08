@@ -77,6 +77,12 @@ Projeto `fifa-queue` (sender `927848400584`), apps Android/iOS/Web via
 
 ## 2. FALTA — apenas server-side (não bloqueia o app)
 
+**Runbook completo e auditado em `docs/etapa7_server_setup.md`** — comandos
+exatos, onde obter cada credencial (Firebase Console, Apple Developer),
+achados de auditoria (verify_jwt corrigido, canal Android `queue_alerts`
+ausente) e a sequência de validação ponta a ponta. Leia esse arquivo primeiro
+se for continuar por aqui.
+
 Enquanto isto não existir, o app funciona inteiro; a outbox só acumula e o
 `_notify_worker()` faz no-op de propósito.
 

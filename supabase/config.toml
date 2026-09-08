@@ -6,3 +6,12 @@
 # project_id e o ref publico do projeto remoto (nao e secret). Usado pela CLI
 # para versionar migrations contra o projeto do FIFA Queue no Supabase.
 project_id = "lteujeclnhmurcewurkg"
+
+# Esta function e chamada so pelo pg_net (dentro do proprio Postgres) e se
+# autentica com o header proprio `x-worker-secret` (conferido no codigo da
+# function), nunca com um Authorization Bearer. Sem verify_jwt = false, o
+# gateway do Supabase rejeitaria a chamada com 401 ANTES do codigo rodar --
+# e falharia em silencio, porque _notify_worker() nunca confere a resposta
+# do net.http_post (entrega e best-effort de proposito).
+[functions.process-notification-outbox]
+verify_jwt = false
