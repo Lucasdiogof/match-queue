@@ -1,11 +1,12 @@
 # Handoff — Etapa 8.5 (Jogar, modos, partida, resultado, reorg de UX)
 
 Documento de continuidade no repositório (sobrevive à troca de conta/máquina).
-**Escrito no meio da etapa** porque o limite da conta acabou. O backend está
-COMPLETO, aplicado e validado; a camada Flutter está PELA METADE mas
-**compilando** (`flutter analyze` limpo).
+Backend COMPLETO, aplicado e validado. Fluxo Jogar/partida/resultado no
+Flutter também COMPLETO (commit `5f6504a`) — `flutter analyze` limpo,
+`flutter build web --release` verde. **Ainda falta** a reorg de UX (Time,
+Perfil, Histórico) e o auth polish continua não commitado — ver seção 3.
 
-Referência: `origin/main`, HEAD `48ddcd8`. 33 migrations locais = 33 remotas
+Referência: `origin/main`, HEAD `5f6504a`. 33 migrations locais = 33 remotas
 (pooler `aws-0-sa-east-1`). `dart format .` QUEBRA aqui (varre `build/`); usar
 `dart format lib`.
 
@@ -61,65 +62,64 @@ janela + record 1-0, double-finish FQ022, empate FQ024, expiração 20min→EXPI
 status EM JOGO, anon 401. **Dados de QA limpos: 0 resíduos** (só o seed WL#1
 permanece).
 
-## 2. PRONTO — Flutter (commit `48ddcd8`, compila)
+## 2. PRONTO — Flutter (commits `48ddcd8` + `5f6504a`, compila e roda)
 
-Cliente de matchmaking migrado para o backend novo (senão o app quebraria, pois
-os RPCs antigos foram dropados):
+Fluxo completo de Jogar/modo/partida/resultado:
 - `GameMode` enum; `request_match_search` leva o modo; `reportMatchFound` chama
   `report_match_found_and_start_game`.
 - `GameModeCubit` app-scoped (lembra o modo em SharedPreferences via
-  `SelectedGameModeStore`), provido em `app.dart`. `matchmaking_section` já passa
-  o modo selecionado em ambos os `startSearch`.
-- Feature `game`: domínio (`PendingGameMatch`, `GameResult`, `GameRepository`),
-  dados (datasource das RPCs `get_pending_game_match`/`finish_game_match`, model,
-  repos Supabase+Local) e `PendingMatchState`. **Ainda órfã** (não registrada no
-  DI, sem UI).
+  `SelectedGameModeStore`), provido em `app.dart`. `GameModeSelector` (chips,
+  `Wrap`, mesmo padrão dos filtros do Histórico) exibido na Home.
+- Feature `game` completa: domínio (`PendingGameMatch`, `GameResult`,
+  `WeekendLeagueEvent`, `GameRepository` — ganhou
+  `fetchCurrentWeekendLeagueEvent()`), dados (Supabase+Local), `PendingMatchCubit`
+  (**app-scoped** como ProfileCubit/TeamsCubit — pending match é do usuário,
+  não do time, por causa do índice único `≤1 IN_MATCH por usuário`; carregado no
+  bootstrap, limpo por `PendingMatchSessionListener` no logout), `game_module.dart`
+  registrado em `dependencies.dart`.
+- `PendingMatchCard` (Vitória/Derrota rápidos + "Adicionar placar" →
+  `FinishMatchSheet` com validação de empate no client, espelhando o FQ024 do
+  banco) e `WeekendLeagueCard` (campanha atual + badge "Em andamento"), ambos
+  renderizando `SizedBox.shrink()` quando não há dado — sem estado vazio pra
+  desenhar.
+- `MatchmakingSection` ganhou `onMatchFound` (prop-drill até o botão Encontrei
+  em `_SearchingSelfCard`) — a Home passa
+  `() => context.read<PendingMatchCubit>().refreshSilently()`, então o card
+  pendente aparece na hora, sem esperar o próximo load espontâneo.
+- Nav renomeada: `navSearch` = "Jogar" (mesma chave, valor novo) + ícone
+  `sports_esports`. `matchmakingCancelAction` = "Cancelar",
+  `matchmakingMatchFoundAction` = "Encontrei".
+- **FQ020–024 mapeados**: `GameFailureReason`/`GameFailure` em
+  `app_failure.dart`, `_gameReasonFrom` no mapper, textos PT/EN/ES.
 
 ## 3. FALTA — Flutter (continuar daqui)
 
-1. `game/presentation/cubit/pending_match_cubit.dart` (state já existe): load
-   pending, `finish({result?/goals})`, refresh. `game/game_module.dart` +
-   registrar em `app/dependencies.dart`.
-2. `pending_match_card.dart` (item 14/15): "Você tem uma partida sem resultado" +
-   modo + horário + [Vitória][Derrota] + "Adicionar placar". `finish_match_sheet.dart`
-   (placar gols pró/contra → finish). Reaproveitar `historyEntryDate/Time` do l10n.
-3. **Rename Buscar→Jogar** (item 2): valor do l10n `navSearch` → Jogar/Play/Jugar
-   (manter a chave) + ícone em `app_shell_page.dart` (sugestão sports_esports).
-4. **Renomear botões** (item 32): `matchmakingCancelAction` → "Cancelar",
-   `matchmakingMatchFoundAction` → "Encontrei" (só o valor).
-5. **Tela Jogar** (home_page): seletor de modo (chips do `GameModeCubit`) +
-   card da campanha WL atual (precisa de um data layer p/
-   `get_current_weekend_league_event` — NÃO existe ainda no client) + pending card
-   + `MatchmakingSection` + empty state de "precisa de time" (reusar `TeamEmptyState`).
-6. Ligar o pending card ao "Encontrei": passar um `onMatchFound` do
-   `MatchmakingSection` até o botão (prop-drill por `_SearchingSelfCard`) para
-   chamar `pendingCubit.load()` na hora — senão o card só aparece no próximo load.
-7. **l10n PT/EN/ES** (item 62): modos (Weekend League / Division Rivals), Encontrei,
-   Em jogo, pending/vitória/derrota/placar, WL #N, Jogar. Depois `flutter gen-l10n`.
-8. Mapear **FQ020–024** no `supabase_error_mapper.dart` + textos l10n.
-9. **Team reorg** (itens 27–31): tela Time usa `get_team_player_statuses`
+1. **Team reorg** (itens 27–31): tela Time usa `get_team_player_statuses`
    (RPC pronta; falta client + badges EM JOGO/BUSCANDO/NA FILA) e move
    convites/edição/duração para uma nova tela **Configurações do time**.
-10. **Perfil reorg** (itens 36–39): sub-páginas Aparência / Idioma / Notificações.
-11. **Histórico redesign** (itens 33–35): timeline combinada busca+partida +
-    toolbar de filtros nova. ⚠️ NÃO existe read model de histórico de
-    `game_matches` (só `get_pending`); criar um (ex.: estender o RPC de history
-    ou um novo) para listar partidas FINISHED/EXPIRED.
-12. **WL record card** (`get_weekend_league_record` pronta) + override manual
-    (`set_weekend_league_manual_record` pronta) — UI mínima (item 25).
-13. **Rivals division**: coluna `rivals_division` existe mas nenhuma RPC grava.
-    Decidir: passar divisão em `report_match_found_and_start_game` ou update
-    próprio. Seleção local por ora (item 26). Pendente de decisão.
-14. **Auth polish** (item 40): 4 arquivos AINDA não commitados no working tree
-    (`app_text_field.dart`, `login_page.dart`, `sign_up_page.dart`,
-    `auth_form_scaffold.dart`) — wordmark maior, ícones mail/lock, hint senha,
-    "Criar conta" movido, footer signup removido. Validar no device e commitar
-    SEPARADO. NÃO perder.
+2. **Perfil reorg** (itens 36–39): sub-páginas Aparência / Idioma / Notificações.
+3. **Histórico redesign** (itens 33–35): timeline combinada busca+partida +
+   toolbar de filtros nova. ⚠️ NÃO existe read model de histórico de
+   `game_matches` (só `get_pending`); criar um (ex.: estender o RPC de history
+   ou um novo) para listar partidas FINISHED/EXPIRED.
+4. **WL record card** (`get_weekend_league_record` pronta) + override manual
+   (`set_weekend_league_manual_record` pronta) — UI mínima (item 25). O
+   `WeekendLeagueCard` atual só mostra a campanha, não o placar/record.
+5. **Rivals division**: coluna `rivals_division` existe mas nenhuma RPC grava.
+   Decidir: passar divisão em `report_match_found_and_start_game` ou update
+   próprio. Seleção local por ora (item 26). Pendente de decisão.
+6. **Auth polish** (item 40): 4 arquivos AINDA não commitados no working tree
+   (`app_text_field.dart`, `login_page.dart`, `sign_up_page.dart`,
+   `auth_form_scaffold.dart`) — wordmark maior, ícones mail/lock, hint senha,
+   "Criar conta" movido, footer signup removido. Validar no device e commitar
+   SEPARADO. NÃO perder.
+7. Mostrar o modo de jogo nos cards de matchmaking (buscando/na fila) —
+   `SearchingPlayer.gameMode` já existe no snapshot, só falta exibir.
 
 ## 4. Não commitar
 Scripts de QA vivem no scratchpad.
 
 ## 5. Ordem de commits sugerida (item 68)
-1. game backend ✅ (`b9619fc`)  2. Flutter Jogar/partida (parcial em `48ddcd8`,
-continuar)  3. team/settings/profile polish  4. auth polish separado  5. docs.
+1. game backend ✅ (`b9619fc`)  2. Flutter Jogar/partida ✅ (`48ddcd8` +
+`5f6504a`)  3. team/settings/profile polish  4. auth polish separado  5. docs.
 Push `main`.
