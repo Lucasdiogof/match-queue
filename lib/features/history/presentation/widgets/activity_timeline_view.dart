@@ -8,6 +8,7 @@ import 'package:fifa_queue/features/history/domain/entities/team_activity_entry.
 import 'package:fifa_queue/features/history/presentation/cubit/activity_history_cubit.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/activity_history_state.dart';
 import 'package:fifa_queue/features/history/presentation/history_formatting.dart';
+import 'package:fifa_queue/features/history/presentation/widgets/filter_chip_row.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -85,9 +86,7 @@ class _ActivityFilters extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
+            FilterChipRow(
               children: <Widget>[
                 for (final period in StatsPeriod.values)
                   AppChip(
@@ -98,9 +97,7 @@ class _ActivityFilters extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.sm),
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
+            FilterChipRow(
               children: <Widget>[
                 AppChip(
                   label: l10n.activityScopeAll,
@@ -121,9 +118,7 @@ class _ActivityFilters extends StatelessWidget {
             ),
             if (state.scope == ActivityScope.games) ...<Widget>[
               const SizedBox(height: AppSpacing.sm),
-              Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.sm,
+              FilterChipRow(
                 children: <Widget>[
                   AppChip(
                     label: l10n.historyStatusAll,
@@ -145,9 +140,7 @@ class _ActivityFilters extends StatelessWidget {
             ],
             if (state.scope == ActivityScope.searches) ...<Widget>[
               const SizedBox(height: AppSpacing.sm),
-              Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.sm,
+              FilterChipRow(
                 children: <Widget>[
                   AppChip(
                     label: l10n.historyStatusAll,

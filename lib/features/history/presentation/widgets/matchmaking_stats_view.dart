@@ -6,6 +6,7 @@ import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/stats_cubit.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/stats_state.dart';
 import 'package:fifa_queue/features/history/presentation/history_formatting.dart';
+import 'package:fifa_queue/features/history/presentation/widgets/filter_chip_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,9 +40,7 @@ class _PeriodFilter extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<StatsCubit, StatsState>(
       buildWhen: (previous, current) => previous.period != current.period,
-      builder: (context, state) => Wrap(
-        spacing: AppSpacing.sm,
-        runSpacing: AppSpacing.sm,
+      builder: (context, state) => FilterChipRow(
         children: <Widget>[
           for (final period in StatsPeriod.values)
             AppChip(

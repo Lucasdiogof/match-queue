@@ -7,6 +7,7 @@ import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/history_cubit.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/history_state.dart';
 import 'package:fifa_queue/features/history/presentation/history_formatting.dart';
+import 'package:fifa_queue/features/history/presentation/widgets/filter_chip_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,9 +87,7 @@ class _HistoryFilters extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
+            FilterChipRow(
               children: <Widget>[
                 for (final period in StatsPeriod.values)
                   AppChip(
@@ -99,9 +98,7 @@ class _HistoryFilters extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.sm),
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
+            FilterChipRow(
               children: <Widget>[
                 AppChip(
                   label: l10n.historyStatusAll,
