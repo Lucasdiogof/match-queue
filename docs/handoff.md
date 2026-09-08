@@ -4,10 +4,16 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-08: **Etapas 1–16 fechadas**, HEAD `02e1fe7` (Etapa 16
-ainda não commitada — ver `handoff_etapa16.md`, seção Git),
+Estado em 2026-09-08: **Etapas 1–16 fechadas**, Etapa 17 (auditoria de
+lançamento, sem feature nova) concluída, HEAD `28ecdf9` = `origin/main`,
 **71 migrations locais = 71 remotas**, `flutter analyze` sem issues. Edge
 Function `process-notification-outbox` versão 3, ACTIVE.
+
+**Antes de decidir o que vem depois, leia
+[`launch_gap_analysis.md`](launch_gap_analysis.md)** — diagnóstico
+completo do que falta para lançar de verdade (Política de Privacidade,
+exclusão de conta, assinatura de release, testes automatizados, risco de
+marca). Resumo em [`handoff_etapa17.md`](handoff_etapa17.md).
 
 ---
 
@@ -55,6 +61,8 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa14.md` | Times 2.0, dashboard esportivo, ranking |
 | `handoff_etapa15.md` | Central de Notificações, eventos sociais/esportivos, correção de dedupe_key |
 | `handoff_etapa16.md` | Perfil público opt-in + compartilhamento da Escalação Principal, rota `/u/:identifier` |
+| `handoff_etapa17.md` | Auditoria de lançamento (sem feature nova) — índice curto |
+| `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
 | `card_provider_research.md` | pesquisa de fonte de cartas e por que cada uma foi descartada |
 | `architecture.md`, `database.md`, `supabase_setup.md`, `deep_links.md`, `branding.md` | referência transversal |
 
