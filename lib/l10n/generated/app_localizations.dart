@@ -1708,6 +1708,12 @@ abstract class AppLocalizations {
   /// **'Status'**
   String get activityDetailStatus;
 
+  /// No description provided for @activityDetailFcAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elenco'**
+  String get activityDetailFcAccount;
+
   /// No description provided for @historyLoadErrorTitle.
   ///
   /// In pt, this message translates to:
@@ -1893,6 +1899,354 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Em andamento'**
   String get weekendLeagueActiveBadge;
+
+  /// No description provided for @errorFcAccountNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elenco não encontrado.'**
+  String get errorFcAccountNotFound;
+
+  /// No description provided for @errorFcAccountNotLinkedToTeam.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este elenco não está vinculado a este time.'**
+  String get errorFcAccountNotLinkedToTeam;
+
+  /// No description provided for @errorFcAccountInvalidName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um nome de 2 a 40 caracteres.'**
+  String get errorFcAccountInvalidName;
+
+  /// No description provided for @errorFcAccountInvalidDivision.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão inválida.'**
+  String get errorFcAccountInvalidDivision;
+
+  /// No description provided for @validationFcAccountNameRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um nome para o elenco.'**
+  String get validationFcAccountNameRequired;
+
+  /// No description provided for @validationFcAccountNameTooShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'O nome precisa ter pelo menos {min} caracteres.'**
+  String validationFcAccountNameTooShort(int min);
+
+  /// No description provided for @validationFcAccountNameTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'O nome pode ter no máximo {max} caracteres.'**
+  String validationFcAccountNameTooLong(int max);
+
+  /// No description provided for @fcAccountRequiredToSearch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie ou selecione um elenco para buscar partida.'**
+  String get fcAccountRequiredToSearch;
+
+  /// No description provided for @fcAccountLinkCta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vincular {accountName} ao {teamName}'**
+  String fcAccountLinkCta(String accountName, String teamName);
+
+  /// No description provided for @fcAccountsPageTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meus Elencos'**
+  String get fcAccountsPageTitle;
+
+  /// No description provided for @fcAccountsPageSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Suas contas de Ultimate Team'**
+  String get fcAccountsPageSubtitle;
+
+  /// No description provided for @fcAccountsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você ainda não tem um elenco'**
+  String get fcAccountsEmptyTitle;
+
+  /// No description provided for @fcAccountsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie um elenco para vincular a times e começar a buscar partidas.'**
+  String get fcAccountsEmptyMessage;
+
+  /// No description provided for @fcAccountCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar elenco'**
+  String get fcAccountCreateAction;
+
+  /// No description provided for @fcAccountCreateTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo elenco'**
+  String get fcAccountCreateTitle;
+
+  /// No description provided for @fcAccountCreateSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dê um nome para identificar este elenco.'**
+  String get fcAccountCreateSubtitle;
+
+  /// No description provided for @fcAccountNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do elenco'**
+  String get fcAccountNameLabel;
+
+  /// No description provided for @fcAccountNameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Elenco principal'**
+  String get fcAccountNameHint;
+
+  /// No description provided for @fcAccountRenameTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear elenco'**
+  String get fcAccountRenameTitle;
+
+  /// No description provided for @fcAccountRenameAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear'**
+  String get fcAccountRenameAction;
+
+  /// No description provided for @fcAccountArchiveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivar elenco'**
+  String get fcAccountArchiveAction;
+
+  /// No description provided for @fcAccountArchiveConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivar elenco?'**
+  String get fcAccountArchiveConfirmTitle;
+
+  /// No description provided for @fcAccountArchiveConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'O elenco deixa de aparecer na lista, mas o histórico dele é mantido.'**
+  String get fcAccountArchiveConfirmMessage;
+
+  /// No description provided for @fcAccountSwitchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar de elenco'**
+  String get fcAccountSwitchTitle;
+
+  /// No description provided for @fcAccountSwitchCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'+ Criar novo elenco'**
+  String get fcAccountSwitchCreateAction;
+
+  /// No description provided for @fcAccountLinkedTeamsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Times vinculados'**
+  String get fcAccountLinkedTeamsTitle;
+
+  /// No description provided for @fcAccountLinkedTeamsEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este elenco ainda não está vinculado a nenhum time.'**
+  String get fcAccountLinkedTeamsEmpty;
+
+  /// No description provided for @fcAccountLinkTeamAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vincular'**
+  String get fcAccountLinkTeamAction;
+
+  /// No description provided for @fcAccountUnlinkTeamAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desvincular'**
+  String get fcAccountUnlinkTeamAction;
+
+  /// No description provided for @fcAccountSettingsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações'**
+  String get fcAccountSettingsTitle;
+
+  /// No description provided for @fcAccountDivisionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão de Rivals'**
+  String get fcAccountDivisionTitle;
+
+  /// No description provided for @fcAccountDivisionPickerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecionar divisão'**
+  String get fcAccountDivisionPickerTitle;
+
+  /// No description provided for @fcAccountDivisionNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem divisão definida'**
+  String get fcAccountDivisionNone;
+
+  /// No description provided for @fcAccountWeekendLeagueTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Weekend League'**
+  String get fcAccountWeekendLeagueTitle;
+
+  /// No description provided for @fcAccountWeekendLeagueComputedLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registrado por partidas: {wins}–{losses}'**
+  String fcAccountWeekendLeagueComputedLabel(int wins, int losses);
+
+  /// No description provided for @fcAccountWeekendLeagueManualLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado informado: {wins}–{losses}'**
+  String fcAccountWeekendLeagueManualLabel(int wins, int losses);
+
+  /// No description provided for @fcAccountWeekendLeagueEditAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar resultado'**
+  String get fcAccountWeekendLeagueEditAction;
+
+  /// No description provided for @fcAccountWeekendLeagueClearAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar resultado das partidas'**
+  String get fcAccountWeekendLeagueClearAction;
+
+  /// No description provided for @fcAccountWeekendLeagueSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar resultado'**
+  String get fcAccountWeekendLeagueSheetTitle;
+
+  /// No description provided for @fcAccountWeekendLeagueWinsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vitórias'**
+  String get fcAccountWeekendLeagueWinsLabel;
+
+  /// No description provided for @fcAccountWeekendLeagueLossesLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Derrotas'**
+  String get fcAccountWeekendLeagueLossesLabel;
+
+  /// No description provided for @fcAccountOnboardingTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie seu primeiro elenco'**
+  String get fcAccountOnboardingTitle;
+
+  /// No description provided for @fcAccountOnboardingMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um elenco representa uma conta de Ultimate Team. Crie um para vincular aos seus times e começar a buscar partidas.'**
+  String get fcAccountOnboardingMessage;
+
+  /// No description provided for @fcAccountOnboardingCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar elenco'**
+  String get fcAccountOnboardingCreateAction;
+
+  /// No description provided for @pendingMatchElencoLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elenco: {name}'**
+  String pendingMatchElencoLabel(String name);
+
+  /// No description provided for @historyElencoLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elenco: {name}'**
+  String historyElencoLabel(String name);
+
+  /// No description provided for @profileFcAccountsRow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elencos'**
+  String get profileFcAccountsRow;
+
+  /// No description provided for @rivalsDivisionDiv10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 10'**
+  String get rivalsDivisionDiv10;
+
+  /// No description provided for @rivalsDivisionDiv9.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 9'**
+  String get rivalsDivisionDiv9;
+
+  /// No description provided for @rivalsDivisionDiv8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 8'**
+  String get rivalsDivisionDiv8;
+
+  /// No description provided for @rivalsDivisionDiv7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 7'**
+  String get rivalsDivisionDiv7;
+
+  /// No description provided for @rivalsDivisionDiv6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 6'**
+  String get rivalsDivisionDiv6;
+
+  /// No description provided for @rivalsDivisionDiv5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 5'**
+  String get rivalsDivisionDiv5;
+
+  /// No description provided for @rivalsDivisionDiv4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 4'**
+  String get rivalsDivisionDiv4;
+
+  /// No description provided for @rivalsDivisionDiv3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 3'**
+  String get rivalsDivisionDiv3;
+
+  /// No description provided for @rivalsDivisionDiv2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 2'**
+  String get rivalsDivisionDiv2;
+
+  /// No description provided for @rivalsDivisionDiv1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão 1'**
+  String get rivalsDivisionDiv1;
+
+  /// No description provided for @rivalsDivisionElite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elite'**
+  String get rivalsDivisionElite;
 }
 
 class _AppLocalizationsDelegate

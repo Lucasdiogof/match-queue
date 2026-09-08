@@ -481,6 +481,7 @@
   "activityDetailScore": "Marcador",
   "activityDetailResult": "Resultado",
   "activityDetailStatus": "Estado",
+  "activityDetailFcAccount": "Elenco",
   "historyLoadErrorTitle": "No fue posible cargar el historial",
   "historyLoadMore": "Cargar más",
   "historyEntryDate": "{date}",
@@ -555,5 +556,131 @@
       }
     }
   },
-  "weekendLeagueActiveBadge": "En curso"
+  "weekendLeagueActiveBadge": "En curso",
+  "errorFcAccountNotFound": "Elenco no encontrado.",
+  "errorFcAccountNotLinkedToTeam": "Este elenco no está vinculado a este equipo.",
+  "errorFcAccountInvalidName": "Indica un nombre de 2 a 40 caracteres.",
+  "errorFcAccountInvalidDivision": "División inválida.",
+  "validationFcAccountNameRequired": "Indica un nombre para el elenco.",
+  "validationFcAccountNameTooShort": "El nombre debe tener al menos {min} caracteres.",
+  "@validationFcAccountNameTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "validationFcAccountNameTooLong": "El nombre puede tener como máximo {max} caracteres.",
+  "@validationFcAccountNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "fcAccountRequiredToSearch": "Crea o selecciona un elenco para buscar partida.",
+  "fcAccountLinkCta": "Vincular {accountName} a {teamName}",
+  "@fcAccountLinkCta": {
+    "placeholders": {
+      "accountName": {
+        "type": "String",
+        "example": "Lucksrei"
+      },
+      "teamName": {
+        "type": "String",
+        "example": "Goiás"
+      }
+    }
+  },
+  "fcAccountsPageTitle": "Mis Elencos",
+  "fcAccountsPageSubtitle": "Tus cuentas de Ultimate Team",
+  "fcAccountsEmptyTitle": "Todavía no tienes un elenco",
+  "fcAccountsEmptyMessage": "Crea un elenco para vincularlo a equipos y empezar a buscar partidas.",
+  "fcAccountCreateAction": "Crear elenco",
+  "fcAccountCreateTitle": "Nuevo elenco",
+  "fcAccountCreateSubtitle": "Dale un nombre a este elenco.",
+  "fcAccountNameLabel": "Nombre del elenco",
+  "fcAccountNameHint": "Ej.: Elenco principal",
+  "fcAccountRenameTitle": "Renombrar elenco",
+  "fcAccountRenameAction": "Renombrar",
+  "fcAccountArchiveAction": "Archivar elenco",
+  "fcAccountArchiveConfirmTitle": "¿Archivar elenco?",
+  "fcAccountArchiveConfirmMessage": "El elenco deja de aparecer en la lista, pero se conserva su historial.",
+  "fcAccountSwitchTitle": "Cambiar de elenco",
+  "fcAccountSwitchCreateAction": "+ Crear nuevo elenco",
+  "fcAccountLinkedTeamsTitle": "Equipos vinculados",
+  "fcAccountLinkedTeamsEmpty": "Este elenco todavía no está vinculado a ningún equipo.",
+  "fcAccountLinkTeamAction": "Vincular",
+  "fcAccountUnlinkTeamAction": "Desvincular",
+  "fcAccountSettingsTitle": "Configuración",
+  "fcAccountDivisionTitle": "División de Rivals",
+  "fcAccountDivisionPickerTitle": "Seleccionar división",
+  "fcAccountDivisionNone": "Sin división definida",
+  "fcAccountWeekendLeagueTitle": "Weekend League",
+  "fcAccountWeekendLeagueComputedLabel": "Registrado por partidas: {wins}–{losses}",
+  "@fcAccountWeekendLeagueComputedLabel": {
+    "placeholders": {
+      "wins": {
+        "type": "int",
+        "example": "8"
+      },
+      "losses": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "fcAccountWeekendLeagueManualLabel": "Resultado informado: {wins}–{losses}",
+  "@fcAccountWeekendLeagueManualLabel": {
+    "placeholders": {
+      "wins": {
+        "type": "int",
+        "example": "13"
+      },
+      "losses": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "fcAccountWeekendLeagueEditAction": "Informar resultado",
+  "fcAccountWeekendLeagueClearAction": "Usar resultado de las partidas",
+  "fcAccountWeekendLeagueSheetTitle": "Informar resultado",
+  "fcAccountWeekendLeagueWinsLabel": "Victorias",
+  "fcAccountWeekendLeagueLossesLabel": "Derrotas",
+  "fcAccountOnboardingTitle": "Crea tu primer elenco",
+  "fcAccountOnboardingMessage": "Un elenco representa una cuenta de Ultimate Team. Crea uno para vincularlo a tus equipos y empezar a buscar partidas.",
+  "fcAccountOnboardingCreateAction": "Crear elenco",
+  "pendingMatchElencoLabel": "Elenco: {name}",
+  "@pendingMatchElencoLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucksrei"
+      }
+    }
+  },
+  "historyElencoLabel": "Elenco: {name}",
+  "@historyElencoLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucksrei"
+      }
+    }
+  },
+  "profileFcAccountsRow": "Elencos",
+  "rivalsDivisionDiv10": "División 10",
+  "rivalsDivisionDiv9": "División 9",
+  "rivalsDivisionDiv8": "División 8",
+  "rivalsDivisionDiv7": "División 7",
+  "rivalsDivisionDiv6": "División 6",
+  "rivalsDivisionDiv5": "División 5",
+  "rivalsDivisionDiv4": "División 4",
+  "rivalsDivisionDiv3": "División 3",
+  "rivalsDivisionDiv2": "División 2",
+  "rivalsDivisionDiv1": "División 1",
+  "rivalsDivisionElite": "Elite"
 }

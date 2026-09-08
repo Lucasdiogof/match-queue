@@ -58,10 +58,13 @@ class _ActivityTimelineViewState extends State<ActivityTimelineView> {
           builder: (context, state) => switch (state.status) {
             ActivityHistoryStatus.initial ||
             ActivityHistoryStatus.loading => const AppLoading(),
-            ActivityHistoryStatus.failure
-                when state.items.isEmpty => _ActivityError(state: state),
+            ActivityHistoryStatus.failure when state.items.isEmpty =>
+              _ActivityError(state: state),
             _ when state.isEmpty => _ActivityEmpty(),
-            _ => _ActivityList(state: state, scrollController: _scrollController),
+            _ => _ActivityList(
+              state: state,
+              scrollController: _scrollController,
+            ),
           },
         ),
       ),
@@ -227,14 +230,10 @@ class _ActivityRow extends StatelessWidget {
                   style: context.textStyles.bodyLarge,
                 ),
                 const SizedBox(height: AppSpacing.xxs),
-                Text(
-                  switch (e) {
-                    GameHistoryEntry() => e.gameMode.label(l10n).toUpperCase(),
-                    SearchHistoryEntry() =>
-                      e.gameMode.label(l10n).toUpperCase(),
-                  },
-                  style: context.textStyles.labelSmall,
-                ),
+                Text(switch (e) {
+                  GameHistoryEntry() => e.gameMode.label(l10n).toUpperCase(),
+                  SearchHistoryEntry() => e.gameMode.label(l10n).toUpperCase(),
+                }, style: context.textStyles.labelSmall),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   _summary(l10n, e),
@@ -371,7 +370,10 @@ class _ActivityDetailSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: switch (e) {
           GameHistoryEntry() => <Widget>[
-            _DetailRow(label: l10n.activityDetailMode, value: e.gameMode.label(l10n)),
+            _DetailRow(
+              label: l10n.activityDetailMode,
+              value: e.gameMode.label(l10n),
+            ),
             _DetailRow(
               label: l10n.historyEntryDate(e.startedAt.toLocal()),
               value: l10n.historyEntryTime(e.startedAt.toLocal()),
@@ -394,9 +396,19 @@ class _ActivityDetailSheet extends StatelessWidget {
                     ? l10n.pendingMatchWinAction
                     : l10n.pendingMatchLossAction,
               ),
+            // Historico anterior a Etapa 9 nao tem elenco: a linha some em
+            // vez de mostrar vazio.
+            if (e.fcAccountName != null)
+              _DetailRow(
+                label: l10n.activityDetailFcAccount,
+                value: e.fcAccountName!,
+              ),
           ],
           SearchHistoryEntry() => <Widget>[
-            _DetailRow(label: l10n.activityDetailMode, value: e.gameMode.label(l10n)),
+            _DetailRow(
+              label: l10n.activityDetailMode,
+              value: e.gameMode.label(l10n),
+            ),
             _DetailRow(
               label: l10n.historyEntryDate(e.startedAt.toLocal()),
               value: l10n.historyEntryTime(e.startedAt.toLocal()),
@@ -409,6 +421,11 @@ class _ActivityDetailSheet extends StatelessWidget {
               label: l10n.activityDetailStatus,
               value: e.status.label(l10n),
             ),
+            if (e.fcAccountName != null)
+              _DetailRow(
+                label: l10n.activityDetailFcAccount,
+                value: e.fcAccountName!,
+              ),
           ],
         },
       ),

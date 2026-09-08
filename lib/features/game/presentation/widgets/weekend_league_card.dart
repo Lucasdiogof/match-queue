@@ -1,47 +1,54 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
-import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
-import 'package:fifa_queue/features/game/presentation/cubit/pending_match_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Contextual ao Elenco selecionado (Etapa 9) -- o record mostrado troca
+/// junto com o elenco, nunca é agregado entre elencos.
 class WeekendLeagueCard extends StatelessWidget {
   const WeekendLeagueCard({super.key});
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<PendingMatchCubit, PendingMatchState>(
+      BlocBuilder<FcAccountsCubit, FcAccountsState>(
         buildWhen: (previous, current) =>
             previous.weekendLeagueEvent != current.weekendLeagueEvent ||
-            previous.weekendLeagueRecord != current.weekendLeagueRecord,
+            previous.selectedAccount != current.selectedAccount,
         builder: (context, state) {
           final event = state.weekendLeagueEvent;
-          if (event == null) {
+          final account = state.selectedAccount;
+          if (event == null || account == null) {
             return const SizedBox.shrink();
           }
-          return _WeekendLeagueCardBody(
-            event: event,
-            record: state.weekendLeagueRecord,
-          );
+          return _WeekendLeagueCardBody(event: event, account: account);
         },
       );
 }
 
 class _WeekendLeagueCardBody extends StatelessWidget {
-  const _WeekendLeagueCardBody({required this.event, this.record});
+  const _WeekendLeagueCardBody({required this.event, required this.account});
 
   final WeekendLeagueEvent event;
-  final WeekendLeagueRecord? record;
+  final FcAccount account;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
+    final record = account.weekendLeagueRecord;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xl),
       child: AppCard(
+        onTap: () => showWeekendLeagueManualRecordSheet(
+          context: context,
+          account: account,
+        ),
         child: Row(
           children: <Widget>[
             Icon(
@@ -60,10 +67,15 @@ class _WeekendLeagueCardBody extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
-                    l10n.weekendLeagueWindow(
-                      l10n.historyEntryDate(event.startsAt),
-                      l10n.historyEntryDate(event.endsAt),
-                    ),
+                    account.hasWeekendLeagueManualOverride
+                        ? l10n.fcAccountWeekendLeagueManualLabel(
+                            record.$1,
+                            record.$2,
+                          )
+                        : l10n.weekendLeagueWindow(
+                            l10n.historyEntryDate(event.startsAt),
+                            l10n.historyEntryDate(event.endsAt),
+                          ),
                     style: context.textStyles.bodySmall?.copyWith(
                       color: colors.textSecondary,
                     ),
@@ -71,13 +83,11 @@ class _WeekendLeagueCardBody extends StatelessWidget {
                 ],
               ),
             ),
-            if (record != null) ...<Widget>[
-              Text(
-                '${record!.wins}–${record!.losses}',
-                style: context.textStyles.headlineSmall,
-              ),
-              const SizedBox(width: AppSpacing.md),
-            ],
+            Text(
+              '${record.$1}–${record.$2}',
+              style: context.textStyles.headlineSmall,
+            ),
+            const SizedBox(width: AppSpacing.md),
             if (event.isActive)
               AppBadge(
                 label: l10n.weekendLeagueActiveBadge,

@@ -45,7 +45,10 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(
-          state.copyWith(status: ActivityHistoryStatus.failure, failure: failure),
+          state.copyWith(
+            status: ActivityHistoryStatus.failure,
+            failure: failure,
+          ),
         );
       }
     }

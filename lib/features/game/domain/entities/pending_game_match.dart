@@ -9,6 +9,7 @@ class PendingGameMatch extends Equatable {
     required this.gameMode,
     required this.startedAt,
     this.weekendLeagueNumber,
+    this.fcAccountName,
   });
 
   final String id;
@@ -16,6 +17,7 @@ class PendingGameMatch extends Equatable {
   final GameMode gameMode;
   final DateTime startedAt;
   final int? weekendLeagueNumber;
+  final String? fcAccountName;
 
   @override
   List<Object?> get props => <Object?>[
@@ -24,5 +26,6 @@ class PendingGameMatch extends Equatable {
     gameMode,
     startedAt,
     weekendLeagueNumber,
+    fcAccountName,
   ];
 }

@@ -60,5 +60,13 @@ extension AppFailureL10n on AppFailure {
       GameFailureReason.invalidMode => l10n.errorGameInvalidMode,
       GameFailureReason.invalidResult => l10n.errorGameInvalidResult,
     },
+    FcAccountFailure(:final reason) => switch (reason) {
+      FcAccountFailureReason.accountNotFound => l10n.errorFcAccountNotFound,
+      FcAccountFailureReason.accountNotLinkedToTeam =>
+        l10n.errorFcAccountNotLinkedToTeam,
+      FcAccountFailureReason.invalidName => l10n.errorFcAccountInvalidName,
+      FcAccountFailureReason.invalidDivision =>
+        l10n.errorFcAccountInvalidDivision,
+    },
   };
 }

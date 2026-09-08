@@ -50,6 +50,19 @@ extension TeamNameValidationErrorL10n on TeamNameValidationError {
   };
 }
 
+extension FcAccountNameValidationErrorL10n on FcAccountNameValidationError {
+  String message(AppLocalizations l10n) => switch (this) {
+    FcAccountNameValidationError.empty => l10n.validationFcAccountNameRequired,
+    FcAccountNameValidationError.tooShort =>
+      l10n.validationFcAccountNameTooShort(
+        AppValidators.fcAccountNameMinLength,
+      ),
+    FcAccountNameValidationError.tooLong => l10n.validationFcAccountNameTooLong(
+      AppValidators.fcAccountNameMaxLength,
+    ),
+  };
+}
+
 extension TeamTagValidationErrorL10n on TeamTagValidationError {
   String message(AppLocalizations l10n) => switch (this) {
     TeamTagValidationError.tooShort => l10n.validationTeamTagTooShort(

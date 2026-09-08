@@ -42,6 +42,7 @@ class TeamActivityModel {
         goalsAgainst: parseNullableInt(json['goals_against']),
         startedAt: startedAt,
         weekendLeagueNumber: parseNullableInt(json['weekend_league_number']),
+        fcAccountName: parseString(json['fc_account_name']),
       );
     }
 
@@ -58,6 +59,7 @@ class TeamActivityModel {
           MatchSearchStatus.cancelled,
       startedAt: startedAt,
       durationSeconds: parseInt(json['duration_seconds']),
+      fcAccountName: parseString(json['fc_account_name']),
     );
   }
 

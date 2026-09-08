@@ -79,6 +79,15 @@ class _PendingMatchCardBody extends StatelessWidget {
                 color: colors.textSecondary,
               ),
             ),
+            if (match.fcAccountName != null) ...<Widget>[
+              const SizedBox(height: AppSpacing.xxs),
+              Text(
+                l10n.pendingMatchElencoLabel(match.fcAccountName!),
+                style: context.textStyles.bodySmall?.copyWith(
+                  color: colors.textSecondary,
+                ),
+              ),
+            ],
             const SizedBox(height: AppSpacing.lg),
             Row(
               children: <Widget>[

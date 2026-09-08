@@ -481,6 +481,7 @@
   "activityDetailScore": "Score",
   "activityDetailResult": "Result",
   "activityDetailStatus": "Status",
+  "activityDetailFcAccount": "Account",
   "historyLoadErrorTitle": "We could not load the history",
   "historyLoadMore": "Load more",
   "historyEntryDate": "{date}",
@@ -555,5 +556,131 @@
       }
     }
   },
-  "weekendLeagueActiveBadge": "Live now"
+  "weekendLeagueActiveBadge": "Live now",
+  "errorFcAccountNotFound": "Account not found.",
+  "errorFcAccountNotLinkedToTeam": "This account isn't linked to this team.",
+  "errorFcAccountInvalidName": "Enter a name from 2 to 40 characters.",
+  "errorFcAccountInvalidDivision": "Invalid division.",
+  "validationFcAccountNameRequired": "Enter a name for the account.",
+  "validationFcAccountNameTooShort": "The name must be at least {min} characters.",
+  "@validationFcAccountNameTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "validationFcAccountNameTooLong": "The name can be at most {max} characters.",
+  "@validationFcAccountNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "40"
+      }
+    }
+  },
+  "fcAccountRequiredToSearch": "Create or select an account to search for a match.",
+  "fcAccountLinkCta": "Link {accountName} to {teamName}",
+  "@fcAccountLinkCta": {
+    "placeholders": {
+      "accountName": {
+        "type": "String",
+        "example": "Lucksrei"
+      },
+      "teamName": {
+        "type": "String",
+        "example": "Goiás"
+      }
+    }
+  },
+  "fcAccountsPageTitle": "My Accounts",
+  "fcAccountsPageSubtitle": "Your Ultimate Team accounts",
+  "fcAccountsEmptyTitle": "You don't have an account yet",
+  "fcAccountsEmptyMessage": "Create an account to link it to teams and start searching for matches.",
+  "fcAccountCreateAction": "Create account",
+  "fcAccountCreateTitle": "New account",
+  "fcAccountCreateSubtitle": "Give this account a name.",
+  "fcAccountNameLabel": "Account name",
+  "fcAccountNameHint": "e.g. Main account",
+  "fcAccountRenameTitle": "Rename account",
+  "fcAccountRenameAction": "Rename",
+  "fcAccountArchiveAction": "Archive account",
+  "fcAccountArchiveConfirmTitle": "Archive account?",
+  "fcAccountArchiveConfirmMessage": "The account stops showing in the list, but its history is kept.",
+  "fcAccountSwitchTitle": "Switch account",
+  "fcAccountSwitchCreateAction": "+ Create new account",
+  "fcAccountLinkedTeamsTitle": "Linked teams",
+  "fcAccountLinkedTeamsEmpty": "This account isn't linked to any team yet.",
+  "fcAccountLinkTeamAction": "Link",
+  "fcAccountUnlinkTeamAction": "Unlink",
+  "fcAccountSettingsTitle": "Settings",
+  "fcAccountDivisionTitle": "Rivals Division",
+  "fcAccountDivisionPickerTitle": "Select division",
+  "fcAccountDivisionNone": "No division set",
+  "fcAccountWeekendLeagueTitle": "Weekend League",
+  "fcAccountWeekendLeagueComputedLabel": "Tracked from matches: {wins}–{losses}",
+  "@fcAccountWeekendLeagueComputedLabel": {
+    "placeholders": {
+      "wins": {
+        "type": "int",
+        "example": "8"
+      },
+      "losses": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "fcAccountWeekendLeagueManualLabel": "Reported result: {wins}–{losses}",
+  "@fcAccountWeekendLeagueManualLabel": {
+    "placeholders": {
+      "wins": {
+        "type": "int",
+        "example": "13"
+      },
+      "losses": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "fcAccountWeekendLeagueEditAction": "Report result",
+  "fcAccountWeekendLeagueClearAction": "Use tracked matches",
+  "fcAccountWeekendLeagueSheetTitle": "Report result",
+  "fcAccountWeekendLeagueWinsLabel": "Wins",
+  "fcAccountWeekendLeagueLossesLabel": "Losses",
+  "fcAccountOnboardingTitle": "Create your first account",
+  "fcAccountOnboardingMessage": "An account represents an Ultimate Team account. Create one to link it to your teams and start searching for matches.",
+  "fcAccountOnboardingCreateAction": "Create account",
+  "pendingMatchElencoLabel": "Account: {name}",
+  "@pendingMatchElencoLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucksrei"
+      }
+    }
+  },
+  "historyElencoLabel": "Account: {name}",
+  "@historyElencoLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucksrei"
+      }
+    }
+  },
+  "profileFcAccountsRow": "Accounts",
+  "rivalsDivisionDiv10": "Division 10",
+  "rivalsDivisionDiv9": "Division 9",
+  "rivalsDivisionDiv8": "Division 8",
+  "rivalsDivisionDiv7": "Division 7",
+  "rivalsDivisionDiv6": "Division 6",
+  "rivalsDivisionDiv5": "Division 5",
+  "rivalsDivisionDiv4": "Division 4",
+  "rivalsDivisionDiv3": "Division 3",
+  "rivalsDivisionDiv2": "Division 2",
+  "rivalsDivisionDiv1": "Division 1",
+  "rivalsDivisionElite": "Elite"
 }

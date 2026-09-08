@@ -1,7 +1,9 @@
 import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/game/domain/entities/pending_game_match.dart';
-import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 
+/// A campanha de Weekend League e o record de vitórias/derrotas saíram
+/// daqui na Etapa 9 -- agora vivem em FcAccountRepository/FcAccountsCubit,
+/// ligados ao Elenco selecionado, não mais ao usuário sozinho.
 abstract interface class GameRepository {
   Future<PendingGameMatch?> fetchPending();
 
@@ -13,12 +15,4 @@ abstract interface class GameRepository {
     int? goalsFor,
     int? goalsAgainst,
   });
-
-  /// A campanha de Weekend League acontecendo agora, senão a próxima, senão a
-  /// última encerrada. Null se nenhuma existir ainda.
-  Future<WeekendLeagueEvent?> fetchCurrentWeekendLeagueEvent();
-
-  /// Vitórias/derrotas do chamador no evento (computado, nunca o override
-  /// manual -- ver [WeekendLeagueRecord]). Null se o evento não existir.
-  Future<WeekendLeagueRecord?> fetchWeekendLeagueRecord(String eventId);
 }

@@ -940,6 +940,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get activityDetailStatus => 'Estado';
 
   @override
+  String get activityDetailFcAccount => 'Elenco';
+
+  @override
   String get historyLoadErrorTitle => 'No fue posible cargar el historial';
 
   @override
@@ -1055,4 +1058,201 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get weekendLeagueActiveBadge => 'En curso';
+
+  @override
+  String get errorFcAccountNotFound => 'Elenco no encontrado.';
+
+  @override
+  String get errorFcAccountNotLinkedToTeam =>
+      'Este elenco no está vinculado a este equipo.';
+
+  @override
+  String get errorFcAccountInvalidName =>
+      'Indica un nombre de 2 a 40 caracteres.';
+
+  @override
+  String get errorFcAccountInvalidDivision => 'División inválida.';
+
+  @override
+  String get validationFcAccountNameRequired =>
+      'Indica un nombre para el elenco.';
+
+  @override
+  String validationFcAccountNameTooShort(int min) {
+    return 'El nombre debe tener al menos $min caracteres.';
+  }
+
+  @override
+  String validationFcAccountNameTooLong(int max) {
+    return 'El nombre puede tener como máximo $max caracteres.';
+  }
+
+  @override
+  String get fcAccountRequiredToSearch =>
+      'Crea o selecciona un elenco para buscar partida.';
+
+  @override
+  String fcAccountLinkCta(String accountName, String teamName) {
+    return 'Vincular $accountName a $teamName';
+  }
+
+  @override
+  String get fcAccountsPageTitle => 'Mis Elencos';
+
+  @override
+  String get fcAccountsPageSubtitle => 'Tus cuentas de Ultimate Team';
+
+  @override
+  String get fcAccountsEmptyTitle => 'Todavía no tienes un elenco';
+
+  @override
+  String get fcAccountsEmptyMessage =>
+      'Crea un elenco para vincularlo a equipos y empezar a buscar partidas.';
+
+  @override
+  String get fcAccountCreateAction => 'Crear elenco';
+
+  @override
+  String get fcAccountCreateTitle => 'Nuevo elenco';
+
+  @override
+  String get fcAccountCreateSubtitle => 'Dale un nombre a este elenco.';
+
+  @override
+  String get fcAccountNameLabel => 'Nombre del elenco';
+
+  @override
+  String get fcAccountNameHint => 'Ej.: Elenco principal';
+
+  @override
+  String get fcAccountRenameTitle => 'Renombrar elenco';
+
+  @override
+  String get fcAccountRenameAction => 'Renombrar';
+
+  @override
+  String get fcAccountArchiveAction => 'Archivar elenco';
+
+  @override
+  String get fcAccountArchiveConfirmTitle => '¿Archivar elenco?';
+
+  @override
+  String get fcAccountArchiveConfirmMessage =>
+      'El elenco deja de aparecer en la lista, pero se conserva su historial.';
+
+  @override
+  String get fcAccountSwitchTitle => 'Cambiar de elenco';
+
+  @override
+  String get fcAccountSwitchCreateAction => '+ Crear nuevo elenco';
+
+  @override
+  String get fcAccountLinkedTeamsTitle => 'Equipos vinculados';
+
+  @override
+  String get fcAccountLinkedTeamsEmpty =>
+      'Este elenco todavía no está vinculado a ningún equipo.';
+
+  @override
+  String get fcAccountLinkTeamAction => 'Vincular';
+
+  @override
+  String get fcAccountUnlinkTeamAction => 'Desvincular';
+
+  @override
+  String get fcAccountSettingsTitle => 'Configuración';
+
+  @override
+  String get fcAccountDivisionTitle => 'División de Rivals';
+
+  @override
+  String get fcAccountDivisionPickerTitle => 'Seleccionar división';
+
+  @override
+  String get fcAccountDivisionNone => 'Sin división definida';
+
+  @override
+  String get fcAccountWeekendLeagueTitle => 'Weekend League';
+
+  @override
+  String fcAccountWeekendLeagueComputedLabel(int wins, int losses) {
+    return 'Registrado por partidas: $wins–$losses';
+  }
+
+  @override
+  String fcAccountWeekendLeagueManualLabel(int wins, int losses) {
+    return 'Resultado informado: $wins–$losses';
+  }
+
+  @override
+  String get fcAccountWeekendLeagueEditAction => 'Informar resultado';
+
+  @override
+  String get fcAccountWeekendLeagueClearAction =>
+      'Usar resultado de las partidas';
+
+  @override
+  String get fcAccountWeekendLeagueSheetTitle => 'Informar resultado';
+
+  @override
+  String get fcAccountWeekendLeagueWinsLabel => 'Victorias';
+
+  @override
+  String get fcAccountWeekendLeagueLossesLabel => 'Derrotas';
+
+  @override
+  String get fcAccountOnboardingTitle => 'Crea tu primer elenco';
+
+  @override
+  String get fcAccountOnboardingMessage =>
+      'Un elenco representa una cuenta de Ultimate Team. Crea uno para vincularlo a tus equipos y empezar a buscar partidas.';
+
+  @override
+  String get fcAccountOnboardingCreateAction => 'Crear elenco';
+
+  @override
+  String pendingMatchElencoLabel(String name) {
+    return 'Elenco: $name';
+  }
+
+  @override
+  String historyElencoLabel(String name) {
+    return 'Elenco: $name';
+  }
+
+  @override
+  String get profileFcAccountsRow => 'Elencos';
+
+  @override
+  String get rivalsDivisionDiv10 => 'División 10';
+
+  @override
+  String get rivalsDivisionDiv9 => 'División 9';
+
+  @override
+  String get rivalsDivisionDiv8 => 'División 8';
+
+  @override
+  String get rivalsDivisionDiv7 => 'División 7';
+
+  @override
+  String get rivalsDivisionDiv6 => 'División 6';
+
+  @override
+  String get rivalsDivisionDiv5 => 'División 5';
+
+  @override
+  String get rivalsDivisionDiv4 => 'División 4';
+
+  @override
+  String get rivalsDivisionDiv3 => 'División 3';
+
+  @override
+  String get rivalsDivisionDiv2 => 'División 2';
+
+  @override
+  String get rivalsDivisionDiv1 => 'División 1';
+
+  @override
+  String get rivalsDivisionElite => 'Elite';
 }
