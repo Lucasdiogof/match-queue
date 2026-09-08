@@ -1461,6 +1461,180 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Avisos sobre a sua vez de buscar e o andamento da sua busca.'**
   String get notificationsChannelQueueAlertsDescription;
+
+  /// No description provided for @historyTabMatches.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partidas'**
+  String get historyTabMatches;
+
+  /// No description provided for @historyTabStats.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estatísticas'**
+  String get historyTabStats;
+
+  /// No description provided for @historyPeriodAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sempre'**
+  String get historyPeriodAll;
+
+  /// No description provided for @historyPeriod7.
+  ///
+  /// In pt, this message translates to:
+  /// **'7 dias'**
+  String get historyPeriod7;
+
+  /// No description provided for @historyPeriod30.
+  ///
+  /// In pt, this message translates to:
+  /// **'30 dias'**
+  String get historyPeriod30;
+
+  /// No description provided for @historyStatusAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas'**
+  String get historyStatusAll;
+
+  /// No description provided for @historyStatusMatchFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Encontradas'**
+  String get historyStatusMatchFound;
+
+  /// No description provided for @historyStatusCancelled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Canceladas'**
+  String get historyStatusCancelled;
+
+  /// No description provided for @historyStatusExpired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Expiradas'**
+  String get historyStatusExpired;
+
+  /// No description provided for @historyStatusMatchFoundLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partida encontrada'**
+  String get historyStatusMatchFoundLabel;
+
+  /// No description provided for @historyStatusCancelledLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelada'**
+  String get historyStatusCancelledLabel;
+
+  /// No description provided for @historyStatusExpiredLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Expirada'**
+  String get historyStatusExpiredLabel;
+
+  /// No description provided for @historyEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma busca ainda'**
+  String get historyEmptyTitle;
+
+  /// No description provided for @historyEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'As buscas de partida do time aparecem aqui quando terminam.'**
+  String get historyEmptyMessage;
+
+  /// No description provided for @historyLoadErrorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar o histórico'**
+  String get historyLoadErrorTitle;
+
+  /// No description provided for @historyLoadMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar mais'**
+  String get historyLoadMore;
+
+  /// No description provided for @historyEntryDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'{date}'**
+  String historyEntryDate(DateTime date);
+
+  /// No description provided for @historyEntryTime.
+  ///
+  /// In pt, this message translates to:
+  /// **'{time}'**
+  String historyEntryTime(DateTime time);
+
+  /// No description provided for @statsTotalSearches.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscas'**
+  String get statsTotalSearches;
+
+  /// No description provided for @statsMatchFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Encontradas'**
+  String get statsMatchFound;
+
+  /// No description provided for @statsCancelled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Canceladas'**
+  String get statsCancelled;
+
+  /// No description provided for @statsExpired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Expiradas'**
+  String get statsExpired;
+
+  /// No description provided for @statsSuccessRate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Taxa de sucesso'**
+  String get statsSuccessRate;
+
+  /// No description provided for @statsAvgDuration.
+  ///
+  /// In pt, this message translates to:
+  /// **'Duração média'**
+  String get statsAvgDuration;
+
+  /// No description provided for @statsPlayersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por jogador'**
+  String get statsPlayersTitle;
+
+  /// No description provided for @statsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem dados no período'**
+  String get statsEmptyTitle;
+
+  /// No description provided for @statsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando o time buscar partidas, as estatísticas aparecem aqui.'**
+  String get statsEmptyMessage;
+
+  /// No description provided for @statsLoadErrorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar as estatísticas'**
+  String get statsLoadErrorTitle;
+
+  /// No description provided for @statsPlayerSearches.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 busca} other{{count} buscas}}'**
+  String statsPlayerSearches(int count);
 }
 
 class _AppLocalizationsDelegate

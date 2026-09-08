@@ -415,5 +415,58 @@
   "notificationsEnableTitle": "Don't miss your turn",
   "notificationsEnableMessage": "Turn on notifications to know the moment it's your turn to search — even with the app closed.",
   "notificationsChannelQueueAlertsName": "Queue alerts",
-  "notificationsChannelQueueAlertsDescription": "Alerts about your turn to search and how your search is going."
+  "notificationsChannelQueueAlertsDescription": "Alerts about your turn to search and how your search is going.",
+  "historyTabMatches": "Matches",
+  "historyTabStats": "Statistics",
+  "historyPeriodAll": "All time",
+  "historyPeriod7": "7 days",
+  "historyPeriod30": "30 days",
+  "historyStatusAll": "All",
+  "historyStatusMatchFound": "Found",
+  "historyStatusCancelled": "Cancelled",
+  "historyStatusExpired": "Expired",
+  "historyStatusMatchFoundLabel": "Match found",
+  "historyStatusCancelledLabel": "Cancelled",
+  "historyStatusExpiredLabel": "Expired",
+  "historyEmptyTitle": "No searches yet",
+  "historyEmptyMessage": "The team's match searches show up here once they finish.",
+  "historyLoadErrorTitle": "We could not load the history",
+  "historyLoadMore": "Load more",
+  "historyEntryDate": "{date}",
+  "@historyEntryDate": {
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      }
+    }
+  },
+  "historyEntryTime": "{time}",
+  "@historyEntryTime": {
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "Hm"
+      }
+    }
+  },
+  "statsTotalSearches": "Searches",
+  "statsMatchFound": "Found",
+  "statsCancelled": "Cancelled",
+  "statsExpired": "Expired",
+  "statsSuccessRate": "Success rate",
+  "statsAvgDuration": "Avg. duration",
+  "statsPlayersTitle": "By player",
+  "statsEmptyTitle": "No data for this period",
+  "statsEmptyMessage": "Once the team searches for matches, statistics show up here.",
+  "statsLoadErrorTitle": "We could not load the statistics",
+  "statsPlayerSearches": "{count, plural, =1{1 search} other{{count} searches}}",
+  "@statsPlayerSearches": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  }
 }

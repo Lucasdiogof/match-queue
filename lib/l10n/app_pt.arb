@@ -415,5 +415,58 @@
   "notificationsEnableTitle": "Não perca a sua vez",
   "notificationsEnableMessage": "Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.",
   "notificationsChannelQueueAlertsName": "Alertas da fila",
-  "notificationsChannelQueueAlertsDescription": "Avisos sobre a sua vez de buscar e o andamento da sua busca."
+  "notificationsChannelQueueAlertsDescription": "Avisos sobre a sua vez de buscar e o andamento da sua busca.",
+  "historyTabMatches": "Partidas",
+  "historyTabStats": "Estatísticas",
+  "historyPeriodAll": "Sempre",
+  "historyPeriod7": "7 dias",
+  "historyPeriod30": "30 dias",
+  "historyStatusAll": "Todas",
+  "historyStatusMatchFound": "Encontradas",
+  "historyStatusCancelled": "Canceladas",
+  "historyStatusExpired": "Expiradas",
+  "historyStatusMatchFoundLabel": "Partida encontrada",
+  "historyStatusCancelledLabel": "Cancelada",
+  "historyStatusExpiredLabel": "Expirada",
+  "historyEmptyTitle": "Nenhuma busca ainda",
+  "historyEmptyMessage": "As buscas de partida do time aparecem aqui quando terminam.",
+  "historyLoadErrorTitle": "Não foi possível carregar o histórico",
+  "historyLoadMore": "Carregar mais",
+  "historyEntryDate": "{date}",
+  "@historyEntryDate": {
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      }
+    }
+  },
+  "historyEntryTime": "{time}",
+  "@historyEntryTime": {
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "Hm"
+      }
+    }
+  },
+  "statsTotalSearches": "Buscas",
+  "statsMatchFound": "Encontradas",
+  "statsCancelled": "Canceladas",
+  "statsExpired": "Expiradas",
+  "statsSuccessRate": "Taxa de sucesso",
+  "statsAvgDuration": "Duração média",
+  "statsPlayersTitle": "Por jogador",
+  "statsEmptyTitle": "Sem dados no período",
+  "statsEmptyMessage": "Quando o time buscar partidas, as estatísticas aparecem aqui.",
+  "statsLoadErrorTitle": "Não foi possível carregar as estatísticas",
+  "statsPlayerSearches": "{count, plural, =1{1 busca} other{{count} buscas}}",
+  "@statsPlayerSearches": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  }
 }

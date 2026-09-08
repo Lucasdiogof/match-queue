@@ -799,4 +799,111 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get notificationsChannelQueueAlertsDescription =>
       'Avisos sobre tu turno de buscar y el progreso de tu búsqueda.';
+
+  @override
+  String get historyTabMatches => 'Partidos';
+
+  @override
+  String get historyTabStats => 'Estadísticas';
+
+  @override
+  String get historyPeriodAll => 'Siempre';
+
+  @override
+  String get historyPeriod7 => '7 días';
+
+  @override
+  String get historyPeriod30 => '30 días';
+
+  @override
+  String get historyStatusAll => 'Todas';
+
+  @override
+  String get historyStatusMatchFound => 'Encontradas';
+
+  @override
+  String get historyStatusCancelled => 'Canceladas';
+
+  @override
+  String get historyStatusExpired => 'Expiradas';
+
+  @override
+  String get historyStatusMatchFoundLabel => 'Partido encontrado';
+
+  @override
+  String get historyStatusCancelledLabel => 'Cancelada';
+
+  @override
+  String get historyStatusExpiredLabel => 'Expirada';
+
+  @override
+  String get historyEmptyTitle => 'Aún no hay búsquedas';
+
+  @override
+  String get historyEmptyMessage =>
+      'Las búsquedas de partido del equipo aparecen aquí cuando terminan.';
+
+  @override
+  String get historyLoadErrorTitle => 'No fue posible cargar el historial';
+
+  @override
+  String get historyLoadMore => 'Cargar más';
+
+  @override
+  String historyEntryDate(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String historyEntryTime(DateTime time) {
+    final intl.DateFormat timeDateFormat = intl.DateFormat.Hm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return '$timeString';
+  }
+
+  @override
+  String get statsTotalSearches => 'Búsquedas';
+
+  @override
+  String get statsMatchFound => 'Encontradas';
+
+  @override
+  String get statsCancelled => 'Canceladas';
+
+  @override
+  String get statsExpired => 'Expiradas';
+
+  @override
+  String get statsSuccessRate => 'Tasa de éxito';
+
+  @override
+  String get statsAvgDuration => 'Duración media';
+
+  @override
+  String get statsPlayersTitle => 'Por jugador';
+
+  @override
+  String get statsEmptyTitle => 'Sin datos en el período';
+
+  @override
+  String get statsEmptyMessage =>
+      'Cuando el equipo busque partidos, las estadísticas aparecen aquí.';
+
+  @override
+  String get statsLoadErrorTitle => 'No fue posible cargar las estadísticas';
+
+  @override
+  String statsPlayerSearches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count búsquedas',
+      one: '1 búsqueda',
+    );
+    return '$_temp0';
+  }
 }
