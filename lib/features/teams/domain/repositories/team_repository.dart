@@ -1,6 +1,7 @@
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 
 abstract interface class TeamRepository {
@@ -38,5 +39,17 @@ abstract interface class TeamRepository {
     required String teamId,
     required String userId,
     String? fcAccountId,
+  });
+
+  /// Dashboard esportivo do Time numa chamada só (Etapa 14): resumo,
+  /// ranking, artilharia, assistências, WL, Rivals e atividade.
+  Future<TeamSportsDashboard> fetchSportsDashboard(String teamId);
+
+  /// Lista completa de artilharia ou assistências, para o "ver tudo".
+  Future<List<TeamPlayerLeaderboardEntry>> fetchPlayerLeaderboard({
+    required String teamId,
+    required bool byAssists,
+    int limit,
+    int offset,
   });
 }

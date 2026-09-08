@@ -33,6 +33,15 @@ abstract interface class TeamRemoteDataSource {
     required String userId,
     String? fcAccountId,
   });
+
+  Future<Map<String, dynamic>> getSportsDashboard(String teamId);
+
+  Future<Object?> getPlayerLeaderboard({
+    required String teamId,
+    required bool byAssists,
+    int limit,
+    int offset,
+  });
 }
 
 class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
@@ -152,4 +161,29 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
         .order(TeamMemberModel.columnJoinedAt, ascending: true);
     return List<Map<String, dynamic>>.from(rows);
   }
+
+  @override
+  Future<Map<String, dynamic>> getSportsDashboard(String teamId) async {
+    final response = await _client.rpc<dynamic>(
+      'get_team_sports_dashboard',
+      params: <String, dynamic>{'p_team_id': teamId},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
+
+  @override
+  Future<Object?> getPlayerLeaderboard({
+    required String teamId,
+    required bool byAssists,
+    int limit = 50,
+    int offset = 0,
+  }) => _client.rpc<dynamic>(
+    'get_team_player_leaderboard',
+    params: <String, dynamic>{
+      'p_team_id': teamId,
+      'p_by_assists': byAssists,
+      'p_limit': limit,
+      'p_offset': offset,
+    },
+  );
 }

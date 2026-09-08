@@ -958,5 +958,92 @@
         "type": "int"
       }
     }
+  },
+  "teamSportsSummaryTitle": "Summary",
+  "teamSportsMatches": "Matches",
+  "teamSportsWins": "Wins",
+  "teamSportsLosses": "Losses",
+  "teamSportsWinRate": "Win rate",
+  "teamSportsGoalsFor": "Goals",
+  "teamSportsGoalsAgainst": "Conceded",
+  "teamSportsGoalDifference": "Difference",
+  "teamSportsRankingTitle": "Ranking",
+  "teamSportsScorersTitle": "Top scorers",
+  "teamSportsAssistsTitle": "Assists",
+  "teamSportsWeekendLeagueTitle": "Weekend League",
+  "teamSportsRivalsTitle": "Division Rivals",
+  "teamSportsActivityTitle": "Recent activity",
+  "teamSportsSeeAll": "See all",
+  "teamSportsSmallSample": "Small sample",
+  "teamSportsNoMatchesYet": "This team has not recorded any matches yet.",
+  "teamSportsNoMatchesMember": "No matches",
+  "teamSportsNoScorersYet": "No goals recorded yet.",
+  "teamSportsNoAssistsYet": "No assists recorded yet.",
+  "teamSportsNoActivityYet": "No finished matches yet.",
+  "teamSportsManualRecord": "Manual",
+  "teamSportsNoDivision": "No division",
+  "teamSportsActivityWin": "won",
+  "teamSportsActivityLoss": "lost",
+  "teamSportsAccountsCount": "{count, plural, =1{1 account} other{{count} accounts}}",
+  "@teamSportsAccountsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsMembersCount": "{count, plural, =1{1 member} other{{count} members}}",
+  "@teamSportsMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsMatchesCount": "{count, plural, =1{1 recorded match} other{{count} recorded matches}}",
+  "@teamSportsMatchesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsRecordLine": "{matches}M · {wins}W · {losses}L",
+  "@teamSportsRecordLine": {
+    "placeholders": {
+      "matches": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsMinSampleHint": "Ranked from {count} matches onward.",
+  "@teamSportsMinSampleHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsGoalsShort": "{count, plural, =1{1 goal} other{{count} goals}}",
+  "@teamSportsGoalsShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsAssistsShort": "{count, plural, =1{1 assist} other{{count} assists}}",
+  "@teamSportsAssistsShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

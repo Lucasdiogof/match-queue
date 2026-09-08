@@ -3207,6 +3207,198 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{count, plural, =1{Ver outra escalação} other{Ver outras {count} escalações}}'**
   String squadOtherLineupsAction(int count);
+
+  /// No description provided for @teamSportsSummaryTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resumo'**
+  String get teamSportsSummaryTitle;
+
+  /// No description provided for @teamSportsMatches.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partidas'**
+  String get teamSportsMatches;
+
+  /// No description provided for @teamSportsWins.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vitórias'**
+  String get teamSportsWins;
+
+  /// No description provided for @teamSportsLosses.
+  ///
+  /// In pt, this message translates to:
+  /// **'Derrotas'**
+  String get teamSportsLosses;
+
+  /// No description provided for @teamSportsWinRate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aproveitamento'**
+  String get teamSportsWinRate;
+
+  /// No description provided for @teamSportsGoalsFor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gols'**
+  String get teamSportsGoalsFor;
+
+  /// No description provided for @teamSportsGoalsAgainst.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sofridos'**
+  String get teamSportsGoalsAgainst;
+
+  /// No description provided for @teamSportsGoalDifference.
+  ///
+  /// In pt, this message translates to:
+  /// **'Saldo'**
+  String get teamSportsGoalDifference;
+
+  /// No description provided for @teamSportsRankingTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ranking'**
+  String get teamSportsRankingTitle;
+
+  /// No description provided for @teamSportsScorersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Artilharia'**
+  String get teamSportsScorersTitle;
+
+  /// No description provided for @teamSportsAssistsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assistências'**
+  String get teamSportsAssistsTitle;
+
+  /// No description provided for @teamSportsWeekendLeagueTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Weekend League'**
+  String get teamSportsWeekendLeagueTitle;
+
+  /// No description provided for @teamSportsRivalsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Division Rivals'**
+  String get teamSportsRivalsTitle;
+
+  /// No description provided for @teamSportsActivityTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atividade recente'**
+  String get teamSportsActivityTitle;
+
+  /// No description provided for @teamSportsSeeAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver tudo'**
+  String get teamSportsSeeAll;
+
+  /// No description provided for @teamSportsSmallSample.
+  ///
+  /// In pt, this message translates to:
+  /// **'Amostra pequena'**
+  String get teamSportsSmallSample;
+
+  /// No description provided for @teamSportsNoMatchesYet.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este Time ainda não registrou partidas.'**
+  String get teamSportsNoMatchesYet;
+
+  /// No description provided for @teamSportsNoMatchesMember.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem partidas'**
+  String get teamSportsNoMatchesMember;
+
+  /// No description provided for @teamSportsNoScorersYet.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum gol registrado ainda.'**
+  String get teamSportsNoScorersYet;
+
+  /// No description provided for @teamSportsNoAssistsYet.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma assistência registrada ainda.'**
+  String get teamSportsNoAssistsYet;
+
+  /// No description provided for @teamSportsNoActivityYet.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma partida concluída ainda.'**
+  String get teamSportsNoActivityYet;
+
+  /// No description provided for @teamSportsManualRecord.
+  ///
+  /// In pt, this message translates to:
+  /// **'Manual'**
+  String get teamSportsManualRecord;
+
+  /// No description provided for @teamSportsNoDivision.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem divisão'**
+  String get teamSportsNoDivision;
+
+  /// No description provided for @teamSportsActivityWin.
+  ///
+  /// In pt, this message translates to:
+  /// **'venceu'**
+  String get teamSportsActivityWin;
+
+  /// No description provided for @teamSportsActivityLoss.
+  ///
+  /// In pt, this message translates to:
+  /// **'perdeu'**
+  String get teamSportsActivityLoss;
+
+  /// No description provided for @teamSportsAccountsCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 Conta} other{{count} Contas}}'**
+  String teamSportsAccountsCount(int count);
+
+  /// No description provided for @teamSportsMembersCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 membro} other{{count} membros}}'**
+  String teamSportsMembersCount(int count);
+
+  /// No description provided for @teamSportsMatchesCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 partida registrada} other{{count} partidas registradas}}'**
+  String teamSportsMatchesCount(int count);
+
+  /// No description provided for @teamSportsRecordLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{matches}J · {wins}V · {losses}D'**
+  String teamSportsRecordLine(int matches, int wins, int losses);
+
+  /// No description provided for @teamSportsMinSampleHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ranqueado a partir de {count} partidas.'**
+  String teamSportsMinSampleHint(int count);
+
+  /// No description provided for @teamSportsGoalsShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 gol} other{{count} gols}}'**
+  String teamSportsGoalsShort(int count);
+
+  /// No description provided for @teamSportsAssistsShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 assistência} other{{count} assistências}}'**
+  String teamSportsAssistsShort(int count);
 }
 
 class _AppLocalizationsDelegate

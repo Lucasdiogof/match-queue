@@ -958,5 +958,92 @@
         "type": "int"
       }
     }
+  },
+  "teamSportsSummaryTitle": "Resumen",
+  "teamSportsMatches": "Partidos",
+  "teamSportsWins": "Victorias",
+  "teamSportsLosses": "Derrotas",
+  "teamSportsWinRate": "Rendimiento",
+  "teamSportsGoalsFor": "Goles",
+  "teamSportsGoalsAgainst": "Recibidos",
+  "teamSportsGoalDifference": "Diferencia",
+  "teamSportsRankingTitle": "Clasificación",
+  "teamSportsScorersTitle": "Goleadores",
+  "teamSportsAssistsTitle": "Asistencias",
+  "teamSportsWeekendLeagueTitle": "Weekend League",
+  "teamSportsRivalsTitle": "Division Rivals",
+  "teamSportsActivityTitle": "Actividad reciente",
+  "teamSportsSeeAll": "Ver todo",
+  "teamSportsSmallSample": "Muestra pequeña",
+  "teamSportsNoMatchesYet": "Este equipo aún no ha registrado partidos.",
+  "teamSportsNoMatchesMember": "Sin partidos",
+  "teamSportsNoScorersYet": "Aún no hay goles registrados.",
+  "teamSportsNoAssistsYet": "Aún no hay asistencias registradas.",
+  "teamSportsNoActivityYet": "Aún no hay partidos terminados.",
+  "teamSportsManualRecord": "Manual",
+  "teamSportsNoDivision": "Sin división",
+  "teamSportsActivityWin": "ganó",
+  "teamSportsActivityLoss": "perdió",
+  "teamSportsAccountsCount": "{count, plural, =1{1 cuenta} other{{count} cuentas}}",
+  "@teamSportsAccountsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsMembersCount": "{count, plural, =1{1 miembro} other{{count} miembros}}",
+  "@teamSportsMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsMatchesCount": "{count, plural, =1{1 partido registrado} other{{count} partidos registrados}}",
+  "@teamSportsMatchesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsRecordLine": "{matches}P · {wins}V · {losses}D",
+  "@teamSportsRecordLine": {
+    "placeholders": {
+      "matches": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsMinSampleHint": "Clasificado a partir de {count} partidos.",
+  "@teamSportsMinSampleHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsGoalsShort": "{count, plural, =1{1 gol} other{{count} goles}}",
+  "@teamSportsGoalsShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "teamSportsAssistsShort": "{count, plural, =1{1 asistencia} other{{count} asistencias}}",
+  "@teamSportsAssistsShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

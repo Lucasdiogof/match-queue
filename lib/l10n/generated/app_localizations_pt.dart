@@ -1814,4 +1814,145 @@ class AppLocalizationsPt extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get teamSportsSummaryTitle => 'Resumo';
+
+  @override
+  String get teamSportsMatches => 'Partidas';
+
+  @override
+  String get teamSportsWins => 'Vitórias';
+
+  @override
+  String get teamSportsLosses => 'Derrotas';
+
+  @override
+  String get teamSportsWinRate => 'Aproveitamento';
+
+  @override
+  String get teamSportsGoalsFor => 'Gols';
+
+  @override
+  String get teamSportsGoalsAgainst => 'Sofridos';
+
+  @override
+  String get teamSportsGoalDifference => 'Saldo';
+
+  @override
+  String get teamSportsRankingTitle => 'Ranking';
+
+  @override
+  String get teamSportsScorersTitle => 'Artilharia';
+
+  @override
+  String get teamSportsAssistsTitle => 'Assistências';
+
+  @override
+  String get teamSportsWeekendLeagueTitle => 'Weekend League';
+
+  @override
+  String get teamSportsRivalsTitle => 'Division Rivals';
+
+  @override
+  String get teamSportsActivityTitle => 'Atividade recente';
+
+  @override
+  String get teamSportsSeeAll => 'Ver tudo';
+
+  @override
+  String get teamSportsSmallSample => 'Amostra pequena';
+
+  @override
+  String get teamSportsNoMatchesYet =>
+      'Este Time ainda não registrou partidas.';
+
+  @override
+  String get teamSportsNoMatchesMember => 'Sem partidas';
+
+  @override
+  String get teamSportsNoScorersYet => 'Nenhum gol registrado ainda.';
+
+  @override
+  String get teamSportsNoAssistsYet => 'Nenhuma assistência registrada ainda.';
+
+  @override
+  String get teamSportsNoActivityYet => 'Nenhuma partida concluída ainda.';
+
+  @override
+  String get teamSportsManualRecord => 'Manual';
+
+  @override
+  String get teamSportsNoDivision => 'Sem divisão';
+
+  @override
+  String get teamSportsActivityWin => 'venceu';
+
+  @override
+  String get teamSportsActivityLoss => 'perdeu';
+
+  @override
+  String teamSportsAccountsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Contas',
+      one: '1 Conta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamSportsMembersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membros',
+      one: '1 membro',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamSportsMatchesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count partidas registradas',
+      one: '1 partida registrada',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamSportsRecordLine(int matches, int wins, int losses) {
+    return '${matches}J · ${wins}V · ${losses}D';
+  }
+
+  @override
+  String teamSportsMinSampleHint(int count) {
+    return 'Ranqueado a partir de $count partidas.';
+  }
+
+  @override
+  String teamSportsGoalsShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gols',
+      one: '1 gol',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String teamSportsAssistsShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count assistências',
+      one: '1 assistência',
+    );
+    return '$_temp0';
+  }
 }

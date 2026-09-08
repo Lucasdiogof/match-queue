@@ -8,11 +8,14 @@ import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/team_sports_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/team_status_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/team_status_state.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/team_sports_sections.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,13 +50,24 @@ class TeamDetailPage extends StatelessWidget {
         ),
         body: userTeam == null
             ? const AppLoading()
-            : BlocProvider<TeamStatusCubit>(
+            : MultiBlocProvider(
                 key: ValueKey(teamId),
-                create: (_) => TeamStatusCubit(
-                  getIt<TeamRepository>(),
-                  getIt<MatchmakingRepository>(),
-                  teamId: teamId,
-                )..start(),
+                providers: <BlocProvider<dynamic>>[
+                  BlocProvider<TeamStatusCubit>(
+                    create: (_) => TeamStatusCubit(
+                      getIt<TeamRepository>(),
+                      getIt<MatchmakingRepository>(),
+                      teamId: teamId,
+                    )..start(),
+                  ),
+                  // Dashboard esportivo so carrega ao ENTRAR no Time
+                  // (item 50) -- a lista de Times continua leve.
+                  BlocProvider<TeamSportsCubit>(
+                    create: (_) =>
+                        TeamSportsCubit(getIt<TeamRepository>(), teamId: teamId)
+                          ..load(),
+                  ),
+                ],
                 child: _TeamStatusBody(team: userTeam.team),
               ),
       );
@@ -76,24 +90,74 @@ class _TeamStatusBody extends StatelessWidget {
   final Team team;
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<TeamStatusCubit, TeamStatusState>(
-        builder: (context, state) => ListView(
+  Widget build(
+    BuildContext context,
+  ) => BlocBuilder<TeamStatusCubit, TeamStatusState>(
+    builder: (context, state) => BlocBuilder<TeamSportsCubit, TeamSportsState>(
+      builder: (context, sports) => RefreshIndicator(
+        onRefresh: context.read<TeamSportsCubit>().refresh,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
           children: <Widget>[
-            _TeamHeaderCard(team: team, state: state),
+            _TeamHeaderCard(
+              team: team,
+              state: state,
+              dashboard: sports.dashboard,
+            ),
             const SizedBox(height: AppSpacing.lg),
+            // Status operacional continua sendo do Realtime da Etapa
+            // anterior -- stats nunca se misturam com ele (item 46).
             _MemberStatusSection(teamId: team.id, state: state),
+            if (sports.dashboard != null) ...<Widget>[
+              const SizedBox(height: AppSpacing.lg),
+              TeamSportsSummarySection(summary: sports.dashboard!.summary),
+              if (sports.dashboard!.summary.hasMatches) ...<Widget>[
+                const SizedBox(height: AppSpacing.lg),
+                TeamSportsRankingSection(
+                  ranking: sports.dashboard!.ranking,
+                  minRankedMatches: sports.dashboard!.minRankedMatches,
+                  onMemberTap: (member) => context.push(
+                    AppRoutes.playerProfileLocation(team.id, member.userId),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                TeamPlayerLeaderboardSection(
+                  entries: sports.dashboard!.topScorers,
+                  byAssists: false,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                TeamPlayerLeaderboardSection(
+                  entries: sports.dashboard!.topAssists,
+                  byAssists: true,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                TeamWeekendLeagueSection(
+                  entries: sports.dashboard!.weekendLeague,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                TeamRivalsSection(entries: sports.dashboard!.rivals),
+                const SizedBox(height: AppSpacing.lg),
+                TeamSportsActivitySection(activity: sports.dashboard!.activity),
+              ],
+            ],
           ],
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _TeamHeaderCard extends StatelessWidget {
-  const _TeamHeaderCard({required this.team, required this.state});
+  const _TeamHeaderCard({
+    required this.team,
+    required this.state,
+    this.dashboard,
+  });
 
   final Team team;
   final TeamStatusState state;
+  final TeamSportsDashboard? dashboard;
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +188,16 @@ class _TeamHeaderCard extends StatelessWidget {
                     color: colors.textSecondary,
                   ),
                 ),
+                if (dashboard != null &&
+                    dashboard!.summary.hasMatches) ...<Widget>[
+                  const SizedBox(height: AppSpacing.xxs),
+                  Text(
+                    l10n.teamSportsMatchesCount(dashboard!.summary.matches),
+                    style: context.textStyles.bodySmall?.copyWith(
+                      color: colors.textTertiary,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

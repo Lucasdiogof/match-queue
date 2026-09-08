@@ -6,6 +6,7 @@ import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dar
 import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
 import 'package:fifa_queue/features/profile/domain/repositories/profile_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
@@ -225,6 +226,41 @@ class LocalTeamRepository implements TeamRepository {
         '${hex.substring(12, 16)}-${hex.substring(16, 20)}-'
         '${hex.substring(20)}';
   }
+
+  /// Modo local nao tem partidas registradas, entao o dashboard vem vazio em
+  /// vez de inventar numeros -- a tela ja trata "time sem partidas".
+  @override
+  Future<TeamSportsDashboard> fetchSportsDashboard(String teamId) async =>
+      TeamSportsDashboard(
+        teamId: teamId,
+        minRankedMatches: 5,
+        summary: const TeamSportsSummary(
+          membersCount: 1,
+          accountsCount: 0,
+          matches: 0,
+          wins: 0,
+          losses: 0,
+          goalsFor: 0,
+          goalsAgainst: 0,
+          goalDifference: 0,
+          registeredPlayerGoals: 0,
+          registeredAssists: 0,
+        ),
+        ranking: const <TeamMemberSportsStats>[],
+        topScorers: const <TeamPlayerLeaderboardEntry>[],
+        topAssists: const <TeamPlayerLeaderboardEntry>[],
+        weekendLeague: const <TeamWeekendLeagueEntry>[],
+        rivals: const <TeamRivalsEntry>[],
+        activity: const <TeamSportsActivity>[],
+      );
+
+  @override
+  Future<List<TeamPlayerLeaderboardEntry>> fetchPlayerLeaderboard({
+    required String teamId,
+    required bool byAssists,
+    int limit = 50,
+    int offset = 0,
+  }) async => const <TeamPlayerLeaderboardEntry>[];
 }
 
 class _LocalTeamRecord {

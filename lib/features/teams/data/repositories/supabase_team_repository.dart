@@ -5,10 +5,12 @@ import 'package:fifa_queue/features/teams/data/models/player_profile_model.dart'
 import 'package:fifa_queue/features/teams/data/models/team_member_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_status_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
+import 'package:fifa_queue/features/teams/data/models/team_sports_dashboard_model.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 
 class SupabaseTeamRepository implements TeamRepository {
@@ -110,6 +112,30 @@ class SupabaseTeamRepository implements TeamRepository {
     }
     return userId;
   }
+
+  @override
+  Future<TeamSportsDashboard> fetchSportsDashboard(String teamId) => _guard(
+    () async => TeamSportsDashboardModel.fromJson(
+      await _dataSource.getSportsDashboard(teamId),
+    ),
+  );
+
+  @override
+  Future<List<TeamPlayerLeaderboardEntry>> fetchPlayerLeaderboard({
+    required String teamId,
+    required bool byAssists,
+    int limit = 50,
+    int offset = 0,
+  }) => _guard(
+    () async => TeamSportsDashboardModel.leaderboardFromResponse(
+      await _dataSource.getPlayerLeaderboard(
+        teamId: teamId,
+        byAssists: byAssists,
+        limit: limit,
+        offset: offset,
+      ),
+    ),
+  );
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
