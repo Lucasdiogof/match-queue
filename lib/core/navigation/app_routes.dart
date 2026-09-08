@@ -136,7 +136,7 @@ class AppRoutes {
     bool preselectShowSquad = false,
   }) {
     final query = <String, String>{
-      if (preselectFcAccountId != null) 'fcAccountId': preselectFcAccountId,
+      'fcAccountId': ?preselectFcAccountId,
       if (preselectShowSquad) 'showSquad': '1',
     };
     if (query.isEmpty) {
