@@ -306,10 +306,10 @@ end;
 $$;
 
 revoke execute on function public.search_fc_player_cards(
-    text, text, integer, integer, integer, integer, uuid, uuid, uuid, text
+    text, text, integer, integer, integer, integer, text, text, text, text
 ) from public, anon;
 grant execute on function public.search_fc_player_cards(
-    text, text, integer, integer, integer, integer, uuid, uuid, uuid, text
+    text, text, integer, integer, integer, integer, text, text, text, text
 ) to authenticated;
 
 -- Lista de clubes para o filtro do picker -- mesmo padrao de

@@ -619,9 +619,12 @@ grant execute on function public.request_match_search(uuid, uuid, text)
 
 -- cancel_match_search e report_match_found_and_start_game passam a receber
 -- a CONTA, nao o time -- a tela Jogar so conhece a conta selecionada. O tipo
--- do parametro continua uuid, entao create or replace basta (mesma
--- assinatura fisica, semantica nova).
-create or replace function public.cancel_match_search(p_fc_account_id uuid)
+-- do parametro continua uuid, mas o NOME muda (p_team_id -> p_fc_account_id)
+-- -- Postgres nao permite renomear parametro via create or replace, entao
+-- precisa dropar a versao antiga primeiro.
+drop function if exists public.cancel_match_search(uuid);
+
+create function public.cancel_match_search(p_fc_account_id uuid)
 returns jsonb
 language plpgsql
 security definer
@@ -700,11 +703,17 @@ $$;
 comment on function public.cancel_match_search(uuid) is
     'Cancela a busca (promove quem esperava) ou sai da fila da conta chamadora, o que for aplicavel.';
 
+revoke execute on function public.cancel_match_search(uuid) from public, anon;
+grant execute on function public.cancel_match_search(uuid) to authenticated;
+
 -- report_match_found_and_start_game tambem passa a receber a conta. O time
 -- gravado em game_matches.team_id e o time primario da sessao (o menor
 -- team_id do conjunto vinculado) -- a partida continua pertencendo a UM
--- time, mesmo que a busca tenha ocupado varios.
-create or replace function public.report_match_found_and_start_game(p_fc_account_id uuid)
+-- time, mesmo que a busca tenha ocupado varios. Mesmo motivo do drop acima:
+-- o parametro muda de nome (p_team_id -> p_fc_account_id).
+drop function if exists public.report_match_found_and_start_game(uuid);
+
+create function public.report_match_found_and_start_game(p_fc_account_id uuid)
 returns jsonb
 language plpgsql
 security definer
@@ -788,9 +797,10 @@ begin
 end;
 $$;
 
--- Ambas ja tinham grant para authenticated desde etapas anteriores (mesmo
--- nome, mesmo tipo de parametro uuid) -- create or replace preserva grants
--- existentes, entao nao precisa regravar revoke/grant aqui.
+revoke execute on function public.report_match_found_and_start_game(uuid)
+    from public, anon;
+grant execute on function public.report_match_found_and_start_game(uuid)
+    to authenticated;
 
 -- get_team_player_statuses (Etapa 8.5/8.5+) passa a enxergar SEARCHING/
 -- QUEUED via as tabelas de juncao -- um membro pode aparecer buscando neste
