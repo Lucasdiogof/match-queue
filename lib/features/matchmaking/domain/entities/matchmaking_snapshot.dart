@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 
 enum MyMatchmakingStatus { searching, queued, none }
 
@@ -10,6 +11,7 @@ class SearchingPlayer extends Equatable {
     required this.startedAt,
     required this.expiresAt,
     this.avatarUrl,
+    this.gameMode,
   });
 
   final String sessionId;
@@ -18,6 +20,7 @@ class SearchingPlayer extends Equatable {
   final String? avatarUrl;
   final DateTime startedAt;
   final DateTime expiresAt;
+  final GameMode? gameMode;
 
   @override
   List<Object?> get props => <Object?>[
@@ -27,6 +30,7 @@ class SearchingPlayer extends Equatable {
     avatarUrl,
     startedAt,
     expiresAt,
+    gameMode,
   ];
 }
 

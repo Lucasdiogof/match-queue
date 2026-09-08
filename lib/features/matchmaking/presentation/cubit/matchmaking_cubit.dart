@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
@@ -89,7 +90,8 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     }
   }
 
-  Future<bool> startSearch() => _runAction(_repository.requestSearch);
+  Future<bool> startSearch(GameMode mode) =>
+      _runAction((teamId) => _repository.requestSearch(teamId, mode: mode));
 
   Future<bool> cancel() => _runAction(_repository.cancelSearch);
 

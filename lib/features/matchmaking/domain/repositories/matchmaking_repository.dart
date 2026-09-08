@@ -1,3 +1,4 @@
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 
@@ -8,7 +9,10 @@ abstract interface class MatchmakingRepository {
   /// encerra o canal subjacente.
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId);
 
-  Future<MatchmakingSnapshot> requestSearch(String teamId);
+  Future<MatchmakingSnapshot> requestSearch(
+    String teamId, {
+    required GameMode mode,
+  });
 
   Future<MatchmakingSnapshot> cancelSearch(String teamId);
 

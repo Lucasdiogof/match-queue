@@ -1,4 +1,5 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/data/datasources/matchmaking_remote_data_source.dart';
 import 'package:fifa_queue/features/matchmaking/data/models/matchmaking_snapshot_model.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
@@ -22,8 +23,11 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
   });
 
   @override
-  Future<MatchmakingSnapshot> requestSearch(String teamId) => _guard(() async {
-    final json = await _dataSource.requestSearch(teamId);
+  Future<MatchmakingSnapshot> requestSearch(
+    String teamId, {
+    required GameMode mode,
+  }) => _guard(() async {
+    final json = await _dataSource.requestSearch(teamId, mode.key);
     return MatchmakingSnapshotModel.fromJson(json);
   });
 

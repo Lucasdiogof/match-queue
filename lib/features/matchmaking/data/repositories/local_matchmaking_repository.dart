@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
@@ -42,7 +43,10 @@ class LocalMatchmakingRepository implements MatchmakingRepository {
       _buildSnapshot(teamId);
 
   @override
-  Future<MatchmakingSnapshot> requestSearch(String teamId) async {
+  Future<MatchmakingSnapshot> requestSearch(
+    String teamId, {
+    required GameMode mode,
+  }) async {
     final existing = _readSession(teamId);
     if (existing != null && existing.expiresAt.isAfter(DateTime.now())) {
       return _buildSnapshot(teamId);
@@ -55,6 +59,7 @@ class LocalMatchmakingRepository implements MatchmakingRepository {
         sessionId: _uuidV4(),
         startedAt: now,
         expiresAt: now.add(duration),
+        gameMode: mode.key,
       ),
     );
     return _buildSnapshot(teamId);
@@ -105,6 +110,7 @@ class LocalMatchmakingRepository implements MatchmakingRepository {
               displayName: _authRepository.currentUser?.shortName ?? 'Você',
               startedAt: active.startedAt,
               expiresAt: active.expiresAt,
+              gameMode: GameMode.tryFromKey(active.gameMode),
             ),
       queue: const <MatchmakingQueueEntry>[],
       myStatus: active == null
@@ -175,21 +181,25 @@ class _LocalSession {
     required this.sessionId,
     required this.startedAt,
     required this.expiresAt,
+    this.gameMode,
   });
 
   final String sessionId;
   final DateTime startedAt;
   final DateTime expiresAt;
+  final String? gameMode;
 
   factory _LocalSession.fromJson(Map<String, dynamic> json) => _LocalSession(
     sessionId: '${json['session_id']}',
     startedAt: DateTime.parse('${json['started_at']}'),
     expiresAt: DateTime.parse('${json['expires_at']}'),
+    gameMode: json['game_mode'] as String?,
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'session_id': sessionId,
     'started_at': startedAt.toIso8601String(),
     'expires_at': expiresAt.toIso8601String(),
+    'game_mode': gameMode,
   };
 }

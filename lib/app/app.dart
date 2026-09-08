@@ -5,6 +5,8 @@ import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/widgets/pending_invite_listener.dart';
+import 'package:fifa_queue/core/di/injector.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_lifecycle_listener.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/locale_sync_listener.dart';
@@ -49,6 +51,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<PendingInviteCubit>.value(value: pendingInviteCubit),
       BlocProvider<ProfileCubit>.value(value: profileCubit),
       BlocProvider<TeamsCubit>.value(value: teamsCubit),
+      BlocProvider<GameModeCubit>(create: (_) => getIt<GameModeCubit>()),
     ],
     child: AppConfigScope(
       config: config,

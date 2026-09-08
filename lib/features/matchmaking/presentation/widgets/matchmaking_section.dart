@@ -7,6 +7,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_queue_list.dart';
@@ -230,7 +231,9 @@ class _IdleCard extends StatelessWidget {
             isLoading: state.isActionPending,
             onPressed: state.isActionPending
                 ? null
-                : () => context.read<MatchmakingCubit>().startSearch(),
+                : () => context.read<MatchmakingCubit>().startSearch(
+                    context.read<GameModeCubit>().state,
+                  ),
           ),
         ],
       ),
@@ -413,7 +416,9 @@ class _SearchingOtherCard extends StatelessWidget {
                 ? null
                 : () => isQueued
                       ? context.read<MatchmakingCubit>().cancel()
-                      : context.read<MatchmakingCubit>().startSearch(),
+                      : context.read<MatchmakingCubit>().startSearch(
+                          context.read<GameModeCubit>().state,
+                        ),
           ),
         ],
       ),

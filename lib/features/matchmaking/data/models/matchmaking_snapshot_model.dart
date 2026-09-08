@@ -1,3 +1,4 @@
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 
 class MatchmakingSnapshotModel {
@@ -19,6 +20,7 @@ class MatchmakingSnapshotModel {
               avatarUrl: searchingJson['avatar_url'] as String?,
               startedAt: DateTime.parse('${searchingJson['started_at']}'),
               expiresAt: DateTime.parse('${searchingJson['expires_at']}'),
+              gameMode: GameMode.tryFromKey(searchingJson['game_mode']),
             ),
       queue: queueJson
           .whereType<Map<String, dynamic>>()

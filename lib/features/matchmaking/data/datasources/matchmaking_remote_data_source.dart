@@ -8,7 +8,7 @@ abstract interface class MatchmakingRemoteDataSource {
 
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId);
 
-  Future<Map<String, dynamic>> requestSearch(String teamId);
+  Future<Map<String, dynamic>> requestSearch(String teamId, String gameMode);
 
   Future<Map<String, dynamic>> cancelSearch(String teamId);
 
@@ -29,8 +29,16 @@ class SupabaseMatchmakingRemoteDataSource
       _call('get_team_matchmaking_state', teamId);
 
   @override
-  Future<Map<String, dynamic>> requestSearch(String teamId) =>
-      _call('request_match_search', teamId);
+  Future<Map<String, dynamic>> requestSearch(
+    String teamId,
+    String gameMode,
+  ) async {
+    final response = await _client.rpc<dynamic>(
+      'request_match_search',
+      params: <String, dynamic>{'p_team_id': teamId, 'p_game_mode': gameMode},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
 
   @override
   Future<Map<String, dynamic>> cancelSearch(String teamId) =>
@@ -38,7 +46,7 @@ class SupabaseMatchmakingRemoteDataSource
 
   @override
   Future<Map<String, dynamic>> reportMatchFound(String teamId) =>
-      _call('report_match_found', teamId);
+      _call('report_match_found_and_start_game', teamId);
 
   /// Postgres Changes em public.team_matchmaking_revisions, filtrado pelo
   /// time. A tabela nao carrega estado nenhum -- so "o time X mudou" -- e a
