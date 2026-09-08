@@ -9,6 +9,83 @@ import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 import 'package:flutter/material.dart';
 
+class _SportSummaryCard extends StatelessWidget {
+  const _SportSummaryCard({required this.profile});
+
+  final PlayerProfile profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+    final summary = profile.sportSummary;
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            l10n.playerProfileSportSummaryTitle.toUpperCase(),
+            style: context.textStyles.labelSmall,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          if (summary == null || !summary.hasAnyStats)
+            Text(
+              l10n.playerProfileNoStatsMessage,
+              style: context.textStyles.bodySmall?.copyWith(
+                color: colors.textSecondary,
+              ),
+            )
+          else ...<Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    l10n.playerProfileRivalsLabel,
+                    style: context.textStyles.bodyMedium,
+                  ),
+                ),
+                Text(
+                  '${summary.rivals.wins}–${summary.rivals.losses}',
+                  style: context.textStyles.titleSmall,
+                ),
+              ],
+            ),
+            if (summary.topScorers.isNotEmpty) ...<Widget>[
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l10n.statsTopScorersTitle.toUpperCase(),
+                style: context.textStyles.labelSmall,
+              ),
+              for (final entry in summary.topScorers)
+                Text(
+                  l10n.statsTopScorerInlineLabel(entry.playerName, entry.goals),
+                  style: context.textStyles.bodySmall?.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+            ],
+            if (summary.topAssists.isNotEmpty) ...<Widget>[
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l10n.statsTopAssistsTitle.toUpperCase(),
+                style: context.textStyles.labelSmall,
+              ),
+              for (final entry in summary.topAssists)
+                Text(
+                  '${entry.playerName} · ${entry.assists}',
+                  style: context.textStyles.bodySmall?.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+            ],
+          ],
+        ],
+      ),
+    );
+  }
+}
+
 /// Perfil publico de um jogador do MESMO time (Etapa 11, Parte B). Read
 /// model server-side novo -- nunca mostra historico de busca, buscas
 /// canceladas, outros times do usuario ou dados de outras contas.
@@ -110,6 +187,8 @@ class _ProfileBody extends StatelessWidget {
         _SquadCard(profile: profile),
         const SizedBox(height: AppSpacing.lg),
         _WeekendLeagueCard(profile: profile),
+        const SizedBox(height: AppSpacing.lg),
+        _SportSummaryCard(profile: profile),
       ],
     ],
   );

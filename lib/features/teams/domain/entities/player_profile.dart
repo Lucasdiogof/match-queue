@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 
 /// Perfil publico de um membro do time (Etapa 11, Parte B). So o que
 /// qualquer companheiro de time pode ver -- nunca historico de busca, nunca
@@ -84,6 +86,26 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
   ];
 }
 
+/// Resumo esportivo do perfil publico -- Rivals all-time e ate 3 lideres de
+/// gols/assistencias da conta. Nunca busca/historico operacional.
+class PlayerProfileSportSummary extends Equatable {
+  const PlayerProfileSportSummary({
+    required this.rivals,
+    required this.topScorers,
+    required this.topAssists,
+  });
+
+  final FcAccountStats rivals;
+  final List<PlayerLeaderboardEntry> topScorers;
+  final List<PlayerLeaderboardEntry> topAssists;
+
+  bool get hasAnyStats =>
+      rivals.matchesCount > 0 || topScorers.isNotEmpty || topAssists.isNotEmpty;
+
+  @override
+  List<Object?> get props => <Object?>[rivals, topScorers, topAssists];
+}
+
 class PlayerProfile extends Equatable {
   const PlayerProfile({
     required this.userId,
@@ -94,6 +116,7 @@ class PlayerProfile extends Equatable {
     this.avatarUrl,
     this.account,
     this.squad,
+    this.sportSummary,
   });
 
   final String userId;
@@ -104,6 +127,7 @@ class PlayerProfile extends Equatable {
   final PlayerProfileAccount? account;
   final PlayerProfileSquadSummary? squad;
   final List<PlayerProfileWeekendLeagueEntry> weekendLeagueHistory;
+  final PlayerProfileSportSummary? sportSummary;
 
   @override
   List<Object?> get props => <Object?>[
@@ -115,5 +139,6 @@ class PlayerProfile extends Equatable {
     account,
     squad,
     weekendLeagueHistory,
+    sportSummary,
   ];
 }

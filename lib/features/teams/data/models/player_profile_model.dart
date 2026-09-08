@@ -1,3 +1,5 @@
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 
 class PlayerProfileModel {
@@ -54,6 +56,19 @@ class PlayerProfileModel {
             ),
           )
           .toList(growable: false),
+      sportSummary: json['sport_summary'] == null
+          ? null
+          : PlayerProfileSportSummary(
+              rivals: FcAccountStats.fromJson(
+                (json['sport_summary'] as Map<String, dynamic>)['rivals'],
+              ),
+              topScorers: PlayerLeaderboardEntry.listFromJson(
+                (json['sport_summary'] as Map<String, dynamic>)['top_scorers'],
+              ),
+              topAssists: PlayerLeaderboardEntry.listFromJson(
+                (json['sport_summary'] as Map<String, dynamic>)['top_assists'],
+              ),
+            ),
     );
   }
 }
