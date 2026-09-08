@@ -16,9 +16,15 @@ class TeamStatusBadge extends StatelessWidget {
 
     switch (member.status) {
       case PlayerOperationalStatus.inMatch:
-        return AppBadge(label: l10n.teamStatusInMatch, tone: AppBadgeTone.danger);
+        return AppBadge(
+          label: l10n.teamStatusInMatch,
+          tone: AppBadgeTone.danger,
+        );
       case PlayerOperationalStatus.searching:
-        return AppBadge(label: l10n.teamStatusSearching, tone: AppBadgeTone.info);
+        return AppBadge(
+          label: l10n.teamStatusSearching,
+          tone: AppBadgeTone.info,
+        );
       case PlayerOperationalStatus.queued:
         final position = member.queuePosition;
         return AppBadge(

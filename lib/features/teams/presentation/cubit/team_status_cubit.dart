@@ -47,7 +47,9 @@ class TeamStatusCubit extends Cubit<TeamStatusState> {
   }
 
   Future<void> load() async {
-    emit(state.copyWith(status: TeamStatusLoadStatus.loading, clearFailure: true));
+    emit(
+      state.copyWith(status: TeamStatusLoadStatus.loading, clearFailure: true),
+    );
     try {
       final members = await _teamRepository.fetchPlayerStatuses(teamId);
       if (!isClosed) {
@@ -62,7 +64,10 @@ class TeamStatusCubit extends Cubit<TeamStatusState> {
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(
-          state.copyWith(status: TeamStatusLoadStatus.failure, failure: failure),
+          state.copyWith(
+            status: TeamStatusLoadStatus.failure,
+            failure: failure,
+          ),
         );
       }
     }

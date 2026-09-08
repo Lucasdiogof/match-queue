@@ -78,8 +78,7 @@ class _LanguageOptionTile extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(child: Text(label, style: context.textStyles.bodyLarge)),
-          if (isSelected)
-            Icon(Icons.check, color: context.colors.textPrimary),
+          if (isSelected) Icon(Icons.check, color: context.colors.textPrimary),
         ],
       ),
     ),

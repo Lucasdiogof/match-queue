@@ -108,16 +108,17 @@ class _TeamStatusBody extends StatelessWidget {
   final Team team;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<TeamStatusCubit, TeamStatusState>(
-    builder: (context, state) => ListView(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-      children: <Widget>[
-        _TeamHeaderCard(team: team, state: state),
-        const SizedBox(height: AppSpacing.lg),
-        _MemberStatusSection(state: state),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) =>
+      BlocBuilder<TeamStatusCubit, TeamStatusState>(
+        builder: (context, state) => ListView(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+          children: <Widget>[
+            _TeamHeaderCard(team: team, state: state),
+            const SizedBox(height: AppSpacing.lg),
+            _MemberStatusSection(state: state),
+          ],
+        ),
+      );
 }
 
 class _TeamHeaderCard extends StatelessWidget {

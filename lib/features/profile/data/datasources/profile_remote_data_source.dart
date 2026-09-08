@@ -71,7 +71,9 @@ class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
   @override
   Future<void> touchActivity(String userId) => _table
       .update(<String, dynamic>{
-        ProfileModel.columnLastActiveAt: DateTime.now().toUtc().toIso8601String(),
+        ProfileModel.columnLastActiveAt: DateTime.now()
+            .toUtc()
+            .toIso8601String(),
       })
       .eq(ProfileModel.columnId, userId);
 }
