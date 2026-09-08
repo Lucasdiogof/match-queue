@@ -57,6 +57,10 @@ class AppRoutes {
     'profile-notifications',
     '/app/profile/notifications',
   );
+  static const AppRoute notifications = AppRoute(
+    'notifications',
+    '/app/notifications',
+  );
   static const AppRoute fcAccounts = AppRoute(
     'fc-accounts',
     '/app/fc-accounts',

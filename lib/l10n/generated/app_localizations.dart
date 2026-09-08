@@ -1636,6 +1636,184 @@ abstract class AppLocalizations {
   /// **'Avisos sobre a sua vez de buscar e o andamento da sua busca.'**
   String get notificationsChannelQueueAlertsDescription;
 
+  /// No description provided for @notificationsChannelAppUpdatesName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atualizações do time'**
+  String get notificationsChannelAppUpdatesName;
+
+  /// No description provided for @notificationsChannelAppUpdatesDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novos membros, ranking, Weekend League e Rivals.'**
+  String get notificationsChannelAppUpdatesDescription;
+
+  /// No description provided for @notificationsCategoryMatchmaking.
+  ///
+  /// In pt, this message translates to:
+  /// **'Matchmaking'**
+  String get notificationsCategoryMatchmaking;
+
+  /// No description provided for @notificationsCategoryMatchmakingHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua vez, avisos de expiração da busca.'**
+  String get notificationsCategoryMatchmakingHint;
+
+  /// No description provided for @notificationsCategoryTeams.
+  ///
+  /// In pt, this message translates to:
+  /// **'Times'**
+  String get notificationsCategoryTeams;
+
+  /// No description provided for @notificationsCategoryTeamsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novos membros no time.'**
+  String get notificationsCategoryTeamsHint;
+
+  /// No description provided for @notificationsCategoryWeekendLeague.
+  ///
+  /// In pt, this message translates to:
+  /// **'Weekend League'**
+  String get notificationsCategoryWeekendLeague;
+
+  /// No description provided for @notificationsCategoryWeekendLeagueHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando um evento de fim de semana termina.'**
+  String get notificationsCategoryWeekendLeagueHint;
+
+  /// No description provided for @notificationsCategoryRivals.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rivals'**
+  String get notificationsCategoryRivals;
+
+  /// No description provided for @notificationsCategoryRivalsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudança de divisão de uma conta do time.'**
+  String get notificationsCategoryRivalsHint;
+
+  /// No description provided for @notificationsCategoryRankings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rankings'**
+  String get notificationsCategoryRankings;
+
+  /// No description provided for @notificationsCategoryRankingsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo líder, artilheiro ou garçom do time.'**
+  String get notificationsCategoryRankingsHint;
+
+  /// No description provided for @notificationsInboxTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificações'**
+  String get notificationsInboxTitle;
+
+  /// No description provided for @notificationsInboxMarkAllRead.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar tudo como lido'**
+  String get notificationsInboxMarkAllRead;
+
+  /// No description provided for @notificationsInboxEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você ainda não tem notificações'**
+  String get notificationsInboxEmptyTitle;
+
+  /// No description provided for @notificationsInboxEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisos do time, do ranking e das suas buscas aparecem aqui.'**
+  String get notificationsInboxEmptyMessage;
+
+  /// No description provided for @notificationsInboxErrorMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não deu para carregar suas notificações.'**
+  String get notificationsInboxErrorMessage;
+
+  /// No description provided for @notificationsInboxRetry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tentar de novo'**
+  String get notificationsInboxRetry;
+
+  /// No description provided for @notificationsGroupToday.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hoje'**
+  String get notificationsGroupToday;
+
+  /// No description provided for @notificationsGroupYesterday.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ontem'**
+  String get notificationsGroupYesterday;
+
+  /// No description provided for @notificationsGroupEarlier.
+  ///
+  /// In pt, this message translates to:
+  /// **'Anteriores'**
+  String get notificationsGroupEarlier;
+
+  /// No description provided for @notificationTeamMemberJoined.
+  ///
+  /// In pt, this message translates to:
+  /// **'{displayName} entrou em {teamName}.'**
+  String notificationTeamMemberJoined(String displayName, String teamName);
+
+  /// No description provided for @notificationTeamLeaderChanged.
+  ///
+  /// In pt, this message translates to:
+  /// **'{leaderDisplayName} assumiu a liderança do ranking do time.'**
+  String notificationTeamLeaderChanged(String leaderDisplayName);
+
+  /// No description provided for @notificationYouAreTeamLeader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você assumiu a liderança do ranking do time!'**
+  String get notificationYouAreTeamLeader;
+
+  /// No description provided for @notificationTeamTopScorerChanged.
+  ///
+  /// In pt, this message translates to:
+  /// **'{playerName} ({displayName}) é o novo artilheiro do time.'**
+  String notificationTeamTopScorerChanged(
+    String playerName,
+    String displayName,
+  );
+
+  /// No description provided for @notificationTeamTopAssistChanged.
+  ///
+  /// In pt, this message translates to:
+  /// **'{playerName} ({displayName}) lidera as assistências do time.'**
+  String notificationTeamTopAssistChanged(
+    String playerName,
+    String displayName,
+  );
+
+  /// No description provided for @notificationWeekendLeagueFinished.
+  ///
+  /// In pt, this message translates to:
+  /// **'{displayName} terminou a Weekend League em {wins}-{losses}.'**
+  String notificationWeekendLeagueFinished(
+    String displayName,
+    int wins,
+    int losses,
+  );
+
+  /// No description provided for @notificationRivalsDivisionChanged.
+  ///
+  /// In pt, this message translates to:
+  /// **'{displayName} chegou à {division} no Rivals.'**
+  String notificationRivalsDivisionChanged(String displayName, String division);
+
   /// No description provided for @historyTabMatches.
   ///
   /// In pt, this message translates to:

@@ -489,6 +489,70 @@
   "notificationsEnableMessage": "Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.",
   "notificationsChannelQueueAlertsName": "Alertas da fila",
   "notificationsChannelQueueAlertsDescription": "Avisos sobre a sua vez de buscar e o andamento da sua busca.",
+  "notificationsChannelAppUpdatesName": "Atualizações do time",
+  "notificationsChannelAppUpdatesDescription": "Novos membros, ranking, Weekend League e Rivals.",
+  "notificationsCategoryMatchmaking": "Matchmaking",
+  "notificationsCategoryMatchmakingHint": "Sua vez, avisos de expiração da busca.",
+  "notificationsCategoryTeams": "Times",
+  "notificationsCategoryTeamsHint": "Novos membros no time.",
+  "notificationsCategoryWeekendLeague": "Weekend League",
+  "notificationsCategoryWeekendLeagueHint": "Quando um evento de fim de semana termina.",
+  "notificationsCategoryRivals": "Rivals",
+  "notificationsCategoryRivalsHint": "Mudança de divisão de uma conta do time.",
+  "notificationsCategoryRankings": "Rankings",
+  "notificationsCategoryRankingsHint": "Novo líder, artilheiro ou garçom do time.",
+  "notificationsInboxTitle": "Notificações",
+  "notificationsInboxMarkAllRead": "Marcar tudo como lido",
+  "notificationsInboxEmptyTitle": "Você ainda não tem notificações",
+  "notificationsInboxEmptyMessage": "Avisos do time, do ranking e das suas buscas aparecem aqui.",
+  "notificationsInboxErrorMessage": "Não deu para carregar suas notificações.",
+  "notificationsInboxRetry": "Tentar de novo",
+  "notificationsGroupToday": "Hoje",
+  "notificationsGroupYesterday": "Ontem",
+  "notificationsGroupEarlier": "Anteriores",
+  "@notificationTeamMemberJoined": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamMemberJoined": "{displayName} entrou em {teamName}.",
+  "@notificationTeamLeaderChanged": {
+    "placeholders": {
+      "leaderDisplayName": {"type": "String"}
+    }
+  },
+  "notificationTeamLeaderChanged": "{leaderDisplayName} assumiu a liderança do ranking do time.",
+  "notificationYouAreTeamLeader": "Você assumiu a liderança do ranking do time!",
+  "@notificationTeamTopScorerChanged": {
+    "placeholders": {
+      "playerName": {"type": "String"},
+      "displayName": {"type": "String"}
+    }
+  },
+  "notificationTeamTopScorerChanged": "{playerName} ({displayName}) é o novo artilheiro do time.",
+  "@notificationTeamTopAssistChanged": {
+    "placeholders": {
+      "playerName": {"type": "String"},
+      "displayName": {"type": "String"}
+    }
+  },
+  "notificationTeamTopAssistChanged": "{playerName} ({displayName}) lidera as assistências do time.",
+  "@notificationWeekendLeagueFinished": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "wins": {"type": "int"},
+      "losses": {"type": "int"}
+    }
+  },
+  "notificationWeekendLeagueFinished": "{displayName} terminou a Weekend League em {wins}-{losses}.",
+  "@notificationRivalsDivisionChanged": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "division": {"type": "String"}
+    }
+  },
+  "notificationRivalsDivisionChanged": "{displayName} chegou à {division} no Rivals.",
   "historyTabMatches": "Partidas",
   "historyTabStats": "Estatísticas",
   "historyPeriodAll": "Sempre",

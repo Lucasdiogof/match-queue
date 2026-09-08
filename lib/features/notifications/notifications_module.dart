@@ -2,14 +2,19 @@ import 'package:fifa_queue/core/firebase/firebase_bootstrap.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
+import 'package:fifa_queue/features/notifications/data/datasources/notification_inbox_remote_data_source.dart';
 import 'package:fifa_queue/features/notifications/data/datasources/notification_remote_data_source.dart';
+import 'package:fifa_queue/features/notifications/data/repositories/local_notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/data/repositories/local_notification_repository.dart';
+import 'package:fifa_queue/features/notifications/data/repositories/supabase_notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/data/repositories/supabase_notification_repository.dart';
 import 'package:fifa_queue/features/notifications/data/services/firebase_push_messaging_service.dart';
 import 'package:fifa_queue/features/notifications/data/services/unavailable_push_messaging_service.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/push_permission_status.dart';
+import 'package:fifa_queue/features/notifications/domain/repositories/notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:fifa_queue/features/notifications/domain/services/push_messaging_service.dart';
+import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -33,7 +38,26 @@ void registerNotificationsModule(
         sl<NotificationRepository>(),
         sl<AppLogger>(),
       ),
+    )
+    ..registerLazySingleton<NotificationInboxRepository>(
+      _notificationInboxRepository(sl, supabaseClient),
+    )
+    ..registerLazySingleton<NotificationUnreadCubit>(
+      () => NotificationUnreadCubit(sl<NotificationInboxRepository>()),
     );
+}
+
+NotificationInboxRepository Function() _notificationInboxRepository(
+  GetIt sl,
+  SupabaseClient? supabaseClient,
+) {
+  if (supabaseClient == null) {
+    return LocalNotificationInboxRepository.new;
+  }
+  return () => SupabaseNotificationInboxRepository(
+    SupabaseNotificationInboxRemoteDataSource(supabaseClient),
+    sl<SupabaseErrorMapper>(),
+  );
 }
 
 PushMessagingService Function() _pushMessagingService(

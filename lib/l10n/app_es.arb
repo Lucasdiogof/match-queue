@@ -489,6 +489,70 @@
   "notificationsEnableMessage": "Activa las notificaciones para saber al instante cuándo es tu turno de buscar partido, incluso con la app cerrada.",
   "notificationsChannelQueueAlertsName": "Alertas de la cola",
   "notificationsChannelQueueAlertsDescription": "Avisos sobre tu turno de buscar y el progreso de tu búsqueda.",
+  "notificationsChannelAppUpdatesName": "Actualizaciones del equipo",
+  "notificationsChannelAppUpdatesDescription": "Nuevos miembros, ranking, Weekend League y Rivals.",
+  "notificationsCategoryMatchmaking": "Matchmaking",
+  "notificationsCategoryMatchmakingHint": "Tu turno, avisos de expiración de la búsqueda.",
+  "notificationsCategoryTeams": "Equipos",
+  "notificationsCategoryTeamsHint": "Nuevos miembros en el equipo.",
+  "notificationsCategoryWeekendLeague": "Weekend League",
+  "notificationsCategoryWeekendLeagueHint": "Cuando un evento de fin de semana termina.",
+  "notificationsCategoryRivals": "Rivals",
+  "notificationsCategoryRivalsHint": "Una cuenta del equipo cambia de división.",
+  "notificationsCategoryRankings": "Rankings",
+  "notificationsCategoryRankingsHint": "Nuevo líder, goleador o asistidor del equipo.",
+  "notificationsInboxTitle": "Notificaciones",
+  "notificationsInboxMarkAllRead": "Marcar todo como leído",
+  "notificationsInboxEmptyTitle": "Todavía no tienes notificaciones",
+  "notificationsInboxEmptyMessage": "Aquí aparecen los avisos del equipo, del ranking y de tus búsquedas.",
+  "notificationsInboxErrorMessage": "No pudimos cargar tus notificaciones.",
+  "notificationsInboxRetry": "Intentar de nuevo",
+  "notificationsGroupToday": "Hoy",
+  "notificationsGroupYesterday": "Ayer",
+  "notificationsGroupEarlier": "Anteriores",
+  "@notificationTeamMemberJoined": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamMemberJoined": "{displayName} se unió a {teamName}.",
+  "@notificationTeamLeaderChanged": {
+    "placeholders": {
+      "leaderDisplayName": {"type": "String"}
+    }
+  },
+  "notificationTeamLeaderChanged": "{leaderDisplayName} asumió el liderato del ranking del equipo.",
+  "notificationYouAreTeamLeader": "¡Asumiste el liderato del ranking del equipo!",
+  "@notificationTeamTopScorerChanged": {
+    "placeholders": {
+      "playerName": {"type": "String"},
+      "displayName": {"type": "String"}
+    }
+  },
+  "notificationTeamTopScorerChanged": "{playerName} ({displayName}) es el nuevo goleador del equipo.",
+  "@notificationTeamTopAssistChanged": {
+    "placeholders": {
+      "playerName": {"type": "String"},
+      "displayName": {"type": "String"}
+    }
+  },
+  "notificationTeamTopAssistChanged": "{playerName} ({displayName}) ahora lidera las asistencias del equipo.",
+  "@notificationWeekendLeagueFinished": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "wins": {"type": "int"},
+      "losses": {"type": "int"}
+    }
+  },
+  "notificationWeekendLeagueFinished": "{displayName} terminó la Weekend League {wins}-{losses}.",
+  "@notificationRivalsDivisionChanged": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "division": {"type": "String"}
+    }
+  },
+  "notificationRivalsDivisionChanged": "{displayName} llegó a {division} en Rivals.",
   "historyTabMatches": "Partidos",
   "historyTabStats": "Estadísticas",
   "historyPeriodAll": "Siempre",

@@ -11,6 +11,7 @@ import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_section.dart';
+import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
@@ -30,7 +31,11 @@ class HomePage extends StatelessWidget {
         final selected = state.selectedTeam;
 
         return AppScaffold(
-          appBar: AppAppBar(title: l10n.homeTitle, subtitle: l10n.homeSubtitle),
+          appBar: AppAppBar(
+            title: l10n.homeTitle,
+            subtitle: l10n.homeSubtitle,
+            actions: const <Widget>[NotificationBellButton()],
+          ),
           body: _HomeBody(state: state, selected: selected),
         );
       },

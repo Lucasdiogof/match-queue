@@ -46,6 +46,11 @@ class FirebaseBootstrap {
   /// notificação em silêncio -- nenhum dos dois lados reporta erro nesse caso.
   static const String queueAlertsChannelId = 'queue_alerts';
 
+  /// Canal dos 6 tipos sociais/esportivos da Etapa 15 (time, ranking,
+  /// Weekend League, Rivals) -- prioridade normal, sem o urgencia de
+  /// "sua vez": ninguem perde nada se abrir o app 10 minutos depois.
+  static const String appUpdatesChannelId = 'app_updates';
+
   Future<FirebaseAvailability> initialize(
     AppConfig config, {
     Locale locale = const Locale('en'),
@@ -99,19 +104,28 @@ class FirebaseBootstrap {
       return;
     }
     final l10n = _lookupL10n(locale);
-    final channel = AndroidNotificationChannel(
-      queueAlertsChannelId,
-      l10n.notificationsChannelQueueAlertsName,
-      description: l10n.notificationsChannelQueueAlertsDescription,
-      importance: Importance.high,
-      playSound: true,
-      enableVibration: true,
-    );
-    await FlutterLocalNotificationsPlugin()
+    final plugin = FlutterLocalNotificationsPlugin()
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(channel);
+        >();
+    await plugin?.createNotificationChannel(
+      AndroidNotificationChannel(
+        queueAlertsChannelId,
+        l10n.notificationsChannelQueueAlertsName,
+        description: l10n.notificationsChannelQueueAlertsDescription,
+        importance: Importance.high,
+        playSound: true,
+        enableVibration: true,
+      ),
+    );
+    await plugin?.createNotificationChannel(
+      AndroidNotificationChannel(
+        appUpdatesChannelId,
+        l10n.notificationsChannelAppUpdatesName,
+        description: l10n.notificationsChannelAppUpdatesDescription,
+        importance: Importance.defaultImportance,
+      ),
+    );
   }
 
   AppLocalizations _lookupL10n(Locale locale) => switch (locale.languageCode) {

@@ -912,6 +912,123 @@ class AppLocalizationsEs extends AppLocalizations {
       'Avisos sobre tu turno de buscar y el progreso de tu búsqueda.';
 
   @override
+  String get notificationsChannelAppUpdatesName => 'Actualizaciones del equipo';
+
+  @override
+  String get notificationsChannelAppUpdatesDescription =>
+      'Nuevos miembros, ranking, Weekend League y Rivals.';
+
+  @override
+  String get notificationsCategoryMatchmaking => 'Matchmaking';
+
+  @override
+  String get notificationsCategoryMatchmakingHint =>
+      'Tu turno, avisos de expiración de la búsqueda.';
+
+  @override
+  String get notificationsCategoryTeams => 'Equipos';
+
+  @override
+  String get notificationsCategoryTeamsHint => 'Nuevos miembros en el equipo.';
+
+  @override
+  String get notificationsCategoryWeekendLeague => 'Weekend League';
+
+  @override
+  String get notificationsCategoryWeekendLeagueHint =>
+      'Cuando un evento de fin de semana termina.';
+
+  @override
+  String get notificationsCategoryRivals => 'Rivals';
+
+  @override
+  String get notificationsCategoryRivalsHint =>
+      'Una cuenta del equipo cambia de división.';
+
+  @override
+  String get notificationsCategoryRankings => 'Rankings';
+
+  @override
+  String get notificationsCategoryRankingsHint =>
+      'Nuevo líder, goleador o asistidor del equipo.';
+
+  @override
+  String get notificationsInboxTitle => 'Notificaciones';
+
+  @override
+  String get notificationsInboxMarkAllRead => 'Marcar todo como leído';
+
+  @override
+  String get notificationsInboxEmptyTitle => 'Todavía no tienes notificaciones';
+
+  @override
+  String get notificationsInboxEmptyMessage =>
+      'Aquí aparecen los avisos del equipo, del ranking y de tus búsquedas.';
+
+  @override
+  String get notificationsInboxErrorMessage =>
+      'No pudimos cargar tus notificaciones.';
+
+  @override
+  String get notificationsInboxRetry => 'Intentar de nuevo';
+
+  @override
+  String get notificationsGroupToday => 'Hoy';
+
+  @override
+  String get notificationsGroupYesterday => 'Ayer';
+
+  @override
+  String get notificationsGroupEarlier => 'Anteriores';
+
+  @override
+  String notificationTeamMemberJoined(String displayName, String teamName) {
+    return '$displayName se unió a $teamName.';
+  }
+
+  @override
+  String notificationTeamLeaderChanged(String leaderDisplayName) {
+    return '$leaderDisplayName asumió el liderato del ranking del equipo.';
+  }
+
+  @override
+  String get notificationYouAreTeamLeader =>
+      '¡Asumiste el liderato del ranking del equipo!';
+
+  @override
+  String notificationTeamTopScorerChanged(
+    String playerName,
+    String displayName,
+  ) {
+    return '$playerName ($displayName) es el nuevo goleador del equipo.';
+  }
+
+  @override
+  String notificationTeamTopAssistChanged(
+    String playerName,
+    String displayName,
+  ) {
+    return '$playerName ($displayName) ahora lidera las asistencias del equipo.';
+  }
+
+  @override
+  String notificationWeekendLeagueFinished(
+    String displayName,
+    int wins,
+    int losses,
+  ) {
+    return '$displayName terminó la Weekend League $wins-$losses.';
+  }
+
+  @override
+  String notificationRivalsDivisionChanged(
+    String displayName,
+    String division,
+  ) {
+    return '$displayName llegó a $division en Rivals.';
+  }
+
+  @override
   String get historyTabMatches => 'Partidos';
 
   @override

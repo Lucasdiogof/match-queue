@@ -3,13 +3,14 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
-import 'package:fifa_queue/features/notifications/domain/entities/push_notification_type.dart';
+import 'package:fifa_queue/features/notifications/domain/entities/notification_category.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/push_permission_status.dart';
 import 'package:fifa_queue/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:fifa_queue/features/notifications/domain/services/push_messaging_service.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_settings_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_settings_state.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/enable_notifications_sheet.dart';
+import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,34 +65,15 @@ class _NotificationSettingsBody extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
               ],
               _PermissionArea(state: state, onEnable: () => _enable(context)),
-              _ToggleRow(
-                label: l10n.notificationsToggleYourTurn,
-                hint: l10n.notificationsToggleYourTurnHint,
-                value: state.preferences.queueTurnEnabled,
-                onChanged: (value) => context
-                    .read<NotificationSettingsCubit>()
-                    .setEnabled(PushNotificationType.yourTurn, value: value),
-              ),
-              _ToggleRow(
-                label: l10n.notificationsToggleExpiring,
-                hint: l10n.notificationsToggleExpiringHint,
-                value: state.preferences.searchExpiringEnabled,
-                onChanged: (value) =>
-                    context.read<NotificationSettingsCubit>().setEnabled(
-                      PushNotificationType.searchExpiring,
-                      value: value,
-                    ),
-              ),
-              _ToggleRow(
-                label: l10n.notificationsToggleExpired,
-                hint: l10n.notificationsToggleExpiredHint,
-                value: state.preferences.searchExpiredEnabled,
-                onChanged: (value) =>
-                    context.read<NotificationSettingsCubit>().setEnabled(
-                      PushNotificationType.searchExpired,
-                      value: value,
-                    ),
-              ),
+              for (final category in NotificationCategory.values)
+                _ToggleRow(
+                  label: _categoryLabel(l10n, category),
+                  hint: _categoryHint(l10n, category),
+                  value: state.preferences.isCategoryEnabled(category),
+                  onChanged: (value) => context
+                      .read<NotificationSettingsCubit>()
+                      .setCategoryEnabled(category, value: value),
+                ),
             ],
           ],
         ),
@@ -99,6 +81,27 @@ class _NotificationSettingsBody extends StatelessWidget {
     );
   }
 }
+
+String _categoryLabel(AppLocalizations l10n, NotificationCategory category) =>
+    switch (category) {
+      NotificationCategory.matchmaking => l10n.notificationsCategoryMatchmaking,
+      NotificationCategory.teams => l10n.notificationsCategoryTeams,
+      NotificationCategory.weekendLeague =>
+        l10n.notificationsCategoryWeekendLeague,
+      NotificationCategory.rivals => l10n.notificationsCategoryRivals,
+      NotificationCategory.rankings => l10n.notificationsCategoryRankings,
+    };
+
+String _categoryHint(AppLocalizations l10n, NotificationCategory category) =>
+    switch (category) {
+      NotificationCategory.matchmaking =>
+        l10n.notificationsCategoryMatchmakingHint,
+      NotificationCategory.teams => l10n.notificationsCategoryTeamsHint,
+      NotificationCategory.weekendLeague =>
+        l10n.notificationsCategoryWeekendLeagueHint,
+      NotificationCategory.rivals => l10n.notificationsCategoryRivalsHint,
+      NotificationCategory.rankings => l10n.notificationsCategoryRankingsHint,
+    };
 
 class _PermissionArea extends StatelessWidget {
   const _PermissionArea({required this.state, required this.onEnable});

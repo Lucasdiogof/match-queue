@@ -906,6 +906,123 @@ class AppLocalizationsEn extends AppLocalizations {
       'Alerts about your turn to search and how your search is going.';
 
   @override
+  String get notificationsChannelAppUpdatesName => 'Team updates';
+
+  @override
+  String get notificationsChannelAppUpdatesDescription =>
+      'New members, ranking, Weekend League and Rivals.';
+
+  @override
+  String get notificationsCategoryMatchmaking => 'Matchmaking';
+
+  @override
+  String get notificationsCategoryMatchmakingHint =>
+      'Your turn, search expiry alerts.';
+
+  @override
+  String get notificationsCategoryTeams => 'Teams';
+
+  @override
+  String get notificationsCategoryTeamsHint => 'New members joining the team.';
+
+  @override
+  String get notificationsCategoryWeekendLeague => 'Weekend League';
+
+  @override
+  String get notificationsCategoryWeekendLeagueHint =>
+      'When a weekend event finishes.';
+
+  @override
+  String get notificationsCategoryRivals => 'Rivals';
+
+  @override
+  String get notificationsCategoryRivalsHint =>
+      'A team account changes division.';
+
+  @override
+  String get notificationsCategoryRankings => 'Rankings';
+
+  @override
+  String get notificationsCategoryRankingsHint =>
+      'New team leader, top scorer or top assist.';
+
+  @override
+  String get notificationsInboxTitle => 'Notifications';
+
+  @override
+  String get notificationsInboxMarkAllRead => 'Mark all as read';
+
+  @override
+  String get notificationsInboxEmptyTitle => 'You have no notifications yet';
+
+  @override
+  String get notificationsInboxEmptyMessage =>
+      'Team, ranking and search updates show up here.';
+
+  @override
+  String get notificationsInboxErrorMessage =>
+      'We couldn\'t load your notifications.';
+
+  @override
+  String get notificationsInboxRetry => 'Try again';
+
+  @override
+  String get notificationsGroupToday => 'Today';
+
+  @override
+  String get notificationsGroupYesterday => 'Yesterday';
+
+  @override
+  String get notificationsGroupEarlier => 'Earlier';
+
+  @override
+  String notificationTeamMemberJoined(String displayName, String teamName) {
+    return '$displayName joined $teamName.';
+  }
+
+  @override
+  String notificationTeamLeaderChanged(String leaderDisplayName) {
+    return '$leaderDisplayName took the lead of the team ranking.';
+  }
+
+  @override
+  String get notificationYouAreTeamLeader =>
+      'You took the lead of the team ranking!';
+
+  @override
+  String notificationTeamTopScorerChanged(
+    String playerName,
+    String displayName,
+  ) {
+    return '$playerName ($displayName) is the new team top scorer.';
+  }
+
+  @override
+  String notificationTeamTopAssistChanged(
+    String playerName,
+    String displayName,
+  ) {
+    return '$playerName ($displayName) now leads the team in assists.';
+  }
+
+  @override
+  String notificationWeekendLeagueFinished(
+    String displayName,
+    int wins,
+    int losses,
+  ) {
+    return '$displayName finished the Weekend League $wins-$losses.';
+  }
+
+  @override
+  String notificationRivalsDivisionChanged(
+    String displayName,
+    String division,
+  ) {
+    return '$displayName reached $division in Rivals.';
+  }
+
+  @override
   String get historyTabMatches => 'Matches';
 
   @override

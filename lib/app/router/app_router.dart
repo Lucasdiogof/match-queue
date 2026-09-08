@@ -14,6 +14,7 @@ import 'package:fifa_queue/features/game/presentation/pages/match_details_page.d
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
+import 'package:fifa_queue/features/notifications/presentation/pages/notifications_inbox_page.dart';
 import 'package:fifa_queue/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_appearance_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_language_page.dart';
@@ -105,6 +106,11 @@ class AppRouter {
         path: AppRoutes.profileNotifications.path,
         name: AppRoutes.profileNotifications.name,
         builder: (context, state) => const ProfileNotificationsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications.path,
+        name: AppRoutes.notifications.name,
+        builder: (context, state) => const NotificationsInboxPage(),
       ),
       GoRoute(
         path: AppRoutes.fcAccounts.path,

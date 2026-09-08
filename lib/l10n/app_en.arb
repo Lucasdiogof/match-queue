@@ -489,6 +489,70 @@
   "notificationsEnableMessage": "Turn on notifications to know the moment it's your turn to search — even with the app closed.",
   "notificationsChannelQueueAlertsName": "Queue alerts",
   "notificationsChannelQueueAlertsDescription": "Alerts about your turn to search and how your search is going.",
+  "notificationsChannelAppUpdatesName": "Team updates",
+  "notificationsChannelAppUpdatesDescription": "New members, ranking, Weekend League and Rivals.",
+  "notificationsCategoryMatchmaking": "Matchmaking",
+  "notificationsCategoryMatchmakingHint": "Your turn, search expiry alerts.",
+  "notificationsCategoryTeams": "Teams",
+  "notificationsCategoryTeamsHint": "New members joining the team.",
+  "notificationsCategoryWeekendLeague": "Weekend League",
+  "notificationsCategoryWeekendLeagueHint": "When a weekend event finishes.",
+  "notificationsCategoryRivals": "Rivals",
+  "notificationsCategoryRivalsHint": "A team account changes division.",
+  "notificationsCategoryRankings": "Rankings",
+  "notificationsCategoryRankingsHint": "New team leader, top scorer or top assist.",
+  "notificationsInboxTitle": "Notifications",
+  "notificationsInboxMarkAllRead": "Mark all as read",
+  "notificationsInboxEmptyTitle": "You have no notifications yet",
+  "notificationsInboxEmptyMessage": "Team, ranking and search updates show up here.",
+  "notificationsInboxErrorMessage": "We couldn't load your notifications.",
+  "notificationsInboxRetry": "Try again",
+  "notificationsGroupToday": "Today",
+  "notificationsGroupYesterday": "Yesterday",
+  "notificationsGroupEarlier": "Earlier",
+  "@notificationTeamMemberJoined": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamMemberJoined": "{displayName} joined {teamName}.",
+  "@notificationTeamLeaderChanged": {
+    "placeholders": {
+      "leaderDisplayName": {"type": "String"}
+    }
+  },
+  "notificationTeamLeaderChanged": "{leaderDisplayName} took the lead of the team ranking.",
+  "notificationYouAreTeamLeader": "You took the lead of the team ranking!",
+  "@notificationTeamTopScorerChanged": {
+    "placeholders": {
+      "playerName": {"type": "String"},
+      "displayName": {"type": "String"}
+    }
+  },
+  "notificationTeamTopScorerChanged": "{playerName} ({displayName}) is the new team top scorer.",
+  "@notificationTeamTopAssistChanged": {
+    "placeholders": {
+      "playerName": {"type": "String"},
+      "displayName": {"type": "String"}
+    }
+  },
+  "notificationTeamTopAssistChanged": "{playerName} ({displayName}) now leads the team in assists.",
+  "@notificationWeekendLeagueFinished": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "wins": {"type": "int"},
+      "losses": {"type": "int"}
+    }
+  },
+  "notificationWeekendLeagueFinished": "{displayName} finished the Weekend League {wins}-{losses}.",
+  "@notificationRivalsDivisionChanged": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "division": {"type": "String"}
+    }
+  },
+  "notificationRivalsDivisionChanged": "{displayName} reached {division} in Rivals.",
   "historyTabMatches": "Matches",
   "historyTabStats": "Statistics",
   "historyPeriodAll": "All time",

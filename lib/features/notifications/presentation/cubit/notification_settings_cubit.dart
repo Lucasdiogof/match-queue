@@ -1,5 +1,6 @@
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
+import 'package:fifa_queue/features/notifications/domain/entities/notification_category.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/push_notification_type.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/push_permission_status.dart';
 import 'package:fifa_queue/features/notifications/domain/repositories/notification_repository.dart';
@@ -62,6 +63,36 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
     final previous = state.preferences;
     final updated = previous.copyWithType(type, value);
     // Otimista: o toggle acompanha o dedo; se a escrita falhar, voltamos.
+    emit(
+      state.copyWith(preferences: updated, isSaving: true, clearFailure: true),
+    );
+    try {
+      final saved = await _repository.savePreferences(updated);
+      if (!isClosed) {
+        emit(state.copyWith(preferences: saved, isSaving: false));
+      }
+    } on AppFailure catch (failure) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            preferences: previous,
+            isSaving: false,
+            failure: failure,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> setCategoryEnabled(
+    NotificationCategory category, {
+    required bool value,
+  }) async {
+    if (state.isSaving) {
+      return;
+    }
+    final previous = state.preferences;
+    final updated = previous.copyWithCategory(category, value);
     emit(
       state.copyWith(preferences: updated, isSaving: true, clearFailure: true),
     );

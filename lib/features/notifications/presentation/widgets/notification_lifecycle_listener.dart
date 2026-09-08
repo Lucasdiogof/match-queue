@@ -7,7 +7,9 @@ import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/push_permission_status.dart';
+import 'package:fifa_queue/features/notifications/domain/repositories/notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/domain/services/push_messaging_service.dart';
+import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/notification_router.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/enable_notifications_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -52,6 +54,8 @@ class _NotificationLifecycleListenerState
   late final NotificationRouter _router = NotificationRouter(
     context.read<TeamsCubit>(),
     _logger,
+    inboxRepository: getIt<NotificationInboxRepository>(),
+    unreadCubit: context.read<NotificationUnreadCubit>(),
   );
 
   StreamSubscription<Map<String, dynamic>>? _taps;
@@ -66,6 +70,7 @@ class _NotificationLifecycleListenerState
     // para o estado inicial, então tratamos aqui.
     if (context.read<AuthCubit>().state.isAuthenticated) {
       unawaited(_coordinator.onSignedIn());
+      unawaited(context.read<NotificationUnreadCubit>().refresh());
     }
 
     _taps = _messaging.notificationTaps().listen(
@@ -88,8 +93,11 @@ class _NotificationLifecycleListenerState
   }
 
   void _onForegroundMessage(Map<String, dynamic> data) {
-    // Sem UI de propósito: o Realtime já cuida do refresh e do snackbar.
+    // Sem UI de propósito: o Realtime já cuida do refresh e do snackbar de
+    // matchmaking. Os tipos sociais/esportivos da Etapa 15 so atualizam o
+    // badge silenciosamente -- item 45, nada de snackbar + inbox + modal.
     _logger.debug('Push em foreground suprimido (Realtime cobre a tela).');
+    unawaited(context.read<NotificationUnreadCubit>().refresh());
   }
 
   Future<void> _maybePromptForPermission() async {
@@ -141,9 +149,12 @@ class _NotificationLifecycleListenerState
         listener: (context, state) {
           if (state.isAuthenticated) {
             unawaited(_coordinator.onSignedIn());
+            unawaited(context.read<NotificationUnreadCubit>().refresh());
           } else {
             _promptedThisRun = false;
             unawaited(_coordinator.onSignedOut());
+            // Item 94/95: badge nunca pode sobreviver a troca de sessão.
+            context.read<NotificationUnreadCubit>().clear();
           }
         },
       ),
