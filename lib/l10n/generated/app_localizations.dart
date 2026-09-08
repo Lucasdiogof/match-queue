@@ -175,7 +175,7 @@ abstract class AppLocalizations {
   /// No description provided for @navSearch.
   ///
   /// In pt, this message translates to:
-  /// **'Buscar'**
+  /// **'Jogar'**
   String get navSearch;
 
   /// No description provided for @navTeam.
@@ -1270,6 +1270,36 @@ abstract class AppLocalizations {
   /// **'Este time está inativo no momento.'**
   String get errorMatchmakingTeamInactive;
 
+  /// No description provided for @errorGameCooldown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Espere um pouco antes de buscar de novo.'**
+  String get errorGameCooldown;
+
+  /// No description provided for @errorGameMatchNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partida não encontrada.'**
+  String get errorGameMatchNotFound;
+
+  /// No description provided for @errorGameMatchAlreadyFinished.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta partida já foi finalizada.'**
+  String get errorGameMatchAlreadyFinished;
+
+  /// No description provided for @errorGameInvalidMode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo de jogo inválido.'**
+  String get errorGameInvalidMode;
+
+  /// No description provided for @errorGameInvalidResult.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um resultado ou um placar sem empate.'**
+  String get errorGameInvalidResult;
+
   /// No description provided for @matchmakingIdleTitle.
   ///
   /// In pt, this message translates to:
@@ -1297,7 +1327,7 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingCancelAction.
   ///
   /// In pt, this message translates to:
-  /// **'Cancelar busca'**
+  /// **'Cancelar'**
   String get matchmakingCancelAction;
 
   /// No description provided for @matchmakingLeaveQueueAction.
@@ -1309,7 +1339,7 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingMatchFoundAction.
   ///
   /// In pt, this message translates to:
-  /// **'Partida encontrada'**
+  /// **'Encontrei'**
   String get matchmakingMatchFoundAction;
 
   /// No description provided for @matchmakingSearchingSelfTitle.
@@ -1635,6 +1665,102 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{count, plural, =1{1 busca} other{{count} buscas}}'**
   String statsPlayerSearches(int count);
+
+  /// No description provided for @gameModeWeekendLeague.
+  ///
+  /// In pt, this message translates to:
+  /// **'Weekend League'**
+  String get gameModeWeekendLeague;
+
+  /// No description provided for @gameModeDivisionRivals.
+  ///
+  /// In pt, this message translates to:
+  /// **'Division Rivals'**
+  String get gameModeDivisionRivals;
+
+  /// No description provided for @pendingMatchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você tem uma partida sem resultado'**
+  String get pendingMatchTitle;
+
+  /// No description provided for @pendingMatchWinAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vitória'**
+  String get pendingMatchWinAction;
+
+  /// No description provided for @pendingMatchLossAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Derrota'**
+  String get pendingMatchLossAction;
+
+  /// No description provided for @pendingMatchAddScoreAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar placar'**
+  String get pendingMatchAddScoreAction;
+
+  /// No description provided for @finishMatchSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado da partida'**
+  String get finishMatchSheetTitle;
+
+  /// No description provided for @finishMatchSheetMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o placar da sua partida.'**
+  String get finishMatchSheetMessage;
+
+  /// No description provided for @finishMatchGoalsForLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus gols'**
+  String get finishMatchGoalsForLabel;
+
+  /// No description provided for @finishMatchGoalsAgainstLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gols do adversário'**
+  String get finishMatchGoalsAgainstLabel;
+
+  /// No description provided for @finishMatchGoalsRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe um número válido.'**
+  String get finishMatchGoalsRequired;
+
+  /// No description provided for @finishMatchDrawError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Empate não é um resultado final válido.'**
+  String get finishMatchDrawError;
+
+  /// No description provided for @finishMatchSubmitAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar resultado'**
+  String get finishMatchSubmitAction;
+
+  /// No description provided for @weekendLeagueBadge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Weekend League #{number}'**
+  String weekendLeagueBadge(int number);
+
+  /// No description provided for @weekendLeagueWindow.
+  ///
+  /// In pt, this message translates to:
+  /// **'{start} – {end}'**
+  String weekendLeagueWindow(String start, String end);
+
+  /// No description provided for @weekendLeagueActiveBadge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em andamento'**
+  String get weekendLeagueActiveBadge;
 }
 
 class _AppLocalizationsDelegate

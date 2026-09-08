@@ -23,9 +23,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 const Duration _safetyRefreshInterval = Duration(seconds: 90);
 
 class MatchmakingSection extends StatelessWidget {
-  const MatchmakingSection({required this.teamId, super.key});
+  const MatchmakingSection({
+    required this.teamId,
+    this.onMatchFound,
+    super.key,
+  });
 
   final String teamId;
+
+  /// Chamado depois de um "Encontrei" bem-sucedido -- serve pra quem mostra
+  /// o card de partida pendente pedir uma releitura na hora, em vez de
+  /// esperar o próximo load espontâneo.
+  final VoidCallback? onMatchFound;
 
   @override
   Widget build(BuildContext context) => BlocProvider<MatchmakingCubit>(
@@ -35,12 +44,14 @@ class MatchmakingSection extends StatelessWidget {
       getIt<AppLogger>(),
       teamId: teamId,
     )..start(),
-    child: const _MatchmakingSectionBody(),
+    child: _MatchmakingSectionBody(onMatchFound: onMatchFound),
   );
 }
 
 class _MatchmakingSectionBody extends StatefulWidget {
-  const _MatchmakingSectionBody();
+  const _MatchmakingSectionBody({this.onMatchFound});
+
+  final VoidCallback? onMatchFound;
 
   @override
   State<_MatchmakingSectionBody> createState() =>
@@ -107,7 +118,10 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
                   state.failure?.localizedMessage(l10n) ?? l10n.errorUnexpected,
             ),
           ),
-          MatchmakingStatus.ready => _MatchmakingReadyBody(state: state),
+          MatchmakingStatus.ready => _MatchmakingReadyBody(
+            state: state,
+            onMatchFound: widget.onMatchFound,
+          ),
         },
       ),
     );
@@ -115,9 +129,10 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
 }
 
 class _MatchmakingReadyBody extends StatelessWidget {
-  const _MatchmakingReadyBody({required this.state});
+  const _MatchmakingReadyBody({required this.state, this.onMatchFound});
 
   final MatchmakingState state;
+  final VoidCallback? onMatchFound;
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +145,7 @@ class _MatchmakingReadyBody extends StatelessWidget {
       _ when snapshot.isSearchingByMe => _SearchingSelfCard(
         state: state,
         snapshot: snapshot,
+        onMatchFound: onMatchFound,
       ),
       _ when snapshot.searching != null => _SearchingOtherCard(
         state: state,
@@ -242,10 +258,22 @@ class _IdleCard extends StatelessWidget {
 }
 
 class _SearchingSelfCard extends StatelessWidget {
-  const _SearchingSelfCard({required this.state, required this.snapshot});
+  const _SearchingSelfCard({
+    required this.state,
+    required this.snapshot,
+    this.onMatchFound,
+  });
 
   final MatchmakingState state;
   final MatchmakingSnapshot snapshot;
+  final VoidCallback? onMatchFound;
+
+  Future<void> _matchFound(BuildContext context) async {
+    final ok = await context.read<MatchmakingCubit>().matchFound();
+    if (ok) {
+      onMatchFound?.call();
+    }
+  }
 
   Future<void> _confirmCancel(BuildContext context) async {
     final l10n = context.l10n;
@@ -329,7 +357,7 @@ class _SearchingSelfCard extends StatelessWidget {
                   isLoading: state.isActionPending,
                   onPressed: state.isActionPending
                       ? null
-                      : () => context.read<MatchmakingCubit>().matchFound(),
+                      : () => _matchFound(context),
                 ),
               ),
             ],

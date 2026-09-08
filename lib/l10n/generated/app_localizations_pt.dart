@@ -45,7 +45,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionSignOut => 'Sair';
 
   @override
-  String get navSearch => 'Buscar';
+  String get navSearch => 'Jogar';
 
   @override
   String get navTeam => 'Time';
@@ -686,6 +686,22 @@ class AppLocalizationsPt extends AppLocalizations {
       'Este time está inativo no momento.';
 
   @override
+  String get errorGameCooldown => 'Espere um pouco antes de buscar de novo.';
+
+  @override
+  String get errorGameMatchNotFound => 'Partida não encontrada.';
+
+  @override
+  String get errorGameMatchAlreadyFinished => 'Esta partida já foi finalizada.';
+
+  @override
+  String get errorGameInvalidMode => 'Modo de jogo inválido.';
+
+  @override
+  String get errorGameInvalidResult =>
+      'Informe um resultado ou um placar sem empate.';
+
+  @override
   String get matchmakingIdleTitle => 'Ninguém está buscando partida';
 
   @override
@@ -699,13 +715,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get matchmakingJoinQueueAction => 'Entrar na fila';
 
   @override
-  String get matchmakingCancelAction => 'Cancelar busca';
+  String get matchmakingCancelAction => 'Cancelar';
 
   @override
   String get matchmakingLeaveQueueAction => 'Sair da fila';
 
   @override
-  String get matchmakingMatchFoundAction => 'Partida encontrada';
+  String get matchmakingMatchFoundAction => 'Encontrei';
 
   @override
   String get matchmakingSearchingSelfTitle => 'Buscando partida';
@@ -901,4 +917,56 @@ class AppLocalizationsPt extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get gameModeWeekendLeague => 'Weekend League';
+
+  @override
+  String get gameModeDivisionRivals => 'Division Rivals';
+
+  @override
+  String get pendingMatchTitle => 'Você tem uma partida sem resultado';
+
+  @override
+  String get pendingMatchWinAction => 'Vitória';
+
+  @override
+  String get pendingMatchLossAction => 'Derrota';
+
+  @override
+  String get pendingMatchAddScoreAction => 'Adicionar placar';
+
+  @override
+  String get finishMatchSheetTitle => 'Resultado da partida';
+
+  @override
+  String get finishMatchSheetMessage => 'Informe o placar da sua partida.';
+
+  @override
+  String get finishMatchGoalsForLabel => 'Seus gols';
+
+  @override
+  String get finishMatchGoalsAgainstLabel => 'Gols do adversário';
+
+  @override
+  String get finishMatchGoalsRequired => 'Informe um número válido.';
+
+  @override
+  String get finishMatchDrawError => 'Empate não é um resultado final válido.';
+
+  @override
+  String get finishMatchSubmitAction => 'Salvar resultado';
+
+  @override
+  String weekendLeagueBadge(int number) {
+    return 'Weekend League #$number';
+  }
+
+  @override
+  String weekendLeagueWindow(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get weekendLeagueActiveBadge => 'Em andamento';
 }

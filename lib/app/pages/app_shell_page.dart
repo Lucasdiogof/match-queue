@@ -24,8 +24,8 @@ class AppShellPage extends StatelessWidget {
     final l10n = context.l10n;
     return <AppShellDestination>[
       AppShellDestination(
-        icon: Icons.search,
-        selectedIcon: Icons.search,
+        icon: Icons.sports_esports_outlined,
+        selectedIcon: Icons.sports_esports,
         label: l10n.navSearch,
       ),
       AppShellDestination(

@@ -12,7 +12,7 @@
   "actionBack": "Voltar",
   "actionNotNow": "Agora não",
   "actionSignOut": "Sair",
-  "navSearch": "Buscar",
+  "navSearch": "Jogar",
   "navTeam": "Time",
   "navHistory": "Histórico",
   "navProfile": "Perfil",
@@ -368,13 +368,18 @@
   "errorMatchmakingNotCurrentSearcher": "Você não é mais quem está buscando partida.",
   "errorMatchmakingAlreadyInOtherState": "Você já está em outro estado da fila.",
   "errorMatchmakingTeamInactive": "Este time está inativo no momento.",
+  "errorGameCooldown": "Espere um pouco antes de buscar de novo.",
+  "errorGameMatchNotFound": "Partida não encontrada.",
+  "errorGameMatchAlreadyFinished": "Esta partida já foi finalizada.",
+  "errorGameInvalidMode": "Modo de jogo inválido.",
+  "errorGameInvalidResult": "Informe um resultado ou um placar sem empate.",
   "matchmakingIdleTitle": "Ninguém está buscando partida",
   "matchmakingIdleMessage": "Toque em buscar partida para começar. O time inteiro vê assim que alguém entra na fila.",
   "matchmakingSearchAction": "Buscar partida",
   "matchmakingJoinQueueAction": "Entrar na fila",
-  "matchmakingCancelAction": "Cancelar busca",
+  "matchmakingCancelAction": "Cancelar",
   "matchmakingLeaveQueueAction": "Sair da fila",
-  "matchmakingMatchFoundAction": "Partida encontrada",
+  "matchmakingMatchFoundAction": "Encontrei",
   "matchmakingSearchingSelfTitle": "Buscando partida",
   "matchmakingSearchingSelfMessage": "Assim que a partida começar, toque em partida encontrada.",
   "matchmakingSearchingOtherTitle": "{name} está buscando partida",
@@ -468,5 +473,41 @@
         "example": "8"
       }
     }
-  }
+  },
+  "gameModeWeekendLeague": "Weekend League",
+  "gameModeDivisionRivals": "Division Rivals",
+  "pendingMatchTitle": "Você tem uma partida sem resultado",
+  "pendingMatchWinAction": "Vitória",
+  "pendingMatchLossAction": "Derrota",
+  "pendingMatchAddScoreAction": "Adicionar placar",
+  "finishMatchSheetTitle": "Resultado da partida",
+  "finishMatchSheetMessage": "Informe o placar da sua partida.",
+  "finishMatchGoalsForLabel": "Seus gols",
+  "finishMatchGoalsAgainstLabel": "Gols do adversário",
+  "finishMatchGoalsRequired": "Informe um número válido.",
+  "finishMatchDrawError": "Empate não é um resultado final válido.",
+  "finishMatchSubmitAction": "Salvar resultado",
+  "weekendLeagueBadge": "Weekend League #{number}",
+  "@weekendLeagueBadge": {
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "weekendLeagueWindow": "{start} – {end}",
+  "@weekendLeagueWindow": {
+    "placeholders": {
+      "start": {
+        "type": "String",
+        "example": "2 de out."
+      },
+      "end": {
+        "type": "String",
+        "example": "5 de out."
+      }
+    }
+  },
+  "weekendLeagueActiveBadge": "Em andamento"
 }

@@ -13,6 +13,7 @@ import 'package:fifa_queue/core/navigation/url_strategy/url_strategy.dart';
 import 'package:fifa_queue/core/observability/crash_reporter.dart';
 import 'package:fifa_queue/core/supabase/supabase_initializer.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/settings/data/repositories/local_settings_repository.dart';
@@ -83,6 +84,7 @@ Future<void> bootstrap() async {
       final pendingInviteCubit = getIt<PendingInviteCubit>()..restore();
       final profileCubit = getIt<ProfileCubit>();
       final teamsCubit = getIt<TeamsCubit>();
+      final pendingMatchCubit = getIt<PendingMatchCubit>();
 
       final restoredUser = authCubit.state.user;
       if (restoredUser != null) {
@@ -90,6 +92,7 @@ Future<void> bootstrap() async {
           profileCubit.load(fallbackDisplayName: restoredUser.shortName),
         );
         unawaited(teamsCubit.load(userId: restoredUser.id));
+        unawaited(pendingMatchCubit.load());
       }
 
       logger.info('FIFA Queue iniciado em ${config.environment.key}.');
@@ -104,6 +107,7 @@ Future<void> bootstrap() async {
           pendingInviteCubit: pendingInviteCubit,
           profileCubit: profileCubit,
           teamsCubit: teamsCubit,
+          pendingMatchCubit: pendingMatchCubit,
         ),
       );
     },

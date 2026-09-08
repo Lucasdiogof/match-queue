@@ -12,7 +12,7 @@
   "actionBack": "Back",
   "actionNotNow": "Not now",
   "actionSignOut": "Sign out",
-  "navSearch": "Search",
+  "navSearch": "Play",
   "navTeam": "Team",
   "navHistory": "History",
   "navProfile": "Profile",
@@ -368,13 +368,18 @@
   "errorMatchmakingNotCurrentSearcher": "You are no longer the one searching for a match.",
   "errorMatchmakingAlreadyInOtherState": "You are already in another queue state.",
   "errorMatchmakingTeamInactive": "This team is currently inactive.",
+  "errorGameCooldown": "Wait a bit before searching again.",
+  "errorGameMatchNotFound": "Match not found.",
+  "errorGameMatchAlreadyFinished": "This match has already been finished.",
+  "errorGameInvalidMode": "Invalid game mode.",
+  "errorGameInvalidResult": "Enter a result or a score with no draw.",
   "matchmakingIdleTitle": "No one is searching for a match",
   "matchmakingIdleMessage": "Tap search for a match to start. The whole team sees it as soon as someone joins the queue.",
   "matchmakingSearchAction": "Search for a match",
   "matchmakingJoinQueueAction": "Join the queue",
-  "matchmakingCancelAction": "Cancel search",
+  "matchmakingCancelAction": "Cancel",
   "matchmakingLeaveQueueAction": "Leave the queue",
-  "matchmakingMatchFoundAction": "Match found",
+  "matchmakingMatchFoundAction": "Found it",
   "matchmakingSearchingSelfTitle": "Searching for a match",
   "matchmakingSearchingSelfMessage": "As soon as the match starts, tap match found.",
   "matchmakingSearchingOtherTitle": "{name} is searching for a match",
@@ -468,5 +473,41 @@
         "example": "8"
       }
     }
-  }
+  },
+  "gameModeWeekendLeague": "Weekend League",
+  "gameModeDivisionRivals": "Division Rivals",
+  "pendingMatchTitle": "You have a match without a result",
+  "pendingMatchWinAction": "Win",
+  "pendingMatchLossAction": "Loss",
+  "pendingMatchAddScoreAction": "Add score",
+  "finishMatchSheetTitle": "Match result",
+  "finishMatchSheetMessage": "Enter your match's score.",
+  "finishMatchGoalsForLabel": "Your goals",
+  "finishMatchGoalsAgainstLabel": "Opponent's goals",
+  "finishMatchGoalsRequired": "Enter a valid number.",
+  "finishMatchDrawError": "A draw is not a valid final result.",
+  "finishMatchSubmitAction": "Save result",
+  "weekendLeagueBadge": "Weekend League #{number}",
+  "@weekendLeagueBadge": {
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "weekendLeagueWindow": "{start} – {end}",
+  "@weekendLeagueWindow": {
+    "placeholders": {
+      "start": {
+        "type": "String",
+        "example": "Oct 2"
+      },
+      "end": {
+        "type": "String",
+        "example": "Oct 5"
+      }
+    }
+  },
+  "weekendLeagueActiveBadge": "Live now"
 }

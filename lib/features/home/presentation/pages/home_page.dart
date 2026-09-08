@@ -1,6 +1,10 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_section.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -68,7 +72,15 @@ class _HomeBody extends StatelessWidget {
           teams: state.teams,
         ),
         const SizedBox(height: AppSpacing.xl),
-        MatchmakingSection(teamId: selected!.id),
+        const GameModeSelector(),
+        const SizedBox(height: AppSpacing.lg),
+        const WeekendLeagueCard(),
+        const PendingMatchCard(),
+        MatchmakingSection(
+          teamId: selected!.id,
+          onMatchFound: () =>
+              context.read<PendingMatchCubit>().refreshSilently(),
+        ),
       ],
     );
   }

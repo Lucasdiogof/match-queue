@@ -52,5 +52,13 @@ extension AppFailureL10n on AppFailure {
       MatchmakingFailureReason.teamInactive =>
         l10n.errorMatchmakingTeamInactive,
     },
+    GameFailure(:final reason) => switch (reason) {
+      GameFailureReason.cooldown => l10n.errorGameCooldown,
+      GameFailureReason.matchNotFound => l10n.errorGameMatchNotFound,
+      GameFailureReason.matchAlreadyFinished =>
+        l10n.errorGameMatchAlreadyFinished,
+      GameFailureReason.invalidMode => l10n.errorGameInvalidMode,
+      GameFailureReason.invalidResult => l10n.errorGameInvalidResult,
+    },
   };
 }

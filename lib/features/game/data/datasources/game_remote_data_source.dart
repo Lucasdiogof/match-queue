@@ -9,6 +9,8 @@ abstract interface class GameRemoteDataSource {
     int? goalsFor,
     int? goalsAgainst,
   });
+
+  Future<Map<String, dynamic>?> getCurrentWeekendLeagueEvent();
 }
 
 class SupabaseGameRemoteDataSource implements GameRemoteDataSource {
@@ -37,4 +39,15 @@ class SupabaseGameRemoteDataSource implements GameRemoteDataSource {
       'p_goals_against': ?goalsAgainst,
     },
   );
+
+  @override
+  Future<Map<String, dynamic>?> getCurrentWeekendLeagueEvent() async {
+    final response = await _client.rpc<dynamic>(
+      'get_current_weekend_league_event',
+    );
+    if (response is! Map) {
+      return null;
+    }
+    return Map<String, dynamic>.from(response);
+  }
 }

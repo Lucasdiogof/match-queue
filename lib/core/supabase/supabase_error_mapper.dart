@@ -85,6 +85,15 @@ class SupabaseErrorMapper {
         _ => null,
       };
 
+  GameFailureReason? _gameReasonFrom(String? code) => switch (code) {
+    'FQ020' => GameFailureReason.cooldown,
+    'FQ021' => GameFailureReason.matchNotFound,
+    'FQ022' => GameFailureReason.matchAlreadyFinished,
+    'FQ023' => GameFailureReason.invalidMode,
+    'FQ024' => GameFailureReason.invalidResult,
+    _ => null,
+  };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -124,6 +133,10 @@ class SupabaseErrorMapper {
         reason: matchmakingReason,
         debugMessage: error.message,
       );
+    }
+    final gameReason = _gameReasonFrom(error.code);
+    if (gameReason != null) {
+      return GameFailure(reason: gameReason, debugMessage: error.message);
     }
     switch (error.code) {
       case '23505':
