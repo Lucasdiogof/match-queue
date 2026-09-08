@@ -481,7 +481,7 @@
   "activityDetailScore": "Marcador",
   "activityDetailResult": "Resultado",
   "activityDetailStatus": "Estado",
-  "activityDetailFcAccount": "Elenco",
+  "activityDetailFcAccount": "Cuenta",
   "historyLoadErrorTitle": "No fue posible cargar el historial",
   "historyLoadMore": "Cargar más",
   "historyEntryDate": "{date}",
@@ -557,11 +557,12 @@
     }
   },
   "weekendLeagueActiveBadge": "En curso",
-  "errorFcAccountNotFound": "Elenco no encontrado.",
-  "errorFcAccountNotLinkedToTeam": "Este elenco no está vinculado a este equipo.",
+  "errorFcAccountNotFound": "Cuenta no encontrada.",
+  "errorFcAccountNotLinkedToTeam": "Esta cuenta no está vinculada a este equipo.",
   "errorFcAccountInvalidName": "Indica un nombre de 2 a 40 caracteres.",
   "errorFcAccountInvalidDivision": "División inválida.",
-  "validationFcAccountNameRequired": "Indica un nombre para el elenco.",
+  "errorFcAccountNotLinkedToAnyTeam": "Esta cuenta no está vinculada a ningún equipo.",
+  "validationFcAccountNameRequired": "Indica un nombre para la cuenta.",
   "validationFcAccountNameTooShort": "El nombre debe tener al menos {min} caracteres.",
   "@validationFcAccountNameTooShort": {
     "placeholders": {
@@ -580,7 +581,7 @@
       }
     }
   },
-  "fcAccountRequiredToSearch": "Crea o selecciona un elenco para buscar partida.",
+  "fcAccountRequiredToSearch": "Crea o selecciona una cuenta para buscar partida.",
   "fcAccountLinkCta": "Vincular {accountName} a {teamName}",
   "@fcAccountLinkCta": {
     "placeholders": {
@@ -594,24 +595,24 @@
       }
     }
   },
-  "fcAccountsPageTitle": "Mis Elencos",
+  "fcAccountsPageTitle": "Mis Cuentas",
   "fcAccountsPageSubtitle": "Tus cuentas de Ultimate Team",
-  "fcAccountsEmptyTitle": "Todavía no tienes un elenco",
-  "fcAccountsEmptyMessage": "Crea un elenco para vincularlo a equipos y empezar a buscar partidas.",
-  "fcAccountCreateAction": "Crear elenco",
-  "fcAccountCreateTitle": "Nuevo elenco",
-  "fcAccountCreateSubtitle": "Dale un nombre a este elenco.",
-  "fcAccountNameLabel": "Nombre del elenco",
-  "fcAccountNameHint": "Ej.: Elenco principal",
-  "fcAccountRenameTitle": "Renombrar elenco",
+  "fcAccountsEmptyTitle": "Todavía no tienes una cuenta",
+  "fcAccountsEmptyMessage": "Crea una cuenta para vincularla a equipos y empezar a buscar partidas.",
+  "fcAccountCreateAction": "Crear cuenta",
+  "fcAccountCreateTitle": "Nueva cuenta",
+  "fcAccountCreateSubtitle": "Dale un nombre a esta cuenta.",
+  "fcAccountNameLabel": "Nombre de la cuenta",
+  "fcAccountNameHint": "Ej.: Cuenta principal",
+  "fcAccountRenameTitle": "Renombrar cuenta",
   "fcAccountRenameAction": "Renombrar",
-  "fcAccountArchiveAction": "Archivar elenco",
-  "fcAccountArchiveConfirmTitle": "¿Archivar elenco?",
-  "fcAccountArchiveConfirmMessage": "El elenco deja de aparecer en la lista, pero se conserva su historial.",
-  "fcAccountSwitchTitle": "Cambiar de elenco",
-  "fcAccountSwitchCreateAction": "+ Crear nuevo elenco",
+  "fcAccountArchiveAction": "Archivar cuenta",
+  "fcAccountArchiveConfirmTitle": "¿Archivar cuenta?",
+  "fcAccountArchiveConfirmMessage": "La cuenta deja de aparecer en la lista, pero se conserva su historial.",
+  "fcAccountSwitchTitle": "Cambiar de cuenta",
+  "fcAccountSwitchCreateAction": "+ Crear nueva cuenta",
   "fcAccountLinkedTeamsTitle": "Equipos vinculados",
-  "fcAccountLinkedTeamsEmpty": "Este elenco todavía no está vinculado a ningún equipo.",
+  "fcAccountLinkedTeamsEmpty": "Esta cuenta todavía no está vinculada a ningún equipo.",
   "fcAccountLinkTeamAction": "Vincular",
   "fcAccountUnlinkTeamAction": "Desvincular",
   "fcAccountSettingsTitle": "Configuración",
@@ -650,10 +651,10 @@
   "fcAccountWeekendLeagueSheetTitle": "Informar resultado",
   "fcAccountWeekendLeagueWinsLabel": "Victorias",
   "fcAccountWeekendLeagueLossesLabel": "Derrotas",
-  "fcAccountOnboardingTitle": "Crea tu primer elenco",
-  "fcAccountOnboardingMessage": "Un elenco representa una cuenta de Ultimate Team. Crea uno para vincularlo a tus equipos y empezar a buscar partidas.",
-  "fcAccountOnboardingCreateAction": "Crear elenco",
-  "pendingMatchElencoLabel": "Elenco: {name}",
+  "fcAccountOnboardingTitle": "Crea tu primera cuenta",
+  "fcAccountOnboardingMessage": "Una cuenta representa un perfil tuyo en el Ultimate Team. Crea una para vincularla a tus equipos y empezar a buscar partidas.",
+  "fcAccountOnboardingCreateAction": "Crear cuenta",
+  "pendingMatchElencoLabel": "Cuenta: {name}",
   "@pendingMatchElencoLabel": {
     "placeholders": {
       "name": {
@@ -662,7 +663,7 @@
       }
     }
   },
-  "historyElencoLabel": "Elenco: {name}",
+  "historyElencoLabel": "Cuenta: {name}",
   "@historyElencoLabel": {
     "placeholders": {
       "name": {
@@ -671,7 +672,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "Elencos",
+  "profileFcAccountsRow": "Cuentas",
   "rivalsDivisionDiv10": "División 10",
   "rivalsDivisionDiv9": "División 9",
   "rivalsDivisionDiv8": "División 8",

@@ -72,6 +72,8 @@ extension AppFailureL10n on AppFailure {
       FcAccountFailureReason.accountNotFound => l10n.errorFcAccountNotFound,
       FcAccountFailureReason.accountNotLinkedToTeam =>
         l10n.errorFcAccountNotLinkedToTeam,
+      FcAccountFailureReason.accountNotLinkedToAnyTeam =>
+        l10n.errorFcAccountNotLinkedToAnyTeam,
       FcAccountFailureReason.invalidName => l10n.errorFcAccountInvalidName,
       FcAccountFailureReason.invalidDivision =>
         l10n.errorFcAccountInvalidDivision,

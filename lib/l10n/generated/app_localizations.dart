@@ -1711,7 +1711,7 @@ abstract class AppLocalizations {
   /// No description provided for @activityDetailFcAccount.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco'**
+  /// **'Conta'**
   String get activityDetailFcAccount;
 
   /// No description provided for @historyLoadErrorTitle.
@@ -1903,13 +1903,13 @@ abstract class AppLocalizations {
   /// No description provided for @errorFcAccountNotFound.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco não encontrado.'**
+  /// **'Conta não encontrada.'**
   String get errorFcAccountNotFound;
 
   /// No description provided for @errorFcAccountNotLinkedToTeam.
   ///
   /// In pt, this message translates to:
-  /// **'Este elenco não está vinculado a este time.'**
+  /// **'Esta conta não está vinculada a este time.'**
   String get errorFcAccountNotLinkedToTeam;
 
   /// No description provided for @errorFcAccountInvalidName.
@@ -1924,10 +1924,16 @@ abstract class AppLocalizations {
   /// **'Divisão inválida.'**
   String get errorFcAccountInvalidDivision;
 
+  /// No description provided for @errorFcAccountNotLinkedToAnyTeam.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta conta não está vinculada a nenhum time.'**
+  String get errorFcAccountNotLinkedToAnyTeam;
+
   /// No description provided for @validationFcAccountNameRequired.
   ///
   /// In pt, this message translates to:
-  /// **'Informe um nome para o elenco.'**
+  /// **'Informe um nome para a conta.'**
   String get validationFcAccountNameRequired;
 
   /// No description provided for @validationFcAccountNameTooShort.
@@ -1945,7 +1951,7 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountRequiredToSearch.
   ///
   /// In pt, this message translates to:
-  /// **'Crie ou selecione um elenco para buscar partida.'**
+  /// **'Crie ou selecione uma conta para buscar partida.'**
   String get fcAccountRequiredToSearch;
 
   /// No description provided for @fcAccountLinkCta.
@@ -1957,7 +1963,7 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountsPageTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Meus Elencos'**
+  /// **'Minhas Contas'**
   String get fcAccountsPageTitle;
 
   /// No description provided for @fcAccountsPageSubtitle.
@@ -1969,49 +1975,49 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountsEmptyTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Você ainda não tem um elenco'**
+  /// **'Você ainda não tem uma conta'**
   String get fcAccountsEmptyTitle;
 
   /// No description provided for @fcAccountsEmptyMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Crie um elenco para vincular a times e começar a buscar partidas.'**
+  /// **'Crie uma conta para vincular a times e começar a buscar partidas.'**
   String get fcAccountsEmptyMessage;
 
   /// No description provided for @fcAccountCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Criar elenco'**
+  /// **'Criar conta'**
   String get fcAccountCreateAction;
 
   /// No description provided for @fcAccountCreateTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Novo elenco'**
+  /// **'Nova conta'**
   String get fcAccountCreateTitle;
 
   /// No description provided for @fcAccountCreateSubtitle.
   ///
   /// In pt, this message translates to:
-  /// **'Dê um nome para identificar este elenco.'**
+  /// **'Dê um nome para identificar esta conta.'**
   String get fcAccountCreateSubtitle;
 
   /// No description provided for @fcAccountNameLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Nome do elenco'**
+  /// **'Nome da conta'**
   String get fcAccountNameLabel;
 
   /// No description provided for @fcAccountNameHint.
   ///
   /// In pt, this message translates to:
-  /// **'Ex.: Elenco principal'**
+  /// **'Ex.: Conta principal'**
   String get fcAccountNameHint;
 
   /// No description provided for @fcAccountRenameTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Renomear elenco'**
+  /// **'Renomear conta'**
   String get fcAccountRenameTitle;
 
   /// No description provided for @fcAccountRenameAction.
@@ -2023,31 +2029,31 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountArchiveAction.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar elenco'**
+  /// **'Arquivar conta'**
   String get fcAccountArchiveAction;
 
   /// No description provided for @fcAccountArchiveConfirmTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar elenco?'**
+  /// **'Arquivar conta?'**
   String get fcAccountArchiveConfirmTitle;
 
   /// No description provided for @fcAccountArchiveConfirmMessage.
   ///
   /// In pt, this message translates to:
-  /// **'O elenco deixa de aparecer na lista, mas o histórico dele é mantido.'**
+  /// **'A conta deixa de aparecer na lista, mas o histórico dela é mantido.'**
   String get fcAccountArchiveConfirmMessage;
 
   /// No description provided for @fcAccountSwitchTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Trocar de elenco'**
+  /// **'Trocar de conta'**
   String get fcAccountSwitchTitle;
 
   /// No description provided for @fcAccountSwitchCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'+ Criar novo elenco'**
+  /// **'+ Criar nova conta'**
   String get fcAccountSwitchCreateAction;
 
   /// No description provided for @fcAccountLinkedTeamsTitle.
@@ -2059,7 +2065,7 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountLinkedTeamsEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Este elenco ainda não está vinculado a nenhum time.'**
+  /// **'Esta conta ainda não está vinculada a nenhum time.'**
   String get fcAccountLinkedTeamsEmpty;
 
   /// No description provided for @fcAccountLinkTeamAction.
@@ -2149,37 +2155,37 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountOnboardingTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Crie seu primeiro elenco'**
+  /// **'Crie sua primeira conta'**
   String get fcAccountOnboardingTitle;
 
   /// No description provided for @fcAccountOnboardingMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Um elenco representa uma conta de Ultimate Team. Crie um para vincular aos seus times e começar a buscar partidas.'**
+  /// **'Uma conta representa um perfil seu no Ultimate Team. Crie uma para vincular aos seus times e começar a buscar partidas.'**
   String get fcAccountOnboardingMessage;
 
   /// No description provided for @fcAccountOnboardingCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Criar elenco'**
+  /// **'Criar conta'**
   String get fcAccountOnboardingCreateAction;
 
   /// No description provided for @pendingMatchElencoLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco: {name}'**
+  /// **'Conta: {name}'**
   String pendingMatchElencoLabel(String name);
 
   /// No description provided for @historyElencoLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco: {name}'**
+  /// **'Conta: {name}'**
   String historyElencoLabel(String name);
 
   /// No description provided for @profileFcAccountsRow.
   ///
   /// In pt, this message translates to:
-  /// **'Elencos'**
+  /// **'Contas'**
   String get profileFcAccountsRow;
 
   /// No description provided for @rivalsDivisionDiv10.

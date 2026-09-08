@@ -1069,6 +1069,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorFcAccountInvalidDivision => 'Invalid division.';
 
   @override
+  String get errorFcAccountNotLinkedToAnyTeam =>
+      'This account isn\'t linked to any team.';
+
+  @override
   String get validationFcAccountNameRequired => 'Enter a name for the account.';
 
   @override

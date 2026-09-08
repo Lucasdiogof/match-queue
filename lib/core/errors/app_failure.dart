@@ -47,6 +47,7 @@ enum GameFailureReason {
 enum FcAccountFailureReason {
   accountNotFound,
   accountNotLinkedToTeam,
+  accountNotLinkedToAnyTeam,
   invalidName,
   invalidDivision,
 }

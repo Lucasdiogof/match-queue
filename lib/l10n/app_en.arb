@@ -561,6 +561,7 @@
   "errorFcAccountNotLinkedToTeam": "This account isn't linked to this team.",
   "errorFcAccountInvalidName": "Enter a name from 2 to 40 characters.",
   "errorFcAccountInvalidDivision": "Invalid division.",
+  "errorFcAccountNotLinkedToAnyTeam": "This account isn't linked to any team.",
   "validationFcAccountNameRequired": "Enter a name for the account.",
   "validationFcAccountNameTooShort": "The name must be at least {min} characters.",
   "@validationFcAccountNameTooShort": {
