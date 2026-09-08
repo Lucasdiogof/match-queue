@@ -2,9 +2,9 @@
 
 Status em 2026-09-08: **backend aplicado e validado ao vivo contra o
 Supabase remoto** (71 migrations locais = 71 remotas), Flutter completo,
-`flutter analyze` limpo (1 info-level de estilo, nenhum erro). Nenhum teste
-automatizado foi rodado (regra permanente do projeto). Nenhum commit/push
-foi feito ainda nesta sessão — ver seção Git.
+`flutter analyze` limpo (zero issues). Nenhum teste automatizado foi
+rodado (regra permanente do projeto). Commitado e pushado em
+`origin/main`, HEAD `f66c458` — ver seção Git.
 
 ## Objetivo, em uma frase
 
@@ -293,14 +293,28 @@ slug reservado (`admin`) → `FQ041`; slug já em uso por outro usuário
 
 ## Git
 
-Nenhum commit feito ainda nesta sessão — a implementação inteira (migration
-+ Flutter + l10n + docs) está pronta na árvore de trabalho, aguardando
-autorização explícita para commitar/pushar (regra permanente do projeto).
-Migration `20260925100000_public_profile_sharing.sql` já está **aplicada no
+Commitado e pushado em `origin/main`. `HEAD` e `origin/main` batem em
+`f66c458` (confirmado via `git rev-parse HEAD`/`git rev-parse origin/main`),
+árvore de trabalho limpa (`git status` sem saída).
+
+Commits desta etapa (mais antigo primeiro):
+
+```
+8d5161f Add the opt-in public profile schema and RPCs
+99e3473 Add core support for public profile sharing
+fec512d Add the public profile feature module
+9c62ba9 Wire up the public profile route and sharing entry points
+d25b318 Write the Etapa 16 handoff
+f66c458 Use a null-aware map entry instead of an if-guard for the query param
+```
+
+O último commit (`f66c458`) corrigiu o único info-level de estilo que
+sobrava em `app_routes.dart` (`use_null_aware_elements`) — `flutter analyze`
+está limpo, zero issues.
+
+Migration `20260925100000_public_profile_sharing.sql` está **aplicada no
 Supabase remoto** (`npx supabase db push` sem erro,
 `npx supabase migration list` confirma **71 locais = 71 remotas**).
-`flutter analyze`: limpo (1 info-level de estilo em `app_routes.dart`,
-nenhum erro/warning). `dart format lib` aplicado (7 arquivos formatados).
 
 ## Pendências conscientes / fora de escopo
 
