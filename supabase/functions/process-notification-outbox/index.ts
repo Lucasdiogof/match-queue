@@ -17,7 +17,26 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
 
-type NotificationType = 'YOUR_TURN' | 'SEARCH_EXPIRING' | 'SEARCH_EXPIRED';
+type NotificationType =
+  | 'YOUR_TURN'
+  | 'SEARCH_EXPIRING'
+  | 'SEARCH_EXPIRED'
+  | 'TEAM_MEMBER_JOINED'
+  | 'TEAM_LEADER_CHANGED'
+  | 'TEAM_TOP_SCORER_CHANGED'
+  | 'TEAM_TOP_ASSIST_CHANGED'
+  | 'WEEKEND_LEAGUE_FINISHED'
+  | 'RIVALS_DIVISION_CHANGED';
+
+// Etapa 15: os 6 tipos novos vêm sempre com um notification_id no payload
+// (gravado por _emit_user_notification) -- é o que o tap usa para marcar a
+// linha como lida e resolver o deep link, sem depender do texto do push.
+const HIGH_PRIORITY_TYPES = new Set<NotificationType>(['YOUR_TURN']);
+const QUEUE_ALERT_TYPES = new Set<NotificationType>([
+  'YOUR_TURN',
+  'SEARCH_EXPIRING',
+  'SEARCH_EXPIRED',
+]);
 
 interface OutboxItem {
   id: string;
@@ -30,28 +49,114 @@ interface OutboxItem {
 }
 
 // O texto vive aqui, nao na outbox: guardar a frase pronta no banco
-// impediria escolher o idioma do destinatario na hora da entrega.
-const COPY: Record<string, Record<NotificationType, { title: string; body: string }>> = {
+// impediria escolher o idioma do destinatario na hora da entrega. Os 6 tipos
+// sociais/esportivos (Etapa 15) interpolam campos do payload -- os mesmos
+// que a Central de Notificacoes usa para renderizar a mesma frase no
+// cliente a partir de title_key + params (item 70).
+type CopyBuilder = (payload: Record<string, unknown>) => { title: string; body: string };
+
+const str = (payload: Record<string, unknown>, key: string, fallback = '') => {
+  const value = payload[key];
+  return typeof value === 'string' && value.length > 0 ? value : fallback;
+};
+
+const COPY: Record<string, Record<NotificationType, CopyBuilder>> = {
   pt: {
-    YOUR_TURN: { title: 'Sua vez de buscar!', body: 'Chegou a sua vez na fila. Abra o app e comece a busca.' },
-    SEARCH_EXPIRING: { title: 'Faltam 30 segundos', body: 'Sua busca está perto de terminar.' },
-    SEARCH_EXPIRED: { title: 'Seu tempo de busca terminou', body: 'A vez passou para o próximo da fila.' },
+    YOUR_TURN: () => ({ title: 'Sua vez de buscar!', body: 'Chegou a sua vez na fila. Abra o app e comece a busca.' }),
+    SEARCH_EXPIRING: () => ({ title: 'Faltam 30 segundos', body: 'Sua busca está perto de terminar.' }),
+    SEARCH_EXPIRED: () => ({ title: 'Seu tempo de busca terminou', body: 'A vez passou para o próximo da fila.' }),
+    TEAM_MEMBER_JOINED: (p) => ({
+      title: 'Novo membro no time',
+      body: `${str(p, 'display_name', 'Alguém')} entrou em ${str(p, 'team_name', 'seu time')}.`,
+    }),
+    TEAM_LEADER_CHANGED: (p) => ({
+      title: 'Novo líder do ranking',
+      body: `${str(p, 'leader_display_name', 'Alguém')} assumiu a liderança do time.`,
+    }),
+    TEAM_TOP_SCORER_CHANGED: (p) => ({
+      title: 'Novo artilheiro do time',
+      body: `${str(p, 'player_name', 'Um jogador')} (${str(p, 'display_name', 'alguém')}) é o novo artilheiro.`,
+    }),
+    TEAM_TOP_ASSIST_CHANGED: (p) => ({
+      title: 'Novo garçom do time',
+      body: `${str(p, 'player_name', 'Um jogador')} (${str(p, 'display_name', 'alguém')}) lidera as assistências.`,
+    }),
+    WEEKEND_LEAGUE_FINISHED: (p) => ({
+      title: 'Weekend League encerrada',
+      body: `${str(p, 'display_name', 'Alguém')} terminou ${str(p, 'wins', '0')}-${str(p, 'losses', '0')}.`,
+    }),
+    RIVALS_DIVISION_CHANGED: (p) => ({
+      title: 'Divisão do Rivals mudou',
+      body: `${str(p, 'display_name', 'Alguém')} chegou à divisão ${str(p, 'division', '')}.`,
+    }),
   },
   en: {
-    YOUR_TURN: { title: 'Your turn to search!', body: 'You are up in the queue. Open the app and start searching.' },
-    SEARCH_EXPIRING: { title: '30 seconds left', body: 'Your search is about to end.' },
-    SEARCH_EXPIRED: { title: 'Your search time is over', body: 'The turn moved to the next player in the queue.' },
+    YOUR_TURN: () => ({ title: 'Your turn to search!', body: 'You are up in the queue. Open the app and start searching.' }),
+    SEARCH_EXPIRING: () => ({ title: '30 seconds left', body: 'Your search is about to end.' }),
+    SEARCH_EXPIRED: () => ({ title: 'Your search time is over', body: 'The turn moved to the next player in the queue.' }),
+    TEAM_MEMBER_JOINED: (p) => ({
+      title: 'New team member',
+      body: `${str(p, 'display_name', 'Someone')} joined ${str(p, 'team_name', 'your team')}.`,
+    }),
+    TEAM_LEADER_CHANGED: (p) => ({
+      title: 'New ranking leader',
+      body: `${str(p, 'leader_display_name', 'Someone')} took the lead on the team.`,
+    }),
+    TEAM_TOP_SCORER_CHANGED: (p) => ({
+      title: 'New team top scorer',
+      body: `${str(p, 'player_name', 'A player')} (${str(p, 'display_name', 'someone')}) is now the top scorer.`,
+    }),
+    TEAM_TOP_ASSIST_CHANGED: (p) => ({
+      title: 'New team top assist',
+      body: `${str(p, 'player_name', 'A player')} (${str(p, 'display_name', 'someone')}) leads in assists.`,
+    }),
+    WEEKEND_LEAGUE_FINISHED: (p) => ({
+      title: 'Weekend League finished',
+      body: `${str(p, 'display_name', 'Someone')} finished ${str(p, 'wins', '0')}-${str(p, 'losses', '0')}.`,
+    }),
+    RIVALS_DIVISION_CHANGED: (p) => ({
+      title: 'Rivals division changed',
+      body: `${str(p, 'display_name', 'Someone')} reached division ${str(p, 'division', '')}.`,
+    }),
   },
   es: {
-    YOUR_TURN: { title: '¡Tu turno de buscar!', body: 'Llegó tu turno en la fila. Abre la app y empieza la búsqueda.' },
-    SEARCH_EXPIRING: { title: 'Quedan 30 segundos', body: 'Tu búsqueda está por terminar.' },
-    SEARCH_EXPIRED: { title: 'Tu tiempo de búsqueda terminó', body: 'El turno pasó al siguiente de la fila.' },
+    YOUR_TURN: () => ({ title: '¡Tu turno de buscar!', body: 'Llegó tu turno en la fila. Abre la app y empieza la búsqueda.' }),
+    SEARCH_EXPIRING: () => ({ title: 'Quedan 30 segundos', body: 'Tu búsqueda está por terminar.' }),
+    SEARCH_EXPIRED: () => ({ title: 'Tu tiempo de búsqueda terminó', body: 'El turno pasó al siguiente de la fila.' }),
+    TEAM_MEMBER_JOINED: (p) => ({
+      title: 'Nuevo miembro en el equipo',
+      body: `${str(p, 'display_name', 'Alguien')} se unió a ${str(p, 'team_name', 'tu equipo')}.`,
+    }),
+    TEAM_LEADER_CHANGED: (p) => ({
+      title: 'Nuevo líder del ranking',
+      body: `${str(p, 'leader_display_name', 'Alguien')} asumió el liderato del equipo.`,
+    }),
+    TEAM_TOP_SCORER_CHANGED: (p) => ({
+      title: 'Nuevo goleador del equipo',
+      body: `${str(p, 'player_name', 'Un jugador')} (${str(p, 'display_name', 'alguien')}) es el nuevo goleador.`,
+    }),
+    TEAM_TOP_ASSIST_CHANGED: (p) => ({
+      title: 'Nuevo asistidor del equipo',
+      body: `${str(p, 'player_name', 'Un jugador')} (${str(p, 'display_name', 'alguien')}) lidera las asistencias.`,
+    }),
+    WEEKEND_LEAGUE_FINISHED: (p) => ({
+      title: 'Weekend League terminada',
+      body: `${str(p, 'display_name', 'Alguien')} terminó ${str(p, 'wins', '0')}-${str(p, 'losses', '0')}.`,
+    }),
+    RIVALS_DIVISION_CHANGED: (p) => ({
+      title: 'División de Rivals cambió',
+      body: `${str(p, 'display_name', 'Alguien')} llegó a la división ${str(p, 'division', '')}.`,
+    }),
   },
 };
 
-const copyFor = (type: NotificationType, locale: string | null) => {
+const copyFor = (
+  type: NotificationType,
+  locale: string | null,
+  payload: Record<string, unknown>,
+) => {
   const language = (locale ?? 'en').split('-')[0].toLowerCase();
-  return (COPY[language] ?? COPY.en)[type];
+  return (COPY[language] ?? COPY.en)[type](payload);
 };
 
 function pemToDer(pem: string): Uint8Array {
@@ -133,8 +238,22 @@ async function sendToToken(
   token: string,
   item: OutboxItem,
 ): Promise<{ ok: boolean; dead: boolean; error?: string }> {
-  const { title, body } = copyFor(item.type, item.locale);
+  const { title, body } = copyFor(item.type, item.locale, item.payload);
   const bearer = await accessToken();
+  const isHighPriority = HIGH_PRIORITY_TYPES.has(item.type);
+  const channelId = QUEUE_ALERT_TYPES.has(item.type) ? 'queue_alerts' : 'app_updates';
+
+  // Só ids: o app relê o estado oficial ao abrir (matchmaking) ou usa o
+  // notification_id para marcar a linha da inbox como lida e resolver o
+  // deep link (Etapa 15) -- nunca o texto do push como fonte da verdade.
+  const data: Record<string, string> = { type: item.type };
+  if (item.team_id) data.team_id = item.team_id;
+  if (item.session_id) data.session_id = item.session_id;
+  for (const [key, value] of Object.entries(item.payload ?? {})) {
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      data[key] = String(value);
+    }
+  }
 
   const res = await fetch(`https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`, {
     method: 'POST',
@@ -143,20 +262,14 @@ async function sendToToken(
       message: {
         token,
         notification: { title, body },
-        // Só ids: o app relê o estado oficial ao abrir. Nada de e-mail,
-        // token ou composicao da fila no payload.
-        data: {
-          type: item.type,
-          team_id: item.team_id ?? '',
-          session_id: item.session_id ?? '',
-        },
+        data,
         android: {
-          priority: item.type === 'YOUR_TURN' ? 'HIGH' : 'NORMAL',
-          notification: { channel_id: 'queue_alerts' },
+          priority: isHighPriority ? 'HIGH' : 'NORMAL',
+          notification: { channel_id: channelId },
         },
         apns: {
-          headers: { 'apns-priority': item.type === 'YOUR_TURN' ? '10' : '5' },
-          payload: { aps: { sound: item.type === 'YOUR_TURN' ? 'default' : undefined } },
+          headers: { 'apns-priority': isHighPriority ? '10' : '5' },
+          payload: { aps: { sound: isHighPriority ? 'default' : undefined } },
         },
       },
     }),
