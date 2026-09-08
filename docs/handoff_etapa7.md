@@ -11,6 +11,9 @@ deployada e ACTIVE; QA ponta a ponta rodado contra o projeto real e passou
 limitação de ambiente e não por defeito: a APNs key pro iOS (precisa de Mac)
 e a confirmação visual da notificação chegando num device Android/iOS real.
 
+Referência de fechamento: HEAD `67f3955`, 24 migrations locais = 24 remotas,
+`origin/main` sincronizado.
+
 ---
 
 ## 1. PRONTO
@@ -80,42 +83,46 @@ Projeto `fifa-queue` (sender `927848400584`), apps Android/iOS/Web via
 
 ---
 
-## 2. FALTA — apenas server-side (não bloqueia o app)
+## 2. Server-side — CONCLUÍDO
 
-**Runbook completo e auditado em `docs/etapa7_server_setup.md`** — comandos
-exatos, onde obter cada credencial (Firebase Console, Apple Developer),
-achados de auditoria (verify_jwt corrigido, canal Android `queue_alerts`
-ausente) e a sequência de validação ponta a ponta. Leia esse arquivo primeiro
-se for continuar por aqui.
+Esta seção descrevia o server-side como pendente. Não é mais: tudo abaixo
+está configurado e rodando no projeto `lteujeclnhmurcewurkg`. O runbook com
+os comandos exatos, onde obter cada credencial e a sequência de validação
+está em `docs/etapa7_server_setup.md`.
 
-Enquanto isto não existir, o app funciona inteiro; a outbox só acumula e o
-`_notify_worker()` faz no-op de propósito.
+| Item | Estado |
+| --- | --- |
+| Service account do Firebase (assinatura FCM v1) | **feito** |
+| Secrets da Edge Function (`WORKER_SECRET`, `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`) | **feito** |
+| Supabase Vault (`notification_worker_url`, `notification_worker_secret`) | **feito** |
+| Deploy de `process-notification-outbox` | **feito** — ACTIVE, `verify_jwt=false` |
+| Canal Android `queue_alerts` registrado antes do primeiro uso | **feito** |
+| QA real backend/FCM | **verde** (`etapa7_server_setup.md`, seção 6) |
 
-1. **Service account** (Firebase → Configurações → Contas de serviço) para a
-   Edge Function assinar o FCM v1.
-2. **APNs Authentication Key (.p8)** no Apple Developer, enviada ao Firebase,
-   para push no iOS. Capabilities no target Runner: *Push Notifications* +
-   *Background Modes → Remote notifications*.
-3. **Secrets da Edge Function** (`supabase secrets set`): `WORKER_SECRET`,
-   `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`.
-4. **Supabase Vault**: `notification_worker_url`
-   (`https://<ref>.functions.supabase.co/process-notification-outbox`) e
-   `notification_worker_secret` (= `WORKER_SECRET`).
-5. **Deploy** de `supabase/functions/process-notification-outbox`.
-6. **Web push** (opcional, adiado): par VAPID + `firebase-messaging-sw.js` +
-   HTTPS/domínio. Sem isso, a Web segue sem push conscientemente.
+O `_notify_worker()` não faz mais no-op: o Vault responde, o trigger dispara
+e o worker processa. O que foi provado de ponta a ponta contra o Google, com
+dados reais: outbox → trigger `pg_net` → worker → OAuth2 assinado pela
+service account → requisição ao FCM v1 → resposta real → desativação de
+token morto → idempotência por `dedupe_key` → timing correto de YOUR_TURN,
+SEARCH_EXPIRING e SEARCH_EXPIRED. Dados de QA removidos ao final.
 
-### QA que só dá para fazer em device real
+### O que realmente falta (nada bloqueia o app)
 
-- Push ponta a ponta (Android/iOS) — Android não builda neste ambiente
-  (loopback do Gradle) e iOS não builda no Windows.
-- Notificação obsoleta: gerar push, deixar a sessão expirar, tocar depois → o
-  app deve abrir o time certo e mostrar o estado atual (o router já relê o
-  backend; falta confirmar no aparelho).
-- Crashlytics: o plugin Gradle já está aplicado; confirmar upload de símbolos
-  num build de release real.
+1. **Confirmação visual em Android físico.** Falta só ver a notificação
+   aparecer na barra de status com um token FCM genuíno. `flutter build apk`
+   falha neste Windows pelo loopback do Gradle, e um token real só existe
+   depois de o app rodar num device com o Firebase inicializado. O caminho
+   de envio já foi exercitado de verdade — o FCM respondeu, apenas rejeitando
+   o token de teste inválido, que era o esperado.
+2. **APNs/iOS.** A Authentication Key (.p8) e as capabilities do target
+   Runner (*Push Notifications* + *Background Modes → Remote notifications*)
+   dependem de um Mac. Passo a passo em `etapa7_server_setup.md`, seção 2.3.
+3. **Web Push — adiado conscientemente.** Depende de par VAPID +
+   `firebase-messaging-sw.js` + domínio HTTPS. Web e desktop não inicializam
+   Firebase de propósito e usam o `UnavailablePushMessagingService`.
 
----
+Fora isso: Crashlytics — o plugin Gradle já está aplicado; confirmar upload
+de símbolos num build de release real.
 
 ## 3. Config gitignored a fornecer em novo checkout/CI
 
