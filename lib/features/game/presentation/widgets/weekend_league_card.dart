@@ -13,21 +13,26 @@ class WeekendLeagueCard extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<PendingMatchCubit, PendingMatchState>(
         buildWhen: (previous, current) =>
-            previous.weekendLeagueEvent != current.weekendLeagueEvent,
+            previous.weekendLeagueEvent != current.weekendLeagueEvent ||
+            previous.weekendLeagueRecord != current.weekendLeagueRecord,
         builder: (context, state) {
           final event = state.weekendLeagueEvent;
           if (event == null) {
             return const SizedBox.shrink();
           }
-          return _WeekendLeagueCardBody(event: event);
+          return _WeekendLeagueCardBody(
+            event: event,
+            record: state.weekendLeagueRecord,
+          );
         },
       );
 }
 
 class _WeekendLeagueCardBody extends StatelessWidget {
-  const _WeekendLeagueCardBody({required this.event});
+  const _WeekendLeagueCardBody({required this.event, this.record});
 
   final WeekendLeagueEvent event;
+  final WeekendLeagueRecord? record;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,13 @@ class _WeekendLeagueCardBody extends StatelessWidget {
                 ],
               ),
             ),
+            if (record != null) ...<Widget>[
+              Text(
+                '${record!.wins}–${record!.losses}',
+                style: context.textStyles.headlineSmall,
+              ),
+              const SizedBox(width: AppSpacing.md),
+            ],
             if (event.isActive)
               AppBadge(
                 label: l10n.weekendLeagueActiveBadge,

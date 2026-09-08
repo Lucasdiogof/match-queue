@@ -877,6 +877,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get historyPeriod30 => '30 dias';
 
   @override
+  String get historyPeriod90 => '90 dias';
+
+  @override
   String get historyStatusAll => 'Todas';
 
   @override
@@ -903,6 +906,33 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get historyEmptyMessage =>
       'As buscas de partida do time aparecem aqui quando terminam.';
+
+  @override
+  String get activityScopeAll => 'Tudo';
+
+  @override
+  String get activityScopeGames => 'Partidas';
+
+  @override
+  String get activityScopeSearches => 'Buscas';
+
+  @override
+  String get activityNoResult => 'Resultado não informado';
+
+  @override
+  String get activityDetailMode => 'Modo';
+
+  @override
+  String get activityDetailDuration => 'Duração';
+
+  @override
+  String get activityDetailScore => 'Placar';
+
+  @override
+  String get activityDetailResult => 'Resultado';
+
+  @override
+  String get activityDetailStatus => 'Status';
 
   @override
   String get historyLoadErrorTitle => 'Não foi possível carregar o histórico';

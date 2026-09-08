@@ -878,6 +878,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyPeriod30 => '30 days';
 
   @override
+  String get historyPeriod90 => '90 days';
+
+  @override
   String get historyStatusAll => 'All';
 
   @override
@@ -904,6 +907,33 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get historyEmptyMessage =>
       'The team\'s match searches show up here once they finish.';
+
+  @override
+  String get activityScopeAll => 'All';
+
+  @override
+  String get activityScopeGames => 'Matches';
+
+  @override
+  String get activityScopeSearches => 'Searches';
+
+  @override
+  String get activityNoResult => 'No result recorded';
+
+  @override
+  String get activityDetailMode => 'Mode';
+
+  @override
+  String get activityDetailDuration => 'Duration';
+
+  @override
+  String get activityDetailScore => 'Score';
+
+  @override
+  String get activityDetailResult => 'Result';
+
+  @override
+  String get activityDetailStatus => 'Status';
 
   @override
   String get historyLoadErrorTitle => 'We could not load the history';

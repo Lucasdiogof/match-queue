@@ -25,3 +25,15 @@ class WeekendLeagueEvent extends Equatable {
   @override
   List<Object?> get props => <Object?>[id, number, season, startsAt, endsAt];
 }
+
+/// Vitórias/derrotas computadas das partidas FINISHED do evento -- nunca
+/// soma o override manual (Etapa 9, ligado ao Elenco/Conta).
+class WeekendLeagueRecord extends Equatable {
+  const WeekendLeagueRecord({required this.wins, required this.losses});
+
+  final int wins;
+  final int losses;
+
+  @override
+  List<Object?> get props => <Object?>[wins, losses];
+}

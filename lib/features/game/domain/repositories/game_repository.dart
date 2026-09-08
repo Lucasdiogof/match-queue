@@ -17,4 +17,8 @@ abstract interface class GameRepository {
   /// A campanha de Weekend League acontecendo agora, senão a próxima, senão a
   /// última encerrada. Null se nenhuma existir ainda.
   Future<WeekendLeagueEvent?> fetchCurrentWeekendLeagueEvent();
+
+  /// Vitórias/derrotas do chamador no evento (computado, nunca o override
+  /// manual -- ver [WeekendLeagueRecord]). Null se o evento não existir.
+  Future<WeekendLeagueRecord?> fetchWeekendLeagueRecord(String eventId);
 }

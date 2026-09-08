@@ -10,6 +10,7 @@ class PendingMatchState extends Equatable {
     this.status = PendingMatchStatus.initial,
     this.match,
     this.weekendLeagueEvent,
+    this.weekendLeagueRecord,
     this.isSaving = false,
     this.actionFailure,
   });
@@ -17,6 +18,7 @@ class PendingMatchState extends Equatable {
   final PendingMatchStatus status;
   final PendingGameMatch? match;
   final WeekendLeagueEvent? weekendLeagueEvent;
+  final WeekendLeagueRecord? weekendLeagueRecord;
   final bool isSaving;
   final AppFailure? actionFailure;
 
@@ -28,6 +30,8 @@ class PendingMatchState extends Equatable {
     bool clearMatch = false,
     WeekendLeagueEvent? weekendLeagueEvent,
     bool clearWeekendLeagueEvent = false,
+    WeekendLeagueRecord? weekendLeagueRecord,
+    bool clearWeekendLeagueRecord = false,
     bool? isSaving,
     AppFailure? actionFailure,
     bool clearActionFailure = false,
@@ -37,6 +41,9 @@ class PendingMatchState extends Equatable {
     weekendLeagueEvent: clearWeekendLeagueEvent
         ? null
         : (weekendLeagueEvent ?? this.weekendLeagueEvent),
+    weekendLeagueRecord: clearWeekendLeagueRecord
+        ? null
+        : (weekendLeagueRecord ?? this.weekendLeagueRecord),
     isSaving: isSaving ?? this.isSaving,
     actionFailure: clearActionFailure
         ? null
@@ -48,6 +55,7 @@ class PendingMatchState extends Equatable {
     status,
     match,
     weekendLeagueEvent,
+    weekendLeagueRecord,
     isSaving,
     actionFailure,
   ];

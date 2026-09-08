@@ -1594,6 +1594,12 @@ abstract class AppLocalizations {
   /// **'30 dias'**
   String get historyPeriod30;
 
+  /// No description provided for @historyPeriod90.
+  ///
+  /// In pt, this message translates to:
+  /// **'90 dias'**
+  String get historyPeriod90;
+
   /// No description provided for @historyStatusAll.
   ///
   /// In pt, this message translates to:
@@ -1647,6 +1653,60 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'As buscas de partida do time aparecem aqui quando terminam.'**
   String get historyEmptyMessage;
+
+  /// No description provided for @activityScopeAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tudo'**
+  String get activityScopeAll;
+
+  /// No description provided for @activityScopeGames.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partidas'**
+  String get activityScopeGames;
+
+  /// No description provided for @activityScopeSearches.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscas'**
+  String get activityScopeSearches;
+
+  /// No description provided for @activityNoResult.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado não informado'**
+  String get activityNoResult;
+
+  /// No description provided for @activityDetailMode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modo'**
+  String get activityDetailMode;
+
+  /// No description provided for @activityDetailDuration.
+  ///
+  /// In pt, this message translates to:
+  /// **'Duração'**
+  String get activityDetailDuration;
+
+  /// No description provided for @activityDetailScore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Placar'**
+  String get activityDetailScore;
+
+  /// No description provided for @activityDetailResult.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado'**
+  String get activityDetailResult;
+
+  /// No description provided for @activityDetailStatus.
+  ///
+  /// In pt, this message translates to:
+  /// **'Status'**
+  String get activityDetailStatus;
 
   /// No description provided for @historyLoadErrorTitle.
   ///

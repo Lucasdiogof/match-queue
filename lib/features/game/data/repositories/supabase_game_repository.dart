@@ -41,6 +41,20 @@ class SupabaseGameRepository implements GameRepository {
         return WeekendLeagueEventModel.fromResponse(json);
       });
 
+  @override
+  Future<WeekendLeagueRecord?> fetchWeekendLeagueRecord(String eventId) =>
+      _guard(() async {
+        final json = await _dataSource.getWeekendLeagueRecord(eventId);
+        final computed = json['computed'];
+        if (computed is! Map) {
+          return null;
+        }
+        return WeekendLeagueRecord(
+          wins: computed['wins'] is int ? computed['wins'] as int : 0,
+          losses: computed['losses'] is int ? computed['losses'] as int : 0,
+        );
+      });
+
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
       return await action();

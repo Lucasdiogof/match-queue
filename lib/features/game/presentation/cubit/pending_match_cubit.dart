@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
+import 'package:fifa_queue/features/game/domain/entities/pending_game_match.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/domain/repositories/game_repository.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,23 +25,10 @@ class PendingMatchCubit extends Cubit<PendingMatchState> {
       ),
     );
     try {
-      final (match, event) = await (
-        _repository.fetchPending(),
-        _repository.fetchCurrentWeekendLeagueEvent(),
-      ).wait;
-      if (isClosed) {
-        return;
+      final result = await _fetchAll();
+      if (!isClosed) {
+        emit(_applyResult(result, status: PendingMatchStatus.ready));
       }
-      emit(
-        state.copyWith(
-          status: PendingMatchStatus.ready,
-          match: match,
-          clearMatch: match == null,
-          weekendLeagueEvent: event,
-          clearWeekendLeagueEvent: event == null,
-          clearActionFailure: true,
-        ),
-      );
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(
@@ -56,23 +45,10 @@ class PendingMatchCubit extends Cubit<PendingMatchState> {
   /// falha pra UI, o card só permanece no último estado bom conhecido.
   Future<void> refreshSilently() async {
     try {
-      final (match, event) = await (
-        _repository.fetchPending(),
-        _repository.fetchCurrentWeekendLeagueEvent(),
-      ).wait;
-      if (isClosed) {
-        return;
+      final result = await _fetchAll();
+      if (!isClosed) {
+        emit(_applyResult(result, status: PendingMatchStatus.ready));
       }
-      emit(
-        state.copyWith(
-          status: PendingMatchStatus.ready,
-          match: match,
-          clearMatch: match == null,
-          weekendLeagueEvent: event,
-          clearWeekendLeagueEvent: event == null,
-          clearActionFailure: true,
-        ),
-      );
     } on AppFailure {
       // silencioso de proposito -- ver doc acima.
     }
@@ -115,4 +91,44 @@ class PendingMatchCubit extends Cubit<PendingMatchState> {
   }
 
   void clear() => emit(const PendingMatchState());
+
+  Future<
+    (
+      PendingGameMatch? match,
+      WeekendLeagueEvent? event,
+      WeekendLeagueRecord? record,
+    )
+  >
+  _fetchAll() async {
+    final (match, event) = await (
+      _repository.fetchPending(),
+      _repository.fetchCurrentWeekendLeagueEvent(),
+    ).wait;
+    final record = event == null
+        ? null
+        : await _repository.fetchWeekendLeagueRecord(event.id);
+    return (match, event, record);
+  }
+
+  PendingMatchState _applyResult(
+    (
+      PendingGameMatch? match,
+      WeekendLeagueEvent? event,
+      WeekendLeagueRecord? record,
+    )
+    result, {
+    required PendingMatchStatus status,
+  }) {
+    final (match, event, record) = result;
+    return state.copyWith(
+      status: status,
+      match: match,
+      clearMatch: match == null,
+      weekendLeagueEvent: event,
+      clearWeekendLeagueEvent: event == null,
+      weekendLeagueRecord: record,
+      clearWeekendLeagueRecord: record == null,
+      clearActionFailure: true,
+    );
+  }
 }

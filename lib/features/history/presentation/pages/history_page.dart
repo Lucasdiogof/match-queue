@@ -2,9 +2,9 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/history/domain/repositories/history_repository.dart';
-import 'package:fifa_queue/features/history/presentation/cubit/history_cubit.dart';
+import 'package:fifa_queue/features/history/presentation/cubit/activity_history_cubit.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/stats_cubit.dart';
-import 'package:fifa_queue/features/history/presentation/widgets/match_history_view.dart';
+import 'package:fifa_queue/features/history/presentation/widgets/activity_timeline_view.dart';
 import 'package:fifa_queue/features/history/presentation/widgets/matchmaking_stats_view.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
@@ -44,9 +44,10 @@ class _HistoryScope extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: <BlocProvider<dynamic>>[
-      BlocProvider<HistoryCubit>(
+      BlocProvider<ActivityHistoryCubit>(
         create: (_) =>
-            HistoryCubit(getIt<HistoryRepository>(), teamId: teamId)..load(),
+            ActivityHistoryCubit(getIt<HistoryRepository>(), teamId: teamId)
+              ..load(),
       ),
       BlocProvider<StatsCubit>(
         create: (_) =>
@@ -97,7 +98,7 @@ class _HistoryTabsState extends State<_HistoryTabs> {
             index: _index,
             sizing: StackFit.expand,
             children: const <Widget>[
-              MatchHistoryView(),
+              ActivityTimelineView(),
               MatchmakingStatsView(),
             ],
           ),

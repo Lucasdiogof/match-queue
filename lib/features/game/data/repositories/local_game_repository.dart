@@ -21,4 +21,9 @@ class LocalGameRepository implements GameRepository {
 
   @override
   Future<WeekendLeagueEvent?> fetchCurrentWeekendLeagueEvent() async => null;
+
+  @override
+  Future<WeekendLeagueRecord?> fetchWeekendLeagueRecord(
+    String eventId,
+  ) async => null;
 }

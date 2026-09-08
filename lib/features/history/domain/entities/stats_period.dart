@@ -3,12 +3,14 @@
 enum StatsPeriod {
   all,
   last7Days,
-  last30Days;
+  last30Days,
+  last90Days;
 
   /// Início da janela relativo a [now], ou nulo para "todo o período".
   DateTime? from(DateTime now) => switch (this) {
     StatsPeriod.all => null,
     StatsPeriod.last7Days => now.subtract(const Duration(days: 7)),
     StatsPeriod.last30Days => now.subtract(const Duration(days: 30)),
+    StatsPeriod.last90Days => now.subtract(const Duration(days: 90)),
   };
 }

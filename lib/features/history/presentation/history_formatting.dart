@@ -28,6 +28,7 @@ extension StatsPeriodL10n on StatsPeriod {
     StatsPeriod.all => l10n.historyPeriodAll,
     StatsPeriod.last7Days => l10n.historyPeriod7,
     StatsPeriod.last30Days => l10n.historyPeriod30,
+    StatsPeriod.last90Days => l10n.historyPeriod90,
   };
 }
 
