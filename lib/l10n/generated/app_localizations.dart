@@ -187,7 +187,7 @@ abstract class AppLocalizations {
   /// No description provided for @navTeam.
   ///
   /// In pt, this message translates to:
-  /// **'Time'**
+  /// **'Times'**
   String get navTeam;
 
   /// No description provided for @navHistory.
@@ -243,6 +243,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Jogadores, cargos e convites.'**
   String get teamSubtitle;
+
+  /// No description provided for @teamsListSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus times e status operacional.'**
+  String get teamsListSubtitle;
 
   /// No description provided for @historyTitle.
   ///
@@ -1059,6 +1065,72 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Membros'**
   String get teamMembersTitle;
+
+  /// No description provided for @teamsListEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você ainda não faz parte de um time.'**
+  String get teamsListEmptyMessage;
+
+  /// No description provided for @teamDetailPlayersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogadores'**
+  String get teamDetailPlayersTitle;
+
+  /// No description provided for @playerProfileTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil do jogador'**
+  String get playerProfileTitle;
+
+  /// No description provided for @playerProfileAccountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta'**
+  String get playerProfileAccountLabel;
+
+  /// No description provided for @playerProfileNoAccountMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este jogador não tem uma conta vinculada a este time.'**
+  String get playerProfileNoAccountMessage;
+
+  /// No description provided for @playerProfileSquadLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escalação principal'**
+  String get playerProfileSquadLabel;
+
+  /// No description provided for @playerProfileSquadNoneMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem escalação montada.'**
+  String get playerProfileSquadNoneMessage;
+
+  /// No description provided for @playerProfileCompletenessLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count}/{total} titulares'**
+  String playerProfileCompletenessLabel(int count, int total);
+
+  /// No description provided for @playerProfileSelectAccountTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este jogador tem mais de uma conta neste time'**
+  String get playerProfileSelectAccountTitle;
+
+  /// No description provided for @playerProfileWeekendLeagueEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum evento de Weekend League registrado.'**
+  String get playerProfileWeekendLeagueEmptyMessage;
+
+  /// No description provided for @playerProfileWeekendLeagueRecordLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{wins}V–{losses}D'**
+  String playerProfileWeekendLeagueRecordLabel(int wins, int losses);
 
   /// No description provided for @teamMembersCount.
   ///

@@ -51,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navSearch => 'Play';
 
   @override
-  String get navTeam => 'Team';
+  String get navTeam => 'Teams';
 
   @override
   String get navHistory => 'History';
@@ -80,6 +80,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get teamSubtitle => 'Players, roles and invites.';
+
+  @override
+  String get teamsListSubtitle => 'Your teams and their operational status.';
 
   @override
   String get historyTitle => 'History';
@@ -543,6 +546,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get teamMembersTitle => 'Members';
+
+  @override
+  String get teamsListEmptyMessage => 'You are not part of any team yet.';
+
+  @override
+  String get teamDetailPlayersTitle => 'Players';
+
+  @override
+  String get playerProfileTitle => 'Player profile';
+
+  @override
+  String get playerProfileAccountLabel => 'Account';
+
+  @override
+  String get playerProfileNoAccountMessage =>
+      'This player has no account linked to this team.';
+
+  @override
+  String get playerProfileSquadLabel => 'Main squad';
+
+  @override
+  String get playerProfileSquadNoneMessage => 'No squad built yet.';
+
+  @override
+  String playerProfileCompletenessLabel(int count, int total) {
+    return '$count/$total starters';
+  }
+
+  @override
+  String get playerProfileSelectAccountTitle =>
+      'This player has more than one account on this team';
+
+  @override
+  String get playerProfileWeekendLeagueEmptyMessage =>
+      'No Weekend League event recorded.';
+
+  @override
+  String playerProfileWeekendLeagueRecordLabel(int wins, int losses) {
+    return '${wins}W–${losses}L';
+  }
 
   @override
   String teamMembersCount(int count) {

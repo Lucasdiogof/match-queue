@@ -14,7 +14,7 @@
   "actionSignOut": "Sign out",
   "actionEdit": "Edit",
   "navSearch": "Play",
-  "navTeam": "Team",
+  "navTeam": "Teams",
   "navHistory": "History",
   "navProfile": "Profile",
   "comingSoonTitle": "Under construction",
@@ -24,6 +24,7 @@
   "homeSubtitle": "Coordinate who is searching right now.",
   "teamTitle": "My team",
   "teamSubtitle": "Players, roles and invites.",
+  "teamsListSubtitle": "Your teams and their operational status.",
   "historyTitle": "History",
   "historySubtitle": "Searches, matches found and expirations.",
   "profileTitle": "Profile",
@@ -277,6 +278,29 @@
   "teamCreateAction": "Create team",
   "teamCreateAnother": "Create another team",
   "teamMembersTitle": "Members",
+  "teamsListEmptyMessage": "You are not part of any team yet.",
+  "teamDetailPlayersTitle": "Players",
+  "playerProfileTitle": "Player profile",
+  "playerProfileAccountLabel": "Account",
+  "playerProfileNoAccountMessage": "This player has no account linked to this team.",
+  "playerProfileSquadLabel": "Main squad",
+  "playerProfileSquadNoneMessage": "No squad built yet.",
+  "playerProfileCompletenessLabel": "{count}/{total} starters",
+  "@playerProfileCompletenessLabel": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "playerProfileSelectAccountTitle": "This player has more than one account on this team",
+  "playerProfileWeekendLeagueEmptyMessage": "No Weekend League event recorded.",
+  "playerProfileWeekendLeagueRecordLabel": "{wins}W–{losses}L",
+  "@playerProfileWeekendLeagueRecordLabel": {
+    "placeholders": {
+      "wins": {"type": "int"},
+      "losses": {"type": "int"}
+    }
+  },
   "teamMembersCount": "{count, plural, =0{No players} =1{1 player} other{{count} players}}",
   "@teamMembersCount": {
     "placeholders": {

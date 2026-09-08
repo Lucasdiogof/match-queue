@@ -5,6 +5,7 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
 import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
 import 'package:fifa_queue/features/profile/domain/repositories/profile_repository.dart';
+import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
@@ -123,6 +124,27 @@ class LocalTeamRepository implements TeamRepository {
         status: PlayerOperationalStatus.offline,
       ),
     ];
+  }
+
+  /// Sem backend real ninguem mais compartilha o time -- so o proprio
+  /// usuario existe pra pedir perfil, e o modo local nunca tem outro membro
+  /// para negar acesso.
+  @override
+  Future<PlayerProfile> fetchMemberProfile({
+    required String teamId,
+    required String userId,
+    String? fcAccountId,
+  }) async {
+    final profile =
+        await _profileRepository.fetchMyProfile() ?? _fallbackProfile(userId);
+    return PlayerProfile(
+      userId: userId,
+      displayName: profile.displayName,
+      avatarUrl: profile.avatarUrl,
+      candidateAccounts: const <PlayerProfileAccountCandidate>[],
+      needsAccountSelection: false,
+      weekendLeagueHistory: const <PlayerProfileWeekendLeagueEntry>[],
+    );
   }
 
   @override

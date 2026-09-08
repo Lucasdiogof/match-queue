@@ -1,3 +1,4 @@
+import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
@@ -29,4 +30,13 @@ abstract interface class TeamRepository {
   Future<List<TeamMember>> fetchMembers(String teamId);
 
   Future<List<TeamMemberStatus>> fetchPlayerStatuses(String teamId);
+
+  /// Perfil publico de um membro do MESMO time (Etapa 11). [fcAccountId]
+  /// desambigua quando o alvo tem mais de uma Conta vinculada aquele time --
+  /// veja [PlayerProfile.needsAccountSelection].
+  Future<PlayerProfile> fetchMemberProfile({
+    required String teamId,
+    required String userId,
+    String? fcAccountId,
+  });
 }

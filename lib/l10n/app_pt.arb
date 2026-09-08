@@ -14,7 +14,7 @@
   "actionSignOut": "Sair",
   "actionEdit": "Editar",
   "navSearch": "Jogar",
-  "navTeam": "Time",
+  "navTeam": "Times",
   "navHistory": "Histórico",
   "navProfile": "Perfil",
   "comingSoonTitle": "Em construção",
@@ -24,6 +24,7 @@
   "homeSubtitle": "Coordene quem está procurando agora.",
   "teamTitle": "Meu time",
   "teamSubtitle": "Jogadores, cargos e convites.",
+  "teamsListSubtitle": "Seus times e status operacional.",
   "historyTitle": "Histórico",
   "historySubtitle": "Buscas, partidas encontradas e expirações.",
   "profileTitle": "Perfil",
@@ -277,6 +278,29 @@
   "teamCreateAction": "Criar time",
   "teamCreateAnother": "Criar outro time",
   "teamMembersTitle": "Membros",
+  "teamsListEmptyMessage": "Você ainda não faz parte de um time.",
+  "teamDetailPlayersTitle": "Jogadores",
+  "playerProfileTitle": "Perfil do jogador",
+  "playerProfileAccountLabel": "Conta",
+  "playerProfileNoAccountMessage": "Este jogador não tem uma conta vinculada a este time.",
+  "playerProfileSquadLabel": "Escalação principal",
+  "playerProfileSquadNoneMessage": "Ainda sem escalação montada.",
+  "playerProfileCompletenessLabel": "{count}/{total} titulares",
+  "@playerProfileCompletenessLabel": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "playerProfileSelectAccountTitle": "Este jogador tem mais de uma conta neste time",
+  "playerProfileWeekendLeagueEmptyMessage": "Nenhum evento de Weekend League registrado.",
+  "playerProfileWeekendLeagueRecordLabel": "{wins}V–{losses}D",
+  "@playerProfileWeekendLeagueRecordLabel": {
+    "placeholders": {
+      "wins": {"type": "int"},
+      "losses": {"type": "int"}
+    }
+  },
   "teamMembersCount": "{count, plural, =0{Nenhum jogador} =1{1 jogador} other{{count} jogadores}}",
   "@teamMembersCount": {
     "placeholders": {

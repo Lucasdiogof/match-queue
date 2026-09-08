@@ -1,9 +1,11 @@
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/teams/data/datasources/team_remote_data_source.dart';
+import 'package:fifa_queue/features/teams/data/models/player_profile_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_status_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
+import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
@@ -86,6 +88,20 @@ class SupabaseTeamRepository implements TeamRepository {
         final json = await _dataSource.getPlayerStatuses(teamId);
         return TeamMemberStatusModel.listFromResponse(json);
       });
+
+  @override
+  Future<PlayerProfile> fetchMemberProfile({
+    required String teamId,
+    required String userId,
+    String? fcAccountId,
+  }) => _guard(() async {
+    final json = await _dataSource.getMemberProfile(
+      teamId: teamId,
+      userId: userId,
+      fcAccountId: fcAccountId,
+    );
+    return PlayerProfileModel.fromJson(json);
+  });
 
   String _requireUserId() {
     final userId = _dataSource.currentUserId;

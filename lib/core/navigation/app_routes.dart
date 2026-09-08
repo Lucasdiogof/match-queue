@@ -31,6 +31,14 @@ class AppRoutes {
 
   static const AppRoute home = AppRoute('home', '/app/home');
   static const AppRoute team = AppRoute('team', '/app/team');
+  static const AppRoute teamDetail = AppRoute(
+    'team-detail',
+    '/app/team/:teamId',
+  );
+  static const AppRoute playerProfile = AppRoute(
+    'player-profile',
+    '/app/team/:teamId/player/:userId',
+  );
   static const AppRoute teamSettings = AppRoute(
     'team-settings',
     '/app/team/settings',
@@ -65,6 +73,8 @@ class AppRoutes {
 
   static const String fcAccountIdParam = 'fcAccountId';
   static const String squadIdParam = 'squadId';
+  static const String teamIdParam = 'teamId';
+  static const String userIdParam = 'userId';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,
@@ -85,6 +95,11 @@ class AppRoutes {
       '/app/fc-accounts/$fcAccountId';
 
   static String squadBuilderLocation(String squadId) => '/app/squads/$squadId';
+
+  static String teamDetailLocation(String teamId) => '/app/team/$teamId';
+
+  static String playerProfileLocation(String teamId, String userId) =>
+      '/app/team/$teamId/player/$userId';
 
   static bool isJoinTeamLocation(String location) =>
       location.startsWith('/join/');

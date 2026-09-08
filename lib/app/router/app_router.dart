@@ -18,7 +18,9 @@ import 'package:fifa_queue/features/profile/presentation/pages/profile_appearanc
 import 'package:fifa_queue/features/profile/presentation/pages/profile_language_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_notifications_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_page.dart';
-import 'package:fifa_queue/features/teams/presentation/pages/team_page.dart';
+import 'package:fifa_queue/features/teams/presentation/pages/team_detail_page.dart';
+import 'package:fifa_queue/features/teams/presentation/pages/teams_list_page.dart';
+import 'package:fifa_queue/features/teams/presentation/pages/player_profile_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -74,6 +76,21 @@ class AppRouter {
         builder: (context, state) => const TeamSettingsPage(),
       ),
       GoRoute(
+        path: AppRoutes.playerProfile.path,
+        name: AppRoutes.playerProfile.name,
+        builder: (context, state) => PlayerProfilePage(
+          teamId: state.pathParameters[AppRoutes.teamIdParam] ?? '',
+          userId: state.pathParameters[AppRoutes.userIdParam] ?? '',
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.teamDetail.path,
+        name: AppRoutes.teamDetail.name,
+        builder: (context, state) => TeamDetailPage(
+          teamId: state.pathParameters[AppRoutes.teamIdParam] ?? '',
+        ),
+      ),
+      GoRoute(
         path: AppRoutes.profileAppearance.path,
         name: AppRoutes.profileAppearance.name,
         builder: (context, state) => const ProfileAppearancePage(),
@@ -125,7 +142,7 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.team.path,
                 name: AppRoutes.team.name,
-                builder: (context, state) => const TeamPage(),
+                builder: (context, state) => const TeamsListPage(),
               ),
             ],
           ),

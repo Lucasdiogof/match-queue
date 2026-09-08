@@ -13,92 +13,60 @@ import 'package:fifa_queue/features/teams/presentation/cubit/team_status_state.d
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_empty_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_selector_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class TeamPage extends StatelessWidget {
-  const TeamPage({super.key});
+/// Detalhe do Time (Etapa 11, item 5): nome, tag, lista de jogadores,
+/// status operacional. As configuracoes/engrenagem do time ficam AQUI, nao
+/// mais na lista.
+class TeamDetailPage extends StatelessWidget {
+  const TeamDetailPage({required this.teamId, super.key});
+
+  final String teamId;
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
+  Widget build(BuildContext context) => BlocBuilder<TeamsCubit, TeamsState>(
+    builder: (context, state) {
+      final userTeam = _findTeam(state, teamId);
 
-    return BlocBuilder<TeamsCubit, TeamsState>(
-      builder: (context, state) {
-        final selected = state.selectedTeam;
-
-        return AppScaffold(
-          appBar: AppAppBar(
-            title: l10n.teamTitle,
-            subtitle: l10n.teamSubtitle,
-            actions: <Widget>[
-              if (state.hasMultipleTeams)
-                AppIconButton(
-                  icon: Icons.swap_horiz,
-                  tooltip: l10n.teamSwitchAction,
-                  variant: AppIconButtonVariant.surface,
-                  onPressed: () => showTeamSelectorSheet(
-                    context: context,
-                    teams: state.teams,
-                    selectedTeamId: state.selectedTeamId,
-                  ),
-                ),
-              if (selected != null)
-                AppIconButton(
-                  icon: Icons.settings_outlined,
-                  tooltip: l10n.teamManageAction,
-                  variant: AppIconButtonVariant.surface,
-                  onPressed: () => context.push(AppRoutes.teamSettings.path),
-                ),
-            ],
-          ),
-          body: _TeamBody(state: state, selected: selected),
-        );
-      },
-    );
-  }
-}
-
-class _TeamBody extends StatelessWidget {
-  const _TeamBody({required this.state, required this.selected});
-
-  final TeamsState state;
-  final UserTeam? selected;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    if (state.isLoading && !state.hasTeams) {
-      return const AppLoading();
-    }
-
-    if (state.status == TeamsStatus.failure && !state.hasTeams) {
-      return AppErrorState(
-        title: l10n.teamLoadErrorTitle,
-        message: state.failure?.localizedMessage(l10n) ?? l10n.errorUnexpected,
-        retryLabel: l10n.actionRetry,
-        onRetry: () => context.read<TeamsCubit>().refresh(),
+      return AppScaffold(
+        appBar: AppAppBar(
+          title: userTeam?.team.name ?? context.l10n.teamTitle,
+          subtitle: userTeam?.team.tag,
+          actions: <Widget>[
+            if (userTeam != null && userTeam.canManageTeam)
+              AppIconButton(
+                icon: Icons.settings_outlined,
+                tooltip: context.l10n.teamManageAction,
+                variant: AppIconButtonVariant.surface,
+                onPressed: () => context.push(AppRoutes.teamSettings.path),
+              ),
+          ],
+        ),
+        body: userTeam == null
+            ? const AppLoading()
+            : BlocProvider<TeamStatusCubit>(
+                key: ValueKey(teamId),
+                create: (_) => TeamStatusCubit(
+                  getIt<TeamRepository>(),
+                  getIt<MatchmakingRepository>(),
+                  teamId: teamId,
+                )..start(),
+                child: _TeamStatusBody(team: userTeam.team),
+              ),
       );
-    }
+    },
+  );
 
-    if (selected == null) {
-      return const TeamEmptyState();
+  UserTeam? _findTeam(TeamsState state, String teamId) {
+    for (final userTeam in state.teams) {
+      if (userTeam.id == teamId) {
+        return userTeam;
+      }
     }
-
-    return BlocProvider<TeamStatusCubit>(
-      key: ValueKey(selected!.id),
-      create: (_) => TeamStatusCubit(
-        getIt<TeamRepository>(),
-        getIt<MatchmakingRepository>(),
-        teamId: selected!.id,
-      )..start(),
-      child: _TeamStatusBody(team: selected!.team),
-    );
+    return null;
   }
 }
 
@@ -115,7 +83,7 @@ class _TeamStatusBody extends StatelessWidget {
           children: <Widget>[
             _TeamHeaderCard(team: team, state: state),
             const SizedBox(height: AppSpacing.lg),
-            _MemberStatusSection(state: state),
+            _MemberStatusSection(teamId: team.id, state: state),
           ],
         ),
       );
@@ -166,8 +134,9 @@ class _TeamHeaderCard extends StatelessWidget {
 }
 
 class _MemberStatusSection extends StatelessWidget {
-  const _MemberStatusSection({required this.state});
+  const _MemberStatusSection({required this.teamId, required this.state});
 
+  final String teamId;
   final TeamStatusState state;
 
   @override
@@ -179,7 +148,7 @@ class _MemberStatusSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            l10n.teamMembersTitle.toUpperCase(),
+            l10n.teamDetailPlayersTitle.toUpperCase(),
             style: context.textStyles.labelSmall,
           ),
           const SizedBox(height: AppSpacing.md),
@@ -193,7 +162,7 @@ class _MemberStatusSection extends StatelessWidget {
             )
           else
             for (final member in state.members)
-              _MemberStatusRow(member: member),
+              _MemberStatusRow(teamId: teamId, member: member),
         ],
       ),
     );
@@ -201,31 +170,36 @@ class _MemberStatusSection extends StatelessWidget {
 }
 
 class _MemberStatusRow extends StatelessWidget {
-  const _MemberStatusRow({required this.member});
+  const _MemberStatusRow({required this.teamId, required this.member});
 
+  final String teamId;
   final TeamMemberStatus member;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-    child: Row(
-      children: <Widget>[
-        AppAvatar(
-          label: member.displayName,
-          imageUrl: member.avatarUrl,
-          size: AppSizing.avatarMd,
-        ),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Text(
-            member.displayName,
-            overflow: TextOverflow.ellipsis,
-            style: context.textStyles.bodyLarge,
+  Widget build(BuildContext context) => InkWell(
+    onTap: () =>
+        context.push(AppRoutes.playerProfileLocation(teamId, member.userId)),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+      child: Row(
+        children: <Widget>[
+          AppAvatar(
+            label: member.displayName,
+            imageUrl: member.avatarUrl,
+            size: AppSizing.avatarMd,
           ),
-        ),
-        const SizedBox(width: AppSpacing.sm),
-        TeamStatusBadge(member: member),
-      ],
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Text(
+              member.displayName,
+              overflow: TextOverflow.ellipsis,
+              style: context.textStyles.bodyLarge,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          TeamStatusBadge(member: member),
+        ],
+      ),
     ),
   );
 }

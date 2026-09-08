@@ -27,6 +27,12 @@ abstract interface class TeamRemoteDataSource {
   Future<List<Map<String, dynamic>>> fetchMembers(String teamId);
 
   Future<Map<String, dynamic>> getPlayerStatuses(String teamId);
+
+  Future<Map<String, dynamic>> getMemberProfile({
+    required String teamId,
+    required String userId,
+    String? fcAccountId,
+  });
 }
 
 class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
@@ -107,6 +113,23 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
     final response = await _client.rpc<dynamic>(
       'get_team_player_statuses',
       params: <String, dynamic>{'p_team_id': teamId},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getMemberProfile({
+    required String teamId,
+    required String userId,
+    String? fcAccountId,
+  }) async {
+    final response = await _client.rpc<dynamic>(
+      'get_team_member_profile',
+      params: <String, dynamic>{
+        'p_team_id': teamId,
+        'p_user_id': userId,
+        'p_fc_account_id': fcAccountId,
+      },
     );
     return Map<String, dynamic>.from(response as Map);
   }

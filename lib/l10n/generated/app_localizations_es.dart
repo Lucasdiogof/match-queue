@@ -51,7 +51,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navSearch => 'Jugar';
 
   @override
-  String get navTeam => 'Equipo';
+  String get navTeam => 'Equipos';
 
   @override
   String get navHistory => 'Historial';
@@ -80,6 +80,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get teamSubtitle => 'Jugadores, roles e invitaciones.';
+
+  @override
+  String get teamsListSubtitle => 'Tus equipos y su estado operacional.';
 
   @override
   String get historyTitle => 'Historial';
@@ -546,6 +549,48 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get teamMembersTitle => 'Miembros';
+
+  @override
+  String get teamsListEmptyMessage =>
+      'Todavía no formas parte de ningún equipo.';
+
+  @override
+  String get teamDetailPlayersTitle => 'Jugadores';
+
+  @override
+  String get playerProfileTitle => 'Perfil del jugador';
+
+  @override
+  String get playerProfileAccountLabel => 'Cuenta';
+
+  @override
+  String get playerProfileNoAccountMessage =>
+      'Este jugador no tiene una cuenta vinculada a este equipo.';
+
+  @override
+  String get playerProfileSquadLabel => 'Escuadra principal';
+
+  @override
+  String get playerProfileSquadNoneMessage =>
+      'Todavía no hay una escuadra armada.';
+
+  @override
+  String playerProfileCompletenessLabel(int count, int total) {
+    return '$count/$total titulares';
+  }
+
+  @override
+  String get playerProfileSelectAccountTitle =>
+      'Este jugador tiene más de una cuenta en este equipo';
+
+  @override
+  String get playerProfileWeekendLeagueEmptyMessage =>
+      'No hay eventos de Weekend League registrados.';
+
+  @override
+  String playerProfileWeekendLeagueRecordLabel(int wins, int losses) {
+    return '${wins}G–${losses}P';
+  }
 
   @override
   String teamMembersCount(int count) {
