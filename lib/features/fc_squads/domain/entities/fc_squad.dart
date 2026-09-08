@@ -5,31 +5,49 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 
 enum SquadSlotType {
   starting('STARTING'),
-  bench('BENCH');
+  bench('BENCH'),
+  reserve('RESERVE');
 
   const SquadSlotType(this.key);
 
   final String key;
 
-  static SquadSlotType fromKey(Object? key) =>
-      key == 'BENCH' ? SquadSlotType.bench : SquadSlotType.starting;
+  static SquadSlotType fromKey(Object? key) => switch (key) {
+    'BENCH' => SquadSlotType.bench,
+    'RESERVE' => SquadSlotType.reserve,
+    _ => SquadSlotType.starting,
+  };
 }
 
 /// Slot PREENCHIDO. Slot vazio não existe como dado -- é a ausência desta
 /// entrada, exatamente como no banco.
+///
+/// [chemistry] e [positionEligible] só existem para titulares (STARTING) --
+/// banco e reserva nunca entram na química (Etapa 13), então ficam `null`/
+/// `true` para eles.
 class SquadSlot extends Equatable {
   const SquadSlot({
     required this.type,
     required this.slotCode,
     required this.card,
+    this.chemistry,
+    this.positionEligible = true,
   });
 
   final SquadSlotType type;
   final String slotCode;
   final PlayerCard card;
+  final int? chemistry;
+  final bool positionEligible;
 
   @override
-  List<Object?> get props => <Object?>[type, slotCode, card];
+  List<Object?> get props => <Object?>[
+    type,
+    slotCode,
+    card,
+    chemistry,
+    positionEligible,
+  ];
 }
 
 /// Linha de lista: o suficiente para "Meus Elencos" sem carregar o builder.
@@ -42,6 +60,9 @@ class FcSquadSummary extends Equatable {
     required this.isDefault,
     required this.startingCount,
     required this.benchCount,
+    this.reserveCount = 0,
+    this.overall,
+    this.chemistry = 0,
   });
 
   final String id;
@@ -51,6 +72,13 @@ class FcSquadSummary extends Equatable {
   final bool isDefault;
   final int startingCount;
   final int benchCount;
+  final int reserveCount;
+
+  /// Média dos titulares preenchidos. `null` sem nenhum titular.
+  final int? overall;
+
+  /// 0-33, só titulares. Nunca inclui banco/reserva.
+  final int chemistry;
 
   @override
   List<Object?> get props => <Object?>[
@@ -61,6 +89,9 @@ class FcSquadSummary extends Equatable {
     isDefault,
     startingCount,
     benchCount,
+    reserveCount,
+    overall,
+    chemistry,
   ];
 }
 
@@ -76,6 +107,12 @@ class FcSquadDetail extends Equatable {
     required this.slots,
     required this.isDefault,
     required this.benchSize,
+    this.reserveSize = 0,
+    this.overall,
+    this.chemistry = 0,
+    this.chemistryRuleVersion,
+    this.filledStarters = 0,
+    this.starterCount = 11,
     this.manager,
     this.managerLeague,
   });
@@ -87,6 +124,19 @@ class FcSquadDetail extends Equatable {
   final List<SquadSlot> slots;
   final bool isDefault;
   final int benchSize;
+  final int reserveSize;
+
+  /// Média dos titulares preenchidos, `null` sem nenhum (nunca 0).
+  final int? overall;
+
+  /// 0-33, soma da química de cada titular. Banco/reserva nunca entram.
+  final int chemistry;
+
+  /// Versão da regra de química usada para calcular [chemistry]/
+  /// [SquadSlot.chemistry] -- hoje sempre `FC_MODERN_V1`.
+  final String? chemistryRuleVersion;
+  final int filledStarters;
+  final int starterCount;
   final FcManager? manager;
   final FcLeague? managerLeague;
 
@@ -99,15 +149,31 @@ class FcSquadDetail extends Equatable {
     return null;
   }
 
+  SquadSlot? slotAt(SquadSlotType type, String slotCode) {
+    for (final slot in slots) {
+      if (slot.type == type && slot.slotCode == slotCode) {
+        return slot;
+      }
+    }
+    return null;
+  }
+
   int get startingCount =>
       slots.where((s) => s.type == SquadSlotType.starting).length;
 
   int get benchCount =>
       slots.where((s) => s.type == SquadSlotType.bench).length;
 
+  int get reserveCount =>
+      slots.where((s) => s.type == SquadSlotType.reserve).length;
+
   bool get isComplete => startingCount == formation.slots.length;
 
+  bool get hasAnySlotFilled => slots.isNotEmpty;
+
   static String benchCodeAt(int index) => 'BENCH_${index + 1}';
+
+  static String reserveCodeAt(int index) => 'RESERVE_${index + 1}';
 
   @override
   List<Object?> get props => <Object?>[
@@ -118,6 +184,12 @@ class FcSquadDetail extends Equatable {
     slots,
     isDefault,
     benchSize,
+    reserveSize,
+    overall,
+    chemistry,
+    chemistryRuleVersion,
+    filledStarters,
+    starterCount,
     manager,
     managerLeague,
   ];

@@ -17,6 +17,7 @@ class SquadPlayerCard extends StatelessWidget {
     this.card,
     this.state = SquadPlayerCardState.empty,
     this.isSaving = false,
+    this.chemistry,
     this.onTap,
     this.onLongPress,
     super.key,
@@ -30,6 +31,10 @@ class SquadPlayerCard extends StatelessWidget {
   final PlayerCard? card;
   final SquadPlayerCardState state;
   final bool isSaving;
+
+  /// 0-3, só para titulares (Etapa 13). `null` para banco/reserva -- eles
+  /// nunca entram na química, então não fazem sentido mostrar um número.
+  final int? chemistry;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -50,46 +55,103 @@ class SquadPlayerCard extends StatelessWidget {
       selected: isSelected,
       label: isEmpty
           ? '$positionCode, vazio'
-          : '${card!.displayName}, $positionCode, ${card!.rating}',
+          : '${card!.displayName}, $positionCode, ${card!.rating}'
+                '${chemistry == null ? '' : ', química $chemistry'}',
       child: SizedBox(
         width: width,
         height: width / aspectRatio,
-        child: Material(
-          color: isEmpty
-              ? colors.surface.withValues(alpha: 0.72)
-              : colors.surfaceElevated,
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: AppRadii.borderSm,
-            side: BorderSide(color: border, width: isSelected ? 2 : 1),
-          ),
-          child: InkWell(
-            onTap: onTap,
-            onLongPress: onLongPress,
-            child: Padding(
-              padding: EdgeInsets.all(width * 0.06),
-              child: isSaving
-                  ? Center(
-                      child: SizedBox(
-                        width: width * 0.28,
-                        height: width * 0.28,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: colors.textSecondary,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            Material(
+              color: isEmpty
+                  ? colors.surface.withValues(alpha: 0.72)
+                  : colors.surfaceElevated,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: AppRadii.borderSm,
+                side: BorderSide(color: border, width: isSelected ? 2 : 1),
+              ),
+              child: InkWell(
+                onTap: onTap,
+                onLongPress: onLongPress,
+                child: Padding(
+                  padding: EdgeInsets.all(width * 0.06),
+                  child: isSaving
+                      ? Center(
+                          child: SizedBox(
+                            width: width * 0.28,
+                            height: width * 0.28,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: colors.textSecondary,
+                            ),
+                          ),
+                        )
+                      : isEmpty
+                      ? _Empty(positionCode: positionCode, width: width)
+                      : _Filled(
+                          card: card!,
+                          positionCode: positionCode,
+                          width: width,
                         ),
-                      ),
-                    )
-                  : isEmpty
-                  ? _Empty(positionCode: positionCode, width: width)
-                  : _Filled(
-                      card: card!,
-                      positionCode: positionCode,
-                      width: width,
-                    ),
+                ),
+              ),
             ),
-          ),
+            if (state == SquadPlayerCardState.outOfPosition)
+              Positioned(
+                top: -4,
+                right: -4,
+                child: Icon(
+                  Icons.warning_amber_rounded,
+                  size: width * 0.24,
+                  color: colors.warning,
+                ),
+              ),
+            if (chemistry != null)
+              Positioned(
+                bottom: 2,
+                left: 2,
+                child: _ChemistryPips(value: chemistry!, width: width),
+              ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+/// Três pontinhos (0-3) representando a química individual do titular. Nunca
+/// aparece em banco/reserva (item 34/57) -- [chemistry] já vem `null` deles.
+class _ChemistryPips extends StatelessWidget {
+  const _ChemistryPips({required this.value, required this.width});
+
+  final int value;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final dotColor = switch (value) {
+      0 => colors.textTertiary,
+      1 => colors.warning,
+      _ => colors.success,
+    };
+    final dot = width * 0.09;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        for (var i = 0; i < 3; i++)
+          Container(
+            width: dot,
+            height: dot,
+            margin: EdgeInsets.only(right: dot * 0.4),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: i < value ? dotColor : colors.borderSubtle,
+            ),
+          ),
+      ],
     );
   }
 }

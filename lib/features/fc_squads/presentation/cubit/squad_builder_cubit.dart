@@ -160,6 +160,38 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
     slot: slotCode,
   );
 
+  /// Move/troca vindo de um drop (drag and drop). Reusa a MESMA RPC atômica
+  /// do tap-to-swap (`swap_fc_squad_slots`) -- nunca um clear+set em dois
+  /// passos, que deixaria o squad inconsistente se o segundo passo falhasse.
+  /// Soltar em cima do próprio slot de origem é um no-op silencioso.
+  Future<bool> moveOrSwap({
+    required SquadSlotType fromType,
+    required String fromSlotCode,
+    required SquadSlotType toType,
+    required String toSlotCode,
+  }) {
+    if (fromType == toType && fromSlotCode == toSlotCode) {
+      return Future.value(false);
+    }
+    if (state.pendingMove != null) {
+      emit(state.copyWith(clearPendingMove: true));
+    }
+    return _run(
+      () => _repository.swapSlots(
+        squadId: squadId,
+        fromType: fromType,
+        fromCode: fromSlotCode,
+        toType: toType,
+        toCode: toSlotCode,
+      ),
+      slot: toSlotCode,
+    );
+  }
+
+  /// "Limpar escalação": apaga só os slots (titular+banco+reserva), nunca o
+  /// squad em si. Confirmação mora na UI.
+  Future<bool> clearAllSlots() => _run(() => _repository.clearSlots(squadId));
+
   Future<bool> setManager({String? managerId, String? managerLeagueId}) => _run(
     () => _repository.setManager(
       squadId: squadId,

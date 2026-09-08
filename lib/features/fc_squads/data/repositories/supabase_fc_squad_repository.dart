@@ -144,6 +144,12 @@ class SupabaseFcSquadRepository implements FcSquadRepository {
     ),
   );
 
+  @override
+  Future<FcSquadDetail> clearSlots(String squadId) => _guard(
+    () async =>
+        FcSquadModel.detailFromJson(await _dataSource.clearSlots(squadId)),
+  );
+
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
       return await action();

@@ -53,10 +53,13 @@ class SquadSelectorRow extends StatelessWidget {
                         child: Text(
                           selected == null
                               ? l10n.squadNoneSelected
-                              : l10n.squadSummaryLabel(
-                                  selected.name,
-                                  selected.formationCode,
-                                ),
+                              : '${l10n.squadSummaryLabel(selected.name, selected.formationCode)}'
+                                    ' · '
+                                    '${selected.startingCount < 11
+                                        ? l10n.squadCompletionLabel(selected.startingCount, 11)
+                                        : selected.overall == null
+                                        ? l10n.squadOverallUnknown
+                                        : l10n.squadOverallValue(selected.overall!)}',
                           overflow: TextOverflow.ellipsis,
                           style: context.textStyles.bodySmall?.copyWith(
                             color: colors.textPrimary,

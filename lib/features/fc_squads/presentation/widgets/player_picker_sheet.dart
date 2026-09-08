@@ -113,7 +113,10 @@ class _PlayerList extends StatelessWidget {
                   child: AppLoading.inline(),
                 );
               }
-              return _PlayerRow(card: state.cards[index]);
+              return _PlayerRow(
+                card: state.cards[index],
+                positionCode: context.read<PlayerPickerCubit>().positionCode,
+              );
             },
           ),
         );
@@ -123,13 +126,18 @@ class _PlayerList extends StatelessWidget {
 }
 
 class _PlayerRow extends StatelessWidget {
-  const _PlayerRow({required this.card});
+  const _PlayerRow({required this.card, this.positionCode});
 
   final PlayerCard card;
+  final String? positionCode;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final l10n = context.l10n;
+    final tier = positionCode == null
+        ? null
+        : eligibilityTier(card, positionCode!);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
@@ -170,7 +178,21 @@ class _PlayerRow extends StatelessWidget {
                 ],
               ),
             ),
-            if (card.cardType != null) AppBadge(label: card.cardType!),
+            if (tier != null)
+              AppBadge(
+                label: switch (tier) {
+                  0 => l10n.squadPositionBadgePrimary,
+                  1 => l10n.squadPositionBadgeAlternative,
+                  _ => l10n.squadPositionBadgeOutOfPosition,
+                },
+                tone: switch (tier) {
+                  0 => AppBadgeTone.success,
+                  1 => AppBadgeTone.info,
+                  _ => AppBadgeTone.neutral,
+                },
+              )
+            else if (card.cardType != null)
+              AppBadge(label: card.cardType!),
           ],
         ),
       ),
@@ -198,6 +220,17 @@ class _FilterRow extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
+              if (cubit.positionCode != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: AppSpacing.sm),
+                  child: AppChip(
+                    label: l10n.squadFilterCompatibleLabel,
+                    icon: Icons.check_circle_outline,
+                    isSelected: state.compatibleOnly,
+                    onPressed: () =>
+                        cubit.setCompatibleOnly(!state.compatibleOnly),
+                  ),
+                ),
               for (final rating in _ratingOptions)
                 Padding(
                   padding: const EdgeInsets.only(right: AppSpacing.sm),

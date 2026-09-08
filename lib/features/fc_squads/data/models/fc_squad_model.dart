@@ -190,28 +190,44 @@ class FcSquadModel {
                 card: cardFromJson(
                   Map<String, dynamic>.from(item['card'] as Map),
                 ),
+                chemistry: item['chemistry'] == null
+                    ? null
+                    : _toInt(item['chemistry']),
+                positionEligible: item['position_eligible'] as bool? ?? true,
               ),
       ],
       isDefault: json['is_default'] as bool? ?? false,
       benchSize: _toInt(json['bench_size']),
+      reserveSize: _toInt(json['reserve_size']),
+      overall: json['overall'] == null ? null : _toInt(json['overall']),
+      chemistry: _toInt(json['chemistry']),
+      chemistryRuleVersion: json['chemistry_rule_version'] as String?,
+      filledStarters: _toInt(json['filled_starters']),
+      starterCount: json['starter_count'] == null
+          ? 11
+          : _toInt(json['starter_count']),
       manager: managerFromJson(json['manager']),
       managerLeague: leagueFromJson(json['manager_league']),
     );
   }
 
-  static List<FcSquadSummary> summariesFromJson(Object? json) =>
-      <FcSquadSummary>[
-        if (json is List)
-          for (final item in json)
-            if (item is Map)
-              FcSquadSummary(
-                id: '${item['id']}',
-                fcAccountId: '${item['fc_account_id']}',
-                name: '${item['name']}',
-                formationCode: '${item['formation_code']}',
-                isDefault: item['is_default'] as bool? ?? false,
-                startingCount: _toInt(item['starting_count']),
-                benchCount: _toInt(item['bench_count']),
-              ),
-      ];
+  static List<FcSquadSummary> summariesFromJson(
+    Object? json,
+  ) => <FcSquadSummary>[
+    if (json is List)
+      for (final item in json)
+        if (item is Map)
+          FcSquadSummary(
+            id: '${item['id']}',
+            fcAccountId: '${item['fc_account_id']}',
+            name: '${item['name']}',
+            formationCode: '${item['formation_code']}',
+            isDefault: item['is_default'] as bool? ?? false,
+            startingCount: _toInt(item['starting_count']),
+            benchCount: _toInt(item['bench_count']),
+            reserveCount: _toInt(item['reserve_count']),
+            overall: item['overall'] == null ? null : _toInt(item['overall']),
+            chemistry: _toInt(item['chemistry']),
+          ),
+  ];
 }

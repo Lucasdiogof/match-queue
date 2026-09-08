@@ -152,6 +152,17 @@ class _SquadRow extends StatelessWidget {
                       color: colors.textSecondary,
                     ),
                   ),
+                  const SizedBox(height: AppSpacing.xxs),
+                  Text(
+                    squad.overall == null
+                        ? '${l10n.squadOverallUnknown} · '
+                              '${l10n.squadChemistryValue(squad.chemistry)}'
+                        : '${l10n.squadOverallValue(squad.overall!)} · '
+                              '${l10n.squadChemistryValue(squad.chemistry)}',
+                    style: context.textStyles.bodySmall?.copyWith(
+                      color: colors.textTertiary,
+                    ),
+                  ),
                 ],
               ),
             ),

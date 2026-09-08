@@ -54,4 +54,8 @@ abstract interface class FcSquadRepository {
     String? managerId,
     String? managerLeagueId,
   });
+
+  /// Limpa todos os slots (titulares + banco + reservas) do squad. O squad
+  /// em si nunca é apagado por aqui.
+  Future<FcSquadDetail> clearSlots(String squadId);
 }

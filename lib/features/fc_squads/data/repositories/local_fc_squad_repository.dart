@@ -38,6 +38,8 @@ class LocalFcSquadRepository implements FcSquadRepository {
           isDefault: s.isDefault,
           startingCount: s.startingCount,
           benchCount: s.benchCount,
+          reserveCount: s.reserveCount,
+          overall: _overall(s),
         ),
       )
       .toList(growable: false);
@@ -61,6 +63,7 @@ class LocalFcSquadRepository implements FcSquadRepository {
       slots: const <SquadSlot>[],
       isDefault: isFirst,
       benchSize: 7,
+      reserveSize: 5,
     );
     await _write(<FcSquadDetail>[...all, squad]);
     return squad;
@@ -205,6 +208,25 @@ class LocalFcSquadRepository implements FcSquadRepository {
     });
   }
 
+  @override
+  Future<FcSquadDetail> clearSlots(String squadId) =>
+      _update(squadId, (s) => _copy(s, slots: const <SquadSlot>[]));
+
+  /// Modo local não modela clube/liga/nação por carta de forma confiável
+  /// (catálogo mínimo de dev), então química fica fora de escopo aqui --
+  /// sempre 0, documentado. Overall (média dos titulares) já é honesto de
+  /// calcular e mostrar mesmo sem backend.
+  int? _overall(FcSquadDetail s) {
+    final ratings = <int>[
+      for (final slot in s.slots)
+        if (slot.type == SquadSlotType.starting) slot.card.rating,
+    ];
+    if (ratings.isEmpty) {
+      return null;
+    }
+    return (ratings.reduce((a, b) => a + b) / ratings.length).round();
+  }
+
   FormationDefinition _formation(String code) =>
       LocalPlayerCardCatalogRepository.formations.firstWhere(
         (f) => f.code == code,
@@ -235,17 +257,40 @@ class LocalFcSquadRepository implements FcSquadRepository {
     FcManager? manager,
     FcLeague? managerLeague,
     bool clearManager = false,
-  }) => FcSquadDetail(
-    id: s.id,
-    fcAccountId: s.fcAccountId,
-    name: name ?? s.name,
-    formation: formation ?? s.formation,
-    slots: slots ?? s.slots,
-    isDefault: isDefault ?? s.isDefault,
-    benchSize: s.benchSize,
-    manager: clearManager ? null : (manager ?? s.manager),
-    managerLeague: clearManager ? null : (managerLeague ?? s.managerLeague),
-  );
+  }) {
+    final nextSlots = slots ?? s.slots;
+    final next = FcSquadDetail(
+      id: s.id,
+      fcAccountId: s.fcAccountId,
+      name: name ?? s.name,
+      formation: formation ?? s.formation,
+      slots: nextSlots,
+      isDefault: isDefault ?? s.isDefault,
+      benchSize: s.benchSize,
+      reserveSize: s.reserveSize,
+      filledStarters: nextSlots
+          .where((x) => x.type == SquadSlotType.starting)
+          .length,
+      starterCount: (formation ?? s.formation).slots.length,
+      manager: clearManager ? null : (manager ?? s.manager),
+      managerLeague: clearManager ? null : (managerLeague ?? s.managerLeague),
+    );
+    return FcSquadDetail(
+      id: next.id,
+      fcAccountId: next.fcAccountId,
+      name: next.name,
+      formation: next.formation,
+      slots: next.slots,
+      isDefault: next.isDefault,
+      benchSize: next.benchSize,
+      reserveSize: next.reserveSize,
+      overall: _overall(next),
+      filledStarters: next.filledStarters,
+      starterCount: next.starterCount,
+      manager: next.manager,
+      managerLeague: next.managerLeague,
+    );
+  }
 
   List<FcSquadDetail> _all() {
     final raw = _preferences.getString(_key);
@@ -292,18 +337,38 @@ class LocalFcSquadRepository implements FcSquadRepository {
   FcSquadDetail _fromJson(Map<String, dynamic> json) {
     final cards = LocalPlayerCardCatalogRepository.cards;
     final rawSlots = json['slots'];
-    return FcSquadDetail(
+    final formation = _formation('${json['formation_code']}');
+    final slots = <SquadSlot>[
+      if (rawSlots is List)
+        for (final item in rawSlots)
+          if (item is Map) ?_slot(Map<String, dynamic>.from(item), cards),
+    ];
+    final base = FcSquadDetail(
       id: '${json['id']}',
       fcAccountId: '${json['fc_account_id']}',
       name: '${json['name']}',
-      formation: _formation('${json['formation_code']}'),
-      slots: <SquadSlot>[
-        if (rawSlots is List)
-          for (final item in rawSlots)
-            if (item is Map) ?_slot(Map<String, dynamic>.from(item), cards),
-      ],
+      formation: formation,
+      slots: slots,
       isDefault: json['is_default'] as bool? ?? false,
       benchSize: 7,
+      reserveSize: 5,
+      filledStarters: slots
+          .where((x) => x.type == SquadSlotType.starting)
+          .length,
+      starterCount: formation.slots.length,
+    );
+    return FcSquadDetail(
+      id: base.id,
+      fcAccountId: base.fcAccountId,
+      name: base.name,
+      formation: base.formation,
+      slots: base.slots,
+      isDefault: base.isDefault,
+      benchSize: base.benchSize,
+      reserveSize: base.reserveSize,
+      overall: _overall(base),
+      filledStarters: base.filledStarters,
+      starterCount: base.starterCount,
     );
   }
 

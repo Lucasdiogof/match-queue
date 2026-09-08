@@ -778,6 +778,62 @@
       }
     }
   },
+  "squadSlotCountLabel": "{filled}/{total}",
+  "@squadSlotCountLabel": {
+    "placeholders": {
+      "filled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "squadOverallValue": "OVR {overall}",
+  "@squadOverallValue": {
+    "placeholders": {
+      "overall": {
+        "type": "int"
+      }
+    }
+  },
+  "squadOverallUnknown": "OVR --",
+  "squadChemistryValue": "{chemistry}/33",
+  "@squadChemistryValue": {
+    "placeholders": {
+      "chemistry": {
+        "type": "int"
+      }
+    }
+  },
+  "squadReserveTitle": "Reserves",
+  "squadClearAction": "Clear lineup",
+  "squadClearConfirmTitle": "Clear lineup?",
+  "squadClearConfirmMessage": "This removes every player from the starters, bench and reserves. The squad itself is kept.",
+  "squadFormationChangeConfirmTitle": "Change formation?",
+  "squadFormationChangeConfirmMessage": "Your players will be repositioned automatically. Nobody is removed, but someone may end up out of position.",
+  "squadFilterCompatibleLabel": "Compatible",
+  "squadPositionBadgePrimary": "Primary",
+  "squadPositionBadgeAlternative": "Alternative",
+  "squadPositionBadgeOutOfPosition": "Out of position",
+  "squadCardDetailAction": "View details",
+  "squadCardDetailRatingLabel": "Rating",
+  "squadCardDetailPositionLabel": "Position",
+  "squadCardDetailAltPositionsLabel": "Alternative positions",
+  "squadCardDetailStatsTitle": "Attributes",
+  "squadCardDetailGkStatsTitle": "Goalkeeper attributes",
+  "squadCardDetailWeakFootLabel": "Weak foot",
+  "squadCardDetailSkillMovesLabel": "Skill moves",
+  "squadCardDetailPreferredFootLabel": "Preferred foot",
+  "squadCardDetailPreferredFootLeft": "Left",
+  "squadCardDetailPreferredFootRight": "Right",
+  "squadCardDetailPlaystylesTitle": "Playstyles",
+  "squadCardDetailRolesTitle": "Roles",
+  "squadCardDetailClubLabel": "Club",
+  "squadCardDetailLeagueLabel": "League",
+  "squadCardDetailNationLabel": "Nation",
+  "squadCardDetailOtherVersionsTitle": "Other versions",
+  "squadCardDetailOtherVersionsComingSoon": "Coming soon: compare every version of this player.",
   "actionMore": "More",
   "errorGameInvalidStatsPayload": "Couldn't save those goals/assists.",
   "errorGamePlayerNotInSquad": "That player wasn't part of this match.",

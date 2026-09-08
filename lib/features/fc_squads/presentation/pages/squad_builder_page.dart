@@ -4,11 +4,14 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/fc_squad_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/squad_builder_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/formation_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/manager_picker_sheet.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_detail_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_picker_sheet.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_drag_payload.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_field.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_name_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
@@ -125,6 +128,32 @@ class _SquadBuilderView extends StatelessWidget {
                   cubit.setDefault();
                 },
               ),
+            if (squad.hasAnySlotFilled) ...<Widget>[
+              const SizedBox(height: AppSpacing.sm),
+              AppButton.ghost(
+                label: l10n.squadClearAction,
+                icon: Icons.delete_sweep_outlined,
+                expanded: true,
+                onPressed: () async {
+                  Navigator.of(sheetContext).pop();
+                  final confirmed = await showAppDialog<bool>(
+                    context: context,
+                    builder: (dialogContext) => AppDialog(
+                      title: l10n.squadClearConfirmTitle,
+                      message: l10n.squadClearConfirmMessage,
+                      confirmLabel: l10n.squadClearAction,
+                      isDestructive: true,
+                      onConfirm: () => Navigator.of(dialogContext).pop(true),
+                      cancelLabel: l10n.actionCancel,
+                      onCancel: () => Navigator.of(dialogContext).pop(false),
+                    ),
+                  );
+                  if (confirmed ?? false) {
+                    await cubit.clearAllSlots();
+                  }
+                },
+              ),
+            ],
           ],
         ),
       ),
@@ -178,16 +207,7 @@ class _Body extends StatelessWidget {
             AppChip(
               label: squad.formation.displayName,
               icon: Icons.grid_view_outlined,
-              onPressed: () async {
-                final code = await showFormationPickerSheet(
-                  context: context,
-                  formations: state.formations,
-                  selectedCode: squad.formation.code,
-                );
-                if (code != null && code != squad.formation.code) {
-                  await cubit.setFormation(code);
-                }
-              },
+              onPressed: () => _onChangeFormation(context, squad, state),
             ),
             const SizedBox(width: AppSpacing.sm),
             if (squad.isDefault) AppBadge(label: l10n.squadDefaultBadge),
@@ -203,6 +223,25 @@ class _Body extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: AppSpacing.sm),
+        Row(
+          children: <Widget>[
+            AppBadge(
+              label: squad.overall == null
+                  ? l10n.squadOverallUnknown
+                  : l10n.squadOverallValue(squad.overall!),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            AppBadge(
+              label: l10n.squadChemistryValue(squad.chemistry),
+              tone: squad.chemistry >= 24
+                  ? AppBadgeTone.success
+                  : squad.chemistry >= 12
+                  ? AppBadgeTone.warning
+                  : AppBadgeTone.neutral,
+            ),
+          ],
+        ),
         if (state.pendingMove != null) ...<Widget>[
           const SizedBox(height: AppSpacing.md),
           AppBanner(tone: AppBannerTone.neutral, message: l10n.squadMoveHint),
@@ -215,20 +254,84 @@ class _Body extends StatelessWidget {
               : null,
           savingSlotCode: state.savingSlot,
           onSlotTap: (slot) => _onSlotTap(context, squad, slot),
-          onSlotLongPress: (slot) => _onSlotActions(
-            context,
-            squad,
-            SquadSlotType.starting,
-            slot.slotCode,
-            slot.positionCode,
+          onSlotLongPress: (slot) {
+            final card = squad.cardAt(SquadSlotType.starting, slot.slotCode);
+            if (card != null) {
+              _showSlotActionsSheet(
+                context: context,
+                type: SquadSlotType.starting,
+                slotCode: slot.slotCode,
+                positionCode: slot.positionCode,
+                card: card,
+              );
+            }
+          },
+          onSlotDrop: (slot, payload) => cubit.moveOrSwap(
+            fromType: payload.type,
+            fromSlotCode: payload.slotCode,
+            toType: SquadSlotType.starting,
+            toSlotCode: slot.slotCode,
           ),
         ),
         const SizedBox(height: AppSpacing.xl),
-        _Bench(squad: squad, state: state),
+        _BenchLikeSection(
+          title: l10n.squadBenchTitle,
+          type: SquadSlotType.bench,
+          size: squad.benchSize,
+          codeAt: FcSquadDetail.benchCodeAt,
+          squad: squad,
+          state: state,
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        _BenchLikeSection(
+          title: l10n.squadReserveTitle,
+          type: SquadSlotType.reserve,
+          size: squad.reserveSize,
+          codeAt: FcSquadDetail.reserveCodeAt,
+          squad: squad,
+          state: state,
+        ),
         const SizedBox(height: AppSpacing.xl),
         _ManagerSection(squad: squad),
       ],
     );
+  }
+
+  Future<void> _onChangeFormation(
+    BuildContext context,
+    FcSquadDetail squad,
+    SquadBuilderState state,
+  ) async {
+    final l10n = context.l10n;
+    final cubit = context.read<SquadBuilderCubit>();
+    final code = await showFormationPickerSheet(
+      context: context,
+      formations: state.formations,
+      selectedCode: squad.formation.code,
+    );
+    if (code == null || code == squad.formation.code) {
+      return;
+    }
+    if (squad.startingCount > 0) {
+      if (!context.mounted) {
+        return;
+      }
+      final confirmed = await showAppDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AppDialog(
+          title: l10n.squadFormationChangeConfirmTitle,
+          message: l10n.squadFormationChangeConfirmMessage,
+          confirmLabel: l10n.squadFormationLabel,
+          onConfirm: () => Navigator.of(dialogContext).pop(true),
+          cancelLabel: l10n.actionCancel,
+          onCancel: () => Navigator.of(dialogContext).pop(false),
+        ),
+      );
+      if (!(confirmed ?? false)) {
+        return;
+      }
+    }
+    await cubit.setFormation(code);
   }
 
   Future<void> _onSlotTap(
@@ -248,128 +351,168 @@ class _Body extends StatelessWidget {
       return;
     }
 
-    final occupied =
-        squad.cardAt(SquadSlotType.starting, slot.slotCode) != null;
-    if (occupied) {
-      await _onSlotActions(
-        context,
-        squad,
-        SquadSlotType.starting,
-        slot.slotCode,
-        slot.positionCode,
+    final card = squad.cardAt(SquadSlotType.starting, slot.slotCode);
+    if (card != null) {
+      await _showSlotActionsSheet(
+        context: context,
+        type: SquadSlotType.starting,
+        slotCode: slot.slotCode,
+        positionCode: slot.positionCode,
+        card: card,
       );
       return;
     }
 
-    final card = await showPlayerPickerSheet(
+    final picked = await showPlayerPickerSheet(
       context: context,
       positionCode: slot.positionCode,
     );
-    if (card != null) {
+    if (picked != null) {
       await cubit.assignCard(
         type: SquadSlotType.starting,
         slotCode: slot.slotCode,
-        playerCardId: card.id,
+        playerCardId: picked.id,
       );
     }
   }
-
-  Future<void> _onSlotActions(
-    BuildContext context,
-    FcSquadDetail squad,
-    SquadSlotType type,
-    String slotCode,
-    String? positionCode,
-  ) async {
-    final l10n = context.l10n;
-    final cubit = context.read<SquadBuilderCubit>();
-    if (squad.cardAt(type, slotCode) == null) {
-      return;
-    }
-
-    await showAppBottomSheet<void>(
-      context: context,
-      builder: (sheetContext) => AppBottomSheet(
-        title: squad.cardAt(type, slotCode)?.displayName,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            AppButton.secondary(
-              label: l10n.squadSlotChangeAction,
-              icon: Icons.swap_horiz,
-              onPressed: () async {
-                Navigator.of(sheetContext).pop();
-                final card = await showPlayerPickerSheet(
-                  context: context,
-                  positionCode: positionCode,
-                );
-                if (card != null) {
-                  await cubit.assignCard(
-                    type: type,
-                    slotCode: slotCode,
-                    playerCardId: card.id,
-                  );
-                }
-              },
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            AppButton.secondary(
-              label: l10n.squadSlotMoveAction,
-              icon: Icons.open_with,
-              onPressed: () {
-                Navigator.of(sheetContext).pop();
-                cubit.tapForMove(type: type, slotCode: slotCode);
-              },
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            AppButton.ghost(
-              label: l10n.squadSlotRemoveAction,
-              expanded: true,
-              onPressed: () {
-                Navigator.of(sheetContext).pop();
-                cubit.clearSlot(type: type, slotCode: slotCode);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
-class _Bench extends StatelessWidget {
-  const _Bench({required this.squad, required this.state});
+/// Menu de ações de um slot preenchido -- reusado pelo campo e pelo
+/// banco/reservas (item 24: "Ver detalhes" abre o card sheet completo;
+/// "Trocar"/"Mover"/"Remover" já existiam desde a Etapa 10).
+/// [positionCode] `null` = banco/reserva, o picker de troca não filtra.
+Future<void> _showSlotActionsSheet({
+  required BuildContext context,
+  required SquadSlotType type,
+  required String slotCode,
+  required PlayerCard card,
+  String? positionCode,
+}) async {
+  final l10n = context.l10n;
+  final cubit = context.read<SquadBuilderCubit>();
 
+  await showAppBottomSheet<void>(
+    context: context,
+    builder: (sheetContext) => AppBottomSheet(
+      title: card.displayName,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          AppButton.secondary(
+            label: l10n.squadCardDetailAction,
+            icon: Icons.info_outline,
+            onPressed: () {
+              Navigator.of(sheetContext).pop();
+              showPlayerCardDetailSheet(context: context, card: card);
+            },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
+            label: l10n.squadSlotChangeAction,
+            icon: Icons.swap_horiz,
+            onPressed: () async {
+              Navigator.of(sheetContext).pop();
+              final picked = await showPlayerPickerSheet(
+                context: context,
+                positionCode: positionCode,
+              );
+              if (picked != null) {
+                await cubit.assignCard(
+                  type: type,
+                  slotCode: slotCode,
+                  playerCardId: picked.id,
+                );
+              }
+            },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
+            label: l10n.squadSlotMoveAction,
+            icon: Icons.open_with,
+            onPressed: () {
+              Navigator.of(sheetContext).pop();
+              cubit.tapForMove(type: type, slotCode: slotCode);
+            },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.ghost(
+            label: l10n.squadSlotRemoveAction,
+            expanded: true,
+            onPressed: () {
+              Navigator.of(sheetContext).pop();
+              cubit.clearSlot(type: type, slotCode: slotCode);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Banco (7) e reservas (5, Etapa 13) usam a MESMA visualização e a mesma
+/// lógica -- nenhum dos dois exige posição, nenhum dos dois entra na
+/// química (item 34/57). [type]/[size]/[codeAt] são o único ponto de
+/// diferença entre as duas seções.
+class _BenchLikeSection extends StatelessWidget {
+  const _BenchLikeSection({
+    required this.title,
+    required this.type,
+    required this.size,
+    required this.codeAt,
+    required this.squad,
+    required this.state,
+  });
+
+  final String title;
+  final SquadSlotType type;
+  final int size;
+  final String Function(int index) codeAt;
   final FcSquadDetail squad;
   final SquadBuilderState state;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    if (size <= 0) {
+      return const SizedBox.shrink();
+    }
+
+    final cubit = context.read<SquadBuilderCubit>();
+    final filled = size == 0
+        ? 0
+        : (type == SquadSlotType.bench ? squad.benchCount : squad.reserveCount);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          l10n.squadBenchTitle.toUpperCase(),
-          style: context.textStyles.labelSmall,
+        Row(
+          children: <Widget>[
+            Text(title.toUpperCase(), style: context.textStyles.labelSmall),
+            const Spacer(),
+            Text(
+              context.l10n.squadSlotCountLabel(filled, size),
+              style: context.textStyles.bodySmall?.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: AppSpacing.md),
         SizedBox(
           height: 72 / SquadPlayerCard.aspectRatio,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: squad.benchSize,
+            itemCount: size,
             separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
-              final slotCode = FcSquadDetail.benchCodeAt(index);
-              final card = squad.cardAt(SquadSlotType.bench, slotCode);
-              return SquadPlayerCard(
-                positionCode: card?.primaryPosition ?? '',
+              final slotCode = codeAt(index);
+              final card = squad.cardAt(type, slotCode);
+              return DraggableSquadSlot(
+                type: type,
+                slotCode: slotCode,
                 width: 72,
                 card: card,
                 state:
-                    state.pendingMove?.type == SquadSlotType.bench &&
+                    state.pendingMove?.type == type &&
                         state.pendingMove?.slotCode == slotCode
                     ? SquadPlayerCardState.selected
                     : card == null
@@ -379,7 +522,18 @@ class _Bench extends StatelessWidget {
                 onTap: () => _onTap(context, slotCode, card != null),
                 onLongPress: card == null
                     ? null
-                    : () => _onTap(context, slotCode, true),
+                    : () => _showSlotActionsSheet(
+                        context: context,
+                        type: type,
+                        slotCode: slotCode,
+                        card: card,
+                      ),
+                onAccept: (payload) => cubit.moveOrSwap(
+                  fromType: payload.type,
+                  fromSlotCode: payload.slotCode,
+                  toType: type,
+                  toSlotCode: slotCode,
+                ),
               );
             },
           ),
@@ -396,20 +550,20 @@ class _Bench extends StatelessWidget {
     final cubit = context.read<SquadBuilderCubit>();
 
     if (state.pendingMove != null) {
-      await cubit.tapForMove(type: SquadSlotType.bench, slotCode: slotCode);
+      await cubit.tapForMove(type: type, slotCode: slotCode);
       return;
     }
 
     if (occupied) {
-      await cubit.tapForMove(type: SquadSlotType.bench, slotCode: slotCode);
+      await cubit.tapForMove(type: type, slotCode: slotCode);
       return;
     }
 
-    // Banco não exige posição: qualquer carta serve.
+    // Banco/reserva não exigem posição: qualquer carta serve.
     final card = await showPlayerPickerSheet(context: context);
     if (card != null) {
       await cubit.assignCard(
-        type: SquadSlotType.bench,
+        type: type,
         slotCode: slotCode,
         playerCardId: card.id,
       );

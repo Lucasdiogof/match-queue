@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_drag_payload.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class SquadField extends StatelessWidget {
     required this.squad,
     required this.onSlotTap,
     required this.onSlotLongPress,
+    required this.onSlotDrop,
     this.pendingSlotCode,
     this.savingSlotCode,
     super.key,
@@ -21,6 +23,7 @@ class SquadField extends StatelessWidget {
   final FcSquadDetail squad;
   final void Function(FormationSlot slot) onSlotTap;
   final void Function(FormationSlot slot) onSlotLongPress;
+  final void Function(FormationSlot slot, SquadDragPayload payload) onSlotDrop;
   final String? pendingSlotCode;
   final String? savingSlotCode;
 
@@ -69,19 +72,37 @@ class SquadField extends StatelessWidget {
                   // embaixo e o ataque em cima (item 25).
                   left: insetX + slot.x * usableW - cardWidth / 2,
                   top: insetY + (1 - slot.y) * usableH - cardHeight / 2,
-                  child: SquadPlayerCard(
-                    positionCode: slot.positionCode,
-                    width: cardWidth,
-                    card: squad.cardAt(SquadSlotType.starting, slot.slotCode),
-                    state: pendingSlotCode == slot.slotCode
-                        ? SquadPlayerCardState.selected
-                        : squad.cardAt(SquadSlotType.starting, slot.slotCode) ==
-                              null
-                        ? SquadPlayerCardState.empty
-                        : SquadPlayerCardState.filled,
-                    isSaving: savingSlotCode == slot.slotCode,
-                    onTap: () => onSlotTap(slot),
-                    onLongPress: () => onSlotLongPress(slot),
+                  width: cardWidth,
+                  height: cardHeight,
+                  child: Builder(
+                    builder: (context) {
+                      final squadSlot = squad.slotAt(
+                        SquadSlotType.starting,
+                        slot.slotCode,
+                      );
+                      final card = squadSlot?.card;
+                      final outOfPosition =
+                          card != null && squadSlot?.positionEligible == false;
+                      return DraggableSquadSlot(
+                        type: SquadSlotType.starting,
+                        slotCode: slot.slotCode,
+                        positionCode: slot.positionCode,
+                        width: cardWidth,
+                        card: card,
+                        chemistry: squadSlot?.chemistry,
+                        state: pendingSlotCode == slot.slotCode
+                            ? SquadPlayerCardState.selected
+                            : card == null
+                            ? SquadPlayerCardState.empty
+                            : outOfPosition
+                            ? SquadPlayerCardState.outOfPosition
+                            : SquadPlayerCardState.filled,
+                        isSaving: savingSlotCode == slot.slotCode,
+                        onTap: () => onSlotTap(slot),
+                        onLongPress: () => onSlotLongPress(slot),
+                        onAccept: (payload) => onSlotDrop(slot, payload),
+                      );
+                    },
                   ),
                 ),
             ],

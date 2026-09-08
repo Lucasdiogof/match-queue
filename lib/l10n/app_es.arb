@@ -778,6 +778,62 @@
       }
     }
   },
+  "squadSlotCountLabel": "{filled}/{total}",
+  "@squadSlotCountLabel": {
+    "placeholders": {
+      "filled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "squadOverallValue": "OVR {overall}",
+  "@squadOverallValue": {
+    "placeholders": {
+      "overall": {
+        "type": "int"
+      }
+    }
+  },
+  "squadOverallUnknown": "OVR --",
+  "squadChemistryValue": "{chemistry}/33",
+  "@squadChemistryValue": {
+    "placeholders": {
+      "chemistry": {
+        "type": "int"
+      }
+    }
+  },
+  "squadReserveTitle": "Reservas",
+  "squadClearAction": "Vaciar alineación",
+  "squadClearConfirmTitle": "¿Vaciar alineación?",
+  "squadClearConfirmMessage": "Esto elimina a todos los jugadores de titulares, banco y reservas. El squad en sí no se elimina.",
+  "squadFormationChangeConfirmTitle": "¿Cambiar formación?",
+  "squadFormationChangeConfirmMessage": "Tus jugadores se reposicionarán automáticamente. Nadie es eliminado, pero alguien puede quedar fuera de posición.",
+  "squadFilterCompatibleLabel": "Compatibles",
+  "squadPositionBadgePrimary": "Primaria",
+  "squadPositionBadgeAlternative": "Alternativa",
+  "squadPositionBadgeOutOfPosition": "Fuera de posición",
+  "squadCardDetailAction": "Ver detalles",
+  "squadCardDetailRatingLabel": "Rating",
+  "squadCardDetailPositionLabel": "Posición",
+  "squadCardDetailAltPositionsLabel": "Posiciones alternativas",
+  "squadCardDetailStatsTitle": "Atributos",
+  "squadCardDetailGkStatsTitle": "Atributos de portero",
+  "squadCardDetailWeakFootLabel": "Pie malo",
+  "squadCardDetailSkillMovesLabel": "Habilidades",
+  "squadCardDetailPreferredFootLabel": "Pie preferido",
+  "squadCardDetailPreferredFootLeft": "Izquierdo",
+  "squadCardDetailPreferredFootRight": "Derecho",
+  "squadCardDetailPlaystylesTitle": "Playstyles",
+  "squadCardDetailRolesTitle": "Roles",
+  "squadCardDetailClubLabel": "Club",
+  "squadCardDetailLeagueLabel": "Liga",
+  "squadCardDetailNationLabel": "Nación",
+  "squadCardDetailOtherVersionsTitle": "Otras versiones",
+  "squadCardDetailOtherVersionsComingSoon": "Próximamente: comparar todas las versiones de este jugador.",
   "actionMore": "Más",
   "errorGameInvalidStatsPayload": "No se pudieron guardar esos goles/asistencias.",
   "errorGamePlayerNotInSquad": "Ese jugador no formó parte de este partido.",

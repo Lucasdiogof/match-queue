@@ -1456,6 +1456,111 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String squadSlotCountLabel(int filled, int total) {
+    return '$filled/$total';
+  }
+
+  @override
+  String squadOverallValue(int overall) {
+    return 'OVR $overall';
+  }
+
+  @override
+  String get squadOverallUnknown => 'OVR --';
+
+  @override
+  String squadChemistryValue(int chemistry) {
+    return '$chemistry/33';
+  }
+
+  @override
+  String get squadReserveTitle => 'Reservas';
+
+  @override
+  String get squadClearAction => 'Limpar escalação';
+
+  @override
+  String get squadClearConfirmTitle => 'Limpar escalação?';
+
+  @override
+  String get squadClearConfirmMessage =>
+      'Isso remove todos os jogadores dos titulares, do banco e das reservas. O squad em si não é apagado.';
+
+  @override
+  String get squadFormationChangeConfirmTitle => 'Trocar formação?';
+
+  @override
+  String get squadFormationChangeConfirmMessage =>
+      'Seus jogadores serão reposicionados automaticamente. Ninguém é removido, mas alguém pode ficar fora de posição.';
+
+  @override
+  String get squadFilterCompatibleLabel => 'Compatíveis';
+
+  @override
+  String get squadPositionBadgePrimary => 'Primária';
+
+  @override
+  String get squadPositionBadgeAlternative => 'Alternativa';
+
+  @override
+  String get squadPositionBadgeOutOfPosition => 'Fora de posição';
+
+  @override
+  String get squadCardDetailAction => 'Ver detalhes';
+
+  @override
+  String get squadCardDetailRatingLabel => 'Rating';
+
+  @override
+  String get squadCardDetailPositionLabel => 'Posição';
+
+  @override
+  String get squadCardDetailAltPositionsLabel => 'Posições alternativas';
+
+  @override
+  String get squadCardDetailStatsTitle => 'Atributos';
+
+  @override
+  String get squadCardDetailGkStatsTitle => 'Atributos de goleiro';
+
+  @override
+  String get squadCardDetailWeakFootLabel => 'Pé fraco';
+
+  @override
+  String get squadCardDetailSkillMovesLabel => 'Habilidades';
+
+  @override
+  String get squadCardDetailPreferredFootLabel => 'Pé preferido';
+
+  @override
+  String get squadCardDetailPreferredFootLeft => 'Esquerdo';
+
+  @override
+  String get squadCardDetailPreferredFootRight => 'Direito';
+
+  @override
+  String get squadCardDetailPlaystylesTitle => 'Playstyles';
+
+  @override
+  String get squadCardDetailRolesTitle => 'Funções';
+
+  @override
+  String get squadCardDetailClubLabel => 'Clube';
+
+  @override
+  String get squadCardDetailLeagueLabel => 'Liga';
+
+  @override
+  String get squadCardDetailNationLabel => 'Nação';
+
+  @override
+  String get squadCardDetailOtherVersionsTitle => 'Outras versões';
+
+  @override
+  String get squadCardDetailOtherVersionsComingSoon =>
+      'Em breve: comparar todas as versões deste jogador.';
+
+  @override
   String get actionMore => 'Mais';
 
   @override

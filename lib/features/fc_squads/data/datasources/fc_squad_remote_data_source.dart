@@ -53,6 +53,8 @@ abstract interface class FcSquadRemoteDataSource {
     String? managerId,
     String? managerLeagueId,
   });
+
+  Future<Map<String, dynamic>> clearSlots(String squadId);
 }
 
 class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
@@ -190,6 +192,10 @@ class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
     'p_manager_id': managerId,
     'p_manager_league_id': managerLeagueId,
   });
+
+  @override
+  Future<Map<String, dynamic>> clearSlots(String squadId) =>
+      _map('clear_fc_squad_slots', <String, dynamic>{'p_squad_id': squadId});
 
   Future<Map<String, dynamic>> _map(
     String function,

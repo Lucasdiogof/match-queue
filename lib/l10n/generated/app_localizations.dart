@@ -2626,6 +2626,198 @@ abstract class AppLocalizations {
   /// **'{name} · {formation}'**
   String squadSummaryLabel(String name, String formation);
 
+  /// No description provided for @squadSlotCountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{filled}/{total}'**
+  String squadSlotCountLabel(int filled, int total);
+
+  /// No description provided for @squadOverallValue.
+  ///
+  /// In pt, this message translates to:
+  /// **'OVR {overall}'**
+  String squadOverallValue(int overall);
+
+  /// No description provided for @squadOverallUnknown.
+  ///
+  /// In pt, this message translates to:
+  /// **'OVR --'**
+  String get squadOverallUnknown;
+
+  /// No description provided for @squadChemistryValue.
+  ///
+  /// In pt, this message translates to:
+  /// **'{chemistry}/33'**
+  String squadChemistryValue(int chemistry);
+
+  /// No description provided for @squadReserveTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reservas'**
+  String get squadReserveTitle;
+
+  /// No description provided for @squadClearAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar escalação'**
+  String get squadClearAction;
+
+  /// No description provided for @squadClearConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar escalação?'**
+  String get squadClearConfirmTitle;
+
+  /// No description provided for @squadClearConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Isso remove todos os jogadores dos titulares, do banco e das reservas. O squad em si não é apagado.'**
+  String get squadClearConfirmMessage;
+
+  /// No description provided for @squadFormationChangeConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar formação?'**
+  String get squadFormationChangeConfirmTitle;
+
+  /// No description provided for @squadFormationChangeConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seus jogadores serão reposicionados automaticamente. Ninguém é removido, mas alguém pode ficar fora de posição.'**
+  String get squadFormationChangeConfirmMessage;
+
+  /// No description provided for @squadFilterCompatibleLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compatíveis'**
+  String get squadFilterCompatibleLabel;
+
+  /// No description provided for @squadPositionBadgePrimary.
+  ///
+  /// In pt, this message translates to:
+  /// **'Primária'**
+  String get squadPositionBadgePrimary;
+
+  /// No description provided for @squadPositionBadgeAlternative.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alternativa'**
+  String get squadPositionBadgeAlternative;
+
+  /// No description provided for @squadPositionBadgeOutOfPosition.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fora de posição'**
+  String get squadPositionBadgeOutOfPosition;
+
+  /// No description provided for @squadCardDetailAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver detalhes'**
+  String get squadCardDetailAction;
+
+  /// No description provided for @squadCardDetailRatingLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rating'**
+  String get squadCardDetailRatingLabel;
+
+  /// No description provided for @squadCardDetailPositionLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Posição'**
+  String get squadCardDetailPositionLabel;
+
+  /// No description provided for @squadCardDetailAltPositionsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Posições alternativas'**
+  String get squadCardDetailAltPositionsLabel;
+
+  /// No description provided for @squadCardDetailStatsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atributos'**
+  String get squadCardDetailStatsTitle;
+
+  /// No description provided for @squadCardDetailGkStatsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atributos de goleiro'**
+  String get squadCardDetailGkStatsTitle;
+
+  /// No description provided for @squadCardDetailWeakFootLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pé fraco'**
+  String get squadCardDetailWeakFootLabel;
+
+  /// No description provided for @squadCardDetailSkillMovesLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Habilidades'**
+  String get squadCardDetailSkillMovesLabel;
+
+  /// No description provided for @squadCardDetailPreferredFootLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pé preferido'**
+  String get squadCardDetailPreferredFootLabel;
+
+  /// No description provided for @squadCardDetailPreferredFootLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esquerdo'**
+  String get squadCardDetailPreferredFootLeft;
+
+  /// No description provided for @squadCardDetailPreferredFootRight.
+  ///
+  /// In pt, this message translates to:
+  /// **'Direito'**
+  String get squadCardDetailPreferredFootRight;
+
+  /// No description provided for @squadCardDetailPlaystylesTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Playstyles'**
+  String get squadCardDetailPlaystylesTitle;
+
+  /// No description provided for @squadCardDetailRolesTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Funções'**
+  String get squadCardDetailRolesTitle;
+
+  /// No description provided for @squadCardDetailClubLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clube'**
+  String get squadCardDetailClubLabel;
+
+  /// No description provided for @squadCardDetailLeagueLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Liga'**
+  String get squadCardDetailLeagueLabel;
+
+  /// No description provided for @squadCardDetailNationLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nação'**
+  String get squadCardDetailNationLabel;
+
+  /// No description provided for @squadCardDetailOtherVersionsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outras versões'**
+  String get squadCardDetailOtherVersionsTitle;
+
+  /// No description provided for @squadCardDetailOtherVersionsComingSoon.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em breve: comparar todas as versões deste jogador.'**
+  String get squadCardDetailOtherVersionsComingSoon;
+
   /// No description provided for @actionMore.
   ///
   /// In pt, this message translates to:
