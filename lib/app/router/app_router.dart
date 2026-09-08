@@ -20,6 +20,8 @@ import 'package:fifa_queue/features/profile/presentation/pages/profile_appearanc
 import 'package:fifa_queue/features/profile/presentation/pages/profile_language_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_notifications_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_page.dart';
+import 'package:fifa_queue/features/public_profile/presentation/pages/public_profile_page.dart';
+import 'package:fifa_queue/features/public_profile/presentation/pages/public_profile_settings_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_detail_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/teams_list_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/player_profile_page.dart';
@@ -108,6 +110,21 @@ class AppRouter {
         builder: (context, state) => const ProfileNotificationsPage(),
       ),
       GoRoute(
+        path: AppRoutes.profileSharing.path,
+        name: AppRoutes.profileSharing.name,
+        builder: (context, state) => PublicProfileSettingsPage(
+          preselectFcAccountId: state.uri.queryParameters['fcAccountId'],
+          preselectShowSquad: state.uri.queryParameters['showSquad'] == '1',
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.publicProfile.path,
+        name: AppRoutes.publicProfile.name,
+        builder: (context, state) => PublicProfilePage(
+          identifier: state.pathParameters[AppRoutes.identifierParam] ?? '',
+        ),
+      ),
+      GoRoute(
         path: AppRoutes.notifications.path,
         name: AppRoutes.notifications.name,
         builder: (context, state) => const NotificationsInboxPage(),
@@ -188,10 +205,17 @@ class AppRouter {
     final location = state.matchedLocation;
     final isSplash = location == AppRoutes.splash.path;
     final isJoinTeam = AppRoutes.isJoinTeamLocation(location);
+    final isPublicProfile = AppRoutes.isPublicProfileLocation(location);
     final isUnauthenticatedArea = AppRoutes.unauthenticatedPaths.contains(
       location,
     );
     final isResetPassword = location == AppRoutes.resetPassword.path;
+
+    // /u/:identifier funciona sem sessao -- nunca redireciona pro login,
+    // com ou sem sessao resolvida, igual join/:inviteCode.
+    if (isPublicProfile) {
+      return null;
+    }
 
     if (!authState.isResolved) {
       return isSplash ? null : AppRoutes.splash.path;

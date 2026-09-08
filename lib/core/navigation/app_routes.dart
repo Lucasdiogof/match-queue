@@ -61,6 +61,14 @@ class AppRoutes {
     'notifications',
     '/app/notifications',
   );
+  static const AppRoute profileSharing = AppRoute(
+    'profile-sharing',
+    '/app/profile/sharing',
+  );
+  static const AppRoute publicProfile = AppRoute(
+    'public-profile',
+    '/u/:identifier',
+  );
   static const AppRoute fcAccounts = AppRoute(
     'fc-accounts',
     '/app/fc-accounts',
@@ -85,6 +93,7 @@ class AppRoutes {
   static const String teamIdParam = 'teamId';
   static const String userIdParam = 'userId';
   static const String matchIdParam = 'matchId';
+  static const String identifierParam = 'identifier';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,
@@ -116,4 +125,23 @@ class AppRoutes {
 
   static bool isJoinTeamLocation(String location) =>
       location.startsWith('/join/');
+
+  static bool isPublicProfileLocation(String location) =>
+      location.startsWith('/u/');
+
+  static String publicProfileLocation(String identifier) => '/u/$identifier';
+
+  static String profileSharingLocation({
+    String? preselectFcAccountId,
+    bool preselectShowSquad = false,
+  }) {
+    final query = <String, String>{
+      if (preselectFcAccountId != null) 'fcAccountId': preselectFcAccountId,
+      if (preselectShowSquad) 'showSquad': '1',
+    };
+    if (query.isEmpty) {
+      return profileSharing.path;
+    }
+    return Uri(path: profileSharing.path, queryParameters: query).toString();
+  }
 }

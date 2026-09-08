@@ -16,8 +16,10 @@ import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_lea
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class FcAccountDetailPage extends StatelessWidget {
   const FcAccountDetailPage({required this.fcAccountId, super.key});
@@ -60,6 +62,8 @@ class _FcAccountDetailBody extends StatelessWidget {
       // Squads primeiro: é o que o usuário vem editar com mais frequência.
       SquadsSection(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
+      _ShareAccountRow(fcAccountId: account.id),
+      const SizedBox(height: AppSpacing.lg),
       _DivisionSection(account: account),
       const SizedBox(height: AppSpacing.lg),
       _RivalsStatsSection(account: account),
@@ -75,6 +79,34 @@ class _FcAccountDetailBody extends StatelessWidget {
       const SizedBox(height: AppSpacing.lg),
       _SettingsSection(account: account),
     ],
+  );
+}
+
+class _ShareAccountRow extends StatelessWidget {
+  const _ShareAccountRow({required this.fcAccountId});
+
+  final String fcAccountId;
+
+  @override
+  Widget build(BuildContext context) => AppCard(
+    child: InkWell(
+      onTap: () => context.push(
+        AppRoutes.profileSharingLocation(preselectFcAccountId: fcAccountId),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.ios_share, color: context.colors.textSecondary),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Text(
+              context.l10n.publicProfileShareAccountCta,
+              style: context.textStyles.bodyLarge,
+            ),
+          ),
+          Icon(Icons.chevron_right, color: context.colors.textTertiary),
+        ],
+      ),
+    ),
   );
 }
 

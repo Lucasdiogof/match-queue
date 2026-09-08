@@ -2,6 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
@@ -18,6 +19,7 @@ import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_name_sh
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SquadBuilderPage extends StatelessWidget {
   const SquadBuilderPage({required this.squadId, super.key});
@@ -117,6 +119,20 @@ class _SquadBuilderView extends StatelessWidget {
                 if (result != null) {
                   await cubit.rename(result.name);
                 }
+              },
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AppButton.secondary(
+              label: l10n.publicProfileShareSquadCta,
+              icon: Icons.ios_share,
+              onPressed: () {
+                Navigator.of(sheetContext).pop();
+                context.push(
+                  AppRoutes.profileSharingLocation(
+                    preselectFcAccountId: squad.fcAccountId,
+                    preselectShowSquad: true,
+                  ),
+                );
               },
             ),
             const SizedBox(height: AppSpacing.sm),

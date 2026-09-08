@@ -206,6 +206,12 @@ class _PreferencesSection extends StatelessWidget {
             label: l10n.notificationsSectionTitle,
             onTap: () => context.push(AppRoutes.profileNotifications.path),
           ),
+          const AppDivider(),
+          _NavRow(
+            icon: Icons.share_outlined,
+            label: l10n.profileSharingRow,
+            onTap: () => context.push(AppRoutes.profileSharing.path),
+          ),
         ],
       ),
     );
