@@ -1,4 +1,5 @@
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 
@@ -41,4 +42,18 @@ abstract interface class FcAccountRepository {
     required String accountId,
     required String eventId,
   });
+
+  /// Partidas registradas/W/L/gols pró-contra-saldo da conta, todos os modos.
+  Future<FcAccountStats> fetchAccountStats(String accountId);
+
+  /// Record de WL (computado x manual), artilharia e assistências de uma
+  /// conta num evento.
+  Future<WeekendLeagueAccountStats> fetchWeekendLeagueAccountStats({
+    required String accountId,
+    required String eventId,
+  });
+
+  /// Partidas/record/gols/assistências de Rivals de uma conta. All-time
+  /// (sem season/semana modelada ainda).
+  Future<RivalsAccountStats> fetchRivalsAccountStats(String accountId);
 }

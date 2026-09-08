@@ -1,9 +1,13 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/pages/weekend_league_detail_page.dart';
+import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,54 +49,88 @@ class _WeekendLeagueCardBody extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xl),
       child: AppCard(
-        onTap: () => showWeekendLeagueManualRecordSheet(
-          context: context,
-          account: account,
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) =>
+                WeekendLeagueDetailPage(account: account, event: event),
+          ),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(
-              Icons.emoji_events_outlined,
-              size: AppSizing.iconLg,
-              color: colors.textSecondary,
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    l10n.weekendLeagueBadge(event.number),
-                    style: context.textStyles.titleSmall,
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.emoji_events_outlined,
+                  size: AppSizing.iconLg,
+                  color: colors.textSecondary,
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        l10n.weekendLeagueBadge(event.number),
+                        style: context.textStyles.titleSmall,
+                      ),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        account.hasWeekendLeagueManualOverride
+                            ? l10n.fcAccountWeekendLeagueManualLabel(
+                                record.$1,
+                                record.$2,
+                              )
+                            : l10n.weekendLeagueWindow(
+                                l10n.historyEntryDate(event.startsAt),
+                                l10n.historyEntryDate(event.endsAt),
+                              ),
+                        style: context.textStyles.bodySmall?.copyWith(
+                          color: colors.textSecondary,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    account.hasWeekendLeagueManualOverride
-                        ? l10n.fcAccountWeekendLeagueManualLabel(
-                            record.$1,
-                            record.$2,
-                          )
-                        : l10n.weekendLeagueWindow(
-                            l10n.historyEntryDate(event.startsAt),
-                            l10n.historyEntryDate(event.endsAt),
-                          ),
+                ),
+                Text(
+                  '${record.$1}–${record.$2}',
+                  style: context.textStyles.headlineSmall,
+                ),
+                const SizedBox(width: AppSpacing.md),
+                if (event.isActive)
+                  AppBadge(
+                    label: l10n.weekendLeagueActiveBadge,
+                    tone: AppBadgeTone.success,
+                  ),
+              ],
+            ),
+            FutureBuilder<WeekendLeagueAccountStats>(
+              future: getIt<FcAccountRepository>()
+                  .fetchWeekendLeagueAccountStats(
+                    accountId: account.id,
+                    eventId: event.id,
+                  ),
+              builder: (context, snapshot) {
+                final scorers =
+                    snapshot.data?.topScorers ??
+                    const <PlayerLeaderboardEntry>[];
+                if (scorers.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  child: Text(
+                    l10n.statsTopScorerInlineLabel(
+                      scorers.first.playerName,
+                      scorers.first.goals,
+                    ),
                     style: context.textStyles.bodySmall?.copyWith(
                       color: colors.textSecondary,
                     ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-            Text(
-              '${record.$1}–${record.$2}',
-              style: context.textStyles.headlineSmall,
-            ),
-            const SizedBox(width: AppSpacing.md),
-            if (event.isActive)
-              AppBadge(
-                label: l10n.weekendLeagueActiveBadge,
-                tone: AppBadgeTone.success,
-              ),
           ],
         ),
       ),

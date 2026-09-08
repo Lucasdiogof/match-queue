@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/fc_accounts/data/datasources/fc_account_remote_data_source.dart';
 import 'package:fifa_queue/features/fc_accounts/data/models/fc_account_model.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 
@@ -77,6 +78,32 @@ class SupabaseFcAccountRepository implements FcAccountRepository {
       eventId: eventId,
     ),
   );
+
+  @override
+  Future<FcAccountStats> fetchAccountStats(String accountId) =>
+      _guard(() async {
+        final json = await _dataSource.getAccountStats(accountId);
+        return FcAccountStats.fromJson(json);
+      });
+
+  @override
+  Future<WeekendLeagueAccountStats> fetchWeekendLeagueAccountStats({
+    required String accountId,
+    required String eventId,
+  }) => _guard(() async {
+    final json = await _dataSource.getWeekendLeagueAccountStats(
+      accountId: accountId,
+      eventId: eventId,
+    );
+    return WeekendLeagueAccountStats.fromJson(json);
+  });
+
+  @override
+  Future<RivalsAccountStats> fetchRivalsAccountStats(String accountId) =>
+      _guard(() async {
+        final json = await _dataSource.getRivalsAccountStats(accountId);
+        return RivalsAccountStats.fromJson(json);
+      });
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
+import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Sem backend real, elencos locais são só do próprio usuário do
@@ -127,6 +129,28 @@ class LocalFcAccountRepository implements FcAccountRepository {
     required String accountId,
     required String eventId,
   }) async {}
+
+  @override
+  Future<FcAccountStats> fetchAccountStats(String accountId) async =>
+      FcAccountStats.empty;
+
+  @override
+  Future<WeekendLeagueAccountStats> fetchWeekendLeagueAccountStats({
+    required String accountId,
+    required String eventId,
+  }) async => const WeekendLeagueAccountStats(
+    computed: FcAccountStats.empty,
+    topScorers: <PlayerLeaderboardEntry>[],
+    topAssists: <PlayerLeaderboardEntry>[],
+  );
+
+  @override
+  Future<RivalsAccountStats> fetchRivalsAccountStats(String accountId) async =>
+      const RivalsAccountStats(
+        aggregate: FcAccountStats.empty,
+        topScorers: <PlayerLeaderboardEntry>[],
+        topAssists: <PlayerLeaderboardEntry>[],
+      );
 
   FcAccount _copyWith(
     FcAccount account, {

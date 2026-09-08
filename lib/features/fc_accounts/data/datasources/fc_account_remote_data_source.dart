@@ -29,6 +29,15 @@ abstract interface class FcAccountRemoteDataSource {
     required String accountId,
     required String eventId,
   });
+
+  Future<Map<String, dynamic>> getAccountStats(String accountId);
+
+  Future<Map<String, dynamic>> getWeekendLeagueAccountStats({
+    required String accountId,
+    required String eventId,
+  });
+
+  Future<Map<String, dynamic>> getRivalsAccountStats(String accountId);
 }
 
 class SupabaseFcAccountRemoteDataSource implements FcAccountRemoteDataSource {
@@ -119,4 +128,37 @@ class SupabaseFcAccountRemoteDataSource implements FcAccountRemoteDataSource {
       'p_event_id': eventId,
     },
   );
+
+  @override
+  Future<Map<String, dynamic>> getAccountStats(String accountId) async {
+    final response = await _client.rpc<dynamic>(
+      'get_fc_account_stats',
+      params: <String, dynamic>{'p_fc_account_id': accountId},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getWeekendLeagueAccountStats({
+    required String accountId,
+    required String eventId,
+  }) async {
+    final response = await _client.rpc<dynamic>(
+      'get_weekend_league_account_stats',
+      params: <String, dynamic>{
+        'p_fc_account_id': accountId,
+        'p_weekend_league_event_id': eventId,
+      },
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRivalsAccountStats(String accountId) async {
+    final response = await _client.rpc<dynamic>(
+      'get_rivals_account_stats',
+      params: <String, dynamic>{'p_fc_account_id': accountId},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
 }
