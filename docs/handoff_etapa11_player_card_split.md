@@ -116,12 +116,29 @@ importado pelo app Flutter) declara:
   `fc_players` (recebe os ids já resolvidos de nação/clube/liga — a classe
   nunca fala com o banco).
 - `ExternalFcCard` — carta normalizada, com `providerPlayerId` nullable
-  linkando de volta ao jogador, `toFcPlayerCardsRow(...)` (mesma ideia) e
-  `isBaseDatasetOnly(hadExplicitCardId: ...)`, que documenta em código a
-  regra: sem `provider_card_id` próprio nem `card_type`/`rarity`
-  declarados, é jogador base puro — o importer usa isso só para um contador
-  de diagnóstico (`rowsBaseDatasetOnly`), o comportamento de fallback
-  (`card_type ?? 'BASE_DATASET'`) já vive dentro de `toFcPlayerCardsRow`.
+  linkando de volta ao jogador e `toFcPlayerCardsRow(...)` (mesma ideia).
+
+**Correção de semântica (revisão do dono do produto, depois da primeira
+versão desta etapa)**: a primeira versão ainda criava uma linha em
+`fc_player_cards` com `card_type = 'BASE_DATASET'` para todo item sem
+sinal de carta real — "compatibilidade com o picker" que deixou de ser
+necessária justamente porque `fc_players` passou a existir. **Isso foi
+removido.** Regra definitiva agora: uma linha só vira `fc_player_cards`
+quando o input declara `provider_card_id` próprio, `card_type` ou
+`rarity` — sem nenhum desses três sinais, o importer faz upsert **somente**
+em `fc_players` e nunca cria (nem inventa) uma carta. `isBaseDatasetOnly()`
+foi removido de `ExternalFcCard`; a decisão "isto é carta ou só jogador"
+agora é tomada em `sync_fc_cards.dart` **antes** de `ExternalFcCard` ser
+sequer construído. `toFcPlayerCardsRow()` também não tem mais o fallback
+`cardType ?? 'BASE_DATASET'` — `card_type` fica `null` quando a fonte não
+declarou, ponto.
+
+Efeito prático: o dataset FC26/SoFIFA já pesquisado (`sofifa_id` identifica
+o ATLETA, não uma versão de carta — nunca teve `provider_card_id` de
+verdade) agora importa **somente** para `fc_players`, zero linhas novas em
+`fc_player_cards`. Corrigido também o mapeamento default de CSV, que
+antes apontava `sofifa_id` para `provider_card_id` (errado — é identidade
+de jogador) e agora aponta para `provider_player_id`.
 
 Nenhuma lógica de provider específico (nomes de coluna do FC26-DataHub,
 convenções do WeFUT, etc.) vaza para essas duas classes nem para o banco —
@@ -172,10 +189,19 @@ provider_player_id)`.
   `deactivateMissing` genéricos em vez de hardcoded para
   `provider_card_id` — usados hoje só para cartas, mas prontos para
   `fc_players` se um dia precisar do mesmo tratamento).
-- Contadores de sempre (lidos/válidos/inseridos/atualizados/ignorados/
-  falhas) + um novo (`fc_players upsertados`, ou a contagem de jogadores
-  distintos no dry-run) + um novo de diagnóstico
-  (`sem sinal de carta real (card_type=BASE_DATASET)`).
+- Contadores refeitos para a distinção player/card: `lidos`, `válidos`,
+  `inválidos`, `players (fc_players) distintos` (deduplicados por chave
+  `provider:game_version:provider_player_id`, contados uma vez mesmo que
+  o mesmo atleta apareça em N linhas/cartas), `cards reais
+  (fc_player_cards)`, `player-only (só fc_players)`, e
+  `inseridos/atualizados/falhas` (esses três só contam cards, já que
+  linha player-only nunca toca `fc_player_cards`). Validado com dois
+  testes manuais via `--dry-run` (nunca tocou o Supabase): um CSV
+  sofifa-style de 2 linhas deu `players: 2, cards reais: 0, player-only:
+  2`; um JSON misto (1 linha com `card_type` + 1 linha só-jogador do
+  mesmo `provider_player_id`) deu `players: 1, cards reais: 1,
+  player-only: 1` — dedup de jogador e separação card/player-only
+  funcionando como esperado.
 - `dart analyze tool` limpo, `dart format tool` aplicado.
 
 ## Segurança

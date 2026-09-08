@@ -128,15 +128,24 @@ Future<void> main(List<String> args) async {
   final dryRunClubs = <String>{};
   final dryRunLeagues = <String>{};
   final dryRunNations = <String>{};
-  final dryRunPlayers = <String>{};
+  // Chave (provider:gameVersion:providerPlayerId) de todo jogador que o
+  // arquivo referencia -- usado para contar jogadores DISTINTOS mesmo
+  // quando o mesmo atleta aparece em N linhas (N cartas), tanto em
+  // --dry-run quanto no sync de verdade.
+  final touchedPlayerKeys = <String>{};
   var rowsRead = 0;
   var rowsValid = 0;
-  var rowsSkipped = 0;
+  var rowsInvalid = 0;
   var rowsInserted = 0;
   var rowsUpdated = 0;
   var rowsFailed = 0;
-  var rowsBaseDatasetOnly = 0;
-  var playersUpserted = 0;
+  // Linha com identidade de jogador mas SEM nenhum sinal de carta/item real
+  // (nem provider_card_id proprio, nem card_type, nem rarity) -- vira
+  // SOMENTE fc_players, nunca uma linha fc_player_cards inventada.
+  var playerOnlyCount = 0;
+  // Linha que declarou um sinal de carta real -- essa sim vira
+  // fc_player_cards (alem de fc_players quando providerPlayerId existir).
+  var realCardCount = 0;
 
   for (final rawRow in rawRows) {
     rowsRead++;
@@ -167,15 +176,31 @@ Future<void> main(List<String> args) async {
               .map((p) => p.toUpperCase())
               .toList(growable: false);
 
-    final providerCardId = col('provider_card_id') ?? col('player_name');
     final playerName = col('player_name');
     final rating = colInt('rating');
+    final providerPlayerId = col('provider_player_id');
+    // Unico sinal aceito de "isto e uma carta/item real": provider_card_id
+    // proprio, ou card_type, ou rarity declarados pelo input. Nunca
+    // inferimos carta a partir so de identidade de jogador (correcao de
+    // semantica desta etapa -- ver docs/card_provider_research.md).
+    final hasCardSignal =
+        col('provider_card_id') != null ||
+        col('card_type') != null ||
+        col('rarity') != null;
 
-    if (providerCardId == null ||
-        playerName == null ||
-        rating == null ||
-        primaryPosition == null) {
-      rowsSkipped++;
+    if (playerName == null || primaryPosition == null) {
+      rowsInvalid++;
+      continue;
+    }
+    if (hasCardSignal && rating == null) {
+      // Carta real sem rating nao e um dado utilizavel.
+      rowsInvalid++;
+      continue;
+    }
+    if (!hasCardSignal && providerPlayerId == null) {
+      // Nem sinal de carta, nem id de jogador -- nada identificavel pra
+      // criar em fc_players nem em fc_player_cards.
+      rowsInvalid++;
       continue;
     }
     rowsValid++;
@@ -184,17 +209,10 @@ Future<void> main(List<String> args) async {
     final clubName = col('club_name');
     final leagueName = col('league_name');
     final nationName = col('nation_name');
-    final providerPlayerId = col('provider_player_id');
-    final hadExplicitCardId = col('provider_card_id') != null;
 
     if (clubName != null) dryRunClubs.add(clubName);
     if (leagueName != null) dryRunLeagues.add(leagueName);
     if (nationName != null) dryRunNations.add(nationName);
-    if (providerPlayerId != null) {
-      dryRunPlayers.add(
-        '${options.provider}:${options.gameVersion}:$providerPlayerId',
-      );
-    }
 
     String? clubId;
     String? leagueId;
@@ -224,58 +242,13 @@ Future<void> main(List<String> args) async {
             );
     }
 
-    final externalCard = ExternalFcCard(
-      provider: options.provider,
-      gameVersion: options.gameVersion,
-      providerCardId: providerCardId,
-      providerPlayerId: providerPlayerId,
-      playerName: playerName,
-      commonName: col('common_name'),
-      rating: rating,
-      primaryPosition: primaryPosition,
-      alternativePositions: alternativePositions,
-      pace: isGoalkeeper ? null : colInt('pace'),
-      shooting: isGoalkeeper ? null : colInt('shooting'),
-      passing: isGoalkeeper ? null : colInt('passing'),
-      dribbling: isGoalkeeper ? null : colInt('dribbling'),
-      defending: isGoalkeeper ? null : colInt('defending'),
-      physical: isGoalkeeper ? null : colInt('physical'),
-      gkDiving: isGoalkeeper ? colInt('gk_diving') : null,
-      gkHandling: isGoalkeeper ? colInt('gk_handling') : null,
-      gkKicking: isGoalkeeper ? colInt('gk_kicking') : null,
-      gkReflexes: isGoalkeeper ? colInt('gk_reflexes') : null,
-      gkSpeed: isGoalkeeper ? colInt('gk_speed') : null,
-      gkPositioning: isGoalkeeper ? colInt('gk_positioning') : null,
-      skillMoves: colInt('skill_moves'),
-      weakFoot: colInt('weak_foot'),
-      playstyles: colList('playstyles'),
-      heightCm: colInt('height_cm'),
-      preferredFoot: col('preferred_foot')?.toUpperCase(),
-      playerRoles: colList('player_roles'),
-      // card_type explicito no input e o unico sinal aceito de "carta real
-      // declarada" -- nunca inventamos um a partir de rarity sozinho (o
-      // dataset ja pesquisado nao tem rarity de UT de verdade).
-      rarity: col('rarity'),
-      cardType: col('card_type'),
-      playerImageUrl: col('player_image_url'),
-      cardImageUrl: col('card_image_url') ?? col('player_image_url'),
-      clubName: clubName,
-      leagueName: leagueName,
-      nationName: nationName,
-      sourceUrl: options.sourceUrl,
-    );
-
-    if (externalCard.isBaseDatasetOnly(hadExplicitCardId: hadExplicitCardId)) {
-      // Sem sinal de carta real (nem provider_card_id proprio, nem
-      // card_type/rarity declarados): toFcPlayerCardsRow() ja resolve
-      // card_type para 'BASE_DATASET' -- nunca fingimos uma carta que o
-      // input nao declarou. A linha em fc_player_cards ainda e criada por
-      // compatibilidade com o picker (card-centric).
-      rowsBaseDatasetOnly++;
-    }
-
+    // fc_players e upsertado sempre que o item declarar identidade de
+    // jogador -- independente de tambem ser uma carta real ou nao.
     String? fcPlayerId;
     if (providerPlayerId != null) {
+      touchedPlayerKeys.add(
+        '${options.provider}:${options.gameVersion}:$providerPlayerId',
+      );
       final externalPlayer = ExternalFcPlayer(
         provider: options.provider,
         gameVersion: options.gameVersion,
@@ -306,11 +279,58 @@ Future<void> main(List<String> args) async {
             syncedAt: DateTime.now().toUtc(),
           ),
         );
-        if (fcPlayerId != null) {
-          playersUpserted++;
-        }
       }
     }
+
+    if (!hasCardSignal) {
+      // So identidade de jogador base: fc_players ja foi upsertado acima
+      // (se providerPlayerId existia). NUNCA criar uma linha em
+      // fc_player_cards so para satisfazer o picker -- essa
+      // "compatibilidade" deixou de ser necessaria com fc_players
+      // existindo.
+      playerOnlyCount++;
+      continue;
+    }
+    realCardCount++;
+
+    final providerCardId = col('provider_card_id') ?? playerName;
+    final externalCard = ExternalFcCard(
+      provider: options.provider,
+      gameVersion: options.gameVersion,
+      providerCardId: providerCardId,
+      providerPlayerId: providerPlayerId,
+      playerName: playerName,
+      commonName: col('common_name'),
+      rating: rating!,
+      primaryPosition: primaryPosition,
+      alternativePositions: alternativePositions,
+      pace: isGoalkeeper ? null : colInt('pace'),
+      shooting: isGoalkeeper ? null : colInt('shooting'),
+      passing: isGoalkeeper ? null : colInt('passing'),
+      dribbling: isGoalkeeper ? null : colInt('dribbling'),
+      defending: isGoalkeeper ? null : colInt('defending'),
+      physical: isGoalkeeper ? null : colInt('physical'),
+      gkDiving: isGoalkeeper ? colInt('gk_diving') : null,
+      gkHandling: isGoalkeeper ? colInt('gk_handling') : null,
+      gkKicking: isGoalkeeper ? colInt('gk_kicking') : null,
+      gkReflexes: isGoalkeeper ? colInt('gk_reflexes') : null,
+      gkSpeed: isGoalkeeper ? colInt('gk_speed') : null,
+      gkPositioning: isGoalkeeper ? colInt('gk_positioning') : null,
+      skillMoves: colInt('skill_moves'),
+      weakFoot: colInt('weak_foot'),
+      playstyles: colList('playstyles'),
+      heightCm: colInt('height_cm'),
+      preferredFoot: col('preferred_foot')?.toUpperCase(),
+      playerRoles: colList('player_roles'),
+      rarity: col('rarity'),
+      cardType: col('card_type'),
+      playerImageUrl: col('player_image_url'),
+      cardImageUrl: col('card_image_url') ?? col('player_image_url'),
+      clubName: clubName,
+      leagueName: leagueName,
+      nationName: nationName,
+      sourceUrl: options.sourceUrl,
+    );
 
     final payload = externalCard.toFcPlayerCardsRow(
       clubId: clubId,
@@ -347,26 +367,23 @@ Future<void> main(List<String> args) async {
   }
 
   stdout.writeln('${options.dryRun ? '[DRY-RUN] ' : ''}Resultado do sync:');
-  stdout.writeln('  formato:     ${options.format.name}');
-  stdout.writeln('  lidos:       $rowsRead');
-  stdout.writeln('  validos:     $rowsValid');
-  stdout.writeln('  ignorados:   $rowsSkipped (campo obrigatorio ausente)');
-  stdout.writeln('  inseridos:   $rowsInserted');
-  stdout.writeln('  atualizados: $rowsUpdated');
-  stdout.writeln('  falhas:      $rowsFailed');
+  stdout.writeln('  formato:        ${options.format.name}');
+  stdout.writeln('  lidos:          $rowsRead');
+  stdout.writeln('  validos:        $rowsValid');
+  stdout.writeln('  invalidos:      $rowsInvalid (campo obrigatorio ausente)');
   stdout.writeln(
-    '  sem sinal de carta real (card_type=BASE_DATASET): $rowsBaseDatasetOnly',
+    '  players (fc_players) distintos: ${touchedPlayerKeys.length}',
+  );
+  stdout.writeln('  cards reais (fc_player_cards):  $realCardCount');
+  stdout.writeln('  player-only (so fc_players):    $playerOnlyCount');
+  stdout.writeln(
+    '  cards -- inseridos: $rowsInserted, atualizados: $rowsUpdated, '
+    'falhas: $rowsFailed',
   );
   if (options.dryRun) {
-    stdout.writeln(
-      '  jogadores (fc_players) distintos no arquivo: '
-      '${dryRunPlayers.length}',
-    );
     stdout.writeln('  nations distintas no arquivo: ${dryRunNations.length}');
     stdout.writeln('  leagues distintas no arquivo: ${dryRunLeagues.length}');
     stdout.writeln('  clubs distintos no arquivo:   ${dryRunClubs.length}');
-  } else {
-    stdout.writeln('  fc_players upsertados: $playersUpserted');
   }
 
   if (client != null) {
@@ -489,7 +506,13 @@ class _FieldMapping {
   final Map<String, String> _overrides;
 
   static const Map<String, String> _csvDefaults = <String, String>{
-    'provider_card_id': 'sofifa_id',
+    // sofifa_id identifica o ATLETA (persiste ano a ano no ecossistema
+    // sofifa) -- e identidade de jogador, nunca de carta/versao. Este
+    // dataset nao declara provider_card_id nenhum de proposito: e
+    // exatamente o caso "so identidade base", sem sinal de carta real (ver
+    // docs/card_provider_research.md e a correcao de semantica desta
+    // etapa). Nao mapear nada para provider_card_id aqui.
+    'provider_player_id': 'sofifa_id',
     'player_name': 'long_name',
     'common_name': 'short_name',
     'rating': 'overall',

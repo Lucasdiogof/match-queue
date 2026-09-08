@@ -219,9 +219,11 @@ dono do produto pediu para nunca ficarem implícitos:
    variando por versão de carta — é o rating "base" daquele jogador na
    base sofifa, não um rating específico de carta especial. Nenhuma linha
    deste provider deve ser chamada de "carta UT real" em nenhum lugar do
-   produto (UI, docs, commit message). O importer grava
-   `card_type = 'BASE_DATASET'` para toda linha desta fonte (nunca
-   inventa `'Special Card'`/`'Rare'`/etc. quando o CSV não declara isso).
+   produto (UI, docs, commit message). **[Atualizado depois — ver
+   `docs/handoff_etapa11_player_card_split.md`]**: o importer hoje nem
+   cria linha em `fc_player_cards` pra esse tipo de dado — faz upsert só
+   em `fc_players`. Nunca inventa `'Special Card'`/`'Rare'`/`'BASE_DATASET'`/
+   etc. quando o input não declara isso.
 3. **Serve como fallback/bootstrap.** Prova que schema (`fc_clubs`,
    `fc_nations`, `fc_leagues`, GK stats corretos, playstyles, etc.),
    importer (upsert idempotente, `is_active`, contagem de
@@ -245,11 +247,21 @@ O nome fica documentado aqui para quando (se) o import for retomado.
 
 ### Schema: por que `fc_player_cards` mesmo sem ser carta UT de verdade
 
+**[SUPERADO — ver `docs/handoff_etapa11_player_card_split.md`]**: a
+decisão abaixo foi tomada quando `fc_players` ainda não existia. Numa
+etapa posterior o dono do produto pediu exatamente essa separação —
+`fc_players` foi criada, e o comportamento de marcar `card_type =
+'BASE_DATASET'` foi **removido**: hoje um dataset player-only (como o
+FC26/SoFIFA descrito abaixo) faz upsert só em `fc_players`, zero linhas
+novas em `fc_player_cards`. O raciocínio original (motivos 1-3 abaixo)
+fica registrado por histórico, não é mais o comportamento atual do
+importer.
+
 Avaliado introduzir uma tabela `fc_players` separada (jogador/identidade
-base) e reservar `fc_player_cards` só para versões UT de verdade. Decisão:
-**não fazer essa migration agora** — usar `fc_player_cards.card_type =
+base) e reservar `fc_player_cards` só para versões UT de verdade. Decisão
+**na época**: não fazer essa migration ainda — usar `fc_player_cards.card_type =
 'BASE_DATASET'` como marcador explícito, exatamente como o dono do produto
-ofereceu como alternativa aceitável. Motivos:
+tinha oferecido como alternativa aceitável naquele momento. Motivos:
 
 - O contrato Flutter (`PlayerCardCatalogRepository`, Etapa 10) já é
   provider-agnostic e não assume nada sobre "uma linha = uma carta única

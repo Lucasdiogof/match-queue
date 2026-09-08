@@ -12,6 +12,13 @@
 // representa a carta/versao especifica (fc_player_cards), com
 // [ExternalFcCard.providerPlayerId] linkando de volta ao jogador quando o
 // item de entrada declarou essa identidade.
+//
+// Uma linha do arquivo de entrada normaliza para (ExternalFcPlayer,
+// ExternalFcCard?) -- o card e null quando a linha so tem identidade de
+// jogador base, sem nenhum sinal de carta/item real (nem provider_card_id
+// proprio, nem card_type, nem rarity). Nesse caso o importer faz upsert
+// SOMENTE em fc_players -- nunca inventa uma linha em fc_player_cards so
+// para satisfazer o picker (que ja e resiliente a fc_player_id nulo).
 
 class ExternalFcPlayer {
   ExternalFcPlayer({
@@ -155,15 +162,6 @@ class ExternalFcCard {
   final String? cardType;
   final String? sourceUrl;
 
-  /// Verdadeiro quando o item de entrada NAO declarou nenhum sinal de carta
-  /// real (nem `provider_card_id` proprio, nem `card_type`, nem `rarity`) --
-  /// so dado de jogador base. `sync_fc_cards.dart` ainda cria a linha em
-  /// `fc_player_cards` (compatibilidade com o picker, que e card-centric),
-  /// mas marca `card_type='BASE_DATASET'` em vez de fingir uma carta que o
-  /// input nunca declarou.
-  bool isBaseDatasetOnly({required bool hadExplicitCardId}) =>
-      !hadExplicitCardId && cardType == null && rarity == null;
-
   Map<String, dynamic> toFcPlayerCardsRow({
     String? clubId,
     String? leagueId,
@@ -207,7 +205,11 @@ class ExternalFcCard {
     'club_id': clubId,
     'league_id': leagueId,
     'nation_id': nationId,
-    'card_type': cardType ?? 'BASE_DATASET',
+    // Nunca inventamos um card_type -- se a fonte nao declarou um, fica
+    // null. Esta linha so e construida quando o item ja declarou algum
+    // sinal de carta real (ver sync_fc_cards.dart); dado so-de-jogador
+    // nunca chega aqui.
+    'card_type': cardType,
     'is_active': true,
     'last_synced_at': syncedAt.toIso8601String(),
     'source_url': sourceUrl,
