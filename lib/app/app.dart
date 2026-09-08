@@ -3,6 +3,8 @@ import 'package:fifa_queue/core/config/app_config_scope.dart';
 import 'package:fifa_queue/core/design_system/theme/app_theme.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_accounts_session_listener.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_session_listener.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
@@ -34,6 +36,7 @@ class FifaQueueApp extends StatelessWidget {
     required this.profileCubit,
     required this.teamsCubit,
     required this.pendingMatchCubit,
+    required this.fcAccountsCubit,
     super.key,
   });
 
@@ -46,6 +49,7 @@ class FifaQueueApp extends StatelessWidget {
   final ProfileCubit profileCubit;
   final TeamsCubit teamsCubit;
   final PendingMatchCubit pendingMatchCubit;
+  final FcAccountsCubit fcAccountsCubit;
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -57,6 +61,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<ProfileCubit>.value(value: profileCubit),
       BlocProvider<TeamsCubit>.value(value: teamsCubit),
       BlocProvider<PendingMatchCubit>.value(value: pendingMatchCubit),
+      BlocProvider<FcAccountsCubit>.value(value: fcAccountsCubit),
       BlocProvider<GameModeCubit>(create: (_) => getIt<GameModeCubit>()),
     ],
     child: AppConfigScope(
@@ -77,12 +82,14 @@ class FifaQueueApp extends StatelessWidget {
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
             builder: (context, child) => ProfileSessionListener(
               child: TeamsSessionListener(
-                child: PendingMatchSessionListener(
-                  child: LocaleSyncListener(
-                    child: PresenceHeartbeatListener(
-                      child: NotificationLifecycleListener(
-                        child: PendingInviteListener(
-                          child: child ?? const SizedBox.shrink(),
+                child: FcAccountsSessionListener(
+                  child: PendingMatchSessionListener(
+                    child: LocaleSyncListener(
+                      child: PresenceHeartbeatListener(
+                        child: NotificationLifecycleListener(
+                          child: PendingInviteListener(
+                            child: child ?? const SizedBox.shrink(),
+                          ),
                         ),
                       ),
                     ),

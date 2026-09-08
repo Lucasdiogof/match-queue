@@ -49,6 +49,16 @@ class AppRoutes {
     'profile-notifications',
     '/app/profile/notifications',
   );
+  static const AppRoute fcAccounts = AppRoute(
+    'fc-accounts',
+    '/app/fc-accounts',
+  );
+  static const AppRoute fcAccountDetail = AppRoute(
+    'fc-account-detail',
+    '/app/fc-accounts/:fcAccountId',
+  );
+
+  static const String fcAccountIdParam = 'fcAccountId';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,
@@ -64,6 +74,9 @@ class AppRoutes {
   };
 
   static String joinTeamLocation(String inviteCode) => '/join/$inviteCode';
+
+  static String fcAccountDetailLocation(String fcAccountId) =>
+      '/app/fc-accounts/$fcAccountId';
 
   static bool isJoinTeamLocation(String location) =>
       location.startsWith('/join/');

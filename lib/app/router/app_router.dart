@@ -7,6 +7,8 @@ import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/login_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_account_detail_page.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_accounts_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
@@ -84,6 +86,18 @@ class AppRouter {
         path: AppRoutes.profileNotifications.path,
         name: AppRoutes.profileNotifications.name,
         builder: (context, state) => const ProfileNotificationsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.fcAccounts.path,
+        name: AppRoutes.fcAccounts.name,
+        builder: (context, state) => const FcAccountsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.fcAccountDetail.path,
+        name: AppRoutes.fcAccountDetail.name,
+        builder: (context, state) => FcAccountDetailPage(
+          fcAccountId: state.pathParameters[AppRoutes.fcAccountIdParam] ?? '',
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

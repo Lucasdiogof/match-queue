@@ -11,7 +11,7 @@ class ProfileNotificationsPage extends StatelessWidget {
     appBar: AppAppBar(title: context.l10n.notificationsSectionTitle),
     body: ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-      children: <Widget>[NotificationSettingsSection()],
+      children: <Widget>[const NotificationSettingsSection()],
     ),
   );
 }

@@ -34,6 +34,8 @@ class ProfilePage extends StatelessWidget {
         children: <Widget>[
           _AccountSection(),
           const SizedBox(height: AppSpacing.lg),
+          const _FcAccountsSection(),
+          const SizedBox(height: AppSpacing.lg),
           _PreferencesSection(),
           const SizedBox(height: AppSpacing.lg),
           const _EnvironmentRow(),
@@ -140,6 +142,23 @@ class _AccountSection extends StatelessWidget {
   }
 }
 
+class _FcAccountsSection extends StatelessWidget {
+  const _FcAccountsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AppCard(
+      child: _NavRow(
+        icon: Icons.sports_esports_outlined,
+        label: l10n.profileFcAccountsRow,
+        onTap: () => context.push(AppRoutes.fcAccounts.path),
+      ),
+    );
+  }
+}
+
 class _PreferencesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -218,9 +237,7 @@ class _NavRow extends StatelessWidget {
           children: <Widget>[
             Icon(icon, size: AppSizing.iconMd, color: colors.textSecondary),
             const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Text(label, style: context.textStyles.bodyLarge),
-            ),
+            Expanded(child: Text(label, style: context.textStyles.bodyLarge)),
             if (value != null)
               DefaultTextStyle.merge(
                 style: context.textStyles.bodyMedium?.copyWith(
