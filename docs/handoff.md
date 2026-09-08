@@ -4,9 +4,10 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-08: **Etapas 1–14 fechadas**, HEAD `f563d8d`,
-**63 migrations locais = 63 remotas**, `origin/main` sincronizado, árvore
-limpa, `flutter analyze` sem issues.
+Estado em 2026-09-08: **Etapas 1–15 fechadas**, HEAD `02e1fe7`,
+**70 migrations locais = 70 remotas**, `origin/main` sincronizado, árvore
+limpa, `flutter analyze` sem issues. Edge Function
+`process-notification-outbox` versão 3, ACTIVE.
 
 ---
 
@@ -52,6 +53,7 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa12.md` | gols, assistências, stats, perfil público |
 | `handoff_etapa13.md` | Squad Builder 2.0, overall, química |
 | `handoff_etapa14.md` | Times 2.0, dashboard esportivo, ranking |
+| `handoff_etapa15.md` | Central de Notificações, eventos sociais/esportivos, correção de dedupe_key |
 | `card_provider_research.md` | pesquisa de fonte de cartas e por que cada uma foi descartada |
 | `architecture.md`, `database.md`, `supabase_setup.md`, `deep_links.md`, `branding.md` | referência transversal |
 
