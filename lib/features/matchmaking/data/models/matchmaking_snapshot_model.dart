@@ -21,6 +21,7 @@ class MatchmakingSnapshotModel {
               startedAt: DateTime.parse('${searchingJson['started_at']}'),
               expiresAt: DateTime.parse('${searchingJson['expires_at']}'),
               gameMode: GameMode.tryFromKey(searchingJson['game_mode']),
+              fcAccountName: searchingJson['fc_account_name'] as String?,
             ),
       queue: queueJson
           .whereType<Map<String, dynamic>>()
@@ -43,5 +44,6 @@ class MatchmakingSnapshotModel {
         avatarUrl: json['avatar_url'] as String?,
         position: json['position'] as int,
         joinedAt: DateTime.parse('${json['joined_at']}'),
+        fcAccountName: json['fc_account_name'] as String?,
       );
 }

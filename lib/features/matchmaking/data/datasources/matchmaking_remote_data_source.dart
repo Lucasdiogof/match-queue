@@ -8,7 +8,11 @@ abstract interface class MatchmakingRemoteDataSource {
 
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId);
 
-  Future<Map<String, dynamic>> requestSearch(String teamId, String gameMode);
+  Future<Map<String, dynamic>> requestSearch(
+    String teamId,
+    String fcAccountId,
+    String gameMode,
+  );
 
   Future<Map<String, dynamic>> cancelSearch(String teamId);
 
@@ -31,11 +35,16 @@ class SupabaseMatchmakingRemoteDataSource
   @override
   Future<Map<String, dynamic>> requestSearch(
     String teamId,
+    String fcAccountId,
     String gameMode,
   ) async {
     final response = await _client.rpc<dynamic>(
       'request_match_search',
-      params: <String, dynamic>{'p_team_id': teamId, 'p_game_mode': gameMode},
+      params: <String, dynamic>{
+        'p_team_id': teamId,
+        'p_fc_account_id': fcAccountId,
+        'p_game_mode': gameMode,
+      },
     );
     return Map<String, dynamic>.from(response as Map);
   }

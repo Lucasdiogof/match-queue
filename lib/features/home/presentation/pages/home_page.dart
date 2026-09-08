@@ -1,6 +1,10 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_onboarding_card.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_selector_row.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
@@ -72,14 +76,36 @@ class _HomeBody extends StatelessWidget {
           teams: state.teams,
         ),
         const SizedBox(height: AppSpacing.xl),
-        const GameModeSelector(),
-        const SizedBox(height: AppSpacing.lg),
-        const WeekendLeagueCard(),
-        const PendingMatchCard(),
-        MatchmakingSection(
-          teamId: selected!.id,
-          onMatchFound: () =>
-              context.read<PendingMatchCubit>().refreshSilently(),
+        BlocBuilder<FcAccountsCubit, FcAccountsState>(
+          buildWhen: (previous, current) =>
+              previous.status != current.status ||
+              previous.accounts != current.accounts,
+          builder: (context, fcState) {
+            if (fcState.isLoading && fcState.accounts.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            if (!fcState.hasAccounts) {
+              return const Padding(
+                padding: EdgeInsets.only(bottom: AppSpacing.lg),
+                child: FcAccountOnboardingCard(),
+              );
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const FcAccountSelectorRow(),
+                const GameModeSelector(),
+                const SizedBox(height: AppSpacing.lg),
+                const WeekendLeagueCard(),
+                const PendingMatchCard(),
+                MatchmakingSection(
+                  teamId: selected!.id,
+                  onMatchFound: () =>
+                      context.read<PendingMatchCubit>().refreshSilently(),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );

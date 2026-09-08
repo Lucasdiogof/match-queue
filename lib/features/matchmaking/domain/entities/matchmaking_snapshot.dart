@@ -12,6 +12,7 @@ class SearchingPlayer extends Equatable {
     required this.expiresAt,
     this.avatarUrl,
     this.gameMode,
+    this.fcAccountName,
   });
 
   final String sessionId;
@@ -21,6 +22,7 @@ class SearchingPlayer extends Equatable {
   final DateTime startedAt;
   final DateTime expiresAt;
   final GameMode? gameMode;
+  final String? fcAccountName;
 
   @override
   List<Object?> get props => <Object?>[
@@ -31,6 +33,7 @@ class SearchingPlayer extends Equatable {
     startedAt,
     expiresAt,
     gameMode,
+    fcAccountName,
   ];
 }
 
@@ -41,6 +44,7 @@ class MatchmakingQueueEntry extends Equatable {
     required this.position,
     required this.joinedAt,
     this.avatarUrl,
+    this.fcAccountName,
   });
 
   final String userId;
@@ -48,6 +52,7 @@ class MatchmakingQueueEntry extends Equatable {
   final String? avatarUrl;
   final int position;
   final DateTime joinedAt;
+  final String? fcAccountName;
 
   @override
   List<Object?> get props => <Object?>[
@@ -56,6 +61,7 @@ class MatchmakingQueueEntry extends Equatable {
     avatarUrl,
     position,
     joinedAt,
+    fcAccountName,
   ];
 }
 

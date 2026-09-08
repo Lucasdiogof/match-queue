@@ -5,6 +5,7 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_c
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_queue_list.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_timer_ring.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -241,18 +243,89 @@ class _IdleCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
-          AppButton(
+          _StartSearchButton(
+            isActionPending: state.isActionPending,
             label: l10n.matchmakingSearchAction,
             icon: Icons.search,
-            isLoading: state.isActionPending,
-            onPressed: state.isActionPending
-                ? null
-                : () => context.read<MatchmakingCubit>().startSearch(
-                    context.read<GameModeCubit>().state,
-                  ),
+            variant: AppButtonVariant.primary,
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Botão de buscar partida, mas ciente do Elenco selecionado: sem elenco
+/// selecionado o botão fica desabilitado, e se o elenco não estiver
+/// vinculado ao time atual vira um CTA de vínculo em vez de buscar
+/// silenciosamente sem associação (Etapa 9).
+class _StartSearchButton extends StatelessWidget {
+  const _StartSearchButton({
+    required this.isActionPending,
+    required this.label,
+    required this.icon,
+    required this.variant,
+  });
+
+  final bool isActionPending;
+  final String label;
+  final IconData icon;
+  final AppButtonVariant variant;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final fcState = context.watch<FcAccountsCubit>().state;
+    final teamId = context.read<MatchmakingCubit>().teamId;
+    final teamName = context.watch<TeamsCubit>().state.selectedTeam?.team.name;
+    final account = fcState.selectedAccount;
+
+    if (account == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            l10n.fcAccountRequiredToSearch,
+            style: context.textStyles.bodySmall?.copyWith(
+              color: context.colors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton(
+            label: label,
+            icon: icon,
+            variant: variant,
+            onPressed: null,
+          ),
+        ],
+      );
+    }
+
+    if (!account.isLinkedTo(teamId)) {
+      return AppButton.secondary(
+        label: l10n.fcAccountLinkCta(account.name, teamName ?? ''),
+        icon: Icons.link,
+        isLoading: fcState.isSaving,
+        onPressed: fcState.isSaving
+            ? null
+            : () => context.read<FcAccountsCubit>().linkToTeam(
+                accountId: account.id,
+                teamId: teamId,
+              ),
+      );
+    }
+
+    return AppButton(
+      label: label,
+      icon: icon,
+      variant: variant,
+      isLoading: isActionPending,
+      onPressed: isActionPending
+          ? null
+          : () => context.read<MatchmakingCubit>().startSearch(
+              account.id,
+              context.read<GameModeCubit>().state,
+            ),
     );
   }
 }
@@ -431,23 +504,22 @@ class _SearchingOtherCard extends StatelessWidget {
               myPosition: snapshot.myPosition,
             ),
           const SizedBox(height: AppSpacing.xl),
-          AppButton(
-            label: isQueued
-                ? l10n.matchmakingLeaveQueueAction
-                : l10n.matchmakingJoinQueueAction,
-            icon: isQueued ? Icons.close : Icons.playlist_add,
-            variant: isQueued
-                ? AppButtonVariant.secondary
-                : AppButtonVariant.primary,
-            isLoading: state.isActionPending,
-            onPressed: state.isActionPending
-                ? null
-                : () => isQueued
-                      ? context.read<MatchmakingCubit>().cancel()
-                      : context.read<MatchmakingCubit>().startSearch(
-                          context.read<GameModeCubit>().state,
-                        ),
-          ),
+          if (isQueued)
+            AppButton.secondary(
+              label: l10n.matchmakingLeaveQueueAction,
+              icon: Icons.close,
+              isLoading: state.isActionPending,
+              onPressed: state.isActionPending
+                  ? null
+                  : () => context.read<MatchmakingCubit>().cancel(),
+            )
+          else
+            _StartSearchButton(
+              isActionPending: state.isActionPending,
+              label: l10n.matchmakingJoinQueueAction,
+              icon: Icons.playlist_add,
+              variant: AppButtonVariant.primary,
+            ),
         ],
       ),
     );
