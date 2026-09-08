@@ -1,0 +1,31 @@
+-- Suporte de indice para as duas leituras novas da Etapa 8.
+--
+-- Um unico indice, porque uma unica forma de query paga por ele:
+--
+--   where team_id = ? and finished_at is not null [and status = ?]
+--   [and user_id = ?] [and finished_at >= ?] [and finished_at < ?]
+--   order by finished_at desc, id desc
+--
+-- E exatamente essa a forma do historico paginado por cursor E a das
+-- agregacoes de estatisticas (que sao a mesma varredura, so que agrupada em
+-- vez de ordenada). Deixar team_id na frente e ordenar por finished_at
+-- descendente faz a paginacao virar range scan puro: cada pagina continua de
+-- onde a anterior parou, sem OFFSET e sem reordenar nada.
+--
+-- Parcial em `finished_at is not null` porque sessao SEARCHING nunca aparece
+-- nem no historico nem nas estatisticas -- fora do indice ela nao ocupa
+-- espaco e nao suja a varredura.
+--
+-- `id` no fim e desempate: `finished_at` pode empatar (duas sessoes
+-- encerradas no mesmo instante pelo mesmo cron) e um cursor so e estavel se
+-- a chave de ordenacao for unica. Sem isso, uma pagina poderia repetir ou
+-- pular linha exatamente no ponto de corte.
+--
+-- Nao criei indice separado para (team_id, user_id) nem para (team_id,
+-- status): os dois so aparecem como filtro DENTRO de um time, e o historico
+-- de um time e um conjunto pequeno que este indice ja restringe. Um indice
+-- que o planner nunca escolheria seria custo de escrita sem retorno. Se um
+-- dia o volume por time justificar, e aditivo.
+create index match_search_sessions_history_idx
+    on public.match_search_sessions (team_id, finished_at desc, id desc)
+    where finished_at is not null;
