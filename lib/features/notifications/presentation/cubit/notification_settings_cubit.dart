@@ -52,14 +52,19 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
     }
   }
 
-  Future<void> setEnabled(PushNotificationType type, {required bool value}) async {
+  Future<void> setEnabled(
+    PushNotificationType type, {
+    required bool value,
+  }) async {
     if (state.isSaving) {
       return;
     }
     final previous = state.preferences;
     final updated = previous.copyWithType(type, value);
     // Otimista: o toggle acompanha o dedo; se a escrita falhar, voltamos.
-    emit(state.copyWith(preferences: updated, isSaving: true, clearFailure: true));
+    emit(
+      state.copyWith(preferences: updated, isSaving: true, clearFailure: true),
+    );
     try {
       final saved = await _repository.savePreferences(updated);
       if (!isClosed) {

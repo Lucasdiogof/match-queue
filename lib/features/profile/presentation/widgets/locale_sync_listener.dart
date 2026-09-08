@@ -42,7 +42,9 @@ class _LocaleSyncListenerState extends State<LocaleSyncListener> {
     try {
       await getIt<ProfileRepository>().updateLocale(tag);
     } on Object catch (error) {
-      getIt<AppLogger>().warning('Falha ao sincronizar locale do profile: $error');
+      getIt<AppLogger>().warning(
+        'Falha ao sincronizar locale do profile: $error',
+      );
     }
   }
 

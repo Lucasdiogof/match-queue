@@ -17,15 +17,14 @@ class NotificationSettingsSection extends StatelessWidget {
   const NotificationSettingsSection({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      BlocProvider<NotificationSettingsCubit>(
-        create: (_) => NotificationSettingsCubit(
-          getIt<NotificationRepository>(),
-          getIt<PushMessagingService>(),
-          getIt<PushTokenCoordinator>(),
-        )..load(),
-        child: const _NotificationSettingsBody(),
-      );
+  Widget build(BuildContext context) => BlocProvider<NotificationSettingsCubit>(
+    create: (_) => NotificationSettingsCubit(
+      getIt<NotificationRepository>(),
+      getIt<PushMessagingService>(),
+      getIt<PushTokenCoordinator>(),
+    )..load(),
+    child: const _NotificationSettingsBody(),
+  );
 }
 
 class _NotificationSettingsBody extends StatelessWidget {
@@ -77,9 +76,8 @@ class _NotificationSettingsBody extends StatelessWidget {
                 label: l10n.notificationsToggleExpiring,
                 hint: l10n.notificationsToggleExpiringHint,
                 value: state.preferences.searchExpiringEnabled,
-                onChanged: (value) => context
-                    .read<NotificationSettingsCubit>()
-                    .setEnabled(
+                onChanged: (value) =>
+                    context.read<NotificationSettingsCubit>().setEnabled(
                       PushNotificationType.searchExpiring,
                       value: value,
                     ),
@@ -88,9 +86,8 @@ class _NotificationSettingsBody extends StatelessWidget {
                 label: l10n.notificationsToggleExpired,
                 hint: l10n.notificationsToggleExpiredHint,
                 value: state.preferences.searchExpiredEnabled,
-                onChanged: (value) => context
-                    .read<NotificationSettingsCubit>()
-                    .setEnabled(
+                onChanged: (value) =>
+                    context.read<NotificationSettingsCubit>().setEnabled(
                       PushNotificationType.searchExpired,
                       value: value,
                     ),

@@ -16,7 +16,10 @@ abstract interface class ProfileRemoteDataSource {
     required String displayName,
   });
 
-  Future<void> updateLocale({required String userId, required String localeTag});
+  Future<void> updateLocale({
+    required String userId,
+    required String localeTag,
+  });
 }
 
 class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {

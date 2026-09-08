@@ -21,7 +21,9 @@ void registerNotificationsModule(
   required FirebaseAvailability firebaseAvailability,
 }) {
   sl
-    ..registerLazySingleton<PushMessagingService>(_pushMessagingService(firebaseAvailability))
+    ..registerLazySingleton<PushMessagingService>(
+      _pushMessagingService(firebaseAvailability),
+    )
     ..registerLazySingleton<NotificationRepository>(
       _notificationRepository(sl, supabaseClient),
     )
