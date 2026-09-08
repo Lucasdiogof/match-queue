@@ -94,6 +94,14 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
+  FcAccountFailureReason? _fcAccountReasonFrom(String? code) => switch (code) {
+    'FQ025' => FcAccountFailureReason.accountNotFound,
+    'FQ026' => FcAccountFailureReason.accountNotLinkedToTeam,
+    'FQ027' => FcAccountFailureReason.invalidName,
+    'FQ028' => FcAccountFailureReason.invalidDivision,
+    _ => null,
+  };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -137,6 +145,13 @@ class SupabaseErrorMapper {
     final gameReason = _gameReasonFrom(error.code);
     if (gameReason != null) {
       return GameFailure(reason: gameReason, debugMessage: error.message);
+    }
+    final fcAccountReason = _fcAccountReasonFrom(error.code);
+    if (fcAccountReason != null) {
+      return FcAccountFailure(
+        reason: fcAccountReason,
+        debugMessage: error.message,
+      );
     }
     switch (error.code) {
       case '23505':

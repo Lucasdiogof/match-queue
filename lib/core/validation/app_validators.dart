@@ -10,6 +10,8 @@ enum TeamNameValidationError { empty, tooShort, tooLong }
 
 enum TeamTagValidationError { tooShort, tooLong, invalidCharacters }
 
+enum FcAccountNameValidationError { empty, tooShort, tooLong }
+
 class AppValidators {
   const AppValidators._();
 
@@ -20,6 +22,8 @@ class AppValidators {
   static const int teamNameMaxLength = 40;
   static const int teamTagMinLength = 2;
   static const int teamTagMaxLength = 6;
+  static const int fcAccountNameMinLength = 2;
+  static const int fcAccountNameMaxLength = 40;
 
   static final RegExp _email = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]{2,}$');
   static final RegExp _whitespaceRun = RegExp(r'\s+');
@@ -101,6 +105,23 @@ class AppValidators {
     }
     if (!_teamTag.hasMatch(normalized)) {
       return TeamTagValidationError.invalidCharacters;
+    }
+    return null;
+  }
+
+  static String normalizeFcAccountName(String value) =>
+      value.trim().replaceAll(_whitespaceRun, ' ');
+
+  static FcAccountNameValidationError? fcAccountName(String? value) {
+    final normalized = normalizeFcAccountName(value ?? '');
+    if (normalized.isEmpty) {
+      return FcAccountNameValidationError.empty;
+    }
+    if (normalized.runes.length < fcAccountNameMinLength) {
+      return FcAccountNameValidationError.tooShort;
+    }
+    if (normalized.runes.length > fcAccountNameMaxLength) {
+      return FcAccountNameValidationError.tooLong;
     }
     return null;
   }
