@@ -1,19 +1,24 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:fifa_queue/features/invitations/presentation/widgets/invite_section.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
+import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
+import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/team_status_cubit.dart';
+import 'package:fifa_queue/features/teams/presentation/cubit/team_status_state.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/edit_team_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_duration.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_empty_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_role_l10n.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_selector_sheet.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/team_status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class TeamPage extends StatelessWidget {
   const TeamPage({super.key});
@@ -41,6 +46,13 @@ class TeamPage extends StatelessWidget {
                     teams: state.teams,
                     selectedTeamId: state.selectedTeamId,
                   ),
+                ),
+              if (selected != null)
+                AppIconButton(
+                  icon: Icons.settings_outlined,
+                  tooltip: l10n.teamManageAction,
+                  variant: AppIconButtonVariant.surface,
+                  onPressed: () => context.push(AppRoutes.teamSettings.path),
                 ),
             ],
           ),
@@ -78,176 +90,141 @@ class _TeamBody extends StatelessWidget {
       return const TeamEmptyState();
     }
 
-    final userTeam = selected!;
-
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-      children: <Widget>[
-        _TeamHeaderCard(userTeam: userTeam),
-        const SizedBox(height: AppSpacing.lg),
-        _MembersSection(state: state),
-        const SizedBox(height: AppSpacing.lg),
-        InviteSection(teamId: userTeam.id, canManage: userTeam.canManageTeam),
-      ],
+    return BlocProvider<TeamStatusCubit>(
+      key: ValueKey(selected!.id),
+      create: (_) => TeamStatusCubit(
+        getIt<TeamRepository>(),
+        getIt<MatchmakingRepository>(),
+        teamId: selected!.id,
+      )..start(),
+      child: _TeamStatusBody(team: selected!.team),
     );
   }
+}
+
+class _TeamStatusBody extends StatelessWidget {
+  const _TeamStatusBody({required this.team});
+
+  final Team team;
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<TeamStatusCubit, TeamStatusState>(
+    builder: (context, state) => ListView(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+      children: <Widget>[
+        _TeamHeaderCard(team: team, state: state),
+        const SizedBox(height: AppSpacing.lg),
+        _MemberStatusSection(state: state),
+      ],
+    ),
+  );
 }
 
 class _TeamHeaderCard extends StatelessWidget {
-  const _TeamHeaderCard({required this.userTeam});
+  const _TeamHeaderCard({required this.team, required this.state});
 
-  final UserTeam userTeam;
+  final Team team;
+  final TeamStatusState state;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final team = userTeam.team;
+    final colors = context.colors;
 
     return AppCard(
       variant: AppCardVariant.elevated,
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TeamAvatar(team: team, size: AppSizing.avatarXl),
-              const SizedBox(width: AppSpacing.lg),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(team.name, style: context.textStyles.headlineSmall),
-                    if (team.tag != null) ...<Widget>[
-                      const SizedBox(height: AppSpacing.xs),
-                      AppBadge(label: team.tag!),
-                    ],
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      teamDurationLabel(
-                        l10n,
-                        team.defaultSearchDuration.inSeconds,
-                      ),
-                      style: context.textStyles.bodySmall?.copyWith(
-                        color: context.colors.textSecondary,
-                      ),
-                    ),
-                  ],
+          TeamAvatar(team: team, size: AppSizing.avatarXl),
+          const SizedBox(width: AppSpacing.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(team.name, style: context.textStyles.headlineSmall),
+                if (team.tag != null) ...<Widget>[
+                  const SizedBox(height: AppSpacing.xs),
+                  AppBadge(label: team.tag!),
+                ],
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  '${l10n.teamMembersCount(state.members.length)} · '
+                  '${l10n.teamActiveCount(state.activeCount)}',
+                  style: context.textStyles.bodySmall?.copyWith(
+                    color: colors.textSecondary,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          if (userTeam.canManageTeam) ...<Widget>[
-            const AppDivider(spacing: AppSpacing.xl),
-            AppButton.secondary(
-              label: l10n.teamManageAction,
-              icon: Icons.tune,
-              onPressed: () => showEditTeamSheet(context, team),
+              ],
             ),
-          ],
+          ),
         ],
       ),
     );
   }
 }
 
-class _MembersSection extends StatelessWidget {
-  const _MembersSection({required this.state});
+class _MemberStatusSection extends StatelessWidget {
+  const _MemberStatusSection({required this.state});
 
-  final TeamsState state;
+  final TeamStatusState state;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final currentUserId = context.read<AuthCubit>().state.user?.id;
 
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                l10n.teamMembersTitle.toUpperCase(),
-                style: context.textStyles.labelSmall,
-              ),
-              Text(
-                l10n.teamMembersCount(state.members.length),
-                style: context.textStyles.bodySmall?.copyWith(
-                  color: context.colors.textSecondary,
-                ),
-              ),
-            ],
+          Text(
+            l10n.teamMembersTitle.toUpperCase(),
+            style: context.textStyles.labelSmall,
           ),
           const SizedBox(height: AppSpacing.md),
-          if (state.membersStatus == TeamMembersStatus.loading)
+          if (state.status == TeamStatusLoadStatus.loading)
             const SizedBox(height: 72, child: AppLoading.inline())
-          else if (state.membersStatus == TeamMembersStatus.failure)
+          else if (state.status == TeamStatusLoadStatus.failure)
             AppBanner(
               tone: AppBannerTone.danger,
               message:
-                  state.membersFailure?.localizedMessage(l10n) ??
-                  l10n.teamMembersErrorTitle,
+                  state.failure?.localizedMessage(l10n) ?? l10n.errorUnexpected,
             )
           else
             for (final member in state.members)
-              _MemberRow(
-                member: member,
-                isCurrentUser: member.userId == currentUserId,
-              ),
+              _MemberStatusRow(member: member),
         ],
       ),
     );
   }
 }
 
-class _MemberRow extends StatelessWidget {
-  const _MemberRow({required this.member, required this.isCurrentUser});
+class _MemberStatusRow extends StatelessWidget {
+  const _MemberStatusRow({required this.member});
 
-  final TeamMember member;
-  final bool isCurrentUser;
+  final TeamMemberStatus member;
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-      child: Row(
-        children: <Widget>[
-          AppAvatar(
-            label: member.displayName,
-            imageUrl: member.profile.avatarUrl,
-            size: AppSizing.avatarMd,
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+    child: Row(
+      children: <Widget>[
+        AppAvatar(
+          label: member.displayName,
+          imageUrl: member.avatarUrl,
+          size: AppSizing.avatarMd,
+        ),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: Text(
+            member.displayName,
+            overflow: TextOverflow.ellipsis,
+            style: context.textStyles.bodyLarge,
           ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Flexible(
-                  child: Text(
-                    member.displayName,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.textStyles.bodyLarge,
-                  ),
-                ),
-                if (isCurrentUser) ...<Widget>[
-                  const SizedBox(width: AppSpacing.sm),
-                  Text(
-                    '· ${l10n.teamYou}',
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: context.colors.textTertiary,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          AppBadge(label: member.role.label(l10n), tone: member.role.badgeTone),
-        ],
-      ),
-    );
-  }
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        TeamStatusBadge(member: member),
+      ],
+    ),
+  );
 }

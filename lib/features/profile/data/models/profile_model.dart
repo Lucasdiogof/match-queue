@@ -8,6 +8,7 @@ class ProfileModel {
   static const String columnDisplayName = 'display_name';
   static const String columnAvatarUrl = 'avatar_url';
   static const String columnLocale = 'locale';
+  static const String columnLastActiveAt = 'last_active_at';
   static const String columnCreatedAt = 'created_at';
   static const String columnUpdatedAt = 'updated_at';
 

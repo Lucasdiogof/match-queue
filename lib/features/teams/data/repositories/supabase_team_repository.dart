@@ -2,8 +2,10 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/teams/data/datasources/team_remote_data_source.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_model.dart';
+import 'package:fifa_queue/features/teams/data/models/team_member_status_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 
@@ -58,6 +60,18 @@ class SupabaseTeamRepository implements TeamRepository {
   });
 
   @override
+  Future<Team> updateSearchDuration({
+    required String teamId,
+    required Duration duration,
+  }) => _guard(() async {
+    final row = await _dataSource.updateSearchDuration(
+      teamId: teamId,
+      seconds: duration.inSeconds,
+    );
+    return TeamModel.fromJson(row);
+  });
+
+  @override
   Future<List<TeamMember>> fetchMembers(String teamId) => _guard(() async {
     final rows = await _dataSource.fetchMembers(teamId);
     return rows
@@ -65,6 +79,13 @@ class SupabaseTeamRepository implements TeamRepository {
         .map(TeamMemberModel.memberFromJson)
         .toList(growable: false);
   });
+
+  @override
+  Future<List<TeamMemberStatus>> fetchPlayerStatuses(String teamId) =>
+      _guard(() async {
+        final json = await _dataSource.getPlayerStatuses(teamId);
+        return TeamMemberStatusModel.listFromResponse(json);
+      });
 
   String _requireUserId() {
     final userId = _dataSource.currentUserId;

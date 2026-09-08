@@ -45,6 +45,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionSignOut => 'Sair';
 
   @override
+  String get actionEdit => 'Editar';
+
+  @override
   String get navSearch => 'Jogar';
 
   @override
@@ -115,6 +118,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String authSignedInAs(String email) {
     return 'Conectado como $email';
   }
+
+  @override
+  String get profilePreferencesTitle => 'Preferências';
 
   @override
   String get settingsAppearance => 'Aparência';
@@ -575,11 +581,55 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamSwitchAction => 'Trocar de time';
 
   @override
+  String teamActiveCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ativos',
+      one: '1 ativo',
+      zero: '0 ativos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get teamSettingsInfoTitle => 'Informações';
+
+  @override
   String get teamSearchDurationLabel => 'Duração padrão da busca';
 
   @override
   String get teamSearchDurationHelper =>
       'Tempo que cada jogador fica na frente da fila.';
+
+  @override
+  String get teamSearchDurationReadOnlyHelper =>
+      'Só o dono ou um admin pode alterar.';
+
+  @override
+  String get teamStatusInMatch => 'Em jogo';
+
+  @override
+  String get teamStatusSearching => 'Buscando';
+
+  @override
+  String get teamStatusQueued => 'Na fila';
+
+  @override
+  String teamStatusQueuedWithPosition(int position) {
+    return 'Na fila · #$position';
+  }
+
+  @override
+  String get teamStatusOffline => 'Offline';
+
+  @override
+  String get teamStatusActiveNow => 'Ativo agora';
+
+  @override
+  String teamStatusActiveMinutesAgo(int minutes) {
+    return 'Há $minutes min';
+  }
 
   @override
   String teamDurationSeconds(int seconds) {

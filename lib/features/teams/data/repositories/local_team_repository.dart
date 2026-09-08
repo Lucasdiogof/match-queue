@@ -6,6 +6,7 @@ import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dar
 import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
 import 'package:fifa_queue/features/profile/domain/repositories/profile_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
@@ -97,6 +98,31 @@ class LocalTeamRepository implements TeamRepository {
     records[index] = _LocalTeamRecord(team: updated, ownerId: userId);
     await _writeRecords(records);
     return updated;
+  }
+
+  @override
+  Future<Team> updateSearchDuration({
+    required String teamId,
+    required Duration duration,
+  }) => updateTeam(teamId: teamId, defaultSearchDuration: duration);
+
+  /// Sem backend real so existe o proprio usuario -- nunca OFFLINE de
+  /// mentirinha pros outros, so a linha do dono, honesta sobre o que a
+  /// fila local sabe (nada de IN_MATCH/SEARCHING/QUEUED sem RPC real).
+  @override
+  Future<List<TeamMemberStatus>> fetchPlayerStatuses(String teamId) async {
+    final userId = _requireUserId();
+    final profile =
+        await _profileRepository.fetchMyProfile() ?? _fallbackProfile(userId);
+    return <TeamMemberStatus>[
+      TeamMemberStatus(
+        userId: userId,
+        displayName: profile.displayName,
+        avatarUrl: profile.avatarUrl,
+        role: TeamRole.owner,
+        status: PlayerOperationalStatus.offline,
+      ),
+    ];
   }
 
   @override

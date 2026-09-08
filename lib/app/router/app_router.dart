@@ -11,8 +11,12 @@ import 'package:fifa_queue/features/history/presentation/pages/history_page.dart
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
 import 'package:fifa_queue/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:fifa_queue/features/profile/presentation/pages/profile_appearance_page.dart';
+import 'package:fifa_queue/features/profile/presentation/pages/profile_language_page.dart';
+import 'package:fifa_queue/features/profile/presentation/pages/profile_notifications_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_page.dart';
+import 'package:fifa_queue/features/teams/presentation/pages/team_settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,6 +64,26 @@ class AppRouter {
         builder: (context, state) => JoinTeamPage(
           inviteCode: state.pathParameters[AppRoutes.inviteCodeParam] ?? '',
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.teamSettings.path,
+        name: AppRoutes.teamSettings.name,
+        builder: (context, state) => const TeamSettingsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileAppearance.path,
+        name: AppRoutes.profileAppearance.name,
+        builder: (context, state) => const ProfileAppearancePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileLanguage.path,
+        name: AppRoutes.profileLanguage.name,
+        builder: (context, state) => const ProfileLanguagePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileNotifications.path,
+        name: AppRoutes.profileNotifications.name,
+        builder: (context, state) => const ProfileNotificationsPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

@@ -31,8 +31,24 @@ class AppRoutes {
 
   static const AppRoute home = AppRoute('home', '/app/home');
   static const AppRoute team = AppRoute('team', '/app/team');
+  static const AppRoute teamSettings = AppRoute(
+    'team-settings',
+    '/app/team/settings',
+  );
   static const AppRoute history = AppRoute('history', '/app/history');
   static const AppRoute profile = AppRoute('profile', '/app/profile');
+  static const AppRoute profileAppearance = AppRoute(
+    'profile-appearance',
+    '/app/profile/appearance',
+  );
+  static const AppRoute profileLanguage = AppRoute(
+    'profile-language',
+    '/app/profile/language',
+  );
+  static const AppRoute profileNotifications = AppRoute(
+    'profile-notifications',
+    '/app/profile/notifications',
+  );
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,

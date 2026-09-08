@@ -12,6 +12,7 @@
   "actionBack": "Volver",
   "actionNotNow": "Ahora no",
   "actionSignOut": "Salir",
+  "actionEdit": "Editar",
   "navSearch": "Jugar",
   "navTeam": "Equipo",
   "navHistory": "Historial",
@@ -43,6 +44,7 @@
       }
     }
   },
+  "profilePreferencesTitle": "Preferencias",
   "settingsAppearance": "Apariencia",
   "settingsLanguage": "Idioma",
   "themeSystem": "Sistema",
@@ -292,8 +294,42 @@
   "teamEditTitle": "Editar equipo",
   "teamSwitchTitle": "Tus equipos",
   "teamSwitchAction": "Cambiar de equipo",
+  "teamActiveCount": "{count, plural, =0{0 activos} =1{1 activo} other{{count} activos}}",
+  "@teamActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "teamSettingsInfoTitle": "Información",
   "teamSearchDurationLabel": "Duración de búsqueda predeterminada",
   "teamSearchDurationHelper": "Tiempo que cada jugador permanece al frente de la cola.",
+  "teamSearchDurationReadOnlyHelper": "Solo el dueño o un admin puede cambiar esto.",
+  "teamStatusInMatch": "En partida",
+  "teamStatusSearching": "Buscando",
+  "teamStatusQueued": "En la cola",
+  "teamStatusQueuedWithPosition": "En la cola · #{position}",
+  "@teamStatusQueuedWithPosition": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "teamStatusOffline": "Offline",
+  "teamStatusActiveNow": "Activo ahora",
+  "teamStatusActiveMinutesAgo": "Hace {minutes} min",
+  "@teamStatusActiveMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "18"
+      }
+    }
+  },
   "teamDurationSeconds": "{seconds} s",
   "@teamDurationSeconds": {
     "placeholders": {

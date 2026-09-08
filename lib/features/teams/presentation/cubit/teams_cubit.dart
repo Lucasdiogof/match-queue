@@ -150,6 +150,40 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
+  Future<bool> updateSearchDuration({
+    required String teamId,
+    required Duration duration,
+  }) async {
+    if (state.isSaving) {
+      return false;
+    }
+    emit(state.copyWith(isSaving: true, clearActionFailure: true));
+    try {
+      final updated = await _repository.updateSearchDuration(
+        teamId: teamId,
+        duration: duration,
+      );
+      final teams = state.teams
+          .map(
+            (userTeam) => userTeam.id == teamId
+                ? UserTeam(
+                    team: updated,
+                    role: userTeam.role,
+                    joinedAt: userTeam.joinedAt,
+                  )
+                : userTeam,
+          )
+          .toList(growable: false);
+      emit(state.copyWith(teams: teams, isSaving: false));
+      return true;
+    } on AppFailure catch (failure) {
+      if (!isClosed) {
+        emit(state.copyWith(isSaving: false, actionFailure: failure));
+      }
+      return false;
+    }
+  }
+
   void clearActionFailure() {
     if (state.actionFailure != null) {
       emit(state.copyWith(clearActionFailure: true));

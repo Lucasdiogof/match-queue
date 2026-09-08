@@ -8,7 +8,6 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/create_team_sheet.dart'
     show UpperCaseTextFormatter;
-import 'package:fifa_queue/features/teams/presentation/widgets/team_duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,9 +42,6 @@ class _EditTeamFormState extends State<_EditTeamForm> {
   late final TextEditingController _tagController = TextEditingController(
     text: widget.team.tag ?? '',
   );
-  late int _durationSeconds = _closestOption(
-    widget.team.defaultSearchDuration.inSeconds,
-  );
 
   @override
   void initState() {
@@ -70,16 +66,6 @@ class _EditTeamFormState extends State<_EditTeamForm> {
     setState(() {});
   }
 
-  static int _closestOption(int seconds) {
-    var best = TeamDurationOptions.values.first;
-    for (final option in TeamDurationOptions.values) {
-      if ((option - seconds).abs() < (best - seconds).abs()) {
-        best = option;
-      }
-    }
-    return best;
-  }
-
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
@@ -91,7 +77,6 @@ class _EditTeamFormState extends State<_EditTeamForm> {
       name: _nameController.text,
       tag: normalizedTag,
       clearTag: normalizedTag == null,
-      defaultSearchDuration: Duration(seconds: _durationSeconds),
     );
     if (saved && mounted) {
       navigator.pop(true);
@@ -160,31 +145,6 @@ class _EditTeamFormState extends State<_EditTeamForm> {
                 ],
                 validator: (value) =>
                     AppValidators.teamTag(value)?.message(l10n),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              Text(
-                l10n.teamSearchDurationLabel.toUpperCase(),
-                style: context.textStyles.labelSmall,
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                l10n.teamSearchDurationHelper,
-                style: context.textStyles.bodySmall,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.sm,
-                children: <Widget>[
-                  for (final option in TeamDurationOptions.values)
-                    AppChip(
-                      label: teamDurationLabel(l10n, option),
-                      isSelected: _durationSeconds == option,
-                      onPressed: state.isSaving
-                          ? null
-                          : () => setState(() => _durationSeconds = option),
-                    ),
-                ],
               ),
             ],
           ),

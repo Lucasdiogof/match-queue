@@ -50,6 +50,10 @@ class SupabaseProfileRepository implements ProfileRepository {
     ),
   );
 
+  @override
+  Future<void> touchActivity() =>
+      _guard(() => _dataSource.touchActivity(_requireUserId()));
+
   String _requireUserId() {
     final userId = _dataSource.currentUserId;
     if (userId == null || userId.isEmpty) {

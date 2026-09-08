@@ -39,6 +39,9 @@ class LocalProfileRepository implements ProfileRepository {
     }
   }
 
+  @override
+  Future<void> touchActivity() async {}
+
   Profile _create(String userId, String displayName) {
     final now = DateTime.now().toUtc();
     return Profile(

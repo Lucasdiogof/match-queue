@@ -20,6 +20,8 @@ abstract interface class ProfileRemoteDataSource {
     required String userId,
     required String localeTag,
   });
+
+  Future<void> touchActivity(String userId);
 }
 
 class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
@@ -64,5 +66,12 @@ class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
     required String localeTag,
   }) => _table
       .update(<String, dynamic>{ProfileModel.columnLocale: localeTag})
+      .eq(ProfileModel.columnId, userId);
+
+  @override
+  Future<void> touchActivity(String userId) => _table
+      .update(<String, dynamic>{
+        ProfileModel.columnLastActiveAt: DateTime.now().toUtc().toIso8601String(),
+      })
       .eq(ProfileModel.columnId, userId);
 }

@@ -172,6 +172,12 @@ abstract class AppLocalizations {
   /// **'Sair'**
   String get actionSignOut;
 
+  /// No description provided for @actionEdit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar'**
+  String get actionEdit;
+
   /// No description provided for @navSearch.
   ///
   /// In pt, this message translates to:
@@ -309,6 +315,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Conectado como {email}'**
   String authSignedInAs(String email);
+
+  /// No description provided for @profilePreferencesTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preferências'**
+  String get profilePreferencesTitle;
 
   /// No description provided for @settingsAppearance.
   ///
@@ -1102,6 +1114,18 @@ abstract class AppLocalizations {
   /// **'Trocar de time'**
   String get teamSwitchAction;
 
+  /// No description provided for @teamActiveCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{0 ativos} =1{1 ativo} other{{count} ativos}}'**
+  String teamActiveCount(int count);
+
+  /// No description provided for @teamSettingsInfoTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informações'**
+  String get teamSettingsInfoTitle;
+
   /// No description provided for @teamSearchDurationLabel.
   ///
   /// In pt, this message translates to:
@@ -1113,6 +1137,54 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Tempo que cada jogador fica na frente da fila.'**
   String get teamSearchDurationHelper;
+
+  /// No description provided for @teamSearchDurationReadOnlyHelper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só o dono ou um admin pode alterar.'**
+  String get teamSearchDurationReadOnlyHelper;
+
+  /// No description provided for @teamStatusInMatch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em jogo'**
+  String get teamStatusInMatch;
+
+  /// No description provided for @teamStatusSearching.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscando'**
+  String get teamStatusSearching;
+
+  /// No description provided for @teamStatusQueued.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na fila'**
+  String get teamStatusQueued;
+
+  /// No description provided for @teamStatusQueuedWithPosition.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na fila · #{position}'**
+  String teamStatusQueuedWithPosition(int position);
+
+  /// No description provided for @teamStatusOffline.
+  ///
+  /// In pt, this message translates to:
+  /// **'Offline'**
+  String get teamStatusOffline;
+
+  /// No description provided for @teamStatusActiveNow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ativo agora'**
+  String get teamStatusActiveNow;
+
+  /// No description provided for @teamStatusActiveMinutesAgo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Há {minutes} min'**
+  String teamStatusActiveMinutesAgo(int minutes);
 
   /// No description provided for @teamDurationSeconds.
   ///

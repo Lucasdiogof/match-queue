@@ -4,10 +4,10 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
-import 'package:fifa_queue/features/notifications/presentation/widgets/notification_settings_section.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_state.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/edit_display_name_sheet.dart';
@@ -15,6 +15,7 @@ import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dar
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -30,18 +31,14 @@ class ProfilePage extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-        children: const <Widget>[
+        children: <Widget>[
           _AccountSection(),
-          SizedBox(height: AppSpacing.lg),
-          NotificationSettingsSection(),
-          SizedBox(height: AppSpacing.lg),
-          _AppearanceSection(),
-          SizedBox(height: AppSpacing.lg),
-          _LanguageSection(),
-          SizedBox(height: AppSpacing.lg),
-          _EnvironmentRow(),
-          SizedBox(height: AppSpacing.xxl),
-          _SignOutButton(),
+          const SizedBox(height: AppSpacing.lg),
+          _PreferencesSection(),
+          const SizedBox(height: AppSpacing.lg),
+          const _EnvironmentRow(),
+          const SizedBox(height: AppSpacing.xxl),
+          const _SignOutButton(),
         ],
       ),
     );
@@ -49,8 +46,6 @@ class ProfilePage extends StatelessWidget {
 }
 
 class _AccountSection extends StatelessWidget {
-  const _AccountSection();
-
   Future<void> _editName(BuildContext context, String currentName) async {
     final messenger = ScaffoldMessenger.of(context);
     final savedMessage = context.l10n.profileSaved;
@@ -106,45 +101,35 @@ class _AccountSection extends StatelessWidget {
 
         return BlocBuilder<AuthCubit, AuthState>(
           builder: (context, authState) => AppCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    AppAvatar(
-                      label: profile.displayName,
-                      imageUrl: profile.avatarUrl,
-                      size: AppSizing.avatarLg,
-                    ),
-                    const SizedBox(width: AppSpacing.lg),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            profile.displayName,
-                            style: context.textStyles.titleLarge,
-                          ),
-                          const SizedBox(height: AppSpacing.xxs),
-                          Text(
-                            l10n.profileMemberSince(profile.createdAt),
-                            style: context.textStyles.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                    AppIconButton(
-                      icon: Icons.edit_outlined,
-                      tooltip: l10n.profileEditName,
-                      variant: AppIconButtonVariant.outlined,
-                      onPressed: () => _editName(context, profile.displayName),
-                    ),
-                  ],
+                AppAvatar(
+                  label: profile.displayName,
+                  imageUrl: profile.avatarUrl,
+                  size: AppSizing.avatarLg,
                 ),
-                const AppDivider(spacing: AppSpacing.xl),
-                _InfoRow(
-                  label: l10n.profileEmailLabel,
-                  value: authState.user?.email ?? '',
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        profile.displayName,
+                        style: context.textStyles.titleLarge,
+                      ),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        authState.user?.email ?? '',
+                        style: context.textStyles.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+                AppIconButton(
+                  icon: Icons.edit_outlined,
+                  tooltip: l10n.profileEditName,
+                  variant: AppIconButtonVariant.outlined,
+                  onPressed: () => _editName(context, profile.displayName),
                 ),
               ],
             ),
@@ -155,98 +140,99 @@ class _AccountSection extends StatelessWidget {
   }
 }
 
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(label.toUpperCase(), style: context.textStyles.labelSmall),
-      const SizedBox(height: AppSpacing.xxs),
-      SelectableText(value, style: context.textStyles.bodyLarge),
-    ],
-  );
-}
-
-class _AppearanceSection extends StatelessWidget {
-  const _AppearanceSection();
-
+class _PreferencesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return _SectionCard(
-      title: l10n.settingsAppearance,
-      child: BlocBuilder<ThemeCubit, ThemeMode>(
-        builder: (context, mode) => Wrap(
-          spacing: AppSpacing.sm,
-          runSpacing: AppSpacing.sm,
-          children: <Widget>[
-            AppChip(
-              label: l10n.themeSystem,
-              isSelected: mode == ThemeMode.system,
-              onPressed: () =>
-                  context.read<ThemeCubit>().select(ThemeMode.system),
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            l10n.profilePreferencesTitle.toUpperCase(),
+            style: context.textStyles.labelSmall,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _NavRow(
+            icon: Icons.brightness_6_outlined,
+            label: l10n.settingsAppearance,
+            value: BlocBuilder<ThemeCubit, ThemeMode>(
+              builder: (context, mode) => Text(switch (mode) {
+                ThemeMode.system => l10n.themeSystem,
+                ThemeMode.light => l10n.themeLight,
+                ThemeMode.dark => l10n.themeDark,
+              }),
             ),
-            AppChip(
-              label: l10n.themeLight,
-              isSelected: mode == ThemeMode.light,
-              onPressed: () =>
-                  context.read<ThemeCubit>().select(ThemeMode.light),
+            onTap: () => context.push(AppRoutes.profileAppearance.path),
+          ),
+          const AppDivider(),
+          _NavRow(
+            icon: Icons.language_outlined,
+            label: l10n.settingsLanguage,
+            value: BlocBuilder<LocaleCubit, Locale?>(
+              builder: (context, locale) => Text(switch (locale) {
+                null => l10n.languageSystem,
+                AppLocales.portuguese => l10n.languagePortuguese,
+                AppLocales.english => l10n.languageEnglish,
+                AppLocales.spanish => l10n.languageSpanish,
+                _ => l10n.languageSystem,
+              }),
             ),
-            AppChip(
-              label: l10n.themeDark,
-              isSelected: mode == ThemeMode.dark,
-              onPressed: () =>
-                  context.read<ThemeCubit>().select(ThemeMode.dark),
-            ),
-          ],
-        ),
+            onTap: () => context.push(AppRoutes.profileLanguage.path),
+          ),
+          const AppDivider(),
+          _NavRow(
+            icon: Icons.notifications_outlined,
+            label: l10n.notificationsSectionTitle,
+            onTap: () => context.push(AppRoutes.profileNotifications.path),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _LanguageSection extends StatelessWidget {
-  const _LanguageSection();
+class _NavRow extends StatelessWidget {
+  const _NavRow({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final Widget? value;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final colors = context.colors;
 
-    return _SectionCard(
-      title: l10n.settingsLanguage,
-      child: BlocBuilder<LocaleCubit, Locale?>(
-        builder: (context, locale) => Wrap(
-          spacing: AppSpacing.sm,
-          runSpacing: AppSpacing.sm,
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+        child: Row(
           children: <Widget>[
-            AppChip(
-              label: l10n.languageSystem,
-              isSelected: locale == null,
-              onPressed: () => context.read<LocaleCubit>().select(null),
+            Icon(icon, size: AppSizing.iconMd, color: colors.textSecondary),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Text(label, style: context.textStyles.bodyLarge),
             ),
-            AppChip(
-              label: l10n.languagePortuguese,
-              isSelected: locale == AppLocales.portuguese,
-              onPressed: () =>
-                  context.read<LocaleCubit>().select(AppLocales.portuguese),
-            ),
-            AppChip(
-              label: l10n.languageEnglish,
-              isSelected: locale == AppLocales.english,
-              onPressed: () =>
-                  context.read<LocaleCubit>().select(AppLocales.english),
-            ),
-            AppChip(
-              label: l10n.languageSpanish,
-              isSelected: locale == AppLocales.spanish,
-              onPressed: () =>
-                  context.read<LocaleCubit>().select(AppLocales.spanish),
+            if (value != null)
+              DefaultTextStyle.merge(
+                style: context.textStyles.bodyMedium?.copyWith(
+                  color: colors.textSecondary,
+                ),
+                child: value!,
+              ),
+            const SizedBox(width: AppSpacing.sm),
+            Icon(
+              Icons.chevron_right,
+              size: AppSizing.iconMd,
+              color: colors.textTertiary,
             ),
           ],
         ),
@@ -293,26 +279,6 @@ class _SignOutButton extends StatelessWidget {
       icon: Icons.logout,
       isLoading: state.isSubmitting,
       onPressed: state.isSubmitting ? null : () => _signOut(context),
-    ),
-  );
-}
-
-class _SectionCard extends StatelessWidget {
-  const _SectionCard({required this.title, required this.child});
-
-  final String title;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => AppCard(
-    variant: AppCardVariant.elevated,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(title.toUpperCase(), style: context.textStyles.labelSmall),
-        const SizedBox(height: AppSpacing.lg),
-        child,
-      ],
     ),
   );
 }

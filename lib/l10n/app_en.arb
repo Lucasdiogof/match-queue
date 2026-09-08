@@ -12,6 +12,7 @@
   "actionBack": "Back",
   "actionNotNow": "Not now",
   "actionSignOut": "Sign out",
+  "actionEdit": "Edit",
   "navSearch": "Play",
   "navTeam": "Team",
   "navHistory": "History",
@@ -43,6 +44,7 @@
       }
     }
   },
+  "profilePreferencesTitle": "Preferences",
   "settingsAppearance": "Appearance",
   "settingsLanguage": "Language",
   "themeSystem": "System",
@@ -292,8 +294,42 @@
   "teamEditTitle": "Edit team",
   "teamSwitchTitle": "Your teams",
   "teamSwitchAction": "Switch team",
+  "teamActiveCount": "{count, plural, =0{0 active} =1{1 active} other{{count} active}}",
+  "@teamActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "teamSettingsInfoTitle": "Info",
   "teamSearchDurationLabel": "Default search duration",
   "teamSearchDurationHelper": "How long each player stays at the front of the queue.",
+  "teamSearchDurationReadOnlyHelper": "Only the owner or an admin can change this.",
+  "teamStatusInMatch": "In a match",
+  "teamStatusSearching": "Searching",
+  "teamStatusQueued": "In queue",
+  "teamStatusQueuedWithPosition": "In queue · #{position}",
+  "@teamStatusQueuedWithPosition": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "teamStatusOffline": "Offline",
+  "teamStatusActiveNow": "Active now",
+  "teamStatusActiveMinutesAgo": "{minutes} min ago",
+  "@teamStatusActiveMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "18"
+      }
+    }
+  },
   "teamDurationSeconds": "{seconds} s",
   "@teamDurationSeconds": {
     "placeholders": {
