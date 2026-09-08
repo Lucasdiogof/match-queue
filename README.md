@@ -8,10 +8,15 @@ Apenas um jogador fica em `SEARCHING`. Os demais entram numa fila ordenada e
 assumem a busca automaticamente quando o jogador da vez encontra partida,
 cancela ou tem o tempo expirado.
 
-> **Estado atual: Etapa 2 concluída — autenticação real e profiles.**
-> Cadastro, login, logout, recuperação de senha e edição de perfil funcionam
-> contra o Supabase. Fila, matchmaking, timer, times e convites continuam
-> para as próximas etapas. Veja [Próximos passos](#próximos-passos).
+> **Estado atual: Etapas 1–14 concluídas.** Autenticação, times, convites,
+> matchmaking multi-time com fila e timer server-authoritative, Realtime,
+> push/FCM, partidas com placar e resultado, Contas/Elencos, Squad Builder
+> com overall e química, e o dashboard esportivo do Time (ranking,
+> artilharia, assistências, Weekend League, Rivals e atividade).
+>
+> **Retomando o desenvolvimento?** Comece por
+> [`docs/handoff.md`](docs/handoff.md) — estado, convenções, armadilhas
+> conhecidas e o que está pendente.
 
 ## Plataformas
 
