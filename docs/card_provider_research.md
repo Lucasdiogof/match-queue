@@ -10,6 +10,37 @@ Nunca contornar CAPTCHA, Cloudflare, nem usar cookies/tokens roubados ou
 privados. Qualquer fonte que exigisse isso foi descartada, sem exceção,
 mesmo que fosse tecnicamente a "melhor" cobertura de campos.
 
+## Quarta rodada (2026-09-08): FUTWIZ, WeFUT, SoFIFA, EA oficial, Kaggle/GitHub FC27, outros squad builders
+
+Pedido do dono do produto: última rodada, exclusivamente fontes
+gratuitas/legítimas de FC27, sem bypass de robots.txt/Cloudflare/ToS.
+Sete candidatos investigados, nenhum sobrou.
+
+| Candidato | URL | Tipo | FC27? | Base ou carta UT | robots.txt | ToS/licença | Bloqueio técnico | Veredito |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| FUTWIZ | futwiz.com | HTML+API interna | Sim (`/fc27/players`) | Carta UT (rarity/versão reais) | **`Disallow: /` explícito para crawlers** | Parceiro EA Community API | N/A — bloqueado por política, nem cheguei a testar tecnicamente | **Descartado** |
+| WeFUT | wefut.com | HTML | Sim (20k+ jogadores) | Carta UT | **`Disallow: /` explícito para crawlers** (já achado na rodada anterior) | Não é parceiro EA aprovado | N/A | **Descartado** |
+| SoFIFA (base FC27) | sofifa.com | HTML | Sim — shortlists/squads FC27 já existem no site (confirmado por resultado de busca) | Base jogador (histórico da fonte) | **`Disallow: /` explícito para crawlers** (2 vezes no arquivo) + `Disallow: /api/` geral | Sem ToS anti-scraping explícito achado, mas o robots.txt já resolve | N/A | **Descartado** |
+| EA oficial (`ea.com/games/ea-sports-fc/ratings`) | ea.com | HTML (primeira parte, marketing) | Sim | Base "ratings reveal" (não é catálogo UT) | Sem disallow específico da página, **mas reserva de direitos explícita no topo do robots.txt**: proíbe "web scraping, machine learning, or any form of text or data mining" de qualquer conteúdo EA sem autorização escrita | Reserva de direitos = ToS de fato | Nenhum (é o robots.txt/reserva que bloqueia, não Cloudflare) | **Descartado** — primeira-parte não significa livre de restrição |
+| Kaggle/GitHub — dataset FC27 dedicado | — | dataset | — | — | — | — | — | **Não existe ainda.** Busca dedicada não achou nenhum dataset FC27 (só FC26/FC24/FIFA23 e anteriores) — o jogo é recente demais para a comunidade já ter publicado um equivalente ao dataset FC26 escolhido antes. Reavaliar daqui a algumas semanas/meses. |
+| Fut-Api / fifa-FUT-Data (GitHub, comunidade) | github.com/MrNaughtZero/Fut-Api, github.com/kafagy/fifa-FUT-Data | API/scraper self-hosted | Não | Carta UT (quando funcionava) | N/A (código, não site) | Fut-Api sem license (`license: null` na API do GitHub), abandonado desde 2022-11; fifa-FUT-Data é MIT mas abandonado desde 2019-11 e mira exatamente FutHead/FutBin, hoje parceiros protegidos | Alvo do scraper (FutBin) está bloqueado | **Descartados** — nenhum é FC27, nenhum é mantido, e o alvo de um deles já é outro item descartado desta lista |
+| fcratings.com | fcratings.com | HTML (WordPress) | Sim | Base "ratings" (WP fan site, não UT) | **Nenhum disallow para crawlers** — o único candidato desta rodada que passa no robots.txt | **ToS proíbe explicitamente**: "Use automated tools (scrapers, bots, crawlers, downloaders) to access or collect data" sem permissão escrita. Site declara "não afiliado a EA/FIFA", é fã-site independente. | Nenhum observado (200 OK, sem Cloudflare challenge) | **Descartado por ToS explícito**, apesar de tecnicamente acessível — é exatamente o caso que a regra dura cobre (nunca automação sem permissão, mesmo sem barreira técnica) |
+| recharge.com (blog, "FC 27 Player Ratings Database") | recharge.com/blog/en-gb/fc-27-player-ratings-database | HTML, alega "capturado automaticamente do ratings público da EA" | Sim, 20.689 jogadores alegados | Base "ratings" (empresa de gift cards, não fã-site de FUT) | Sem disallow bloqueando esta página especificamente | Página de Termos retornou 404 nesta pesquisa — não verificável | Nenhum JSON/API/iframe encontrado no HTML estático — o widget "buscável" provavelmente carrega via JS não capturado por uma busca estática simples | **Inconclusivo, não adotado**: mesmo que fosse tecnicamente acessível, é o blog de uma empresa de gift cards revendendo dado de terceiro (a própria EA) sem confirmar direito de redistribuição, e sem nenhuma garantia de manutenção — sustentabilidade ruim como fonte de produto mesmo se o bloqueio de ToS não existisse |
+
+### Conclusão da quarta rodada
+
+**Nenhum candidato desta rodada é utilizável.** Três (FUTWIZ, WeFUT, SoFIFA)
+bloqueiam a automação por nome no `robots.txt` — não é uma barreira
+técnica a contornar, é a própria política do site dizendo "não". A fonte
+oficial da EA tem reserva de direitos textual contra qualquer scraping/
+mineração de dados. `fcratings.com` passa no `robots.txt` mas o próprio
+ToS proíbe a mesma coisa em texto simples. `recharge.com` fica inconclusivo
+tecnicamente e é uma fonte de baixa sustentabilidade mesmo sem o bloqueio.
+Nenhum dataset FC27 dedicado existe ainda em Kaggle/GitHub — o jogo é
+recente demais. **Nenhuma prova de conceito foi construída nesta rodada**,
+porque nenhum candidato passou pelo primeiro filtro (robots.txt permitir +
+ToS não proibir automação).
+
 ## Checagem técnica direta em FUT.GG e FUTBIN (2026-09-08, terceira rodada)
 
 O dono do produto pediu para reabrir especificamente FUT.GG e FUTBIN como
@@ -198,12 +229,13 @@ dono do produto pediu para nunca ficarem implícitos:
    certamente vão exigir um provider diferente deste, mesmo que uma fonte
    FC27 "base" apareça.
 
-**Nome do provider no banco**: `KAGGLE_ROVNEZ_FC26` — nunca `FUTGG`/
-`FUTBIN`/`FUTWIZ` (o dado não vem de lá) nem `LOCAL` (esse continua
-reservado para as 50 cartas dev inventadas da Etapa 10). O nome é
-explícito sobre fonte (Kaggle), autor (rovnez) e versão do jogo (FC26) —
-qualquer pessoa lendo uma linha do banco sabe de onde ela veio sem
-precisar abrir este documento.
+**Nome do provider planejado para quando este import rodar**:
+`KAGGLE_ROVNEZ_FC26` — nunca `FUTGG`/`FUTBIN`/`FUTWIZ` (o dado não vem de
+lá) nem `LOCAL` (esse continua reservado para as 50 cartas dev inventadas
+da Etapa 10). **Nota (ver "Estado real do catálogo" mais abaixo): este
+import nunca chegou a rodar** — o dono do produto interrompeu o fluxo
+antes da escrita no Supabase para focar a pesquisa em FC27 real primeiro.
+O nome fica documentado aqui para quando (se) o import for retomado.
 
 ### Schema: por que `fc_player_cards` mesmo sem ser carta UT de verdade
 
@@ -263,19 +295,63 @@ parceiro aprovado da EA.** Pesquisa dedicada rodada em 2026-09-08:
   atrás de proteção anti-bot padrão da indústria. Não investigados a fundo
   individualmente porque o padrão (site comercial de squad builder = dado
   protegido/parceiro EA) já se repetiu em todos os candidatos anteriores.
+  A quarta rodada (seção acima) foi além disso e confirmou o mesmo padrão
+  também para bases (não só cartas UT): FUTWIZ/WeFUT/SoFIFA bloqueiam
+  crawlers por nome no `robots.txt`, o site oficial da EA reserva
+  direitos contra scraping/mineração de dados, `fcratings.com` proíbe
+  automação no próprio ToS, e `recharge.com` é tecnicamente inconclusivo
+  além de ter baixa sustentabilidade como fonte de produto.
 
-**Conclusão**: a única fonte de cartas UT com `card_type`/rarity real e
-múltiplas versões por jogador hoje é FUT.GG/FUTBIN/FUTWIZ, todas atrás da
-EA Community API fechada. Isso deixa o FIFA Queue sem fonte gratuita e
-compatível com a regra dura para cartas UT especiais de FC27 **por
-enquanto**. Reavaliar quando: (a) a EA reabrir o programa de parceiros, ou
-(b) surgir um dataset estático versionado (mesmo padrão do FC26 escolhido
-acima) que alguém publique com licença aberta cobrindo card types reais de
-FC27 — nenhum foi encontrado nesta pesquisa.
+**Conclusão final, após quatro rodadas de pesquisa**: não existe hoje
+nenhuma fonte gratuita de FC27 — nem carta UT real (`card_type`/rarity),
+nem sequer uma base "ratings" alternativa ao dataset FC26 já escolhido —
+que passe simultaneamente por robots.txt permissivo, ToS sem proibição de
+automação, e sem proteção técnica ativa (Cloudflare challenge). Todo
+candidato investigado caiu em pelo menos um desses três filtros. Reavaliar
+quando: (a) a EA reabrir o programa de parceiros da Community API; (b)
+surgir um dataset estático versionado equivalente ao FC26 escolhido, mas
+para FC27 (ainda não existe — o jogo é recente demais); ou (c) um site
+novo publicar dados FC27 com robots.txt/ToS que não proíbam automação.
 
-**A Etapa 11 fecha na situação B**: pipeline pronto (importer + schema +
-Flutter), base FC26 provisória populada (`KAGGLE_ROVNEZ_FC26`,
-`card_type = 'BASE_DATASET'`), abstração de provider pronta para acoplar
-uma fonte real assim que existir, e esta pendência documentada
-explicitamente: **`FC27 UT catalog source` — sem fonte gratuita disponível
-em 2026-09-08, reavaliar periodicamente.**
+## Estado real do catálogo nesta etapa (correção importante)
+
+**O dataset FC26 (`KAGGLE_ROVNEZ_FC26`) foi pesquisado, documentado e o
+importer foi escrito/corrigido para ele — mas o import foi
+INTERROMPIDO por decisão consciente do dono do produto antes de escrever
+qualquer linha no Supabase.** Nenhum dry-run chegou a rodar contra o CSV
+real (o arquivo nunca chegou a existir em `tool/data/` antes da mudança de
+direção). O catálogo real de cartas em produção **continua vazio**; as 50
+cartas `provider = 'LOCAL'` da Etapa 10 seguem como único conteúdo em
+`fc_player_cards`, já com `is_active = false` (aplicado pela migration
+`20260918100200_extend_fc_card_catalog.sql`, que já rodou no Supabase
+remoto) — ou seja, o picker em produção hoje não retorna nenhuma carta,
+por design (nunca mostra `LOCAL` fora de dev), até que uma fonte real seja
+importada.
+
+**A Etapa 11 fecha em situação B**, exatamente como definido pelo dono do
+produto:
+
+- Arquitetura Conta/Times/Squad corrigida — pronta.
+- Schema do catálogo (`fc_clubs`, GK stats, playstyles, `is_active`,
+  `game_version`, `card_type`, etc.) — pronto, migrado no Supabase remoto.
+- Importer (`tool/sync_fc_cards.dart`) — pronto, com dry-run
+  credential-free e mapeamento já ajustado para o schema do dataset FC26
+  escolhido (fica como fallback/tooling, não descartado).
+- Pesquisa exaustiva de fontes FC27 — documentada nesta rodada e nas três
+  anteriores, sete candidatos novos + três anteriores, todos descartados
+  com motivo técnico concreto (nunca achismo).
+- FUT.GG inviável hoje (robots.txt desautoriza `/api/*`, dado real só via
+  client-side JS nessa rota).
+- FUTBIN inviável hoje (`HTTP 403` ativo do Cloudflare + ToS explícito).
+- FUTWIZ/WeFUT/SoFIFA/EA-oficial/fcratings/recharge — todos verificados e
+  descartados nesta rodada, motivo por candidato na tabela acima.
+- FC27 UT real: **ainda sem fonte pública adequada** — pendência aberta,
+  não forçada.
+- FC26 **não foi importado** — decisão consciente do dono do produto, não
+  esquecimento nem limitação técnica.
+- As 50 cartas `LOCAL` continuam só dev/fallback (`is_active = false` já
+  aplicado em produção).
+- Etapa 11 está **tecnicamente preparada** (schema + importer + UX
+  Conta/Times/Squad + matchmaking multi-time, tudo aplicado e funcionando)
+  **mas sem catálogo real FC27** povoado — essa é a limitação externa
+  documentada, não um item de trabalho pendente do lado do FIFA Queue.

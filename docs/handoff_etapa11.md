@@ -7,8 +7,14 @@ push`, numa sessão seguinte que tinha o CLI disponível por `npx`) —
 `supabase migration list` confirma as 55 migrations locais batendo com as
 55 remotas. Duas correções de SQL precisaram entrar no meio do caminho (ver
 "Correções de SQL encontradas ao aplicar" abaixo) — nenhum dado foi
-perdido, o CLI reverte sozinho a migration que falha. **O catálogo real de
-cartas ainda não está populado** — ver "Pendências" no final.
+perdido, o CLI reverte sozinho a migration que falha. **Etapa 11 fecha em
+situação B: tudo que depende do FIFA Queue está pronto, mas o catálogo
+real de cartas FC27 não está populado** — 4 rodadas de pesquisa (fut.gg,
+futbin, futwiz, wefut, sofifa, EA oficial, fcratings, recharge, datasets
+Kaggle/GitHub) não encontraram nenhuma fonte gratuita viável sem violar
+robots.txt/ToS/proteção técnica. Isso é uma limitação externa documentada,
+não bloqueia a Etapa 12. Ver "Pronto para a Etapa 12?" e
+`docs/card_provider_research.md` para os detalhes completos.
 
 ## Correção conceitual (Elenco → Conta, Conta → Times, Conta → Squad)
 
@@ -244,6 +250,12 @@ Migration `20260918100200_extend_fc_card_catalog.sql`:
 Commits desta etapa (mais recente primeiro), todos em `origin/main`:
 
 ```
+6a0de0b Verify FUT.GG and FUTBIN empirically instead of by inference
+274c9c0 Close the FC27 Ultimate Team card source research as situation B
+2efcbfb Make the card importer's dry-run truly credential-free
+53bf281 Pick a concrete card dataset and fix its position parsing
+eb02798 Fix two SQL bugs found while applying the Etapa 11 migrations
+9825375 Write the Etapa 11 handoff
 3accc60 Add the server-side card catalog importer script
 8c3497d Extend the card catalog schema for real data and wire up the picker
 1288b74 Align History's filter rows into one consistent toolbar
@@ -255,34 +267,36 @@ Commits desta etapa (mais recente primeiro), todos em `origin/main`:
 
 `git status` limpo além de `.agents/`/`skills-lock.json` (tooling, nunca
 commitado, como sempre). `flutter analyze` limpo depois de cada bloco.
-`dart format lib`/`dart format tool` aplicados.
+`dart format lib`/`dart format tool` aplicados. As migrations desta etapa
+(3 arquivos) estão aplicadas no Supabase remoto — `supabase migration
+list` confirma 55 locais = 55 remotas.
 
 ## Pendências conscientes
 
 - **Migrations: RESOLVIDA.** As 3 aplicadas no Supabase remoto, local =
   remoto confirmado (`supabase migration list`, 55/55).
-- **O importer de cartas reais ainda não rodou — bloqueado em 2 passos que
-  só o usuário consegue destravar, nenhum deles é um "não tentei":**
-  1. **Baixar o dataset de fato.** Kaggle exige conta logada para o botão
-     de download (não é paywall, é o padrão do site) — esta sessão não tem
-     login no Kaggle nem deveria ter. Preciso que o usuário baixe
-     `kaggle.com/datasets/rovnez/fc-26-fifa-26-player-data` (arquivo ZIP,
-     ~3.1MB) pela própria conta e coloque o CSV extraído em
-     `tool/data/fc26_players.csv` (pasta nova, `tool/data/` — adicionar ao
-     `.gitignore`, dataset de terceiro não deve ir pro Git).
-  2. **`SUPABASE_URL`/`SUPABASE_SERVICE_ROLE_KEY` não estão no ambiente**
-     desta máquina (`env | grep -i supabase` veio vazio). O importer já
-     recusa rodar sem as duas (`tool/sync_fc_cards.dart:48-57`) — nunca
-     devem ser coladas no chat; se o usuário confirmar que vai exportá-las
-     no shell antes de rodar, o próximo passo é só `dart run
-     tool/sync_fc_cards.dart --csv=tool/data/fc26_players.csv --dry-run`
-     primeiro (confere o mapeamento contra o CSV real, o mapeamento
-     default já foi corrigido pro schema deste dataset especificamente —
-     ver seção Provider research), depois sem `--dry-run`.
-  Com o arquivo e as env vars prontos, o resto é mecânico: dry-run,
-  conferir contagem de puladas, import pequeno primeiro (`head -200
-  fc26_players.csv > amostra.csv` e rodar contra a amostra), depois o
-  arquivo inteiro.
+- **Import do dataset FC26 (`KAGGLE_ROVNEZ_FC26`): INTERROMPIDO POR
+  DECISÃO CONSCIENTE, não por bloqueio técnico.** O importer foi
+  corrigido e estava pronto pra rodar (dry-run credential-free, mapeamento
+  de posições ajustado pro schema real do dataset — ver "Provider
+  research"), mas o dono do produto pediu para parar antes de escrever
+  qualquer linha no Supabase e focar a pesquisa em achar uma fonte FC27
+  real primeiro. **Nenhum CSV chegou a ser baixado, nenhuma linha foi
+  escrita.** O importer continua no repo como tooling/fallback, pronto
+  para retomar se o dataset FC26 for reconsiderado no futuro — só rodar
+  `dart run tool/sync_fc_cards.dart --csv=tool/data/fc26_players.csv
+  --provider=KAGGLE_ROVNEZ_FC26 --game-version=FC26 --dry-run` primeiro
+  (não precisa de credencial nenhuma, é parse-only de verdade agora).
+- **Fonte gratuita de FC27/UT real: pesquisada exaustivamente (4 rodadas),
+  não encontrada.** Ver `docs/card_provider_research.md` — FUT.GG, FUTBIN,
+  FUTWIZ, WeFUT, SoFIFA, o site oficial da EA, fcratings.com e
+  recharge.com foram todos verificados individualmente (robots.txt, ToS,
+  comportamento técnico real) e descartados com motivo concreto para cada
+  um. Nenhum dataset FC27 dedicado existe ainda em Kaggle/GitHub (jogo
+  recente demais). Catálogo real em produção **continua vazio** — as 50
+  cartas `LOCAL` seguem como único conteúdo de `fc_player_cards`, já
+  `is_active = false`, então o picker em produção não retorna nada até
+  uma fonte real (FC26 ou FC27) ser efetivamente importada.
 - **Card type nas filtros do picker**: rating/liga/clube/nação estão
   implementados; `cardType` ficou de fora da UI do picker (a RPC já aceita
   o parâmetro, só falta o controle visual) — os valores possíveis dependem
@@ -296,13 +310,23 @@ commitado, como sempre). `flutter analyze` limpo depois de cada bloco.
 
 ## Pronto para a Etapa 12?
 
-**Ainda não, com uma dependência clara primeiro**: aplicar as 3 migrations
-novas no Supabase remoto e rodar o importer contra um dataset real (as duas
-pendências acima) — sem isso o app roda com o catálogo LOCAL inativo
-(picker vazio em produção) e o matchmaking multi-time nunca foi exercitado
-contra o Postgres de verdade. Depois de resolvido isso, a Etapa 12 (gols,
-assistências, estatísticas individuais, artilharia por WL/Rivals, evolução
-de desempenho) tem uma base pronta: `game_matches.squad_snapshot` já guarda
-jogador/posição/rating por partida desde a Etapa 10, e cada slot congelado
-tem `card_id` — o suficiente para começar a contar gols/assistências por
-carta sem precisar de outra migration de schema base.
+**A Etapa 11 fecha em situação B** (definição do dono do produto): tudo
+que é responsabilidade do FIFA Queue está pronto — migrations aplicadas,
+UX Conta/Times/Squad corrigida, matchmaking multi-time reescrito e já
+rodando contra o Postgres remoto de verdade, importer pronto e corrigido.
+O que falta (catálogo real de cartas FC27) é uma **limitação externa
+documentada**, não um item de trabalho perdido: pesquisa exaustiva de 4
+rodadas não achou nenhuma fonte gratuita de FC27 (nem UT real, nem base
+alternativa) que não exigisse violar robots.txt, ToS ou proteção técnica
+ativa — ver `docs/card_provider_research.md` para o motivo específico de
+cada um dos ~10 candidatos descartados.
+
+Por decisão explícita do dono do produto, **isso não bloqueia o resto do
+produto** — o picker em produção fica vazio (nenhuma carta ativa) até uma
+fonte real ser importada, mas isso é uma limitação de dados, não de
+código: `game_matches.squad_snapshot` já guarda jogador/posição/rating por
+partida desde a Etapa 10, e cada slot congelado tem `card_id` — o
+suficiente para a Etapa 12 (gols, assistências, estatísticas individuais,
+artilharia por WL/Rivals, evolução de desempenho) começar sem precisar de
+outra migration de schema base nem depender do catálogo de cartas estar
+populado.
