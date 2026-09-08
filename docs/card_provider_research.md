@@ -130,7 +130,7 @@ aprovados. Isso significa duas coisas:
 | **futbin.com** | ToS (`futbin.com/tos`) proíbe explicitamente "unauthorized access to the Website... or any server, computer, or database connected". Tem endpoints de terceiros (Apify, Parse.bot) fazendo scraping por fora, o que não muda o ToS do site em si. Também virou parceiro da EA Community API. | Rating, posições, preço de mercado, SBCs, playstyles — boa cobertura, mas parte fica atrás de assinatura premium no próprio site. | Alto risco/descartado: ToS proíbe explicitamente, e contornar isso seria a exata prática que a regra dura veta. | **Descartado por ToS explícito.** |
 | **futwiz.com** | Não foi encontrado endpoint público documentado; mesmo padrão dos outros dois (site com proteção anti-bot, dados via scraping não-oficial). | Provavelmente comparável a fut.gg/futbin (não verificado a fundo, descartado antes por causa do padrão de acesso). | Alto risco — mesmo raciocínio dos outros dois. | Descartado pelo mesmo motivo estrutural. |
 | **Datasets comunitários (GitHub/Kaggle)** — ex. `EAFC26-DataHub` (Kaggle "FC 26 Player Data", ~18k jogadores, 110+ atributos), `sofifa-web-scraper` (scrape do SoFIFA, ~18k jogadores), `FC25-Players-ETL` | Download direto de arquivo CSV/JSON versionado — **sem scraping ao vivo, sem bot, sem CAPTCHA**. Atualização é manual (baixar o CSV mais novo), não um endpoint. | Ampla (rating, posições, stats, nação, liga, clube, altura, pé) — GK stats e playstyles variam por dataset, precisam de validação campo a campo antes do import. | Baixo risco operacional (arquivo estático, licença geralmente aberta/CC), mas **não é tempo real** — cada atualização de patch da EA exige baixar um CSV novo manualmente. | Depende da licença específica do dataset (verificar antes de redistribuir imagens). |
-| **SoFIFA.com** | HTML público, tabelas simples, sem login, historicamente tolerante a scraping pontual e de baixo volume (não confirma ToS explícito nesta pesquisa). | Rating, posições, stats completos, nação, liga, clube, altura, pé — GK stats e playstyles mais limitados que fut.gg/futbin. | Risco médio: é scraping de HTML de um site de terceiros (frágil a mudança de layout), mas sem Cloudflare/CAPTCHA hoje. | Sem ToS anti-scraping explícito encontrado, mas convém manter volume baixo e cache local. |
+| **SoFIFA.com** | ~~HTML público, tabelas simples, sem login, historicamente tolerante a scraping pontual e de baixo volume~~ **[SUPERADO — ver quarta rodada abaixo]: `robots.txt` desautoriza crawlers explicitamente (`Disallow: /`) + `Disallow: /api/` geral.** Esta linha refletia uma avaliação inicial sem checar `robots.txt`; a checagem real veio depois e descartou a fonte. | Rating, posições, stats completos, nação, liga, clube, altura, pé — GK stats e playstyles mais limitados que fut.gg/futbin. | N/A — descartado por política do site, não por risco técnico. | **Descartado**, não mais cogitado como fallback (ver correção na seção "Decisão" abaixo). |
 
 ## Decisão — dataset concreto, não "tipo X ou equivalente"
 
@@ -172,13 +172,19 @@ Justificativa geral (mantida do texto original desta seção):
   aprovado da EA Community API — essa é a linha oficial e correta pra esse
   caminho, não scraping por fora.
 
-**Fallback: SoFIFA**, só para preencher campos que o dataset comunitário não
-tiver (ex.: imagem de clube específica) — scraping pontual, baixo volume,
-nunca automatizado num cron, sempre revisado manualmente antes de upsert.
+**Sem fallback de scraping direto para nenhum site.** Uma avaliação
+anterior nesta mesma pesquisa cogitou SoFIFA como fallback pontual para
+campos isolados — **superada pela quarta rodada** (seção acima), que
+confirmou `robots.txt` do SoFIFA desautorizando crawlers explicitamente
+(`Disallow: /`, duas vezes no arquivo) + `Disallow: /api/` geral. Não
+existe fallback de scraping para nenhuma fonte nesta pesquisa — só o
+dataset estático com licença aberta (CC BY 4.0) é usado como fonte, e
+somente por download manual, nunca por automação ao vivo contra o site.
 
-**Nunca**: fut.gg, futbin, futwiz por scraping direto. Ficam registrados
-aqui como "vire parceiro oficial da EA Community API primeiro", não como
-"tente contornar a proteção deles".
+**Nunca**: fut.gg, futbin, futwiz, sofifa, wefut por scraping direto.
+Ficam registrados aqui como "vire parceiro oficial da EA Community API
+primeiro" (os três primeiros) ou "robots.txt/ToS proíbem" (os outros),
+nunca como alvo de bypass.
 
 ## O que isso significa para o importer desta etapa
 

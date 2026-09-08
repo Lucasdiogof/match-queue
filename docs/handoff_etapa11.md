@@ -237,12 +237,17 @@ Migration `20260918100200_extend_fc_card_catalog.sql`:
   `security definer`, `search_path=''`, `revoke`/`grant` explícitos, mesmo
   padrão de sempre.
 - Importer `tool/sync_fc_cards.dart`: Dart standalone, nunca importado pelo
-  app Flutter, autentica com `SUPABASE_SERVICE_ROLE_KEY` do ambiente (nunca
-  hardcoded), lê CSV local, upsert idempotente por `(provider,
-  provider_card_id)`, nunca deleta — marca `is_active=false` pro que sumiu
-  da rodada. Mapeamento de colunas é externo (`--map=`) porque datasets
-  comunitários variam nome de coluna entre si; `--dry-run` reporta quantas
-  linhas seriam puladas por falta de campo obrigatório antes de escrever
+  app Flutter, autentica com `SUPABASE_SECRET_KEY` do ambiente como
+  variável principal (nome atual da chave no painel do Supabase),
+  `SUPABASE_SERVICE_ROLE_KEY` aceita como fallback legado (mesmo padrão de
+  `SUPABASE_PUBLISHABLE_KEY`/`SUPABASE_ANON_KEY` que o app já usa) — nunca
+  hardcoded, nunca logado. `--dry-run` não exige nenhuma das duas: é
+  parse-only de verdade, não toca o Supabase. Lê CSV local, upsert
+  idempotente por `(provider, provider_card_id)`, nunca deleta — marca
+  `is_active=false` pro que sumiu da rodada. Mapeamento de colunas é
+  externo (`--map=`) porque datasets comunitários variam nome de coluna
+  entre si; `--dry-run` reporta quantas linhas seriam puladas por falta de
+  campo obrigatório antes de escrever
   qualquer coisa.
 
 ## Git
