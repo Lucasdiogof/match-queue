@@ -1,3 +1,4 @@
+import 'package:fifa_queue/features/game/domain/entities/game_match_details.dart';
 import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/game/domain/entities/pending_game_match.dart';
 
@@ -14,5 +15,26 @@ abstract interface class GameRepository {
     GameResult? result,
     int? goalsFor,
     int? goalsAgainst,
+  });
+
+  /// Partida + conta + squad_snapshot + player stats numa unica leitura.
+  /// Base da tela de detalhe do Histórico -- dono ou membro do mesmo time.
+  Future<GameMatchDetails> fetchMatchDetails(String matchId);
+
+  /// Edita resultado/placar de uma partida já FINISHED, sem limite de
+  /// tempo (Etapa 12). Continua exigindo dono.
+  Future<void> updateMatchResult({
+    required String matchId,
+    GameResult? result,
+    int? goalsFor,
+    int? goalsAgainst,
+  });
+
+  /// Substitui os gols/assistências por jogador da partida inteira -- o
+  /// Flutter sempre manda a lista completa do squad_snapshot (titulares +
+  /// banco), zerada onde não houve gol/assistência.
+  Future<void> upsertPlayerStats({
+    required String matchId,
+    required List<GameMatchPlayerStatInput> stats,
   });
 }

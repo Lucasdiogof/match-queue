@@ -71,10 +71,16 @@ class AppRoutes {
     '/app/squads/:squadId',
   );
 
+  static const AppRoute matchDetail = AppRoute(
+    'match-detail',
+    '/app/history/match/:matchId',
+  );
+
   static const String fcAccountIdParam = 'fcAccountId';
   static const String squadIdParam = 'squadId';
   static const String teamIdParam = 'teamId';
   static const String userIdParam = 'userId';
+  static const String matchIdParam = 'matchId';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,
@@ -95,6 +101,9 @@ class AppRoutes {
       '/app/fc-accounts/$fcAccountId';
 
   static String squadBuilderLocation(String squadId) => '/app/squads/$squadId';
+
+  static String matchDetailLocation(String matchId) =>
+      '/app/history/match/$matchId';
 
   static String teamDetailLocation(String teamId) => '/app/team/$teamId';
 

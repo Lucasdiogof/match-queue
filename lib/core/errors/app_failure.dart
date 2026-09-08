@@ -42,6 +42,10 @@ enum GameFailureReason {
   matchAlreadyFinished,
   invalidMode,
   invalidResult,
+  invalidStatsPayload,
+  playerNotInSquad,
+  noSquadSnapshot,
+  matchNotFinished,
 }
 
 enum FcAccountFailureReason {

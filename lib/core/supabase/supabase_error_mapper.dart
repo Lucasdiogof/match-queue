@@ -91,6 +91,10 @@ class SupabaseErrorMapper {
     'FQ022' => GameFailureReason.matchAlreadyFinished,
     'FQ023' => GameFailureReason.invalidMode,
     'FQ024' => GameFailureReason.invalidResult,
+    'FQ036' => GameFailureReason.invalidStatsPayload,
+    'FQ037' => GameFailureReason.playerNotInSquad,
+    'FQ038' => GameFailureReason.noSquadSnapshot,
+    'FQ039' => GameFailureReason.matchNotFinished,
     _ => null,
   };
 

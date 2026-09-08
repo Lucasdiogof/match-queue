@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> showFinishMatchSheet(BuildContext context) =>
-    showAppBottomSheet<void>(
+/// Retorna true quando o placar foi salvo com sucesso -- o chamador decide
+/// se oferece o detalhamento por jogador em seguida, com o BuildContext da
+/// própria página (o da sheet já estará desmontado nesse ponto).
+Future<bool?> showFinishMatchSheet(BuildContext context) =>
+    showAppBottomSheet<bool>(
       context: context,
       builder: (sheetContext) => BlocProvider.value(
         value: context.read<PendingMatchCubit>(),
@@ -57,7 +60,7 @@ class _FinishMatchFormState extends State<_FinishMatchForm> {
       return;
     }
     if (ok) {
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(true);
     }
   }
 

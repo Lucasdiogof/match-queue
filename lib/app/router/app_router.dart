@@ -10,6 +10,7 @@ import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_account_detail_page.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_accounts_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/squad_builder_page.dart';
+import 'package:fifa_queue/features/game/presentation/pages/match_details_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
@@ -122,6 +123,13 @@ class AppRouter {
         name: AppRoutes.squadBuilder.name,
         builder: (context, state) => SquadBuilderPage(
           squadId: state.pathParameters[AppRoutes.squadIdParam] ?? '',
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.matchDetail.path,
+        name: AppRoutes.matchDetail.name,
+        builder: (context, state) => MatchDetailsPage(
+          matchId: state.pathParameters[AppRoutes.matchIdParam] ?? '',
         ),
       ),
       StatefulShellRoute.indexedStack(

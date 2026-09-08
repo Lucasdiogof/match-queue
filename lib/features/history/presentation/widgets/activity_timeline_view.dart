@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
@@ -13,6 +14,7 @@ import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_s
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ActivityTimelineView extends StatefulWidget {
   const ActivityTimelineView({super.key});
@@ -353,6 +355,17 @@ class _ActivityDetailSheet extends StatelessWidget {
     return AppBottomSheet(
       title: e.displayName,
       actions: <Widget>[
+        if (e is GameHistoryEntry && e.status != 'IN_MATCH') ...<Widget>[
+          AppButton(
+            label: l10n.matchDetailsTitle,
+            expanded: true,
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.push(AppRoutes.matchDetailLocation(e.id));
+            },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         AppButton.ghost(
           label: l10n.actionClose,
           expanded: true,
