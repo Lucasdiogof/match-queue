@@ -38,6 +38,12 @@ class PlayerCardQuery extends Equatable {
     position: position,
     limit: limit,
     offset: offset + limit,
+    minRating: minRating,
+    maxRating: maxRating,
+    leagueName: leagueName,
+    clubName: clubName,
+    nationName: nationName,
+    cardType: cardType,
   );
 
   @override
@@ -79,4 +85,8 @@ abstract interface class PlayerCardCatalogRepository {
   Future<List<FcNation>> getNations();
 
   Future<List<FcLeague>> getLeagues();
+
+  /// [leagueName] filtra pela liga, quando informado. Etapa 11: filtro de
+  /// clube no picker de cartas.
+  Future<List<FcClub>> getClubs({String? leagueName});
 }

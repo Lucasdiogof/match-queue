@@ -2560,6 +2560,24 @@ abstract class AppLocalizations {
   /// **'Cartas de desenvolvimento. O catálogo real chega na próxima etapa.'**
   String get squadDevCatalogNotice;
 
+  /// No description provided for @squadFilterLeagueLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Liga'**
+  String get squadFilterLeagueLabel;
+
+  /// No description provided for @squadFilterClubLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clube'**
+  String get squadFilterClubLabel;
+
+  /// No description provided for @squadFilterNationLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nação'**
+  String get squadFilterNationLabel;
+
   /// No description provided for @errorSquadNotFound.
   ///
   /// In pt, this message translates to:

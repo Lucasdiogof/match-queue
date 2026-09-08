@@ -171,20 +171,25 @@ class _Filled extends StatelessWidget {
             width: width * 0.40,
             height: width * 0.40,
             alignment: Alignment.center,
+            clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: colors.surfaceHighest,
               shape: BoxShape.circle,
               border: Border.all(color: colors.borderSubtle),
             ),
-            child: Text(
-              card.initials,
-              style: TextStyle(
-                fontSize: width * 0.17,
-                height: 1,
-                fontWeight: FontWeight.w600,
-                color: colors.textSecondary,
-              ),
-            ),
+            // Carta real com foto usa a imagem; sem foto (ou catalogo de
+            // dev, provider LOCAL) cai nas iniciais -- nunca um placeholder
+            // quebrado (item 122).
+            child: card.playerImageUrl == null
+                ? _Initials(card: card, width: width)
+                : Image.network(
+                    card.playerImageUrl!,
+                    fit: BoxFit.cover,
+                    width: width * 0.40,
+                    height: width * 0.40,
+                    errorBuilder: (context, error, stackTrace) =>
+                        _Initials(card: card, width: width),
+                  ),
           ),
         ),
         Text(
@@ -203,4 +208,22 @@ class _Filled extends StatelessWidget {
       ],
     );
   }
+}
+
+class _Initials extends StatelessWidget {
+  const _Initials({required this.card, required this.width});
+
+  final PlayerCard card;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) => Text(
+    card.initials,
+    style: TextStyle(
+      fontSize: width * 0.17,
+      height: 1,
+      fontWeight: FontWeight.w600,
+      color: context.colors.textSecondary,
+    ),
+  );
 }

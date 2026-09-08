@@ -485,4 +485,10 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
     FcLeague(id: 'local-league-1', name: 'Liga Nacional'),
     FcLeague(id: 'local-league-2', name: 'Liga Continental'),
   ];
+
+  @override
+  Future<List<FcClub>> getClubs({String? leagueName}) async => const <FcClub>[
+    FcClub(id: 'local-club-1', name: 'Clube A', leagueId: 'local-league-1'),
+    FcClub(id: 'local-club-2', name: 'Clube B', leagueId: 'local-league-2'),
+  ];
 }

@@ -26,10 +26,25 @@ class PlayerCard extends Equatable {
     this.leagueName,
     this.nationName,
     this.cardType,
+    this.gameVersion = 'FC27',
+    this.gkDiving,
+    this.gkHandling,
+    this.gkKicking,
+    this.gkReflexes,
+    this.gkSpeed,
+    this.gkPositioning,
+    this.skillMoves,
+    this.weakFoot,
+    this.playstyles = const <String>[],
+    this.heightCm,
+    this.preferredFoot,
+    this.playerRoles = const <String>[],
+    this.rarity,
   });
 
   final String id;
   final String provider;
+  final String gameVersion;
   final String playerName;
   final String? commonName;
   final int rating;
@@ -41,12 +56,27 @@ class PlayerCard extends Equatable {
   final int? dribbling;
   final int? defending;
   final int? physical;
+  final int? gkDiving;
+  final int? gkHandling;
+  final int? gkKicking;
+  final int? gkReflexes;
+  final int? gkSpeed;
+  final int? gkPositioning;
+  final int? skillMoves;
+  final int? weakFoot;
+  final List<String> playstyles;
+  final int? heightCm;
+  final String? preferredFoot;
+  final List<String> playerRoles;
+  final String? rarity;
   final String? playerImageUrl;
   final String? cardImageUrl;
   final String? clubName;
   final String? leagueName;
   final String? nationName;
   final String? cardType;
+
+  bool get isGoalkeeper => primaryPosition == 'GK';
 
   String get displayName => commonName ?? playerName;
 

@@ -1418,6 +1418,15 @@ class AppLocalizationsPt extends AppLocalizations {
       'Cartas de desenvolvimento. O catálogo real chega na próxima etapa.';
 
   @override
+  String get squadFilterLeagueLabel => 'Liga';
+
+  @override
+  String get squadFilterClubLabel => 'Clube';
+
+  @override
+  String get squadFilterNationLabel => 'Nação';
+
+  @override
   String get errorSquadNotFound => 'Squad não encontrado.';
 
   @override

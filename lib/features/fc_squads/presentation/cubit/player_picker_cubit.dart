@@ -15,6 +15,10 @@ class PlayerPickerState extends Equatable {
     this.query = '',
     this.hasMore = false,
     this.isLoadingMore = false,
+    this.minRating,
+    this.leagueName,
+    this.clubName,
+    this.nationName,
     this.failure,
   });
 
@@ -23,7 +27,17 @@ class PlayerPickerState extends Equatable {
   final String query;
   final bool hasMore;
   final bool isLoadingMore;
+  final int? minRating;
+  final String? leagueName;
+  final String? clubName;
+  final String? nationName;
   final AppFailure? failure;
+
+  bool get hasActiveFilters =>
+      minRating != null ||
+      leagueName != null ||
+      clubName != null ||
+      nationName != null;
 
   PlayerPickerState copyWith({
     PlayerPickerStatus? status,
@@ -31,6 +45,14 @@ class PlayerPickerState extends Equatable {
     String? query,
     bool? hasMore,
     bool? isLoadingMore,
+    int? minRating,
+    bool clearMinRating = false,
+    String? leagueName,
+    bool clearLeagueName = false,
+    String? clubName,
+    bool clearClubName = false,
+    String? nationName,
+    bool clearNationName = false,
     AppFailure? failure,
     bool clearFailure = false,
   }) => PlayerPickerState(
@@ -39,6 +61,10 @@ class PlayerPickerState extends Equatable {
     query: query ?? this.query,
     hasMore: hasMore ?? this.hasMore,
     isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    minRating: clearMinRating ? null : (minRating ?? this.minRating),
+    leagueName: clearLeagueName ? null : (leagueName ?? this.leagueName),
+    clubName: clearClubName ? null : (clubName ?? this.clubName),
+    nationName: clearNationName ? null : (nationName ?? this.nationName),
     failure: clearFailure ? null : (failure ?? this.failure),
   );
 
@@ -49,6 +75,10 @@ class PlayerPickerState extends Equatable {
     query,
     hasMore,
     isLoadingMore,
+    minRating,
+    leagueName,
+    clubName,
+    nationName,
     failure,
   ];
 }
@@ -83,6 +113,54 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     });
   }
 
+  void setMinRating(int? minRating) {
+    emit(
+      minRating == null
+          ? state.copyWith(clearMinRating: true)
+          : state.copyWith(minRating: minRating),
+    );
+    unawaited(_search(state.query));
+  }
+
+  void setLeagueName(String? leagueName) {
+    emit(
+      leagueName == null
+          ? state.copyWith(clearLeagueName: true, clearClubName: true)
+          : state.copyWith(leagueName: leagueName, clearClubName: true),
+    );
+    unawaited(_search(state.query));
+  }
+
+  void setClubName(String? clubName) {
+    emit(
+      clubName == null
+          ? state.copyWith(clearClubName: true)
+          : state.copyWith(clubName: clubName),
+    );
+    unawaited(_search(state.query));
+  }
+
+  void setNationName(String? nationName) {
+    emit(
+      nationName == null
+          ? state.copyWith(clearNationName: true)
+          : state.copyWith(nationName: nationName),
+    );
+    unawaited(_search(state.query));
+  }
+
+  void clearFilters() {
+    emit(
+      state.copyWith(
+        clearMinRating: true,
+        clearLeagueName: true,
+        clearClubName: true,
+        clearNationName: true,
+      ),
+    );
+    unawaited(_search(state.query));
+  }
+
   Future<void> loadMore() async {
     if (!state.hasMore || state.isLoadingMore || isClosed) {
       return;
@@ -96,6 +174,10 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
           position: positionCode,
           limit: pageSize,
           offset: state.cards.length,
+          minRating: state.minRating,
+          leagueName: state.leagueName,
+          clubName: state.clubName,
+          nationName: state.nationName,
         ),
       );
       if (isClosed || generation != _generation) {
@@ -126,6 +208,10 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
           query: query.isEmpty ? null : query,
           position: positionCode,
           limit: pageSize,
+          minRating: state.minRating,
+          leagueName: state.leagueName,
+          clubName: state.clubName,
+          nationName: state.nationName,
         ),
       );
       if (isClosed || generation != _generation) {

@@ -43,7 +43,37 @@ class FcSquadModel {
     leagueName: json['league_name'] as String?,
     nationName: json['nation_name'] as String?,
     cardType: json['card_type'] as String?,
+    gameVersion: '${json['game_version'] ?? 'FC27'}',
+    gkDiving: json['gk_diving'] as int?,
+    gkHandling: json['gk_handling'] as int?,
+    gkKicking: json['gk_kicking'] as int?,
+    gkReflexes: json['gk_reflexes'] as int?,
+    gkSpeed: json['gk_speed'] as int?,
+    gkPositioning: json['gk_positioning'] as int?,
+    skillMoves: json['skill_moves'] as int?,
+    weakFoot: json['weak_foot'] as int?,
+    playstyles: _toStringList(json['playstyles']),
+    heightCm: json['height_cm'] as int?,
+    preferredFoot: json['preferred_foot'] as String?,
+    playerRoles: _toStringList(json['player_roles']),
+    rarity: json['rarity'] as String?,
   );
+
+  static FcClub? clubFromJson(Object? json) {
+    if (json is! Map) {
+      return null;
+    }
+    final m = Map<String, dynamic>.from(json);
+    if (m['id'] == null) {
+      return null;
+    }
+    return FcClub(
+      id: '${m['id']}',
+      name: '${m['name']}',
+      leagueId: m['league_id'] as String?,
+      logoImageUrl: m['logo_image_url'] as String?,
+    );
+  }
 
   static FormationSlot _slotFromJson(Map<String, dynamic> json) =>
       FormationSlot(

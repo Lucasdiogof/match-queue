@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/fc_squads/data/models/fc_squad_model.dart';
-import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart'
+    show FcClub, FcLeague, FcManager, FcNation;
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,6 +25,12 @@ class SupabasePlayerCardCatalogRepository
         'p_position': query.position,
         'p_limit': query.limit,
         'p_offset': query.offset,
+        'p_min_rating': query.minRating,
+        'p_max_rating': query.maxRating,
+        'p_league_name': query.leagueName,
+        'p_club_name': query.clubName,
+        'p_nation_name': query.nationName,
+        'p_card_type': query.cardType,
       },
     );
     final json = Map<String, dynamic>.from(response as Map);
@@ -87,6 +94,26 @@ class SupabasePlayerCardCatalogRepository
     return <FcLeague>[
       for (final row in rows) ?FcSquadModel.leagueFromJson(row),
     ];
+  });
+
+  @override
+  Future<List<FcClub>> getClubs({String? leagueName}) => _guard(() async {
+    var builder = _client
+        .from('fc_clubs')
+        .select('id, name, league_id, logo_image_url');
+    if (leagueName != null) {
+      final leagueRows = await _client
+          .from('fc_leagues')
+          .select('id')
+          .eq('name', leagueName)
+          .limit(1);
+      if (leagueRows.isEmpty) {
+        return const <FcClub>[];
+      }
+      builder = builder.eq('league_id', leagueRows.first['id'] as Object);
+    }
+    final rows = await builder.order('name', ascending: true);
+    return <FcClub>[for (final row in rows) ?FcSquadModel.clubFromJson(row)];
   });
 
   Future<T> _guard<T>(Future<T> Function() action) async {

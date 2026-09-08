@@ -46,6 +46,8 @@ class _PlayerPickerBody extends StatelessWidget {
               onChanged: context.read<PlayerPickerCubit>().search,
             ),
             const SizedBox(height: AppSpacing.sm),
+            const _FilterRow(),
+            const SizedBox(height: AppSpacing.sm),
             // Deixa explícito que o catálogo ainda é de desenvolvimento --
             // melhor dizer do que deixar parecer dado oficial.
             Text(
@@ -174,4 +176,157 @@ class _PlayerRow extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Filtros do picker (item 12 da Etapa 11): rating, liga, clube, nacao.
+/// Posicao ja e implicita (o slot filtra por elegibilidade), entao nao
+/// aparece aqui de novo.
+class _FilterRow extends StatelessWidget {
+  const _FilterRow();
+
+  static const List<int?> _ratingOptions = <int?>[null, 75, 80, 85, 90];
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return BlocBuilder<PlayerPickerCubit, PlayerPickerState>(
+      builder: (context, state) {
+        final cubit = context.read<PlayerPickerCubit>();
+        return SizedBox(
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              for (final rating in _ratingOptions)
+                Padding(
+                  padding: const EdgeInsets.only(right: AppSpacing.sm),
+                  child: AppChip(
+                    label: rating == null ? l10n.historyStatusAll : '$rating+',
+                    isSelected: state.minRating == rating,
+                    onPressed: () => cubit.setMinRating(rating),
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.only(right: AppSpacing.sm),
+                child: AppChip(
+                  label: state.leagueName ?? l10n.squadFilterLeagueLabel,
+                  icon: Icons.emoji_events_outlined,
+                  isSelected: state.leagueName != null,
+                  onPressed: () => _pickLeague(context, cubit),
+                ),
+              ),
+              if (state.leagueName != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: AppSpacing.sm),
+                  child: AppChip(
+                    label: state.clubName ?? l10n.squadFilterClubLabel,
+                    icon: Icons.shield_outlined,
+                    isSelected: state.clubName != null,
+                    onPressed: () =>
+                        _pickClub(context, cubit, state.leagueName),
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.only(right: AppSpacing.sm),
+                child: AppChip(
+                  label: state.nationName ?? l10n.squadFilterNationLabel,
+                  icon: Icons.flag_outlined,
+                  isSelected: state.nationName != null,
+                  onPressed: () => _pickNation(context, cubit),
+                ),
+              ),
+              if (state.hasActiveFilters)
+                AppChip(
+                  label: l10n.actionCancel,
+                  icon: Icons.close,
+                  onPressed: cubit.clearFilters,
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickLeague(
+    BuildContext context,
+    PlayerPickerCubit cubit,
+  ) async {
+    final leagues = await getIt<PlayerCardCatalogRepository>().getLeagues();
+    if (!context.mounted) {
+      return;
+    }
+    final name = await _showNamePickerSheet(
+      context,
+      title: context.l10n.squadFilterLeagueLabel,
+      names: leagues.map((l) => l.name).toList(growable: false),
+    );
+    if (name != null) {
+      cubit.setLeagueName(name);
+    }
+  }
+
+  Future<void> _pickClub(
+    BuildContext context,
+    PlayerPickerCubit cubit,
+    String? leagueName,
+  ) async {
+    final clubs = await getIt<PlayerCardCatalogRepository>().getClubs(
+      leagueName: leagueName,
+    );
+    if (!context.mounted) {
+      return;
+    }
+    final name = await _showNamePickerSheet(
+      context,
+      title: context.l10n.squadFilterClubLabel,
+      names: clubs.map((c) => c.name).toList(growable: false),
+    );
+    if (name != null) {
+      cubit.setClubName(name);
+    }
+  }
+
+  Future<void> _pickNation(
+    BuildContext context,
+    PlayerPickerCubit cubit,
+  ) async {
+    final nations = await getIt<PlayerCardCatalogRepository>().getNations();
+    if (!context.mounted) {
+      return;
+    }
+    final name = await _showNamePickerSheet(
+      context,
+      title: context.l10n.squadFilterNationLabel,
+      names: nations.map((n) => n.name).toList(growable: false),
+    );
+    if (name != null) {
+      cubit.setNationName(name);
+    }
+  }
+
+  Future<String?> _showNamePickerSheet(
+    BuildContext context, {
+    required String title,
+    required List<String> names,
+  }) => showAppBottomSheet<String>(
+    context: context,
+    builder: (sheetContext) => AppBottomSheet(
+      title: title,
+      child: names.isEmpty
+          ? Text(sheetContext.l10n.squadPlayerPickerEmpty)
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                for (final name in names)
+                  AppButton.secondary(
+                    label: name,
+                    onPressed: () => Navigator.of(sheetContext).pop(name),
+                  ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+            ),
+    ),
+  );
 }

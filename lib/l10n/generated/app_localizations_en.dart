@@ -1417,6 +1417,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Development cards. The real catalog arrives in the next stage.';
 
   @override
+  String get squadFilterLeagueLabel => 'League';
+
+  @override
+  String get squadFilterClubLabel => 'Club';
+
+  @override
+  String get squadFilterNationLabel => 'Nation';
+
+  @override
   String get errorSquadNotFound => 'Squad not found.';
 
   @override
