@@ -1,10 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/fc_player.dart';
 
 /// Carta de jogador, sempre com identidade NOSSA.
 ///
 /// [provider] e [providerCardId] guardam a origem (LOCAL hoje; FUT_GG,
 /// FUTBIN, FUTWIZ depois) sem que nada no app dependa dela: trocar de fonte
 /// muda quem popula o catálogo, nunca quem o lê.
+///
+/// [fcPlayerId]/[player] apontam para o atleta base ([FcPlayer]) desta
+/// carta, quando o catálogo distingue jogador de versão -- nulos para
+/// catálogo LOCAL/dev e para qualquer carta cujo provider não tenha
+/// declarado a identidade do jogador. A carta continua o card-centric
+/// visualmente: isto é metadata adicional, nunca substitui os campos de
+/// carta já existentes.
 class PlayerCard extends Equatable {
   const PlayerCard({
     required this.id,
@@ -14,6 +22,8 @@ class PlayerCard extends Equatable {
     required this.primaryPosition,
     required this.alternativePositions,
     this.commonName,
+    this.fcPlayerId,
+    this.player,
     this.pace,
     this.shooting,
     this.passing,
@@ -47,6 +57,8 @@ class PlayerCard extends Equatable {
   final String gameVersion;
   final String playerName;
   final String? commonName;
+  final String? fcPlayerId;
+  final FcPlayer? player;
   final int rating;
   final String primaryPosition;
   final List<String> alternativePositions;

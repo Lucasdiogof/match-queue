@@ -1,4 +1,5 @@
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/fc_player.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
@@ -28,6 +29,8 @@ class FcSquadModel {
     provider: '${json['provider'] ?? 'LOCAL'}',
     playerName: '${json['player_name']}',
     commonName: json['common_name'] as String?,
+    fcPlayerId: json['fc_player_id'] as String?,
+    player: _playerFromJson(json['fc_player']),
     rating: _toInt(json['rating']),
     primaryPosition: '${json['primary_position']}',
     alternativePositions: _toStringList(json['alternative_positions']),
@@ -58,6 +61,26 @@ class FcSquadModel {
     playerRoles: _toStringList(json['player_roles']),
     rarity: json['rarity'] as String?,
   );
+
+  static FcPlayer? _playerFromJson(Object? json) {
+    if (json is! Map) {
+      return null;
+    }
+    final m = Map<String, dynamic>.from(json);
+    if (m['id'] == null || m['name'] == null) {
+      return null;
+    }
+    return FcPlayer(
+      id: '${m['id']}',
+      name: '${m['name']}',
+      commonName: m['common_name'] as String?,
+      primaryPosition: m['primary_position'] as String?,
+      imageUrl: m['image_url'] as String?,
+      nationName: m['nation_name'] as String?,
+      clubName: m['club_name'] as String?,
+      leagueName: m['league_name'] as String?,
+    );
+  }
 
   static FcClub? clubFromJson(Object? json) {
     if (json is! Map) {
