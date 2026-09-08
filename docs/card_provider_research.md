@@ -10,6 +10,70 @@ Nunca contornar CAPTCHA, Cloudflare, nem usar cookies/tokens roubados ou
 privados. Qualquer fonte que exigisse isso foi descartada, sem exceção,
 mesmo que fosse tecnicamente a "melhor" cobertura de campos.
 
+## Checagem técnica direta em FUT.GG e FUTBIN (2026-09-08, terceira rodada)
+
+O dono do produto pediu para reabrir especificamente FUT.GG e FUTBIN como
+possíveis fontes de FC27 UT real, já que ambos expõem publicamente listas
+de jogadores FC27 no navegador. Investigação técnica direta (sem bypass,
+só observando o que uma requisição comum recebe), nesta ordem:
+
+### FUT.GG
+
+- `robots.txt` (`fut.gg/robots.txt`) **desautoriza explicitamente
+  `Disallow: /api/*`** para `User-agent: *`. Qualquer endpoint JSON
+  público que a página use por baixo dos panos está, pelo próprio
+  `robots.txt` do site, marcado como "não rastreie isto".
+- `https://www.fut.gg/players/` responde `HTTP 200` (atrás de Cloudflare,
+  mas sem desafio ativo para uma requisição simples) — título confirma
+  "EA SPORTS FC 26 Players" (a rota default é FC26, precisaria achar o
+  parâmetro/rota certa pra FC27, não investigado a fundo por já esbarrar
+  no ponto seguinte).
+- O HTML retornado é só o shell de uma aplicação **TanStack Start**
+  (React) — confirmado pelo atributo `id="$tsr-stream-barrier"` no
+  script de hidratação. **Nenhum jogador, nenhum link de jogador,
+  nenhum payload JSON de dado real está no HTML inicial** — a lista
+  completa é buscada depois, client-side, via chamadas JavaScript que
+  batem exatamente nos caminhos `/api/*` que o `robots.txt` acabou de
+  desautorizar. Ou seja: o único jeito de ver o dado real é executar o
+  JS da página (navegador de verdade) e capturar chamadas para uma rota
+  que o próprio site pede pra não automatizar.
+- **Classificação: client-rendered, dado real servido por endpoint que o
+  robots.txt marca `Disallow`.** Não há caminho de "HTML público
+  simples" nem "payload JSON exposto sem precisar tocar `/api/*`".
+
+### FUTBIN
+
+- `robots.txt` (`futbin.com/robots.txt`) não desautoriza `/players`
+  diretamente, mas desautoriza qualquer URL com query string
+  (`Disallow: /*?*`, `/players/*?*`) — o que cobre busca/filtro/paginação
+  por parâmetro, exatamente o que qualquer picker real precisaria.
+- **Requisição simples e não-autenticada a `https://www.futbin.com/players`
+  voltou `HTTP 403 Forbidden`, servido pelo Cloudflare** (`Server:
+  cloudflare`, sem corpo de página, só a página de bloqueio padrão) — ou
+  seja, proteção anti-bot ativa bloqueando uma requisição comum de
+  verdade, não hipotética. Passar disso exigiria resolver o desafio do
+  Cloudflare — exatamente o bypass que a regra dura proíbe.
+- Some-se a isso o achado já registrado antes nesta pesquisa: o ToS do
+  próprio FUTBIN proíbe explicitamente acesso não autorizado ao site ou a
+  qualquer servidor/banco de dados conectado a ele.
+- **Classificação: protegido/autenticado na prática (403 ativo) + ToS
+  proíbe explicitamente.** Nenhuma prova de conceito é possível aqui sem
+  violar as duas coisas ao mesmo tempo.
+
+### Conclusão desta rodada
+
+**Nenhuma prova de conceito foi construída contra FUT.GG ou FUTBIN.**
+Não por falta de tentativa de investigação técnica (feita, documentada
+acima), mas porque os dois já bloqueiam ou desautorizam exatamente o
+caminho que uma extração real precisaria usar, checável de forma
+concreta e reprodutível (não é achismo): `curl` simples contra FUTBIN
+recebe `403` do Cloudflare agora mesmo; o `robots.txt` do FUT.GG
+desautoriza `/api/*`, que é onde o dado de verdade mora. Isso reforça
+(agora com evidência técnica direta, não só o anúncio da EA) a conclusão
+já registrada na seção "Pendência explícita" abaixo: os dois são
+parceiros aprovados da EA Community API precisamente porque o acesso
+direto e não-autorizado a eles é, por design, bloqueado ou proibido.
+
 ## Achado que muda o cenário: EA lançou uma Community API oficial
 
 Em julho de 2026 a EA anunciou uma **Community API** oficial para o EA
