@@ -745,4 +745,46 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get matchmakingReconnecting => 'Reconectando…';
+
+  @override
+  String get notificationsSectionTitle => 'Notificações';
+
+  @override
+  String get notificationsToggleYourTurn => 'Sua vez de buscar';
+
+  @override
+  String get notificationsToggleYourTurnHint =>
+      'Quando chegar a sua vez na fila do time.';
+
+  @override
+  String get notificationsToggleExpiring => '30 segundos restantes';
+
+  @override
+  String get notificationsToggleExpiringHint =>
+      'Um aviso antes de a sua busca expirar.';
+
+  @override
+  String get notificationsToggleExpired => 'Tempo de busca encerrado';
+
+  @override
+  String get notificationsToggleExpiredHint =>
+      'Quando a sua busca termina sem partida.';
+
+  @override
+  String get notificationsEnableCta => 'Ativar notificações';
+
+  @override
+  String get notificationsPermissionDeniedHint =>
+      'As notificações estão bloqueadas. Ative-as nas configurações do sistema.';
+
+  @override
+  String get notificationsUnsupportedHint =>
+      'Este dispositivo ainda não recebe notificações push.';
+
+  @override
+  String get notificationsEnableTitle => 'Não perca a sua vez';
+
+  @override
+  String get notificationsEnableMessage =>
+      'Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.';
 }

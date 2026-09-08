@@ -750,4 +750,46 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get matchmakingReconnecting => 'Reconectando…';
+
+  @override
+  String get notificationsSectionTitle => 'Notificaciones';
+
+  @override
+  String get notificationsToggleYourTurn => 'Tu turno de buscar';
+
+  @override
+  String get notificationsToggleYourTurnHint =>
+      'Cuando llegue tu turno en la cola del equipo.';
+
+  @override
+  String get notificationsToggleExpiring => 'Quedan 30 segundos';
+
+  @override
+  String get notificationsToggleExpiringHint =>
+      'Un aviso antes de que tu búsqueda expire.';
+
+  @override
+  String get notificationsToggleExpired => 'Tiempo de búsqueda terminado';
+
+  @override
+  String get notificationsToggleExpiredHint =>
+      'Cuando tu búsqueda termina sin partido.';
+
+  @override
+  String get notificationsEnableCta => 'Activar notificaciones';
+
+  @override
+  String get notificationsPermissionDeniedHint =>
+      'Las notificaciones están bloqueadas. Actívalas en los ajustes del sistema.';
+
+  @override
+  String get notificationsUnsupportedHint =>
+      'Este dispositivo aún no recibe notificaciones push.';
+
+  @override
+  String get notificationsEnableTitle => 'No te pierdas tu turno';
+
+  @override
+  String get notificationsEnableMessage =>
+      'Activa las notificaciones para saber al instante cuándo es tu turno de buscar partido, incluso con la app cerrada.';
 }

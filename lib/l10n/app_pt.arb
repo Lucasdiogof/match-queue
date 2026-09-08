@@ -401,5 +401,17 @@
   "matchmakingCancelConfirmTitle": "Cancelar busca?",
   "matchmakingCancelConfirmMessage": "Você vai perder sua posição na busca atual.",
   "matchmakingYourTurnTitle": "Sua vez de buscar!",
-  "matchmakingReconnecting": "Reconectando…"
+  "matchmakingReconnecting": "Reconectando…",
+  "notificationsSectionTitle": "Notificações",
+  "notificationsToggleYourTurn": "Sua vez de buscar",
+  "notificationsToggleYourTurnHint": "Quando chegar a sua vez na fila do time.",
+  "notificationsToggleExpiring": "30 segundos restantes",
+  "notificationsToggleExpiringHint": "Um aviso antes de a sua busca expirar.",
+  "notificationsToggleExpired": "Tempo de busca encerrado",
+  "notificationsToggleExpiredHint": "Quando a sua busca termina sem partida.",
+  "notificationsEnableCta": "Ativar notificações",
+  "notificationsPermissionDeniedHint": "As notificações estão bloqueadas. Ative-as nas configurações do sistema.",
+  "notificationsUnsupportedHint": "Este dispositivo ainda não recebe notificações push.",
+  "notificationsEnableTitle": "Não perca a sua vez",
+  "notificationsEnableMessage": "Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado."
 }

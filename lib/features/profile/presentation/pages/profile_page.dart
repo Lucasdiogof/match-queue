@@ -1,10 +1,13 @@
 import 'package:fifa_queue/core/config/app_config_scope.dart';
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
+import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
+import 'package:fifa_queue/features/notifications/presentation/widgets/notification_settings_section.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_state.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/edit_display_name_sheet.dart';
@@ -29,6 +32,8 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
         children: const <Widget>[
           _AccountSection(),
+          SizedBox(height: AppSpacing.lg),
+          NotificationSettingsSection(),
           SizedBox(height: AppSpacing.lg),
           _AppearanceSection(),
           SizedBox(height: AppSpacing.lg),
@@ -273,15 +278,21 @@ class _EnvironmentRow extends StatelessWidget {
 class _SignOutButton extends StatelessWidget {
   const _SignOutButton();
 
+  Future<void> _signOut(BuildContext context) async {
+    // Ordem importa: a baixa do device depende de auth.uid(), então precisa
+    // acontecer com a sessão ainda válida, ANTES do signOut.
+    final authCubit = context.read<AuthCubit>();
+    await getIt<PushTokenCoordinator>().deactivateForSignOut();
+    await authCubit.signOut();
+  }
+
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthCubit, AuthState>(
     builder: (context, state) => AppButton.secondary(
       label: context.l10n.actionSignOut,
       icon: Icons.logout,
       isLoading: state.isSubmitting,
-      onPressed: state.isSubmitting
-          ? null
-          : () => context.read<AuthCubit>().signOut(),
+      onPressed: state.isSubmitting ? null : () => _signOut(context),
     ),
   );
 }

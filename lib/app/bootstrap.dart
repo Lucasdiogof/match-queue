@@ -55,13 +55,16 @@ Future<void> bootstrap() async {
       final supabaseClient = await SupabaseInitializer(
         logger,
       ).initialize(config);
-      await FirebaseBootstrap(logger).initialize(config);
+      final firebaseAvailability = await FirebaseBootstrap(
+        logger,
+      ).initialize(config);
 
       await registerDependencies(
         config: config,
         logger: logger,
         preferences: preferences,
         supabaseClient: supabaseClient,
+        firebaseAvailability: firebaseAvailability,
       );
 
       final authCubit = getIt<AuthCubit>()..initialize();

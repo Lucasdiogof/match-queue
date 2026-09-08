@@ -42,6 +42,14 @@ class SupabaseProfileRepository implements ProfileRepository {
     return ProfileModel.fromJson(updated);
   });
 
+  @override
+  Future<void> updateLocale(String localeTag) => _guard(
+    () => _dataSource.updateLocale(
+      userId: _requireUserId(),
+      localeTag: localeTag,
+    ),
+  );
+
   String _requireUserId() {
     final userId = _dataSource.currentUserId;
     if (userId == null || userId.isEmpty) {

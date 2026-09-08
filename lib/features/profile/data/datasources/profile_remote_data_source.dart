@@ -15,6 +15,8 @@ abstract interface class ProfileRemoteDataSource {
     required String userId,
     required String displayName,
   });
+
+  Future<void> updateLocale({required String userId, required String localeTag});
 }
 
 class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
@@ -52,4 +54,12 @@ class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
       .eq(ProfileModel.columnId, userId)
       .select()
       .single();
+
+  @override
+  Future<void> updateLocale({
+    required String userId,
+    required String localeTag,
+  }) => _table
+      .update(<String, dynamic>{ProfileModel.columnLocale: localeTag})
+      .eq(ProfileModel.columnId, userId);
 }

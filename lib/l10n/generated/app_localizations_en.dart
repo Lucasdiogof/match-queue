@@ -745,4 +745,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get matchmakingReconnecting => 'Reconnecting…';
+
+  @override
+  String get notificationsSectionTitle => 'Notifications';
+
+  @override
+  String get notificationsToggleYourTurn => 'Your turn to search';
+
+  @override
+  String get notificationsToggleYourTurnHint =>
+      'When it becomes your turn in the team queue.';
+
+  @override
+  String get notificationsToggleExpiring => '30 seconds left';
+
+  @override
+  String get notificationsToggleExpiringHint =>
+      'A heads-up before your search expires.';
+
+  @override
+  String get notificationsToggleExpired => 'Search time ended';
+
+  @override
+  String get notificationsToggleExpiredHint =>
+      'When your search ends without a match.';
+
+  @override
+  String get notificationsEnableCta => 'Enable notifications';
+
+  @override
+  String get notificationsPermissionDeniedHint =>
+      'Notifications are blocked. Turn them on in your system settings.';
+
+  @override
+  String get notificationsUnsupportedHint =>
+      'This device does not receive push notifications yet.';
+
+  @override
+  String get notificationsEnableTitle => 'Don\'t miss your turn';
+
+  @override
+  String get notificationsEnableMessage =>
+      'Turn on notifications to know the moment it\'s your turn to search — even with the app closed.';
 }

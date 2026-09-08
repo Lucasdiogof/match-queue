@@ -401,5 +401,17 @@
   "matchmakingCancelConfirmTitle": "¿Cancelar búsqueda?",
   "matchmakingCancelConfirmMessage": "Vas a perder tu lugar en la búsqueda actual.",
   "matchmakingYourTurnTitle": "¡Tu turno de buscar!",
-  "matchmakingReconnecting": "Reconectando…"
+  "matchmakingReconnecting": "Reconectando…",
+  "notificationsSectionTitle": "Notificaciones",
+  "notificationsToggleYourTurn": "Tu turno de buscar",
+  "notificationsToggleYourTurnHint": "Cuando llegue tu turno en la cola del equipo.",
+  "notificationsToggleExpiring": "Quedan 30 segundos",
+  "notificationsToggleExpiringHint": "Un aviso antes de que tu búsqueda expire.",
+  "notificationsToggleExpired": "Tiempo de búsqueda terminado",
+  "notificationsToggleExpiredHint": "Cuando tu búsqueda termina sin partido.",
+  "notificationsEnableCta": "Activar notificaciones",
+  "notificationsPermissionDeniedHint": "Las notificaciones están bloqueadas. Actívalas en los ajustes del sistema.",
+  "notificationsUnsupportedHint": "Este dispositivo aún no recibe notificaciones push.",
+  "notificationsEnableTitle": "No te pierdas tu turno",
+  "notificationsEnableMessage": "Activa las notificaciones para saber al instante cuándo es tu turno de buscar partido, incluso con la app cerrada."
 }

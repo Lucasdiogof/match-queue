@@ -1377,6 +1377,78 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Reconectando…'**
   String get matchmakingReconnecting;
+
+  /// No description provided for @notificationsSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificações'**
+  String get notificationsSectionTitle;
+
+  /// No description provided for @notificationsToggleYourTurn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua vez de buscar'**
+  String get notificationsToggleYourTurn;
+
+  /// No description provided for @notificationsToggleYourTurnHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando chegar a sua vez na fila do time.'**
+  String get notificationsToggleYourTurnHint;
+
+  /// No description provided for @notificationsToggleExpiring.
+  ///
+  /// In pt, this message translates to:
+  /// **'30 segundos restantes'**
+  String get notificationsToggleExpiring;
+
+  /// No description provided for @notificationsToggleExpiringHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um aviso antes de a sua busca expirar.'**
+  String get notificationsToggleExpiringHint;
+
+  /// No description provided for @notificationsToggleExpired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tempo de busca encerrado'**
+  String get notificationsToggleExpired;
+
+  /// No description provided for @notificationsToggleExpiredHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando a sua busca termina sem partida.'**
+  String get notificationsToggleExpiredHint;
+
+  /// No description provided for @notificationsEnableCta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ativar notificações'**
+  String get notificationsEnableCta;
+
+  /// No description provided for @notificationsPermissionDeniedHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'As notificações estão bloqueadas. Ative-as nas configurações do sistema.'**
+  String get notificationsPermissionDeniedHint;
+
+  /// No description provided for @notificationsUnsupportedHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este dispositivo ainda não recebe notificações push.'**
+  String get notificationsUnsupportedHint;
+
+  /// No description provided for @notificationsEnableTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não perca a sua vez'**
+  String get notificationsEnableTitle;
+
+  /// No description provided for @notificationsEnableMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ative as notificações para saber na hora quando for a sua vez de buscar partida — mesmo com o app fechado.'**
+  String get notificationsEnableMessage;
 }
 
 class _AppLocalizationsDelegate

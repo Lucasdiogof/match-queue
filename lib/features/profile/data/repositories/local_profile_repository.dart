@@ -30,6 +30,15 @@ class LocalProfileRepository implements ProfileRepository {
     return updated;
   }
 
+  @override
+  Future<void> updateLocale(String localeTag) async {
+    final userId = _requireUserId();
+    final existing = _profiles[userId];
+    if (existing != null) {
+      _profiles[userId] = existing.copyWith(locale: localeTag);
+    }
+  }
+
   Profile _create(String userId, String displayName) {
     final now = DateTime.now().toUtc();
     return Profile(
