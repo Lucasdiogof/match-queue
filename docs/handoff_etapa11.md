@@ -1,11 +1,14 @@
 # Handoff — Etapa 11 (Conta/Times/Jogar redesenhados + catálogo de cartas real)
 
 Status em 2026-09-08: **backend e Flutter escritos e commitados/pushados em
-`origin/main`** (`flutter analyze` limpo em todo o lote). **Migrations
-escritas mas NÃO aplicadas no Supabase remoto** — esta sessão não tinha
-Supabase CLI/Docker disponíveis no ambiente (`which supabase` e `docker
---version` falharam) e nenhuma credencial de projeto. Ver "Pendências" no
-final antes de qualquer trabalho novo.
+`origin/main`** (`flutter analyze` limpo em todo o lote). **As 3 migrations
+desta etapa foram aplicadas no Supabase remoto** (via `npx supabase db
+push`, numa sessão seguinte que tinha o CLI disponível por `npx`) —
+`supabase migration list` confirma as 55 migrations locais batendo com as
+55 remotas. Duas correções de SQL precisaram entrar no meio do caminho (ver
+"Correções de SQL encontradas ao aplicar" abaixo) — nenhum dado foi
+perdido, o CLI reverte sozinho a migration que falha. **O catálogo real de
+cartas ainda não está populado** — ver "Pendências" no final.
 
 ## Correção conceitual (Elenco → Conta, Conta → Times, Conta → Squad)
 
@@ -145,17 +148,57 @@ quebrando linha. Usado nos três lugares que tinham filtro solto
 (`ActivityTimelineView`, `MatchHistoryView`, `MatchmakingStatsView`).
 Puramente layout — nenhuma lógica/dado mudou.
 
+## Correções de SQL encontradas ao aplicar
+
+`npx supabase db push` (real, não `--dry-run`, que só lista arquivos
+pendentes sem validar SQL) pegou dois bugs reais na primeira tentativa,
+ambos corrigidos e commitados (`eb02798`):
+
+- `cancel_match_search`/`report_match_found_and_start_game` usavam `create
+  or replace function` trocando o NOME do parâmetro (`p_team_id` →
+  `p_fc_account_id`) mantendo o mesmo tipo `uuid` — Postgres recusa isso
+  (`cannot change name of input parameter`, SQLSTATE 42P13). Precisou
+  `drop function` explícito antes do `create`, com `revoke`/`grant`
+  re-declarados depois (o drop apaga os grants existentes).
+- `search_fc_player_cards`: o `revoke`/`grant` da assinatura nova estava
+  digitado com os 3 últimos parâmetros como `uuid, uuid, uuid` quando a
+  função de verdade os declara `text, text, text` (são nomes —
+  `league_name`/`club_name`/`nation_name` — não ids). Postgres não achava a
+  função para revogar/conceder (`function ... does not exist`, SQLSTATE
+  42883).
+
+Migrations 1 e 2 do lote aplicaram de primeira; só a 3ª precisou da
+correção acima, reaplicada sozinha depois.
+
 ## Provider research (fut.gg/futbin/futwiz/outras/decisão)
 
-`docs/card_provider_research.md`. Achado central: EA lançou em julho/2026
-uma Community API oficial e fut.gg/futbin/futwiz são parceiros aprovados —
-o que significa que, SEM ser parceiro EA também, o único acesso a esses
-três hoje é scraping por trás de Cloudflare/ToS, exatamente o que a regra
-dura desta etapa proíbe. **Decisão**: provider primário é um dataset
-comunitário estático (CSV/JSON versionado tipo Kaggle "FC 26 Player Data"),
-sem scraping ao vivo, sem bot, sem CAPTCHA. Fallback: SoFIFA, scraping
-pontual e manual, nunca em cron. fut.gg/futbin/futwiz ficam anotados como
-"vire parceiro oficial primeiro", não como alvo de scraping.
+`docs/card_provider_research.md` — decisão final e concreta, sem "tipo X ou
+equivalente": **"FC 26 (FIFA 26) Player Data"**, dataset Kaggle de
+`rovnez` (`kaggle.com/datasets/rovnez/fc-26-fifa-26-player-data`), licença
+**CC BY 4.0**, scraping declarado de sofifa.com, versão 3
+(`dateModified` 2025-09-22), 18k+ jogadores, colunas no padrão
+sofifa/"FIFA complete player dataset" (`long_name`, `short_name`,
+`overall`, `player_positions`, `pace/shooting/passing/dribbling/
+defending/physic`, `goalkeeping_diving/handling/kicking/positioning/
+reflexes/speed`, `height_cm`, `preferred_foot`, `weak_foot`,
+`skill_moves`, `club_name`, `league_name`, `nationality_name`) — o mesmo
+padrão que o mapeamento default do importer já assumia. Fallback: SoFIFA
+direto (HTML público, scraping pontual e manual, nunca em cron), só para
+preencher campo isolado que faltar. fut.gg/futbin/futwiz ficam anotados
+como "vire parceiro oficial da EA Community API primeiro", não como alvo
+de scraping — motivo completo na tabela comparativa do doc.
+
+**Limitação encontrada e documentada**: datasets sofifa-style não trazem
+técnicos/managers — item 68 do pedido original vira fallback permanente
+(sem fonte gratuita conhecida para isso), não pendência temporária.
+
+**Bug de parsing corrigido no importer antes do primeiro uso**:
+`player_positions` vem como uma string única tipo `"ST, LW, CF"` (primária
++ alternativas juntas); o mapeamento original jogava essa string crua em
+`primary_position` (ficaria `"ST, LW, CF"` inteiro) e duplicava tudo em
+`alternative_positions`. Corrigido em `tool/sync_fc_cards.dart`: separa a
+lista uma vez, primeira posição vira `primary_position`, o resto vira
+`alternative_positions`.
 
 ## Dados reais (schema)
 
@@ -216,23 +259,30 @@ commitado, como sempre). `flutter analyze` limpo depois de cada bloco.
 
 ## Pendências conscientes
 
-- **As migrations desta etapa (3 arquivos, `20260918*`) NÃO foram
-  aplicadas no Supabase remoto.** Este ambiente não tinha `supabase` CLI
-  nem Docker instalados (`which supabase` → not found, `docker --version`
-  → not found), e as migrations anteriores sempre foram aplicadas por uma
-  sessão/máquina com o CLI configurado. **Rodar `supabase db push` (ou
-  colar o SQL manualmente no SQL Editor, na ordem dos três arquivos) antes
-  de testar qualquer coisa desta etapa no app** — sem isso, todo o
-  Flutter novo vai falhar em runtime (RPC inexistente).
-- **O importer de cartas reais não rodou.** Faltam duas coisas fora do meu
-  alcance nesta sessão: (1) baixar de fato um dataset comunitário (Kaggle
-  exige conta/clique manual, e baixar arquivo de terceiro é ação que exige
-  permissão explícita do usuário no chat — esta sessão roda sem supervisão
-  síncrona); (2) a `SUPABASE_SERVICE_ROLE_KEY` do projeto, que nunca deve
-  passar por aqui de qualquer forma. Depois de aplicar as migrations,
-  rodar `dart run tool/sync_fc_cards.dart --csv=<arquivo> --dry-run`
-  primeiro para conferir o mapeamento de colunas contra o CSV real, ajustar
-  `--map` se preciso, e só então sem `--dry-run`.
+- **Migrations: RESOLVIDA.** As 3 aplicadas no Supabase remoto, local =
+  remoto confirmado (`supabase migration list`, 55/55).
+- **O importer de cartas reais ainda não rodou — bloqueado em 2 passos que
+  só o usuário consegue destravar, nenhum deles é um "não tentei":**
+  1. **Baixar o dataset de fato.** Kaggle exige conta logada para o botão
+     de download (não é paywall, é o padrão do site) — esta sessão não tem
+     login no Kaggle nem deveria ter. Preciso que o usuário baixe
+     `kaggle.com/datasets/rovnez/fc-26-fifa-26-player-data` (arquivo ZIP,
+     ~3.1MB) pela própria conta e coloque o CSV extraído em
+     `tool/data/fc26_players.csv` (pasta nova, `tool/data/` — adicionar ao
+     `.gitignore`, dataset de terceiro não deve ir pro Git).
+  2. **`SUPABASE_URL`/`SUPABASE_SERVICE_ROLE_KEY` não estão no ambiente**
+     desta máquina (`env | grep -i supabase` veio vazio). O importer já
+     recusa rodar sem as duas (`tool/sync_fc_cards.dart:48-57`) — nunca
+     devem ser coladas no chat; se o usuário confirmar que vai exportá-las
+     no shell antes de rodar, o próximo passo é só `dart run
+     tool/sync_fc_cards.dart --csv=tool/data/fc26_players.csv --dry-run`
+     primeiro (confere o mapeamento contra o CSV real, o mapeamento
+     default já foi corrigido pro schema deste dataset especificamente —
+     ver seção Provider research), depois sem `--dry-run`.
+  Com o arquivo e as env vars prontos, o resto é mecânico: dry-run,
+  conferir contagem de puladas, import pequeno primeiro (`head -200
+  fc26_players.csv > amostra.csv` e rodar contra a amostra), depois o
+  arquivo inteiro.
 - **Card type nas filtros do picker**: rating/liga/clube/nação estão
   implementados; `cardType` ficou de fora da UI do picker (a RPC já aceita
   o parâmetro, só falta o controle visual) — os valores possíveis dependem

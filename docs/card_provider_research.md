@@ -37,10 +37,33 @@ aprovados. Isso significa duas coisas:
 | **Datasets comunitários (GitHub/Kaggle)** — ex. `EAFC26-DataHub` (Kaggle "FC 26 Player Data", ~18k jogadores, 110+ atributos), `sofifa-web-scraper` (scrape do SoFIFA, ~18k jogadores), `FC25-Players-ETL` | Download direto de arquivo CSV/JSON versionado — **sem scraping ao vivo, sem bot, sem CAPTCHA**. Atualização é manual (baixar o CSV mais novo), não um endpoint. | Ampla (rating, posições, stats, nação, liga, clube, altura, pé) — GK stats e playstyles variam por dataset, precisam de validação campo a campo antes do import. | Baixo risco operacional (arquivo estático, licença geralmente aberta/CC), mas **não é tempo real** — cada atualização de patch da EA exige baixar um CSV novo manualmente. | Depende da licença específica do dataset (verificar antes de redistribuir imagens). |
 | **SoFIFA.com** | HTML público, tabelas simples, sem login, historicamente tolerante a scraping pontual e de baixo volume (não confirma ToS explícito nesta pesquisa). | Rating, posições, stats completos, nação, liga, clube, altura, pé — GK stats e playstyles mais limitados que fut.gg/futbin. | Risco médio: é scraping de HTML de um site de terceiros (frágil a mudança de layout), mas sem Cloudflare/CAPTCHA hoje. | Sem ToS anti-scraping explícito encontrado, mas convém manter volume baixo e cache local. |
 
-## Decisão
+## Decisão — dataset concreto, não "tipo X ou equivalente"
 
-**Provider primário: dataset comunitário estático (CSV/JSON versionado, tipo
-Kaggle "FC 26 Player Data" ou equivalente do GitHub).** Justificativa:
+Pesquisa complementar em 2026-09-08 (segunda sessão desta etapa) trocou o
+placeholder genérico abaixo por uma escolha concreta e verificada.
+
+**Provider primário: "FC 26 (FIFA 26) Player Data"**
+
+| Campo | Valor |
+| --- | --- |
+| Nome exato | FC 26 (FIFA 26) Player Data |
+| URL | https://www.kaggle.com/datasets/rovnez/fc-26-fifa-26-player-data |
+| Mantenedor | `rovnez` (perfil Kaggle, sem afiliação declarada com EA/parceiros) |
+| Licença | **CC BY 4.0** (Attribution 4.0 International) — uso comercial permitido, exige atribuição. Confirmado via metadado `schema.org/Dataset` embutido na página (`"license":{"name":"Attribution 4.0 International (CC BY 4.0)"}`), não por leitura visual da página (Kaggle é SPA, texto renderizado por JS não é lido pelo WebFetch). |
+| FC26/FC27 cobertos | FC 26 explicitamente (nome do dataset e descrição). Não há confirmação de dados FC 27 — é o mais recente disponível nesta pesquisa; `game_version` grava `FC27` no nosso schema mas o dado de origem real é rotulado FC26 pelo autor. **Anotar isso é importante**: `game_version` no import deve refletir o rótulo real do dado (`FC26`), não forçar `FC27` só porque é o padrão do importer — ajustar `--game-version=FC26` no comando de sync. |
+| Data/frequência de atualização | Versão 3, `dateModified` 2025-09-22T18:19:44Z. Sem cron/API — atualização é manual pelo autor subindo nova versão; nós replicamos isso baixando a versão mais nova manualmente quando quisermos atualizar, não há como automatizar sem credencial Kaggle configurada. |
+| Quantidade aproximada | Descrição cita "18,000+" como padrão da família de datasets sofifa-scrape; este dataset específico não expõe row count na metadata pública, mas o arquivo é 3.184.169 bytes (zip) — compatível com a mesma ordem de grandeza (~18k linhas, dezenas de colunas). |
+| Posições alternativas | Sim — coluna única `player_positions` (ex. `"ST, LW, CF"`), primeira é a primária, resto são alternativas. Não vem em colunas separadas. |
+| Stats | Sim, nomenclatura sofifa clássica: `pace/shooting/passing/dribbling/defending/physic` (nota: `physic`, não `physical`) para linha; `goalkeeping_diving/handling/kicking/reflexes/speed/positioning` para goleiro — nunca os dois preenchidos na mesma linha. |
+| Clubes/Ligas/Nações | Sim — `club_name`, `league_name`, `nationality_name` como texto (não IDs), resolvidos para as tabelas `fc_clubs`/`fc_leagues`/`fc_nations` pelo importer via upsert-por-nome. |
+| Managers/técnicos | **Não.** Datasets sofifa-scrape são focados em jogador, nunca tiveram campo de técnico/staff em nenhuma versão conhecida (FIFA 15 a FC 26). Fica como limitação estrutural da fonte, não uma omissão do import — ver "Managers" abaixo. |
+| Imagens | Coluna `player_face_url` (retrato do jogador). Não há imagem de "carta" no estilo Ultimate Team (rating/posição sobrepostos) — só a foto do jogador. `card_image_url` é preenchido com o mesmo valor de `player_face_url` como aproximação; card art de verdade não existe nesta fonte. |
+| Formato dos arquivos | ZIP contendo CSV (confirmado por `encodingFormat`/`fileFormat: "zip"` na metadata; o conteúdo interno de datasets desta família é sempre um único CSV). |
+| Estabilidade dos IDs | Coluna `sofifa_id` é o id estável entre versões do mesmo jogador no ecossistema sofifa (usado como `provider_card_id`) — jogadores mantêm o mesmo `sofifa_id` ano a ano, o que torna o upsert idempotente confiável mesmo quando o dataset for atualizado para uma versão nova. |
+| Limitações conhecidas | (1) Requer conta Kaggle logada para clicar em "Download" — não há endpoint anônimo; (2) sem técnicos/managers; (3) sem card art estilo UT, só foto de jogador; (4) `game_version` real é FC26, não FC27; (5) atualização é manual, sem API/cron. |
+| Por que este e não FUT.GG/FUTBIN/FUTWIZ | Ver seção "Achado que muda o cenário" acima — os três viraram parceiros aprovados da EA Community API, então acessá-los sem ser parceiro exigiria contornar Cloudflare/ToS, proibido pela regra dura desta etapa. Este dataset é scraping histórico já feito e publicado sob licença aberta (CC BY 4.0) por terceiro, sem exigir bypass de proteção nenhuma da nossa parte — só um clique de download numa conta gratuita. |
+
+Justificativa geral (mantida do texto original desta seção):
 
 - É o único caminho que não depende de scraping ao vivo nem de contornar
   proteção alguma — cumpre a regra dura com folga, não no limite dela.

@@ -100,7 +100,21 @@ Future<void> main(List<String> args) async {
     final providerCardId = col('provider_card_id') ?? col('player_name');
     final playerName = col('player_name');
     final rating = colInt('rating');
-    final primaryPosition = col('primary_position');
+
+    // player_positions em datasets estilo sofifa vem como uma lista unica,
+    // ex. "ST, LW, CF" -- a primeira e a posicao primaria, o resto sao as
+    // alternativas. Ler primary_position e alternative_positions do mesmo
+    // valor cru (como o mapeamento default faz) exige separar aqui; nunca
+    // jogar a string toda em primary_position.
+    final positionsRaw = col('primary_position');
+    final positionsList = positionsRaw
+        ?.split(RegExp(r'[|,/]'))
+        .map((p) => p.trim().toUpperCase())
+        .where((p) => p.isNotEmpty)
+        .toList(growable: false);
+    final primaryPosition = (positionsList == null || positionsList.isEmpty)
+        ? null
+        : positionsList.first;
 
     if (providerCardId == null ||
         playerName == null ||
@@ -146,14 +160,13 @@ Future<void> main(List<String> args) async {
             name: nationName,
           );
 
-    final alternativePositionsRaw = col('alternative_positions');
-    final alternativePositions = alternativePositionsRaw == null
+    // alternative_positions mapeia pra mesma coluna player_positions no
+    // default (dataset nao separa primaria de alternativas em colunas
+    // distintas) -- reaproveita a lista ja quebrada acima, tirando a
+    // primaria para nao duplicar.
+    final alternativePositions = (positionsList == null || positionsList.length <= 1)
         ? const <String>[]
-        : alternativePositionsRaw
-              .split(RegExp(r'[|,/]'))
-              .map((p) => p.trim().toUpperCase())
-              .where((p) => p.isNotEmpty)
-              .toList(growable: false);
+        : positionsList.skip(1).toList(growable: false);
 
     final playstylesRaw = col('playstyles');
     final playstyles = playstylesRaw == null
