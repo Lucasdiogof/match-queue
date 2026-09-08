@@ -1,4 +1,5 @@
-// Importer SERVER-SIDE do catalogo de cartas EA FC (Etapa 11, Parte E).
+// Importer SERVER-SIDE do catalogo de cartas EA FC (Etapa 11, Parte E;
+// atualizado na etapa de separacao jogador/carta).
 //
 // NUNCA rodar isto de dentro do app Flutter -- exige a service role key, que
 // ignora RLS inteira. E um script standalone, chamado manualmente por quem
@@ -6,21 +7,36 @@
 // rodaria num backend Node. Aqui e Dart puro (`dart run tool/sync_fc_cards.dart`)
 // para nao introduzir um segundo runtime no repositorio.
 //
+// NUNCA acessa rede externa nenhuma (fut.gg/futbin/futwiz/wefut ou qualquer
+// outro site) -- so le um arquivo LOCAL (CSV ou JSON) que quem roda baixou
+// a mao de onde quiser. Decisao ja tomada e comunicada: WeFUT foi recusado
+// como fonte porque seu robots.txt desautoriza crawlers nominalmente. Este
+// script e deliberadamente cego a qual foi a origem do arquivo -- so importa
+// --provider=<nome> que o operador escolhe.
+//
 // O QUE ELE FAZ
-//   1. Le um CSV local (baixado a mao de um dataset comunitario -- ver
-//      docs/card_provider_research.md; a decisao foi NUNCA fazer scraping ao
-//      vivo de fut.gg/futbin/futwiz).
-//   2. Resolve nacao/liga/clube por nome, criando a linha em fc_nations/
-//      fc_leagues/fc_clubs se ainda nao existir (upsert por nome).
-//   3. Faz upsert idempotente em fc_player_cards por (provider,
-//      provider_card_id) -- rodar duas vezes com o mesmo CSV nunca duplica.
-//   4. NUNCA apaga uma carta que sumiu do CSV: so marca is_active=false pra
-//      tudo daquele provider que nao apareceu nesta rodada (feito ao final,
-//      depois que todo upsert da rodada terminou).
+//   1. Le um arquivo local: CSV (formato historico) ou JSON (array de
+//      objetos). Formato inferido pela extensao, ou forcado com --format=.
+//   2. Normaliza cada linha/item para o contrato de tool/fc_import_contract.dart
+//      (ExternalFcPlayer/ExternalFcCard) -- nenhuma logica de provider
+//      especifico vaza dali pra frente.
+//   3. Se o item declarar provider_player_id: upsert em fc_players primeiro
+//      (idempotente por (provider, game_version, provider_player_id)),
+//      pega o id interno.
+//   4. Upsert idempotente em fc_player_cards por (provider, provider_card_id),
+//      com fc_player_id apontando pro player resolvido no passo 3 (nulo se o
+//      item nao declarou provider_player_id). Roda duas vezes com o mesmo
+//      arquivo nunca duplica.
+//   5. NUNCA apaga uma carta que sumiu do arquivo: so marca is_active=false
+//      pra tudo daquele provider que nao apareceu nesta rodada (feito ao
+//      final, depois que todo upsert da rodada terminou).
 //
 // USO
-//   dart run tool/sync_fc_cards.dart --csv=/caminho/para/dataset.csv \
-//       --provider=COMMUNITY_CSV --game-version=FC27
+//   dart run tool/sync_fc_cards.dart --file=tool/data/algo.json \
+//       --provider=MEU_PROVIDER --game-version=FC27 [--dry-run]
+//   dart run tool/sync_fc_cards.dart --csv=/caminho/dataset.csv \
+//       --provider=COMMUNITY_CSV --game-version=FC27   (forma antiga, ainda
+//                                                        suportada)
 //
 // Variaveis de ambiente obrigatorias (nunca hardcoded, nunca no app, nunca
 // impressas por este script):
@@ -33,33 +49,42 @@
 //                          SUPABASE_ANON_KEY como fallback de
 //                          SUPABASE_PUBLISHABLE_KEY (docs/supabase_setup.md).
 //
-// MAPEAMENTO DE COLUNAS
-// Datasets comunitarios variam o nome das colunas entre si. Em vez de
-// acoplar a um dataset especifico, o script le um mapeamento de
-// "nosso campo -> nome da coluna no CSV" de um arquivo JSON (--map=...),
-// com um default razoavel (colunas em snake_case parecidas com as do
-// FC26-DataHub/SoFIFA) que quem rodar deve conferir contra o CSV real antes
-// de disparar para o banco -- por isso o --dry-run abaixo.
+// MAPEAMENTO DE CAMPOS
+// Fontes variam o nome do campo entre si. Em vez de acoplar a uma fonte
+// especifica, o script le um mapeamento de "nosso campo -> nome do campo no
+// arquivo" de um JSON (--map=...). Default para CSV: nomes no estilo
+// FC26-DataHub/SoFIFA (o unico dataset ja pesquisado -- ver
+// docs/card_provider_research.md). Default para JSON: identidade (o arquivo
+// ja usa os nomes canonicos abaixo) -- e o formato pensado para "qualquer
+// fonte futura", entao nao assume convencao de coluna nenhuma.
+//
+// Campos canonicos aceitos (mesma lista serve pra jogador e carta; um item
+// pode ter so um subconjunto):
+//   provider_player_id, provider_card_id, player_name, common_name, rating,
+//   primary_position, alternative_positions, pace, shooting, passing,
+//   dribbling, defending, physical, gk_diving, gk_handling, gk_kicking,
+//   gk_reflexes, gk_speed, gk_positioning, skill_moves, weak_foot,
+//   playstyles, height_cm, preferred_foot, player_roles, rarity,
+//   player_image_url, card_image_url, club_name, league_name, nation_name,
+//   card_type
 //
 // --dry-run imprime quantas linhas seriam upsertadas/desativadas sem
-// escrever nada -- rodar sempre antes do primeiro sync de verdade.
+// escrever nada -- rodar sempre antes do primeiro sync de verdade. E
+// parse-only de verdade: nao exige nenhuma credencial do Supabase.
 
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import 'fc_import_contract.dart';
+
 Future<void> main(List<String> args) async {
   final options = _Args.parse(args);
 
-  // --dry-run e parse-only por definicao -- nao deveria exigir credencial
-  // nenhuma do Supabase, nem para ler. So pede SUPABASE_URL/SUPABASE_SECRET_
-  // KEY quando vai escrever de verdade.
   _SupabaseAdmin? client;
   if (!options.dryRun) {
     final supabaseUrl = Platform.environment['SUPABASE_URL'];
-    // SUPABASE_SECRET_KEY e o nome atual; SUPABASE_SERVICE_ROLE_KEY fica
-    // como fallback legado. Nunca logar o valor de nenhuma das duas.
     final secretKey =
         Platform.environment['SUPABASE_SECRET_KEY'] ??
         Platform.environment['SUPABASE_SERVICE_ROLE_KEY'];
@@ -75,82 +100,76 @@ Future<void> main(List<String> args) async {
     client = _SupabaseAdmin(baseUrl: supabaseUrl, secretKey: secretKey);
   }
 
-  final csvFile = File(options.csvPath);
-  if (!csvFile.existsSync()) {
-    stderr.writeln('CSV nao encontrado: ${options.csvPath}');
+  final file = File(options.filePath);
+  if (!file.existsSync()) {
+    stderr.writeln('Arquivo nao encontrado: ${options.filePath}');
     exitCode = 1;
     return;
   }
 
-  final mapping = await _ColumnMapping.load(options.mapPath);
-  final rows = _parseCsv(await csvFile.readAsString());
-  if (rows.isEmpty) {
-    stderr.writeln('CSV vazio.');
+  final mapping = await _FieldMapping.load(options.mapPath, options.format);
+  final rawRows = options.format == _InputFormat.json
+      ? _parseJson(await file.readAsString())
+      : _parseCsvAsRows(await file.readAsString());
+  if (rawRows.isEmpty) {
+    stderr.writeln('Arquivo vazio ou sem linhas de dados.');
     return;
   }
 
-  final header = rows.first;
-  final headerIndex = <String, int>{
-    for (var i = 0; i < header.length; i++) header[i].trim(): i,
-  };
-
-  // Buscado uma vez antes do loop para diferenciar insert de update sem
-  // precisar de uma consulta por linha -- upsert do PostgREST nao informa
-  // isso pelo status HTTP (sempre volta como sucesso da mesma forma).
   final existingProviderCardIds = client == null
       ? <String>{}
-      : await client.fetchExistingProviderCardIds(
+      : await client.fetchExistingProviderIds(
           table: 'fc_player_cards',
+          idColumn: 'provider_card_id',
           provider: options.provider,
         );
 
   final seenProviderCardIds = <String>{};
-  // Em --dry-run nao consultamos/criamos nada em fc_clubs/fc_leagues/
-  // fc_nations (upsertByName escreve) -- so contamos nomes distintos vistos
-  // no CSV, que e o suficiente pra reportar "quantos clubes/ligas/nacoes
-  // apareceriam" sem tocar o banco.
   final dryRunClubs = <String>{};
   final dryRunLeagues = <String>{};
   final dryRunNations = <String>{};
+  final dryRunPlayers = <String>{};
   var rowsRead = 0;
   var rowsValid = 0;
   var rowsSkipped = 0;
   var rowsInserted = 0;
   var rowsUpdated = 0;
   var rowsFailed = 0;
+  var rowsBaseDatasetOnly = 0;
+  var playersUpserted = 0;
 
-  for (final row in rows.skip(1)) {
+  for (final rawRow in rawRows) {
     rowsRead++;
-    String? col(String field) {
-      final columnName = mapping.get(field);
-      final index = headerIndex[columnName];
-      if (index == null || index >= row.length) {
-        return null;
-      }
-      final value = row[index].trim();
-      return value.isEmpty ? null : value;
+    String? col(String field) => _stringOrNull(rawRow[mapping.get(field)]);
+    int? colInt(String field) => int.tryParse(col(field) ?? '');
+    List<String> colList(String field) {
+      final raw = col(field);
+      return raw == null
+          ? const <String>[]
+          : raw
+                .split(RegExp(r'[|,/]'))
+                .map((p) => p.trim())
+                .where((p) => p.isNotEmpty)
+                .toList(growable: false);
     }
 
-    int? colInt(String field) => int.tryParse(col(field) ?? '');
+    // player_positions em datasets estilo sofifa vem como uma lista unica,
+    // ex. "ST, LW, CF" -- a primeira e a posicao primaria, o resto sao as
+    // alternativas.
+    final positionsList = colList('primary_position');
+    final primaryPosition = positionsList.isEmpty
+        ? null
+        : positionsList.first.toUpperCase();
+    final alternativePositions = positionsList.length <= 1
+        ? const <String>[]
+        : positionsList
+              .skip(1)
+              .map((p) => p.toUpperCase())
+              .toList(growable: false);
 
     final providerCardId = col('provider_card_id') ?? col('player_name');
     final playerName = col('player_name');
     final rating = colInt('rating');
-
-    // player_positions em datasets estilo sofifa vem como uma lista unica,
-    // ex. "ST, LW, CF" -- a primeira e a posicao primaria, o resto sao as
-    // alternativas. Ler primary_position e alternative_positions do mesmo
-    // valor cru (como o mapeamento default faz) exige separar aqui; nunca
-    // jogar a string toda em primary_position.
-    final positionsRaw = col('primary_position');
-    final positionsList = positionsRaw
-        ?.split(RegExp(r'[|,/]'))
-        .map((p) => p.trim().toUpperCase())
-        .where((p) => p.isNotEmpty)
-        .toList(growable: false);
-    final primaryPosition = (positionsList == null || positionsList.isEmpty)
-        ? null
-        : positionsList.first;
 
     if (providerCardId == null ||
         playerName == null ||
@@ -161,15 +180,21 @@ Future<void> main(List<String> args) async {
     }
     rowsValid++;
 
-    final isGoalkeeper = primaryPosition.toUpperCase() == 'GK';
-
+    final isGoalkeeper = primaryPosition == 'GK';
     final clubName = col('club_name');
     final leagueName = col('league_name');
     final nationName = col('nation_name');
+    final providerPlayerId = col('provider_player_id');
+    final hadExplicitCardId = col('provider_card_id') != null;
 
     if (clubName != null) dryRunClubs.add(clubName);
     if (leagueName != null) dryRunLeagues.add(leagueName);
     if (nationName != null) dryRunNations.add(nationName);
+    if (providerPlayerId != null) {
+      dryRunPlayers.add(
+        '${options.provider}:${options.gameVersion}:$providerPlayerId',
+      );
+    }
 
     String? clubId;
     String? leagueId;
@@ -199,78 +224,101 @@ Future<void> main(List<String> args) async {
             );
     }
 
-    // alternative_positions mapeia pra mesma coluna player_positions no
-    // default (dataset nao separa primaria de alternativas em colunas
-    // distintas) -- reaproveita a lista ja quebrada acima, tirando a
-    // primaria para nao duplicar.
-    final alternativePositions =
-        (positionsList == null || positionsList.length <= 1)
-        ? const <String>[]
-        : positionsList.skip(1).toList(growable: false);
+    final externalCard = ExternalFcCard(
+      provider: options.provider,
+      gameVersion: options.gameVersion,
+      providerCardId: providerCardId,
+      providerPlayerId: providerPlayerId,
+      playerName: playerName,
+      commonName: col('common_name'),
+      rating: rating,
+      primaryPosition: primaryPosition,
+      alternativePositions: alternativePositions,
+      pace: isGoalkeeper ? null : colInt('pace'),
+      shooting: isGoalkeeper ? null : colInt('shooting'),
+      passing: isGoalkeeper ? null : colInt('passing'),
+      dribbling: isGoalkeeper ? null : colInt('dribbling'),
+      defending: isGoalkeeper ? null : colInt('defending'),
+      physical: isGoalkeeper ? null : colInt('physical'),
+      gkDiving: isGoalkeeper ? colInt('gk_diving') : null,
+      gkHandling: isGoalkeeper ? colInt('gk_handling') : null,
+      gkKicking: isGoalkeeper ? colInt('gk_kicking') : null,
+      gkReflexes: isGoalkeeper ? colInt('gk_reflexes') : null,
+      gkSpeed: isGoalkeeper ? colInt('gk_speed') : null,
+      gkPositioning: isGoalkeeper ? colInt('gk_positioning') : null,
+      skillMoves: colInt('skill_moves'),
+      weakFoot: colInt('weak_foot'),
+      playstyles: colList('playstyles'),
+      heightCm: colInt('height_cm'),
+      preferredFoot: col('preferred_foot')?.toUpperCase(),
+      playerRoles: colList('player_roles'),
+      // card_type explicito no input e o unico sinal aceito de "carta real
+      // declarada" -- nunca inventamos um a partir de rarity sozinho (o
+      // dataset ja pesquisado nao tem rarity de UT de verdade).
+      rarity: col('rarity'),
+      cardType: col('card_type'),
+      playerImageUrl: col('player_image_url'),
+      cardImageUrl: col('card_image_url') ?? col('player_image_url'),
+      clubName: clubName,
+      leagueName: leagueName,
+      nationName: nationName,
+      sourceUrl: options.sourceUrl,
+    );
 
-    final playstylesRaw = col('playstyles');
-    final playstyles = playstylesRaw == null
-        ? const <String>[]
-        : playstylesRaw
-              .split(RegExp(r'[|,/]'))
-              .map((p) => p.trim())
-              .where((p) => p.isNotEmpty)
-              .toList(growable: false);
+    if (externalCard.isBaseDatasetOnly(hadExplicitCardId: hadExplicitCardId)) {
+      // Sem sinal de carta real (nem provider_card_id proprio, nem
+      // card_type/rarity declarados): toFcPlayerCardsRow() ja resolve
+      // card_type para 'BASE_DATASET' -- nunca fingimos uma carta que o
+      // input nao declarou. A linha em fc_player_cards ainda e criada por
+      // compatibilidade com o picker (card-centric).
+      rowsBaseDatasetOnly++;
+    }
 
-    final playerRolesRaw = col('player_roles');
-    final playerRoles = playerRolesRaw == null
-        ? const <String>[]
-        : playerRolesRaw
-              .split(RegExp(r'[|,/]'))
-              .map((p) => p.trim())
-              .where((p) => p.isNotEmpty)
-              .toList(growable: false);
+    String? fcPlayerId;
+    if (providerPlayerId != null) {
+      final externalPlayer = ExternalFcPlayer(
+        provider: options.provider,
+        gameVersion: options.gameVersion,
+        providerPlayerId: providerPlayerId,
+        name: playerName,
+        commonName: col('common_name'),
+        nationName: nationName,
+        clubName: clubName,
+        leagueName: leagueName,
+        primaryPosition: primaryPosition,
+        alternativePositions: alternativePositions,
+        imageUrl: col('player_image_url'),
+        heightCm: colInt('height_cm'),
+        preferredFoot: col('preferred_foot')?.toUpperCase(),
+        weakFoot: colInt('weak_foot'),
+        skillMoves: colInt('skill_moves'),
+      );
 
-    final payload = <String, dynamic>{
-      'provider': options.provider,
-      'provider_card_id': providerCardId,
-      'game_version': options.gameVersion,
-      'player_name': playerName,
-      'common_name': col('common_name'),
-      'rating': rating,
-      'primary_position': primaryPosition.toUpperCase(),
-      'alternative_positions': alternativePositions,
-      'pace': isGoalkeeper ? null : colInt('pace'),
-      'shooting': isGoalkeeper ? null : colInt('shooting'),
-      'passing': isGoalkeeper ? null : colInt('passing'),
-      'dribbling': isGoalkeeper ? null : colInt('dribbling'),
-      'defending': isGoalkeeper ? null : colInt('defending'),
-      'physical': isGoalkeeper ? null : colInt('physical'),
-      'gk_diving': isGoalkeeper ? colInt('gk_diving') : null,
-      'gk_handling': isGoalkeeper ? colInt('gk_handling') : null,
-      'gk_kicking': isGoalkeeper ? colInt('gk_kicking') : null,
-      'gk_reflexes': isGoalkeeper ? colInt('gk_reflexes') : null,
-      'gk_speed': isGoalkeeper ? colInt('gk_speed') : null,
-      'gk_positioning': isGoalkeeper ? colInt('gk_positioning') : null,
-      'skill_moves': colInt('skill_moves'),
-      'weak_foot': colInt('weak_foot'),
-      'playstyles': playstyles,
-      'height_cm': colInt('height_cm'),
-      'preferred_foot': col('preferred_foot')?.toUpperCase(),
-      'player_roles': playerRoles,
-      'rarity': col('rarity'),
-      'player_image_url': col('player_image_url'),
-      'card_image_url': col('card_image_url'),
-      'club_name': clubName,
-      'league_name': leagueName,
-      'nation_name': nationName,
-      'club_id': clubId,
-      'league_id': leagueId,
-      'nation_id': nationId,
-      // BASE_DATASET quando o CSV nao declara card_type/rarity de verdade --
-      // datasets de player database (sofifa-style) nao tem versao de carta
-      // Ultimate Team, so o jogador base. Nunca fingir "Special Card" pra
-      // uma fonte que nao distingue isso (docs/card_provider_research.md).
-      'card_type': col('card_type') ?? 'BASE_DATASET',
-      'is_active': true,
-      'last_synced_at': DateTime.now().toUtc().toIso8601String(),
-      'source_url': options.sourceUrl,
-    };
+      if (client != null) {
+        fcPlayerId = await client.upsertFcPlayer(
+          provider: externalPlayer.provider,
+          gameVersion: externalPlayer.gameVersion,
+          providerPlayerId: externalPlayer.providerPlayerId,
+          row: externalPlayer.toFcPlayersRow(
+            nationId: nationId,
+            clubId: clubId,
+            leagueId: leagueId,
+            syncedAt: DateTime.now().toUtc(),
+          ),
+        );
+        if (fcPlayerId != null) {
+          playersUpserted++;
+        }
+      }
+    }
+
+    final payload = externalCard.toFcPlayerCardsRow(
+      clubId: clubId,
+      leagueId: leagueId,
+      nationId: nationId,
+      fcPlayerId: fcPlayerId,
+      syncedAt: DateTime.now().toUtc(),
+    );
 
     seenProviderCardIds.add(providerCardId);
 
@@ -299,23 +347,34 @@ Future<void> main(List<String> args) async {
   }
 
   stdout.writeln('${options.dryRun ? '[DRY-RUN] ' : ''}Resultado do sync:');
+  stdout.writeln('  formato:     ${options.format.name}');
   stdout.writeln('  lidos:       $rowsRead');
   stdout.writeln('  validos:     $rowsValid');
   stdout.writeln('  ignorados:   $rowsSkipped (campo obrigatorio ausente)');
   stdout.writeln('  inseridos:   $rowsInserted');
   stdout.writeln('  atualizados: $rowsUpdated');
   stdout.writeln('  falhas:      $rowsFailed');
+  stdout.writeln(
+    '  sem sinal de carta real (card_type=BASE_DATASET): $rowsBaseDatasetOnly',
+  );
   if (options.dryRun) {
-    stdout.writeln('  nations distintas no CSV: ${dryRunNations.length}');
-    stdout.writeln('  leagues distintas no CSV: ${dryRunLeagues.length}');
-    stdout.writeln('  clubs distintos no CSV:   ${dryRunClubs.length}');
+    stdout.writeln(
+      '  jogadores (fc_players) distintos no arquivo: '
+      '${dryRunPlayers.length}',
+    );
+    stdout.writeln('  nations distintas no arquivo: ${dryRunNations.length}');
+    stdout.writeln('  leagues distintas no arquivo: ${dryRunLeagues.length}');
+    stdout.writeln('  clubs distintos no arquivo:   ${dryRunClubs.length}');
+  } else {
+    stdout.writeln('  fc_players upsertados: $playersUpserted');
   }
 
   if (client != null) {
     final deactivated = await client.deactivateMissing(
       table: 'fc_player_cards',
+      idColumn: 'provider_card_id',
       provider: options.provider,
-      keepProviderCardIds: seenProviderCardIds,
+      keepIds: seenProviderCardIds,
     );
     stdout.writeln(
       'Cartas is_active=false por nao aparecerem nesta rodada: $deactivated',
@@ -323,9 +382,19 @@ Future<void> main(List<String> args) async {
   }
 }
 
+String? _stringOrNull(Object? value) {
+  if (value == null) return null;
+  final text = value is String ? value : '$value';
+  final trimmed = text.trim();
+  return trimmed.isEmpty ? null : trimmed;
+}
+
+enum _InputFormat { csv, json }
+
 class _Args {
   _Args({
-    required this.csvPath,
+    required this.filePath,
+    required this.format,
     required this.provider,
     required this.gameVersion,
     required this.mapPath,
@@ -333,7 +402,8 @@ class _Args {
     this.sourceUrl,
   });
 
-  final String csvPath;
+  final String filePath;
+  final _InputFormat format;
   final String provider;
   final String gameVersion;
   final String? mapPath;
@@ -341,7 +411,9 @@ class _Args {
   final String? sourceUrl;
 
   static _Args parse(List<String> args) {
-    String? csvPath;
+    String? filePath;
+    _InputFormat? forcedFormat;
+    var isLegacyCsvFlag = false;
     var provider = 'COMMUNITY_CSV';
     var gameVersion = 'FC27';
     String? mapPath;
@@ -349,8 +421,14 @@ class _Args {
     String? sourceUrl;
 
     for (final arg in args) {
-      if (arg.startsWith('--csv=')) {
-        csvPath = arg.substring('--csv='.length);
+      if (arg.startsWith('--file=')) {
+        filePath = arg.substring('--file='.length);
+      } else if (arg.startsWith('--csv=')) {
+        filePath = arg.substring('--csv='.length);
+        isLegacyCsvFlag = true;
+      } else if (arg.startsWith('--format=')) {
+        final value = arg.substring('--format='.length).toLowerCase();
+        forcedFormat = value == 'json' ? _InputFormat.json : _InputFormat.csv;
       } else if (arg.startsWith('--provider=')) {
         provider = arg.substring('--provider='.length);
       } else if (arg.startsWith('--game-version=')) {
@@ -364,15 +442,28 @@ class _Args {
       }
     }
 
-    if (csvPath == null) {
+    if (filePath == null) {
       stderr.writeln(
-        'Uso: dart run tool/sync_fc_cards.dart --csv=<path> [--provider=...] [--dry-run]',
+        'Uso: dart run tool/sync_fc_cards.dart --file=<path> '
+        '[--provider=...] [--game-version=...] [--format=csv|json] '
+        '[--map=...] [--dry-run]\n'
+        '(--csv=<path> continua aceito como forma antiga, equivalente a '
+        '--file=<path> --format=csv)',
       );
       exit(1);
     }
 
+    final format =
+        forcedFormat ??
+        (isLegacyCsvFlag
+            ? _InputFormat.csv
+            : (filePath.toLowerCase().endsWith('.json')
+                  ? _InputFormat.json
+                  : _InputFormat.csv));
+
     return _Args(
-      csvPath: csvPath,
+      filePath: filePath,
+      format: format,
       provider: provider,
       gameVersion: gameVersion,
       mapPath: mapPath,
@@ -382,16 +473,22 @@ class _Args {
   }
 }
 
-/// Mapeamento "campo nosso -> coluna do CSV". O default e um palpite
-/// razoavel para datasets no estilo FC26-DataHub/SoFIFA -- CONFERIR contra
-/// o cabecalho real do CSV antes do primeiro sync (rodar com --dry-run e
-/// olhar se `cardsSkippedNoRating` bate com o esperado).
-class _ColumnMapping {
-  _ColumnMapping(this._overrides);
+/// Mapeamento "campo nosso -> chave no arquivo de origem".
+///
+/// CSV: default no estilo FC26-DataHub/SoFIFA (o unico dataset ja
+/// pesquisado -- docs/card_provider_research.md), porque cabecalhos de CSV
+/// variam por fonte e precisam de um palpite razoavel. CONFERIR contra o
+/// cabecalho real antes do primeiro sync (--dry-run mostra quantas linhas
+/// seriam ignoradas por falta de campo obrigatorio).
+///
+/// JSON: default identidade -- o formato pensado para "qualquer fonte
+/// futura" ja usa os nomes canonicos, entao nao ha cabecalho pra adivinhar.
+class _FieldMapping {
+  _FieldMapping(this._overrides);
 
   final Map<String, String> _overrides;
 
-  static const Map<String, String> _defaults = <String, String>{
+  static const Map<String, String> _csvDefaults = <String, String>{
     'provider_card_id': 'sofifa_id',
     'player_name': 'long_name',
     'common_name': 'short_name',
@@ -425,158 +522,64 @@ class _ColumnMapping {
     'card_type': 'card_type',
   };
 
-  static Future<_ColumnMapping> load(String? path) async {
+  static Future<_FieldMapping> load(String? path, _InputFormat format) async {
+    final defaults = format == _InputFormat.csv
+        ? _csvDefaults
+        : const <String, String>{};
     if (path == null) {
-      return _ColumnMapping(_defaults);
+      return _FieldMapping(defaults);
     }
     final file = File(path);
     if (!file.existsSync()) {
       stderr.writeln(
         '--map aponta para arquivo inexistente: $path -- usando default.',
       );
-      return _ColumnMapping(_defaults);
+      return _FieldMapping(defaults);
     }
     final decoded =
         jsonDecode(await file.readAsString()) as Map<String, dynamic>;
-    return _ColumnMapping(<String, String>{
-      ..._defaults,
+    return _FieldMapping(<String, String>{
+      ...defaults,
       for (final entry in decoded.entries) entry.key: '${entry.value}',
     });
   }
 
-  String get(String field) => _overrides[field] ?? _defaults[field] ?? field;
-}
-
-/// Cliente HTTP fino contra o PostgREST do Supabase, autenticado com a
-/// secret key -- nunca importado pelo app Flutter (vive so em tool/).
-class _SupabaseAdmin {
-  _SupabaseAdmin({required this.baseUrl, required this.secretKey});
-
-  final String baseUrl;
-  final String secretKey;
-
-  Map<String, String> get _headers => <String, String>{
-    'apikey': secretKey,
-    'Authorization': 'Bearer $secretKey',
-    'Content-Type': 'application/json',
-  };
-
-  /// Upsert por nome (nacao/liga/clube). O "provider" so serve pra rastrear
-  /// origem; o conflito real e por nome, pra nao duplicar "Brasil" a cada
-  /// linha de carta que cita o mesmo pais.
-  Future<String?> upsertByName({
-    required String table,
-    required String provider,
-    required String name,
-    Map<String, dynamic> extra = const <String, dynamic>{},
-  }) async {
-    final existing = await http.get(
-      Uri.parse(
-        '$baseUrl/rest/v1/$table?name=eq.${Uri.encodeComponent(name)}&select=id&limit=1',
-      ),
-      headers: _headers,
-    );
-    final rows = jsonDecode(existing.body) as List<dynamic>;
-    if (rows.isNotEmpty) {
-      return (rows.first as Map<String, dynamic>)['id'] as String?;
-    }
-
-    final response = await http.post(
-      Uri.parse('$baseUrl/rest/v1/$table'),
-      headers: <String, String>{..._headers, 'Prefer': 'return=representation'},
-      body: jsonEncode(<String, dynamic>{
-        'provider': provider,
-        'name': name,
-        ...extra,
-      }),
-    );
-    final created = jsonDecode(response.body);
-    if (created is List && created.isNotEmpty) {
-      return (created.first as Map<String, dynamic>)['id'] as String?;
-    }
-    return null;
-  }
-
-  /// Todos os provider_card_id ja existentes para este provider -- buscado
-  /// uma vez antes do loop principal para que o sync saiba, por linha, se
-  /// vai inserir ou atualizar (o upsert do PostgREST nao diferencia isso
-  /// pelo status HTTP).
-  Future<Set<String>> fetchExistingProviderCardIds({
-    required String table,
-    required String provider,
-  }) async {
-    final response = await http.get(
-      Uri.parse(
-        '$baseUrl/rest/v1/$table?provider=eq.${Uri.encodeComponent(provider)}'
-        '&select=provider_card_id',
-      ),
-      headers: _headers,
-    );
-    if (response.statusCode >= 300) {
-      stderr.writeln(
-        'Falha ao listar provider_card_id existentes: '
-        '${response.statusCode} ${response.body}',
-      );
-      return <String>{};
-    }
-    final rows = jsonDecode(response.body) as List<dynamic>;
-    return <String>{
-      for (final row in rows)
-        (row as Map<String, dynamic>)['provider_card_id'] as String,
-    };
-  }
-
-  /// Retorna false em falha (sem lancar) -- quem chama conta sucesso/falha
-  /// para o relatorio final, nao interrompe o resto do sync por uma linha.
-  Future<bool> upsert({
-    required String table,
-    required String onConflict,
-    required Map<String, dynamic> row,
-  }) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/rest/v1/$table?on_conflict=$onConflict'),
-      headers: <String, String>{
-        ..._headers,
-        'Prefer': 'resolution=merge-duplicates,return=minimal',
-      },
-      body: jsonEncode(row),
-    );
-    if (response.statusCode >= 300) {
-      stderr.writeln(
-        'Falha ao upsertar $table: ${response.statusCode} ${response.body}',
-      );
-      return false;
-    }
-    return true;
-  }
-
-  /// Marca is_active=false para toda carta DAQUELE provider que nao
-  /// apareceu nesta rodada de sync -- nunca deleta.
-  Future<int> deactivateMissing({
-    required String table,
-    required String provider,
-    required Set<String> keepProviderCardIds,
-  }) async {
-    if (keepProviderCardIds.isEmpty) {
-      return 0;
-    }
-    final idsList = keepProviderCardIds.map((id) => '"$id"').join(',');
-    final response = await http.patch(
-      Uri.parse(
-        '$baseUrl/rest/v1/$table?provider=eq.$provider'
-        '&provider_card_id=not.in.($idsList)&is_active=eq.true',
-      ),
-      headers: <String, String>{..._headers, 'Prefer': 'return=representation'},
-      body: jsonEncode(<String, dynamic>{'is_active': false}),
-    );
-    final updated = jsonDecode(response.body);
-    return updated is List ? updated.length : 0;
-  }
+  /// Para JSON sem override, cai no proprio nome do campo (identidade) --
+  /// para CSV sem override e sem default conhecido, tambem cai no proprio
+  /// nome (comportamento historico: aceita coluna com o nome canonico
+  /// literal, ex. `provider_player_id`, mesmo fora dos defaults do dataset
+  /// ja pesquisado).
+  String get(String field) => _overrides[field] ?? field;
 }
 
 /// Parser CSV simples (RFC 4180: campos entre aspas podem conter virgula e
 /// quebra de linha). Sem dependencia de package:csv de proposito -- um
 /// script de sync nao precisa de mais uma dependencia no pubspec principal.
+List<Map<String, dynamic>> _parseCsvAsRows(String content) {
+  final rows = _parseCsv(content);
+  if (rows.isEmpty) return const <Map<String, dynamic>>[];
+  final header = rows.first;
+  return <Map<String, dynamic>>[
+    for (final row in rows.skip(1))
+      <String, dynamic>{
+        for (var i = 0; i < header.length; i++)
+          header[i].trim(): i < row.length ? row[i] : null,
+      },
+  ];
+}
+
+List<Map<String, dynamic>> _parseJson(String content) {
+  final decoded = jsonDecode(content);
+  if (decoded is! List) {
+    stderr.writeln('JSON invalido: esperado um array de objetos no topo.');
+    return const <Map<String, dynamic>>[];
+  }
+  return <Map<String, dynamic>>[
+    for (final item in decoded)
+      if (item is Map) Map<String, dynamic>.from(item),
+  ];
+}
+
 List<List<String>> _parseCsv(String content) {
   final rows = <List<String>>[];
   var row = <String>[];
@@ -634,4 +637,168 @@ List<List<String>> _parseCsv(String content) {
     endRow();
   }
   return rows;
+}
+
+/// Cliente HTTP fino contra o PostgREST do Supabase, autenticado com a
+/// secret key -- nunca importado pelo app Flutter (vive so em tool/).
+class _SupabaseAdmin {
+  _SupabaseAdmin({required this.baseUrl, required this.secretKey});
+
+  final String baseUrl;
+  final String secretKey;
+
+  Map<String, String> get _headers => <String, String>{
+    'apikey': secretKey,
+    'Authorization': 'Bearer $secretKey',
+    'Content-Type': 'application/json',
+  };
+
+  /// Upsert por nome (nacao/liga/clube). O "provider" so serve pra rastrear
+  /// origem; o conflito real e por nome, pra nao duplicar "Brasil" a cada
+  /// linha de carta que cita o mesmo pais.
+  Future<String?> upsertByName({
+    required String table,
+    required String provider,
+    required String name,
+    Map<String, dynamic> extra = const <String, dynamic>{},
+  }) async {
+    final existing = await http.get(
+      Uri.parse(
+        '$baseUrl/rest/v1/$table?name=eq.${Uri.encodeComponent(name)}&select=id&limit=1',
+      ),
+      headers: _headers,
+    );
+    final rows = jsonDecode(existing.body) as List<dynamic>;
+    if (rows.isNotEmpty) {
+      return (rows.first as Map<String, dynamic>)['id'] as String?;
+    }
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/rest/v1/$table'),
+      headers: <String, String>{..._headers, 'Prefer': 'return=representation'},
+      body: jsonEncode(<String, dynamic>{
+        'provider': provider,
+        'name': name,
+        ...extra,
+      }),
+    );
+    final created = jsonDecode(response.body);
+    if (created is List && created.isNotEmpty) {
+      return (created.first as Map<String, dynamic>)['id'] as String?;
+    }
+    return null;
+  }
+
+  /// Upsert de um atleta base por (provider, game_version,
+  /// provider_player_id). Mesmo padrao de `upsert`, mas precisa devolver o
+  /// id gerado/existente para a carta linkar `fc_player_id`.
+  Future<String?> upsertFcPlayer({
+    required String provider,
+    required String gameVersion,
+    required String providerPlayerId,
+    required Map<String, dynamic> row,
+  }) async {
+    final response = await http.post(
+      Uri.parse(
+        '$baseUrl/rest/v1/fc_players'
+        '?on_conflict=provider,game_version,provider_player_id',
+      ),
+      headers: <String, String>{
+        ..._headers,
+        'Prefer': 'resolution=merge-duplicates,return=representation',
+      },
+      body: jsonEncode(row),
+    );
+    if (response.statusCode >= 300) {
+      stderr.writeln(
+        'Falha ao upsertar fc_players ($provider/$gameVersion/'
+        '$providerPlayerId): ${response.statusCode} ${response.body}',
+      );
+      return null;
+    }
+    final decoded = jsonDecode(response.body);
+    if (decoded is List && decoded.isNotEmpty) {
+      return (decoded.first as Map<String, dynamic>)['id'] as String?;
+    }
+    return null;
+  }
+
+  /// Todos os ids externos ja existentes para este provider (carta:
+  /// provider_card_id) -- buscado uma vez antes do loop principal para que
+  /// o sync saiba, por linha, se vai inserir ou atualizar (o upsert do
+  /// PostgREST nao diferencia isso pelo status HTTP).
+  Future<Set<String>> fetchExistingProviderIds({
+    required String table,
+    required String idColumn,
+    required String provider,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/rest/v1/$table?provider=eq.${Uri.encodeComponent(provider)}'
+        '&select=$idColumn',
+      ),
+      headers: _headers,
+    );
+    if (response.statusCode >= 300) {
+      stderr.writeln(
+        'Falha ao listar $idColumn existentes: '
+        '${response.statusCode} ${response.body}',
+      );
+      return <String>{};
+    }
+    final rows = jsonDecode(response.body) as List<dynamic>;
+    return <String>{
+      for (final row in rows)
+        if ((row as Map<String, dynamic>)[idColumn] != null)
+          row[idColumn] as String,
+    };
+  }
+
+  /// Retorna false em falha (sem lancar) -- quem chama conta sucesso/falha
+  /// para o relatorio final, nao interrompe o resto do sync por uma linha.
+  Future<bool> upsert({
+    required String table,
+    required String onConflict,
+    required Map<String, dynamic> row,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/rest/v1/$table?on_conflict=$onConflict'),
+      headers: <String, String>{
+        ..._headers,
+        'Prefer': 'resolution=merge-duplicates,return=minimal',
+      },
+      body: jsonEncode(row),
+    );
+    if (response.statusCode >= 300) {
+      stderr.writeln(
+        'Falha ao upsertar $table: ${response.statusCode} ${response.body}',
+      );
+      return false;
+    }
+    return true;
+  }
+
+  /// Marca is_active=false para toda carta DAQUELE provider que nao
+  /// apareceu nesta rodada de sync -- nunca deleta.
+  Future<int> deactivateMissing({
+    required String table,
+    required String idColumn,
+    required String provider,
+    required Set<String> keepIds,
+  }) async {
+    if (keepIds.isEmpty) {
+      return 0;
+    }
+    final idsList = keepIds.map((id) => '"$id"').join(',');
+    final response = await http.patch(
+      Uri.parse(
+        '$baseUrl/rest/v1/$table?provider=eq.$provider'
+        '&$idColumn=not.in.($idsList)&is_active=eq.true',
+      ),
+      headers: <String, String>{..._headers, 'Prefer': 'return=representation'},
+      body: jsonEncode(<String, dynamic>{'is_active': false}),
+    );
+    final updated = jsonDecode(response.body);
+    return updated is List ? updated.length : 0;
+  }
 }
