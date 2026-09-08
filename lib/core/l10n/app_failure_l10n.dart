@@ -83,5 +83,14 @@ extension AppFailureL10n on AppFailure {
       FcAccountFailureReason.invalidDivision =>
         l10n.errorFcAccountInvalidDivision,
     },
+    PublicProfileFailure(:final reason) => switch (reason) {
+      PublicProfileFailureReason.invalidSlugFormat =>
+        l10n.errorPublicProfileInvalidSlug,
+      PublicProfileFailureReason.reservedSlug =>
+        l10n.errorPublicProfileReservedSlug,
+      PublicProfileFailureReason.slugTaken => l10n.errorPublicProfileSlugTaken,
+      PublicProfileFailureReason.slugRequired =>
+        l10n.errorPublicProfileSlugRequired,
+    },
   };
 }

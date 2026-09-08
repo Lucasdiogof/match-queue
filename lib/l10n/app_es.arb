@@ -1109,5 +1109,62 @@
         "type": "int"
       }
     }
-  }
+  },
+  "profileSharingRow": "Compartir",
+  "publicProfileSectionTitle": "Compartir",
+  "publicProfileMasterSwitchLabel": "Perfil público",
+  "publicProfileMasterSwitchHint": "Haz tu perfil visible mediante un enlace público, sin necesitar cuenta en la app.",
+  "publicProfileStatusActive": "Perfil público: Activo",
+  "publicProfileStatusInactive": "Perfil público: Inactivo",
+  "publicProfileSlugLabel": "Dirección de tu perfil",
+  "publicProfileSlugHint": "3 a 24 letras minúsculas, números o _",
+  "publicProfileSlugAvailable": "Disponible",
+  "publicProfileSlugUnavailable": "Esta dirección ya está en uso",
+  "publicProfileSlugChecking": "Comprobando…",
+  "publicProfileSlugInvalid": "Dirección inválida",
+  "publicProfileAccountLabel": "Cuenta pública",
+  "publicProfileAccountEmpty": "Ninguna cuenta seleccionada",
+  "publicProfileToggleSquad": "Alineación Principal",
+  "publicProfileToggleWeekendLeague": "Weekend League",
+  "publicProfileToggleRivals": "Division Rivals",
+  "publicProfileToggleStats": "Estadísticas generales",
+  "publicProfileCopyLinkAction": "Copiar enlace",
+  "publicProfileLinkCopied": "Enlace copiado",
+  "publicProfileShareAction": "Compartir",
+  "publicProfileShareImageAction": "Compartir imagen",
+  "publicProfileShareImageError": "No se pudo compartir la imagen en este dispositivo.",
+  "publicProfileSaveAction": "Guardar",
+  "publicProfileSaved": "Configuración guardada",
+  "publicProfilePreviewTitle": "Vista previa",
+  "publicProfilePageTitle": "Perfil",
+  "publicProfileNotFoundTitle": "Perfil no encontrado",
+  "publicProfileNotFoundMessage": "Este enlace no existe o ya no está disponible.",
+  "publicProfileShareAccountCta": "Compartir esta Cuenta",
+  "publicProfileShareSquadCta": "Compartir alineación",
+  "publicProfileEnableFirstMessage": "Activa tu perfil público para compartir tu alineación.",
+  "publicProfileGoToSettingsAction": "Ir a Compartir",
+  "publicProfileEditSharingCta": "Editar compartir",
+  "publicProfileNoAccountsHint": "Crea una Cuenta antes de compartir.",
+  "errorPublicProfileInvalidSlug": "Dirección inválida. Usa 3-24 letras minúsculas, números o _.",
+  "errorPublicProfileReservedSlug": "Esta dirección está reservada, elige otra.",
+  "errorPublicProfileSlugTaken": "Esta dirección ya está en uso.",
+  "errorPublicProfileSlugRequired": "Elige una dirección antes de activar tu perfil público.",
+  "validationPublicProfileSlugRequired": "Elige una dirección para tu perfil.",
+  "validationPublicProfileSlugTooShort": "La dirección necesita al menos {min} caracteres.",
+  "@validationPublicProfileSlugTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPublicProfileSlugTooLong": "La dirección puede tener como máximo {max} caracteres.",
+  "@validationPublicProfileSlugTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPublicProfileSlugInvalid": "Usa solo letras minúsculas, números o _."
 }

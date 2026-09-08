@@ -2085,4 +2085,147 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get profileSharingRow => 'Compartir';
+
+  @override
+  String get publicProfileSectionTitle => 'Compartir';
+
+  @override
+  String get publicProfileMasterSwitchLabel => 'Perfil público';
+
+  @override
+  String get publicProfileMasterSwitchHint =>
+      'Haz tu perfil visible mediante un enlace público, sin necesitar cuenta en la app.';
+
+  @override
+  String get publicProfileStatusActive => 'Perfil público: Activo';
+
+  @override
+  String get publicProfileStatusInactive => 'Perfil público: Inactivo';
+
+  @override
+  String get publicProfileSlugLabel => 'Dirección de tu perfil';
+
+  @override
+  String get publicProfileSlugHint => '3 a 24 letras minúsculas, números o _';
+
+  @override
+  String get publicProfileSlugAvailable => 'Disponible';
+
+  @override
+  String get publicProfileSlugUnavailable => 'Esta dirección ya está en uso';
+
+  @override
+  String get publicProfileSlugChecking => 'Comprobando…';
+
+  @override
+  String get publicProfileSlugInvalid => 'Dirección inválida';
+
+  @override
+  String get publicProfileAccountLabel => 'Cuenta pública';
+
+  @override
+  String get publicProfileAccountEmpty => 'Ninguna cuenta seleccionada';
+
+  @override
+  String get publicProfileToggleSquad => 'Alineación Principal';
+
+  @override
+  String get publicProfileToggleWeekendLeague => 'Weekend League';
+
+  @override
+  String get publicProfileToggleRivals => 'Division Rivals';
+
+  @override
+  String get publicProfileToggleStats => 'Estadísticas generales';
+
+  @override
+  String get publicProfileCopyLinkAction => 'Copiar enlace';
+
+  @override
+  String get publicProfileLinkCopied => 'Enlace copiado';
+
+  @override
+  String get publicProfileShareAction => 'Compartir';
+
+  @override
+  String get publicProfileShareImageAction => 'Compartir imagen';
+
+  @override
+  String get publicProfileShareImageError =>
+      'No se pudo compartir la imagen en este dispositivo.';
+
+  @override
+  String get publicProfileSaveAction => 'Guardar';
+
+  @override
+  String get publicProfileSaved => 'Configuración guardada';
+
+  @override
+  String get publicProfilePreviewTitle => 'Vista previa';
+
+  @override
+  String get publicProfilePageTitle => 'Perfil';
+
+  @override
+  String get publicProfileNotFoundTitle => 'Perfil no encontrado';
+
+  @override
+  String get publicProfileNotFoundMessage =>
+      'Este enlace no existe o ya no está disponible.';
+
+  @override
+  String get publicProfileShareAccountCta => 'Compartir esta Cuenta';
+
+  @override
+  String get publicProfileShareSquadCta => 'Compartir alineación';
+
+  @override
+  String get publicProfileEnableFirstMessage =>
+      'Activa tu perfil público para compartir tu alineación.';
+
+  @override
+  String get publicProfileGoToSettingsAction => 'Ir a Compartir';
+
+  @override
+  String get publicProfileEditSharingCta => 'Editar compartir';
+
+  @override
+  String get publicProfileNoAccountsHint =>
+      'Crea una Cuenta antes de compartir.';
+
+  @override
+  String get errorPublicProfileInvalidSlug =>
+      'Dirección inválida. Usa 3-24 letras minúsculas, números o _.';
+
+  @override
+  String get errorPublicProfileReservedSlug =>
+      'Esta dirección está reservada, elige otra.';
+
+  @override
+  String get errorPublicProfileSlugTaken => 'Esta dirección ya está en uso.';
+
+  @override
+  String get errorPublicProfileSlugRequired =>
+      'Elige una dirección antes de activar tu perfil público.';
+
+  @override
+  String get validationPublicProfileSlugRequired =>
+      'Elige una dirección para tu perfil.';
+
+  @override
+  String validationPublicProfileSlugTooShort(int min) {
+    return 'La dirección necesita al menos $min caracteres.';
+  }
+
+  @override
+  String validationPublicProfileSlugTooLong(int max) {
+    return 'La dirección puede tener como máximo $max caracteres.';
+  }
+
+  @override
+  String get validationPublicProfileSlugInvalid =>
+      'Usa solo letras minúsculas, números o _.';
 }

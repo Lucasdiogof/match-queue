@@ -2072,4 +2072,146 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get profileSharingRow => 'Sharing';
+
+  @override
+  String get publicProfileSectionTitle => 'Sharing';
+
+  @override
+  String get publicProfileMasterSwitchLabel => 'Public profile';
+
+  @override
+  String get publicProfileMasterSwitchHint =>
+      'Make your profile visible through a public link, no app account needed.';
+
+  @override
+  String get publicProfileStatusActive => 'Public profile: Active';
+
+  @override
+  String get publicProfileStatusInactive => 'Public profile: Inactive';
+
+  @override
+  String get publicProfileSlugLabel => 'Your profile address';
+
+  @override
+  String get publicProfileSlugHint => '3 to 24 lowercase letters, numbers or _';
+
+  @override
+  String get publicProfileSlugAvailable => 'Available';
+
+  @override
+  String get publicProfileSlugUnavailable => 'This address is already taken';
+
+  @override
+  String get publicProfileSlugChecking => 'Checking…';
+
+  @override
+  String get publicProfileSlugInvalid => 'Invalid address';
+
+  @override
+  String get publicProfileAccountLabel => 'Public account';
+
+  @override
+  String get publicProfileAccountEmpty => 'No account selected';
+
+  @override
+  String get publicProfileToggleSquad => 'Main lineup';
+
+  @override
+  String get publicProfileToggleWeekendLeague => 'Weekend League';
+
+  @override
+  String get publicProfileToggleRivals => 'Division Rivals';
+
+  @override
+  String get publicProfileToggleStats => 'General stats';
+
+  @override
+  String get publicProfileCopyLinkAction => 'Copy link';
+
+  @override
+  String get publicProfileLinkCopied => 'Link copied';
+
+  @override
+  String get publicProfileShareAction => 'Share';
+
+  @override
+  String get publicProfileShareImageAction => 'Share image';
+
+  @override
+  String get publicProfileShareImageError =>
+      'Couldn\'t share the image on this device.';
+
+  @override
+  String get publicProfileSaveAction => 'Save';
+
+  @override
+  String get publicProfileSaved => 'Settings saved';
+
+  @override
+  String get publicProfilePreviewTitle => 'Preview';
+
+  @override
+  String get publicProfilePageTitle => 'Profile';
+
+  @override
+  String get publicProfileNotFoundTitle => 'Profile not found';
+
+  @override
+  String get publicProfileNotFoundMessage =>
+      'This link doesn\'t exist or is no longer available.';
+
+  @override
+  String get publicProfileShareAccountCta => 'Share this Account';
+
+  @override
+  String get publicProfileShareSquadCta => 'Share lineup';
+
+  @override
+  String get publicProfileEnableFirstMessage =>
+      'Enable your public profile to share your lineup.';
+
+  @override
+  String get publicProfileGoToSettingsAction => 'Go to Sharing';
+
+  @override
+  String get publicProfileEditSharingCta => 'Edit sharing';
+
+  @override
+  String get publicProfileNoAccountsHint => 'Create an Account before sharing.';
+
+  @override
+  String get errorPublicProfileInvalidSlug =>
+      'Invalid address. Use 3-24 lowercase letters, numbers or _.';
+
+  @override
+  String get errorPublicProfileReservedSlug =>
+      'This address is reserved, pick another one.';
+
+  @override
+  String get errorPublicProfileSlugTaken => 'This address is already taken.';
+
+  @override
+  String get errorPublicProfileSlugRequired =>
+      'Pick an address before enabling your public profile.';
+
+  @override
+  String get validationPublicProfileSlugRequired =>
+      'Pick an address for your profile.';
+
+  @override
+  String validationPublicProfileSlugTooShort(int min) {
+    return 'The address needs at least $min characters.';
+  }
+
+  @override
+  String validationPublicProfileSlugTooLong(int max) {
+    return 'The address can have at most $max characters.';
+  }
+
+  @override
+  String get validationPublicProfileSlugInvalid =>
+      'Use only lowercase letters, numbers or _.';
 }

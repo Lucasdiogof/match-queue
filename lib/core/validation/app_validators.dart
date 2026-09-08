@@ -12,6 +12,13 @@ enum TeamTagValidationError { tooShort, tooLong, invalidCharacters }
 
 enum FcAccountNameValidationError { empty, tooShort, tooLong }
 
+enum PublicProfileSlugValidationError {
+  empty,
+  tooShort,
+  tooLong,
+  invalidCharacters,
+}
+
 class AppValidators {
   const AppValidators._();
 
@@ -24,10 +31,13 @@ class AppValidators {
   static const int teamTagMaxLength = 6;
   static const int fcAccountNameMinLength = 2;
   static const int fcAccountNameMaxLength = 40;
+  static const int publicProfileSlugMinLength = 3;
+  static const int publicProfileSlugMaxLength = 24;
 
   static final RegExp _email = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]{2,}$');
   static final RegExp _whitespaceRun = RegExp(r'\s+');
   static final RegExp _teamTag = RegExp(r'^[A-Z0-9]+$');
+  static final RegExp _publicProfileSlugChars = RegExp(r'^[a-z0-9_]+$');
 
   static String normalizeEmail(String value) => value.trim().toLowerCase();
 
@@ -122,6 +132,54 @@ class AppValidators {
     }
     if (normalized.runes.length > fcAccountNameMaxLength) {
       return FcAccountNameValidationError.tooLong;
+    }
+    return null;
+  }
+
+  // Espelha public._public_profile_reserved_slugs() no banco -- so para
+  // feedback imediato na UI. O backend continua a fonte de verdade; uma
+  // palavra nova reservada no banco sem estar aqui so aparece pro usuario
+  // depois do submit, nunca vira brecha de seguranca.
+  static const Set<String> publicProfileReservedSlugs = <String>{
+    'admin',
+    'api',
+    'auth',
+    'app',
+    'settings',
+    'notifications',
+    'share',
+    'u',
+    'public',
+    'login',
+    'signup',
+    'onboarding',
+    'home',
+    'team',
+    'teams',
+    'history',
+    'profile',
+    'join',
+    'squads',
+    'match',
+  };
+
+  static String normalizePublicProfileSlug(String value) =>
+      value.trim().toLowerCase();
+
+  static PublicProfileSlugValidationError? publicProfileSlug(String? value) {
+    final normalized = normalizePublicProfileSlug(value ?? '');
+    if (normalized.isEmpty) {
+      return PublicProfileSlugValidationError.empty;
+    }
+    if (normalized.length < publicProfileSlugMinLength) {
+      return PublicProfileSlugValidationError.tooShort;
+    }
+    if (normalized.length > publicProfileSlugMaxLength) {
+      return PublicProfileSlugValidationError.tooLong;
+    }
+    if (!_publicProfileSlugChars.hasMatch(normalized) ||
+        publicProfileReservedSlugs.contains(normalized)) {
+      return PublicProfileSlugValidationError.invalidCharacters;
     }
     return null;
   }

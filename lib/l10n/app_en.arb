@@ -1109,5 +1109,62 @@
         "type": "int"
       }
     }
-  }
+  },
+  "profileSharingRow": "Sharing",
+  "publicProfileSectionTitle": "Sharing",
+  "publicProfileMasterSwitchLabel": "Public profile",
+  "publicProfileMasterSwitchHint": "Make your profile visible through a public link, no app account needed.",
+  "publicProfileStatusActive": "Public profile: Active",
+  "publicProfileStatusInactive": "Public profile: Inactive",
+  "publicProfileSlugLabel": "Your profile address",
+  "publicProfileSlugHint": "3 to 24 lowercase letters, numbers or _",
+  "publicProfileSlugAvailable": "Available",
+  "publicProfileSlugUnavailable": "This address is already taken",
+  "publicProfileSlugChecking": "Checking…",
+  "publicProfileSlugInvalid": "Invalid address",
+  "publicProfileAccountLabel": "Public account",
+  "publicProfileAccountEmpty": "No account selected",
+  "publicProfileToggleSquad": "Main lineup",
+  "publicProfileToggleWeekendLeague": "Weekend League",
+  "publicProfileToggleRivals": "Division Rivals",
+  "publicProfileToggleStats": "General stats",
+  "publicProfileCopyLinkAction": "Copy link",
+  "publicProfileLinkCopied": "Link copied",
+  "publicProfileShareAction": "Share",
+  "publicProfileShareImageAction": "Share image",
+  "publicProfileShareImageError": "Couldn't share the image on this device.",
+  "publicProfileSaveAction": "Save",
+  "publicProfileSaved": "Settings saved",
+  "publicProfilePreviewTitle": "Preview",
+  "publicProfilePageTitle": "Profile",
+  "publicProfileNotFoundTitle": "Profile not found",
+  "publicProfileNotFoundMessage": "This link doesn't exist or is no longer available.",
+  "publicProfileShareAccountCta": "Share this Account",
+  "publicProfileShareSquadCta": "Share lineup",
+  "publicProfileEnableFirstMessage": "Enable your public profile to share your lineup.",
+  "publicProfileGoToSettingsAction": "Go to Sharing",
+  "publicProfileEditSharingCta": "Edit sharing",
+  "publicProfileNoAccountsHint": "Create an Account before sharing.",
+  "errorPublicProfileInvalidSlug": "Invalid address. Use 3-24 lowercase letters, numbers or _.",
+  "errorPublicProfileReservedSlug": "This address is reserved, pick another one.",
+  "errorPublicProfileSlugTaken": "This address is already taken.",
+  "errorPublicProfileSlugRequired": "Pick an address before enabling your public profile.",
+  "validationPublicProfileSlugRequired": "Pick an address for your profile.",
+  "validationPublicProfileSlugTooShort": "The address needs at least {min} characters.",
+  "@validationPublicProfileSlugTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPublicProfileSlugTooLong": "The address can have at most {max} characters.",
+  "@validationPublicProfileSlugTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPublicProfileSlugInvalid": "Use only lowercase letters, numbers or _."
 }

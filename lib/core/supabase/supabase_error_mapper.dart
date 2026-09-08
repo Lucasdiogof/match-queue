@@ -117,6 +117,15 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
+  PublicProfileFailureReason? _publicProfileReasonFrom(String? code) =>
+      switch (code) {
+        'FQ040' => PublicProfileFailureReason.invalidSlugFormat,
+        'FQ041' => PublicProfileFailureReason.reservedSlug,
+        'FQ042' => PublicProfileFailureReason.slugTaken,
+        'FQ043' => PublicProfileFailureReason.slugRequired,
+        _ => null,
+      };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -169,6 +178,13 @@ class SupabaseErrorMapper {
     if (fcAccountReason != null) {
       return FcAccountFailure(
         reason: fcAccountReason,
+        debugMessage: error.message,
+      );
+    }
+    final publicProfileReason = _publicProfileReasonFrom(error.code);
+    if (publicProfileReason != null) {
+      return PublicProfileFailure(
+        reason: publicProfileReason,
         debugMessage: error.message,
       );
     }

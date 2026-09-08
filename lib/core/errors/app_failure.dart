@@ -65,6 +65,13 @@ enum SquadFailureReason {
   inUseByActiveSearch,
 }
 
+enum PublicProfileFailureReason {
+  invalidSlugFormat,
+  reservedSlug,
+  slugTaken,
+  slugRequired,
+}
+
 sealed class AppFailure extends Equatable implements Exception {
   const AppFailure({this.debugMessage});
 
@@ -143,6 +150,15 @@ final class SquadFailure extends AppFailure {
   const SquadFailure({required this.reason, super.debugMessage});
 
   final SquadFailureReason reason;
+
+  @override
+  List<Object?> get props => <Object?>[reason, debugMessage];
+}
+
+final class PublicProfileFailure extends AppFailure {
+  const PublicProfileFailure({required this.reason, super.debugMessage});
+
+  final PublicProfileFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];

@@ -2072,4 +2072,147 @@ class AppLocalizationsPt extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get profileSharingRow => 'Compartilhamento';
+
+  @override
+  String get publicProfileSectionTitle => 'Compartilhamento';
+
+  @override
+  String get publicProfileMasterSwitchLabel => 'Perfil público';
+
+  @override
+  String get publicProfileMasterSwitchHint =>
+      'Deixe seu perfil visível por um link público, sem precisar de conta no app.';
+
+  @override
+  String get publicProfileStatusActive => 'Perfil público: Ativo';
+
+  @override
+  String get publicProfileStatusInactive => 'Perfil público: Inativo';
+
+  @override
+  String get publicProfileSlugLabel => 'Endereço do seu perfil';
+
+  @override
+  String get publicProfileSlugHint => '3 a 24 letras minúsculas, números ou _';
+
+  @override
+  String get publicProfileSlugAvailable => 'Disponível';
+
+  @override
+  String get publicProfileSlugUnavailable => 'Este endereço já está em uso';
+
+  @override
+  String get publicProfileSlugChecking => 'Verificando…';
+
+  @override
+  String get publicProfileSlugInvalid => 'Endereço inválido';
+
+  @override
+  String get publicProfileAccountLabel => 'Conta pública';
+
+  @override
+  String get publicProfileAccountEmpty => 'Nenhuma conta selecionada';
+
+  @override
+  String get publicProfileToggleSquad => 'Escalação Principal';
+
+  @override
+  String get publicProfileToggleWeekendLeague => 'Weekend League';
+
+  @override
+  String get publicProfileToggleRivals => 'Division Rivals';
+
+  @override
+  String get publicProfileToggleStats => 'Estatísticas gerais';
+
+  @override
+  String get publicProfileCopyLinkAction => 'Copiar link';
+
+  @override
+  String get publicProfileLinkCopied => 'Link copiado';
+
+  @override
+  String get publicProfileShareAction => 'Compartilhar';
+
+  @override
+  String get publicProfileShareImageAction => 'Compartilhar imagem';
+
+  @override
+  String get publicProfileShareImageError =>
+      'Não foi possível compartilhar a imagem neste dispositivo.';
+
+  @override
+  String get publicProfileSaveAction => 'Salvar';
+
+  @override
+  String get publicProfileSaved => 'Configurações salvas';
+
+  @override
+  String get publicProfilePreviewTitle => 'Pré-visualização';
+
+  @override
+  String get publicProfilePageTitle => 'Perfil';
+
+  @override
+  String get publicProfileNotFoundTitle => 'Perfil não encontrado';
+
+  @override
+  String get publicProfileNotFoundMessage =>
+      'Este link não existe ou não está mais disponível.';
+
+  @override
+  String get publicProfileShareAccountCta => 'Compartilhar esta Conta';
+
+  @override
+  String get publicProfileShareSquadCta => 'Compartilhar escalação';
+
+  @override
+  String get publicProfileEnableFirstMessage =>
+      'Ative o perfil público para compartilhar sua escalação.';
+
+  @override
+  String get publicProfileGoToSettingsAction => 'Ir para Compartilhamento';
+
+  @override
+  String get publicProfileEditSharingCta => 'Editar compartilhamento';
+
+  @override
+  String get publicProfileNoAccountsHint =>
+      'Crie um Elenco antes de compartilhar.';
+
+  @override
+  String get errorPublicProfileInvalidSlug =>
+      'Endereço inválido. Use 3-24 letras minúsculas, números ou _.';
+
+  @override
+  String get errorPublicProfileReservedSlug =>
+      'Este endereço é reservado, escolha outro.';
+
+  @override
+  String get errorPublicProfileSlugTaken => 'Este endereço já está em uso.';
+
+  @override
+  String get errorPublicProfileSlugRequired =>
+      'Escolha um endereço antes de ativar o perfil público.';
+
+  @override
+  String get validationPublicProfileSlugRequired =>
+      'Escolha um endereço para o perfil.';
+
+  @override
+  String validationPublicProfileSlugTooShort(int min) {
+    return 'O endereço precisa ter pelo menos $min caracteres.';
+  }
+
+  @override
+  String validationPublicProfileSlugTooLong(int max) {
+    return 'O endereço pode ter no máximo $max caracteres.';
+  }
+
+  @override
+  String get validationPublicProfileSlugInvalid =>
+      'Use só letras minúsculas, números ou _.';
 }

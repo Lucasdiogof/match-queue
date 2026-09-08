@@ -63,6 +63,24 @@ extension FcAccountNameValidationErrorL10n on FcAccountNameValidationError {
   };
 }
 
+extension PublicProfileSlugValidationErrorL10n
+    on PublicProfileSlugValidationError {
+  String message(AppLocalizations l10n) => switch (this) {
+    PublicProfileSlugValidationError.empty =>
+      l10n.validationPublicProfileSlugRequired,
+    PublicProfileSlugValidationError.tooShort =>
+      l10n.validationPublicProfileSlugTooShort(
+        AppValidators.publicProfileSlugMinLength,
+      ),
+    PublicProfileSlugValidationError.tooLong =>
+      l10n.validationPublicProfileSlugTooLong(
+        AppValidators.publicProfileSlugMaxLength,
+      ),
+    PublicProfileSlugValidationError.invalidCharacters =>
+      l10n.validationPublicProfileSlugInvalid,
+  };
+}
+
 extension TeamTagValidationErrorL10n on TeamTagValidationError {
   String message(AppLocalizations l10n) => switch (this) {
     TeamTagValidationError.tooShort => l10n.validationTeamTagTooShort(

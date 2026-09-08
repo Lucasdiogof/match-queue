@@ -3577,6 +3577,264 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{count, plural, =1{1 assistência} other{{count} assistências}}'**
   String teamSportsAssistsShort(int count);
+
+  /// No description provided for @profileSharingRow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhamento'**
+  String get profileSharingRow;
+
+  /// No description provided for @publicProfileSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhamento'**
+  String get publicProfileSectionTitle;
+
+  /// No description provided for @publicProfileMasterSwitchLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil público'**
+  String get publicProfileMasterSwitchLabel;
+
+  /// No description provided for @publicProfileMasterSwitchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deixe seu perfil visível por um link público, sem precisar de conta no app.'**
+  String get publicProfileMasterSwitchHint;
+
+  /// No description provided for @publicProfileStatusActive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil público: Ativo'**
+  String get publicProfileStatusActive;
+
+  /// No description provided for @publicProfileStatusInactive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil público: Inativo'**
+  String get publicProfileStatusInactive;
+
+  /// No description provided for @publicProfileSlugLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Endereço do seu perfil'**
+  String get publicProfileSlugLabel;
+
+  /// No description provided for @publicProfileSlugHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'3 a 24 letras minúsculas, números ou _'**
+  String get publicProfileSlugHint;
+
+  /// No description provided for @publicProfileSlugAvailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Disponível'**
+  String get publicProfileSlugAvailable;
+
+  /// No description provided for @publicProfileSlugUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este endereço já está em uso'**
+  String get publicProfileSlugUnavailable;
+
+  /// No description provided for @publicProfileSlugChecking.
+  ///
+  /// In pt, this message translates to:
+  /// **'Verificando…'**
+  String get publicProfileSlugChecking;
+
+  /// No description provided for @publicProfileSlugInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Endereço inválido'**
+  String get publicProfileSlugInvalid;
+
+  /// No description provided for @publicProfileAccountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta pública'**
+  String get publicProfileAccountLabel;
+
+  /// No description provided for @publicProfileAccountEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma conta selecionada'**
+  String get publicProfileAccountEmpty;
+
+  /// No description provided for @publicProfileToggleSquad.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escalação Principal'**
+  String get publicProfileToggleSquad;
+
+  /// No description provided for @publicProfileToggleWeekendLeague.
+  ///
+  /// In pt, this message translates to:
+  /// **'Weekend League'**
+  String get publicProfileToggleWeekendLeague;
+
+  /// No description provided for @publicProfileToggleRivals.
+  ///
+  /// In pt, this message translates to:
+  /// **'Division Rivals'**
+  String get publicProfileToggleRivals;
+
+  /// No description provided for @publicProfileToggleStats.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estatísticas gerais'**
+  String get publicProfileToggleStats;
+
+  /// No description provided for @publicProfileCopyLinkAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar link'**
+  String get publicProfileCopyLinkAction;
+
+  /// No description provided for @publicProfileLinkCopied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Link copiado'**
+  String get publicProfileLinkCopied;
+
+  /// No description provided for @publicProfileShareAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar'**
+  String get publicProfileShareAction;
+
+  /// No description provided for @publicProfileShareImageAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar imagem'**
+  String get publicProfileShareImageAction;
+
+  /// No description provided for @publicProfileShareImageError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível compartilhar a imagem neste dispositivo.'**
+  String get publicProfileShareImageError;
+
+  /// No description provided for @publicProfileSaveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar'**
+  String get publicProfileSaveAction;
+
+  /// No description provided for @publicProfileSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações salvas'**
+  String get publicProfileSaved;
+
+  /// No description provided for @publicProfilePreviewTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pré-visualização'**
+  String get publicProfilePreviewTitle;
+
+  /// No description provided for @publicProfilePageTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil'**
+  String get publicProfilePageTitle;
+
+  /// No description provided for @publicProfileNotFoundTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfil não encontrado'**
+  String get publicProfileNotFoundTitle;
+
+  /// No description provided for @publicProfileNotFoundMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este link não existe ou não está mais disponível.'**
+  String get publicProfileNotFoundMessage;
+
+  /// No description provided for @publicProfileShareAccountCta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar esta Conta'**
+  String get publicProfileShareAccountCta;
+
+  /// No description provided for @publicProfileShareSquadCta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar escalação'**
+  String get publicProfileShareSquadCta;
+
+  /// No description provided for @publicProfileEnableFirstMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ative o perfil público para compartilhar sua escalação.'**
+  String get publicProfileEnableFirstMessage;
+
+  /// No description provided for @publicProfileGoToSettingsAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ir para Compartilhamento'**
+  String get publicProfileGoToSettingsAction;
+
+  /// No description provided for @publicProfileEditSharingCta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar compartilhamento'**
+  String get publicProfileEditSharingCta;
+
+  /// No description provided for @publicProfileNoAccountsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie um Elenco antes de compartilhar.'**
+  String get publicProfileNoAccountsHint;
+
+  /// No description provided for @errorPublicProfileInvalidSlug.
+  ///
+  /// In pt, this message translates to:
+  /// **'Endereço inválido. Use 3-24 letras minúsculas, números ou _.'**
+  String get errorPublicProfileInvalidSlug;
+
+  /// No description provided for @errorPublicProfileReservedSlug.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este endereço é reservado, escolha outro.'**
+  String get errorPublicProfileReservedSlug;
+
+  /// No description provided for @errorPublicProfileSlugTaken.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este endereço já está em uso.'**
+  String get errorPublicProfileSlugTaken;
+
+  /// No description provided for @errorPublicProfileSlugRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha um endereço antes de ativar o perfil público.'**
+  String get errorPublicProfileSlugRequired;
+
+  /// No description provided for @validationPublicProfileSlugRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha um endereço para o perfil.'**
+  String get validationPublicProfileSlugRequired;
+
+  /// No description provided for @validationPublicProfileSlugTooShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'O endereço precisa ter pelo menos {min} caracteres.'**
+  String validationPublicProfileSlugTooShort(int min);
+
+  /// No description provided for @validationPublicProfileSlugTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'O endereço pode ter no máximo {max} caracteres.'**
+  String validationPublicProfileSlugTooLong(int max);
+
+  /// No description provided for @validationPublicProfileSlugInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use só letras minúsculas, números ou _.'**
+  String get validationPublicProfileSlugInvalid;
 }
 
 class _AppLocalizationsDelegate

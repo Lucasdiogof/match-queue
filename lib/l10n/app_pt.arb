@@ -1109,5 +1109,62 @@
         "type": "int"
       }
     }
-  }
+  },
+  "profileSharingRow": "Compartilhamento",
+  "publicProfileSectionTitle": "Compartilhamento",
+  "publicProfileMasterSwitchLabel": "Perfil público",
+  "publicProfileMasterSwitchHint": "Deixe seu perfil visível por um link público, sem precisar de conta no app.",
+  "publicProfileStatusActive": "Perfil público: Ativo",
+  "publicProfileStatusInactive": "Perfil público: Inativo",
+  "publicProfileSlugLabel": "Endereço do seu perfil",
+  "publicProfileSlugHint": "3 a 24 letras minúsculas, números ou _",
+  "publicProfileSlugAvailable": "Disponível",
+  "publicProfileSlugUnavailable": "Este endereço já está em uso",
+  "publicProfileSlugChecking": "Verificando…",
+  "publicProfileSlugInvalid": "Endereço inválido",
+  "publicProfileAccountLabel": "Conta pública",
+  "publicProfileAccountEmpty": "Nenhuma conta selecionada",
+  "publicProfileToggleSquad": "Escalação Principal",
+  "publicProfileToggleWeekendLeague": "Weekend League",
+  "publicProfileToggleRivals": "Division Rivals",
+  "publicProfileToggleStats": "Estatísticas gerais",
+  "publicProfileCopyLinkAction": "Copiar link",
+  "publicProfileLinkCopied": "Link copiado",
+  "publicProfileShareAction": "Compartilhar",
+  "publicProfileShareImageAction": "Compartilhar imagem",
+  "publicProfileShareImageError": "Não foi possível compartilhar a imagem neste dispositivo.",
+  "publicProfileSaveAction": "Salvar",
+  "publicProfileSaved": "Configurações salvas",
+  "publicProfilePreviewTitle": "Pré-visualização",
+  "publicProfilePageTitle": "Perfil",
+  "publicProfileNotFoundTitle": "Perfil não encontrado",
+  "publicProfileNotFoundMessage": "Este link não existe ou não está mais disponível.",
+  "publicProfileShareAccountCta": "Compartilhar esta Conta",
+  "publicProfileShareSquadCta": "Compartilhar escalação",
+  "publicProfileEnableFirstMessage": "Ative o perfil público para compartilhar sua escalação.",
+  "publicProfileGoToSettingsAction": "Ir para Compartilhamento",
+  "publicProfileEditSharingCta": "Editar compartilhamento",
+  "publicProfileNoAccountsHint": "Crie um Elenco antes de compartilhar.",
+  "errorPublicProfileInvalidSlug": "Endereço inválido. Use 3-24 letras minúsculas, números ou _.",
+  "errorPublicProfileReservedSlug": "Este endereço é reservado, escolha outro.",
+  "errorPublicProfileSlugTaken": "Este endereço já está em uso.",
+  "errorPublicProfileSlugRequired": "Escolha um endereço antes de ativar o perfil público.",
+  "validationPublicProfileSlugRequired": "Escolha um endereço para o perfil.",
+  "validationPublicProfileSlugTooShort": "O endereço precisa ter pelo menos {min} caracteres.",
+  "@validationPublicProfileSlugTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPublicProfileSlugTooLong": "O endereço pode ter no máximo {max} caracteres.",
+  "@validationPublicProfileSlugTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationPublicProfileSlugInvalid": "Use só letras minúsculas, números ou _."
 }
