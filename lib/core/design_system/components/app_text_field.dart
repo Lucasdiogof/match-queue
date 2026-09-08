@@ -110,6 +110,7 @@ class AppPasswordField extends StatefulWidget {
     this.hintText,
     this.helperText,
     this.errorText,
+    this.prefixIcon,
     this.textInputAction,
     this.autofillHints,
     this.enabled = true,
@@ -127,6 +128,7 @@ class AppPasswordField extends StatefulWidget {
   final String? hintText;
   final String? helperText;
   final String? errorText;
+  final IconData? prefixIcon;
   final TextInputAction? textInputAction;
   final Iterable<String>? autofillHints;
   final bool enabled;
@@ -150,6 +152,7 @@ class _AppPasswordFieldState extends State<AppPasswordField> {
     hintText: widget.hintText,
     helperText: widget.helperText,
     errorText: widget.errorText,
+    prefixIcon: widget.prefixIcon,
     enabled: widget.enabled,
     obscureText: _obscured,
     keyboardType: TextInputType.visiblePassword,

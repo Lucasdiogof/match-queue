@@ -89,11 +89,6 @@ class _SignUpPageState extends State<SignUpPage> {
           subtitle: l10n.signUpSubtitle,
           onBack: () => context.go(AppRoutes.login.path),
           backTooltip: l10n.actionBack,
-          footer: AuthFooterPrompt(
-            question: l10n.signUpHaveAccount,
-            actionLabel: l10n.authSignIn,
-            onAction: () => context.go(AppRoutes.login.path),
-          ),
           children: <Widget>[
             if (failure != null) ...<Widget>[
               AppBanner(
@@ -138,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     autofillHints: const <String>[AutofillHints.email],
-                    prefixIcon: Icons.alternate_email,
+                    prefixIcon: Icons.mail_outline_rounded,
                     errorText: _emailTouch.errorFor(
                       _email.text,
                       submitted: _submitted,
@@ -158,6 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     helperText: l10n.authPasswordHelper(
                       AppValidators.passwordMinLength,
                     ),
+                    prefixIcon: Icons.lock_outline_rounded,
                     controller: _password,
                     focusNode: _passwordFocus,
                     enabled: !isSubmitting,
@@ -181,6 +177,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: AppSpacing.lg),
                   AppPasswordField(
                     label: l10n.authConfirmPassword,
+                    hintText: '••••••••',
+                    prefixIcon: Icons.lock_outline_rounded,
                     controller: _confirmation,
                     focusNode: _confirmationFocus,
                     enabled: !isSubmitting,

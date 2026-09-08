@@ -74,11 +74,6 @@ class _LoginPageState extends State<LoginPage> {
         return AuthFormScaffold(
           title: l10n.loginTitle,
           subtitle: l10n.appTagline,
-          footer: AuthFooterPrompt(
-            question: l10n.loginNoAccount,
-            actionLabel: l10n.authSignUp,
-            onAction: () => context.go(AppRoutes.signUp.path),
-          ),
           children: <Widget>[
             if (failure != null) ...<Widget>[
               AppBanner(
@@ -99,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     autofillHints: const <String>[AutofillHints.email],
-                    prefixIcon: Icons.alternate_email,
+                    prefixIcon: Icons.mail_outline_rounded,
                     errorText: _emailTouch.errorFor(
                       _email.text,
                       submitted: _submitted,
@@ -116,6 +111,8 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: AppSpacing.lg),
                   AppPasswordField(
                     label: l10n.authPassword,
+                    hintText: '••••••••',
+                    prefixIcon: Icons.lock_outline_rounded,
                     controller: _password,
                     focusNode: _passwordFocus,
                     enabled: !isSubmitting,
@@ -151,6 +148,12 @@ class _LoginPageState extends State<LoginPage> {
                     label: l10n.authSignIn,
                     isLoading: isSubmitting,
                     onPressed: _canSubmit && !isSubmitting ? _submit : null,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  AuthFooterPrompt(
+                    question: l10n.loginNoAccount,
+                    actionLabel: l10n.authSignUp,
+                    onAction: () => context.go(AppRoutes.signUp.path),
                   ),
                 ],
               ),
