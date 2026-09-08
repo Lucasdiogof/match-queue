@@ -118,20 +118,34 @@ importado pelo app Flutter) declara:
 - `ExternalFcCard` — carta normalizada, com `providerPlayerId` nullable
   linkando de volta ao jogador e `toFcPlayerCardsRow(...)` (mesma ideia).
 
-**Correção de semântica (revisão do dono do produto, depois da primeira
-versão desta etapa)**: a primeira versão ainda criava uma linha em
-`fc_player_cards` com `card_type = 'BASE_DATASET'` para todo item sem
-sinal de carta real — "compatibilidade com o picker" que deixou de ser
-necessária justamente porque `fc_players` passou a existir. **Isso foi
-removido.** Regra definitiva agora: uma linha só vira `fc_player_cards`
-quando o input declara `provider_card_id` próprio, `card_type` ou
-`rarity` — sem nenhum desses três sinais, o importer faz upsert **somente**
-em `fc_players` e nunca cria (nem inventa) uma carta. `isBaseDatasetOnly()`
-foi removido de `ExternalFcCard`; a decisão "isto é carta ou só jogador"
-agora é tomada em `sync_fc_cards.dart` **antes** de `ExternalFcCard` ser
-sequer construído. `toFcPlayerCardsRow()` também não tem mais o fallback
-`cardType ?? 'BASE_DATASET'` — `card_type` fica `null` quando a fonte não
-declarou, ponto.
+**Correção de semântica, em duas rodadas (revisão do dono do produto,
+depois da primeira versão desta etapa)**:
+
+1. A primeira versão ainda criava uma linha em `fc_player_cards` com
+   `card_type = 'BASE_DATASET'` para todo item sem sinal de carta real —
+   "compatibilidade com o picker" que deixou de ser necessária justamente
+   porque `fc_players` passou a existir. **Removido.**
+2. A segunda versão passou a considerar `card_type`/`rarity` sozinhos
+   como "sinal de carta real" (mesmo sem `provider_card_id`) — **endurecido
+   de novo**: `card_type`/`rarity` são ATRIBUTOS da carta, não identidade.
+   Sem uma chave externa (`provider_card_id`) não existe forma idempotente
+   de upsertar, então **regra final: `fc_player_cards` exige
+   `provider_card_id` explícito e não-vazio; `card_type`/`rarity` sozinhos
+   NÃO criam carta.** Um item com `card_type` mas sem `provider_card_id`
+   vira `player-only` (só `fc_players`), com um aviso de diagnóstico no
+   resumo do `--dry-run` ("card metadata sem identidade") — não é erro,
+   só um sinal de que a fonte parece descrever cartas sem dar id pra elas.
+   Nunca inventamos um `provider_card_id` sintético (a partir de player
+   id, nome, rating ou índice de linha) para contornar isso.
+
+Regra definitiva: uma linha só vira `fc_player_cards` quando o input
+declara `provider_card_id` próprio — sem isso, o importer faz upsert
+**somente** em `fc_players` e nunca cria (nem inventa) uma carta.
+`isBaseDatasetOnly()` foi removido de `ExternalFcCard`; a decisão "isto é
+carta ou só jogador" agora é tomada em `sync_fc_cards.dart` **antes** de
+`ExternalFcCard` ser sequer construído. `toFcPlayerCardsRow()` também não
+tem mais o fallback `cardType ?? 'BASE_DATASET'` — `card_type` fica `null`
+quando a fonte não declarou, ponto.
 
 Efeito prático: o dataset FC26/SoFIFA já pesquisado (`sofifa_id` identifica
 o ATLETA, não uma versão de carta — nunca teve `provider_card_id` de
@@ -193,15 +207,22 @@ provider_player_id)`.
   `inválidos`, `players (fc_players) distintos` (deduplicados por chave
   `provider:game_version:provider_player_id`, contados uma vez mesmo que
   o mesmo atleta apareça em N linhas/cartas), `cards reais
-  (fc_player_cards)`, `player-only (só fc_players)`, e
+  (fc_player_cards)`, `player-only (só fc_players)`, um aviso de
+  diagnóstico opcional (`card metadata sem identidade`, quando
+  `card_type`/`rarity` aparece sem `provider_card_id` — não é erro, só
+  mostra que a fonte parece descrever cartas sem dar id pra elas), e
   `inseridos/atualizados/falhas` (esses três só contam cards, já que
-  linha player-only nunca toca `fc_player_cards`). Validado com dois
-  testes manuais via `--dry-run` (nunca tocou o Supabase): um CSV
-  sofifa-style de 2 linhas deu `players: 2, cards reais: 0, player-only:
-  2`; um JSON misto (1 linha com `card_type` + 1 linha só-jogador do
-  mesmo `provider_player_id`) deu `players: 1, cards reais: 1,
-  player-only: 1` — dedup de jogador e separação card/player-only
-  funcionando como esperado.
+  linha player-only nunca toca `fc_player_cards`).
+- **Regra final, endurecida na segunda revisão**: `fc_player_cards`
+  requires an explicit `provider_card_id`; `card_type`/`rarity` alone do
+  not create a card. Validado com três testes manuais via `--dry-run`
+  (nunca tocou o Supabase): (1) CSV sofifa-style puro → `players: 1, cards
+  reais: 0, player-only: 1`; (2) JSON com `card_type` presente mas SEM
+  `provider_card_id` → `players: 1, cards reais: 0, player-only: 1` + o
+  aviso de diagnóstico contando 1; (3) JSON com `provider_card_id`
+  presente (sem `card_type`) → `players: 1, cards reais: 1, player-only:
+  0`. Os três batem exatamente com a regra: só `provider_card_id` cria
+  carta, `card_type`/`rarity` sozinhos nunca bastam.
 - `dart analyze tool` limpo, `dart format tool` aplicado.
 
 ## Segurança

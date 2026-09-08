@@ -143,9 +143,13 @@ Future<void> main(List<String> args) async {
   // (nem provider_card_id proprio, nem card_type, nem rarity) -- vira
   // SOMENTE fc_players, nunca uma linha fc_player_cards inventada.
   var playerOnlyCount = 0;
-  // Linha que declarou um sinal de carta real -- essa sim vira
-  // fc_player_cards (alem de fc_players quando providerPlayerId existir).
+  // Linha com provider_card_id proprio -- essa sim vira fc_player_cards
+  // (alem de fc_players quando providerPlayerId existir).
   var realCardCount = 0;
+  // Diagnostico: linha com card_type/rarity mas SEM provider_card_id --
+  // nao vira carta (falta identidade), mas vale avisar que a fonte parece
+  // descrever cartas sem dar um id pra elas.
+  var cardMetadataWithoutIdCount = 0;
 
   for (final rawRow in rawRows) {
     rowsRead++;
@@ -179,31 +183,35 @@ Future<void> main(List<String> args) async {
     final playerName = col('player_name');
     final rating = colInt('rating');
     final providerPlayerId = col('provider_player_id');
-    // Unico sinal aceito de "isto e uma carta/item real": provider_card_id
-    // proprio, ou card_type, ou rarity declarados pelo input. Nunca
-    // inferimos carta a partir so de identidade de jogador (correcao de
-    // semantica desta etapa -- ver docs/card_provider_research.md).
-    final hasCardSignal =
-        col('provider_card_id') != null ||
-        col('card_type') != null ||
-        col('rarity') != null;
+    // Unica evidencia aceita de "isto e uma carta/item real":
+    // provider_card_id proprio, nao-vazio. card_type/rarity sao ATRIBUTOS
+    // da carta, nunca identidade -- sozinhos nao bastam, porque nao existe
+    // chave externa idempotente pra upsertar sem eles (nunca inventamos um
+    // id sintetico a partir de player id/nome/rating/indice de linha).
+    final hasCardId = col('provider_card_id') != null;
+    // So para diagnostico: item que descreve uma carta (tem card_type ou
+    // rarity) mas nao declara provider_card_id -- nao vira fc_player_cards,
+    // mas fica registrado no resumo do dry-run como aviso, nao erro.
+    final hasCardMetadataWithoutId =
+        !hasCardId && (col('card_type') != null || col('rarity') != null);
 
     if (playerName == null || primaryPosition == null) {
       rowsInvalid++;
       continue;
     }
-    if (hasCardSignal && rating == null) {
+    if (hasCardId && rating == null) {
       // Carta real sem rating nao e um dado utilizavel.
       rowsInvalid++;
       continue;
     }
-    if (!hasCardSignal && providerPlayerId == null) {
-      // Nem sinal de carta, nem id de jogador -- nada identificavel pra
-      // criar em fc_players nem em fc_player_cards.
+    if (!hasCardId && providerPlayerId == null) {
+      // Nem identidade de carta, nem id de jogador -- nada identificavel
+      // pra criar em fc_players nem em fc_player_cards.
       rowsInvalid++;
       continue;
     }
     rowsValid++;
+    if (hasCardMetadataWithoutId) cardMetadataWithoutIdCount++;
 
     final isGoalkeeper = primaryPosition == 'GK';
     final clubName = col('club_name');
@@ -282,12 +290,12 @@ Future<void> main(List<String> args) async {
       }
     }
 
-    if (!hasCardSignal) {
-      // So identidade de jogador base: fc_players ja foi upsertado acima
-      // (se providerPlayerId existia). NUNCA criar uma linha em
-      // fc_player_cards so para satisfazer o picker -- essa
-      // "compatibilidade" deixou de ser necessaria com fc_players
-      // existindo.
+    if (!hasCardId) {
+      // Sem provider_card_id: fc_players ja foi upsertado acima (se
+      // providerPlayerId existia). NUNCA criar uma linha em
+      // fc_player_cards so para satisfazer o picker, e NUNCA so por causa
+      // de card_type/rarity sozinhos -- sem identidade externa, nao ha
+      // chave pra upsertar de forma idempotente.
       playerOnlyCount++;
       continue;
     }
@@ -376,6 +384,13 @@ Future<void> main(List<String> args) async {
   );
   stdout.writeln('  cards reais (fc_player_cards):  $realCardCount');
   stdout.writeln('  player-only (so fc_players):    $playerOnlyCount');
+  if (cardMetadataWithoutIdCount > 0) {
+    stdout.writeln(
+      '  aviso: card metadata sem identidade (card_type/rarity sem '
+      'provider_card_id): $cardMetadataWithoutIdCount -- viraram '
+      'player-only, nao card',
+    );
+  }
   stdout.writeln(
     '  cards -- inseridos: $rowsInserted, atualizados: $rowsUpdated, '
     'falhas: $rowsFailed',
