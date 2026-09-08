@@ -22,9 +22,16 @@
 //   dart run tool/sync_fc_cards.dart --csv=/caminho/para/dataset.csv \
 //       --provider=COMMUNITY_CSV --game-version=FC27
 //
-// Variaveis de ambiente obrigatorias (nunca hardcoded, nunca no app):
-//   SUPABASE_URL                 ex.: https://<project-ref>.supabase.co
-//   SUPABASE_SERVICE_ROLE_KEY    Project Settings -> API keys -> service_role
+// Variaveis de ambiente obrigatorias (nunca hardcoded, nunca no app, nunca
+// impressas por este script):
+//   SUPABASE_URL           ex.: https://<project-ref>.supabase.co
+//   SUPABASE_SECRET_KEY    Project Settings -> API keys -> secret key (nome
+//                          atual da chave que ignora RLS no painel do
+//                          Supabase). SUPABASE_SERVICE_ROLE_KEY continua
+//                          aceita como fallback legado (nome antigo da mesma
+//                          chave), igual o app Flutter aceita
+//                          SUPABASE_ANON_KEY como fallback de
+//                          SUPABASE_PUBLISHABLE_KEY (docs/supabase_setup.md).
 //
 // MAPEAMENTO DE COLUNAS
 // Datasets comunitarios variam o nome das colunas entre si. Em vez de
@@ -45,15 +52,27 @@ import 'package:http/http.dart' as http;
 Future<void> main(List<String> args) async {
   final options = _Args.parse(args);
 
-  final supabaseUrl = Platform.environment['SUPABASE_URL'];
-  final serviceRoleKey = Platform.environment['SUPABASE_SERVICE_ROLE_KEY'];
-  if (supabaseUrl == null || serviceRoleKey == null) {
-    stderr.writeln(
-      'SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY precisam estar no ambiente. '
-      'Nunca hardcode a service role key neste arquivo.',
-    );
-    exitCode = 1;
-    return;
+  // --dry-run e parse-only por definicao -- nao deveria exigir credencial
+  // nenhuma do Supabase, nem para ler. So pede SUPABASE_URL/SUPABASE_SECRET_
+  // KEY quando vai escrever de verdade.
+  _SupabaseAdmin? client;
+  if (!options.dryRun) {
+    final supabaseUrl = Platform.environment['SUPABASE_URL'];
+    // SUPABASE_SECRET_KEY e o nome atual; SUPABASE_SERVICE_ROLE_KEY fica
+    // como fallback legado. Nunca logar o valor de nenhuma das duas.
+    final secretKey =
+        Platform.environment['SUPABASE_SECRET_KEY'] ??
+        Platform.environment['SUPABASE_SERVICE_ROLE_KEY'];
+    if (supabaseUrl == null || secretKey == null) {
+      stderr.writeln(
+        'SUPABASE_URL e SUPABASE_SECRET_KEY (ou, como fallback legado, '
+        'SUPABASE_SERVICE_ROLE_KEY) precisam estar no ambiente para rodar '
+        'sem --dry-run. Nunca hardcode essa chave neste arquivo.',
+      );
+      exitCode = 1;
+      return;
+    }
+    client = _SupabaseAdmin(baseUrl: supabaseUrl, secretKey: secretKey);
   }
 
   final csvFile = File(options.csvPath);
@@ -75,16 +94,33 @@ Future<void> main(List<String> args) async {
     for (var i = 0; i < header.length; i++) header[i].trim(): i,
   };
 
-  final client = _SupabaseAdmin(
-    baseUrl: supabaseUrl,
-    serviceRoleKey: serviceRoleKey,
-  );
+  // Buscado uma vez antes do loop para diferenciar insert de update sem
+  // precisar de uma consulta por linha -- upsert do PostgREST nao informa
+  // isso pelo status HTTP (sempre volta como sucesso da mesma forma).
+  final existingProviderCardIds = client == null
+      ? <String>{}
+      : await client.fetchExistingProviderCardIds(
+          table: 'fc_player_cards',
+          provider: options.provider,
+        );
 
   final seenProviderCardIds = <String>{};
-  var cardsUpserted = 0;
-  var cardsSkippedNoRating = 0;
+  // Em --dry-run nao consultamos/criamos nada em fc_clubs/fc_leagues/
+  // fc_nations (upsertByName escreve) -- so contamos nomes distintos vistos
+  // no CSV, que e o suficiente pra reportar "quantos clubes/ligas/nacoes
+  // apareceriam" sem tocar o banco.
+  final dryRunClubs = <String>{};
+  final dryRunLeagues = <String>{};
+  final dryRunNations = <String>{};
+  var rowsRead = 0;
+  var rowsValid = 0;
+  var rowsSkipped = 0;
+  var rowsInserted = 0;
+  var rowsUpdated = 0;
+  var rowsFailed = 0;
 
   for (final row in rows.skip(1)) {
+    rowsRead++;
     String? col(String field) {
       final columnName = mapping.get(field);
       final index = headerIndex[columnName];
@@ -120,9 +156,10 @@ Future<void> main(List<String> args) async {
         playerName == null ||
         rating == null ||
         primaryPosition == null) {
-      cardsSkippedNoRating++;
+      rowsSkipped++;
       continue;
     }
+    rowsValid++;
 
     final isGoalkeeper = primaryPosition.toUpperCase() == 'GK';
 
@@ -130,41 +167,44 @@ Future<void> main(List<String> args) async {
     final leagueName = col('league_name');
     final nationName = col('nation_name');
 
-    final clubId = clubName == null
-        ? null
-        : await client.upsertByName(
-            table: 'fc_clubs',
-            provider: options.provider,
-            name: clubName,
-            extra: <String, dynamic>{
-              if (leagueName != null)
-                'league_id': await client.upsertByName(
-                  table: 'fc_leagues',
-                  provider: options.provider,
-                  name: leagueName,
-                ),
-            },
-          );
-    final leagueId = leagueName == null
-        ? null
-        : await client.upsertByName(
-            table: 'fc_leagues',
-            provider: options.provider,
-            name: leagueName,
-          );
-    final nationId = nationName == null
-        ? null
-        : await client.upsertByName(
-            table: 'fc_nations',
-            provider: options.provider,
-            name: nationName,
-          );
+    if (clubName != null) dryRunClubs.add(clubName);
+    if (leagueName != null) dryRunLeagues.add(leagueName);
+    if (nationName != null) dryRunNations.add(nationName);
+
+    String? clubId;
+    String? leagueId;
+    String? nationId;
+    if (client != null) {
+      leagueId = leagueName == null
+          ? null
+          : await client.upsertByName(
+              table: 'fc_leagues',
+              provider: options.provider,
+              name: leagueName,
+            );
+      clubId = clubName == null
+          ? null
+          : await client.upsertByName(
+              table: 'fc_clubs',
+              provider: options.provider,
+              name: clubName,
+              extra: <String, dynamic>{'league_id': ?leagueId},
+            );
+      nationId = nationName == null
+          ? null
+          : await client.upsertByName(
+              table: 'fc_nations',
+              provider: options.provider,
+              name: nationName,
+            );
+    }
 
     // alternative_positions mapeia pra mesma coluna player_positions no
     // default (dataset nao separa primaria de alternativas em colunas
     // distintas) -- reaproveita a lista ja quebrada acima, tirando a
     // primaria para nao duplicar.
-    final alternativePositions = (positionsList == null || positionsList.length <= 1)
+    final alternativePositions =
+        (positionsList == null || positionsList.length <= 1)
         ? const <String>[]
         : positionsList.skip(1).toList(growable: false);
 
@@ -222,7 +262,11 @@ Future<void> main(List<String> args) async {
       'club_id': clubId,
       'league_id': leagueId,
       'nation_id': nationId,
-      'card_type': col('card_type'),
+      // BASE_DATASET quando o CSV nao declara card_type/rarity de verdade --
+      // datasets de player database (sofifa-style) nao tem versao de carta
+      // Ultimate Team, so o jogador base. Nunca fingir "Special Card" pra
+      // uma fonte que nao distingue isso (docs/card_provider_research.md).
+      'card_type': col('card_type') ?? 'BASE_DATASET',
       'is_active': true,
       'last_synced_at': DateTime.now().toUtc().toIso8601String(),
       'source_url': options.sourceUrl,
@@ -231,24 +275,43 @@ Future<void> main(List<String> args) async {
     seenProviderCardIds.add(providerCardId);
 
     if (options.dryRun) {
-      cardsUpserted++;
+      if (existingProviderCardIds.contains(providerCardId)) {
+        rowsUpdated++;
+      } else {
+        rowsInserted++;
+      }
       continue;
     }
 
-    await client.upsert(
+    final wasExisting = existingProviderCardIds.contains(providerCardId);
+    final ok = await client!.upsert(
       table: 'fc_player_cards',
       onConflict: 'provider,provider_card_id',
       row: payload,
     );
-    cardsUpserted++;
+    if (!ok) {
+      rowsFailed++;
+    } else if (wasExisting) {
+      rowsUpdated++;
+    } else {
+      rowsInserted++;
+    }
   }
 
-  stdout.writeln(
-    '${options.dryRun ? '[dry-run] ' : ''}Cartas processadas: $cardsUpserted '
-    '(puladas por falta de campo obrigatorio: $cardsSkippedNoRating)',
-  );
+  stdout.writeln('${options.dryRun ? '[DRY-RUN] ' : ''}Resultado do sync:');
+  stdout.writeln('  lidos:       $rowsRead');
+  stdout.writeln('  validos:     $rowsValid');
+  stdout.writeln('  ignorados:   $rowsSkipped (campo obrigatorio ausente)');
+  stdout.writeln('  inseridos:   $rowsInserted');
+  stdout.writeln('  atualizados: $rowsUpdated');
+  stdout.writeln('  falhas:      $rowsFailed');
+  if (options.dryRun) {
+    stdout.writeln('  nations distintas no CSV: ${dryRunNations.length}');
+    stdout.writeln('  leagues distintas no CSV: ${dryRunLeagues.length}');
+    stdout.writeln('  clubs distintos no CSV:   ${dryRunClubs.length}');
+  }
 
-  if (!options.dryRun) {
+  if (client != null) {
     final deactivated = await client.deactivateMissing(
       table: 'fc_player_cards',
       provider: options.provider,
@@ -385,16 +448,16 @@ class _ColumnMapping {
 }
 
 /// Cliente HTTP fino contra o PostgREST do Supabase, autenticado com a
-/// service role key -- nunca importado pelo app Flutter (vive so em tool/).
+/// secret key -- nunca importado pelo app Flutter (vive so em tool/).
 class _SupabaseAdmin {
-  _SupabaseAdmin({required this.baseUrl, required this.serviceRoleKey});
+  _SupabaseAdmin({required this.baseUrl, required this.secretKey});
 
   final String baseUrl;
-  final String serviceRoleKey;
+  final String secretKey;
 
   Map<String, String> get _headers => <String, String>{
-    'apikey': serviceRoleKey,
-    'Authorization': 'Bearer $serviceRoleKey',
+    'apikey': secretKey,
+    'Authorization': 'Bearer $secretKey',
     'Content-Type': 'application/json',
   };
 
@@ -434,7 +497,38 @@ class _SupabaseAdmin {
     return null;
   }
 
-  Future<void> upsert({
+  /// Todos os provider_card_id ja existentes para este provider -- buscado
+  /// uma vez antes do loop principal para que o sync saiba, por linha, se
+  /// vai inserir ou atualizar (o upsert do PostgREST nao diferencia isso
+  /// pelo status HTTP).
+  Future<Set<String>> fetchExistingProviderCardIds({
+    required String table,
+    required String provider,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/rest/v1/$table?provider=eq.${Uri.encodeComponent(provider)}'
+        '&select=provider_card_id',
+      ),
+      headers: _headers,
+    );
+    if (response.statusCode >= 300) {
+      stderr.writeln(
+        'Falha ao listar provider_card_id existentes: '
+        '${response.statusCode} ${response.body}',
+      );
+      return <String>{};
+    }
+    final rows = jsonDecode(response.body) as List<dynamic>;
+    return <String>{
+      for (final row in rows)
+        (row as Map<String, dynamic>)['provider_card_id'] as String,
+    };
+  }
+
+  /// Retorna false em falha (sem lancar) -- quem chama conta sucesso/falha
+  /// para o relatorio final, nao interrompe o resto do sync por uma linha.
+  Future<bool> upsert({
     required String table,
     required String onConflict,
     required Map<String, dynamic> row,
@@ -451,7 +545,9 @@ class _SupabaseAdmin {
       stderr.writeln(
         'Falha ao upsertar $table: ${response.statusCode} ${response.body}',
       );
+      return false;
     }
+    return true;
   }
 
   /// Marca is_active=false para toda carta DAQUELE provider que nao

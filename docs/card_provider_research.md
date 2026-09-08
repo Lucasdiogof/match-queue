@@ -97,3 +97,79 @@ não tinha o arquivo de dados real disponível nem permissão prévia para
 baixar um arquivo de terceiro sem confirmação explícita do usuário no chat
 (regra do ambiente: download de arquivo é ação que exige permissão
 explícita, e esta sessão roda sem supervisão síncrona).
+
+## Correção de status crítica (revisão do dono do produto, 2026-09-08)
+
+O dataset escolhido acima **NÃO é uma fonte de dados final** para o
+catálogo de cartas Ultimate Team. É uma fonte **provisória**, usada para
+validar o pipeline inteiro (importer, schema, busca, filtros, picker) com
+dado real e não-trivial em vez de continuar rodando só contra as 50 cartas
+`LOCAL` inventadas na Etapa 10. Registrando aqui os quatro pontos que o
+dono do produto pediu para nunca ficarem implícitos:
+
+1. **É FC26, não FC27.** O produto tem FC27 como alvo declarado; este
+   dataset nunca alega ser FC27. `game_version` gravado no banco para
+   essas linhas é `FC26`, honesto com a origem — nunca `FC27` só porque é
+   o default do importer.
+2. **É player database, não carta Ultimate Team.** O dataset (schema
+   sofifa-scrape clássico) tem **uma linha por jogador**, sem `card_type`/
+   `rarity` reais, sem múltiplas versões do mesmo jogador (sem "Mbappé
+   TOTS" vs "Mbappé Gold Rare" como linhas separadas), e sem rating
+   variando por versão de carta — é o rating "base" daquele jogador na
+   base sofifa, não um rating específico de carta especial. Nenhuma linha
+   deste provider deve ser chamada de "carta UT real" em nenhum lugar do
+   produto (UI, docs, commit message). O importer grava
+   `card_type = 'BASE_DATASET'` para toda linha desta fonte (nunca
+   inventa `'Special Card'`/`'Rare'`/etc. quando o CSV não declara isso).
+3. **Serve como fallback/bootstrap.** Prova que schema (`fc_clubs`,
+   `fc_nations`, `fc_leagues`, GK stats corretos, playstyles, etc.),
+   importer (upsert idempotente, `is_active`, contagem de
+   inserido/atualizado/ignorado/falha) e o lado Flutter (busca, filtros,
+   picker, imagens) funcionam ponta a ponta contra dado real — sem
+   depender de achar a fonte "definitiva" primeiro.
+4. **FC27/UT real ainda precisa de fonte própria.** Continua em aberto —
+   ver seção "Pendência explícita: FC27 UT catalog source" mais abaixo,
+   escrita depois de uma segunda rodada de pesquisa dedicada a isso.
+   Cartas especiais Ultimate Team (TOTS, Icons, versões in-form etc.) quase
+   certamente vão exigir um provider diferente deste, mesmo que uma fonte
+   FC27 "base" apareça.
+
+**Nome do provider no banco**: `KAGGLE_ROVNEZ_FC26` — nunca `FUTGG`/
+`FUTBIN`/`FUTWIZ` (o dado não vem de lá) nem `LOCAL` (esse continua
+reservado para as 50 cartas dev inventadas da Etapa 10). O nome é
+explícito sobre fonte (Kaggle), autor (rovnez) e versão do jogo (FC26) —
+qualquer pessoa lendo uma linha do banco sabe de onde ela veio sem
+precisar abrir este documento.
+
+### Schema: por que `fc_player_cards` mesmo sem ser carta UT de verdade
+
+Avaliado introduzir uma tabela `fc_players` separada (jogador/identidade
+base) e reservar `fc_player_cards` só para versões UT de verdade. Decisão:
+**não fazer essa migration agora** — usar `fc_player_cards.card_type =
+'BASE_DATASET'` como marcador explícito, exatamente como o dono do produto
+ofereceu como alternativa aceitável. Motivos:
+
+- O contrato Flutter (`PlayerCardCatalogRepository`, Etapa 10) já é
+  provider-agnostic e não assume nada sobre "uma linha = uma carta única
+  de verdade" — ele so pede busca/paginação/filtro por um objeto com
+  rating+posição+stats, que uma linha de player database preenche sem
+  forçar nada.
+- Quando (se) uma fonte FC27 UT real aparecer, ela entra como outro
+  `provider` na mesma tabela, com `card_type` de verdade (`'Gold Rare'`,
+  `'TOTS'`, etc.) — nenhuma migration de separação é bloqueante para isso.
+- **Isto é explicitamente provisório, não a solução final.** Se o produto
+  crescer a ponto de precisar modelar "um jogador, N cartas dele" como
+  relação de primeira classe (ex.: comparar duas versões do mesmo jogador
+  lado a lado), a separação `fc_players`/`fc_player_cards` vira a
+  migration certa — só não agora, sem uso real que justifique o custo.
+
+## Pendência explícita: FC27 UT catalog source
+
+**Ainda não resolvida.** Pesquisa dedicada rodada em 2026-09-08 (mesma
+sessão) não encontrou uma fonte gratuita de cartas Ultimate Team FC27 reais
+(com `card_type`/rarity, múltiplas versões por jogador, rating por versão)
+que não exija contornar proteção ou virar parceiro aprovado da EA. Ver
+seção dedicada mais abaixo para o detalhamento completo dessa segunda
+rodada — **a Etapa 11 não fecha 100% enquanto este item não virar A
+(fonte encontrada) ou B (confirmado documentadamente que não existe fonte
+adequada ainda)**, conforme pedido do dono do produto.
