@@ -1,12 +1,15 @@
 # Etapa 7 — fechamento do lado servidor (push/FCM)
 
 Runbook de execução. Vive no repo de propósito (sobrevive a troca de conta/
-máquina). Auditado contra o estado real do projeto em 2026-09-08:
-`process-notification-outbox` **não está deployada**, **zero secrets**
-configurados no Edge Functions, **zero valores no Vault**, tabelas de
-notificação com **zero linhas** (nenhum resíduo de QA). `pg_cron`, `pg_net`,
-`pgcrypto` instalados; Vault confirmado funcional (schema `vault` responde a
-query, mesmo não aparecendo como extensão própria). Cron jobs já ativos:
+máquina). Estado em 2026-09-08: `process-notification-outbox` **deployada e
+ACTIVE** (`verify_jwt: false` confirmado, URL testada com `curl` — 403 sem
+header, ou seja o gateway não bloqueia e a function rejeita certo por falta
+de `x-worker-secret`). Canal Android `queue_alerts` registrado no client
+(commit `aaa9c60`). Ainda **zero secrets** configurados no Edge Functions e
+**zero valores no Vault** — é só isso que falta agora. Tabelas de notificação
+com **zero linhas** (nenhum resíduo de QA). `pg_cron`, `pg_net`, `pgcrypto`
+instalados; Vault confirmado funcional (schema `vault` responde a query,
+mesmo não aparecendo como extensão própria). Cron jobs já ativos:
 `matchmaking-expire-searches` (Etapa 5) e `notification-outbox-dispatch`
 (Etapa 7, rede de segurança de 1 min).
 
@@ -209,8 +212,7 @@ do shell e tem UI própria pra isso:
 1. Abra **https://supabase.com/dashboard/project/lteujeclnhmurcewurkg/settings/vault**
 2. **Add new secret** → Name: `notification_worker_url` → Secret value:
    `https://lteujeclnhmurcewurkg.supabase.co/functions/v1/process-notification-outbox`
-   (confirme contra a URL exata que o deploy do passo 3.3 vai imprimir) →
-   Save.
+   (já deployada e confirmada — ver seção 3.3) → Save.
 3. **Add new secret** de novo → Name: `notification_worker_secret` → Secret
    value: o **mesmo valor exato** do `WORKER_SECRET` gerado em 2.1 → Save.
 
@@ -228,18 +230,33 @@ Conferir que os nomes existem (sem expor o valor decifrado):
 npx supabase@latest db query --linked "select name, created_at from vault.secrets where name in ('notification_worker_url','notification_worker_secret') order by name;"
 ```
 
-### 3.3 Deploy da Edge Function
+### 3.3 Deploy da Edge Function — JÁ FEITO
 
-Sim — **dá pra fazer 100% por CLI**, depois dos secrets prontos (a function
-já lê tudo de `Deno.env`, não tem nada hardcoded). Rode:
+Deployar código não expõe nem depende de nenhuma credencial (a function só
+responde 503/403 até os secrets existirem), então já rodei este passo. Sem
+Docker instalado neste ambiente, usei `--use-api` (bundling sem Docker,
+suportado pela CLI 2.117.0):
 
 ```bash
-npx supabase@latest functions deploy process-notification-outbox --project-ref lteujeclnhmurcewurkg --no-verify-jwt
+npx supabase@latest functions deploy process-notification-outbox --project-ref lteujeclnhmurcewurkg --no-verify-jwt --use-api
 ```
 
-A CLI imprime a URL pública ao final — **confira que bate exatamente** com o
-que você colocou em `notification_worker_url` no Vault (passo 3.2). Se
-divergir, atualize o valor no Vault (Dashboard → Vault → editar o secret).
+Confirmado: `functions list` mostra `status: ACTIVE`, `verify_jwt: false`.
+Testei com `curl -X POST` sem nenhum header — voltou **403** (a própria
+function rejeitando por `x-worker-secret` ausente), não 401 do gateway, o
+que confirma que o bypass de JWT funcionou. A URL pública, já confirmada por
+esse teste, é exatamente:
+
+```
+https://lteujeclnhmurcewurkg.supabase.co/functions/v1/process-notification-outbox
+```
+
+Use esse valor exato no `notification_worker_url` do Vault (passo 3.2) — não
+precisa mais conferir contra a saída do deploy, já está validado.
+
+Se no futuro o código da function mudar, rode o mesmo comando de novo — o
+deploy é idempotente (sobrescreve a versão, `version` incrementa no
+`functions list`).
 
 ---
 
@@ -250,10 +267,10 @@ divergir, atualize o valor no Vault (Dashboard → Vault → editar o secret).
       `FIREBASE_PRIVATE_KEY` extraídos, arquivo JSON apagado depois
 - [ ] `supabase secrets set --env-file ...` rodado, `secrets list` mostra os
       4 nomes, arquivo `.env` local apagado
-- [ ] `notification_worker_url` no Vault
+- [ ] `notification_worker_url` no Vault (valor já confirmado, seção 3.3)
 - [ ] `notification_worker_secret` no Vault (== `WORKER_SECRET`)
-- [ ] `supabase functions deploy ... --no-verify-jwt` rodado, URL conferida
-      contra o Vault
+- [x] `supabase functions deploy ... --no-verify-jwt --use-api` rodado,
+      `ACTIVE`, URL testada e confirmada (403 sem header = correto)
 - [ ] APNs key (.p8) gerada no Apple Developer, Key ID + Team ID anotados
 - [ ] APNs key enviada ao Firebase Console (Cloud Messaging → Apple app config)
 - [ ] Capabilities Push Notifications + Background Modes no target Runner
