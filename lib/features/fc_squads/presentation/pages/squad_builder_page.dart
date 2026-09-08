@@ -1,0 +1,449 @@
+import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/di/injector.dart';
+import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
+import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
+import 'package:fifa_queue/features/fc_squads/domain/repositories/fc_squad_repository.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/cubit/squad_builder_cubit.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/formation_picker_sheet.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/manager_picker_sheet.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_picker_sheet.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_field.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_name_sheet.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class SquadBuilderPage extends StatelessWidget {
+  const SquadBuilderPage({required this.squadId, super.key});
+
+  final String squadId;
+
+  @override
+  Widget build(BuildContext context) => BlocProvider<SquadBuilderCubit>(
+    create: (_) =>
+        SquadBuilderCubit(getIt<FcSquadRepository>(), squadId: squadId)..load(),
+    child: const _SquadBuilderView(),
+  );
+}
+
+class _SquadBuilderView extends StatelessWidget {
+  const _SquadBuilderView();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return BlocConsumer<SquadBuilderCubit, SquadBuilderState>(
+      listenWhen: (previous, current) =>
+          previous.actionFailure != current.actionFailure &&
+          current.actionFailure != null,
+      listener: (context, state) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(state.actionFailure!.localizedMessage(l10n)),
+            ),
+          );
+        context.read<SquadBuilderCubit>().clearActionFailure();
+      },
+      builder: (context, state) {
+        final squad = state.squad;
+
+        return AppScaffold(
+          appBar: AppAppBar(
+            title: squad?.name ?? l10n.squadsSectionTitle,
+            subtitle: squad?.formation.displayName,
+            actions: <Widget>[
+              if (squad != null)
+                AppIconButton(
+                  icon: Icons.more_horiz,
+                  tooltip: l10n.actionMore,
+                  variant: AppIconButtonVariant.surface,
+                  onPressed: () => _showActions(context, squad, state),
+                ),
+            ],
+          ),
+          body: switch (state.status) {
+            SquadBuilderStatus.loading when squad == null => const AppLoading(),
+            SquadBuilderStatus.failure when squad == null => AppErrorState(
+              title: l10n.errorUnexpected,
+              message: state.failure?.localizedMessage(l10n) ?? '',
+              retryLabel: l10n.actionRetry,
+              onRetry: context.read<SquadBuilderCubit>().load,
+            ),
+            _ when squad == null => const AppLoading(),
+            _ => _Body(squad: squad, state: state),
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _showActions(
+    BuildContext context,
+    FcSquadDetail squad,
+    SquadBuilderState state,
+  ) async {
+    final l10n = context.l10n;
+    final cubit = context.read<SquadBuilderCubit>();
+
+    await showAppBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => AppBottomSheet(
+        title: squad.name,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            AppButton.secondary(
+              label: l10n.squadRenameAction,
+              icon: Icons.edit_outlined,
+              onPressed: () async {
+                Navigator.of(sheetContext).pop();
+                final result = await showSquadNameSheet(
+                  context: context,
+                  title: l10n.squadRenameTitle,
+                  initialName: squad.name,
+                );
+                if (result != null) {
+                  await cubit.rename(result.name);
+                }
+              },
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            if (!squad.isDefault)
+              AppButton.secondary(
+                label: l10n.squadSetDefaultAction,
+                icon: Icons.star_outline,
+                onPressed: () {
+                  Navigator.of(sheetContext).pop();
+                  cubit.setDefault();
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({required this.squad, required this.state});
+
+  final FcSquadDetail squad;
+  final SquadBuilderState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final cubit = context.read<SquadBuilderCubit>();
+
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            AppChip(
+              label: squad.formation.displayName,
+              icon: Icons.grid_view_outlined,
+              onPressed: () async {
+                final code = await showFormationPickerSheet(
+                  context: context,
+                  formations: state.formations,
+                  selectedCode: squad.formation.code,
+                );
+                if (code != null && code != squad.formation.code) {
+                  await cubit.setFormation(code);
+                }
+              },
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            if (squad.isDefault) AppBadge(label: l10n.squadDefaultBadge),
+            const Spacer(),
+            Text(
+              l10n.squadCompletionLabel(
+                squad.startingCount,
+                squad.formation.slots.length,
+              ),
+              style: context.textStyles.bodySmall?.copyWith(
+                color: context.colors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+        if (state.pendingMove != null) ...<Widget>[
+          const SizedBox(height: AppSpacing.md),
+          AppBanner(tone: AppBannerTone.neutral, message: l10n.squadMoveHint),
+        ],
+        const SizedBox(height: AppSpacing.lg),
+        SquadField(
+          squad: squad,
+          pendingSlotCode: state.pendingMove?.type == SquadSlotType.starting
+              ? state.pendingMove?.slotCode
+              : null,
+          savingSlotCode: state.savingSlot,
+          onSlotTap: (slot) => _onSlotTap(context, squad, slot),
+          onSlotLongPress: (slot) => _onSlotActions(
+            context,
+            squad,
+            SquadSlotType.starting,
+            slot.slotCode,
+            slot.positionCode,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        _Bench(squad: squad, state: state),
+        const SizedBox(height: AppSpacing.xl),
+        _ManagerSection(squad: squad),
+      ],
+    );
+  }
+
+  Future<void> _onSlotTap(
+    BuildContext context,
+    FcSquadDetail squad,
+    FormationSlot slot,
+  ) async {
+    final cubit = context.read<SquadBuilderCubit>();
+
+    // Com um movimento em curso, o toque conclui a troca em vez de abrir o
+    // picker -- é o que torna o tap-to-swap previsível.
+    if (state.pendingMove != null) {
+      await cubit.tapForMove(
+        type: SquadSlotType.starting,
+        slotCode: slot.slotCode,
+      );
+      return;
+    }
+
+    final occupied =
+        squad.cardAt(SquadSlotType.starting, slot.slotCode) != null;
+    if (occupied) {
+      await _onSlotActions(
+        context,
+        squad,
+        SquadSlotType.starting,
+        slot.slotCode,
+        slot.positionCode,
+      );
+      return;
+    }
+
+    final card = await showPlayerPickerSheet(
+      context: context,
+      positionCode: slot.positionCode,
+    );
+    if (card != null) {
+      await cubit.assignCard(
+        type: SquadSlotType.starting,
+        slotCode: slot.slotCode,
+        playerCardId: card.id,
+      );
+    }
+  }
+
+  Future<void> _onSlotActions(
+    BuildContext context,
+    FcSquadDetail squad,
+    SquadSlotType type,
+    String slotCode,
+    String? positionCode,
+  ) async {
+    final l10n = context.l10n;
+    final cubit = context.read<SquadBuilderCubit>();
+    if (squad.cardAt(type, slotCode) == null) {
+      return;
+    }
+
+    await showAppBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => AppBottomSheet(
+        title: squad.cardAt(type, slotCode)?.displayName,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            AppButton.secondary(
+              label: l10n.squadSlotChangeAction,
+              icon: Icons.swap_horiz,
+              onPressed: () async {
+                Navigator.of(sheetContext).pop();
+                final card = await showPlayerPickerSheet(
+                  context: context,
+                  positionCode: positionCode,
+                );
+                if (card != null) {
+                  await cubit.assignCard(
+                    type: type,
+                    slotCode: slotCode,
+                    playerCardId: card.id,
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AppButton.secondary(
+              label: l10n.squadSlotMoveAction,
+              icon: Icons.open_with,
+              onPressed: () {
+                Navigator.of(sheetContext).pop();
+                cubit.tapForMove(type: type, slotCode: slotCode);
+              },
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AppButton.ghost(
+              label: l10n.squadSlotRemoveAction,
+              expanded: true,
+              onPressed: () {
+                Navigator.of(sheetContext).pop();
+                cubit.clearSlot(type: type, slotCode: slotCode);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Bench extends StatelessWidget {
+  const _Bench({required this.squad, required this.state});
+
+  final FcSquadDetail squad;
+  final SquadBuilderState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          l10n.squadBenchTitle.toUpperCase(),
+          style: context.textStyles.labelSmall,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        SizedBox(
+          height: 72 / SquadPlayerCard.aspectRatio,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: squad.benchSize,
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
+            itemBuilder: (context, index) {
+              final slotCode = FcSquadDetail.benchCodeAt(index);
+              final card = squad.cardAt(SquadSlotType.bench, slotCode);
+              return SquadPlayerCard(
+                positionCode: card?.primaryPosition ?? '',
+                width: 72,
+                card: card,
+                state:
+                    state.pendingMove?.type == SquadSlotType.bench &&
+                        state.pendingMove?.slotCode == slotCode
+                    ? SquadPlayerCardState.selected
+                    : card == null
+                    ? SquadPlayerCardState.empty
+                    : SquadPlayerCardState.filled,
+                isSaving: state.savingSlot == slotCode,
+                onTap: () => _onTap(context, slotCode, card != null),
+                onLongPress: card == null
+                    ? null
+                    : () => _onTap(context, slotCode, true),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _onTap(
+    BuildContext context,
+    String slotCode,
+    bool occupied,
+  ) async {
+    final cubit = context.read<SquadBuilderCubit>();
+
+    if (state.pendingMove != null) {
+      await cubit.tapForMove(type: SquadSlotType.bench, slotCode: slotCode);
+      return;
+    }
+
+    if (occupied) {
+      await cubit.tapForMove(type: SquadSlotType.bench, slotCode: slotCode);
+      return;
+    }
+
+    // Banco não exige posição: qualquer carta serve.
+    final card = await showPlayerPickerSheet(context: context);
+    if (card != null) {
+      await cubit.assignCard(
+        type: SquadSlotType.bench,
+        slotCode: slotCode,
+        playerCardId: card.id,
+      );
+    }
+  }
+}
+
+class _ManagerSection extends StatelessWidget {
+  const _ManagerSection({required this.squad});
+
+  final FcSquadDetail squad;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final manager = squad.manager;
+
+    return AppCard(
+      onTap: () async {
+        final selection = await showManagerPickerSheet(
+          context: context,
+          currentManager: manager,
+          currentLeague: squad.managerLeague,
+        );
+        if (selection != null && context.mounted) {
+          await context.read<SquadBuilderCubit>().setManager(
+            managerId: selection.manager?.id,
+            managerLeagueId: selection.league?.id,
+          );
+        }
+      },
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.person_outline, color: context.colors.textSecondary),
+          const SizedBox(width: AppSpacing.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  l10n.squadManagerTitle.toUpperCase(),
+                  style: context.textStyles.labelSmall,
+                ),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  manager?.name ?? l10n.squadManagerNoneTitle,
+                  style: context.textStyles.bodyLarge,
+                ),
+                if (squad.managerLeague != null)
+                  Text(
+                    squad.managerLeague!.name,
+                    style: context.textStyles.bodySmall?.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Icon(
+            manager == null ? Icons.add : Icons.chevron_right,
+            color: context.colors.textTertiary,
+          ),
+        ],
+      ),
+    );
+  }
+}

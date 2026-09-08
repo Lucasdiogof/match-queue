@@ -102,6 +102,16 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
+  SquadFailureReason? _squadReasonFrom(String? code) => switch (code) {
+    'FQ029' => SquadFailureReason.notFound,
+    'FQ030' => SquadFailureReason.invalidName,
+    'FQ031' => SquadFailureReason.invalidFormation,
+    'FQ032' => SquadFailureReason.invalidSlot,
+    'FQ033' => SquadFailureReason.cardCannotPlayPosition,
+    'FQ034' => SquadFailureReason.inUseByActiveSearch,
+    _ => null,
+  };
+
   AuthFailureReason _authReasonFrom(AuthException error) {
     switch (error.code) {
       case 'invalid_credentials':
@@ -134,6 +144,10 @@ class SupabaseErrorMapper {
     final inviteReason = _inviteReasonFrom(error.code);
     if (inviteReason != null) {
       return InviteFailure(reason: inviteReason, debugMessage: error.message);
+    }
+    final squadReason = _squadReasonFrom(error.code);
+    if (squadReason != null) {
+      return SquadFailure(reason: squadReason, debugMessage: error.message);
     }
     final matchmakingReason = _matchmakingReasonFrom(error.code);
     if (matchmakingReason != null) {

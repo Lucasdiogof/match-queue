@@ -42,6 +42,14 @@ extension AppFailureL10n on AppFailure {
       InviteFailureReason.generationFailed => l10n.errorInviteGenerationFailed,
       InviteFailureReason.permissionDenied => l10n.errorInvitePermissionDenied,
     },
+    SquadFailure(:final reason) => switch (reason) {
+      SquadFailureReason.notFound => l10n.errorSquadNotFound,
+      SquadFailureReason.invalidName => l10n.errorSquadNameInvalid,
+      SquadFailureReason.invalidFormation => l10n.errorSquadFormationInvalid,
+      SquadFailureReason.invalidSlot => l10n.errorSquadSlotInvalid,
+      SquadFailureReason.cardCannotPlayPosition => l10n.errorSquadCardPosition,
+      SquadFailureReason.inUseByActiveSearch => l10n.errorSquadInUse,
+    },
     MatchmakingFailure(:final reason) => switch (reason) {
       MatchmakingFailureReason.noActiveSearch =>
         l10n.errorMatchmakingNoActiveSearch,

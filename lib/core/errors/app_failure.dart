@@ -51,6 +51,15 @@ enum FcAccountFailureReason {
   invalidDivision,
 }
 
+enum SquadFailureReason {
+  notFound,
+  invalidName,
+  invalidFormation,
+  invalidSlot,
+  cardCannotPlayPosition,
+  inUseByActiveSearch,
+}
+
 sealed class AppFailure extends Equatable implements Exception {
   const AppFailure({this.debugMessage});
 
@@ -120,6 +129,15 @@ final class FcAccountFailure extends AppFailure {
   const FcAccountFailure({required this.reason, super.debugMessage});
 
   final FcAccountFailureReason reason;
+
+  @override
+  List<Object?> get props => <Object?>[reason, debugMessage];
+}
+
+final class SquadFailure extends AppFailure {
+  const SquadFailure({required this.reason, super.debugMessage});
+
+  final SquadFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];
