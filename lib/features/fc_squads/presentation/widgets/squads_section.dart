@@ -10,7 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-/// Seção "Squads" dentro do detalhe do Elenco.
+/// "Escalação Principal" no detalhe da Conta.
+///
+/// A UX principal trata UMA escalação como a do elenco, mesmo com o backend
+/// suportando N (item 2). Quem tem mais de uma chega nelas por um caminho
+/// secundário, em vez de a tela virar um gerenciador de squads.
 class SquadsSection extends StatelessWidget {
   const SquadsSection({required this.fcAccountId, super.key});
 
@@ -23,30 +27,21 @@ class SquadsSection extends StatelessWidget {
     return BlocBuilder<FcSquadsCubit, FcSquadsState>(
       builder: (context, state) {
         // Só mostra squads do elenco aberto: se o cubit ainda está com outra
-        // conta carregada, espera em vez de exibir dado alheio (item 127).
+        // conta carregada, espera em vez de exibir dado alheio.
         if (state.accountId != fcAccountId) {
           return const SizedBox.shrink();
         }
+
+        final primary = state.defaultSquad ?? state.squads.firstOrNull;
+        final others = state.squads.where((s) => s.id != primary?.id).length;
 
         return AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    l10n.squadsSectionTitle.toUpperCase(),
-                    style: context.textStyles.labelSmall,
-                  ),
-                  if (state.hasSquads)
-                    Text(
-                      '${state.squads.length}',
-                      style: context.textStyles.bodySmall?.copyWith(
-                        color: context.colors.textSecondary,
-                      ),
-                    ),
-                ],
+              Text(
+                l10n.squadPrimaryLineupTitle.toUpperCase(),
+                style: context.textStyles.labelSmall,
               ),
               const SizedBox(height: AppSpacing.md),
               if (state.isLoading)
@@ -58,27 +53,43 @@ class SquadsSection extends StatelessWidget {
                       state.failure?.localizedMessage(l10n) ??
                       l10n.errorUnexpected,
                 )
-              else if (!state.hasSquads)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                  child: Text(
-                    l10n.squadsEmptyMessage,
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: context.colors.textSecondary,
-                    ),
+              else if (primary == null) ...<Widget>[
+                Text(
+                  l10n.squadPrimaryLineupEmpty,
+                  style: context.textStyles.bodySmall?.copyWith(
+                    color: context.colors.textSecondary,
                   ),
-                )
-              else
-                for (final squad in state.squads)
-                  _SquadRow(squad: squad, accountId: fcAccountId),
-              const SizedBox(height: AppSpacing.sm),
-              AppButton.secondary(
-                label: l10n.squadCreateAction,
-                icon: Icons.add,
-                onPressed: state.isSaving
-                    ? null
-                    : () => _create(context, state),
-              ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                AppButton.secondary(
+                  label: l10n.squadPrimaryLineupCreateAction,
+                  icon: Icons.add,
+                  onPressed: state.isSaving
+                      ? null
+                      : () => _create(context, state),
+                ),
+              ] else ...<Widget>[
+                _PrimarySummary(squad: primary),
+                const SizedBox(height: AppSpacing.lg),
+                AppButton.secondary(
+                  label: l10n.squadPrimaryLineupEditAction,
+                  icon: Icons.tune,
+                  onPressed: () => context.pushNamed(
+                    AppRoutes.squadBuilder.name,
+                    pathParameters: <String, String>{
+                      AppRoutes.squadIdParam: primary.id,
+                    },
+                  ),
+                ),
+                if (others > 0) ...<Widget>[
+                  const SizedBox(height: AppSpacing.sm),
+                  AppButton.ghost(
+                    label: l10n.squadOtherLineupsAction(others),
+                    expanded: true,
+                    onPressed: () => _showAll(context, state),
+                  ),
+                ],
+              ],
             ],
           ),
         );
@@ -103,73 +114,150 @@ class SquadsSection extends StatelessWidget {
       formationCode: result.formationCode!,
     );
   }
+
+  Future<void> _showAll(BuildContext context, FcSquadsState state) async {
+    final l10n = context.l10n;
+
+    await showAppBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => AppBottomSheet(
+        title: l10n.squadsSectionTitle,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            for (final squad in state.squads)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                child: AppCard(
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    context.pushNamed(
+                      AppRoutes.squadBuilder.name,
+                      pathParameters: <String, String>{
+                        AppRoutes.squadIdParam: squad.id,
+                      },
+                    );
+                  },
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              squad.name,
+                              overflow: TextOverflow.ellipsis,
+                              style: sheetContext.textStyles.bodyLarge,
+                            ),
+                            Text(
+                              _summaryLine(sheetContext, squad),
+                              style: sheetContext.textStyles.bodySmall
+                                  ?.copyWith(
+                                    color: sheetContext.colors.textSecondary,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (squad.isDefault)
+                        AppBadge(label: l10n.squadDefaultBadge),
+                    ],
+                  ),
+                ),
+              ),
+            const SizedBox(height: AppSpacing.sm),
+            AppButton.secondary(
+              label: l10n.squadCreateAction,
+              icon: Icons.add,
+              onPressed: () async {
+                Navigator.of(sheetContext).pop();
+                await _create(context, state);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _SquadRow extends StatelessWidget {
-  const _SquadRow({required this.squad, required this.accountId});
+String _summaryLine(BuildContext context, FcSquadSummary squad) {
+  final l10n = context.l10n;
+  final overall = squad.overall == null
+      ? l10n.squadOverallUnknown
+      : l10n.squadOverallValue(squad.overall!);
+  return '${squad.formationCode} · $overall · '
+      '${l10n.squadChemistryValue(squad.chemistry)}';
+}
+
+class _PrimarySummary extends StatelessWidget {
+  const _PrimarySummary({required this.squad});
 
   final FcSquadSummary squad;
-  final String accountId;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
+    final isComplete = squad.startingCount >= 11;
 
-    return InkWell(
-      onTap: () => context.pushNamed(
-        AppRoutes.squadBuilder.name,
-        pathParameters: <String, String>{AppRoutes.squadIdParam: squad.id},
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-        child: Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
           children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          squad.name,
-                          overflow: TextOverflow.ellipsis,
-                          style: context.textStyles.bodyLarge,
-                        ),
-                      ),
-                      if (squad.isDefault) ...<Widget>[
-                        const SizedBox(width: AppSpacing.sm),
-                        AppBadge(label: l10n.squadDefaultBadge),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    '${squad.formationCode} · '
-                    '${l10n.squadCompletionLabel(squad.startingCount, 11)}',
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    squad.overall == null
-                        ? '${l10n.squadOverallUnknown} · '
-                              '${l10n.squadChemistryValue(squad.chemistry)}'
-                        : '${l10n.squadOverallValue(squad.overall!)} · '
-                              '${l10n.squadChemistryValue(squad.chemistry)}',
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textTertiary,
-                    ),
-                  ),
-                ],
+            Flexible(
+              child: Text(
+                squad.name,
+                overflow: TextOverflow.ellipsis,
+                style: context.textStyles.titleMedium,
               ),
             ),
-            Icon(Icons.chevron_right, color: colors.textTertiary),
+            const SizedBox(width: AppSpacing.sm),
+            AppBadge(label: squad.formationCode),
           ],
         ),
-      ),
+        const SizedBox(height: AppSpacing.sm),
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
+          children: <Widget>[
+            AppBadge(
+              label: squad.overall == null
+                  ? l10n.squadOverallUnknown
+                  : l10n.squadOverallValue(squad.overall!),
+            ),
+            AppBadge(
+              label: l10n.squadChemistryValue(squad.chemistry),
+              tone: squad.chemistry >= 24
+                  ? AppBadgeTone.success
+                  : squad.chemistry >= 12
+                  ? AppBadgeTone.warning
+                  : AppBadgeTone.neutral,
+            ),
+            // Escalação incompleta é informação, não erro: buscar partida
+            // continua liberado (item 52).
+            if (!isComplete)
+              AppBadge(
+                label: l10n.squadCompletionLabel(squad.startingCount, 11),
+                tone: AppBadgeTone.warning,
+              ),
+          ],
+        ),
+        if (isComplete) ...<Widget>[
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            l10n.squadCompletionLabel(squad.startingCount, 11),
+            style: context.textStyles.bodySmall?.copyWith(
+              color: colors.textTertiary,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

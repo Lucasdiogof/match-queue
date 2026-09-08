@@ -50,20 +50,41 @@ class SquadSelectorRow extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Flexible(
-                        child: Text(
-                          selected == null
-                              ? l10n.squadNoneSelected
-                              : '${l10n.squadSummaryLabel(selected.name, selected.formationCode)}'
-                                    ' · '
-                                    '${selected.startingCount < 11
-                                        ? l10n.squadCompletionLabel(selected.startingCount, 11)
-                                        : selected.overall == null
-                                        ? l10n.squadOverallUnknown
-                                        : l10n.squadOverallValue(selected.overall!)}',
-                          overflow: TextOverflow.ellipsis,
-                          style: context.textStyles.bodySmall?.copyWith(
-                            color: colors.textPrimary,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              selected == null
+                                  ? l10n.squadNoneSelected
+                                  : l10n.squadSummaryLabel(
+                                      selected.name,
+                                      selected.formationCode,
+                                    ),
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textStyles.bodySmall?.copyWith(
+                                color: colors.textPrimary,
+                              ),
+                            ),
+                            // Escalação incompleta troca o OVR pela contagem:
+                            // com metade do time faltando, a média engana
+                            // mais do que informa.
+                            if (selected != null)
+                              Text(
+                                selected.startingCount < 11
+                                    ? l10n.squadCompletionLabel(
+                                        selected.startingCount,
+                                        11,
+                                      )
+                                    : '${selected.overall == null ? l10n.squadOverallUnknown : l10n.squadOverallValue(selected.overall!)}'
+                                          ' · '
+                                          '${l10n.squadChemistryValue(selected.chemistry)}',
+                                overflow: TextOverflow.ellipsis,
+                                style: context.textStyles.bodySmall?.copyWith(
+                                  color: colors.textTertiary,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                       Icon(
