@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squads_section.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rename_fc_account_sheet.dart';
@@ -51,6 +52,9 @@ class _FcAccountDetailBody extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
     children: <Widget>[
+      // Squads primeiro: é o que o usuário vem editar com mais frequência.
+      SquadsSection(fcAccountId: account.id),
+      const SizedBox(height: AppSpacing.lg),
       _DivisionSection(account: account),
       const SizedBox(height: AppSpacing.lg),
       _WeekendLeagueSection(

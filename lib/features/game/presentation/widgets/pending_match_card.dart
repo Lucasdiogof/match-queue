@@ -88,6 +88,20 @@ class _PendingMatchCardBody extends StatelessWidget {
                 ),
               ),
             ],
+            if (match.fcSquadName != null) ...<Widget>[
+              const SizedBox(height: AppSpacing.xxs),
+              Text(
+                match.fcFormationCode == null
+                    ? match.fcSquadName!
+                    : l10n.squadSummaryLabel(
+                        match.fcSquadName!,
+                        match.fcFormationCode!,
+                      ),
+                style: context.textStyles.bodySmall?.copyWith(
+                  color: context.colors.textSecondary,
+                ),
+              ),
+            ],
             const SizedBox(height: AppSpacing.lg),
             Row(
               children: <Widget>[

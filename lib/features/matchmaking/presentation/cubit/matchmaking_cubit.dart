@@ -90,9 +90,17 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     }
   }
 
-  Future<bool> startSearch(String fcAccountId, GameMode mode) => _runAction(
-    (teamId) =>
-        _repository.requestSearch(teamId, fcAccountId: fcAccountId, mode: mode),
+  Future<bool> startSearch(
+    String fcAccountId,
+    GameMode mode, {
+    String? fcSquadId,
+  }) => _runAction(
+    (teamId) => _repository.requestSearch(
+      teamId,
+      fcAccountId: fcAccountId,
+      fcSquadId: fcSquadId,
+      mode: mode,
+    ),
   );
 
   Future<bool> cancel() => _runAction(_repository.cancelSearch);

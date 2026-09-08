@@ -682,5 +682,70 @@
   "rivalsDivisionDiv3": "División 3",
   "rivalsDivisionDiv2": "División 2",
   "rivalsDivisionDiv1": "División 1",
-  "rivalsDivisionElite": "Elite"
+  "rivalsDivisionElite": "Elite",
+  "squadsSectionTitle": "Squads",
+  "squadsEmptyTitle": "Ningun equipo configurado",
+  "squadsEmptyMessage": "Crea un equipo para armar tu alineación. Puedes buscar partida incluso sin uno.",
+  "squadCreateAction": "Crear equipo",
+  "squadCreateTitle": "Nuevo equipo",
+  "squadCreateSubtitle": "Ponle un nombre y elige la formación inicial.",
+  "squadNameLabel": "Nombre del equipo",
+  "squadNameHint": "Ej.: Principal",
+  "squadFormationLabel": "Formación",
+  "squadRenameTitle": "Renombrar equipo",
+  "squadRenameAction": "Renombrar",
+  "squadSetDefaultAction": "Definir como predeterminado",
+  "squadDefaultBadge": "Predeterminado",
+  "squadArchiveAction": "Archivar equipo",
+  "squadArchiveConfirmTitle": "¿Archivar equipo?",
+  "squadArchiveConfirmMessage": "Sale de la lista, pero se mantiene el historial de partidas jugadas con él.",
+  "squadBenchTitle": "Banquillo",
+  "squadManagerTitle": "Entrenador",
+  "squadManagerAddAction": "Añadir entrenador",
+  "squadManagerRemoveAction": "Quitar entrenador",
+  "squadManagerNationLabel": "País",
+  "squadManagerLeagueLabel": "Liga",
+  "squadManagerPickNationFirst": "Elige un país para ver los entrenadores.",
+  "squadManagerNoneTitle": "Sin entrenador",
+  "squadFormationPickerTitle": "Elegir formación",
+  "squadPlayerPickerTitle": "Buscar jugador",
+  "squadPlayerSearchHint": "Buscar jugador...",
+  "squadPlayerPickerEmpty": "No se encontraron cartas.",
+  "squadSlotChangeAction": "Cambiar jugador",
+  "squadSlotMoveAction": "Mover",
+  "squadSlotRemoveAction": "Quitar",
+  "squadMoveHint": "Toca otro espacio para intercambiar.",
+  "squadIncompleteLabel": "Equipo incompleto",
+  "squadLabel": "Equipo",
+  "squadNoneSelected": "Sin equipo",
+  "squadDevCatalogNotice": "Cartas de desarrollo. El catálogo real llega en la próxima etapa.",
+  "errorSquadNotFound": "Equipo no encontrado.",
+  "errorSquadNameInvalid": "Elige un nombre de 1 a 40 caracteres.",
+  "errorSquadFormationInvalid": "Esa formación no está disponible.",
+  "errorSquadSlotInvalid": "Ese espacio no existe en esta formación.",
+  "errorSquadCardPosition": "Ese jugador no juega en esa posición.",
+  "errorSquadInUse": "Este equipo se está usando en una búsqueda activa.",
+  "squadCompletionLabel": "{filled}/{total} titulares",
+  "@squadCompletionLabel": {
+    "placeholders": {
+      "filled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "squadSummaryLabel": "{name} · {formation}",
+  "@squadSummaryLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "formation": {
+        "type": "String"
+      }
+    }
+  },
+  "actionMore": "Más"
 }

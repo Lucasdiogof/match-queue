@@ -403,6 +403,18 @@ class _ActivityDetailSheet extends StatelessWidget {
                 label: l10n.activityDetailFcAccount,
                 value: e.fcAccountName!,
               ),
+            // Vem do snapshot da partida: partidas anteriores à Etapa 10 não
+            // têm squad e a linha simplesmente não aparece.
+            if (e.fcSquadName != null)
+              _DetailRow(
+                label: l10n.squadLabel,
+                value: e.fcFormationCode == null
+                    ? e.fcSquadName!
+                    : l10n.squadSummaryLabel(
+                        e.fcSquadName!,
+                        e.fcFormationCode!,
+                      ),
+              ),
           ],
           SearchHistoryEntry() => <Widget>[
             _DetailRow(

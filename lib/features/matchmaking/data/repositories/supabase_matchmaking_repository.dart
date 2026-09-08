@@ -26,9 +26,15 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
   Future<MatchmakingSnapshot> requestSearch(
     String teamId, {
     required String fcAccountId,
+    String? fcSquadId,
     required GameMode mode,
   }) => _guard(() async {
-    final json = await _dataSource.requestSearch(teamId, fcAccountId, mode.key);
+    final json = await _dataSource.requestSearch(
+      teamId,
+      fcAccountId,
+      fcSquadId,
+      mode.key,
+    );
     return MatchmakingSnapshotModel.fromJson(json);
   });
 

@@ -2247,6 +2247,276 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Elite'**
   String get rivalsDivisionElite;
+
+  /// No description provided for @squadsSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Squads'**
+  String get squadsSectionTitle;
+
+  /// No description provided for @squadsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum squad configurado'**
+  String get squadsEmptyTitle;
+
+  /// No description provided for @squadsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie um squad para montar sua escalação. Você pode buscar partida mesmo sem um.'**
+  String get squadsEmptyMessage;
+
+  /// No description provided for @squadCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar squad'**
+  String get squadCreateAction;
+
+  /// No description provided for @squadCreateTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo squad'**
+  String get squadCreateTitle;
+
+  /// No description provided for @squadCreateSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dê um nome e escolha a formação inicial.'**
+  String get squadCreateSubtitle;
+
+  /// No description provided for @squadNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do squad'**
+  String get squadNameLabel;
+
+  /// No description provided for @squadNameHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Principal'**
+  String get squadNameHint;
+
+  /// No description provided for @squadFormationLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Formação'**
+  String get squadFormationLabel;
+
+  /// No description provided for @squadRenameTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear squad'**
+  String get squadRenameTitle;
+
+  /// No description provided for @squadRenameAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear'**
+  String get squadRenameAction;
+
+  /// No description provided for @squadSetDefaultAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Definir como padrão'**
+  String get squadSetDefaultAction;
+
+  /// No description provided for @squadDefaultBadge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Padrão'**
+  String get squadDefaultBadge;
+
+  /// No description provided for @squadArchiveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivar squad'**
+  String get squadArchiveAction;
+
+  /// No description provided for @squadArchiveConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arquivar squad?'**
+  String get squadArchiveConfirmTitle;
+
+  /// No description provided for @squadArchiveConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ele sai da lista, mas o histórico das partidas jogadas com ele é mantido.'**
+  String get squadArchiveConfirmMessage;
+
+  /// No description provided for @squadBenchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Banco'**
+  String get squadBenchTitle;
+
+  /// No description provided for @squadManagerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Técnico'**
+  String get squadManagerTitle;
+
+  /// No description provided for @squadManagerAddAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar técnico'**
+  String get squadManagerAddAction;
+
+  /// No description provided for @squadManagerRemoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover técnico'**
+  String get squadManagerRemoveAction;
+
+  /// No description provided for @squadManagerNationLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'País'**
+  String get squadManagerNationLabel;
+
+  /// No description provided for @squadManagerLeagueLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Liga'**
+  String get squadManagerLeagueLabel;
+
+  /// No description provided for @squadManagerPickNationFirst.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha um país para ver os técnicos.'**
+  String get squadManagerPickNationFirst;
+
+  /// No description provided for @squadManagerNoneTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem técnico'**
+  String get squadManagerNoneTitle;
+
+  /// No description provided for @squadFormationPickerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher formação'**
+  String get squadFormationPickerTitle;
+
+  /// No description provided for @squadPlayerPickerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar jogador'**
+  String get squadPlayerPickerTitle;
+
+  /// No description provided for @squadPlayerSearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar jogador...'**
+  String get squadPlayerSearchHint;
+
+  /// No description provided for @squadPlayerPickerEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma carta encontrada.'**
+  String get squadPlayerPickerEmpty;
+
+  /// No description provided for @squadSlotChangeAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar jogador'**
+  String get squadSlotChangeAction;
+
+  /// No description provided for @squadSlotMoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mover'**
+  String get squadSlotMoveAction;
+
+  /// No description provided for @squadSlotRemoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover'**
+  String get squadSlotRemoveAction;
+
+  /// No description provided for @squadMoveHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque em outro slot para trocar.'**
+  String get squadMoveHint;
+
+  /// No description provided for @squadIncompleteLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Squad incompleto'**
+  String get squadIncompleteLabel;
+
+  /// No description provided for @squadLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Squad'**
+  String get squadLabel;
+
+  /// No description provided for @squadNoneSelected.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem squad'**
+  String get squadNoneSelected;
+
+  /// No description provided for @squadDevCatalogNotice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cartas de desenvolvimento. O catálogo real chega na próxima etapa.'**
+  String get squadDevCatalogNotice;
+
+  /// No description provided for @errorSquadNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Squad não encontrado.'**
+  String get errorSquadNotFound;
+
+  /// No description provided for @errorSquadNameInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha um nome de 1 a 40 caracteres.'**
+  String get errorSquadNameInvalid;
+
+  /// No description provided for @errorSquadFormationInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa formação não está disponível.'**
+  String get errorSquadFormationInvalid;
+
+  /// No description provided for @errorSquadSlotInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa posição não existe nesta formação.'**
+  String get errorSquadSlotInvalid;
+
+  /// No description provided for @errorSquadCardPosition.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse jogador não atua nessa posição.'**
+  String get errorSquadCardPosition;
+
+  /// No description provided for @errorSquadInUse.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este squad está sendo usado em uma busca ativa.'**
+  String get errorSquadInUse;
+
+  /// No description provided for @squadCompletionLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{filled}/{total} titulares'**
+  String squadCompletionLabel(int filled, int total);
+
+  /// No description provided for @squadSummaryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} · {formation}'**
+  String squadSummaryLabel(String name, String formation);
+
+  /// No description provided for @actionMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais'**
+  String get actionMore;
 }
 
 class _AppLocalizationsDelegate

@@ -8,6 +8,7 @@ import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_snapshot.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
@@ -322,9 +323,12 @@ class _StartSearchButton extends StatelessWidget {
       isLoading: isActionPending,
       onPressed: isActionPending
           ? null
+          // O squad é opcional: sem nenhum configurado a busca acontece
+          // igual, só sem escalação associada (item 63).
           : () => context.read<MatchmakingCubit>().startSearch(
               account.id,
               context.read<GameModeCubit>().state,
+              fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
             ),
     );
   }

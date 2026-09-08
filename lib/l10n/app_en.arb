@@ -682,5 +682,70 @@
   "rivalsDivisionDiv3": "Division 3",
   "rivalsDivisionDiv2": "Division 2",
   "rivalsDivisionDiv1": "Division 1",
-  "rivalsDivisionElite": "Elite"
+  "rivalsDivisionElite": "Elite",
+  "squadsSectionTitle": "Squads",
+  "squadsEmptyTitle": "No squad yet",
+  "squadsEmptyMessage": "Create a squad to set up your lineup. You can still search for a match without one.",
+  "squadCreateAction": "Create squad",
+  "squadCreateTitle": "New squad",
+  "squadCreateSubtitle": "Name it and pick a starting formation.",
+  "squadNameLabel": "Squad name",
+  "squadNameHint": "e.g. Main",
+  "squadFormationLabel": "Formation",
+  "squadRenameTitle": "Rename squad",
+  "squadRenameAction": "Rename",
+  "squadSetDefaultAction": "Set as default",
+  "squadDefaultBadge": "Default",
+  "squadArchiveAction": "Archive squad",
+  "squadArchiveConfirmTitle": "Archive squad?",
+  "squadArchiveConfirmMessage": "It leaves the list, but the history of matches played with it is kept.",
+  "squadBenchTitle": "Bench",
+  "squadManagerTitle": "Manager",
+  "squadManagerAddAction": "Add manager",
+  "squadManagerRemoveAction": "Remove manager",
+  "squadManagerNationLabel": "Country",
+  "squadManagerLeagueLabel": "League",
+  "squadManagerPickNationFirst": "Pick a country to see managers.",
+  "squadManagerNoneTitle": "No manager",
+  "squadFormationPickerTitle": "Choose formation",
+  "squadPlayerPickerTitle": "Find player",
+  "squadPlayerSearchHint": "Search player...",
+  "squadPlayerPickerEmpty": "No cards found.",
+  "squadSlotChangeAction": "Change player",
+  "squadSlotMoveAction": "Move",
+  "squadSlotRemoveAction": "Remove",
+  "squadMoveHint": "Tap another slot to swap.",
+  "squadIncompleteLabel": "Incomplete squad",
+  "squadLabel": "Squad",
+  "squadNoneSelected": "No squad",
+  "squadDevCatalogNotice": "Development cards. The real catalog arrives in the next stage.",
+  "errorSquadNotFound": "Squad not found.",
+  "errorSquadNameInvalid": "Pick a name between 1 and 40 characters.",
+  "errorSquadFormationInvalid": "That formation is not available.",
+  "errorSquadSlotInvalid": "That slot does not exist in this formation.",
+  "errorSquadCardPosition": "That player cannot play in that position.",
+  "errorSquadInUse": "This squad is being used in an active search.",
+  "squadCompletionLabel": "{filled}/{total} starters",
+  "@squadCompletionLabel": {
+    "placeholders": {
+      "filled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "squadSummaryLabel": "{name} · {formation}",
+  "@squadSummaryLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "formation": {
+        "type": "String"
+      }
+    }
+  },
+  "actionMore": "More"
 }

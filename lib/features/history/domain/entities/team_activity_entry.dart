@@ -40,6 +40,8 @@ class GameHistoryEntry extends TeamActivityEntry {
     required this.startedAt,
     super.avatarUrl,
     super.fcAccountName,
+    this.fcSquadName,
+    this.fcFormationCode,
     this.result,
     this.goalsFor,
     this.goalsAgainst,
@@ -54,6 +56,8 @@ class GameHistoryEntry extends TeamActivityEntry {
   final int? goalsAgainst;
   final DateTime startedAt;
   final int? weekendLeagueNumber;
+  final String? fcSquadName;
+  final String? fcFormationCode;
 
   bool get hasScore => goalsFor != null && goalsAgainst != null;
 

@@ -10,6 +10,8 @@ class PendingGameMatch extends Equatable {
     required this.startedAt,
     this.weekendLeagueNumber,
     this.fcAccountName,
+    this.fcSquadName,
+    this.fcFormationCode,
   });
 
   final String id;
@@ -18,6 +20,8 @@ class PendingGameMatch extends Equatable {
   final DateTime startedAt;
   final int? weekendLeagueNumber;
   final String? fcAccountName;
+  final String? fcSquadName;
+  final String? fcFormationCode;
 
   @override
   List<Object?> get props => <Object?>[
@@ -27,5 +31,7 @@ class PendingGameMatch extends Equatable {
     startedAt,
     weekendLeagueNumber,
     fcAccountName,
+    fcSquadName,
+    fcFormationCode,
   ];
 }

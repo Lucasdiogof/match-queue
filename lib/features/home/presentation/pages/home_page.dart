@@ -5,6 +5,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_c
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_onboarding_card.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_selector_row.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_selector_row.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
@@ -94,6 +95,7 @@ class _HomeBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const FcAccountSelectorRow(),
+                const SquadSelectorRow(),
                 const GameModeSelector(),
                 const SizedBox(height: AppSpacing.lg),
                 const WeekendLeagueCard(),

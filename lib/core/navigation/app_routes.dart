@@ -58,7 +58,13 @@ class AppRoutes {
     '/app/fc-accounts/:fcAccountId',
   );
 
+  static const AppRoute squadBuilder = AppRoute(
+    'squad-builder',
+    '/app/squads/:squadId',
+  );
+
   static const String fcAccountIdParam = 'fcAccountId';
+  static const String squadIdParam = 'squadId';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,
@@ -77,6 +83,8 @@ class AppRoutes {
 
   static String fcAccountDetailLocation(String fcAccountId) =>
       '/app/fc-accounts/$fcAccountId';
+
+  static String squadBuilderLocation(String squadId) => '/app/squads/$squadId';
 
   static bool isJoinTeamLocation(String location) =>
       location.startsWith('/join/');

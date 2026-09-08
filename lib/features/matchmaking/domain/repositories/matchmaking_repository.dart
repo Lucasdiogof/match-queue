@@ -12,6 +12,7 @@ abstract interface class MatchmakingRepository {
   Future<MatchmakingSnapshot> requestSearch(
     String teamId, {
     required String fcAccountId,
+    String? fcSquadId,
     required GameMode mode,
   });
 

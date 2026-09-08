@@ -1255,4 +1255,150 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rivalsDivisionElite => 'Elite';
+
+  @override
+  String get squadsSectionTitle => 'Squads';
+
+  @override
+  String get squadsEmptyTitle => 'Ningun equipo configurado';
+
+  @override
+  String get squadsEmptyMessage =>
+      'Crea un equipo para armar tu alineación. Puedes buscar partida incluso sin uno.';
+
+  @override
+  String get squadCreateAction => 'Crear equipo';
+
+  @override
+  String get squadCreateTitle => 'Nuevo equipo';
+
+  @override
+  String get squadCreateSubtitle =>
+      'Ponle un nombre y elige la formación inicial.';
+
+  @override
+  String get squadNameLabel => 'Nombre del equipo';
+
+  @override
+  String get squadNameHint => 'Ej.: Principal';
+
+  @override
+  String get squadFormationLabel => 'Formación';
+
+  @override
+  String get squadRenameTitle => 'Renombrar equipo';
+
+  @override
+  String get squadRenameAction => 'Renombrar';
+
+  @override
+  String get squadSetDefaultAction => 'Definir como predeterminado';
+
+  @override
+  String get squadDefaultBadge => 'Predeterminado';
+
+  @override
+  String get squadArchiveAction => 'Archivar equipo';
+
+  @override
+  String get squadArchiveConfirmTitle => '¿Archivar equipo?';
+
+  @override
+  String get squadArchiveConfirmMessage =>
+      'Sale de la lista, pero se mantiene el historial de partidas jugadas con él.';
+
+  @override
+  String get squadBenchTitle => 'Banquillo';
+
+  @override
+  String get squadManagerTitle => 'Entrenador';
+
+  @override
+  String get squadManagerAddAction => 'Añadir entrenador';
+
+  @override
+  String get squadManagerRemoveAction => 'Quitar entrenador';
+
+  @override
+  String get squadManagerNationLabel => 'País';
+
+  @override
+  String get squadManagerLeagueLabel => 'Liga';
+
+  @override
+  String get squadManagerPickNationFirst =>
+      'Elige un país para ver los entrenadores.';
+
+  @override
+  String get squadManagerNoneTitle => 'Sin entrenador';
+
+  @override
+  String get squadFormationPickerTitle => 'Elegir formación';
+
+  @override
+  String get squadPlayerPickerTitle => 'Buscar jugador';
+
+  @override
+  String get squadPlayerSearchHint => 'Buscar jugador...';
+
+  @override
+  String get squadPlayerPickerEmpty => 'No se encontraron cartas.';
+
+  @override
+  String get squadSlotChangeAction => 'Cambiar jugador';
+
+  @override
+  String get squadSlotMoveAction => 'Mover';
+
+  @override
+  String get squadSlotRemoveAction => 'Quitar';
+
+  @override
+  String get squadMoveHint => 'Toca otro espacio para intercambiar.';
+
+  @override
+  String get squadIncompleteLabel => 'Equipo incompleto';
+
+  @override
+  String get squadLabel => 'Equipo';
+
+  @override
+  String get squadNoneSelected => 'Sin equipo';
+
+  @override
+  String get squadDevCatalogNotice =>
+      'Cartas de desarrollo. El catálogo real llega en la próxima etapa.';
+
+  @override
+  String get errorSquadNotFound => 'Equipo no encontrado.';
+
+  @override
+  String get errorSquadNameInvalid => 'Elige un nombre de 1 a 40 caracteres.';
+
+  @override
+  String get errorSquadFormationInvalid => 'Esa formación no está disponible.';
+
+  @override
+  String get errorSquadSlotInvalid =>
+      'Ese espacio no existe en esta formación.';
+
+  @override
+  String get errorSquadCardPosition => 'Ese jugador no juega en esa posición.';
+
+  @override
+  String get errorSquadInUse =>
+      'Este equipo se está usando en una búsqueda activa.';
+
+  @override
+  String squadCompletionLabel(int filled, int total) {
+    return '$filled/$total titulares';
+  }
+
+  @override
+  String squadSummaryLabel(String name, String formation) {
+    return '$name · $formation';
+  }
+
+  @override
+  String get actionMore => 'Más';
 }

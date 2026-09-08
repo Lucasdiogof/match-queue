@@ -43,6 +43,8 @@ class TeamActivityModel {
         startedAt: startedAt,
         weekendLeagueNumber: parseNullableInt(json['weekend_league_number']),
         fcAccountName: parseString(json['fc_account_name']),
+        fcSquadName: parseString(json['fc_squad_name']),
+        fcFormationCode: parseString(json['fc_formation_code']),
       );
     }
 

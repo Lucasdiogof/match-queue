@@ -11,6 +11,7 @@ abstract interface class MatchmakingRemoteDataSource {
   Future<Map<String, dynamic>> requestSearch(
     String teamId,
     String fcAccountId,
+    String? fcSquadId,
     String gameMode,
   );
 
@@ -36,6 +37,7 @@ class SupabaseMatchmakingRemoteDataSource
   Future<Map<String, dynamic>> requestSearch(
     String teamId,
     String fcAccountId,
+    String? fcSquadId,
     String gameMode,
   ) async {
     final response = await _client.rpc<dynamic>(
@@ -43,6 +45,7 @@ class SupabaseMatchmakingRemoteDataSource
       params: <String, dynamic>{
         'p_team_id': teamId,
         'p_fc_account_id': fcAccountId,
+        'p_fc_squad_id': fcSquadId,
         'p_game_mode': gameMode,
       },
     );

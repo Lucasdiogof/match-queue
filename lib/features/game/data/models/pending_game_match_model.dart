@@ -20,6 +20,8 @@ class PendingGameMatchModel {
           ? m['weekend_league_number'] as int
           : null,
       fcAccountName: m['fc_account_name'] as String?,
+      fcSquadName: m['fc_squad_name'] as String?,
+      fcFormationCode: m['fc_formation_code'] as String?,
     );
   }
 }

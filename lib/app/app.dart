@@ -5,6 +5,8 @@ import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_accounts_session_listener.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/fc_squads_session_listener.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_session_listener.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
@@ -62,6 +64,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<TeamsCubit>.value(value: teamsCubit),
       BlocProvider<PendingMatchCubit>.value(value: pendingMatchCubit),
       BlocProvider<FcAccountsCubit>.value(value: fcAccountsCubit),
+      BlocProvider<FcSquadsCubit>(create: (_) => getIt<FcSquadsCubit>()),
       BlocProvider<GameModeCubit>(create: (_) => getIt<GameModeCubit>()),
     ],
     child: AppConfigScope(
@@ -83,12 +86,14 @@ class FifaQueueApp extends StatelessWidget {
             builder: (context, child) => ProfileSessionListener(
               child: TeamsSessionListener(
                 child: FcAccountsSessionListener(
-                  child: PendingMatchSessionListener(
-                    child: LocaleSyncListener(
-                      child: PresenceHeartbeatListener(
-                        child: NotificationLifecycleListener(
-                          child: PendingInviteListener(
-                            child: child ?? const SizedBox.shrink(),
+                  child: FcSquadsSessionListener(
+                    child: PendingMatchSessionListener(
+                      child: LocaleSyncListener(
+                        child: PresenceHeartbeatListener(
+                          child: NotificationLifecycleListener(
+                            child: PendingInviteListener(
+                              child: child ?? const SizedBox.shrink(),
+                            ),
                           ),
                         ),
                       ),

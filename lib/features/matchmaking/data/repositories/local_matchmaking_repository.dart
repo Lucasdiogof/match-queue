@@ -46,6 +46,7 @@ class LocalMatchmakingRepository implements MatchmakingRepository {
   Future<MatchmakingSnapshot> requestSearch(
     String teamId, {
     required String fcAccountId,
+    String? fcSquadId,
     required GameMode mode,
   }) async {
     final existing = _readSession(teamId);
