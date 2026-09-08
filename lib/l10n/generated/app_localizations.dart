@@ -2631,6 +2631,276 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Mais'**
   String get actionMore;
+
+  /// No description provided for @errorGameInvalidStatsPayload.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível salvar esses gols/assistências.'**
+  String get errorGameInvalidStatsPayload;
+
+  /// No description provided for @errorGamePlayerNotInSquad.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse jogador não fez parte desta partida.'**
+  String get errorGamePlayerNotInSquad;
+
+  /// No description provided for @errorGameNoSquadSnapshot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta partida não tem escalação registrada.'**
+  String get errorGameNoSquadSnapshot;
+
+  /// No description provided for @errorGameMatchNotFinished.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalize a partida antes de editar o resultado.'**
+  String get errorGameMatchNotFinished;
+
+  /// No description provided for @pendingMatchDetailsPromptTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar detalhes da partida?'**
+  String get pendingMatchDetailsPromptTitle;
+
+  /// No description provided for @pendingMatchDetailsPromptMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você pode registrar gols e assistências por jogador agora ou depois, pelo Histórico.'**
+  String get pendingMatchDetailsPromptMessage;
+
+  /// No description provided for @pendingMatchDetailsPromptAddAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar agora'**
+  String get pendingMatchDetailsPromptAddAction;
+
+  /// No description provided for @pendingMatchDetailsPromptSkipAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agora não'**
+  String get pendingMatchDetailsPromptSkipAction;
+
+  /// No description provided for @matchDetailsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhe da partida'**
+  String get matchDetailsTitle;
+
+  /// No description provided for @matchDetailsResultLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado'**
+  String get matchDetailsResultLabel;
+
+  /// No description provided for @matchDetailsScoreLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Placar'**
+  String get matchDetailsScoreLabel;
+
+  /// No description provided for @matchDetailsNoResultMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem resultado registrado.'**
+  String get matchDetailsNoResultMessage;
+
+  /// No description provided for @matchDetailsEditResultAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar resultado'**
+  String get matchDetailsEditResultAction;
+
+  /// No description provided for @matchDetailsAddDetailsAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar gols e assistências'**
+  String get matchDetailsAddDetailsAction;
+
+  /// No description provided for @matchDetailsEditDetailsAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar gols e assistências'**
+  String get matchDetailsEditDetailsAction;
+
+  /// No description provided for @matchDetailsSquadSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escalação'**
+  String get matchDetailsSquadSectionTitle;
+
+  /// No description provided for @matchDetailsPlayerStatsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gols e assistências'**
+  String get matchDetailsPlayerStatsTitle;
+
+  /// No description provided for @matchDetailsPlayerStatsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum gol ou assistência registrado nesta partida.'**
+  String get matchDetailsPlayerStatsEmptyMessage;
+
+  /// No description provided for @editMatchResultSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar resultado'**
+  String get editMatchResultSheetTitle;
+
+  /// No description provided for @editMatchResultSheetMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você pode corrigir o placar a qualquer momento, mesmo depois da partida encerrada.'**
+  String get editMatchResultSheetMessage;
+
+  /// No description provided for @editMatchResultSubmitAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar resultado'**
+  String get editMatchResultSubmitAction;
+
+  /// No description provided for @playerStatsEditorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gols e assistências'**
+  String get playerStatsEditorTitle;
+
+  /// No description provided for @playerStatsEditorStartingLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Titulares'**
+  String get playerStatsEditorStartingLabel;
+
+  /// No description provided for @playerStatsEditorBenchLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Banco'**
+  String get playerStatsEditorBenchLabel;
+
+  /// No description provided for @playerStatsEditorSaveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar detalhes'**
+  String get playerStatsEditorSaveAction;
+
+  /// No description provided for @statsGoalsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gols'**
+  String get statsGoalsLabel;
+
+  /// No description provided for @statsAssistsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assistências'**
+  String get statsAssistsLabel;
+
+  /// No description provided for @statsMatchesLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partidas'**
+  String get statsMatchesLabel;
+
+  /// No description provided for @statsWinsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vitórias'**
+  String get statsWinsLabel;
+
+  /// No description provided for @statsLossesLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Derrotas'**
+  String get statsLossesLabel;
+
+  /// No description provided for @statsGoalDiffLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Saldo de gols'**
+  String get statsGoalDiffLabel;
+
+  /// No description provided for @statsGoalsAgainstLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gols sofridos'**
+  String get statsGoalsAgainstLabel;
+
+  /// No description provided for @statsTopScorersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Artilharia'**
+  String get statsTopScorersTitle;
+
+  /// No description provided for @statsTopAssistsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assistências'**
+  String get statsTopAssistsTitle;
+
+  /// No description provided for @statsEmptyLeaderboardMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum gol ou assistência registrado ainda.'**
+  String get statsEmptyLeaderboardMessage;
+
+  /// No description provided for @statsTopScorerInlineLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} · {goals} gols'**
+  String statsTopScorerInlineLabel(String name, int goals);
+
+  /// No description provided for @fcAccountStatsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estatísticas'**
+  String get fcAccountStatsTitle;
+
+  /// No description provided for @fcAccountStatsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma partida registrada ainda.'**
+  String get fcAccountStatsEmptyMessage;
+
+  /// No description provided for @weekendLeagueDetailManualNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'O resultado informado manualmente é diferente do que as partidas detalhadas mostram até agora.'**
+  String get weekendLeagueDetailManualNote;
+
+  /// No description provided for @rivalsSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Division Rivals'**
+  String get rivalsSectionTitle;
+
+  /// No description provided for @rivalsDetailTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Division Rivals'**
+  String get rivalsDetailTitle;
+
+  /// No description provided for @rivalsAllTimeNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estatísticas de todas as partidas registradas (ainda sem separação por season/semana).'**
+  String get rivalsAllTimeNote;
+
+  /// No description provided for @playerProfileSportSummaryTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resumo esportivo'**
+  String get playerProfileSportSummaryTitle;
+
+  /// No description provided for @playerProfileRivalsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Division Rivals'**
+  String get playerProfileRivalsLabel;
+
+  /// No description provided for @playerProfileNoStatsMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem partidas detalhadas.'**
+  String get playerProfileNoStatsMessage;
 }
 
 class _AppLocalizationsDelegate

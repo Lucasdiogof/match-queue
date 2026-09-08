@@ -1458,4 +1458,150 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionMore => 'More';
+
+  @override
+  String get errorGameInvalidStatsPayload =>
+      'Couldn\'t save those goals/assists.';
+
+  @override
+  String get errorGamePlayerNotInSquad =>
+      'That player wasn\'t part of this match.';
+
+  @override
+  String get errorGameNoSquadSnapshot => 'This match has no squad on record.';
+
+  @override
+  String get errorGameMatchNotFinished =>
+      'Finish the match before editing its result.';
+
+  @override
+  String get pendingMatchDetailsPromptTitle => 'Add match details?';
+
+  @override
+  String get pendingMatchDetailsPromptMessage =>
+      'You can log goals and assists per player now or later, from History.';
+
+  @override
+  String get pendingMatchDetailsPromptAddAction => 'Add now';
+
+  @override
+  String get pendingMatchDetailsPromptSkipAction => 'Not now';
+
+  @override
+  String get matchDetailsTitle => 'Match details';
+
+  @override
+  String get matchDetailsResultLabel => 'Result';
+
+  @override
+  String get matchDetailsScoreLabel => 'Score';
+
+  @override
+  String get matchDetailsNoResultMessage => 'No result recorded.';
+
+  @override
+  String get matchDetailsEditResultAction => 'Edit result';
+
+  @override
+  String get matchDetailsAddDetailsAction => 'Add goals and assists';
+
+  @override
+  String get matchDetailsEditDetailsAction => 'Edit goals and assists';
+
+  @override
+  String get matchDetailsSquadSectionTitle => 'Squad';
+
+  @override
+  String get matchDetailsPlayerStatsTitle => 'Goals and assists';
+
+  @override
+  String get matchDetailsPlayerStatsEmptyMessage =>
+      'No goals or assists recorded for this match.';
+
+  @override
+  String get editMatchResultSheetTitle => 'Edit result';
+
+  @override
+  String get editMatchResultSheetMessage =>
+      'You can correct the score at any time, even after the match is over.';
+
+  @override
+  String get editMatchResultSubmitAction => 'Save result';
+
+  @override
+  String get playerStatsEditorTitle => 'Goals and assists';
+
+  @override
+  String get playerStatsEditorStartingLabel => 'Starting XI';
+
+  @override
+  String get playerStatsEditorBenchLabel => 'Bench';
+
+  @override
+  String get playerStatsEditorSaveAction => 'Save details';
+
+  @override
+  String get statsGoalsLabel => 'Goals';
+
+  @override
+  String get statsAssistsLabel => 'Assists';
+
+  @override
+  String get statsMatchesLabel => 'Matches';
+
+  @override
+  String get statsWinsLabel => 'Wins';
+
+  @override
+  String get statsLossesLabel => 'Losses';
+
+  @override
+  String get statsGoalDiffLabel => 'Goal difference';
+
+  @override
+  String get statsGoalsAgainstLabel => 'Goals conceded';
+
+  @override
+  String get statsTopScorersTitle => 'Top scorers';
+
+  @override
+  String get statsTopAssistsTitle => 'Assists';
+
+  @override
+  String get statsEmptyLeaderboardMessage =>
+      'No goals or assists recorded yet.';
+
+  @override
+  String statsTopScorerInlineLabel(String name, int goals) {
+    return '$name · $goals goals';
+  }
+
+  @override
+  String get fcAccountStatsTitle => 'Stats';
+
+  @override
+  String get fcAccountStatsEmptyMessage => 'No matches recorded yet.';
+
+  @override
+  String get weekendLeagueDetailManualNote =>
+      'The manually entered result differs from what the detailed matches show so far.';
+
+  @override
+  String get rivalsSectionTitle => 'Division Rivals';
+
+  @override
+  String get rivalsDetailTitle => 'Division Rivals';
+
+  @override
+  String get rivalsAllTimeNote =>
+      'Stats from all recorded matches (no season/week breakdown yet).';
+
+  @override
+  String get playerProfileSportSummaryTitle => 'Sport summary';
+
+  @override
+  String get playerProfileRivalsLabel => 'Division Rivals';
+
+  @override
+  String get playerProfileNoStatsMessage => 'No detailed matches yet.';
 }

@@ -1457,4 +1457,151 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get actionMore => 'Mais';
+
+  @override
+  String get errorGameInvalidStatsPayload =>
+      'Não foi possível salvar esses gols/assistências.';
+
+  @override
+  String get errorGamePlayerNotInSquad =>
+      'Esse jogador não fez parte desta partida.';
+
+  @override
+  String get errorGameNoSquadSnapshot =>
+      'Esta partida não tem escalação registrada.';
+
+  @override
+  String get errorGameMatchNotFinished =>
+      'Finalize a partida antes de editar o resultado.';
+
+  @override
+  String get pendingMatchDetailsPromptTitle => 'Adicionar detalhes da partida?';
+
+  @override
+  String get pendingMatchDetailsPromptMessage =>
+      'Você pode registrar gols e assistências por jogador agora ou depois, pelo Histórico.';
+
+  @override
+  String get pendingMatchDetailsPromptAddAction => 'Adicionar agora';
+
+  @override
+  String get pendingMatchDetailsPromptSkipAction => 'Agora não';
+
+  @override
+  String get matchDetailsTitle => 'Detalhe da partida';
+
+  @override
+  String get matchDetailsResultLabel => 'Resultado';
+
+  @override
+  String get matchDetailsScoreLabel => 'Placar';
+
+  @override
+  String get matchDetailsNoResultMessage => 'Sem resultado registrado.';
+
+  @override
+  String get matchDetailsEditResultAction => 'Editar resultado';
+
+  @override
+  String get matchDetailsAddDetailsAction => 'Adicionar gols e assistências';
+
+  @override
+  String get matchDetailsEditDetailsAction => 'Editar gols e assistências';
+
+  @override
+  String get matchDetailsSquadSectionTitle => 'Escalação';
+
+  @override
+  String get matchDetailsPlayerStatsTitle => 'Gols e assistências';
+
+  @override
+  String get matchDetailsPlayerStatsEmptyMessage =>
+      'Nenhum gol ou assistência registrado nesta partida.';
+
+  @override
+  String get editMatchResultSheetTitle => 'Editar resultado';
+
+  @override
+  String get editMatchResultSheetMessage =>
+      'Você pode corrigir o placar a qualquer momento, mesmo depois da partida encerrada.';
+
+  @override
+  String get editMatchResultSubmitAction => 'Salvar resultado';
+
+  @override
+  String get playerStatsEditorTitle => 'Gols e assistências';
+
+  @override
+  String get playerStatsEditorStartingLabel => 'Titulares';
+
+  @override
+  String get playerStatsEditorBenchLabel => 'Banco';
+
+  @override
+  String get playerStatsEditorSaveAction => 'Salvar detalhes';
+
+  @override
+  String get statsGoalsLabel => 'Gols';
+
+  @override
+  String get statsAssistsLabel => 'Assistências';
+
+  @override
+  String get statsMatchesLabel => 'Partidas';
+
+  @override
+  String get statsWinsLabel => 'Vitórias';
+
+  @override
+  String get statsLossesLabel => 'Derrotas';
+
+  @override
+  String get statsGoalDiffLabel => 'Saldo de gols';
+
+  @override
+  String get statsGoalsAgainstLabel => 'Gols sofridos';
+
+  @override
+  String get statsTopScorersTitle => 'Artilharia';
+
+  @override
+  String get statsTopAssistsTitle => 'Assistências';
+
+  @override
+  String get statsEmptyLeaderboardMessage =>
+      'Nenhum gol ou assistência registrado ainda.';
+
+  @override
+  String statsTopScorerInlineLabel(String name, int goals) {
+    return '$name · $goals gols';
+  }
+
+  @override
+  String get fcAccountStatsTitle => 'Estatísticas';
+
+  @override
+  String get fcAccountStatsEmptyMessage => 'Nenhuma partida registrada ainda.';
+
+  @override
+  String get weekendLeagueDetailManualNote =>
+      'O resultado informado manualmente é diferente do que as partidas detalhadas mostram até agora.';
+
+  @override
+  String get rivalsSectionTitle => 'Division Rivals';
+
+  @override
+  String get rivalsDetailTitle => 'Division Rivals';
+
+  @override
+  String get rivalsAllTimeNote =>
+      'Estatísticas de todas as partidas registradas (ainda sem separação por season/semana).';
+
+  @override
+  String get playerProfileSportSummaryTitle => 'Resumo esportivo';
+
+  @override
+  String get playerProfileRivalsLabel => 'Division Rivals';
+
+  @override
+  String get playerProfileNoStatsMessage => 'Ainda sem partidas detalhadas.';
 }

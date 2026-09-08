@@ -1468,4 +1468,153 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get actionMore => 'Más';
+
+  @override
+  String get errorGameInvalidStatsPayload =>
+      'No se pudieron guardar esos goles/asistencias.';
+
+  @override
+  String get errorGamePlayerNotInSquad =>
+      'Ese jugador no formó parte de este partido.';
+
+  @override
+  String get errorGameNoSquadSnapshot =>
+      'Este partido no tiene alineación registrada.';
+
+  @override
+  String get errorGameMatchNotFinished =>
+      'Termina el partido antes de editar el resultado.';
+
+  @override
+  String get pendingMatchDetailsPromptTitle => '¿Agregar detalles del partido?';
+
+  @override
+  String get pendingMatchDetailsPromptMessage =>
+      'Puedes registrar goles y asistencias por jugador ahora o después, desde el Historial.';
+
+  @override
+  String get pendingMatchDetailsPromptAddAction => 'Agregar ahora';
+
+  @override
+  String get pendingMatchDetailsPromptSkipAction => 'Ahora no';
+
+  @override
+  String get matchDetailsTitle => 'Detalle del partido';
+
+  @override
+  String get matchDetailsResultLabel => 'Resultado';
+
+  @override
+  String get matchDetailsScoreLabel => 'Marcador';
+
+  @override
+  String get matchDetailsNoResultMessage => 'Sin resultado registrado.';
+
+  @override
+  String get matchDetailsEditResultAction => 'Editar resultado';
+
+  @override
+  String get matchDetailsAddDetailsAction => 'Agregar goles y asistencias';
+
+  @override
+  String get matchDetailsEditDetailsAction => 'Editar goles y asistencias';
+
+  @override
+  String get matchDetailsSquadSectionTitle => 'Alineación';
+
+  @override
+  String get matchDetailsPlayerStatsTitle => 'Goles y asistencias';
+
+  @override
+  String get matchDetailsPlayerStatsEmptyMessage =>
+      'No hay goles ni asistencias registrados en este partido.';
+
+  @override
+  String get editMatchResultSheetTitle => 'Editar resultado';
+
+  @override
+  String get editMatchResultSheetMessage =>
+      'Puedes corregir el marcador en cualquier momento, incluso después de terminado el partido.';
+
+  @override
+  String get editMatchResultSubmitAction => 'Guardar resultado';
+
+  @override
+  String get playerStatsEditorTitle => 'Goles y asistencias';
+
+  @override
+  String get playerStatsEditorStartingLabel => 'Titulares';
+
+  @override
+  String get playerStatsEditorBenchLabel => 'Suplentes';
+
+  @override
+  String get playerStatsEditorSaveAction => 'Guardar detalles';
+
+  @override
+  String get statsGoalsLabel => 'Goles';
+
+  @override
+  String get statsAssistsLabel => 'Asistencias';
+
+  @override
+  String get statsMatchesLabel => 'Partidos';
+
+  @override
+  String get statsWinsLabel => 'Victorias';
+
+  @override
+  String get statsLossesLabel => 'Derrotas';
+
+  @override
+  String get statsGoalDiffLabel => 'Diferencia de goles';
+
+  @override
+  String get statsGoalsAgainstLabel => 'Goles recibidos';
+
+  @override
+  String get statsTopScorersTitle => 'Goleadores';
+
+  @override
+  String get statsTopAssistsTitle => 'Asistencias';
+
+  @override
+  String get statsEmptyLeaderboardMessage =>
+      'Todavía no hay goles ni asistencias registrados.';
+
+  @override
+  String statsTopScorerInlineLabel(String name, int goals) {
+    return '$name · $goals goles';
+  }
+
+  @override
+  String get fcAccountStatsTitle => 'Estadísticas';
+
+  @override
+  String get fcAccountStatsEmptyMessage =>
+      'Todavía no hay partidos registrados.';
+
+  @override
+  String get weekendLeagueDetailManualNote =>
+      'El resultado ingresado manualmente difiere de lo que muestran los partidos detallados hasta ahora.';
+
+  @override
+  String get rivalsSectionTitle => 'Division Rivals';
+
+  @override
+  String get rivalsDetailTitle => 'Division Rivals';
+
+  @override
+  String get rivalsAllTimeNote =>
+      'Estadísticas de todos los partidos registrados (todavía sin separación por temporada/semana).';
+
+  @override
+  String get playerProfileSportSummaryTitle => 'Resumen deportivo';
+
+  @override
+  String get playerProfileRivalsLabel => 'Division Rivals';
+
+  @override
+  String get playerProfileNoStatsMessage =>
+      'Todavía no hay partidos detallados.';
 }
