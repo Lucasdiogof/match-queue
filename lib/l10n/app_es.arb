@@ -1284,5 +1284,6 @@
   },
   "pendingMatchSkipAction": "No informar este partido",
   "pendingMatchSkipConfirmTitle": "¿No informar el resultado?",
-  "pendingMatchSkipConfirmMessage": "El partido sale de aquí sin contar como victoria ni derrota. Puedes buscar otro con normalidad."
+  "pendingMatchSkipConfirmMessage": "El partido sale de aquí sin contar como victoria ni derrota. Puedes buscar otro con normalidad.",
+  "historyResultNotInformed": "Resultado no informado"
 }

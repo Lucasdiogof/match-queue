@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_history_entry.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
@@ -8,6 +9,8 @@ import 'package:fifa_queue/features/history/presentation/cubit/history_cubit.dar
 import 'package:fifa_queue/features/history/presentation/cubit/history_state.dart';
 import 'package:fifa_queue/features/history/presentation/history_formatting.dart';
 import 'package:fifa_queue/features/history/presentation/widgets/filter_chip_row.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
+import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -186,6 +189,10 @@ class _HistoryRow extends StatelessWidget {
                     color: colors.textSecondary,
                   ),
                 ),
+                if (entry.hasMatch || entry.fcAccountName != null) ...<Widget>[
+                  const SizedBox(height: AppSpacing.xs),
+                  _MatchLine(entry: entry),
+                ],
               ],
             ),
           ),
@@ -195,6 +202,69 @@ class _HistoryRow extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Contexto da partida que saiu da busca: conta, modalidade e desfecho.
+/// Resultado ausente vira rotulo neutro -- o app nunca deduz derrota de um
+/// registro que o jogador escolheu nao preencher.
+class _MatchLine extends StatelessWidget {
+  const _MatchLine({required this.entry});
+
+  final MatchHistoryEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+    final context_ = <String>[
+      if (entry.fcAccountName != null) entry.fcAccountName!,
+      if (entry.gameMode != null) entry.gameMode!.label(l10n),
+    ];
+
+    return Row(
+      children: <Widget>[
+        if (context_.isNotEmpty)
+          Flexible(
+            child: Text(
+              context_.join(' · '),
+              overflow: TextOverflow.ellipsis,
+              style: context.textStyles.bodySmall?.copyWith(
+                color: colors.textTertiary,
+              ),
+            ),
+          ),
+        if (entry.hasMatch) ...<Widget>[
+          if (context_.isNotEmpty) const SizedBox(width: AppSpacing.sm),
+          if (entry.result != null)
+            Text(
+              entry.hasScore
+                  ? '${_resultLabel(l10n, entry.result!)} '
+                        '${entry.goalsFor}–${entry.goalsAgainst}'
+                  : _resultLabel(l10n, entry.result!),
+              style: context.textStyles.bodySmall?.copyWith(
+                color: entry.result == GameResult.win
+                    ? colors.success
+                    : colors.danger,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          else
+            Text(
+              l10n.historyResultNotInformed,
+              style: context.textStyles.bodySmall?.copyWith(
+                color: colors.textTertiary,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+        ],
+      ],
+    );
+  }
+
+  static String _resultLabel(AppLocalizations l10n, GameResult result) =>
+      result == GameResult.win
+      ? l10n.pendingMatchWinAction
+      : l10n.pendingMatchLossAction;
 }
 
 class _HistoryEmpty extends StatelessWidget {

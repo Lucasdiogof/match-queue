@@ -1284,5 +1284,6 @@
   },
   "pendingMatchSkipAction": "Don't report this match",
   "pendingMatchSkipConfirmTitle": "Skip the result?",
-  "pendingMatchSkipConfirmMessage": "The match leaves this card without counting as a win or a loss. You can search for another one as usual."
+  "pendingMatchSkipConfirmMessage": "The match leaves this card without counting as a win or a loss. You can search for another one as usual.",
+  "historyResultNotInformed": "Result not reported"
 }

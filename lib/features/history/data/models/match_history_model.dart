@@ -1,7 +1,10 @@
+import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/data/models/parse.dart';
+import 'package:fifa_queue/features/history/domain/entities/game_match_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_history_entry.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_history_page.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 
 class MatchHistoryModel {
   const MatchHistoryModel._();
@@ -36,7 +39,25 @@ class MatchHistoryModel {
       finishedAt: parseDate(json['finished_at'], fallback: startedAt),
       durationSeconds: parseInt(json['duration_seconds']),
       configuredDurationSeconds: parseInt(json['configured_duration_seconds']),
+      gameMode: GameMode.tryFromKey(json['game_mode']),
+      fcAccountName: parseString(json['fc_account_name']),
+      matchStatus: GameMatchStatus.fromKey(parseString(json['match_status'])),
+      matchStartedAt: json['match_started_at'] == null
+          ? null
+          : parseDate(json['match_started_at']),
+      result: _resultFromKey(parseString(json['result'])),
+      goalsFor: parseNullableInt(json['goals_for']),
+      goalsAgainst: parseNullableInt(json['goals_against']),
     );
+  }
+
+  static GameResult? _resultFromKey(String? key) {
+    for (final result in GameResult.values) {
+      if (result.key == key) {
+        return result;
+      }
+    }
+    return null;
   }
 
   static MatchHistoryCursor? _cursorFromJson(Object? value) {
