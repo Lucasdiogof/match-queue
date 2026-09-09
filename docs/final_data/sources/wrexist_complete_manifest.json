@@ -1,0 +1,39 @@
+{
+  "repository": "Wrexist/dynasty-manager",
+  "commit": "0fa46443e0bab1fdcb8e6f5c83f14a19a46b25c5",
+  "generated_for": "FC27 complete dataset handoff",
+  "files": [
+    {
+      "name": "FC27_male_players.csv",
+      "path": "data/fc27/FC27_male_players.csv",
+      "size_bytes": 7451473,
+      "git_blob_sha1": "1d5130a590866767713bcaa5723f4859f45c3b03",
+      "data_rows_expected": 16228,
+      "role": "complete male player catalog"
+    },
+    {
+      "name": "FC27_female_players.csv",
+      "path": "data/fc27/FC27_female_players.csv",
+      "size_bytes": 720491,
+      "git_blob_sha1": "3d351af4591471606cf0b27b726cc05be421c566",
+      "data_rows_expected": 1645,
+      "role": "complete female player catalog"
+    },
+    {
+      "name": "FC27_community_pack_input.csv",
+      "path": "data/fc27/FC27_community_pack_input.csv",
+      "size_bytes": 2749507,
+      "git_blob_sha1": "7b0f17ae981be7b464c78140d87ca3dd58943589",
+      "data_rows_expected": 16129,
+      "role": "legacy game import shape; excludes 99 rows without potential"
+    },
+    {
+      "name": "FC27_male_players_reconciled.csv",
+      "path": "data/fc27/FC27_male_players_reconciled.csv",
+      "size_bytes": 7954992,
+      "git_blob_sha1": "79e4d0a2569346c789e3a0ba9c30d87722465b0b",
+      "data_rows_expected": 16228,
+      "role": "complete male catalog with game club/league reconciliation fields"
+    }
+  ]
+}
