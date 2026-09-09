@@ -2392,4 +2392,53 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deleteAccountAction => 'Excluir minha conta permanentemente';
+
+  @override
+  String get homeFcAccountEyebrow => 'CONTA FC ATIVA';
+
+  @override
+  String get homeFcAccountSwitchAction => 'Trocar';
+
+  @override
+  String get homeFcAccountNoTeams => 'Ainda sem time';
+
+  @override
+  String homeFcAccountTeamCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Em $count times',
+      one: 'Em 1 time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeNoTeamTitle => 'Entre em um time';
+
+  @override
+  String get homeNoTeamMessage =>
+      'Buscar partida exige um time. Rivals e Weekend League você já pode usar.';
+
+  @override
+  String get pendingMatchSkipAction => 'Não informar esta partida';
+
+  @override
+  String get pendingMatchSkipConfirmTitle => 'Não informar o resultado?';
+
+  @override
+  String get pendingMatchSkipConfirmMessage =>
+      'A partida sai daqui sem contar como vitória nem derrota. Você pode buscar outra normalmente.';
+
+  @override
+  String get historyResultNotInformed => 'Resultado não informado';
+
+  @override
+  String get weekendLeagueWeekPickerTitle => 'Selecionar semana';
+
+  @override
+  String get weekendLeagueChangeWeekAction => 'Trocar';
+
+  @override
+  String get weekendLeagueCurrentWeekBadge => 'Em andamento';
 }

@@ -4141,6 +4141,84 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Excluir minha conta permanentemente'**
   String get deleteAccountAction;
+
+  /// No description provided for @homeFcAccountEyebrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'CONTA FC ATIVA'**
+  String get homeFcAccountEyebrow;
+
+  /// No description provided for @homeFcAccountSwitchAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar'**
+  String get homeFcAccountSwitchAction;
+
+  /// No description provided for @homeFcAccountNoTeams.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem time'**
+  String get homeFcAccountNoTeams;
+
+  /// No description provided for @homeFcAccountTeamCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Em 1 time} other{Em {count} times}}'**
+  String homeFcAccountTeamCount(int count);
+
+  /// No description provided for @homeNoTeamTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre em um time'**
+  String get homeNoTeamTitle;
+
+  /// No description provided for @homeNoTeamMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar partida exige um time. Rivals e Weekend League você já pode usar.'**
+  String get homeNoTeamMessage;
+
+  /// No description provided for @pendingMatchSkipAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não informar esta partida'**
+  String get pendingMatchSkipAction;
+
+  /// No description provided for @pendingMatchSkipConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não informar o resultado?'**
+  String get pendingMatchSkipConfirmTitle;
+
+  /// No description provided for @pendingMatchSkipConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A partida sai daqui sem contar como vitória nem derrota. Você pode buscar outra normalmente.'**
+  String get pendingMatchSkipConfirmMessage;
+
+  /// No description provided for @historyResultNotInformed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Resultado não informado'**
+  String get historyResultNotInformed;
+
+  /// No description provided for @weekendLeagueWeekPickerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecionar semana'**
+  String get weekendLeagueWeekPickerTitle;
+
+  /// No description provided for @weekendLeagueChangeWeekAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar'**
+  String get weekendLeagueChangeWeekAction;
+
+  /// No description provided for @weekendLeagueCurrentWeekBadge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em andamento'**
+  String get weekendLeagueCurrentWeekBadge;
 }
 
 class _AppLocalizationsDelegate

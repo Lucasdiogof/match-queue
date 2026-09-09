@@ -2390,4 +2390,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountAction => 'Permanently delete my account';
+
+  @override
+  String get homeFcAccountEyebrow => 'ACTIVE FC ACCOUNT';
+
+  @override
+  String get homeFcAccountSwitchAction => 'Switch';
+
+  @override
+  String get homeFcAccountNoTeams => 'No team yet';
+
+  @override
+  String homeFcAccountTeamCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'In $count teams',
+      one: 'In 1 team',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeNoTeamTitle => 'Join a team';
+
+  @override
+  String get homeNoTeamMessage =>
+      'Searching for a match needs a team. Rivals and Weekend League already work.';
+
+  @override
+  String get pendingMatchSkipAction => 'Don\'t report this match';
+
+  @override
+  String get pendingMatchSkipConfirmTitle => 'Skip the result?';
+
+  @override
+  String get pendingMatchSkipConfirmMessage =>
+      'The match leaves this card without counting as a win or a loss. You can search for another one as usual.';
+
+  @override
+  String get historyResultNotInformed => 'Result not reported';
+
+  @override
+  String get weekendLeagueWeekPickerTitle => 'Pick a week';
+
+  @override
+  String get weekendLeagueChangeWeekAction => 'Change';
+
+  @override
+  String get weekendLeagueCurrentWeekBadge => 'Running';
 }
