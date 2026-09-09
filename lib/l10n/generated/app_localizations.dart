@@ -259,7 +259,7 @@ abstract class AppLocalizations {
   /// No description provided for @controlTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Seu jogo começa aqui'**
+  /// **'Sua vez na fila'**
   String get controlTitle;
 
   /// No description provided for @controlSubtitle.
@@ -319,7 +319,7 @@ abstract class AppLocalizations {
   /// No description provided for @teamsEyebrow.
   ///
   /// In pt, this message translates to:
-  /// **'TIMES'**
+  /// **'FIFA QUEUE'**
   String get teamsEyebrow;
 
   /// No description provided for @teamsListSubtitle.
@@ -415,7 +415,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyEyebrow.
   ///
   /// In pt, this message translates to:
-  /// **'HISTÓRICO'**
+  /// **'FIFA QUEUE'**
   String get historyEyebrow;
 
   /// No description provided for @historyTitle.
@@ -2621,7 +2621,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileFcAccountsRow.
   ///
   /// In pt, this message translates to:
-  /// **'Contas'**
+  /// **'Contas FC'**
   String get profileFcAccountsRow;
 
   /// No description provided for @rivalsDivisionDiv10.
@@ -4219,6 +4219,42 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Em andamento'**
   String get weekendLeagueCurrentWeekBadge;
+
+  /// No description provided for @rivalsSetDivisionAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informar'**
+  String get rivalsSetDivisionAction;
+
+  /// No description provided for @controlNoTeamTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você precisa de um time'**
+  String get controlNoTeamTitle;
+
+  /// No description provided for @controlNoTeamMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A fila é do time. Entre em um ou crie o seu para começar a buscar.'**
+  String get controlNoTeamMessage;
+
+  /// No description provided for @controlNoTeamAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver times'**
+  String get controlNoTeamAction;
+
+  /// No description provided for @statsEmptyScorersMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum gol registrado ainda.'**
+  String get statsEmptyScorersMessage;
+
+  /// No description provided for @statsEmptyAssistsMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma assistência registrada ainda.'**
+  String get statsEmptyAssistsMessage;
 }
 
 class _AppLocalizationsDelegate

@@ -88,7 +88,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get controlEyebrow => 'CONTROL';
 
   @override
-  String get controlTitle => 'Tu partido empieza aquí';
+  String get controlTitle => 'Tu turno en la fila';
 
   @override
   String get controlSubtitle => 'Cola, rival y plantilla en un solo lugar.';
@@ -121,7 +121,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get teamSubtitle => 'Jugadores, roles e invitaciones.';
 
   @override
-  String get teamsEyebrow => 'EQUIPOS';
+  String get teamsEyebrow => 'FIFA QUEUE';
 
   @override
   String get teamsListSubtitle => 'Tus equipos y su estado operacional.';
@@ -175,7 +175,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este equipo no existe o no está disponible públicamente.';
 
   @override
-  String get historyEyebrow => 'HISTORIAL';
+  String get historyEyebrow => 'FIFA QUEUE';
 
   @override
   String get historyTitle => 'Historial';
@@ -1491,7 +1491,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get profileFcAccountsRow => 'Cuentas';
+  String get profileFcAccountsRow => 'Cuentas FC';
 
   @override
   String get rivalsDivisionDiv10 => 'División 10';
@@ -2454,4 +2454,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get weekendLeagueCurrentWeekBadge => 'En curso';
+
+  @override
+  String get rivalsSetDivisionAction => 'Informar';
+
+  @override
+  String get controlNoTeamTitle => 'Necesitas un equipo';
+
+  @override
+  String get controlNoTeamMessage =>
+      'La fila es del equipo. Entra en uno o crea el tuyo para empezar a buscar.';
+
+  @override
+  String get controlNoTeamAction => 'Ver equipos';
+
+  @override
+  String get statsEmptyScorersMessage => 'Ningún gol registrado todavía.';
+
+  @override
+  String get statsEmptyAssistsMessage =>
+      'Ninguna asistencia registrada todavía.';
 }

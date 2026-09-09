@@ -2,6 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_onboarding_card.dart';
@@ -19,6 +20,7 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 /// O Controle e o hub operacional do FIFA Queue -- contexto ativo (conta,
 /// modo, squad, fila) quando existe, e cartoes de descoberta do catalogo FC27
@@ -79,14 +81,33 @@ class _ControlBody extends StatelessWidget {
       );
     }
 
+    // Sem time o bloqueio real depende de onde o usuario esta na ordem
+    // Conta FC -> Time. Uma mensagem so para os dois casos mandava criar
+    // conta quem ja tinha, e pedia para "escolher um modo" quem nem time
+    // tem -- instrucao que nao resolve nada.
     if (selected == null) {
       return ListView(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         children: <Widget>[
-          AppEmptyState(
-            icon: Icons.sports_soccer_outlined,
-            title: l10n.controlEmptyTitle,
-            message: l10n.controlEmptyMessage,
+          BlocBuilder<FcAccountsCubit, FcAccountsState>(
+            buildWhen: (previous, current) =>
+                previous.status != current.status ||
+                previous.hasAccounts != current.hasAccounts,
+            builder: (context, fcState) {
+              if (fcState.isLoading && fcState.accounts.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              if (!fcState.hasAccounts) {
+                return const FcAccountOnboardingCard();
+              }
+              return AppEmptyState(
+                icon: Icons.groups_outlined,
+                title: l10n.controlNoTeamTitle,
+                message: l10n.controlNoTeamMessage,
+                actionLabel: l10n.controlNoTeamAction,
+                onAction: () => context.go(AppRoutes.team.path),
+              );
+            },
           ),
           const SizedBox(height: AppSpacing.xl),
           const _DiscoverySection(),
@@ -230,30 +251,38 @@ class _DiscoverySection extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.md),
-              SizedBox(
-                height: 88,
-                child: FutureBuilder<List<FcClubSummary>>(
-                  future: getIt<PlayerCardCatalogRepository>()
-                      .getClubCatalogSummary(),
-                  builder: (context, snapshot) {
-                    final clubs = snapshot.data;
-                    if (clubs == null) {
-                      return const AppLoading.inline();
-                    }
-                    if (clubs.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    return ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: clubs.length,
-                      separatorBuilder: (_, _) =>
-                          const SizedBox(width: AppSpacing.sm),
-                      itemBuilder: (context, index) =>
-                          _ClubChipCard(summary: clubs[index]),
+              // A altura fixa fica DENTRO do builder: por fora, uma lista
+              // vazia devolvia SizedBox.shrink dentro de uma caixa de 88px e
+              // sobrava um buraco morto embaixo do titulo.
+              FutureBuilder<List<FcClubSummary>>(
+                future: getIt<PlayerCardCatalogRepository>()
+                    .getClubCatalogSummary(),
+                builder: (context, snapshot) {
+                  final clubs = snapshot.data;
+                  if (clubs == null) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: AppSpacing.md),
+                      child: AppLoading.inline(),
                     );
-                  },
-                ),
+                  }
+                  if (clubs.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.md),
+                    child: SizedBox(
+                      height: 88,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: clubs.length,
+                        separatorBuilder: (_, _) =>
+                            const SizedBox(width: AppSpacing.sm),
+                        itemBuilder: (context, index) =>
+                            _ClubChipCard(summary: clubs[index]),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

@@ -2,6 +2,8 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
@@ -90,8 +92,26 @@ class _HomeBody extends StatelessWidget {
 /// Sem time a Home continua util (Rivals e Weekend League sao da Conta FC),
 /// entao o convite para entrar num time e um card no fluxo -- nunca um
 /// bloqueio de tela inteira, que era o que escondia a identidade FC.
+///
+/// So aparece depois que existe Conta FC: sem nenhuma, o texto prometeria
+/// Rivals e Weekend League que ainda nao da pra usar, e competiria com o
+/// convite de criar a primeira conta, que e a acao certa naquele momento.
 class _NoTeamCard extends StatelessWidget {
   const _NoTeamCard();
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<FcAccountsCubit, FcAccountsState>(
+        buildWhen: (previous, current) =>
+            previous.hasAccounts != current.hasAccounts,
+        builder: (context, state) => state.hasAccounts
+            ? const _NoTeamCardBody()
+            : const SizedBox.shrink(),
+      );
+}
+
+class _NoTeamCardBody extends StatelessWidget {
+  const _NoTeamCardBody();
 
   @override
   Widget build(BuildContext context) {

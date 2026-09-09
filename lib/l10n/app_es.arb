@@ -26,7 +26,7 @@
   "startSubtitle": "Tu equipo y tu semana en un solo lugar.",
   "startShortcutsTitle": "Accesos rápidos",
   "controlEyebrow": "CONTROL",
-  "controlTitle": "Tu partido empieza aquí",
+  "controlTitle": "Tu turno en la fila",
   "controlSubtitle": "Cola, rival y plantilla en un solo lugar.",
   "controlDiscoverCardsTitle": "Explorar cartas",
   "controlDiscoverCardsSubtitle": "Jugadores destacados del catálogo completo.",
@@ -36,7 +36,7 @@
   "controlEmptyMessage": "Elige una cuenta y un modo para empezar a buscar partido.",
   "teamTitle": "Mi equipo",
   "teamSubtitle": "Jugadores, roles e invitaciones.",
-  "teamsEyebrow": "EQUIPOS",
+  "teamsEyebrow": "FIFA QUEUE",
   "teamsListSubtitle": "Tus equipos y su estado operacional.",
   "teamsMineTab": "Mis Equipos",
   "teamsExploreTab": "Explorar",
@@ -62,7 +62,7 @@
   },
   "teamPublicPageNotFoundTitle": "Equipo no encontrado",
   "teamPublicPageNotFoundMessage": "Este equipo no existe o no está disponible públicamente.",
-  "historyEyebrow": "HISTORIAL",
+  "historyEyebrow": "FIFA QUEUE",
   "historyTitle": "Historial",
   "historySubtitle": "Búsquedas, partidos encontrados y expiraciones.",
   "profileTitle": "Perfil",
@@ -833,7 +833,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "Cuentas",
+  "profileFcAccountsRow": "Cuentas FC",
   "rivalsDivisionDiv10": "División 10",
   "rivalsDivisionDiv9": "División 9",
   "rivalsDivisionDiv8": "División 8",
@@ -1288,5 +1288,11 @@
   "historyResultNotInformed": "Resultado no informado",
   "weekendLeagueWeekPickerTitle": "Seleccionar semana",
   "weekendLeagueChangeWeekAction": "Cambiar",
-  "weekendLeagueCurrentWeekBadge": "En curso"
+  "weekendLeagueCurrentWeekBadge": "En curso",
+  "rivalsSetDivisionAction": "Informar",
+  "controlNoTeamTitle": "Necesitas un equipo",
+  "controlNoTeamMessage": "La fila es del equipo. Entra en uno o crea el tuyo para empezar a buscar.",
+  "controlNoTeamAction": "Ver equipos",
+  "statsEmptyScorersMessage": "Ningún gol registrado todavía.",
+  "statsEmptyAssistsMessage": "Ninguna asistencia registrada todavía."
 }

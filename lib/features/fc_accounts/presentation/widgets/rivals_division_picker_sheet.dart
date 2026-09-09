@@ -16,8 +16,12 @@ Future<void> showRivalsDivisionPickerSheet({
     context: context,
     builder: (sheetContext) => AppBottomSheet(
       title: context.l10n.fcAccountDivisionPickerTitle,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      // Sao 12 opcoes fixas: cabe numa tela alta e NAO cabe numa baixa, onde
+      // a ultima (Elite) ficava atras da navegacao e inalcancavel, porque uma
+      // Column simples nao rola.
+      isChildScrollable: true,
+      child: ListView(
+        shrinkWrap: true,
         children: <Widget>[
           _DivisionOptionRow(
             label: context.l10n.fcAccountDivisionNone,

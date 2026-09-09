@@ -26,7 +26,7 @@
   "startSubtitle": "Your team and your week in one place.",
   "startShortcutsTitle": "Shortcuts",
   "controlEyebrow": "CONTROL",
-  "controlTitle": "Your game starts here",
+  "controlTitle": "Your turn in the queue",
   "controlSubtitle": "Queue, opponent and squad in one place.",
   "controlDiscoverCardsTitle": "Explore cards",
   "controlDiscoverCardsSubtitle": "Featured players from the full catalog.",
@@ -36,7 +36,7 @@
   "controlEmptyMessage": "Pick an account and a mode to start searching for a match.",
   "teamTitle": "My team",
   "teamSubtitle": "Players, roles and invites.",
-  "teamsEyebrow": "TEAMS",
+  "teamsEyebrow": "FIFA QUEUE",
   "teamsListSubtitle": "Your teams and their operational status.",
   "teamsMineTab": "My Teams",
   "teamsExploreTab": "Explore",
@@ -62,7 +62,7 @@
   },
   "teamPublicPageNotFoundTitle": "Team not found",
   "teamPublicPageNotFoundMessage": "This team doesn't exist or isn't publicly available.",
-  "historyEyebrow": "HISTORY",
+  "historyEyebrow": "FIFA QUEUE",
   "historyTitle": "History",
   "historySubtitle": "Searches, matches found and expirations.",
   "profileTitle": "Profile",
@@ -833,7 +833,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "Accounts",
+  "profileFcAccountsRow": "FC accounts",
   "rivalsDivisionDiv10": "Division 10",
   "rivalsDivisionDiv9": "Division 9",
   "rivalsDivisionDiv8": "Division 8",
@@ -1288,5 +1288,11 @@
   "historyResultNotInformed": "Result not reported",
   "weekendLeagueWeekPickerTitle": "Pick a week",
   "weekendLeagueChangeWeekAction": "Change",
-  "weekendLeagueCurrentWeekBadge": "Running"
+  "weekendLeagueCurrentWeekBadge": "Running",
+  "rivalsSetDivisionAction": "Set",
+  "controlNoTeamTitle": "You need a team",
+  "controlNoTeamMessage": "The queue belongs to the team. Join one or create yours to start searching.",
+  "controlNoTeamAction": "See teams",
+  "statsEmptyScorersMessage": "No goals recorded yet.",
+  "statsEmptyAssistsMessage": "No assists recorded yet."
 }

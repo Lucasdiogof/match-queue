@@ -18,8 +18,11 @@ Future<void> showFcAccountSwitcherSheet({
       value: cubit,
       child: AppBottomSheet(
         title: context.l10n.fcAccountSwitchTitle,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        // A lista cresce com o numero de contas; sem scroll, quem tem varias
+        // perde as ultimas linhas e o botao de criar atras da navegacao.
+        isChildScrollable: true,
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             for (final account in accounts)
               Padding(

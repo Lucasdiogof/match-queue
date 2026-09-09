@@ -283,7 +283,9 @@ class _LeaderboardSection extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           if (entries.isEmpty)
             Text(
-              l10n.statsEmptyLeaderboardMessage,
+              showGoals
+                  ? l10n.statsEmptyScorersMessage
+                  : l10n.statsEmptyAssistsMessage,
               style: context.textStyles.bodySmall?.copyWith(
                 color: colors.textSecondary,
               ),

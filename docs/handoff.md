@@ -120,6 +120,25 @@ correções de leitura vieram junto: escopo do histórico por `session_teams` (o
 Time era cego a buscas lideradas por outro Time) e join lateral da partida.
 Ver [`handoff_product_domain_validation.md`](handoff_product_domain_validation.md).
 
+**QA visual/funcional (2026-09-09)**: primeira rodada em que o app **rodou de
+verdade** e foi visto na tela — todas as anteriores fecharam com `NOT
+EXECUTED`. Caminho que funciona: `flutter build web
+--no-web-resources-cdn` (sem a flag o CanvasKit vem da CDN bloqueada e a tela
+fica preta com o `main()` já rodado) servido estaticamente, e **sem**
+`--dart-define-from-file` para cair nos repositórios locais e não tocar
+produção. **Android continua bloqueado**: o Gradle falha com `Unable to
+establish loopback connection` (`UnixDomainSockets.connect0` → `EINVAL`) em
+bash e PowerShell, com e sem sandbox, com `--no-daemon`, `TEMP` longo e as
+flags de rede do JDK — no terminal do dono funciona. **9 bugs de UI
+corrigidos** (um deles reportado pelo dono rodando em device: a barra de
+navegacao estourava 2px porque `Transform.translate` nao encolhe a caixa de
+layout), com destaque para dois reais: a tela de Rivals não tinha a
+divisão (o card da Home apontava para um beco sem saída) e a sheet de divisão
+não rolava, deixando "Elite" inalcançável em telas de 600px. Squad Builder,
+imagens de carta, filtros de catálogo, matchmaking e Weekend League **não**
+puderam ser vistos (dependem de backend/catálogo). Ver
+[`handoff_visual_qa.md`](handoff_visual_qa.md).
+
 ## 1. O que o produto é
 
 Coordena qual jogador de um grupo pode procurar partida no EA SPORTS FC /
@@ -179,6 +198,7 @@ Distinções que já custaram bug quando ignoradas:
 | `ios_release_mac.md` | Auditoria estática iOS + checklist de 21 passos pra continuar o release num Mac |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `handoff_ui_refresh.md` | UI/UX refresh — shell de 5 abas com Controle central, Times público/privado + página pública, Início/Histórico com identidade própria, AppBackground/FeatureHeader |
+| `handoff_visual_qa.md` | QA visual/funcional — primeira execução real do app (Web), 8 bugs de UI corrigidos, o que continua bloqueado por ambiente |
 | `handoff_product_domain_validation.md` | Validação do domínio do produto — Home liderada pela Conta FC, resultado descartável, histórico com a partida, semanas reais de Weekend League |
 | `handoff_gameplay_flows_refresh.md` | Gameplay flows refresh — Conta FC obrigatória antes de Time, anti-duplicação no picker, imagens de carta, overlap no campo, bottom sheet overflow, filtros hierárquicos, RivalsCard na Home |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |

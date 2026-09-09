@@ -193,9 +193,15 @@ class _NavItem extends StatelessWidget {
               size: AppSizing.iconMd,
             ),
             const SizedBox(height: AppSpacing.xxs),
-            Text(
-              destination.label,
-              style: context.textStyles.labelSmall?.copyWith(color: color),
+            // Flexible + uma linha: o rotulo nunca empurra a barra alem dos
+            // 64px, por maior que seja a escala de fonte do aparelho.
+            Flexible(
+              child: Text(
+                destination.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.textStyles.labelSmall?.copyWith(color: color),
+              ),
             ),
           ],
         ),
@@ -229,38 +235,54 @@ class _PrimaryNavItem extends StatelessWidget {
       label: destination.label,
       child: InkWell(
         onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        // Stack, nao Column: o circulo de 52px ocupa altura de layout mesmo
+        // translatado, entao 52 + a linha do rotulo estourava a barra de
+        // 64px por 2px assim que a metrica de texto do aparelho fosse um
+        // pouco maior que a do desenho. Posicionado, o visual e o mesmo
+        // (circulo saindo pra fora da barra, via Clip.none) e a altura nunca
+        // depende do tamanho da fonte.
+        child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
           children: <Widget>[
-            Transform.translate(
-              offset: const Offset(0, -10),
-              child: Container(
-                width: 52,
-                height: 52,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: background,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: colors.background, width: 3),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: colors.success.withValues(alpha: 0.28),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  isSelected ? destination.selectedIcon : destination.icon,
-                  color: foreground,
-                  size: AppSizing.iconLg,
+            Positioned(
+              top: -10,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  width: 52,
+                  height: 52,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: background,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: colors.background, width: 3),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: colors.success.withValues(alpha: 0.28),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    isSelected ? destination.selectedIcon : destination.icon,
+                    color: foreground,
+                    size: AppSizing.iconLg,
+                  ),
                 ),
               ),
             ),
-            Transform.translate(
-              offset: const Offset(0, -6),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 6,
               child: Text(
                 destination.label,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: context.textStyles.labelSmall?.copyWith(
                   color: isSelected ? colors.success : colors.textTertiary,
                   fontWeight: FontWeight.w600,

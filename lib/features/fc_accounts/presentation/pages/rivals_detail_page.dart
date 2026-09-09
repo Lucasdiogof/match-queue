@@ -7,7 +7,12 @@ import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart'
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_picker_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Detalhe de Division Rivals de uma conta -- all-time nesta etapa (sem
 /// season/semana modelada ainda, simplificacao consciente).
@@ -62,7 +67,7 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
           if (stats == null) {
             return const SizedBox.shrink();
           }
-          return _Body(stats: stats);
+          return _Body(accountId: widget.account.id, stats: stats);
         },
       ),
     );
@@ -70,8 +75,9 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({required this.stats});
+  const _Body({required this.accountId, required this.stats});
 
+  final String accountId;
   final RivalsAccountStats stats;
 
   @override
@@ -86,6 +92,8 @@ class _Body extends StatelessWidget {
         vertical: AppSpacing.xl,
       ),
       children: <Widget>[
+        _DivisionSection(accountId: accountId),
+        const SizedBox(height: AppSpacing.lg),
         AppCard(
           variant: AppCardVariant.elevated,
           child: Column(
@@ -145,6 +153,70 @@ class _Body extends StatelessWidget {
   }
 }
 
+/// A divisao e o dado principal de Rivals, entao vive aqui e nao so na tela
+/// da Conta: o card da Home diz "divisao nao informada" e traz o usuario pra
+/// ca -- chegar sem poder informar era um beco sem saida. Reusa o mesmo
+/// picker da Conta FC, nunca uma segunda forma de escrever o campo.
+class _DivisionSection extends StatelessWidget {
+  const _DivisionSection({required this.accountId});
+
+  final String accountId;
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<FcAccountsCubit, FcAccountsState>(
+        builder: (context, state) {
+          final l10n = context.l10n;
+          FcAccount? account;
+          for (final candidate in state.accounts) {
+            if (candidate.id == accountId) {
+              account = candidate;
+            }
+          }
+          final division = account?.rivalsDivision;
+
+          return AppCard(
+            variant: AppCardVariant.elevated,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  l10n.fcAccountDivisionTitle.toUpperCase(),
+                  style: context.textStyles.labelSmall,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        division?.label(l10n) ?? l10n.fcAccountDivisionNone,
+                        style: context.textStyles.titleMedium?.copyWith(
+                          color: division == null
+                              ? context.colors.textSecondary
+                              : context.colors.textPrimary,
+                        ),
+                      ),
+                    ),
+                    if (account != null)
+                      AppButton.ghost(
+                        label: division == null
+                            ? l10n.rivalsSetDivisionAction
+                            : l10n.actionEdit,
+                        onPressed: () => showRivalsDivisionPickerSheet(
+                          context: context,
+                          accountId: accountId,
+                          selected: division,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+}
+
 class _StatTile extends StatelessWidget {
   const _StatTile({required this.label, required this.value});
 
@@ -190,7 +262,9 @@ class _LeaderboardCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           if (entries.isEmpty)
             Text(
-              l10n.statsEmptyLeaderboardMessage,
+              showGoals
+                  ? l10n.statsEmptyScorersMessage
+                  : l10n.statsEmptyAssistsMessage,
               style: context.textStyles.bodySmall?.copyWith(
                 color: colors.textSecondary,
               ),
