@@ -1074,31 +1074,51 @@ class _SupabaseAdmin {
   /// provider_card_id) -- buscado uma vez antes do loop principal para que
   /// o sync saiba, por linha, se vai inserir ou atualizar (o upsert do
   /// PostgREST nao diferencia isso pelo status HTTP).
+  // PostgREST/Supabase aplica um teto padrao de linhas por resposta (~1000)
+  // numa unica request sem paginacao -- descoberto ao vivo na Etapa 17B-2:
+  // rodar o mesmo arquivo de 5000 linhas duas vezes seguidas (a segunda vez
+  // com as 5000 ja existentes de verdade) reportou so ~770 "atualizados"
+  // em vez de 5000. O upsert em si (on_conflict) nunca dependeu deste
+  // conjunto pra decidir insert-vs-update de verdade -- o Postgres resolve
+  // isso sozinho -- mas o RESUMO impresso (inseridos/atualizados) e a
+  // decisao de `--full-catalog` (o que desativar) dependem de ter o
+  // conjunto COMPLETO, nao uma amostra truncada arbitraria da ordem que o
+  // Postgres devolveu primeiro.
+  static const int _pageSize = 1000;
+
   Future<Set<String>> fetchExistingProviderIds({
     required String table,
     required String idColumn,
     required String provider,
   }) async {
-    final response = await _httpClient.get(
-      Uri.parse(
-        '$baseUrl/rest/v1/$table?provider=eq.${Uri.encodeComponent(provider)}'
-        '&select=$idColumn',
-      ),
-      headers: _headers,
-    );
-    if (response.statusCode >= 300) {
-      stderr.writeln(
-        'Falha ao listar $idColumn existentes: '
-        '${response.statusCode} ${response.body}',
+    final ids = <String>{};
+    var offset = 0;
+    while (true) {
+      final response = await _httpClient.get(
+        Uri.parse(
+          '$baseUrl/rest/v1/$table?provider=eq.${Uri.encodeComponent(provider)}'
+          '&select=$idColumn&order=$idColumn.asc'
+          '&offset=$offset&limit=$_pageSize',
+        ),
+        headers: _headers,
       );
-      return <String>{};
+      if (response.statusCode >= 300) {
+        stderr.writeln(
+          'Falha ao listar $idColumn existentes: '
+          '${response.statusCode} ${response.body}',
+        );
+        return ids;
+      }
+      final rows = jsonDecode(response.body) as List<dynamic>;
+      for (final row in rows) {
+        final value = (row as Map<String, dynamic>)[idColumn];
+        if (value != null) ids.add(value as String);
+      }
+      if (rows.length < _pageSize) {
+        return ids;
+      }
+      offset += _pageSize;
     }
-    final rows = jsonDecode(response.body) as List<dynamic>;
-    return <String>{
-      for (final row in rows)
-        if ((row as Map<String, dynamic>)[idColumn] != null)
-          row[idColumn] as String,
-    };
   }
 
   /// Marca is_active=false para toda carta DAQUELE provider que nao
