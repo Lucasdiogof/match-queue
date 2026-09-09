@@ -1,8 +1,7 @@
 import 'package:fifa_queue/features/legal/domain/legal_document.dart';
 
-const String kSupportEmailPlaceholder = '[EMAIL_DE_SUPORTE]';
-const String kResponsiblePartyPlaceholder =
-    '[NOME/RAZÃO SOCIAL DO RESPONSÁVEL PELO APP]';
+const String kSupportEmail = 'lucasdiogo1234@gmail.com';
+const String kResponsibleParty = 'Lucas Diogo Franca (CNPJ 54.868.173/0001-55)';
 
 const String _nonAffiliationPt =
     'O FIFA Queue é um aplicativo independente, feito por fã, e não é '
@@ -18,9 +17,9 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
     LegalSection(
       title: '1. Responsável pelo aplicativo',
       body:
-          'O FIFA Queue é operado por $kResponsiblePartyPlaceholder. '
+          'O FIFA Queue é operado por $kResponsibleParty. '
           'Dúvidas sobre esta Política podem ser enviadas para '
-          '$kSupportEmailPlaceholder.',
+          '$kSupportEmail.',
     ),
     LegalSection(
       title: '2. Quais dados coletamos',
@@ -112,7 +111,7 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           'exibição e avatar pelo próprio app; ativar ou desativar seu '
           'perfil público; e excluir sua conta e os dados associados a '
           'ela. Para qualquer outra solicitação sobre seus dados, entre em '
-          'contato pelo $kSupportEmailPlaceholder.',
+          'contato pelo $kSupportEmail.',
     ),
     LegalSection(
       title: '10. Menores de idade',
@@ -229,7 +228,7 @@ const LegalDocument kTermsOfUsePt = LegalDocument(
     ),
     LegalSection(
       title: '13. Contato',
-      body: 'Dúvidas sobre estes Termos: $kSupportEmailPlaceholder.',
+      body: 'Dúvidas sobre estes Termos: $kSupportEmail.',
     ),
     LegalSection(title: '14. Marca e afiliação', body: _nonAffiliationPt),
   ],

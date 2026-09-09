@@ -266,6 +266,7 @@
   },
   "teamNoTeamTitle": "Você ainda não faz parte de um time",
   "teamNoTeamMessage": "Crie o seu time ou entre com um código de convite para começar.",
+  "historyNoTeamMessage": "Sem time não há histórico pra mostrar. Crie o seu ou entre com um código de convite para começar a registrar buscas e partidas.",
   "teamCreateCta": "Criar time",
   "teamHaveInviteCode": "Tenho um código de convite",
   "teamCreateTitle": "Crie seu time",

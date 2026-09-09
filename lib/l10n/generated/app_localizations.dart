@@ -994,6 +994,12 @@ abstract class AppLocalizations {
   /// **'Crie o seu time ou entre com um código de convite para começar.'**
   String get teamNoTeamMessage;
 
+  /// No description provided for @historyNoTeamMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem time não há histórico pra mostrar. Crie o seu ou entre com um código de convite para começar a registrar buscas e partidas.'**
+  String get historyNoTeamMessage;
+
   /// No description provided for @teamCreateCta.
   ///
   /// In pt, this message translates to:

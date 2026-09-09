@@ -266,6 +266,7 @@
   },
   "teamNoTeamTitle": "You are not part of a team yet",
   "teamNoTeamMessage": "Create your team or join with an invite code to get started.",
+  "historyNoTeamMessage": "No team means no history to show. Create your team or join with an invite code to start tracking searches and matches.",
   "teamCreateCta": "Create team",
   "teamHaveInviteCode": "I have an invite code",
   "teamCreateTitle": "Create your team",

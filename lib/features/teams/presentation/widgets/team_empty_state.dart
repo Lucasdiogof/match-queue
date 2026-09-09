@@ -5,7 +5,9 @@ import 'package:fifa_queue/features/teams/presentation/widgets/create_team_sheet
 import 'package:flutter/material.dart';
 
 class TeamEmptyState extends StatelessWidget {
-  const TeamEmptyState({super.key});
+  const TeamEmptyState({this.message, super.key});
+
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class TeamEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                l10n.teamNoTeamMessage,
+                message ?? l10n.teamNoTeamMessage,
                 textAlign: TextAlign.center,
                 style: context.textStyles.bodyMedium?.copyWith(
                   color: colors.textSecondary,

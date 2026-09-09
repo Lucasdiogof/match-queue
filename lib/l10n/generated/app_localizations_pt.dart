@@ -511,6 +511,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Crie o seu time ou entre com um código de convite para começar.';
 
   @override
+  String get historyNoTeamMessage =>
+      'Sem time não há histórico pra mostrar. Crie o seu ou entre com um código de convite para começar a registrar buscas e partidas.';
+
+  @override
   String get teamCreateCta => 'Criar time';
 
   @override

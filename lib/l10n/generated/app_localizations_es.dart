@@ -514,6 +514,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Crea tu equipo o únete con un código de invitación para empezar.';
 
   @override
+  String get historyNoTeamMessage =>
+      'Sin equipo no hay historial que mostrar. Crea el tuyo o únete con un código de invitación para empezar a registrar búsquedas y partidos.';
+
+  @override
   String get teamCreateCta => 'Crear equipo';
 
   @override

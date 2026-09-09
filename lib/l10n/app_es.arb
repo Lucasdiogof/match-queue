@@ -266,6 +266,7 @@
   },
   "teamNoTeamTitle": "Todavía no formas parte de un equipo",
   "teamNoTeamMessage": "Crea tu equipo o únete con un código de invitación para empezar.",
+  "historyNoTeamMessage": "Sin equipo no hay historial que mostrar. Crea el tuyo o únete con un código de invitación para empezar a registrar búsquedas y partidos.",
   "teamCreateCta": "Crear equipo",
   "teamHaveInviteCode": "Tengo un código de invitación",
   "teamCreateTitle": "Crea tu equipo",

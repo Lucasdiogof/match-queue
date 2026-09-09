@@ -28,7 +28,7 @@ class HistoryPage extends StatelessWidget {
             subtitle: l10n.historySubtitle,
           ),
           body: selected == null
-              ? const TeamEmptyState()
+              ? TeamEmptyState(message: l10n.historyNoTeamMessage)
               : _HistoryScope(key: ValueKey(selected.id), teamId: selected.id),
         );
       },

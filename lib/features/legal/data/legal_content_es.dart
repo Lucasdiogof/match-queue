@@ -1,5 +1,5 @@
 import 'package:fifa_queue/features/legal/data/legal_content_pt.dart'
-    show kResponsiblePartyPlaceholder, kSupportEmailPlaceholder;
+    show kResponsibleParty, kSupportEmail;
 import 'package:fifa_queue/features/legal/domain/legal_document.dart';
 
 const String _nonAffiliationEs =
@@ -16,9 +16,9 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
     LegalSection(
       title: '1. Responsable de la aplicación',
       body:
-          'FIFA Queue es operado por $kResponsiblePartyPlaceholder. '
+          'FIFA Queue es operado por $kResponsibleParty. '
           'Puedes enviar preguntas sobre esta Política a '
-          '$kSupportEmailPlaceholder.',
+          '$kSupportEmail.',
     ),
     LegalSection(
       title: '2. Qué datos recopilamos',
@@ -111,7 +111,7 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
           'visible y avatar desde la propia app; activar o desactivar tu '
           'perfil público; y eliminar tu cuenta y los datos asociados a '
           'ella. Para cualquier otra solicitud sobre tus datos, '
-          'contáctanos en $kSupportEmailPlaceholder.',
+          'contáctanos en $kSupportEmail.',
     ),
     LegalSection(
       title: '10. Menores de edad',
@@ -232,7 +232,7 @@ const LegalDocument kTermsOfUseEs = LegalDocument(
     ),
     LegalSection(
       title: '13. Contacto',
-      body: 'Preguntas sobre estos Términos: $kSupportEmailPlaceholder.',
+      body: 'Preguntas sobre estos Términos: $kSupportEmail.',
     ),
     LegalSection(title: '14. Marca y afiliación', body: _nonAffiliationEs),
   ],
