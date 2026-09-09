@@ -164,6 +164,7 @@ Distinções que já custaram bug quando ignoradas:
 | `android_device_qa.md` | Checklist manual de QA em device Android físico com o release real |
 | `ios_release_mac.md` | Auditoria estática iOS + checklist de 21 passos pra continuar o release num Mac |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
+| `handoff_ui_refresh.md` | UI/UX refresh — shell de 5 abas com Controle central, Times público/privado + página pública, Início/Histórico com identidade própria, AppBackground/FeatureHeader |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
 | `card_provider_research.md` | pesquisa de fonte de cartas e por que cada uma foi descartada |
