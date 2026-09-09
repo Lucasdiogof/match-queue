@@ -1,21 +1,22 @@
 # Handoff — Etapa 17B-2 (validação em escala intermediária do import FC27)
 
-Status em 2026-09-09 (atualizado após a credencial ficar disponível):
-**veredito READY FOR FULL IMPORT** (seção 16) — os degraus 500/2.000/5.000
-rodaram de verdade contra o Supabase de produção via `tool/
-sync_fc_cards.dart`, idempotência real confirmada nos três, validação
-profunda no banco e QA REST real todas limpas. O full import dos ~17.873
-**não foi executado**, por proibição explícita do pedido que motivou esta
-retomada — aguarda autorização separada.
+Status em 2026-09-09 (após o full import autorizado): **FULL IMPORT
+COMPLETE — READY FOR APP QA.** Os 17.873 registros do catálogo Wrexist
+estão em produção via `tool/sync_fc_cards.dart` real (nunca SQL manual),
+idempotência real confirmada em escala completa (segunda execução: 0
+inserido, 17.873 atualizado, 0 falha), validação profunda no banco e QA
+REST real todas limpas. Um achado estrutural real foi encontrado e
+diagnosticado durante a validação (seção 17: 32 linhas órfãs em
+`fc_clubs`, herdadas de uma fase anterior do projeto, zero cartas
+apontando pra elas) — **não corrigido**, por não ser bloqueante e por não
+ter sido pedida autorização para alterar dados fora do escopo de QA.
 
 Histórico: esta etapa começou bloqueada por `SUPABASE_SECRET_KEY`/
 `SUPABASE_SERVICE_ROLE_KEY` ausentes do ambiente (seções 1-14, veredito
-original **B — NOT READY**). Tudo que não dependia de escrita real foi
-executado até o fim naquele momento: auditoria completa do arquivo
-inteiro (17.873 linhas), seleção determinística e dry-run limpo dos três
-degraus, implementação e medição de batching no importer (double HTTP
-local), e a suíte de testes automatizados (primeira do repositório). A
-seção 15 documenta a retomada real; a seção 16 tem o veredito atual.
+original **B — NOT READY**), depois validou os degraus 500/2.000/5.000
+com a credencial disponível (seção 15, veredito **READY FOR FULL IMPORT**
+na seção 16), e por fim recebeu autorização explícita para o full import
+dos ~17.873, executado e validado na seção 17.
 
 ## 1. Baseline no início desta etapa
 
@@ -528,3 +529,167 @@ linha seja ela INSERT ou UPDATE.
 **Import completo dos ~17.873 registros NÃO foi executado nesta tarefa**,
 por proibição explícita do pedido. Aguardando autorização separada do
 dono do produto.
+
+## 17. Full import autorizado e executado (2026-09-09)
+
+Autorização explícita recebida para o full import dos ~17.873. Executado
+com `tool/sync_fc_cards.dart` (nunca SQL manual), duas vezes (primeira
+escrita real + idempotência), com validação profunda entre as duas.
+
+### Import 1 (primeira escrita real do catálogo completo)
+
+Baseline antes: 6.713 cartas `WREXIST_EA_FC27_SNAPSHOT` já em produção
+(os degraus da seção 15).
+
+```
+lidos=17.873  validos=17.873  invalidos=0
+players distintos=17.873  cards reais=17.873  player-only=0
+cards -- inseridos: 11.160, atualizados: 6.713, falhas: 0
+duração real: 53,14s  ->  336,4 registros/s
+```
+
+`11.160 + 6.713 = 17.873` — bate exatamente com o total, confirmando que
+cada linha do arquivo virou exatamente uma carta, nem uma a mais nem a
+menos. Os 6.713 atualizados são precisamente as cartas que já existiam
+dos degraus 500/2.000/5.000/40 — nenhuma foi duplicada, todas foram
+atualizadas no lugar certo.
+
+### Validação profunda pós-import 1
+
+| Checagem | Resultado |
+| --- | --- |
+| Total `WREXIST_EA_FC27_SNAPSHOT` (cartas / players) | 17.873 / 17.873 (1:1) |
+| `fc_player_id` nulo ou pendurado | 0 / 0 |
+| Carta com provider diferente do player | 0 |
+| `provider_card_id` / `provider_player_id` duplicado | 0 / 0 |
+| `game_version` fora de `FC27` | 0 (nenhum vazamento) |
+| Cartas sem liga / nação / rating | 0 / 0 / 0 |
+| Cartas sem clube (free agent) | 2.402 — **bate exatamente** com a auditoria original do arquivo inteiro (Etapa 17B-2, seção 2) |
+| Cartas `is_active=false` | 0 (sem `--full-catalog`, nada foi desativado) |
+| Cartas `LOCAL` (tabela inteira) | 50 — inalteradas |
+| Clubes / ligas / nações distintos tocados pelas cartas | 614(¹) / 57 / 157 |
+| GK / rating min-max | 2.014 / 47-91 |
+
+(¹) 614 é maior que os "572 nomes distintos" da auditoria porque conta
+LINHAS de `fc_clubs`, não nomes — ver achado da seção abaixo.
+
+### Achado real, diagnosticado, NÃO CORRIGIDO (regra "pare antes de corrigir amplo")
+
+Ao conferir clubes com o mesmo nome, apareceram **67 grupos de nome
+duplicado** em `fc_clubs` — mais que os 42 já documentados (clube
+homônimo em ligas DIFERENTES, ex. Arsenal masculino vs feminino, que
+segue existindo e inalterado, é comportamento aceito). Investiguei os 25
+extras e encontrei **32 pares com o MESMO nome E A MESMA liga** (ex. 3
+linhas de "Juventus": uma órfã sem `provider_club_id`, uma com
+`provider_club_id="45"` na Serie A, e uma terceira com
+`provider_club_id="116280"` numa liga diferente — essa última é o caso
+já conhecido dos 42 homônimos cross-liga).
+
+**Causa raiz confirmada por consulta direta**: as 32 linhas problemáticas
+são **100% linhas órfãs com `provider_club_id IS NULL`** — sobras de uma
+fase anterior do projeto, de antes de `club_external_id`/`provider_club_id`
+existir no mapeamento do importer (a Etapa 17B introduziu esse campo).
+Confirmado com uma consulta que cruza as 32 linhas órfãs contra
+`fc_player_cards`: **zero cartas apontam para qualquer uma delas** — toda
+carta atual, sem exceção, usa a linha irmã correta (a que tem
+`provider_club_id` preenchido). A segunda execução do full import (ver
+abaixo) não mexeu nesse número (continuou 32), confirmando que o
+importer atual não está gerando linhas órfãs novas — essas 32 são
+puramente herança, não uma regressão desta etapa.
+
+**Impacto real: nenhum.** Não afeta `fc_player_cards` (cada carta grava
+sua própria liga, nunca herda da linha de clube), não afeta o picker
+(que não lê `fc_clubs.league_id` para nada hoje, achado já registrado na
+seção 2), não afeta contagem de cartas, jogadores ou nenhuma feature do
+app.
+
+**Decisão**: NÃO apaguei essas 32 linhas nem alterei schema. O pedido
+desta retomada autorizou o full import e QA, não uma faxina de dados fora
+do escopo de QA temporário — apagar linhas de catálogo (mesmo órfãs)
+exige autorização própria, então fica registrado como achado, não como
+correção aplicada. Se autorizado no futuro, a limpeza é direta: `delete
+from fc_clubs where provider_club_id is null and id not in (select
+club_id from fc_player_cards where club_id is not null)`.
+
+### Import 2 (idempotência em escala completa)
+
+```
+lidos=17.873  validos=17.873  invalidos=0
+cards -- inseridos: 0, atualizados: 17.873, falhas: 0
+duração real: 53,08s  ->  336,8 registros/s
+```
+
+Contagens antes vs. depois da segunda execução, lado a lado:
+
+| Métrica | Antes (pós-import 1) | Depois (pós-import 2) |
+| --- | ---: | ---: |
+| Cartas `WREXIST_EA_FC27_SNAPSHOT` | 17.873 | 17.873 |
+| Players `WREXIST_EA_FC27_SNAPSHOT` | 17.873 | 17.873 |
+| `provider_card_id` duplicado | 0 | 0 |
+| `provider_player_id` duplicado | 0 | 0 |
+| Cartas `LOCAL` | 50 | 50 |
+| Total linhas `fc_clubs` | 646 | 646 (inalterado) |
+| Grupos "mesmo nome + mesma liga" (achado acima) | 32 | 32 (inalterado, não cresceu) |
+
+**Idempotência real confirmada em escala completa: zero duplicação, zero
+FK alterada, zero clube/liga/nação fantasma novo, zero provider errado.**
+
+### Performance real (substitui a tabela da seção 15 para o tamanho total)
+
+| Escala | Import 1 | Import 2 | Inserts | Updates | Falhas | Reg/s |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 17.873 (full) | 53,14s | 53,08s | 11.160 / 0 | 6.713 / 17.873 | 0 / 0 | 336,4 / 336,8 |
+
+Nenhum erro HTTP, timeout, retry ou rate-limit em nenhuma das duas
+execuções. Throughput do full import (336 reg/s) é **3× maior** que o
+medido em 5.000 (116 reg/s) — confirma a previsão da seção 15 de que o
+cache de nomes já estava quase saturado aos 5.000 registros, tornando o
+restante do arquivo praticamente todo "cache-hit".
+
+### QA REST real pós-full-import
+
+Usuário `qa17b2-fullimport@fifaqueue.test`, criado e removido nesta
+sessão (0 resíduo confirmado em `auth.users`).
+
+| Teste | Resultado |
+| --- | --- |
+| Posição (`GK`) | 50/50 resultados são `GK` |
+| Liga (`Bundesliga`) | 50 resultados (capado pelo limite pedido) |
+| Clube (`Real Madrid`) | 49 resultados |
+| `p_min_rating=88` | 43 resultados, mínimo real = 88 |
+| Nação (`Argentina`) | 50 resultados |
+| Busca por nome, feminino (`Putellas`) | 1 resultado — Alexia Putellas |
+| Busca por nome, masculino (`Haaland`) | 2 resultados — Erling e Markus Haaland |
+| Paginação na ponta final (`offset=17800`, total 17.873) | 73 resultados (exatamente `17873-17800`), 100% provider `WREXIST_EA_FC27_SNAPSHOT` |
+
+Zero carta `LOCAL` em qualquer amostra lida via REST. Zero resíduo de QA
+ao final.
+
+### Testes / analyze / migrations / Edge Functions (pós-full-import)
+
+- `flutter test test/tool`: 6/6 verde (inalterado, nenhum bug no
+  importer, nenhuma mudança de código).
+- `flutter analyze`: limpo.
+- Migrations: 76 locais = 76 remotas (full import não usa migration
+  nenhuma).
+- Edge Functions: `process-notification-outbox` (v3, ACTIVE) e
+  `delete-account` (v1, ACTIVE) — inalteradas, não relacionadas a este
+  import.
+- `git status`: limpo (só os dois handoffs, nesta atualização).
+
+### Decisão final: catálogo pronto para uso normal no app
+
+**Sim.** O catálogo Wrexist FC27 completo (17.873 cartas, 100% com
+`fc_player_id` resolvido, zero `LOCAL` misturado, zero corrupção
+estrutural) está em produção e é seguro para o app consumir via
+`search_fc_player_cards` e o restante do fluxo do Squad Builder. O único
+achado (32 linhas órfãs em `fc_clubs`) é cosmético, não afeta nenhuma
+consulta nem feature existente.
+
+## 18. Veredito final
+
+**FULL IMPORT COMPLETE — READY FOR APP QA.**
+
+Nenhum push foi feito nesta tarefa, conforme instruído — as mudanças
+ficam só nos dois arquivos de handoff, aguardando autorização para
+commit/push.

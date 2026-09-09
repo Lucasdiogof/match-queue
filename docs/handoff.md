@@ -9,37 +9,29 @@ feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
 de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
 inativo todos corrigidos e validados ao vivo, ver
 [`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B/17B-2
-(importação real do catálogo FC27) segue EM ANDAMENTO, agora sobre dado
-real** — o dono do produto decidiu explicitamente promover o Wrexist
-snapshot (17.873 cartas, republicação MIT do endpoint da EA) de fixture de
-teste para fonte de trabalho real desta etapa, já que o arquivo "oficial"
-da EA ainda não chegou. Auditoria completa + normalização + dry-run
-completo (17.873/17.873 válidas, 0 inválidas) limpos. **Sample import de
-40 cartas ESCRITO no Supabase remoto com sucesso** (via SQL equivalente ao
-importer, autorizado pelo dono do produto). **Etapa 17B-2 (validação em
-escala intermediária, 2026-09-09)**: auditou o arquivo inteiro de novo
-(achou 42 clubes homônimos em ligas diferentes, achado documentado, não
-bloqueante), gerou amostras determinísticas de 500/2.000/5.000 com
-dry-run 100% limpo nos três, implementou cache de nomes + upsert em lote
-(`--batch-size`, default 500, medido contra um double HTTP local — não
-arbitrário) no importer real, e escreveu a primeira suíte de testes
-automatizados do repositório (6 testes, `test/tool/`). **Retomada
-2026-09-09**: `SUPABASE_SECRET_KEY` ficou disponível no ambiente — os três
-degraus (500/2.000/5.000) rodaram de verdade contra o Supabase real via
-`tool/sync_fc_cards.dart` (nunca via SQL manual), idempotência real
-confirmada nos três (reimport = 0 inserido, 100% atualizado, 0 falha),
-validação profunda direto no banco limpa (zero FK pendurada, zero
-provider incoerente, zero `LOCAL` misturado) e QA REST real limpo (busca,
-nome, posição, rating, liga, clube, nação, paginação, masculino+feminino),
-usuário de QA removido sem resíduo. Veredito atual: **READY FOR FULL
-IMPORT** — mas o full import dos ~17.873 **não foi executado**, aguarda
-autorização explícita separada do dono do produto. Ver
-[`handoff_etapa17b2.md`](handoff_etapa17b2.md) (mais recente, seções 15-16
-têm a retomada) e [`handoff_etapa17b.md`](handoff_etapa17b.md) (histórico).
+(importação real do catálogo FC27) FECHADA — FULL IMPORT COMPLETE, READY
+FOR APP QA.** O catálogo Wrexist inteiro (17.873 cartas, republicação MIT
+do endpoint da EA, usado como fonte real enquanto o arquivo "oficial" da
+EA não chega) está em produção via `tool/sync_fc_cards.dart` real (nunca
+SQL manual): 11.160 inseridas + 6.713 atualizadas (as que já vinham dos
+degraus 500/2.000/5.000/40) = 17.873 exatas, 0 falha, 53s de execução
+(336 registros/s). Idempotência confirmada em escala completa (segunda
+execução: 0 inserido, 17.873 atualizado, contagens idênticas). QA REST
+real limpo (posição, liga, clube, rating, nação, masculino/feminino,
+paginação até a última página) com usuário descartável, removido sem
+resíduo. **Achado real, diagnosticado e documentado, não corrigido**: 32
+linhas órfãs em `fc_clubs` (herdadas de antes do mapeamento
+`club_external_id` existir, zero cartas apontando pra elas, zero impacto
+em qualquer feature) — distinto do achado já conhecido dos 42 clubes
+homônimos em ligas diferentes (esse continua igual, aceito). Ver
+[`handoff_etapa17b2.md`](handoff_etapa17b2.md) (seção 17 tem o full
+import; seções 1-16 têm o histórico da validação em escala) e
+[`handoff_etapa17b.md`](handoff_etapa17b.md) (histórico mais antigo).
 76 migrations locais = remotas, `flutter analyze` e `flutter test
 test/tool` (6/6) sem issues. Edge Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
-ACTIVE).
+ACTIVE). **Nenhum push foi feito** desta atualização — aguarda
+autorização explícita.
 
 **Antes de decidir o que vem depois, leia
 [`launch_gap_analysis.md`](launch_gap_analysis.md)** (diagnóstico
@@ -160,30 +152,30 @@ Distinções que já custaram bug quando ignoradas:
 
 **Bloqueado por dado externo:**
 
-- **Catálogo FC27 real ainda não importado em produção (Etapa 17B em
-  andamento).** O arquivo oficial da EA continua não obtido (mesmo motivo
-  de sempre — `robots.txt` proíbe mineração automatizada, precisa vir de
-  download manual do usuário). **Mudança 2026-09-09**: o dono do produto
-  decidiu trabalhar com o Wrexist snapshot (17.873 cartas) como fonte real
-  desta etapa enquanto o arquivo da EA não chega. Importer auditado e
-  adaptado (posições em colunas separadas, detailed_stats/playstyles_plus/
-  raw_metadata, `--full-catalog`, `source_url` por linha); segurança do
-  `is_active` aplicada em produção; auditoria + normalização + dry-run
-  completo do Wrexist snapshot rodados e limpos (17.873/17.873 válidas).
-  **Retomada 2026-09-09 (Etapa 17B-2)**: `SUPABASE_SECRET_KEY` ficou
-  disponível. Degraus 500/2.000/5.000 escritos de verdade em produção via
-  `tool/sync_fc_cards.dart` (real, nunca SQL manual), reimportados na
-  mesma sessão para confirmar idempotência (0 inserido, 100% atualizado,
-  0 falha nos três), validados direto no banco e via REST real com
-  usuário de QA descartável. Catálogo real em produção hoje: **6.713
-  cartas `WREXIST_EA_FC27_SNAPSHOT`** (união exata dos quatro conjuntos
-  40+500+2.000+5.000, conferida id a id). Veredito: **READY FOR FULL
-  IMPORT** — mas o full import dos ~17.873 restantes **não foi
-  executado**, aguarda autorização explícita separada. Ver
-  `docs/handoff_etapa17b2.md` (seções 15-16). Nada no produto depende
-  disso pra funcionar — o app roda com as 50 cartas `provider = 'LOCAL'`
-  de dev e com o catálogo real parcial (6.713 cartas) até a autorização
-  do full import.
+- **Arquivo "oficial" da EA continua não obtido** — mesmo motivo de
+  sempre (`robots.txt` proíbe mineração automatizada, precisa vir de
+  download manual do usuário). Não bloqueia nada: o dono do produto
+  decidiu em 2026-09-09 promover o Wrexist snapshot de fixture de teste a
+  fonte de trabalho real (ver item resolvido abaixo), então isso deixou
+  de ser blocker de produto — só fica registrado caso o arquivo da EA
+  apareça um dia e vire uma segunda fonte a reconciliar.
+
+**Resolvido em 2026-09-09 (Etapa 17B/17B-2, FECHADA):**
+
+- **Catálogo FC27 real (Wrexist snapshot, 17.873 cartas) importado em
+  produção por completo.** Importer auditado e adaptado (posições em
+  colunas separadas, detailed_stats/playstyles_plus/raw_metadata,
+  `--full-catalog`, `source_url`, cache de nomes, upsert em lote); 3
+  degraus (500/2.000/5.000) validados em escala com credencial real,
+  depois full import autorizado e executado via `tool/sync_fc_cards.dart`
+  (11.160 inseridas + 6.713 atualizadas = 17.873, 0 falha, 53s/336
+  reg/s), idempotência confirmada em escala completa, QA REST real
+  limpo. Catálogo pronto para uso normal no app. Achado não-bloqueante
+  documentado: 32 linhas órfãs em `fc_clubs` (sem carta nenhuma
+  apontando pra elas, herdadas de antes do `club_external_id` existir) —
+  não corrigido, sem impacto em nenhuma feature. Ver
+  `docs/handoff_etapa17b2.md` (seção 17 para o full import; seções 1-16
+  para o histórico completo da validação em escala).
 - **Fontes de carta descartadas** (FUT.GG, FUTBIN, FUTWIZ, WeFUT, SoFIFA,
   fcratings): todas por `robots.txt` ou ToS. Razão de cada uma em
   `card_provider_research.md`. Não reabrir a pesquisa.
