@@ -19,6 +19,10 @@ abstract interface class GameRepository {
 
   /// Partida + conta + squad_snapshot + player stats numa unica leitura.
   /// Base da tela de detalhe do Histórico -- dono ou membro do mesmo time.
+  /// Encerra a partida sem registrar resultado. Informar resultado e
+  /// opcional: nao registrar nunca pode bloquear uma nova busca.
+  Future<void> discardMatch(String matchId);
+
   Future<GameMatchDetails> fetchMatchDetails(String matchId);
 
   /// Edita resultado/placar de uma partida já FINISHED, sem limite de

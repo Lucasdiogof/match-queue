@@ -103,5 +103,34 @@ class PendingMatchCubit extends Cubit<PendingMatchState> {
     }
   }
 
+  /// Descartar e um desfecho legitimo, nao um erro: a partida sai do card
+  /// sem virar vitoria nem derrota e nada disso bloqueia a proxima busca.
+  Future<bool> discard() async {
+    final match = state.match;
+    if (match == null || state.isSaving) {
+      return false;
+    }
+    emit(state.copyWith(isSaving: true, clearActionFailure: true));
+    try {
+      await _repository.discardMatch(match.id);
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            status: PendingMatchStatus.ready,
+            clearMatch: true,
+            isSaving: false,
+            clearActionFailure: true,
+          ),
+        );
+      }
+      return true;
+    } on AppFailure catch (failure) {
+      if (!isClosed) {
+        emit(state.copyWith(isSaving: false, actionFailure: failure));
+      }
+      return false;
+    }
+  }
+
   void clear() => emit(const PendingMatchState());
 }

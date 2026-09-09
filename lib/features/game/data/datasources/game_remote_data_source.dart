@@ -10,6 +10,8 @@ abstract interface class GameRemoteDataSource {
     int? goalsAgainst,
   });
 
+  Future<void> discardMatch(String matchId);
+
   Future<Map<String, dynamic>> getMatchDetails(String matchId);
 
   Future<void> updateMatchResult({
@@ -50,6 +52,12 @@ class SupabaseGameRemoteDataSource implements GameRemoteDataSource {
       'p_goals_for': ?goalsFor,
       'p_goals_against': ?goalsAgainst,
     },
+  );
+
+  @override
+  Future<void> discardMatch(String matchId) => _client.rpc<dynamic>(
+    'discard_game_match',
+    params: <String, dynamic>{'p_match_id': matchId},
   );
 
   @override

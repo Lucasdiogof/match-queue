@@ -20,6 +20,9 @@ class LocalGameRepository implements GameRepository {
   }) async {}
 
   @override
+  Future<void> discardMatch(String matchId) async {}
+
+  @override
   Future<GameMatchDetails> fetchMatchDetails(String matchId) async {
     throw const NotFoundFailure();
   }

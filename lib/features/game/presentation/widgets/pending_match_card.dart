@@ -7,6 +7,7 @@ import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_state.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/finish_match_sheet.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
+import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -36,6 +37,26 @@ Future<void> maybeOfferMatchDetails({
   );
   if (wantsDetails == true && context.mounted) {
     await context.push(AppRoutes.matchDetailLocation(match.id));
+  }
+}
+
+/// Descartar e irreversivel (a partida nao volta a ser registravel), entao
+/// confirma -- mas continua sendo um toque, nunca um requisito.
+Future<void> _discard(BuildContext context, AppLocalizations l10n) async {
+  final cubit = context.read<PendingMatchCubit>();
+  final confirmed = await showAppDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AppDialog(
+      title: l10n.pendingMatchSkipConfirmTitle,
+      message: l10n.pendingMatchSkipConfirmMessage,
+      confirmLabel: l10n.pendingMatchSkipAction,
+      cancelLabel: l10n.actionCancel,
+      onConfirm: () => Navigator.of(dialogContext).pop(true),
+      onCancel: () => Navigator.of(dialogContext).pop(false),
+    ),
+  );
+  if (confirmed == true) {
+    await cubit.discard();
   }
 }
 
@@ -196,6 +217,11 @@ class _PendingMatchCardBody extends StatelessWidget {
                         );
                       }
                     },
+            ),
+            AppButton.ghost(
+              label: l10n.pendingMatchSkipAction,
+              expanded: true,
+              onPressed: isSaving ? null : () => _discard(context, l10n),
             ),
           ],
         ),

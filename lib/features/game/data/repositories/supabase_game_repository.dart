@@ -35,6 +35,10 @@ class SupabaseGameRepository implements GameRepository {
   );
 
   @override
+  Future<void> discardMatch(String matchId) =>
+      _guard(() => _dataSource.discardMatch(matchId));
+
+  @override
   Future<GameMatchDetails> fetchMatchDetails(String matchId) =>
       _guard(() async {
         final json = await _dataSource.getMatchDetails(matchId);
