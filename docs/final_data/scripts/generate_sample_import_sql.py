@@ -60,7 +60,19 @@ def main():
 
     leagues = sorted({r["league"] for r in rows if r.get("league")})
     nations = sorted({r["nationality"] for r in rows if r.get("nationality")})
-    clubs = sorted({(r["club"], r.get("league") or "") for r in rows if r.get("club")})
+    # O mesmo nome de clube pode aparecer em ligas diferentes na fonte (ex.
+    # times masculino/feminino homonimos como "SV Werder Bremen" em
+    # Bundesliga e GPFBL) -- fc_clubs resolve por nome sozinho, sem
+    # distincao de liga, entao duas linhas com o mesmo nome quebram a
+    # subquery de resolucao (`more than one row returned`). Dedup por nome
+    # aqui, mantendo a liga que vem primeiro em ordem alfabetica --
+    # deterministico e documentado, nao tenta adivinhar qual e "a" liga
+    # certa do clube.
+    club_pairs = sorted({(r["club"], r.get("league") or "") for r in rows if r.get("club")})
+    club_to_league: dict[str, str] = {}
+    for name, league in club_pairs:
+        club_to_league.setdefault(name, league)
+    clubs = sorted(club_to_league.items())
 
     lines = []
     lines.append("begin;")
@@ -176,7 +188,13 @@ def main():
             f"{line_stat('pace')}, {line_stat('shooting')}, {line_stat('passing')}, "
             f"{line_stat('dribbling')}, {line_stat('defending')}, {line_stat('physical')}, "
             f"{gk_stat('gk_diving')}, {gk_stat('gk_handling')}, {gk_stat('gk_kicking')}, "
-            f"{gk_stat('gk_reflexes')}, NULL, {gk_stat('gk_positioning')}, "
+            # gk_speed (SPD) nao existe em nenhuma variante do Wrexist --
+            # NULL::integer explicito, nunca NULL puro: como a coluna
+            # inteira fica sempre nula nas 40 linhas, um NULL sem cast faz
+            # o Postgres inferir o tipo da coluna da VALUES() como text
+            # (sem nenhum literal nao-nulo pra ancorar o tipo), o que quebra
+            # o insert contra a coluna integer real.
+            f"{gk_stat('gk_reflexes')}, NULL::integer, {gk_stat('gk_positioning')}, "
             f"{sql_int(r.get('skill_moves'))}, {sql_int(r.get('weak_foot'))}, "
             f"{sql_text_array([p.strip() for p in (r.get('playstyles') or '').split(',') if p.strip()])}, "
             f"{sql_text_array([p.strip() for p in (r.get('playstyles_plus') or '').split(',') if p.strip()])}, "

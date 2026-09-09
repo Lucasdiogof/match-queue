@@ -15,13 +15,21 @@ snapshot (17.873 cartas, republicação MIT do endpoint da EA) de fixture de
 teste para fonte de trabalho real desta etapa, já que o arquivo "oficial"
 da EA ainda não chegou. Auditoria completa + normalização + dry-run
 completo (17.873/17.873 válidas, 0 inválidas) rodados e limpos nesta
-sessão; sample import de 40 cartas **preparado mas bloqueado**: este
-ambiente não tem `SUPABASE_SECRET_KEY` para rodar `tool/sync_fc_cards.dart`
-em modo de escrita — decisão de como prosseguir (secret key vs. SQL
-equivalente) pendente do dono do produto. Ver
-[`handoff_etapa17b.md`](handoff_etapa17b.md), seção "2026-09-09 (sessão de
-validação técnica)". 74 migrations locais = remotas, `flutter analyze` e
-`dart analyze tool lib` sem issues. Edge Functions:
+sessão. **Sample import de 40 cartas ESCRITO no Supabase remoto com
+sucesso**, via SQL equivalente ao contrato do importer (autorizado pelo
+dono do produto — este ambiente não tem `SUPABASE_SECRET_KEY` para rodar
+`tool/sync_fc_cards.dart` em modo de escrita). Dois bugs reais do gerador
+SQL encontrados e corrigidos no caminho (clube duplicado por nome em
+ligas diferentes; `gk_speed` sem cast quebrando inferência de tipo).
+Idempotência confirmada (2ª execução, contagens idênticas). Picker
+(`search_fc_player_cards`) validado via REST com usuário autenticado real
+— retorna as 40 cartas reais, filtros de posição/liga/rating funcionando,
+zero carta `LOCAL` vazando. **UI Flutter em si ainda não testada** (só o
+dado que ela consome). Veredito: pronto pra escala de amostra, **full
+import dos ~17.873 registros continua exigindo autorização explícita**.
+Ver [`handoff_etapa17b.md`](handoff_etapa17b.md). 74 migrations locais =
+remotas, `flutter analyze` e `dart analyze tool lib` sem issues. Edge
+Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
 ACTIVE).
 

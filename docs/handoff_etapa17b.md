@@ -110,7 +110,7 @@ nations: 157, leagues: 57, clubs: 572
 Zero inválido, zero JSON malformado, zero aviso de metadata-sem-id — sinal
 limpo para prosseguir à amostra.
 
-### Parte 5 — Amostra determinística (preparada, escrita em produção BLOQUEADA por credencial)
+### Parte 5 — Amostra determinística (ESCRITA EM PRODUÇÃO CONCLUÍDA)
 
 Critério documentado ANTES de rodar: ordenar as 17.873 linhas por
 `player_id` numérico ascendente, amostragem sistemática com passo fixo
@@ -125,23 +125,107 @@ registrada no log da sessão (reproduzível rodando o script). Dry-run da
 amostra isolada: 40 lidas, 40 válidas, 0 inválidas, 0 falhas — consistente
 com o dry-run do arquivo completo.
 
-**Bloqueador real encontrado**: este ambiente de execução não tem
-`SUPABASE_SECRET_KEY` (nem `SUPABASE_SERVICE_ROLE_KEY`) — só a chave
-pública (anon/publishable) está em `env/development.json`, de propósito
-(nunca a secret key vai para o client). Sem essa variável,
-`tool/sync_fc_cards.dart` não roda em modo de escrita real (ele mesmo
-recusa e sai com erro, por design). O único acesso de escrita confirmado
-nesta sessão é `npx supabase db query --linked -f arquivo.sql` (usa a
-autenticação de login do CLI, não a secret key do PostgREST) — confirmado
-funcionando para leitura (`select count(*) ... from fc_player_cards`
-retornou `50` linhas `provider=LOCAL`, batendo com o estado documentado).
-Escrever a amostra via SQL direto (espelhando o contrato exato do
-importer) é tecnicamente possível, mas **não testa o caminho de escrita
-real do `tool/sync_fc_cards.dart`** — só testa parsing/dry-run (já feito
-acima). Decisão de como prosseguir (rodar a ferramenta de verdade com a
-secret key exportada pelo dono do produto, ou aceitar SQL equivalente como
-substituto documentado) fica para o dono do produto — não decidida
-unilateralmente nesta sessão. Ver seção "Pendência" no fim deste arquivo.
+**Bloqueador de ambiente (mesmo de sempre) resolvido via caminho
+alternativo, com autorização do dono do produto**: este ambiente não tem
+`SUPABASE_SECRET_KEY`, então `tool/sync_fc_cards.dart` recusa rodar em modo
+de escrita (por design, correto). O dono do produto optou pelo SQL
+equivalente ao contrato exato do importer, gerado por
+`docs/final_data/scripts/generate_sample_import_sql.py` e aplicado via
+`npx supabase db query --linked -f sample_import.sql` (autenticação do
+login do CLI, nunca a secret key). **Isso testa o schema/contrato/
+idempotência, mas não o código HTTP do `tool/sync_fc_cards.dart` em si**
+— quando a secret key existir num ambiente, rodar a ferramenta de verdade
+contra o mesmo arquivo normalizado é o próximo passo pra fechar essa
+lacuna específica.
+
+**Dois bugs reais encontrados e corrigidos no gerador SQL antes da escrita
+ter sucesso** (nenhum dos dois é do importer real, só do script auxiliar):
+
+1. **Clube duplicado por nome em ligas diferentes**: a amostra incluía
+   `SV Werder Bremen` em `Bundesliga` E em `GPFBL` (times masculino/
+   feminino homônimos) — como `fc_clubs` resolve por nome sozinho, isso
+   gerava duas linhas com o mesmo nome e a subquery de resolução de
+   `club_id` falhava com `more than one row returned by a subquery used
+   as an expression`. Corrigido deduplicando por nome de clube antes de
+   gerar o `INSERT`, mantendo a liga alfabeticamente primeira —
+   determinístico, documentado, não tenta adivinhar qual liga é "a certa".
+2. **`gk_speed` sempre `NULL` sem cast**: nenhuma variante do Wrexist tem
+   o stat SPD de goleiro (só diving/handling/kicking/reflexes/
+   positioning). Como a coluna inteira da amostra ficava `NULL` em todas
+   as 40 linhas, o Postgres não tinha nenhum literal não-nulo pra ancorar
+   o tipo da coluna no `VALUES()` e inferia `text`, quebrando contra a
+   coluna `integer` real (`column "gk_speed" is of type integer but
+   expression is of type text`). Corrigido trocando o literal por
+   `NULL::integer` explícito.
+
+**Escrita real confirmada, com verificação direta no banco**:
+
+```
+players: 40, cards: 40, active_cards: 40, cards_without_player: 0,
+clubs: 32, leagues: 25, nations: 25
+```
+
+Amostra de linha (Fran Kirby, maior rating da amostra): `provider_card_id
+= "227255:BASE"`, `card_type = "BASE_LAUNCH"`, `club_name = "Brighton"`,
+`league_name = "Barclays WSL"`, `nation_name = "England"`, `source_url =
+"https://www.ea.com/games/ea-sports-fc/ratings?playerId=227255"` (URL
+real, por jogador) — todos os campos conferidos batendo com o CSV de
+origem.
+
+### Parte 8 — Idempotência (CONFIRMADA)
+
+Rodei o MESMO `sample_import.sql` uma segunda vez sem nenhuma mudança.
+Contagens depois: **idênticas** (`players: 40, cards: 40, active_cards:
+40, cards_without_player: 0, clubs: 32, leagues: 25, nations: 25`) — zero
+duplicata em `fc_players`/`fc_player_cards`/`fc_clubs`/`fc_leagues`/
+`fc_nations`. O `on conflict` do gerador usa exatamente os mesmos índices
+únicos reais (`fc_players_provider_idx` e `fc_player_cards` por
+`provider,provider_card_id`), então roda seguro repetidamente.
+
+### Parte 6 — Validação do picker via REST (autenticado de verdade)
+
+Não tive Flutter rodando nesta sessão, então validei o caminho que o app
+realmente usa: criei 2 usuários de QA reais via `POST /auth/v1/signup`
+(nunca inserção direta no banco), peguei o `access_token` de cada um, e
+chamei `search_fc_player_cards` via `POST /rest/v1/rpc/...` com esse
+token — o mesmo caminho HTTP que o Flutter usa. Confirmado:
+
+- Chamada sem filtro: retorna as 40 cartas reais, cada uma com o objeto
+  `fc_player` aninhado (nome, posição, clube, liga, nação), stats
+  completos, `playstyles`, `card_type`. **Nenhuma carta `provider=LOCAL`
+  aparece** (`providers vistos: {'WREXIST_EA_FC27_SNAPSHOT'}` numa busca
+  de até 100 itens).
+- Filtro `p_position='CAM'`: retorna só CAMs, com `has_more: true`
+  (confirma paginação funcionando).
+- Filtro `p_league_name='Bundesliga'`: 5 itens.
+- Filtro `p_min_rating=80`: 2 itens (83 e 81) — filtro de rating correto.
+- Chamada sem token/anônima continua bloqueada (`FQ003`, já esperado —
+  a RPC exige `auth.uid()`).
+
+Os 2 usuários de QA foram deletados ao final
+(`delete from auth.users where email like 'qa-fc27-picker%'`) —
+confirmado 0 residual. **Não testei a UI do Flutter em si** (seleção de
+carta no picker, entrada no squad, overall/chemistry recalculando,
+salvar/reabrir squad) — isso continua pendente de uma sessão com o app
+rodando de verdade; o que foi validado é que os dados que o Flutter
+consome via essa RPC estão corretos e completos.
+
+### Veredito desta rodada (amostra de 40 cartas)
+
+**A — READY FOR SAMPLE-SCALE IMPORT, confirmado.** Auditoria, normalização,
+dry-run completo (17.873/17.873), escrita real da amostra, idempotência
+(2ª execução idêntica) e picker via REST autenticado — todos passaram.
+
+**Ainda NÃO é veredito para o full import dos ~17.873 registros** — falta
+especificamente: (a) rodar `tool/sync_fc_cards.dart` de verdade (não só o
+SQL equivalente) quando uma `SUPABASE_SECRET_KEY` estiver disponível num
+ambiente, já que o real caminho de produção é essa ferramenta, não o
+script gerador de SQL; (b) medir performance a 1 request/linha contra
+volume real antes de rodar as ~17.873 linhas inteiras (o gerador de SQL
+não tem esse problema por ser um único `INSERT` em lote, mas o importer
+real sim); (c) validação de UI Flutter de ponta a ponta (só o dado que a
+UI consome foi validado, não a UI em si). **Full import continua exigindo
+autorização explícita separada do dono do produto**, como sempre.
 
 ### Achado de repositório: `docs/final_data/output/` está no `.gitignore`
 
