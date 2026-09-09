@@ -5,6 +5,8 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/core/observability/analytics_service.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_link_picker_sheet.dart';
 import 'package:fifa_queue/features/invitations/domain/repositories/invite_repository.dart';
 import 'package:fifa_queue/features/invitations/domain/usecases/resolve_team_invite.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/invite_resolution_cubit.dart';
@@ -108,8 +110,12 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
       await teamsCubit.load(userId: userId);
       await teamsCubit.selectTeam(teamId);
     }
-    if (joinResult != null && !joinResult.alreadyMember) {
+    final isNewJoin = joinResult != null && !joinResult.alreadyMember;
+    if (isNewJoin) {
       await getIt<AnalyticsService>().logEvent('invite_accepted');
+      if (mounted) {
+        await _linkFcAccounts(teamId);
+      }
     }
     if (!mounted) {
       return;
@@ -117,6 +123,35 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
     await context.read<PendingInviteCubit>().consume();
     if (mounted) {
       context.go(AppRoutes.home.path);
+    }
+  }
+
+  /// Entrada nova de verdade (não reabertura de quem já era membro) exige
+  /// pelo menos uma Conta FC vinculada (gameplay flows refresh, item 16).
+  /// Sem nenhuma, leva pra criação e volta pro mesmo fluxo -- nunca
+  /// conclui o vínculo sem Conta FC, mas também nunca desfaz a entrada no
+  /// time (já é sócio; só falta dizer com qual Conta FC).
+  Future<void> _linkFcAccounts(String teamId) async {
+    final fcAccountsCubit = context.read<FcAccountsCubit>();
+    if (!fcAccountsCubit.state.hasAccounts) {
+      await context.push(AppRoutes.fcAccounts.path);
+      if (!mounted) {
+        return;
+      }
+    }
+    final accounts = fcAccountsCubit.state.accounts;
+    if (accounts.isEmpty) {
+      return;
+    }
+    final selected = await showFcAccountLinkPickerSheet(
+      context: context,
+      accounts: accounts,
+    );
+    if (!mounted || selected == null) {
+      return;
+    }
+    for (final accountId in selected) {
+      await fcAccountsCubit.linkToTeam(accountId: accountId, teamId: teamId);
     }
   }
 

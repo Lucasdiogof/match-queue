@@ -225,6 +225,11 @@ class FcSquadDetail extends Equatable {
 
   bool get hasAnySlotFilled => slots.isNotEmpty;
 
+  /// Ids das cartas já ocupando algum slot -- usado pra excluir do picker
+  /// (gameplay flows refresh, item 4): selecionar uma carta já usada não
+  /// deve mais realocá-la em silêncio, o picker simplesmente não a oferece.
+  Set<String> get usedCardIds => slots.map((slot) => slot.card.id).toSet();
+
   static String benchCodeAt(int index) => 'BENCH_${index + 1}';
 
   static String reserveCodeAt(int index) => 'RESERVE_${index + 1}';

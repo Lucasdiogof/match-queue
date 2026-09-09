@@ -99,14 +99,21 @@ class PlayerPickerState extends Equatable {
 /// busca já vem filtrada por elegibilidade (item 43), então o usuário não
 /// consegue escolher alguém que a RPC recusaria depois.
 class PlayerPickerCubit extends Cubit<PlayerPickerState> {
-  PlayerPickerCubit(this._repository, {this.positionCode})
-    : super(const PlayerPickerState());
+  PlayerPickerCubit(
+    this._repository, {
+    this.positionCode,
+    this.excludeCardIds = const <String>[],
+  }) : super(const PlayerPickerState());
 
   static const Duration searchDebounce = Duration(milliseconds: 300);
   static const int pageSize = 30;
 
   final PlayerCardCatalogRepository _repository;
   final String? positionCode;
+
+  /// Cartas já ocupando outro slot do squad atual -- nunca oferecidas de
+  /// novo aqui (gameplay flows refresh, item 4).
+  final List<String> excludeCardIds;
 
   Timer? _debounce;
   int _generation = 0;
@@ -201,6 +208,7 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
           leagueName: state.leagueName,
           clubName: state.clubName,
           nationName: state.nationName,
+          excludeCardIds: excludeCardIds,
         ),
       );
       if (isClosed || generation != _generation) {
@@ -238,6 +246,7 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
           leagueName: state.leagueName,
           clubName: state.clubName,
           nationName: state.nationName,
+          excludeCardIds: excludeCardIds,
         ),
       );
       if (isClosed || generation != _generation) {

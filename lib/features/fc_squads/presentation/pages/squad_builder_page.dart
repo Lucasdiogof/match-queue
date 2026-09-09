@@ -394,6 +394,7 @@ class _Body extends StatelessWidget {
     final picked = await showPlayerPickerSheet(
       context: context,
       positionCode: slot.positionCode,
+      excludeCardIds: squad.usedCardIds.toList(),
     );
     if (picked != null) {
       await cubit.assignCard(
@@ -459,9 +460,14 @@ Future<void> _showSlotActionsSheet({
             icon: Icons.swap_horiz,
             onPressed: () async {
               Navigator.of(sheetContext).pop();
+              // Exclui os demais slots ocupados, mas nunca o próprio card
+              // do slot em troca -- senão ele sumiria da lista sem motivo.
+              final usedCardIds = <String>[...?cubit.state.squad?.usedCardIds]
+                ..remove(card.id);
               final picked = await showPlayerPickerSheet(
                 context: context,
                 positionCode: positionCode,
+                excludeCardIds: usedCardIds,
               );
               if (picked != null) {
                 await cubit.assignCard(
@@ -607,7 +613,10 @@ class _BenchLikeSection extends StatelessWidget {
     }
 
     // Banco/reserva não exigem posição: qualquer carta serve.
-    final card = await showPlayerPickerSheet(context: context);
+    final card = await showPlayerPickerSheet(
+      context: context,
+      excludeCardIds: cubit.state.squad?.usedCardIds.toList() ?? const [],
+    );
     if (card != null) {
       await cubit.assignCard(
         type: type,

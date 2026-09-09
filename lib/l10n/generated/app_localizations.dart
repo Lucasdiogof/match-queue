@@ -1192,6 +1192,12 @@ abstract class AppLocalizations {
   /// **'Dá para ajustar cores, logo e duração da busca depois.'**
   String get teamCreateSubtitle;
 
+  /// No description provided for @teamCreateFcAccountsSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quais Contas FC fazem parte deste time?'**
+  String get teamCreateFcAccountsSectionTitle;
+
   /// No description provided for @teamNameLabel.
   ///
   /// In pt, this message translates to:
@@ -3421,6 +3427,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Division Rivals'**
   String get rivalsDetailTitle;
+
+  /// No description provided for @rivalsNoDivisionLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Divisão ainda não informada'**
+  String get rivalsNoDivisionLabel;
 
   /// No description provided for @rivalsAllTimeNote.
   ///

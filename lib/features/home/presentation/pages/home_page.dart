@@ -3,6 +3,7 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
@@ -80,6 +81,7 @@ class _HomeBody extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
       children: const <Widget>[
         WeekendLeagueCard(),
+        RivalsCard(),
         PendingMatchCard(),
         _ShortcutsGrid(),
       ],

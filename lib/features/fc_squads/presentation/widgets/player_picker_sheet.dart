@@ -5,19 +5,24 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/player_picker_cubit.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/catalog_picker_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Escolha de carta para um slot. [positionCode] nulo é banco (sem filtro).
+/// [excludeCardIds] são cartas já ocupando outro slot do squad atual --
+/// nunca oferecidas de novo aqui (gameplay flows refresh, item 4).
 Future<PlayerCard?> showPlayerPickerSheet({
   required BuildContext context,
   String? positionCode,
+  List<String> excludeCardIds = const <String>[],
 }) => showAppBottomSheet<PlayerCard>(
   context: context,
   builder: (sheetContext) => BlocProvider<PlayerPickerCubit>(
     create: (_) => PlayerPickerCubit(
       getIt<PlayerCardCatalogRepository>(),
       positionCode: positionCode,
+      excludeCardIds: excludeCardIds,
     )..load(),
     child: _PlayerPickerBody(positionCode: positionCode),
   ),
@@ -149,8 +154,42 @@ class _PlayerRow extends StatelessWidget {
         ),
         child: Row(
           children: <Widget>[
+            Container(
+              width: 36,
+              height: 36,
+              alignment: Alignment.center,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: colors.surfaceHighest,
+                shape: BoxShape.circle,
+                border: Border.all(color: colors.borderSubtle),
+              ),
+              // Mesmo padrão de fallback do card do campo (item 122): foto
+              // quando existe, iniciais quando não -- nunca placeholder
+              // quebrado.
+              child: card.playerImageUrl == null
+                  ? Text(
+                      card.displayName.isEmpty
+                          ? '?'
+                          : card.displayName[0].toUpperCase(),
+                      style: context.textStyles.labelSmall,
+                    )
+                  : Image.network(
+                      card.playerImageUrl!,
+                      fit: BoxFit.cover,
+                      width: 36,
+                      height: 36,
+                      errorBuilder: (context, error, stackTrace) => Text(
+                        card.displayName.isEmpty
+                            ? '?'
+                            : card.displayName[0].toUpperCase(),
+                        style: context.textStyles.labelSmall,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
             SizedBox(
-              width: 34,
+              width: 30,
               child: Text(
                 '${card.rating}',
                 style: context.textStyles.titleMedium,
@@ -282,6 +321,8 @@ class _FilterRow extends StatelessWidget {
     );
   }
 
+  // Liga fica flat (so ~57 no catalogo real -- nao justifica agrupamento
+  // alfabetico), so com o overflow de scroll corrigido (item 7/9).
   Future<void> _pickLeague(
     BuildContext context,
     PlayerPickerCubit cubit,
@@ -290,8 +331,8 @@ class _FilterRow extends StatelessWidget {
     if (!context.mounted) {
       return;
     }
-    final name = await _showNamePickerSheet(
-      context,
+    final name = await showFlatCatalogPickerSheet(
+      context: context,
       title: context.l10n.squadFilterLeagueLabel,
       names: leagues.map((l) => l.name).toList(growable: false),
     );
@@ -300,19 +341,37 @@ class _FilterRow extends StatelessWidget {
     }
   }
 
+  // Clube e hierarquico (item 10): faixa alfabetica de Liga -> Liga ->
+  // Clubes daquela liga. ~572-646 clubes no catalogo real nunca cabem numa
+  // lista plana.
   Future<void> _pickClub(
     BuildContext context,
     PlayerPickerCubit cubit,
     String? leagueName,
   ) async {
+    var effectiveLeagueName = leagueName;
+    if (effectiveLeagueName == null) {
+      final leagues = await getIt<PlayerCardCatalogRepository>().getLeagues();
+      if (!context.mounted) {
+        return;
+      }
+      effectiveLeagueName = await showAlphabeticalPickerSheet(
+        context: context,
+        title: context.l10n.squadFilterLeagueLabel,
+        names: leagues.map((l) => l.name).toList(growable: false),
+      );
+      if (effectiveLeagueName == null || !context.mounted) {
+        return;
+      }
+    }
     final clubs = await getIt<PlayerCardCatalogRepository>().getClubs(
-      leagueName: leagueName,
+      leagueName: effectiveLeagueName,
     );
     if (!context.mounted) {
       return;
     }
-    final name = await _showNamePickerSheet(
-      context,
+    final name = await showFlatCatalogPickerSheet(
+      context: context,
       title: context.l10n.squadFilterClubLabel,
       names: clubs.map((c) => c.name).toList(growable: false),
     );
@@ -321,6 +380,7 @@ class _FilterRow extends StatelessWidget {
     }
   }
 
+  // Nacao e agrupada por faixa alfabetica (item 8): ~157 no catalogo real.
   Future<void> _pickNation(
     BuildContext context,
     PlayerPickerCubit cubit,
@@ -329,8 +389,8 @@ class _FilterRow extends StatelessWidget {
     if (!context.mounted) {
       return;
     }
-    final name = await _showNamePickerSheet(
-      context,
+    final name = await showAlphabeticalPickerSheet(
+      context: context,
       title: context.l10n.squadFilterNationLabel,
       names: nations.map((n) => n.name).toList(growable: false),
     );
@@ -338,28 +398,4 @@ class _FilterRow extends StatelessWidget {
       cubit.setNationName(name);
     }
   }
-
-  Future<String?> _showNamePickerSheet(
-    BuildContext context, {
-    required String title,
-    required List<String> names,
-  }) => showAppBottomSheet<String>(
-    context: context,
-    builder: (sheetContext) => AppBottomSheet(
-      title: title,
-      child: names.isEmpty
-          ? Text(sheetContext.l10n.squadPlayerPickerEmpty)
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                for (final name in names)
-                  AppButton.secondary(
-                    label: name,
-                    onPressed: () => Navigator.of(sheetContext).pop(name),
-                  ),
-                const SizedBox(height: AppSpacing.sm),
-              ],
-            ),
-    ),
-  );
 }

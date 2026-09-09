@@ -507,6 +507,7 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
             .where(
               (c) => text == null || c.displayName.toLowerCase().contains(text),
             )
+            .where((c) => !query.excludeCardIds.contains(c.id))
             .toList()
           ..sort((a, b) => b.rating.compareTo(a.rating));
     final start = query.offset.clamp(0, filtered.length);

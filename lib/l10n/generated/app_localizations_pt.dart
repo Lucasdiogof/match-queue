@@ -621,6 +621,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Dá para ajustar cores, logo e duração da busca depois.';
 
   @override
+  String get teamCreateFcAccountsSectionTitle =>
+      'Quais Contas FC fazem parte deste time?';
+
+  @override
   String get teamNameLabel => 'Nome do time';
 
   @override
@@ -1910,6 +1914,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get rivalsDetailTitle => 'Division Rivals';
+
+  @override
+  String get rivalsNoDivisionLabel => 'Divisão ainda não informada';
 
   @override
   String get rivalsAllTimeNote =>

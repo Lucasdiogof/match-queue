@@ -20,6 +20,7 @@ class PlayerCardQuery extends Equatable {
     this.clubName,
     this.nationName,
     this.cardType,
+    this.excludeCardIds = const <String>[],
   });
 
   final String? query;
@@ -33,6 +34,10 @@ class PlayerCardQuery extends Equatable {
   final String? nationName;
   final String? cardType;
 
+  /// Cartas já ocupando outro slot do squad atual -- nunca oferecidas de
+  /// novo no picker (gameplay flows refresh, item 4).
+  final List<String> excludeCardIds;
+
   PlayerCardQuery nextPage() => PlayerCardQuery(
     query: query,
     position: position,
@@ -44,6 +49,7 @@ class PlayerCardQuery extends Equatable {
     clubName: clubName,
     nationName: nationName,
     cardType: cardType,
+    excludeCardIds: excludeCardIds,
   );
 
   @override
@@ -58,6 +64,7 @@ class PlayerCardQuery extends Equatable {
     clubName,
     nationName,
     cardType,
+    excludeCardIds,
   ];
 }
 

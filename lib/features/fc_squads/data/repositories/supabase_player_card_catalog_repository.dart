@@ -31,6 +31,9 @@ class SupabasePlayerCardCatalogRepository
         'p_club_name': query.clubName,
         'p_nation_name': query.nationName,
         'p_card_type': query.cardType,
+        'p_exclude_card_ids': query.excludeCardIds.isEmpty
+            ? null
+            : query.excludeCardIds,
       },
     );
     final json = Map<String, dynamic>.from(response as Map);
