@@ -75,14 +75,13 @@ supabase/.branches/
 # nunca versionar arquivo de dados de outra licenca dentro do nosso repo.
 tool/data/
 
-# Catalogo real FC27 (Etapa 17B) -- o dump completo da EA (17k+ linhas) e
-# baixado a mao pelo usuario, nunca por automação (robots.txt da EA proibe
-# coleta automatizada). Nunca versionar o dump bruto; so os scripts,
-# schemas e as fixtures pequenas e curadas (data/hall_of_fut_21.csv,
-# legacy_samples/) ficam versionados.
+# Catalogo real FC27 (Etapa 17B) -- o dump bruto vindo diretamente da EA
+# continua fora do git (robots.txt da EA proibe coleta automatizada,
+# e o dump em si nunca foi obtido por automação). Fixtures de terceiro
+# que o usuario ja trouxe pro repo (Wrexist, WEFUT, Hall of FUT) o dono do
+# produto autorizou versionar por inteiro (projeto de resenha, sem
+# pretensao comercial) -- ficam fora desta lista de propósito.
 docs/final_data/data/ea_raw/
-docs/final_data/data/*.json
-docs/final_data/data/wrexist_snapshot/
 docs/final_data/FC27_COMPLETE/
 docs/final_data/output/
 
