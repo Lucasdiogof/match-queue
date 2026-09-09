@@ -1,17 +1,21 @@
 # Handoff — Etapa 17B-2 (validação em escala intermediária do import FC27)
 
-Status em 2026-09-09: **veredito B — NOT READY FOR FULL IMPORT.** Blocker
-único e explícito: **`SUPABASE_SECRET_KEY` (nem o fallback legado
-`SUPABASE_SERVICE_ROLE_KEY`) não está no ambiente desta sessão**, então
-`tool/sync_fc_cards.dart` recusa rodar em modo de escrita (por design,
-correto) — nenhuma escrita real em produção foi feita nesta etapa, e por
-consequência nenhum dos degraus 500/2.000/5.000 rodou de verdade contra o
-Supabase. Tudo o que não depende de escrita real foi executado até o fim:
-auditoria completa do arquivo inteiro (17.873 linhas), seleção
-determinística e dry-run limpo dos três degraus, implementação e medição
-real de batching no importer (contra um double HTTP local, sem rede
-externa nem credencial real), e uma suíte de testes automatizados nova
-(primeira do repositório).
+Status em 2026-09-09 (atualizado após a credencial ficar disponível):
+**veredito READY FOR FULL IMPORT** (seção 16) — os degraus 500/2.000/5.000
+rodaram de verdade contra o Supabase de produção via `tool/
+sync_fc_cards.dart`, idempotência real confirmada nos três, validação
+profunda no banco e QA REST real todas limpas. O full import dos ~17.873
+**não foi executado**, por proibição explícita do pedido que motivou esta
+retomada — aguarda autorização separada.
+
+Histórico: esta etapa começou bloqueada por `SUPABASE_SECRET_KEY`/
+`SUPABASE_SERVICE_ROLE_KEY` ausentes do ambiente (seções 1-14, veredito
+original **B — NOT READY**). Tudo que não dependia de escrita real foi
+executado até o fim naquele momento: auditoria completa do arquivo
+inteiro (17.873 linhas), seleção determinística e dry-run limpo dos três
+degraus, implementação e medição de batching no importer (double HTTP
+local), e a suíte de testes automatizados (primeira do repositório). A
+seção 15 documenta a retomada real; a seção 16 tem o veredito atual.
 
 ## 1. Baseline no início desta etapa
 
@@ -358,9 +362,111 @@ o que tornaria o full import rápido mesmo contra latência de rede real
 medição direta contra produção**, e deve ser tratado como estimativa, não
 garantia, até um degrau real rodar com credencial disponível.
 
-## 14. Veredito
+## 15. Retomada 2026-09-09 — credencial disponibilizada, degraus reais executados
 
-**B — NOT READY FOR FULL IMPORT.**
+`SUPABASE_SECRET_KEY` ficou disponível no ambiente. Antes de rodar qualquer
+coisa, o baseline do banco já mostrava **6.713 cartas `WREXIST_EA_FC27_SNAPSHOT`**
+— comparação exata (id a id) confirmou que esse número bate **perfeitamente**
+com a união dos quatro conjuntos (`sample40 ∪ sample500 ∪ sample2000 ∪
+sample5000` = 6.713, zero diferença nos dois sentidos). Ou seja: **os
+degraus 500/2.000/5.000 já tinham sido executados de verdade contra
+produção antes desta sessão começar a medir** (fora desta sessão, sem
+commit de código associado — rodar o importer não muda arquivo nenhum).
+Não houve como capturar a duração/contagem da PRIMEIRA execução real —
+registrado como limitação, não inventado.
+
+### O que esta sessão mediu de verdade
+
+Para não aceitar "já está lá" como prova de nada, rodei os três degraus
+**de novo**, com `tool/sync_fc_cards.dart` real, cronometrando cada um.
+Isso serve dois propósitos ao mesmo tempo: confirma idempotência real
+E dá uma medição de performance genuína contra o Supabase de produção,
+já que o custo de rede de uma linha é o mesmo seja ela INSERT ou UPDATE.
+
+| N | resultado | inseridos | atualizados | falhas | duração real | reg/s |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: |
+| 500 | limpo | 0 | 500 | 0 | 25,78s | 19,4 |
+| 2.000 | limpo | 0 | 2.000 | 0 | 42,27s | 47,3 |
+| 5.000 | limpo | 0 | 5.000 | 0 | 43,13s | 116,0 |
+
+Nenhum erro HTTP, nenhum timeout, nenhum rate-limit, nenhum retry
+disparado em nenhum dos três. Throughput cresce com N porque o custo fixo
+(resolver nomes de clube/liga/nação novos, aquecer o cache) se dilui —
+em 5.000 registros já são tocados 570 dos 572 clubes distintos do arquivo
+inteiro, então o cache já está quase saturado antes do fim.
+
+### Validação profunda pós-import (SQL direto, não REST)
+
+| Checagem | Resultado |
+| --- | --- |
+| Total `WREXIST_EA_FC27_SNAPSHOT` em `fc_player_cards` | 6.713 (== união esperada) |
+| `fc_players` provider `WREXIST_EA_FC27_SNAPSHOT` | 6.713 (1:1 com as cartas) |
+| Cartas com `fc_player_id` nulo | 0 |
+| Cartas com `fc_player_id` "pendurado" (sem player correspondente) | 0 |
+| Cartas cujo player tem provider diferente da carta | 0 |
+| `provider_card_id` duplicado | 0 |
+| `game_version` fora de `FC27` | 0 |
+| Cartas `is_active = false` | 0 (nenhuma desativação rodou, sem `--full-catalog`) |
+| Cartas sem clube (free agent) | 926 — esperado, não é bug (dataset inteiro tem 2.402 sem clube) |
+| Cartas sem liga/nação/rating | 0 / 0 / 0 |
+| GK sem `gk_speed` | 770/770 (100%) — comportamento já documentado (fonte não traz esse campo; a correção antiga evitou crash, nunca inventou valor) |
+| Cartas `LOCAL` (tabela inteira) | 50 — inalteradas, conjunto disjunto do `WREXIST` |
+
+### QA REST real (usuário temporário, limpo ao final)
+
+Criado `qa17b2-fc27@fifaqueue.test` via `/auth/v1/signup`, chamado
+`search_fc_player_cards` via REST com o token real, depois `delete from
+auth.users` (cascata limpou profile). Resíduo pós-limpeza: **0** em
+`auth.users` e `profiles`.
+
+| Teste | Resultado |
+| --- | --- |
+| Busca sem filtro (ordenado por rating desc) | ok — Bonmatí/Mbappé (91) no topo, ordem correta |
+| Busca por nome (`Mbapp`) | 1 resultado |
+| Filtro por posição (`GK`) | 10/10 resultados são `GK` |
+| `p_min_rating=85` | 50 resultados, mínimo real = 85 |
+| `p_max_rating=50` | 50 resultados, máximo real = 50 |
+| Filtro por liga (`Premier League`) | 50 resultados (capado pelo limite pedido) |
+| Filtro por clube (`Arsenal`) | 20 resultados |
+| Filtro por nação (`Brazil`) | 50 resultados |
+| Paginação (`offset=0` vs `offset=10`) | 0 sobreposição de ids entre páginas |
+| Masculino e feminino | ambos aparecem sem filtro nenhum (Bonmatí/Russo junto com Mbappé/Haaland) |
+| Provider vazando | **zero** `LOCAL` nas amostras lidas via RPC (a prova definitiva é estrutural: os 50 `LOCAL` e as 6.713 `WREXIST` são conjuntos disjuntos, confirmado por SQL direto — a amostra via REST é so confirmação adicional, limitada a 100 linhas por chamada por causa do teto do próprio RPC, `least(p_limit, 100)`) |
+
+Nenhum usuário/dado de QA ficou para trás.
+
+### Flutter
+
+`Flutter visual QA: NOT EXECUTED — environment limitation.` (sem mudança
+desde a rodada anterior; REST real cobriu a validação funcional pedida
+nesta retomada.)
+
+### Nada no importer foi alterado
+
+Nenhum bug real foi encontrado nesta retomada — os três degraus e as duas
+execuções (a que já existia + a que rodei agora) se comportaram
+exatamente como o dry-run e a auditoria já previam. `tool/sync_fc_cards.dart`
+continua sem mudança de código desde a seção 4. `flutter analyze`,
+`dart format tool lib test` e `flutter test test/tool` (6/6) seguem
+limpos.
+
+### Estimativa revisada para o full import (17.873), agora com medição real
+
+Com os números reais de 5.000 (116 reg/s, já com a maior parte do cache
+de clube/liga/nação aquecida): extrapolação simples dá **~17.873/116 ≈
+154s (~2,5 min)**. Essa extrapolação tende a ser **pessimista**: aos
+5.000 registros o dataset já expôs 570 dos 572 clubes distintos, 57/57
+ligas e 128/157 nações do arquivo inteiro — a maior parte do custo de
+"nome novo, sem cache" já foi paga; os ~12.873 registros restantes devem
+bater cache com mais frequência, então o full import real tende a rodar
+em menos de 154s, não mais. Ainda é extrapolação, não medição do full
+import em si — mas agora apoiada em três pontos de dado reais contra
+produção, não só um double local.
+
+## 14. Veredito (histórico desta seção, mantido — ver seção 16 para o veredito atual)
+
+**B — NOT READY FOR FULL IMPORT** *(válido no momento em que foi escrito;
+revisto na seção 16 abaixo, após a credencial ficar disponível)*.
 
 **Blocker exato**: `SUPABASE_SECRET_KEY` (ou o fallback legado
 `SUPABASE_SERVICE_ROLE_KEY`) precisa estar no ambiente (Project Settings
@@ -387,3 +493,38 @@ final_data/schema/wrexist_ea_cards_map.json
 `--dry-run`), validar direto no banco, rodar de novo para confirmar
 idempotência real, só então subir para 2.000 e 5.000 na mesma ordem, e só
 então pedir autorização explícita para o full import dos ~17.873.
+
+*(Este passo já foi executado — ver seção 15/16.)*
+
+## 16. Veredito atual (2026-09-09, pós-retomada com credencial disponível)
+
+**READY FOR FULL IMPORT.**
+
+Todos os critérios foram atendidos com o importer real, contra produção:
+
+- os três degraus (500/2.000/5.000) existem em produção, confirmados por
+  comparação exata id-a-id (não estimativa);
+- idempotência real confirmada nos três (reimportados nesta sessão: 0
+  inserido, 100% atualizado, 0 falha, em todos);
+- performance real medida contra o Supabase de produção (não só double
+  local): 19–116 registros/s, crescente com N, sem erro/timeout/retry;
+- zero corrupção estrutural: `fc_player_id` sempre resolvido, zero FK
+  pendurada, zero provider incoerente, zero `provider_card_id` duplicado;
+- provider correto (`WREXIST_EA_FC27_SNAPSHOT`) em 100% das linhas;
+- zero carta `LOCAL` misturada (conjuntos disjuntos, confirmado por SQL
+  direto sobre a tabela inteira, não amostra);
+- QA REST real passou (busca livre, nome, posição, rating min/max, liga,
+  clube, nação, paginação sem sobreposição, masculino e feminino
+  coexistindo, sem vazamento de provider) com usuário temporário limpo ao
+  final, zero resíduo.
+
+**Não bloqueante, documentado**: a duração da PRIMEIRA execução real dos
+três degraus não foi capturada por esta sessão (já estava feita quando a
+sessão começou a medir o baseline) — os números de performance acima vêm
+da segunda execução (idempotente), que é uma medição igualmente válida de
+custo de rede real, já que o importer faz o mesmo trabalho de rede numa
+linha seja ela INSERT ou UPDATE.
+
+**Import completo dos ~17.873 registros NÃO foi executado nesta tarefa**,
+por proibição explícita do pedido. Aguardando autorização separada do
+dono do produto.

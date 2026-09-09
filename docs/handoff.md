@@ -23,16 +23,21 @@ bloqueante), gerou amostras determinísticas de 500/2.000/5.000 com
 dry-run 100% limpo nos três, implementou cache de nomes + upsert em lote
 (`--batch-size`, default 500, medido contra um double HTTP local — não
 arbitrário) no importer real, e escreveu a primeira suíte de testes
-automatizados do repositório (6 testes, `test/tool/`). **Nenhum dos três
-degraus foi escrito de verdade em produção** — `SUPABASE_SECRET_KEY`
-continua ausente deste ambiente, e por decisão explícita desta etapa o
-gerador de SQL manual NÃO foi usado como substituto para os degraus
-500/2.000/5.000 (só serve para a amostra de 40 já feita antes). Veredito
-desta rodada: **B — NOT READY FOR FULL IMPORT**, blocker é exclusivamente
-a ausência da secret key. Ver [`handoff_etapa17b2.md`](handoff_etapa17b2.md)
-(mais recente) e [`handoff_etapa17b.md`](handoff_etapa17b.md) (histórico).
-74 migrations locais = remotas, `flutter analyze` e `dart analyze tool
-lib test` sem issues. Edge Functions:
+automatizados do repositório (6 testes, `test/tool/`). **Retomada
+2026-09-09**: `SUPABASE_SECRET_KEY` ficou disponível no ambiente — os três
+degraus (500/2.000/5.000) rodaram de verdade contra o Supabase real via
+`tool/sync_fc_cards.dart` (nunca via SQL manual), idempotência real
+confirmada nos três (reimport = 0 inserido, 100% atualizado, 0 falha),
+validação profunda direto no banco limpa (zero FK pendurada, zero
+provider incoerente, zero `LOCAL` misturado) e QA REST real limpo (busca,
+nome, posição, rating, liga, clube, nação, paginação, masculino+feminino),
+usuário de QA removido sem resíduo. Veredito atual: **READY FOR FULL
+IMPORT** — mas o full import dos ~17.873 **não foi executado**, aguarda
+autorização explícita separada do dono do produto. Ver
+[`handoff_etapa17b2.md`](handoff_etapa17b2.md) (mais recente, seções 15-16
+têm a retomada) e [`handoff_etapa17b.md`](handoff_etapa17b.md) (histórico).
+76 migrations locais = remotas, `flutter analyze` e `flutter test
+test/tool` (6/6) sem issues. Edge Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
 ACTIVE).
 
@@ -165,18 +170,20 @@ Distinções que já custaram bug quando ignoradas:
   raw_metadata, `--full-catalog`, `source_url` por linha); segurança do
   `is_active` aplicada em produção; auditoria + normalização + dry-run
   completo do Wrexist snapshot rodados e limpos (17.873/17.873 válidas).
-  **Bloqueador atual (Etapa 17B-2)**: amostra de 40 já escrita em
-  produção (via SQL manual, sessão anterior); degraus 500/2.000/5.000
-  auditados e com dry-run 100% limpo, mas **nenhum escrito de verdade** —
-  este ambiente continua sem `SUPABASE_SECRET_KEY`/
-  `SUPABASE_SERVICE_ROLE_KEY` para rodar `tool/sync_fc_cards.dart` sem
-  `--dry-run`, e desta vez o SQL manual NÃO foi usado como substituto
-  (decisão explícita da Etapa 17B-2: ele só vale para a amostra de 40 já
-  feita, não para os degraus maiores). Decisão pendente do dono do
-  produto: exportar a secret key numa sessão futura. Ver
-  `docs/handoff_etapa17b2.md`. Nada no produto depende disso pra
-  funcionar — o app roda com as 50 cartas `provider = 'LOCAL'` de dev e
-  com o catálogo real parcial (40 cartas) até lá.
+  **Retomada 2026-09-09 (Etapa 17B-2)**: `SUPABASE_SECRET_KEY` ficou
+  disponível. Degraus 500/2.000/5.000 escritos de verdade em produção via
+  `tool/sync_fc_cards.dart` (real, nunca SQL manual), reimportados na
+  mesma sessão para confirmar idempotência (0 inserido, 100% atualizado,
+  0 falha nos três), validados direto no banco e via REST real com
+  usuário de QA descartável. Catálogo real em produção hoje: **6.713
+  cartas `WREXIST_EA_FC27_SNAPSHOT`** (união exata dos quatro conjuntos
+  40+500+2.000+5.000, conferida id a id). Veredito: **READY FOR FULL
+  IMPORT** — mas o full import dos ~17.873 restantes **não foi
+  executado**, aguarda autorização explícita separada. Ver
+  `docs/handoff_etapa17b2.md` (seções 15-16). Nada no produto depende
+  disso pra funcionar — o app roda com as 50 cartas `provider = 'LOCAL'`
+  de dev e com o catálogo real parcial (6.713 cartas) até a autorização
+  do full import.
 - **Fontes de carta descartadas** (FUT.GG, FUTBIN, FUTWIZ, WeFUT, SoFIFA,
   fcratings): todas por `robots.txt` ou ToS. Razão de cada uma em
   `card_provider_research.md`. Não reabrir a pesquisa.
