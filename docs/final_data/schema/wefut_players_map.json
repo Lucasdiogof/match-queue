@@ -1,0 +1,11 @@
+{
+  "provider_player_id": "provider_player_id",
+  "player_name": "name",
+  "common_name": "common_name",
+  "primary_position": "primary_position",
+  "alternative_positions": "alternative_positions",
+  "player_image_url": "player_image_url",
+  "club_name": "club",
+  "league_name": "league",
+  "nation_name": "nation"
+}

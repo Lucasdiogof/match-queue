@@ -113,6 +113,10 @@ class ExternalFcCard {
     this.skillMoves,
     this.weakFoot,
     this.playstyles = const <String>[],
+    this.playstylesPlus = const <String>[],
+    this.detailedStats,
+    this.accelerateRate,
+    this.rawMetadata,
     this.heightCm,
     this.preferredFoot,
     this.playerRoles = const <String>[],
@@ -150,6 +154,10 @@ class ExternalFcCard {
   final int? skillMoves;
   final int? weakFoot;
   final List<String> playstyles;
+  final List<String> playstylesPlus;
+  final Map<String, dynamic>? detailedStats;
+  final String? accelerateRate;
+  final Map<String, dynamic>? rawMetadata;
   final int? heightCm;
   final String? preferredFoot;
   final List<String> playerRoles;
@@ -193,6 +201,10 @@ class ExternalFcCard {
     'skill_moves': skillMoves,
     'weak_foot': weakFoot,
     'playstyles': playstyles,
+    'playstyles_plus': playstylesPlus,
+    'detailed_stats': detailedStats ?? <String, dynamic>{},
+    'accelerate_rate': accelerateRate,
+    'raw_metadata': rawMetadata,
     'height_cm': heightCm,
     'preferred_foot': preferredFoot,
     'player_roles': playerRoles,

@@ -1,0 +1,8 @@
+{
+  "player_name": "player_name",
+  "primary_position": "primary_position",
+  "rating": "live_database_rating",
+  "card_type": "card_type",
+  "rarity": "rarity",
+  "physical": "physical"
+}

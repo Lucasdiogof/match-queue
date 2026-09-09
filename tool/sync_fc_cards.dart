@@ -27,9 +27,11 @@
 //      com fc_player_id apontando pro player resolvido no passo 3 (nulo se o
 //      item nao declarou provider_player_id). Roda duas vezes com o mesmo
 //      arquivo nunca duplica.
-//   5. NUNCA apaga uma carta que sumiu do arquivo: so marca is_active=false
-//      pra tudo daquele provider que nao apareceu nesta rodada (feito ao
-//      final, depois que todo upsert da rodada terminou).
+//   5. NUNCA apaga uma carta que sumiu do arquivo. So marca is_active=false
+//      pra tudo daquele provider que nao apareceu nesta rodada -- e so
+//      quando --full-catalog e passado (feito ao final, depois que todo
+//      upsert da rodada terminou). Sem essa flag, uma rodada com arquivo
+//      PARCIAL nunca desativa nada -- e o default, de proposito.
 //
 // USO
 //   dart run tool/sync_fc_cards.dart --file=tool/data/algo.json \
@@ -64,9 +66,19 @@
 //   primary_position, alternative_positions, pace, shooting, passing,
 //   dribbling, defending, physical, gk_diving, gk_handling, gk_kicking,
 //   gk_reflexes, gk_speed, gk_positioning, skill_moves, weak_foot,
-//   playstyles, height_cm, preferred_foot, player_roles, rarity,
+//   playstyles, playstyles_plus, detailed_stats, accelerate_rate,
+//   raw_metadata, height_cm, preferred_foot, player_roles, rarity,
 //   player_image_url, card_image_url, club_name, league_name, nation_name,
 //   card_type
+//
+// alternative_positions e uma coluna PROPRIA quando a fonte ja separa
+// primaria de alternativas (WEFUT, EA) -- so cai no split combinado de um
+// unico campo ("ST, LW, CF") quando o mapeamento de primary_position e
+// alternative_positions aponta pra MESMA coluna de origem (estilo sofifa).
+//
+// detailed_stats/raw_metadata esperam uma celula com JSON serializado
+// (objeto) quando a fonte trouxer -- decodificados linha a linha; falha de
+// parse vira warning no resumo, nunca aborta a linha.
 //
 // --dry-run imprime quantas linhas seriam upsertadas/desativadas sem
 // escrever nada -- rodar sempre antes do primeiro sync de verdade. E
@@ -150,6 +162,10 @@ Future<void> main(List<String> args) async {
   // nao vira carta (falta identidade), mas vale avisar que a fonte parece
   // descrever cartas sem dar um id pra elas.
   var cardMetadataWithoutIdCount = 0;
+  // Celula de detailed_stats/raw_metadata que nao decodificou como JSON --
+  // vira aviso, nunca aborta a linha.
+  var malformedJsonFieldCount = 0;
+  var rowsWithAlternativePositions = 0;
 
   for (final rawRow in rawRows) {
     rowsRead++;
@@ -166,19 +182,61 @@ Future<void> main(List<String> args) async {
                 .toList(growable: false);
     }
 
-    // player_positions em datasets estilo sofifa vem como uma lista unica,
-    // ex. "ST, LW, CF" -- a primeira e a posicao primaria, o resto sao as
-    // alternativas.
-    final positionsList = colList('primary_position');
-    final primaryPosition = positionsList.isEmpty
+    // Alguns campos (detailed_stats, raw_metadata) chegam como uma celula
+    // com JSON serializado dentro (fontes tipo WEFUT/EA). Falha de parse
+    // vira warning, nao aborta a linha -- o resto do card continua valido.
+    Map<String, dynamic>? colJsonObject(String field) {
+      final raw = col(field);
+      if (raw == null) return null;
+      try {
+        final decoded = jsonDecode(raw);
+        return decoded is Map ? Map<String, dynamic>.from(decoded) : null;
+      } on FormatException {
+        malformedJsonFieldCount++;
+        return null;
+      }
+    }
+
+    // Duas formas de fonte coexistem: datasets estilo sofifa descrevem
+    // posicao como uma lista unica ("ST, LW, CF", primeira = primaria,
+    // resto = alternativas) na MESMA coluna mapeada para primary_position;
+    // outras fontes (WEFUT, EA) ja separam primary_position e
+    // alternative_positions em colunas distintas. So cai no split combinado
+    // quando o mapeamento das duas chaves resolve pra a MESMA coluna de
+    // origem -- caso contrario, cada uma e lida da sua propria coluna.
+    // Combinado quando as duas chaves resolvem pra mesma coluna (sofifa
+    // default) OU quando a coluna resolvida para alternative_positions nem
+    // existe no arquivo (--map customizado que so pensou em
+    // primary_position) -- nesse segundo caso cai pro derivado em vez de
+    // silenciosamente nunca achar nenhuma alternativa.
+    final alternativePositionsColumn = mapping.get('alternative_positions');
+    final combinedPositionSource =
+        mapping.get('primary_position') == alternativePositionsColumn ||
+        !rawRow.containsKey(alternativePositionsColumn);
+    final List<String> primaryPositionCandidates;
+    final List<String> alternativePositionCandidates;
+    if (combinedPositionSource) {
+      final positionsList = colList('primary_position');
+      primaryPositionCandidates = positionsList.isEmpty
+          ? const <String>[]
+          : <String>[positionsList.first];
+      alternativePositionCandidates = positionsList.length <= 1
+          ? const <String>[]
+          : positionsList.skip(1).toList(growable: false);
+    } else {
+      final primaryRaw = col('primary_position');
+      primaryPositionCandidates = primaryRaw == null
+          ? const <String>[]
+          : <String>[primaryRaw];
+      alternativePositionCandidates = colList('alternative_positions');
+    }
+    final primaryPosition = primaryPositionCandidates.isEmpty
         ? null
-        : positionsList.first.toUpperCase();
-    final alternativePositions = positionsList.length <= 1
-        ? const <String>[]
-        : positionsList
-              .skip(1)
-              .map((p) => p.toUpperCase())
-              .toList(growable: false);
+        : primaryPositionCandidates.first.toUpperCase();
+    final alternativePositions = alternativePositionCandidates
+        .map((p) => p.toUpperCase())
+        .toList(growable: false);
+    if (alternativePositions.isNotEmpty) rowsWithAlternativePositions++;
 
     final playerName = col('player_name');
     final rating = colInt('rating');
@@ -327,6 +385,10 @@ Future<void> main(List<String> args) async {
       skillMoves: colInt('skill_moves'),
       weakFoot: colInt('weak_foot'),
       playstyles: colList('playstyles'),
+      playstylesPlus: colList('playstyles_plus'),
+      detailedStats: colJsonObject('detailed_stats'),
+      accelerateRate: col('accelerate_rate'),
+      rawMetadata: colJsonObject('raw_metadata'),
       heightCm: colInt('height_cm'),
       preferredFoot: col('preferred_foot')?.toUpperCase(),
       playerRoles: colList('player_roles'),
@@ -384,11 +446,20 @@ Future<void> main(List<String> args) async {
   );
   stdout.writeln('  cards reais (fc_player_cards):  $realCardCount');
   stdout.writeln('  player-only (so fc_players):    $playerOnlyCount');
+  stdout.writeln(
+    '  linhas com posicoes alternativas: $rowsWithAlternativePositions',
+  );
   if (cardMetadataWithoutIdCount > 0) {
     stdout.writeln(
       '  aviso: card metadata sem identidade (card_type/rarity sem '
       'provider_card_id): $cardMetadataWithoutIdCount -- viraram '
       'player-only, nao card',
+    );
+  }
+  if (malformedJsonFieldCount > 0) {
+    stdout.writeln(
+      '  aviso: campos JSON malformados (detailed_stats/raw_metadata) '
+      'ignorados: $malformedJsonFieldCount',
     );
   }
   stdout.writeln(
@@ -402,15 +473,22 @@ Future<void> main(List<String> args) async {
   }
 
   if (client != null) {
-    final deactivated = await client.deactivateMissing(
-      table: 'fc_player_cards',
-      idColumn: 'provider_card_id',
-      provider: options.provider,
-      keepIds: seenProviderCardIds,
-    );
-    stdout.writeln(
-      'Cartas is_active=false por nao aparecerem nesta rodada: $deactivated',
-    );
+    if (options.fullCatalog) {
+      final deactivated = await client.deactivateMissing(
+        table: 'fc_player_cards',
+        idColumn: 'provider_card_id',
+        provider: options.provider,
+        keepIds: seenProviderCardIds,
+      );
+      stdout.writeln(
+        'Cartas is_active=false por nao aparecerem nesta rodada: $deactivated',
+      );
+    } else {
+      stdout.writeln(
+        'Sem --full-catalog: nenhuma carta foi desativada por ausencia '
+        'nesta rodada (arquivo tratado como parcial, de proposito).',
+      );
+    }
   }
 }
 
@@ -431,6 +509,7 @@ class _Args {
     required this.gameVersion,
     required this.mapPath,
     required this.dryRun,
+    required this.fullCatalog,
     this.sourceUrl,
   });
 
@@ -440,6 +519,7 @@ class _Args {
   final String gameVersion;
   final String? mapPath;
   final bool dryRun;
+  final bool fullCatalog;
   final String? sourceUrl;
 
   static _Args parse(List<String> args) {
@@ -450,6 +530,7 @@ class _Args {
     var gameVersion = 'FC27';
     String? mapPath;
     var dryRun = false;
+    var fullCatalog = false;
     String? sourceUrl;
 
     for (final arg in args) {
@@ -471,6 +552,8 @@ class _Args {
         sourceUrl = arg.substring('--source-url='.length);
       } else if (arg == '--dry-run') {
         dryRun = true;
+      } else if (arg == '--full-catalog') {
+        fullCatalog = true;
       }
     }
 
@@ -478,9 +561,12 @@ class _Args {
       stderr.writeln(
         'Uso: dart run tool/sync_fc_cards.dart --file=<path> '
         '[--provider=...] [--game-version=...] [--format=csv|json] '
-        '[--map=...] [--dry-run]\n'
+        '[--map=...] [--dry-run] [--full-catalog]\n'
         '(--csv=<path> continua aceito como forma antiga, equivalente a '
-        '--file=<path> --format=csv)',
+        '--file=<path> --format=csv)\n'
+        '--full-catalog autoriza desativar (is_active=false) cartas do '
+        'provider ausentes desta rodada -- default e NAO desativar nada, '
+        'pra um arquivo parcial nunca apagar o resto do catalogo por engano.',
       );
       exit(1);
     }
@@ -500,6 +586,7 @@ class _Args {
       gameVersion: gameVersion,
       mapPath: mapPath,
       dryRun: dryRun,
+      fullCatalog: fullCatalog,
       sourceUrl: sourceUrl,
     );
   }
@@ -531,6 +618,11 @@ class _FieldMapping {
     'player_name': 'long_name',
     'common_name': 'short_name',
     'rating': 'overall',
+    // Sofifa descreve posicao como uma lista unica na MESMA coluna --
+    // primary_position e alternative_positions apontam pro mesmo campo de
+    // proposito, e e exatamente essa igualdade que sync_fc_cards.dart usa
+    // pra decidir entre split combinado (este caso) e colunas separadas
+    // (fontes que ja vem com primary/alternative distintos, ex. WEFUT/EA).
     'primary_position': 'player_positions',
     'alternative_positions': 'player_positions',
     'pace': 'pace',
