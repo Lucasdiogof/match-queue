@@ -28,9 +28,7 @@
             </intent-filter>
 
             <!-- Callback do Supabase Auth (recuperacao de senha). Scheme
-                 proprio, nao depende de dominio. Os App Links https://
-                 de /join/:inviteCode entram aqui quando o dominio existir
-                 (ver docs/deep_links.md). -->
+                 proprio, nao depende de dominio. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -38,6 +36,26 @@
                 <data
                     android:scheme="com.lucasdiogof.fifaqueue"
                     android:host="auth-callback"/>
+            </intent-filter>
+
+            <!-- App Links (Etapa 21B): https://lucksrei.com/join/:inviteCode
+                 e https://lucksrei.com/u/:slug abrem o app direto, sem passar
+                 por navegador. android:autoVerify dispara a verificacao do
+                 assetlinks.json (docs/deep_links.md) na instalacao. Filtro
+                 separado do scheme proprio de proposito: autoVerify so deve
+                 ir com data https/host reais. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="lucksrei.com"
+                    android:pathPrefix="/join"/>
+                <data
+                    android:scheme="https"
+                    android:host="lucksrei.com"
+                    android:pathPrefix="/u"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

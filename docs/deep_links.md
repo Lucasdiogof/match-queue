@@ -15,7 +15,7 @@ infraestrutura de domínio/hosting, que depende de um domínio definido.
 | URLs sem `#` no Web | `usePathUrlStrategy()` via import condicional |
 | Callback de recuperação de senha | `com.lucasdiogof.fifaqueue://auth-callback` registrado no Android e no iOS |
 | `APP_LINK_HOST` | **`lucksrei.com`** — já configurado em `env/production.json`. O código já usa esse valor (`InviteLinkBuilder`, `PublicProfileLinkBuilder`, `AuthRedirects`) sempre que presente; o que falta é só a configuração nativa (manifest/entitlements) e publicar os dois arquivos `.well-known/*` no domínio |
-| Android App Links | **NEEDS WEBSITE + CONFIG NATIVA** — conteúdo pronto abaixo, nada publicado ainda |
+| Android App Links | **Config nativa PRONTA (Etapa 21B)** — intent-filter `autoVerify` já no `AndroidManifest.xml`. Falta só **NEEDS WEBSITE**: publicar `assetlinks.json` no Cloudflare Pages |
 | iOS Universal Links | **NEEDS WEBSITE + macOS** — conteúdo pronto abaixo, nada publicado ainda; capability configurada no Xcode (ver `docs/ios_release_mac.md`, passo 14) |
 
 ## Fluxo
@@ -78,19 +78,33 @@ SHA256: 19:42:BA:9C:AA:7D:A8:A9:2E:E7:DA:25:21:6B:DE:AD:CF:13:B4:48:8B:55:FA:DC:
 }]
 ```
 
-2. Adicionar em `android/app/src/main/AndroidManifest.xml`, dentro da
-   `<activity>` principal (**MISSING**, não adicionado ainda — mudança
-   de código, fora do escopo desta auditoria):
+2. **Feito (Etapa 21B)**: `android/app/src/main/AndroidManifest.xml` já
+   tem o intent-filter de App Links, num bloco separado do custom
+   scheme de recuperação de senha (que continua intacto):
 
 ```xml
 <intent-filter android:autoVerify="true">
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="https" android:host="lucksrei.com" android:pathPrefix="/join" />
-    <data android:scheme="https" android:host="lucksrei.com" android:pathPrefix="/u" />
+    <action android:name="android.intent.action.VIEW"/>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <category android:name="android.intent.category.BROWSABLE"/>
+    <data
+        android:scheme="https"
+        android:host="lucksrei.com"
+        android:pathPrefix="/join"/>
+    <data
+        android:scheme="https"
+        android:host="lucksrei.com"
+        android:pathPrefix="/u"/>
 </intent-filter>
 ```
+
+**Lado Android do app: pronto.** O que falta agora é só publicar
+`assetlinks.json` (conteúdo acima) em `https://lucksrei.com/.well-known/
+assetlinks.json` no Cloudflare Pages que já serve o domínio — sem isso,
+o Android não confirma a verificação e os links continuam abrindo no
+navegador em vez do app (comportamento seguro, nunca quebra, só não usa
+App Links ainda). **NEEDS WEBSITE**, não publicado nesta etapa por
+instrução explícita.
 
 ### iOS (Universal Links)
 
