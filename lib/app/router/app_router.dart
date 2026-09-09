@@ -14,8 +14,12 @@ import 'package:fifa_queue/features/game/presentation/pages/match_details_page.d
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
+import 'package:fifa_queue/features/legal/presentation/pages/privacy_policy_page.dart';
+import 'package:fifa_queue/features/legal/presentation/pages/terms_of_use_page.dart';
 import 'package:fifa_queue/features/notifications/presentation/pages/notifications_inbox_page.dart';
 import 'package:fifa_queue/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:fifa_queue/features/profile/presentation/pages/about_page.dart';
+import 'package:fifa_queue/features/profile/presentation/pages/delete_account_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_appearance_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_language_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/profile_notifications_page.dart';
@@ -108,6 +112,26 @@ class AppRouter {
         path: AppRoutes.profileNotifications.path,
         name: AppRoutes.profileNotifications.name,
         builder: (context, state) => const ProfileNotificationsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.deleteAccount.path,
+        name: AppRoutes.deleteAccount.name,
+        builder: (context, state) => const DeleteAccountPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.about.path,
+        name: AppRoutes.about.name,
+        builder: (context, state) => const AboutPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.privacyPolicy.path,
+        name: AppRoutes.privacyPolicy.name,
+        builder: (context, state) => const PrivacyPolicyPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.termsOfUse.path,
+        name: AppRoutes.termsOfUse.name,
+        builder: (context, state) => const TermsOfUsePage(),
       ),
       GoRoute(
         path: AppRoutes.profileSharing.path,
@@ -206,14 +230,16 @@ class AppRouter {
     final isSplash = location == AppRoutes.splash.path;
     final isJoinTeam = AppRoutes.isJoinTeamLocation(location);
     final isPublicProfile = AppRoutes.isPublicProfileLocation(location);
+    final isAlwaysPublic = AppRoutes.alwaysPublicPaths.contains(location);
     final isUnauthenticatedArea = AppRoutes.unauthenticatedPaths.contains(
       location,
     );
     final isResetPassword = location == AppRoutes.resetPassword.path;
 
-    // /u/:identifier funciona sem sessao -- nunca redireciona pro login,
-    // com ou sem sessao resolvida, igual join/:inviteCode.
-    if (isPublicProfile) {
+    // /u/:identifier e /privacy /terms funcionam sem sessao -- nunca
+    // redireciona pro login, com ou sem sessao resolvida, igual
+    // join/:inviteCode.
+    if (isPublicProfile || isAlwaysPublic) {
       return null;
     }
 

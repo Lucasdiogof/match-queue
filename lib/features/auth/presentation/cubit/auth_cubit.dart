@@ -60,6 +60,14 @@ class AuthCubit extends Cubit<AuthState> {
     return succeeded;
   }
 
+  Future<bool> deleteAccount() async {
+    final succeeded = await _run(_repository.deleteAccount);
+    if (succeeded && !isClosed) {
+      emit(const AuthState(status: AuthStatus.unauthenticated));
+    }
+    return succeeded;
+  }
+
   void clearFailure() {
     if (state.failure != null) {
       emit(state.copyWith(clearFailure: true));

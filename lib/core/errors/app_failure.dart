@@ -18,6 +18,7 @@ enum TeamFailureReason {
   notFound,
   permissionDenied,
   profileMissing,
+  soleOwnerBlocksAccountDeletion,
 }
 
 enum InviteFailureReason {

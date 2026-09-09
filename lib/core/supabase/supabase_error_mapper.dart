@@ -49,6 +49,7 @@ class SupabaseErrorMapper {
     'FQ004' || 'FQ005' => TeamFailureReason.permissionDenied,
     'FQ006' => TeamFailureReason.profileMissing,
     'FQ007' => TeamFailureReason.invalidSearchDuration,
+    'FQ044' => TeamFailureReason.soleOwnerBlocksAccountDeletion,
     _ => null,
   };
 

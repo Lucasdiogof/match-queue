@@ -33,6 +33,8 @@ extension AppFailureL10n on AppFailure {
       TeamFailureReason.notFound => l10n.errorTeamNotFound,
       TeamFailureReason.permissionDenied => l10n.errorTeamPermissionDenied,
       TeamFailureReason.profileMissing => l10n.errorTeamProfileMissing,
+      TeamFailureReason.soleOwnerBlocksAccountDeletion =>
+        l10n.errorSoleOwnerBlocksAccountDeletion,
     },
     InviteFailure(:final reason) => switch (reason) {
       InviteFailureReason.notFound => l10n.errorInviteNotFound,

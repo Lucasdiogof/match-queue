@@ -77,6 +77,17 @@ class LocalAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<void> deleteAccount() async {
+    final user = _currentUser;
+    if (user == null) {
+      throw const AuthFailure(reason: AuthFailureReason.sessionExpired);
+    }
+    _accounts.remove(user.email);
+    _currentUser = null;
+    _controller.add(const AuthSnapshot.signedOut());
+  }
+
+  @override
   Future<void> dispose() async {
     await _controller.close();
   }

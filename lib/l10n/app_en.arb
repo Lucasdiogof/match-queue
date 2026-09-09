@@ -1166,5 +1166,41 @@
       }
     }
   },
-  "validationPublicProfileSlugInvalid": "Use only lowercase letters, numbers or _."
+  "validationPublicProfileSlugInvalid": "Use only lowercase letters, numbers or _.",
+  "errorSoleOwnerBlocksAccountDeletion": "You are the sole owner of a team with other members. Remove the other members or wait for ownership transfer support before deleting your account.",
+  "profileLegalTitle": "About and legal",
+  "aboutTitle": "About",
+  "aboutDescription": "FIFA Queue organizes your EA SPORTS FC team's match search queue, accounts, and stats.",
+  "privacyPolicyTitle": "Privacy Policy",
+  "termsOfUseTitle": "Terms of Use",
+  "legalUpdatedAt": "Updated on {date}",
+  "@legalUpdatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Sep 8"
+      }
+    }
+  },
+  "deleteAccountRow": "Delete my account",
+  "deleteAccountTitle": "Delete account",
+  "deleteAccountWarningTitle": "This action is permanent",
+  "deleteAccountWarningMessage": "Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.",
+  "deleteAccountConsequenceFcAccounts": "All your FC accounts and their recorded Rivals division",
+  "deleteAccountConsequenceSquads": "Your squads (Squad Builder)",
+  "deleteAccountConsequenceHistory": "Your membership in the teams you belong to",
+  "deleteAccountConsequenceStats": "Your personal match history and stats",
+  "deleteAccountConsequencePreferences": "Your notification preferences and registered devices",
+  "deleteAccountConsequencePublicProfile": "Your public profile, if enabled",
+  "deleteAccountTypeToConfirm": "To confirm, type {word} in the field below.",
+  "@deleteAccountTypeToConfirm": {
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "DELETE"
+      }
+    }
+  },
+  "deleteAccountConfirmWord": "DELETE",
+  "deleteAccountAction": "Permanently delete my account"
 }

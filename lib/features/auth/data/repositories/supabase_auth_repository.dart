@@ -65,6 +65,9 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<void> signOut() => _guard(_dataSource.signOut);
 
   @override
+  Future<void> deleteAccount() => _guard(_dataSource.deleteAccount);
+
+  @override
   Future<void> dispose() async {}
 
   AuthSessionEvent _mapEvent(AuthChangeEvent event) => switch (event) {

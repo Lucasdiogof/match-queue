@@ -1166,5 +1166,41 @@
       }
     }
   },
-  "validationPublicProfileSlugInvalid": "Use só letras minúsculas, números ou _."
+  "validationPublicProfileSlugInvalid": "Use só letras minúsculas, números ou _.",
+  "errorSoleOwnerBlocksAccountDeletion": "Você é dono único de um time com outros integrantes. Remova os outros integrantes ou aguarde suporte a transferência de posse antes de excluir sua conta.",
+  "profileLegalTitle": "Sobre e legal",
+  "aboutTitle": "Sobre",
+  "aboutDescription": "FIFA Queue organiza a fila de busca de partida, elencos e estatísticas do seu time de EA SPORTS FC.",
+  "privacyPolicyTitle": "Política de Privacidade",
+  "termsOfUseTitle": "Termos de Uso",
+  "legalUpdatedAt": "Atualizado em {date}",
+  "@legalUpdatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "8 de set."
+      }
+    }
+  },
+  "deleteAccountRow": "Excluir minha conta",
+  "deleteAccountTitle": "Excluir conta",
+  "deleteAccountWarningTitle": "Esta ação é permanente",
+  "deleteAccountWarningMessage": "Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.",
+  "deleteAccountConsequenceFcAccounts": "Todos os seus elencos (Contas EA FC) e a divisão de Rivals registrada",
+  "deleteAccountConsequenceSquads": "Suas escalações (Squad Builder)",
+  "deleteAccountConsequenceHistory": "Sua participação nos times de que você faz parte",
+  "deleteAccountConsequenceStats": "Seu histórico e estatísticas pessoais de partidas",
+  "deleteAccountConsequencePreferences": "Suas preferências de notificação e dispositivos registrados",
+  "deleteAccountConsequencePublicProfile": "Seu perfil público, se estiver ativado",
+  "deleteAccountTypeToConfirm": "Para confirmar, digite {word} no campo abaixo.",
+  "@deleteAccountTypeToConfirm": {
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "EXCLUIR"
+      }
+    }
+  },
+  "deleteAccountConfirmWord": "EXCLUIR",
+  "deleteAccountAction": "Excluir minha conta permanentemente"
 }

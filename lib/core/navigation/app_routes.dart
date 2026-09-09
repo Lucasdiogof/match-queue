@@ -77,6 +77,13 @@ class AppRoutes {
     'fc-account-detail',
     '/app/fc-accounts/:fcAccountId',
   );
+  static const AppRoute deleteAccount = AppRoute(
+    'delete-account',
+    '/app/profile/delete-account',
+  );
+  static const AppRoute privacyPolicy = AppRoute('privacy', '/privacy');
+  static const AppRoute termsOfUse = AppRoute('terms', '/terms');
+  static const AppRoute about = AppRoute('about', '/app/profile/about');
 
   static const AppRoute squadBuilder = AppRoute(
     'squad-builder',
@@ -107,6 +114,11 @@ class AppRoutes {
     '/signup',
     '/onboarding',
   };
+
+  /// Acessíveis com ou sem sessão, nunca redirecionadas -- mesmo padrão de
+  /// `/u/:identifier` (ver `isPublicProfileLocation`), mas path fixo em vez
+  /// de prefixo.
+  static const Set<String> alwaysPublicPaths = <String>{'/privacy', '/terms'};
 
   static String joinTeamLocation(String inviteCode) => '/join/$inviteCode';
 

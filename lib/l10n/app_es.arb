@@ -1166,5 +1166,41 @@
       }
     }
   },
-  "validationPublicProfileSlugInvalid": "Usa solo letras minúsculas, números o _."
+  "validationPublicProfileSlugInvalid": "Usa solo letras minúsculas, números o _.",
+  "errorSoleOwnerBlocksAccountDeletion": "Eres el único dueño de un equipo con otros integrantes. Elimina a los demás integrantes o espera el soporte de transferencia de propiedad antes de eliminar tu cuenta.",
+  "profileLegalTitle": "Acerca de y legal",
+  "aboutTitle": "Acerca de",
+  "aboutDescription": "FIFA Queue organiza la cola de búsqueda de partida, las cuentas y las estadísticas de tu equipo de EA SPORTS FC.",
+  "privacyPolicyTitle": "Política de Privacidad",
+  "termsOfUseTitle": "Términos de Uso",
+  "legalUpdatedAt": "Actualizado el {date}",
+  "@legalUpdatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "8 sept."
+      }
+    }
+  },
+  "deleteAccountRow": "Eliminar mi cuenta",
+  "deleteAccountTitle": "Eliminar cuenta",
+  "deleteAccountWarningTitle": "Esta acción es permanente",
+  "deleteAccountWarningMessage": "Al eliminar tu cuenta, pierdes acceso a todo lo que se indica abajo. No se puede deshacer ni recuperar después.",
+  "deleteAccountConsequenceFcAccounts": "Todas tus cuentas de EA FC y la división de Rivals registrada",
+  "deleteAccountConsequenceSquads": "Tus alineaciones (Squad Builder)",
+  "deleteAccountConsequenceHistory": "Tu membresía en los equipos a los que perteneces",
+  "deleteAccountConsequenceStats": "Tu historial y estadísticas personales de partidas",
+  "deleteAccountConsequencePreferences": "Tus preferencias de notificación y dispositivos registrados",
+  "deleteAccountConsequencePublicProfile": "Tu perfil público, si está activado",
+  "deleteAccountTypeToConfirm": "Para confirmar, escribe {word} en el campo de abajo.",
+  "@deleteAccountTypeToConfirm": {
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "ELIMINAR"
+      }
+    }
+  },
+  "deleteAccountConfirmWord": "ELIMINAR",
+  "deleteAccountAction": "Eliminar mi cuenta permanentemente"
 }

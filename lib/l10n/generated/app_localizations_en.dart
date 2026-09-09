@@ -2214,4 +2214,76 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get validationPublicProfileSlugInvalid =>
       'Use only lowercase letters, numbers or _.';
+
+  @override
+  String get errorSoleOwnerBlocksAccountDeletion =>
+      'You are the sole owner of a team with other members. Remove the other members or wait for ownership transfer support before deleting your account.';
+
+  @override
+  String get profileLegalTitle => 'About and legal';
+
+  @override
+  String get aboutTitle => 'About';
+
+  @override
+  String get aboutDescription =>
+      'FIFA Queue organizes your EA SPORTS FC team\'s match search queue, accounts, and stats.';
+
+  @override
+  String get privacyPolicyTitle => 'Privacy Policy';
+
+  @override
+  String get termsOfUseTitle => 'Terms of Use';
+
+  @override
+  String legalUpdatedAt(String date) {
+    return 'Updated on $date';
+  }
+
+  @override
+  String get deleteAccountRow => 'Delete my account';
+
+  @override
+  String get deleteAccountTitle => 'Delete account';
+
+  @override
+  String get deleteAccountWarningTitle => 'This action is permanent';
+
+  @override
+  String get deleteAccountWarningMessage =>
+      'Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.';
+
+  @override
+  String get deleteAccountConsequenceFcAccounts =>
+      'All your FC accounts and their recorded Rivals division';
+
+  @override
+  String get deleteAccountConsequenceSquads => 'Your squads (Squad Builder)';
+
+  @override
+  String get deleteAccountConsequenceHistory =>
+      'Your membership in the teams you belong to';
+
+  @override
+  String get deleteAccountConsequenceStats =>
+      'Your personal match history and stats';
+
+  @override
+  String get deleteAccountConsequencePreferences =>
+      'Your notification preferences and registered devices';
+
+  @override
+  String get deleteAccountConsequencePublicProfile =>
+      'Your public profile, if enabled';
+
+  @override
+  String deleteAccountTypeToConfirm(String word) {
+    return 'To confirm, type $word in the field below.';
+  }
+
+  @override
+  String get deleteAccountConfirmWord => 'DELETE';
+
+  @override
+  String get deleteAccountAction => 'Permanently delete my account';
 }

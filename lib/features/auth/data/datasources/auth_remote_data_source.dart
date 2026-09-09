@@ -25,6 +25,8 @@ abstract interface class AuthRemoteDataSource {
   Future<void> updatePassword(String newPassword);
 
   Future<void> signOut();
+
+  Future<void> deleteAccount();
 }
 
 class SupabaseAuthRemoteDataSource implements AuthRemoteDataSource {
@@ -98,4 +100,19 @@ class SupabaseAuthRemoteDataSource implements AuthRemoteDataSource {
 
   @override
   Future<void> signOut() => _auth.signOut();
+
+  @override
+  Future<void> deleteAccount() async {
+    final response = await _client.functions.invoke('delete-account');
+    final body = response.data;
+    final ok = response.status == 200 && body is Map && body['success'] == true;
+    if (!ok) {
+      final message = body is Map ? '${body['error']}' : 'unknown error';
+      final code = body is Map ? body['code'] as String? : null;
+      throw PostgrestException(message: message, code: code);
+    }
+    // O servidor ja removeu auth.users -- isto so limpa o JWT local (agora
+    // orfao) e garante que watchAuthState() emita signedOut de verdade.
+    await _auth.signOut();
+  }
 }

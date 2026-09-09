@@ -2215,4 +2215,77 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get validationPublicProfileSlugInvalid =>
       'Use só letras minúsculas, números ou _.';
+
+  @override
+  String get errorSoleOwnerBlocksAccountDeletion =>
+      'Você é dono único de um time com outros integrantes. Remova os outros integrantes ou aguarde suporte a transferência de posse antes de excluir sua conta.';
+
+  @override
+  String get profileLegalTitle => 'Sobre e legal';
+
+  @override
+  String get aboutTitle => 'Sobre';
+
+  @override
+  String get aboutDescription =>
+      'FIFA Queue organiza a fila de busca de partida, elencos e estatísticas do seu time de EA SPORTS FC.';
+
+  @override
+  String get privacyPolicyTitle => 'Política de Privacidade';
+
+  @override
+  String get termsOfUseTitle => 'Termos de Uso';
+
+  @override
+  String legalUpdatedAt(String date) {
+    return 'Atualizado em $date';
+  }
+
+  @override
+  String get deleteAccountRow => 'Excluir minha conta';
+
+  @override
+  String get deleteAccountTitle => 'Excluir conta';
+
+  @override
+  String get deleteAccountWarningTitle => 'Esta ação é permanente';
+
+  @override
+  String get deleteAccountWarningMessage =>
+      'Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.';
+
+  @override
+  String get deleteAccountConsequenceFcAccounts =>
+      'Todos os seus elencos (Contas EA FC) e a divisão de Rivals registrada';
+
+  @override
+  String get deleteAccountConsequenceSquads =>
+      'Suas escalações (Squad Builder)';
+
+  @override
+  String get deleteAccountConsequenceHistory =>
+      'Sua participação nos times de que você faz parte';
+
+  @override
+  String get deleteAccountConsequenceStats =>
+      'Seu histórico e estatísticas pessoais de partidas';
+
+  @override
+  String get deleteAccountConsequencePreferences =>
+      'Suas preferências de notificação e dispositivos registrados';
+
+  @override
+  String get deleteAccountConsequencePublicProfile =>
+      'Seu perfil público, se estiver ativado';
+
+  @override
+  String deleteAccountTypeToConfirm(String word) {
+    return 'Para confirmar, digite $word no campo abaixo.';
+  }
+
+  @override
+  String get deleteAccountConfirmWord => 'EXCLUIR';
+
+  @override
+  String get deleteAccountAction => 'Excluir minha conta permanentemente';
 }

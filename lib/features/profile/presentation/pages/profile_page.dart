@@ -38,9 +38,13 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           _PreferencesSection(),
           const SizedBox(height: AppSpacing.lg),
+          const _LegalSection(),
+          const SizedBox(height: AppSpacing.lg),
           const _EnvironmentRow(),
           const SizedBox(height: AppSpacing.xxl),
           const _SignOutButton(),
+          const SizedBox(height: AppSpacing.md),
+          const _DeleteAccountButton(),
         ],
       ),
     );
@@ -216,6 +220,57 @@ class _PreferencesSection extends StatelessWidget {
       ),
     );
   }
+}
+
+class _LegalSection extends StatelessWidget {
+  const _LegalSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            l10n.profileLegalTitle.toUpperCase(),
+            style: context.textStyles.labelSmall,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _NavRow(
+            icon: Icons.info_outline,
+            label: l10n.aboutTitle,
+            onTap: () => context.push(AppRoutes.about.path),
+          ),
+          const AppDivider(),
+          _NavRow(
+            icon: Icons.privacy_tip_outlined,
+            label: l10n.privacyPolicyTitle,
+            onTap: () => context.push(AppRoutes.privacyPolicy.path),
+          ),
+          const AppDivider(),
+          _NavRow(
+            icon: Icons.description_outlined,
+            label: l10n.termsOfUseTitle,
+            onTap: () => context.push(AppRoutes.termsOfUse.path),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DeleteAccountButton extends StatelessWidget {
+  const _DeleteAccountButton();
+
+  @override
+  Widget build(BuildContext context) => AppButton.ghost(
+    label: context.l10n.deleteAccountRow,
+    icon: Icons.delete_outline,
+    expanded: true,
+    onPressed: () => context.push(AppRoutes.deleteAccount.path),
+  );
 }
 
 class _NavRow extends StatelessWidget {

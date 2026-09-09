@@ -3835,6 +3835,126 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Use só letras minúsculas, números ou _.'**
   String get validationPublicProfileSlugInvalid;
+
+  /// No description provided for @errorSoleOwnerBlocksAccountDeletion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você é dono único de um time com outros integrantes. Remova os outros integrantes ou aguarde suporte a transferência de posse antes de excluir sua conta.'**
+  String get errorSoleOwnerBlocksAccountDeletion;
+
+  /// No description provided for @profileLegalTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobre e legal'**
+  String get profileLegalTitle;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobre'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'FIFA Queue organiza a fila de busca de partida, elencos e estatísticas do seu time de EA SPORTS FC.'**
+  String get aboutDescription;
+
+  /// No description provided for @privacyPolicyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Política de Privacidade'**
+  String get privacyPolicyTitle;
+
+  /// No description provided for @termsOfUseTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Termos de Uso'**
+  String get termsOfUseTitle;
+
+  /// No description provided for @legalUpdatedAt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atualizado em {date}'**
+  String legalUpdatedAt(String date);
+
+  /// No description provided for @deleteAccountRow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir minha conta'**
+  String get deleteAccountRow;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir conta'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountWarningTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta ação é permanente'**
+  String get deleteAccountWarningTitle;
+
+  /// No description provided for @deleteAccountWarningMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.'**
+  String get deleteAccountWarningMessage;
+
+  /// No description provided for @deleteAccountConsequenceFcAccounts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os seus elencos (Contas EA FC) e a divisão de Rivals registrada'**
+  String get deleteAccountConsequenceFcAccounts;
+
+  /// No description provided for @deleteAccountConsequenceSquads.
+  ///
+  /// In pt, this message translates to:
+  /// **'Suas escalações (Squad Builder)'**
+  String get deleteAccountConsequenceSquads;
+
+  /// No description provided for @deleteAccountConsequenceHistory.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua participação nos times de que você faz parte'**
+  String get deleteAccountConsequenceHistory;
+
+  /// No description provided for @deleteAccountConsequenceStats.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu histórico e estatísticas pessoais de partidas'**
+  String get deleteAccountConsequenceStats;
+
+  /// No description provided for @deleteAccountConsequencePreferences.
+  ///
+  /// In pt, this message translates to:
+  /// **'Suas preferências de notificação e dispositivos registrados'**
+  String get deleteAccountConsequencePreferences;
+
+  /// No description provided for @deleteAccountConsequencePublicProfile.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu perfil público, se estiver ativado'**
+  String get deleteAccountConsequencePublicProfile;
+
+  /// No description provided for @deleteAccountTypeToConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para confirmar, digite {word} no campo abaixo.'**
+  String deleteAccountTypeToConfirm(String word);
+
+  /// No description provided for @deleteAccountConfirmWord.
+  ///
+  /// In pt, this message translates to:
+  /// **'EXCLUIR'**
+  String get deleteAccountConfirmWord;
+
+  /// No description provided for @deleteAccountAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir minha conta permanentemente'**
+  String get deleteAccountAction;
 }
 
 class _AppLocalizationsDelegate
