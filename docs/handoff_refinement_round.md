@@ -107,13 +107,39 @@ reconstruir.**
 - **Testes automatizados**: não escritos por decisão do dono do produto — QA
   manual assumida por ele após o fechamento desta rodada. Suíte automatizada
   segue 17/17 (nada quebrado).
-- **QA visual**: tentada via `flutter build web --no-web-resources-cdn
-  --no-wasm-dry-run` + servidor local (seção 3). O app renderizou e a tela de
-  login apareceu normalmente, mas o botão "Entrar" não respondeu a clique nem
-  a Enter no campo de senha (sem navegação, sem banner de erro) — não foi
-  possível autenticar para chegar às telas do shell (Home/Jogar/Times/
-  Histórico) e comparar visualmente os itens 20/23/24. Marcado como **NOT
-  EXECUTED — ENVIRONMENT LIMITATION**, não como PASS.
+- **QA visual**: tentada em **duas sessões, três técnicas diferentes**, todas
+  sem sucesso em passar da tela de login:
+  1. Clique/Enter normais no botão "Entrar" — sem resposta (sem navegação,
+     sem banner de erro).
+  2. Ativar semantics (`flt-semantics-placeholder`) pra conseguir uma árvore
+     de acessibilidade real e navegar por ela — o elemento existe mas
+     `.click()` nele não criou nenhum nó de semantics.
+  3. Dirigir por JS: localizar o `<canvas>` real (dentro do shadow root de
+     `flt-glass-pane`, que por sua vez só aparece com
+     `document>FLT-GLASS-PANE`, não aninhado sob `<flutter-view>` — script de
+     busca recursiva por shadow roots necessário), disparar
+     `PointerEvent`/`MouseEvent` sintéticos nele pra focar o campo (isso
+     **funcionou** — confirmado via `document.activeElement` com
+     shadow-piercing manual: o input de e-mail/senha corretos ficam focados),
+     e então setar `.value` via `Object.getOwnPropertyDescriptor(
+     HTMLInputElement.prototype, 'value').set` + `dispatchEvent(new
+     InputEvent('input', ...))`. O valor no DOM muda, mas **o campo
+     renderizado pelo CanvasKit continua mostrando o placeholder** — o motor
+     Flutter não sincronizou o `TextEditingController` a partir desse evento
+     sintético. A ação padrão `computer{action:"type"}` desta ferramenta
+     também é inconsistente: às vezes preenche um campo, às vezes não (visto
+     nos dois lados, e-mail e senha, em tentativas diferentes), sem padrão
+     claro.
+  
+  Conclusão: **não é um bug do app** — é uma limitação real deste ambiente de
+  preview com apps Flutter web renderizados via CanvasKit em canvas, onde a
+  ponte entre evento de teclado/DOM sintético e o motor de renderização não
+  fecha de forma confiável. Login automatizado aqui não é confiável pra QA
+  visual de telas autenticadas. Marcado como **NOT EXECUTED — ENVIRONMENT
+  LIMITATION**, nunca como PASS. Quem tiver um device/simulador real ou outro
+  ambiente de preview deve validar 20/23/24 visualmente antes de decidir se
+  precisam de correção — o código, na leitura estática, não mostra o defeito
+  descrito (ver seção 5).
 
 ---
 

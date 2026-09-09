@@ -154,9 +154,14 @@ valor de filtro) corrigida renomeando o filtro para "Jogos"/"Games"/"Juegos".
 **Não alterados, só auditados**: os 3 itens de redesign visual
 (header/background da tela Jogar, card de modo, sistema global de
 header/background) — o código atual não tem o "bloco verde chapado" descrito,
-e a QA visual para confirmar como renderiza de fato ficou bloqueada (login
-não respondeu a clique/Enter no navegador de preview desta ferramenta); ver seção 5
-de `handoff_refinement_round.md` antes de tocar nesses três arquivos.
+e a QA visual para confirmar como renderiza de fato ficou bloqueada em **duas
+tentativas, três técnicas diferentes** (clique/Enter normal, ativar semantics,
+dirigir por JS direto no canvas/DOM) — o motor CanvasKit deste ambiente de
+preview não sincroniza texto digitado de volta pro `TextEditingController` de
+forma confiável, então nunca passou da tela de login. Ver seção 5 e a seção
+"Testes e QA visual" de `handoff_refinement_round.md` antes de tocar nesses
+três arquivos — precisa de device/simulador real ou outro ambiente de
+preview.
 Testes automatizados desta rodada foram deliberadamente deixados para QA
 manual do dono do produto — suíte automatizada segue 17/17, `flutter
 analyze` limpo.
