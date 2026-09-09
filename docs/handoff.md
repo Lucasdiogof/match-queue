@@ -4,20 +4,26 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-09: **Etapas 1–19 fechadas** (17, 18 e 19 foram
-auditoria, sem feature nova). **Etapa 19 (Release QA) encerrou com
-veredito NOT READY FOR STORE RELEASE — bloqueio 100% de ambiente, zero
-bug de código**: nenhuma das 3 plataformas conseguiu abrir uma tela real
-neste ambiente (Web trava antes do primeiro frame por bloqueio de rede
-do sandbox no `Supabase.initialize()` pré-`runApp`; Android falha no
-Gradle com "Unable to establish loopback connection"; iOS exige macOS) —
-os três motivos foram reconfirmados ao vivo, não presumidos. Tudo que dá
-pra validar sem tela (auth, times, contas, matchmaking ponta a ponta —
-fila FIFO, promoção automática — perfil público, segurança) foi
-validado ao vivo via REST contra produção e passou. `flutter analyze`/
-`flutter test` limpos, nenhum código mudou. Falta ainda gerar
-`android/key.properties` pro release Android real. Ver
-[`handoff_etapa19.md`](handoff_etapa19.md). **Fase A (bloqueadores de
+Estado em 2026-09-09: **Etapas 1–20 fechadas** (17-20 foram auditoria,
+sem feature nova). **Etapa 20 (Store Release Readiness / Device QA)
+encerrou com veredito NOT READY — CONFIG BLOCKERS**: zero bug de
+código, zero bloqueio de arquitetura. O que falta é 100% credencial/
+config (keystore Android + `key.properties`, setup de Xcode nunca feito
+neste projeto — nem `pod install` rodou ainda —, domínio pra Privacy
+Policy URL e App/Universal Links, textos e artes de listagem de loja) e
+ambiente de execução (Gradle não builda nesta máquina Windows — release
+E debug de APK/AAB tentados de verdade, mesmo erro de loopback nos
+dois; Web compila mas não roda ao vivo no navegador de preview pelo mesmo
+bloqueio de sandbox já visto na Etapa 19; iOS exige macOS). Estimativa
+de completude de metadata: Google Play ~35%, App Store ~25%. Checklist
+manual de Device QA criado, execução pendente de aparelho físico. Ver
+[`handoff_etapa20.md`](handoff_etapa20.md),
+[`release_checklist_android.md`](release_checklist_android.md),
+[`release_checklist_ios.md`](release_checklist_ios.md) e
+[`release_checklist_store_metadata.md`](release_checklist_store_metadata.md).
+`flutter analyze`/`flutter test` limpos, nenhum código mudou nesta
+etapa. Etapa 19 (Release QA original, mesmo veredito de ambiente) segue
+em [`handoff_etapa19.md`](handoff_etapa19.md). **Fase A (bloqueadores de
 lançamento) FECHADA** — exclusão
 de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
 inativo todos corrigidos e validados ao vivo, ver
@@ -117,6 +123,10 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa17b2.md` | Validação em escala + full import real do catálogo FC27 (17.873 cartas), idempotência, QA REST, 32 fc_clubs órfãos diagnosticados |
 | `handoff_etapa18.md` | Validação do catálogo real dentro do app — Squad Builder/picker/busca/filtros contra as 17.873 cartas, performance real, sem bug encontrado |
 | `handoff_etapa19.md` | Release QA — veredito NOT READY, bloqueio 100% de ambiente (Web/Android/iOS), fluxos críticos validados via REST onde possível |
+| `handoff_etapa20.md` | Store Release Readiness / Device QA — veredito NOT READY (config), estimativas de metadata Play/App Store, checklist manual de device QA |
+| `release_checklist_android.md` | Keystore/signing/SDK/ícones Android — o que falta, sem inventar credencial |
+| `release_checklist_ios.md` | Auditoria estática iOS + checklist operacional de 10 passos para executar num Mac |
+| `release_checklist_store_metadata.md` | O que existe e o que falta pra Google Play e App Store, item a item |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
