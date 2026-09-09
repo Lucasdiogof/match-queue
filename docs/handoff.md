@@ -8,28 +8,31 @@ Estado em 2026-09-09: **Etapas 1–17 fechadas** (17 foi auditoria, sem
 feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
 de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
 inativo todos corrigidos e validados ao vivo, ver
-[`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B
+[`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B/17B-2
 (importação real do catálogo FC27) segue EM ANDAMENTO, agora sobre dado
 real** — o dono do produto decidiu explicitamente promover o Wrexist
 snapshot (17.873 cartas, republicação MIT do endpoint da EA) de fixture de
 teste para fonte de trabalho real desta etapa, já que o arquivo "oficial"
 da EA ainda não chegou. Auditoria completa + normalização + dry-run
-completo (17.873/17.873 válidas, 0 inválidas) rodados e limpos nesta
-sessão. **Sample import de 40 cartas ESCRITO no Supabase remoto com
-sucesso**, via SQL equivalente ao contrato do importer (autorizado pelo
-dono do produto — este ambiente não tem `SUPABASE_SECRET_KEY` para rodar
-`tool/sync_fc_cards.dart` em modo de escrita). Dois bugs reais do gerador
-SQL encontrados e corrigidos no caminho (clube duplicado por nome em
-ligas diferentes; `gk_speed` sem cast quebrando inferência de tipo).
-Idempotência confirmada (2ª execução, contagens idênticas). Picker
-(`search_fc_player_cards`) validado via REST com usuário autenticado real
-— retorna as 40 cartas reais, filtros de posição/liga/rating funcionando,
-zero carta `LOCAL` vazando. **UI Flutter em si ainda não testada** (só o
-dado que ela consome). Veredito: pronto pra escala de amostra, **full
-import dos ~17.873 registros continua exigindo autorização explícita**.
-Ver [`handoff_etapa17b.md`](handoff_etapa17b.md). 74 migrations locais =
-remotas, `flutter analyze` e `dart analyze tool lib` sem issues. Edge
-Functions:
+completo (17.873/17.873 válidas, 0 inválidas) limpos. **Sample import de
+40 cartas ESCRITO no Supabase remoto com sucesso** (via SQL equivalente ao
+importer, autorizado pelo dono do produto). **Etapa 17B-2 (validação em
+escala intermediária, 2026-09-09)**: auditou o arquivo inteiro de novo
+(achou 42 clubes homônimos em ligas diferentes, achado documentado, não
+bloqueante), gerou amostras determinísticas de 500/2.000/5.000 com
+dry-run 100% limpo nos três, implementou cache de nomes + upsert em lote
+(`--batch-size`, default 500, medido contra um double HTTP local — não
+arbitrário) no importer real, e escreveu a primeira suíte de testes
+automatizados do repositório (6 testes, `test/tool/`). **Nenhum dos três
+degraus foi escrito de verdade em produção** — `SUPABASE_SECRET_KEY`
+continua ausente deste ambiente, e por decisão explícita desta etapa o
+gerador de SQL manual NÃO foi usado como substituto para os degraus
+500/2.000/5.000 (só serve para a amostra de 40 já feita antes). Veredito
+desta rodada: **B — NOT READY FOR FULL IMPORT**, blocker é exclusivamente
+a ausência da secret key. Ver [`handoff_etapa17b2.md`](handoff_etapa17b2.md)
+(mais recente) e [`handoff_etapa17b.md`](handoff_etapa17b.md) (histórico).
+74 migrations locais = remotas, `flutter analyze` e `dart analyze tool
+lib test` sem issues. Edge Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
 ACTIVE).
 
@@ -88,7 +91,8 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa15.md` | Central de Notificações, eventos sociais/esportivos, correção de dedupe_key |
 | `handoff_etapa16.md` | Perfil público opt-in + compartilhamento da Escalação Principal, rota `/u/:identifier` |
 | `handoff_etapa17.md` | Auditoria de lançamento (sem feature nova) — índice curto |
-| `handoff_etapa17b.md` | Importação real do catálogo FC27 — segurança corrigida, importer adaptado, aguardando arquivo real da EA |
+| `handoff_etapa17b.md` | Importação real do catálogo FC27 — segurança corrigida, importer adaptado, sample de 40 escrito em produção |
+| `handoff_etapa17b2.md` | Validação em escala intermediária (500/2.000/5.000) do import FC27 — auditoria completa, batching medido, testes automatizados, veredito B (blocker: credencial) |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
@@ -161,15 +165,18 @@ Distinções que já custaram bug quando ignoradas:
   raw_metadata, `--full-catalog`, `source_url` por linha); segurança do
   `is_active` aplicada em produção; auditoria + normalização + dry-run
   completo do Wrexist snapshot rodados e limpos (17.873/17.873 válidas).
-  **Bloqueador atual**: sample import de 40 cartas preparado mas não
-  escrito — este ambiente não tem `SUPABASE_SECRET_KEY` para rodar
-  `tool/sync_fc_cards.dart` sem `--dry-run`. Decisão pendente do dono do
-  produto: exportar a secret key numa sessão futura, ou aceitar um SQL
-  equivalente gerado à mão (`docs/final_data/scripts/
-  generate_sample_import_sql.py`, não executado) como substituto — ver
-  `docs/handoff_etapa17b.md`. Nada no produto depende disso pra funcionar —
-  o app roda com as 50 cartas `provider = 'LOCAL'` de dev e com catálogo
-  real vazio até lá.
+  **Bloqueador atual (Etapa 17B-2)**: amostra de 40 já escrita em
+  produção (via SQL manual, sessão anterior); degraus 500/2.000/5.000
+  auditados e com dry-run 100% limpo, mas **nenhum escrito de verdade** —
+  este ambiente continua sem `SUPABASE_SECRET_KEY`/
+  `SUPABASE_SERVICE_ROLE_KEY` para rodar `tool/sync_fc_cards.dart` sem
+  `--dry-run`, e desta vez o SQL manual NÃO foi usado como substituto
+  (decisão explícita da Etapa 17B-2: ele só vale para a amostra de 40 já
+  feita, não para os degraus maiores). Decisão pendente do dono do
+  produto: exportar a secret key numa sessão futura. Ver
+  `docs/handoff_etapa17b2.md`. Nada no produto depende disso pra
+  funcionar — o app roda com as 50 cartas `provider = 'LOCAL'` de dev e
+  com o catálogo real parcial (40 cartas) até lá.
 - **Fontes de carta descartadas** (FUT.GG, FUTBIN, FUTWIZ, WeFUT, SoFIFA,
   fcratings): todas por `robots.txt` ou ToS. Razão de cada uma em
   `card_provider_research.md`. Não reabrir a pesquisa.
