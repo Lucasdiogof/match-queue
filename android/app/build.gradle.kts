@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -6,6 +9,16 @@ plugins {
     // END: FlutterFire Configuration
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+// Assinatura de release (Fase A, item 28-31). android/key.properties nunca
+// e versionado (ver .gitignore) -- cada maquina/CI que gera release precisa
+// do proprio arquivo, apontando pro keystore real. Ver docs/android_signing.md.
+val keystorePropertiesFile = rootProject.file("key.properties")
+val hasKeystoreProperties = keystorePropertiesFile.exists()
+val keystoreProperties = Properties()
+if (hasKeystoreProperties) {
+    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
 }
 
 android {
@@ -32,12 +45,43 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (hasKeystoreProperties) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // Sem key.properties, cai no debug signing (mantem `flutter run
+            // --release` funcionando em dev) -- mas o check no
+            // gradle.taskGraph abaixo impede que uma build de release de
+            // verdade (assembleRelease/bundleRelease) saia assinada com a
+            // chave de debug em silencio.
+            signingConfig = if (hasKeystoreProperties) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
+    }
+}
+
+gradle.taskGraph.whenReady {
+    val requestedRelease = allTasks.any { it.name.contains("Release") }
+    if (requestedRelease && !hasKeystoreProperties) {
+        throw GradleException(
+            "Build de release pedida sem android/key.properties -- isso " +
+                "assinaria o APK/AAB com a chave de debug, que a Play Store " +
+                "rejeita. Gere um keystore e crie key.properties antes de " +
+                "continuar (veja docs/android_signing.md). Builds de debug " +
+                "continuam funcionando normalmente sem esse arquivo."
+        )
     }
 }
 

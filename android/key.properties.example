@@ -1,0 +1,4 @@
+storePassword=CHANGE_ME
+keyPassword=CHANGE_ME
+keyAlias=fifaqueue
+storeFile=/absolute/path/to/fifaqueue-release.jks
