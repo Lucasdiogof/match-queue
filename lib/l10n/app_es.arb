@@ -14,7 +14,7 @@
   "actionSignOut": "Salir",
   "actionEdit": "Editar",
   "navHome": "Inicio",
-  "navControl": "Control",
+  "navControl": "Jugar",
   "navTeam": "Equipos",
   "navHistory": "Historial",
   "navProfile": "Perfil",
@@ -25,7 +25,7 @@
   "startTitle": "Resumen",
   "startSubtitle": "Tu equipo y tu semana en un solo lugar.",
   "startShortcutsTitle": "Accesos rápidos",
-  "controlEyebrow": "CONTROL",
+  "controlEyebrow": "JUGAR",
   "controlTitle": "Tu turno en la fila",
   "controlSubtitle": "Cola, rival y plantilla en un solo lugar.",
   "controlDiscoverCardsTitle": "Explorar cartas",
@@ -489,7 +489,7 @@
   "matchmakingLeaveQueueAction": "Salir de la cola",
   "matchmakingMatchFoundAction": "La encontré",
   "matchmakingSearchingSelfTitle": "Buscando partida",
-  "matchmakingSearchingSelfMessage": "En cuanto empiece la partida, toca partida encontrada.",
+  "matchmakingSearchingSelfMessage": "Cuando entres en el partido, marca que lo encontraste.",
   "matchmakingSearchingOtherTitle": "{name} está buscando partida",
   "@matchmakingSearchingOtherTitle": {
     "placeholders": {
@@ -534,7 +534,7 @@
   "notificationsCategoryTeams": "Equipos",
   "notificationsCategoryTeamsHint": "Nuevos miembros en el equipo.",
   "notificationsCategoryWeekendLeague": "Weekend League",
-  "notificationsCategoryWeekendLeagueHint": "Cuando un evento de fin de semana termina.",
+  "notificationsCategoryWeekendLeagueHint": "Cuando termina una Weekend League.",
   "notificationsCategoryRivals": "Rivals",
   "notificationsCategoryRivalsHint": "Una cuenta del equipo cambia de división.",
   "notificationsCategoryRankings": "Rankings",
@@ -831,7 +831,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "Cuentas FC",
+  "profileFcAccountsRow": "Cuentas",
   "rivalsDivisionDiv10": "División 10",
   "rivalsDivisionDiv9": "División 9",
   "rivalsDivisionDiv8": "División 8",
@@ -1323,5 +1323,6 @@
       }
     }
   },
-  "errorWeekendLeagueLimit": "Weekend League tiene 15 partidos: victorias y derrotas juntas no pueden superarlo."
+  "errorWeekendLeagueLimit": "Weekend League tiene 15 partidos: victorias y derrotas juntas no pueden superarlo.",
+  "squadNoneSelectedHint": "Elige una plantilla para esta búsqueda"
 }

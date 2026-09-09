@@ -51,7 +51,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navHome => 'Inicio';
 
   @override
-  String get navControl => 'Control';
+  String get navControl => 'Jugar';
 
   @override
   String get navTeam => 'Equipos';
@@ -85,7 +85,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startShortcutsTitle => 'Accesos rápidos';
 
   @override
-  String get controlEyebrow => 'CONTROL';
+  String get controlEyebrow => 'JUGAR';
 
   @override
   String get controlTitle => 'Tu turno en la fila';
@@ -929,7 +929,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get matchmakingSearchingSelfMessage =>
-      'En cuanto empiece la partida, toca partida encontrada.';
+      'Cuando entres en el partido, marca que lo encontraste.';
 
   @override
   String matchmakingSearchingOtherTitle(String name) {
@@ -1030,7 +1030,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notificationsCategoryWeekendLeagueHint =>
-      'Cuando un evento de fin de semana termina.';
+      'Cuando termina una Weekend League.';
 
   @override
   String get notificationsCategoryRivals => 'Rivals';
@@ -1484,7 +1484,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get profileFcAccountsRow => 'Cuentas FC';
+  String get profileFcAccountsRow => 'Cuentas';
 
   @override
   String get rivalsDivisionDiv10 => 'División 10';
@@ -1909,10 +1909,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get fcAccountStatsEmptyMessage =>
       'Todavía no hay partidos registrados.';
-
-  @override
-  String get weekendLeagueDetailManualNote =>
-      'El resultado ingresado manualmente difiere de lo que muestran los partidos detallados hasta ahora.';
 
   @override
   String get rivalsSectionTitle => 'Division Rivals';
@@ -2513,4 +2509,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errorWeekendLeagueLimit =>
       'Weekend League tiene 15 partidos: victorias y derrotas juntas no pueden superarlo.';
+
+  @override
+  String get squadNoneSelectedHint => 'Elige una plantilla para esta búsqueda';
 }

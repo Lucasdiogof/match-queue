@@ -187,7 +187,7 @@ abstract class AppLocalizations {
   /// No description provided for @navControl.
   ///
   /// In pt, this message translates to:
-  /// **'Controle'**
+  /// **'Jogar'**
   String get navControl;
 
   /// No description provided for @navTeam.
@@ -253,7 +253,7 @@ abstract class AppLocalizations {
   /// No description provided for @controlEyebrow.
   ///
   /// In pt, this message translates to:
-  /// **'CONTROLE'**
+  /// **'JOGAR'**
   String get controlEyebrow;
 
   /// No description provided for @controlTitle.
@@ -1675,7 +1675,7 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingSearchingSelfMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Assim que a partida começar, toque em partida encontrada.'**
+  /// **'Quando entrar na partida, marque que encontrou.'**
   String get matchmakingSearchingSelfMessage;
 
   /// No description provided for @matchmakingSearchingOtherTitle.
@@ -1849,7 +1849,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsCategoryWeekendLeagueHint.
   ///
   /// In pt, this message translates to:
-  /// **'Quando um evento de fim de semana termina.'**
+  /// **'Quando uma Weekend League termina.'**
   String get notificationsCategoryWeekendLeagueHint;
 
   /// No description provided for @notificationsCategoryRivals.
@@ -2609,7 +2609,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileFcAccountsRow.
   ///
   /// In pt, this message translates to:
-  /// **'Contas FC'**
+  /// **'Contas'**
   String get profileFcAccountsRow;
 
   /// No description provided for @rivalsDivisionDiv10.
@@ -3397,12 +3397,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Nenhuma partida registrada ainda.'**
   String get fcAccountStatsEmptyMessage;
-
-  /// No description provided for @weekendLeagueDetailManualNote.
-  ///
-  /// In pt, this message translates to:
-  /// **'O resultado informado manualmente é diferente do que as partidas detalhadas mostram até agora.'**
-  String get weekendLeagueDetailManualNote;
 
   /// No description provided for @rivalsSectionTitle.
   ///
@@ -4309,6 +4303,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'A Weekend League tem 15 partidas: vitórias e derrotas somadas não podem passar disso.'**
   String get errorWeekendLeagueLimit;
+
+  /// No description provided for @squadNoneSelectedHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha um squad para esta busca'**
+  String get squadNoneSelectedHint;
 }
 
 class _AppLocalizationsDelegate

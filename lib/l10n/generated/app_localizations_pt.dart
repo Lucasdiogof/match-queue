@@ -51,7 +51,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navHome => 'Início';
 
   @override
-  String get navControl => 'Controle';
+  String get navControl => 'Jogar';
 
   @override
   String get navTeam => 'Times';
@@ -85,7 +85,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get startShortcutsTitle => 'Atalhos';
 
   @override
-  String get controlEyebrow => 'CONTROLE';
+  String get controlEyebrow => 'JOGAR';
 
   @override
   String get controlTitle => 'Sua vez na fila';
@@ -922,7 +922,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get matchmakingSearchingSelfMessage =>
-      'Assim que a partida começar, toque em partida encontrada.';
+      'Quando entrar na partida, marque que encontrou.';
 
   @override
   String matchmakingSearchingOtherTitle(String name) {
@@ -1023,7 +1023,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get notificationsCategoryWeekendLeagueHint =>
-      'Quando um evento de fim de semana termina.';
+      'Quando uma Weekend League termina.';
 
   @override
   String get notificationsCategoryRivals => 'Rivals';
@@ -1475,7 +1475,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get profileFcAccountsRow => 'Contas FC';
+  String get profileFcAccountsRow => 'Contas';
 
   @override
   String get rivalsDivisionDiv10 => 'Divisão 10';
@@ -1897,10 +1897,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get fcAccountStatsEmptyMessage => 'Nenhuma partida registrada ainda.';
-
-  @override
-  String get weekendLeagueDetailManualNote =>
-      'O resultado informado manualmente é diferente do que as partidas detalhadas mostram até agora.';
 
   @override
   String get rivalsSectionTitle => 'Division Rivals';
@@ -2500,4 +2496,7 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get errorWeekendLeagueLimit =>
       'A Weekend League tem 15 partidas: vitórias e derrotas somadas não podem passar disso.';
+
+  @override
+  String get squadNoneSelectedHint => 'Escolha um squad para esta busca';
 }

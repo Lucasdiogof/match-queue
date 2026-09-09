@@ -28,73 +28,66 @@ class SquadSelectorRow extends StatelessWidget {
 
         final selected = state.selectedSquad;
 
-        return Padding(
-          padding: const EdgeInsets.only(top: AppSpacing.sm),
+        final subtitle = selected == null
+            ? l10n.squadNoneSelectedHint
+            : selected.startingCount < 11
+            ? l10n.squadCompletionLabel(selected.startingCount, 11)
+            : '${selected.formationCode} · '
+                  '${selected.overall == null ? l10n.squadOverallUnknown : l10n.squadOverallValue(selected.overall!)}'
+                  ' · ${l10n.squadChemistryValue(selected.chemistry)}';
+
+        return AppCard(
+          onTap: () => _onTap(context, state),
           child: Row(
             children: <Widget>[
-              Icon(
-                Icons.grid_view_outlined,
-                size: AppSizing.iconSm,
-                color: colors.textTertiary,
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Text(
-                '${l10n.squadLabel}: ',
-                style: context.textStyles.bodySmall?.copyWith(
-                  color: colors.textTertiary,
+              Container(
+                width: AppSizing.iconXl,
+                height: AppSizing.iconXl,
+                decoration: BoxDecoration(
+                  color: colors.surfaceHighest,
+                  borderRadius: BorderRadius.circular(AppRadii.sm),
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.grid_view_rounded,
+                  size: AppSizing.iconSm,
+                  color: colors.textSecondary,
                 ),
               ),
+              const SizedBox(width: AppSpacing.md),
               Expanded(
-                child: InkWell(
-                  onTap: () => _onTap(context, state),
-                  child: Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              selected == null
-                                  ? l10n.squadNoneSelected
-                                  : l10n.squadSummaryLabel(
-                                      selected.name,
-                                      selected.formationCode,
-                                    ),
-                              overflow: TextOverflow.ellipsis,
-                              style: context.textStyles.bodySmall?.copyWith(
-                                color: colors.textPrimary,
-                              ),
-                            ),
-                            // Escalação incompleta troca o OVR pela contagem:
-                            // com metade do time faltando, a média engana
-                            // mais do que informa.
-                            if (selected != null)
-                              Text(
-                                selected.startingCount < 11
-                                    ? l10n.squadCompletionLabel(
-                                        selected.startingCount,
-                                        11,
-                                      )
-                                    : '${selected.overall == null ? l10n.squadOverallUnknown : l10n.squadOverallValue(selected.overall!)}'
-                                          ' · '
-                                          '${l10n.squadChemistryValue(selected.chemistry)}',
-                                overflow: TextOverflow.ellipsis,
-                                style: context.textStyles.bodySmall?.copyWith(
-                                  color: colors.textTertiary,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_drop_down,
-                        size: AppSizing.iconSm,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      l10n.squadLabel.toUpperCase(),
+                      style: context.textStyles.labelSmall?.copyWith(
                         color: colors.textTertiary,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      selected?.name ?? l10n.squadNoneSelected,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textStyles.titleSmall,
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      subtitle,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textStyles.bodySmall?.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Icon(
+                Icons.unfold_more,
+                size: AppSizing.iconSm,
+                color: colors.textTertiary,
               ),
             ],
           ),
@@ -111,8 +104,9 @@ class SquadSelectorRow extends StatelessWidget {
       context: context,
       builder: (sheetContext) => AppBottomSheet(
         title: l10n.squadLabel,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        isChildScrollable: true,
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             if (!state.hasSquads)
               Padding(

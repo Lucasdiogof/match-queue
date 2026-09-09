@@ -134,8 +134,14 @@ class _ControlBody extends StatelessWidget {
             final hasActiveQueueContext = account != null;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              // Ordem: quem sou (conta) -> com que time jogo (squad) ->
+              // o que vou jogar (modo) -> a fila. O card de busca fecha a
+              // sequencia porque e o foco da tela; squad e contexto, nao
+              // destino.
               children: <Widget>[
                 const FcAccountSelectorRow(),
+                const SizedBox(height: AppSpacing.sm),
+                const SquadSelectorRow(),
                 const SizedBox(height: AppSpacing.lg),
                 AppCard(
                   child: Column(
@@ -150,8 +156,6 @@ class _ControlBody extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                const AppCard(child: SquadSelectorRow()),
                 const SizedBox(height: AppSpacing.xl),
                 if (account != null)
                   MatchmakingSection(

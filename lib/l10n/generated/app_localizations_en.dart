@@ -51,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
-  String get navControl => 'Control';
+  String get navControl => 'Play';
 
   @override
   String get navTeam => 'Teams';
@@ -85,7 +85,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startShortcutsTitle => 'Shortcuts';
 
   @override
-  String get controlEyebrow => 'CONTROL';
+  String get controlEyebrow => 'PLAY';
 
   @override
   String get controlTitle => 'Your turn in the queue';
@@ -923,7 +923,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get matchmakingSearchingSelfMessage =>
-      'As soon as the match starts, tap match found.';
+      'When you get into the match, mark that you found it.';
 
   @override
   String matchmakingSearchingOtherTitle(String name) {
@@ -1024,7 +1024,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsCategoryWeekendLeagueHint =>
-      'When a weekend event finishes.';
+      'When a Weekend League ends.';
 
   @override
   String get notificationsCategoryRivals => 'Rivals';
@@ -1475,7 +1475,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get profileFcAccountsRow => 'FC accounts';
+  String get profileFcAccountsRow => 'Accounts';
 
   @override
   String get rivalsDivisionDiv10 => 'Division 10';
@@ -1897,10 +1897,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fcAccountStatsEmptyMessage => 'No matches recorded yet.';
-
-  @override
-  String get weekendLeagueDetailManualNote =>
-      'The manually entered result differs from what the detailed matches show so far.';
 
   @override
   String get rivalsSectionTitle => 'Division Rivals';
@@ -2497,4 +2493,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorWeekendLeagueLimit =>
       'Weekend League has 15 matches: wins and losses together cannot exceed that.';
+
+  @override
+  String get squadNoneSelectedHint => 'Pick a squad for this search';
 }

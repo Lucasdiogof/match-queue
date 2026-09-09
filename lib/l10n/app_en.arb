@@ -14,7 +14,7 @@
   "actionSignOut": "Sign out",
   "actionEdit": "Edit",
   "navHome": "Home",
-  "navControl": "Control",
+  "navControl": "Play",
   "navTeam": "Teams",
   "navHistory": "History",
   "navProfile": "Profile",
@@ -25,7 +25,7 @@
   "startTitle": "Overview",
   "startSubtitle": "Your team and your week in one place.",
   "startShortcutsTitle": "Shortcuts",
-  "controlEyebrow": "CONTROL",
+  "controlEyebrow": "PLAY",
   "controlTitle": "Your turn in the queue",
   "controlSubtitle": "Queue, opponent and squad in one place.",
   "controlDiscoverCardsTitle": "Explore cards",
@@ -489,7 +489,7 @@
   "matchmakingLeaveQueueAction": "Leave the queue",
   "matchmakingMatchFoundAction": "Found it",
   "matchmakingSearchingSelfTitle": "Searching for a match",
-  "matchmakingSearchingSelfMessage": "As soon as the match starts, tap match found.",
+  "matchmakingSearchingSelfMessage": "When you get into the match, mark that you found it.",
   "matchmakingSearchingOtherTitle": "{name} is searching for a match",
   "@matchmakingSearchingOtherTitle": {
     "placeholders": {
@@ -534,7 +534,7 @@
   "notificationsCategoryTeams": "Teams",
   "notificationsCategoryTeamsHint": "New members joining the team.",
   "notificationsCategoryWeekendLeague": "Weekend League",
-  "notificationsCategoryWeekendLeagueHint": "When a weekend event finishes.",
+  "notificationsCategoryWeekendLeagueHint": "When a Weekend League ends.",
   "notificationsCategoryRivals": "Rivals",
   "notificationsCategoryRivalsHint": "A team account changes division.",
   "notificationsCategoryRankings": "Rankings",
@@ -831,7 +831,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "FC accounts",
+  "profileFcAccountsRow": "Accounts",
   "rivalsDivisionDiv10": "Division 10",
   "rivalsDivisionDiv9": "Division 9",
   "rivalsDivisionDiv8": "Division 8",
@@ -1323,5 +1323,6 @@
       }
     }
   },
-  "errorWeekendLeagueLimit": "Weekend League has 15 matches: wins and losses together cannot exceed that."
+  "errorWeekendLeagueLimit": "Weekend League has 15 matches: wins and losses together cannot exceed that.",
+  "squadNoneSelectedHint": "Pick a squad for this search"
 }
