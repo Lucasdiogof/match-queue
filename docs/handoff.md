@@ -32,8 +32,23 @@ próprio usuário — nesta ferramenta de execução automatizada o Gradle
 ainda bate no erro de loopback, confirmando que a limitação é do
 processo que chama o Gradle, não da máquina Windows como um todo.
 `READY TO BUILD RELEASE NESTA MÁQUINA` passa a **SIM** (no terminal do
-usuário). Falta ainda Device QA com este AAB e o setup de metadata da
-Play Console pra `READY FOR STORE SUBMISSION`. Ver
+usuário). **Etapa 21 (Google Play readiness + preparação pro Mac,
+2026-09-09)**: auditoria do próprio AAB (assinatura real confirmada por
+`META-INF/FIFAQUEU.RSA`/`Signflinger`, `POST_NOTIFICATIONS` presente no
+manifest final, nenhuma flag de debug); checklist sequencial completo
+de Google Play (~40% pronto, ver `docs/google_play_release.md`);
+levantamento real de Data Safety (`docs/google_play_data_safety.md` —
+e-mail, nome, device token, crash logs; nada de localização/contatos/
+fotos/financeiro); checklist manual de Device QA Android
+(`docs/android_device_qa.md`, criado, execução pendente de aparelho);
+auditoria iOS + checklist de 21 passos pro Mac
+(`docs/ios_release_mac.md` — `Podfile` nunca existiu, capabilities de
+push/background nunca configuradas, esperado, não regressão);
+`docs/deep_links.md` atualizado com o SHA-256 real do keystore de
+release e o conteúdo pronto de `assetlinks.json`/
+`apple-app-site-association` pra `lucksrei.com` — **nada publicado no
+domínio nem no manifest**, só documentado. Zero mudança de código
+Dart/nativo nesta etapa. Ver
 [`handoff_etapa20.md`](handoff_etapa20.md),
 [`release_checklist_android.md`](release_checklist_android.md),
 [`release_checklist_ios.md`](release_checklist_ios.md) e
@@ -144,6 +159,10 @@ Distinções que já custaram bug quando ignoradas:
 | `release_checklist_android.md` | Keystore/signing/SDK/ícones Android — o que falta, sem inventar credencial |
 | `release_checklist_ios.md` | Auditoria estática iOS + checklist operacional de 10 passos para executar num Mac |
 | `release_checklist_store_metadata.md` | O que existe e o que falta pra Google Play e App Store, item a item |
+| `google_play_release.md` | Checklist sequencial de release Play Store (Store Listing → produção), com auditoria real do AAB assinado |
+| `google_play_data_safety.md` | Levantamento real do que o app coleta, pra preencher o formulário de Data Safety |
+| `android_device_qa.md` | Checklist manual de QA em device Android físico com o release real |
+| `ios_release_mac.md` | Auditoria estática iOS + checklist de 21 passos pra continuar o release num Mac |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |

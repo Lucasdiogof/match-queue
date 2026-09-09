@@ -4,7 +4,7 @@ O convite por link é uma feature central do FIFA Queue. A rota já existe e o
 fluxo de "convite pendente" já é persistido; o que falta é apenas a
 infraestrutura de domínio/hosting, que depende de um domínio definido.
 
-## Estado atual (Etapa 1)
+## Estado atual (atualizado 2026-09-09 — domínio decidido)
 
 | Item | Situação |
 | --- | --- |
@@ -14,8 +14,9 @@ infraestrutura de domínio/hosting, que depende de um domínio definido.
 | Retomada após login | `PendingInviteListener` no `builder` do `MaterialApp.router` |
 | URLs sem `#` no Web | `usePathUrlStrategy()` via import condicional |
 | Callback de recuperação de senha | `com.lucasdiogof.fifaqueue://auth-callback` registrado no Android e no iOS |
-| Android App Links | **Pendente** — depende do domínio |
-| iOS Universal Links | **Pendente** — depende do domínio |
+| `APP_LINK_HOST` | **`lucksrei.com`** — já configurado em `env/production.json`. O código já usa esse valor (`InviteLinkBuilder`, `PublicProfileLinkBuilder`, `AuthRedirects`) sempre que presente; o que falta é só a configuração nativa (manifest/entitlements) e publicar os dois arquivos `.well-known/*` no domínio |
+| Android App Links | **NEEDS WEBSITE + CONFIG NATIVA** — conteúdo pronto abaixo, nada publicado ainda |
+| iOS Universal Links | **NEEDS WEBSITE + macOS** — conteúdo pronto abaixo, nada publicado ainda; capability configurada no Xcode (ver `docs/ios_release_mac.md`, passo 14) |
 
 ## Fluxo
 
@@ -33,44 +34,94 @@ abre /join/X7K2P9
                  └── go('/join/X7K2P9') ──► BottomSheet do convite
 ```
 
-## O que configurar quando o domínio existir
+## O que falta configurar, agora que `lucksrei.com` está decidido
 
-Defina `APP_LINK_HOST` no arquivo de environment correspondente e siga os
-passos abaixo.
+`APP_LINK_HOST=lucksrei.com` já está em `env/production.json` — o
+código Dart (`InviteLinkBuilder`, `PublicProfileLinkBuilder`,
+`AuthRedirects`) já passa a gerar `https://lucksrei.com/join/...` e
+`https://lucksrei.com/u/...` automaticamente em builds que usem esse
+env file, **sem precisar de mudança de código**. O que falta é 100%
+config nativa (manifest Android / capability iOS) e publicação no
+domínio — nenhum dos dois foi feito, por instrução explícita de não
+publicar nada sem autorização.
 
 ### Web
 
-O `usePathUrlStrategy()` já está ativo, então `https://<host>/join/X7K2P9`
-cai direto na rota. O servidor precisa de um *fallback* para `index.html`
-em qualquer path (SPA rewrite).
+O `usePathUrlStrategy()` já está ativo, então `https://lucksrei.com/join/X7K2P9`
+cai direto na rota. O servidor de `lucksrei.com` precisa de um
+*fallback* para `index.html` em qualquer path (SPA rewrite) — depende
+de onde o Web for hospedado (fora do escopo desta etapa).
 
 ### Android (App Links)
 
-1. Publicar `https://<host>/.well-known/assetlinks.json` com o SHA-256 do
-   certificado de assinatura e o `applicationId` `com.lucasdiogof.fifaqueue`.
+**Fingerprint real do keystore de release** (extraído de
+`fifaqueue-release.jks`, seguro de publicar — não é segredo, é
+justamente o que vai no `assetlinks.json`):
+
+```
+SHA256: 19:42:BA:9C:AA:7D:A8:A9:2E:E7:DA:25:21:6B:DE:AD:CF:13:B4:48:8B:55:FA:DC:75:4D:A5:B6:E5:AF:E1:3A
+```
+
+1. Publicar em `https://lucksrei.com/.well-known/assetlinks.json`
+   (**NEEDS WEBSITE**, não publicado ainda):
+
+```json
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.lucasdiogof.fifaqueue",
+    "sha256_cert_fingerprints": [
+      "19:42:BA:9C:AA:7D:A8:A9:2E:E7:DA:25:21:6B:DE:AD:CF:13:B4:48:8B:55:FA:DC:75:4D:A5:B6:E5:AF:E1:3A"
+    ]
+  }
+}]
+```
+
 2. Adicionar em `android/app/src/main/AndroidManifest.xml`, dentro da
-   `<activity>` principal:
+   `<activity>` principal (**MISSING**, não adicionado ainda — mudança
+   de código, fora do escopo desta auditoria):
 
 ```xml
 <intent-filter android:autoVerify="true">
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="https" android:host="<host>" android:pathPrefix="/join" />
+    <data android:scheme="https" android:host="lucksrei.com" android:pathPrefix="/join" />
+    <data android:scheme="https" android:host="lucksrei.com" android:pathPrefix="/u" />
 </intent-filter>
 ```
 
 ### iOS (Universal Links)
 
-1. Publicar `https://<host>/.well-known/apple-app-site-association` (sem
-   extensão, servido como `application/json`) com o App ID
-   `<TEAM_ID>.com.lucasdiogof.fifaqueue` e o path `/join/*`.
-2. Habilitar o capability *Associated Domains* no target Runner e adicionar
-   `applinks:<host>`.
+1. Publicar em `https://lucksrei.com/.well-known/apple-app-site-association`
+   (sem extensão, servido como `application/json`, **NEEDS WEBSITE**,
+   não publicado ainda):
 
-Nada disso foi adicionado ainda porque o domínio ainda não foi decidido e
-arquivos de configuração apontando para um host inexistente só criariam
-ruído.
+```json
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "<TEAM_ID>.com.lucasdiogof.fifaqueue",
+        "paths": ["/join/*", "/u/*"]
+      }
+    ]
+  }
+}
+```
+
+`<TEAM_ID>` só existe depois de configurar a conta Apple Developer no
+Mac (ver `docs/ios_release_mac.md`, passo 9) — **NEEDS APPLE
+DEVELOPER**.
+
+2. Habilitar a capability *Associated Domains* no target Runner e
+   adicionar `applinks:lucksrei.com` — passo 14 de
+   `docs/ios_release_mac.md`, **NEEDS macOS**.
+
+Nada foi publicado no domínio nem adicionado ao manifest/entitlements
+nesta sessão — só documentado, por instrução explícita.
 
 
 ## Recuperação de senha
