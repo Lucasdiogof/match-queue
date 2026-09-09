@@ -47,21 +47,46 @@ a partir de onde o Gradle resolve caminhos relativos).
 Este arquivo **nunca deve ser commitado** — já está no `.gitignore` (assim
 como `*.jks`/`*.keystore`/`*.p12`).
 
-## 3. Rodar a build de release
+## 3. Validar o SHA-1/SHA-256 do certificado (opcional aqui, obrigatório antes de configurar App Links)
+
+Só é necessário quando o Android App Links ou algum SDK que peça
+fingerprint do certificado (ex. Google Sign-In, se um dia for adotado)
+exigir. Não bloqueia gerar o AAB/APK:
 
 ```bash
-flutter build appbundle --release
+keytool -list -v -keystore fifaqueue-release.jks -alias fifaqueue
 ```
 
-ou, para um APK direto:
+Peça a senha do keystore quando solicitado. A saída mostra `SHA1:` e
+`SHA256:` — é isso que vai num eventual `assetlinks.json` (ver
+`docs/deep_links.md`) ou no painel do Firebase (Project Settings →
+seu app Android → "Add fingerprint"), se o Firebase precisar dele pra
+algum recurso (Dynamic Links, Google Sign-In — não usado hoje).
+
+## 4. Rodar a build de release
+
+Sempre com `--dart-define-from-file`, como qualquer outra build deste
+projeto (sem isso o app builda mas fica sem `SUPABASE_URL`/chave e
+falha em runtime, não é específico de release):
 
 ```bash
-flutter build apk --release
+flutter build appbundle --release --dart-define-from-file=env/production.json
+```
+
+ou, para um APK direto (útil pra instalar num device de teste, a Play
+Store pede AAB):
+
+```bash
+flutter build apk --release --dart-define-from-file=env/production.json
 ```
 
 Sem `key.properties`, qualquer uma dessas duas falha imediatamente com uma
 mensagem explicando o que falta — de propósito, para nunca sair um artefato
 assinado com a chave de debug sem ninguém perceber.
+
+`env/production.json` ainda não existe neste checkout (só o
+`.example.json`) — copie e preencha com a URL/chave publicável do
+projeto Supabase de produção antes de rodar o build real.
 
 ## Ambiente de CI/CD
 

@@ -11,22 +11,24 @@ inventada — o que falta fica documentado como template, sem valor real.
 propósito em qualquer build de release (`gradle.taskGraph.whenReady`) —
 não deixa sair um artefato assinado com a chave de debug em silêncio.
 
-Template esperado (sem valores reais — preencher na máquina que gerar o
-keystore, nunca commitar):
+Template já versionado, sem valores reais (`android/key.properties.example`,
+confirmado tracked no git, com `CHANGE_ME` nos campos de senha):
 
 ```properties
-storePassword=<senha do keystore>
-keyPassword=<senha da chave>
-keyAlias=<alias da chave>
-storeFile=<caminho absoluto ou relativo ao keystore .jks/.keystore>
+storePassword=CHANGE_ME
+keyPassword=CHANGE_ME
+keyAlias=fifaqueue
+storeFile=/absolute/path/to/fifaqueue-release.jks
 ```
 
-Passo a passo completo (geração do keystore, `keytool`, onde colocar o
-arquivo) já documentado em `docs/android_signing.md` — não duplicado aqui.
+Passo a passo completo (geração do keystore, `keytool`, validação de
+SHA-1/SHA-256, onde colocar o arquivo) documentado em
+`docs/android_signing.md` — não duplicado aqui.
 
 | Item | Status |
 | --- | --- |
-| `key.properties` | **MISSING** — precisa ser gerado numa máquina de confiança, nunca commitado |
+| `android/key.properties.example` (template) | **READY** — já existe no repo, versionado, sem credencial real |
+| `key.properties` (arquivo real) | **MISSING** — precisa ser gerado numa máquina de confiança, nunca commitado |
 | Keystore (`.jks`/`.keystore`) | **MISSING** — mesmo motivo |
 | `storePassword` / `keyPassword` / `keyAlias` / `storeFile` | **NEEDS USER INPUT** — dependem do keystore gerado |
 | `signingConfigs["release"]` no Gradle | **READY** — já lê de `key.properties` quando existir, sem mudança de código necessária |
