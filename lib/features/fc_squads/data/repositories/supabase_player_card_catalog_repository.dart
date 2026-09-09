@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/fc_squads/data/models/fc_squad_model.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart'
-    show FcClub, FcLeague, FcManager, FcNation;
+    show FcClub, FcClubSummary, FcLeague, FcManager, FcNation;
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -115,6 +115,33 @@ class SupabasePlayerCardCatalogRepository
     final rows = await builder.order('name', ascending: true);
     return <FcClub>[for (final row in rows) ?FcSquadModel.clubFromJson(row)];
   });
+
+  @override
+  Future<List<FcClubSummary>> getClubCatalogSummary({int limit = 12}) =>
+      _guard(() async {
+        final response = await _client.rpc<dynamic>(
+          'get_fc_club_catalog_summary',
+          params: <String, dynamic>{'p_limit': limit},
+        );
+        return <FcClubSummary>[
+          if (response is List)
+            for (final entry in response)
+              if (entry is Map)
+                _clubSummaryFromJson(Map<String, dynamic>.from(entry)),
+        ];
+      });
+
+  FcClubSummary _clubSummaryFromJson(Map<String, dynamic> json) =>
+      FcClubSummary(
+        clubId: '${json['club_id']}',
+        name: '${json['name']}',
+        logoImageUrl: json['logo_image_url'] as String?,
+        leagueName: json['league_name'] as String?,
+        cardCount: json['card_count'] is int ? json['card_count'] as int : 0,
+        averageRating: json['average_rating'] is int
+            ? json['average_rating'] as int
+            : (json['average_rating'] as num?)?.round(),
+      );
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

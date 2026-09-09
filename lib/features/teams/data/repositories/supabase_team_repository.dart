@@ -137,6 +137,36 @@ class SupabaseTeamRepository implements TeamRepository {
     ),
   );
 
+  @override
+  Future<Team> setTeamVisibility({
+    required String teamId,
+    required bool isPublic,
+  }) => _guard(() async {
+    final row = await _dataSource.setTeamVisibility(
+      teamId: teamId,
+      isPublic: isPublic,
+    );
+    return TeamModel.fromJson(row);
+  });
+
+  @override
+  Future<List<PublicTeamSummary>> listPublicTeams({int limit = 50}) =>
+      _guard(() async {
+        final response = await _dataSource.listPublicTeams(limit: limit);
+        return <PublicTeamSummary>[
+          if (response is List)
+            for (final entry in response)
+              if (entry is Map)
+                TeamModel.summaryFromJson(Map<String, dynamic>.from(entry)),
+        ];
+      });
+
+  @override
+  Future<PublicTeam> getPublicTeam(String teamId) => _guard(() async {
+    final json = await _dataSource.getPublicTeam(teamId);
+    return TeamModel.publicTeamFromJson(json);
+  });
+
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
       return await action();

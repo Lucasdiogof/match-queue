@@ -288,6 +288,13 @@ class _StatusBadge extends StatelessWidget {
             : result == GameResult.loss
             ? l10n.pendingMatchLossAction
             : l10n.activityNoResult,
+        // Nunca so cor: vitoria/derrota tambem se distinguem pelo icone
+        // (seta pra cima/baixo), acessivel a daltonismo.
+        icon: result == GameResult.win
+            ? Icons.arrow_upward
+            : result == GameResult.loss
+            ? Icons.arrow_downward
+            : Icons.remove,
         tone: result == GameResult.win
             ? AppBadgeTone.success
             : result == GameResult.loss

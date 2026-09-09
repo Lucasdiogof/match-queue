@@ -556,4 +556,8 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
     FcClub(id: 'local-club-1', name: 'Clube A', leagueId: 'local-league-1'),
     FcClub(id: 'local-club-2', name: 'Clube B', leagueId: 'local-league-2'),
   ];
+
+  @override
+  Future<List<FcClubSummary>> getClubCatalogSummary({int limit = 12}) async =>
+      const <FcClubSummary>[];
 }

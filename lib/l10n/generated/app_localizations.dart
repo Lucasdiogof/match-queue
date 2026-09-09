@@ -178,11 +178,17 @@ abstract class AppLocalizations {
   /// **'Editar'**
   String get actionEdit;
 
-  /// No description provided for @navSearch.
+  /// No description provided for @navHome.
   ///
   /// In pt, this message translates to:
-  /// **'Jogar'**
-  String get navSearch;
+  /// **'Início'**
+  String get navHome;
+
+  /// No description provided for @navControl.
+  ///
+  /// In pt, this message translates to:
+  /// **'Controle'**
+  String get navControl;
 
   /// No description provided for @navTeam.
   ///
@@ -220,17 +226,83 @@ abstract class AppLocalizations {
   /// **'Etapa 3'**
   String get comingSoonNextStage;
 
-  /// No description provided for @homeTitle.
+  /// No description provided for @startEyebrow.
   ///
   /// In pt, this message translates to:
-  /// **'Buscar partida'**
-  String get homeTitle;
+  /// **'FIFA QUEUE'**
+  String get startEyebrow;
 
-  /// No description provided for @homeSubtitle.
+  /// No description provided for @startTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Coordene quem está procurando agora.'**
-  String get homeSubtitle;
+  /// **'Visão geral'**
+  String get startTitle;
+
+  /// No description provided for @startSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu time e sua semana em um lugar.'**
+  String get startSubtitle;
+
+  /// No description provided for @startShortcutsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atalhos'**
+  String get startShortcutsTitle;
+
+  /// No description provided for @controlEyebrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'CONTROLE'**
+  String get controlEyebrow;
+
+  /// No description provided for @controlTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu jogo começa aqui'**
+  String get controlTitle;
+
+  /// No description provided for @controlSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fila, adversário e squad em um só lugar.'**
+  String get controlSubtitle;
+
+  /// No description provided for @controlDiscoverCardsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Explorar cartas'**
+  String get controlDiscoverCardsTitle;
+
+  /// No description provided for @controlDiscoverCardsSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogadores em destaque no catálogo completo.'**
+  String get controlDiscoverCardsSubtitle;
+
+  /// No description provided for @controlDiscoverClubsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clubes'**
+  String get controlDiscoverClubsTitle;
+
+  /// No description provided for @controlDiscoverClubsSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Explore os clubes do catálogo FC27.'**
+  String get controlDiscoverClubsSubtitle;
+
+  /// No description provided for @controlEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pronto pra entrar em campo?'**
+  String get controlEmptyTitle;
+
+  /// No description provided for @controlEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha uma conta e um modo pra começar a buscar partida.'**
+  String get controlEmptyMessage;
 
   /// No description provided for @teamTitle.
   ///
@@ -244,11 +316,107 @@ abstract class AppLocalizations {
   /// **'Jogadores, cargos e convites.'**
   String get teamSubtitle;
 
+  /// No description provided for @teamsEyebrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'TIMES'**
+  String get teamsEyebrow;
+
   /// No description provided for @teamsListSubtitle.
   ///
   /// In pt, this message translates to:
   /// **'Seus times e status operacional.'**
   String get teamsListSubtitle;
+
+  /// No description provided for @teamsMineTab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meus Times'**
+  String get teamsMineTab;
+
+  /// No description provided for @teamsExploreTab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Explorar'**
+  String get teamsExploreTab;
+
+  /// No description provided for @teamsExploreEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum time público ainda'**
+  String get teamsExploreEmptyTitle;
+
+  /// No description provided for @teamsExploreEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Times públicos aparecem aqui quando existirem.'**
+  String get teamsExploreEmptyMessage;
+
+  /// No description provided for @teamVisibilitySectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Visibilidade'**
+  String get teamVisibilitySectionTitle;
+
+  /// No description provided for @teamVisibilityPublic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Público'**
+  String get teamVisibilityPublic;
+
+  /// No description provided for @teamVisibilityPrivate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Privado'**
+  String get teamVisibilityPrivate;
+
+  /// No description provided for @teamVisibilityPublicHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparece em Explorar e tem página pública.'**
+  String get teamVisibilityPublicHint;
+
+  /// No description provided for @teamVisibilityPrivateHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não aparece em Explorar nem em buscas públicas.'**
+  String get teamVisibilityPrivateHint;
+
+  /// No description provided for @teamPublicPageMembersTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elenco'**
+  String get teamPublicPageMembersTitle;
+
+  /// No description provided for @teamPublicPageRecordTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Retrospecto'**
+  String get teamPublicPageRecordTitle;
+
+  /// No description provided for @teamPublicPageRecordLine.
+  ///
+  /// In pt, this message translates to:
+  /// **'{wins} vitórias • {losses} derrotas'**
+  String teamPublicPageRecordLine(int wins, int losses);
+
+  /// No description provided for @teamPublicPageNotFoundTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Time não encontrado'**
+  String get teamPublicPageNotFoundTitle;
+
+  /// No description provided for @teamPublicPageNotFoundMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este time não existe ou não está disponível publicamente.'**
+  String get teamPublicPageNotFoundMessage;
+
+  /// No description provided for @historyEyebrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'HISTÓRICO'**
+  String get historyEyebrow;
 
   /// No description provided for @historyTitle.
   ///

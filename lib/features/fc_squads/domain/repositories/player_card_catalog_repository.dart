@@ -89,4 +89,8 @@ abstract interface class PlayerCardCatalogRepository {
   /// [leagueName] filtra pela liga, quando informado. Etapa 11: filtro de
   /// clube no picker de cartas.
   Future<List<FcClub>> getClubs({String? leagueName});
+
+  /// Clubes com agregados (contagem de cartas + rating médio), para o card
+  /// "Clubes" do Controle. Só clubes com pelo menos 1 carta ativa.
+  Future<List<FcClubSummary>> getClubCatalogSummary({int limit = 12});
 }

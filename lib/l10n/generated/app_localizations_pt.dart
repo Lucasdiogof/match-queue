@@ -48,7 +48,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionEdit => 'Editar';
 
   @override
-  String get navSearch => 'Jogar';
+  String get navHome => 'Início';
+
+  @override
+  String get navControl => 'Controle';
 
   @override
   String get navTeam => 'Times';
@@ -70,10 +73,46 @@ class AppLocalizationsPt extends AppLocalizations {
   String get comingSoonNextStage => 'Etapa 3';
 
   @override
-  String get homeTitle => 'Buscar partida';
+  String get startEyebrow => 'FIFA QUEUE';
 
   @override
-  String get homeSubtitle => 'Coordene quem está procurando agora.';
+  String get startTitle => 'Visão geral';
+
+  @override
+  String get startSubtitle => 'Seu time e sua semana em um lugar.';
+
+  @override
+  String get startShortcutsTitle => 'Atalhos';
+
+  @override
+  String get controlEyebrow => 'CONTROLE';
+
+  @override
+  String get controlTitle => 'Seu jogo começa aqui';
+
+  @override
+  String get controlSubtitle => 'Fila, adversário e squad em um só lugar.';
+
+  @override
+  String get controlDiscoverCardsTitle => 'Explorar cartas';
+
+  @override
+  String get controlDiscoverCardsSubtitle =>
+      'Jogadores em destaque no catálogo completo.';
+
+  @override
+  String get controlDiscoverClubsTitle => 'Clubes';
+
+  @override
+  String get controlDiscoverClubsSubtitle =>
+      'Explore os clubes do catálogo FC27.';
+
+  @override
+  String get controlEmptyTitle => 'Pronto pra entrar em campo?';
+
+  @override
+  String get controlEmptyMessage =>
+      'Escolha uma conta e um modo pra começar a buscar partida.';
 
   @override
   String get teamTitle => 'Meu time';
@@ -82,7 +121,61 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamSubtitle => 'Jogadores, cargos e convites.';
 
   @override
+  String get teamsEyebrow => 'TIMES';
+
+  @override
   String get teamsListSubtitle => 'Seus times e status operacional.';
+
+  @override
+  String get teamsMineTab => 'Meus Times';
+
+  @override
+  String get teamsExploreTab => 'Explorar';
+
+  @override
+  String get teamsExploreEmptyTitle => 'Nenhum time público ainda';
+
+  @override
+  String get teamsExploreEmptyMessage =>
+      'Times públicos aparecem aqui quando existirem.';
+
+  @override
+  String get teamVisibilitySectionTitle => 'Visibilidade';
+
+  @override
+  String get teamVisibilityPublic => 'Público';
+
+  @override
+  String get teamVisibilityPrivate => 'Privado';
+
+  @override
+  String get teamVisibilityPublicHint =>
+      'Aparece em Explorar e tem página pública.';
+
+  @override
+  String get teamVisibilityPrivateHint =>
+      'Não aparece em Explorar nem em buscas públicas.';
+
+  @override
+  String get teamPublicPageMembersTitle => 'Elenco';
+
+  @override
+  String get teamPublicPageRecordTitle => 'Retrospecto';
+
+  @override
+  String teamPublicPageRecordLine(int wins, int losses) {
+    return '$wins vitórias • $losses derrotas';
+  }
+
+  @override
+  String get teamPublicPageNotFoundTitle => 'Time não encontrado';
+
+  @override
+  String get teamPublicPageNotFoundMessage =>
+      'Este time não existe ou não está disponível publicamente.';
+
+  @override
+  String get historyEyebrow => 'HISTÓRICO';
 
   @override
   String get historyTitle => 'Histórico';

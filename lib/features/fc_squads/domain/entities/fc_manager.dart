@@ -39,6 +39,37 @@ class FcClub extends Equatable {
   List<Object?> get props => <Object?>[id, name, leagueId, logoImageUrl];
 }
 
+/// Clube com agregados do catálogo (contagem de cartas ativas + rating
+/// médio) -- usado pelo card "Clubes" do Controle. Nunca inventa número:
+/// vem de get_fc_club_catalog_summary, só clubes com >= 1 carta ativa.
+class FcClubSummary extends Equatable {
+  const FcClubSummary({
+    required this.clubId,
+    required this.name,
+    required this.cardCount,
+    this.logoImageUrl,
+    this.leagueName,
+    this.averageRating,
+  });
+
+  final String clubId;
+  final String name;
+  final String? logoImageUrl;
+  final String? leagueName;
+  final int cardCount;
+  final int? averageRating;
+
+  @override
+  List<Object?> get props => <Object?>[
+    clubId,
+    name,
+    logoImageUrl,
+    leagueName,
+    cardCount,
+    averageRating,
+  ];
+}
+
 /// Técnico. A liga NÃO mora aqui de propósito: ela é configuração do squad
 /// (o mesmo técnico pode ser usado com ligas diferentes em squads
 /// diferentes), então vive em [FcSquadDetail.managerLeague].

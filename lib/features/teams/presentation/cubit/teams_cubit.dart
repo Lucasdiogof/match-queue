@@ -184,6 +184,40 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
+  Future<bool> setTeamVisibility({
+    required String teamId,
+    required bool isPublic,
+  }) async {
+    if (state.isSaving) {
+      return false;
+    }
+    emit(state.copyWith(isSaving: true, clearActionFailure: true));
+    try {
+      final updated = await _repository.setTeamVisibility(
+        teamId: teamId,
+        isPublic: isPublic,
+      );
+      final teams = state.teams
+          .map(
+            (userTeam) => userTeam.id == teamId
+                ? UserTeam(
+                    team: updated,
+                    role: userTeam.role,
+                    joinedAt: userTeam.joinedAt,
+                  )
+                : userTeam,
+          )
+          .toList(growable: false);
+      emit(state.copyWith(teams: teams, isSaving: false));
+      return true;
+    } on AppFailure catch (failure) {
+      if (!isClosed) {
+        emit(state.copyWith(isSaving: false, actionFailure: failure));
+      }
+      return false;
+    }
+  }
+
   void clearActionFailure() {
     if (state.actionFailure != null) {
       emit(state.copyWith(clearActionFailure: true));

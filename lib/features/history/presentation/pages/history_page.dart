@@ -8,7 +8,6 @@ import 'package:fifa_queue/features/history/presentation/widgets/activity_timeli
 import 'package:fifa_queue/features/history/presentation/widgets/matchmaking_stats_view.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,13 +22,31 @@ class HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: AppAppBar(
-            title: l10n.historyTitle,
-            subtitle: l10n.historySubtitle,
+          appBar: const AppAppBar(),
+          body: AppBackground(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                FeatureHeader(
+                  eyebrow: l10n.historyEyebrow,
+                  title: l10n.historyTitle,
+                  subtitle: l10n.historySubtitle,
+                ),
+                Expanded(
+                  child: selected == null
+                      ? AppEmptyState(
+                          icon: Icons.timeline_outlined,
+                          title: l10n.historyEmptyTitle,
+                          message: l10n.historyNoTeamMessage,
+                        )
+                      : _HistoryScope(
+                          key: ValueKey(selected.id),
+                          teamId: selected.id,
+                        ),
+                ),
+              ],
+            ),
           ),
-          body: selected == null
-              ? TeamEmptyState(message: l10n.historyNoTeamMessage)
-              : _HistoryScope(key: ValueKey(selected.id), teamId: selected.id),
         );
       },
     );

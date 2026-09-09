@@ -50,6 +50,8 @@ class _TeamSettingsBody extends StatelessWidget {
       children: <Widget>[
         _InfoSection(team: team, canManage: canManage),
         const SizedBox(height: AppSpacing.lg),
+        _VisibilitySection(team: team, canManage: canManage),
+        const SizedBox(height: AppSpacing.lg),
         _DurationSection(team: team, canManage: canManage),
         const SizedBox(height: AppSpacing.lg),
         InviteSection(teamId: team.id, canManage: canManage),
@@ -95,6 +97,83 @@ class _InfoSection extends StatelessWidget {
             const SizedBox(height: AppSpacing.xs),
             AppBadge(label: team.tag!),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _VisibilitySection extends StatefulWidget {
+  const _VisibilitySection({required this.team, required this.canManage});
+
+  final Team team;
+  final bool canManage;
+
+  @override
+  State<_VisibilitySection> createState() => _VisibilitySectionState();
+}
+
+class _VisibilitySectionState extends State<_VisibilitySection> {
+  bool _isSaving = false;
+
+  Future<void> _toggle(bool isPublic) async {
+    if (_isSaving || isPublic == widget.team.isPublic) {
+      return;
+    }
+    setState(() => _isSaving = true);
+    context.read<TeamsCubit>().clearActionFailure();
+    await context.read<TeamsCubit>().setTeamVisibility(
+      teamId: widget.team.id,
+      isPublic: isPublic,
+    );
+    if (mounted) {
+      setState(() => _isSaving = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            l10n.teamVisibilitySectionTitle.toUpperCase(),
+            style: context.textStyles.labelSmall,
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            widget.team.isPublic
+                ? l10n.teamVisibilityPublicHint
+                : l10n.teamVisibilityPrivateHint,
+            style: context.textStyles.bodySmall?.copyWith(
+              color: context.colors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Wrap(
+            spacing: AppSpacing.sm,
+            children: <Widget>[
+              AppChip(
+                label: l10n.teamVisibilityPublic,
+                icon: Icons.public,
+                isSelected: widget.team.isPublic,
+                onPressed: widget.canManage && !_isSaving
+                    ? () => _toggle(true)
+                    : null,
+              ),
+              AppChip(
+                label: l10n.teamVisibilityPrivate,
+                icon: Icons.lock_outline,
+                isSelected: !widget.team.isPublic,
+                onPressed: widget.canManage && !_isSaving
+                    ? () => _toggle(false)
+                    : null,
+              ),
+            ],
+          ),
         ],
       ),
     );

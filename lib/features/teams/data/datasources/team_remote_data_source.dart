@@ -42,6 +42,15 @@ abstract interface class TeamRemoteDataSource {
     int limit,
     int offset,
   });
+
+  Future<Map<String, dynamic>> setTeamVisibility({
+    required String teamId,
+    required bool isPublic,
+  });
+
+  Future<Object?> listPublicTeams({int limit});
+
+  Future<Map<String, dynamic>> getPublicTeam(String teamId);
 }
 
 class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
@@ -186,4 +195,31 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
       'p_offset': offset,
     },
   );
+
+  @override
+  Future<Map<String, dynamic>> setTeamVisibility({
+    required String teamId,
+    required bool isPublic,
+  }) async {
+    final response = await _client.rpc<dynamic>(
+      'set_team_visibility',
+      params: <String, dynamic>{'p_team_id': teamId, 'p_is_public': isPublic},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
+
+  @override
+  Future<Object?> listPublicTeams({int limit = 50}) => _client.rpc<dynamic>(
+    'list_public_teams',
+    params: <String, dynamic>{'p_limit': limit},
+  );
+
+  @override
+  Future<Map<String, dynamic>> getPublicTeam(String teamId) async {
+    final response = await _client.rpc<dynamic>(
+      'get_public_team',
+      params: <String, dynamic>{'p_team_id': teamId},
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
 }

@@ -48,7 +48,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionEdit => 'Edit';
 
   @override
-  String get navSearch => 'Play';
+  String get navHome => 'Home';
+
+  @override
+  String get navControl => 'Control';
 
   @override
   String get navTeam => 'Teams';
@@ -70,10 +73,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comingSoonNextStage => 'Stage 3';
 
   @override
-  String get homeTitle => 'Find a match';
+  String get startEyebrow => 'FIFA QUEUE';
 
   @override
-  String get homeSubtitle => 'Coordinate who is searching right now.';
+  String get startTitle => 'Overview';
+
+  @override
+  String get startSubtitle => 'Your team and your week in one place.';
+
+  @override
+  String get startShortcutsTitle => 'Shortcuts';
+
+  @override
+  String get controlEyebrow => 'CONTROL';
+
+  @override
+  String get controlTitle => 'Your game starts here';
+
+  @override
+  String get controlSubtitle => 'Queue, opponent and squad in one place.';
+
+  @override
+  String get controlDiscoverCardsTitle => 'Explore cards';
+
+  @override
+  String get controlDiscoverCardsSubtitle =>
+      'Featured players from the full catalog.';
+
+  @override
+  String get controlDiscoverClubsTitle => 'Clubs';
+
+  @override
+  String get controlDiscoverClubsSubtitle =>
+      'Explore the clubs in the FC27 catalog.';
+
+  @override
+  String get controlEmptyTitle => 'Ready to get on the pitch?';
+
+  @override
+  String get controlEmptyMessage =>
+      'Pick an account and a mode to start searching for a match.';
 
   @override
   String get teamTitle => 'My team';
@@ -82,7 +121,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamSubtitle => 'Players, roles and invites.';
 
   @override
+  String get teamsEyebrow => 'TEAMS';
+
+  @override
   String get teamsListSubtitle => 'Your teams and their operational status.';
+
+  @override
+  String get teamsMineTab => 'My Teams';
+
+  @override
+  String get teamsExploreTab => 'Explore';
+
+  @override
+  String get teamsExploreEmptyTitle => 'No public teams yet';
+
+  @override
+  String get teamsExploreEmptyMessage =>
+      'Public teams show up here once they exist.';
+
+  @override
+  String get teamVisibilitySectionTitle => 'Visibility';
+
+  @override
+  String get teamVisibilityPublic => 'Public';
+
+  @override
+  String get teamVisibilityPrivate => 'Private';
+
+  @override
+  String get teamVisibilityPublicHint =>
+      'Shows up in Explore and has a public page.';
+
+  @override
+  String get teamVisibilityPrivateHint =>
+      'Never appears in Explore or public search.';
+
+  @override
+  String get teamPublicPageMembersTitle => 'Roster';
+
+  @override
+  String get teamPublicPageRecordTitle => 'Record';
+
+  @override
+  String teamPublicPageRecordLine(int wins, int losses) {
+    return '$wins wins • $losses losses';
+  }
+
+  @override
+  String get teamPublicPageNotFoundTitle => 'Team not found';
+
+  @override
+  String get teamPublicPageNotFoundMessage =>
+      'This team doesn\'t exist or isn\'t publicly available.';
+
+  @override
+  String get historyEyebrow => 'HISTORY';
 
   @override
   String get historyTitle => 'History';

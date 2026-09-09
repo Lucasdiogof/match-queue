@@ -261,6 +261,33 @@ class LocalTeamRepository implements TeamRepository {
     int limit = 50,
     int offset = 0,
   }) async => const <TeamPlayerLeaderboardEntry>[];
+
+  @override
+  Future<Team> setTeamVisibility({
+    required String teamId,
+    required bool isPublic,
+  }) async {
+    final userId = _requireUserId();
+    final records = _readRecords();
+    final index = records.indexWhere((record) => record.team.id == teamId);
+    if (index < 0) {
+      throw const TeamFailure(reason: TeamFailureReason.notFound);
+    }
+    final updated = records[index].team.copyWith(isPublic: isPublic);
+    records[index] = _LocalTeamRecord(team: updated, ownerId: userId);
+    await _writeRecords(records);
+    return updated;
+  }
+
+  /// Modo local não tem outros usuários -- Explorar nunca tem nada a
+  /// mostrar (ninguém além do próprio dono existe para publicar um time).
+  @override
+  Future<List<PublicTeamSummary>> listPublicTeams({int limit = 50}) async =>
+      const <PublicTeamSummary>[];
+
+  @override
+  Future<PublicTeam> getPublicTeam(String teamId) async =>
+      const PublicTeam(found: false);
 }
 
 class _LocalTeamRecord {
@@ -288,6 +315,7 @@ class _LocalTeamRecord {
               : 180,
         ),
         isActive: json['is_active'] is bool ? json['is_active'] as bool : true,
+        isPublic: json['is_public'] is bool ? json['is_public'] as bool : true,
         createdAt: createdAt,
         updatedAt:
             DateTime.tryParse('${json['updated_at']}')?.toUtc() ?? createdAt,
@@ -305,6 +333,7 @@ class _LocalTeamRecord {
     'secondary_color': team.secondaryColor,
     'default_search_duration_seconds': team.defaultSearchDuration.inSeconds,
     'is_active': team.isActive,
+    'is_public': team.isPublic,
     'created_at': team.createdAt.toIso8601String(),
     'updated_at': team.updatedAt.toIso8601String(),
   };

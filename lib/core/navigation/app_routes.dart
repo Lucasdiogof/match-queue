@@ -30,7 +30,12 @@ class AppRoutes {
   static const AppRoute joinTeam = AppRoute('join-team', '/join/:inviteCode');
 
   static const AppRoute home = AppRoute('home', '/app/home');
+  static const AppRoute control = AppRoute('control', '/app/control');
   static const AppRoute team = AppRoute('team', '/app/team');
+  static const AppRoute publicTeam = AppRoute(
+    'public-team',
+    '/app/team/public/:teamId',
+  );
   static const AppRoute teamDetail = AppRoute(
     'team-detail',
     '/app/team/:teamId',
@@ -105,6 +110,7 @@ class AppRoutes {
   static const List<AppRoute> shellRoutes = <AppRoute>[
     home,
     team,
+    control,
     history,
     profile,
   ];
@@ -131,6 +137,8 @@ class AppRoutes {
       '/app/history/match/$matchId';
 
   static String teamDetailLocation(String teamId) => '/app/team/$teamId';
+
+  static String publicTeamLocation(String teamId) => '/app/team/public/$teamId';
 
   static String playerProfileLocation(String teamId, String userId) =>
       '/app/team/$teamId/player/$userId';

@@ -52,4 +52,18 @@ abstract interface class TeamRepository {
     int limit,
     int offset,
   });
+
+  /// Liga/desliga a visibilidade pública do time (aba Explorar + página
+  /// pública). Só owner/admin -- a RPC recusa com FQ012 caso contrário.
+  Future<Team> setTeamVisibility({
+    required String teamId,
+    required bool isPublic,
+  });
+
+  /// Times públicos para a aba Explorar -- nunca inclui time privado.
+  Future<List<PublicTeamSummary>> listPublicTeams({int limit = 50});
+
+  /// Página pública de um time. `found = false` cobre "não existe" e "é
+  /// privado" com a mesma resposta.
+  Future<PublicTeam> getPublicTeam(String teamId);
 }
