@@ -4,8 +4,8 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-09: **Etapas 1–17 fechadas** (17 foi auditoria, sem
-feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
+Estado em 2026-09-09: **Etapas 1–18 fechadas** (17 e 18 foram auditoria,
+sem feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
 de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
 inativo todos corrigidos e validados ao vivo, ver
 [`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B/17B-2
@@ -27,6 +27,18 @@ homônimos em ligas diferentes (esse continua igual, aceito). Ver
 [`handoff_etapa17b2.md`](handoff_etapa17b2.md) (seção 17 tem o full
 import; seções 1-16 têm o histórico da validação em escala) e
 [`handoff_etapa17b.md`](handoff_etapa17b.md) (histórico mais antigo).
+**Etapa 18 (validação do catálogo real dentro do app) FECHADA — READY
+FOR RELEASE QA.** Auditoria pura, zero mudança de código: Squad Builder/
+picker/busca/filtros testados ao vivo via REST contra as 17.873 cartas
+reais (posição, anti-duplicação de carta em slot, overall/chemistry,
+masculino/feminino, clube ambíguo, sem clube, nomes semelhantes — tudo
+PASS, nenhuma regra nova inventada). Performance real medida (145-594ms
+por busca, picker já pagina server-side, nunca carrega tudo de uma vez)
+— nenhuma otimização necessária. Achado adicional: mesmo padrão dos 32
+`fc_clubs` órfãos existe em menor escala em `fc_leagues` (6) e
+`fc_nations` (8) — documentado, não corrigido, zero impacto. Única
+pendência real: QA visual Flutter não executável neste ambiente. Ver
+[`handoff_etapa18.md`](handoff_etapa18.md).
 76 migrations locais = remotas, `flutter analyze` e `flutter test
 test/tool` (6/6) sem issues. Edge Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
@@ -89,7 +101,8 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa16.md` | Perfil público opt-in + compartilhamento da Escalação Principal, rota `/u/:identifier` |
 | `handoff_etapa17.md` | Auditoria de lançamento (sem feature nova) — índice curto |
 | `handoff_etapa17b.md` | Importação real do catálogo FC27 — segurança corrigida, importer adaptado, sample de 40 escrito em produção |
-| `handoff_etapa17b2.md` | Validação em escala intermediária (500/2.000/5.000) do import FC27 — auditoria completa, batching medido, testes automatizados, veredito B (blocker: credencial) |
+| `handoff_etapa17b2.md` | Validação em escala + full import real do catálogo FC27 (17.873 cartas), idempotência, QA REST, 32 fc_clubs órfãos diagnosticados |
+| `handoff_etapa18.md` | Validação do catálogo real dentro do app — Squad Builder/picker/busca/filtros contra as 17.873 cartas, performance real, sem bug encontrado |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
