@@ -69,7 +69,14 @@
 //   playstyles, playstyles_plus, detailed_stats, accelerate_rate,
 //   raw_metadata, height_cm, preferred_foot, player_roles, rarity,
 //   player_image_url, card_image_url, club_name, league_name, nation_name,
-//   card_type, source_url
+//   card_type, source_url, club_external_id
+//
+// club_external_id (Etapa 17B-2, dataset Wrexist): quando a fonte declarar
+// um id proprio de clube (distinto do nome), o upsert de fc_clubs passa a
+// resolver por (provider, provider_club_id) em vez de so por nome -- evita
+// colidir clubes homonimos em ligas diferentes (achado real: 42 no
+// snapshot Wrexist, times masculino/feminino com o mesmo nome). Sem esse
+// campo mapeado, cai no comportamento historico (dedup por nome).
 //
 // source_url por linha (Etapa 17B, dataset Wrexist): quando o arquivo ja
 // declara uma URL de origem por jogador/carta, ela tem prioridade sobre
@@ -172,7 +179,72 @@ Future<void> main(List<String> args) async {
   var malformedJsonFieldCount = 0;
   var rowsWithAlternativePositions = 0;
 
+  // Modo escrita processa em lotes de --batch-size linhas: um POST em array
+  // por lote para fc_players, outro para fc_player_cards, em vez de 1
+  // request por linha. Cada lote resolve o fc_player_id via
+  // provider_player_id devolvido pelo POST (return=representation), nunca
+  // por posicao no array -- seguro mesmo que o Postgres reordene a resposta.
+  final chunkPlayerRows = <Map<String, dynamic>>[];
+  final chunkCardBuilders = <_PendingCard>[];
+
+  Future<void> flushChunk() async {
+    if (client == null) return;
+    if (chunkPlayerRows.isNotEmpty) {
+      // Um POST em array com ON CONFLICT falha se a MESMA chave de conflito
+      // aparecer duas vezes no mesmo array (Postgres: "ON CONFLICT DO UPDATE
+      // command cannot affect row a second time"). O dataset atual tem 0
+      // provider_player_id duplicado (auditoria Etapa 17B-2), mas uma fonte
+      // futura com varias cartas por jogador (Gold/TOTW/Icon) poderia
+      // repetir o mesmo jogador dentro do mesmo lote -- dedup por
+      // provider_player_id (ultima ocorrencia vence, mesmo dado em todo
+      // caso) protege o lote sem mudar nenhum resultado no dataset atual.
+      final dedupedPlayers = <String, Map<String, dynamic>>{
+        for (final row in chunkPlayerRows)
+          row['provider_player_id'] as String: row,
+      };
+      final created = await client.upsertBatch(
+        table: 'fc_players',
+        onConflict: 'provider,game_version,provider_player_id',
+        rows: dedupedPlayers.values.toList(growable: false),
+      );
+      final idByProviderPlayerId = <String, String>{
+        for (final row in created ?? const <Map<String, dynamic>>[])
+          if (row['provider_player_id'] is String && row['id'] is String)
+            row['provider_player_id'] as String: row['id'] as String,
+      };
+      for (final pending in chunkCardBuilders) {
+        if (pending.providerPlayerId != null) {
+          pending.row['fc_player_id'] =
+              idByProviderPlayerId[pending.providerPlayerId];
+        }
+      }
+      chunkPlayerRows.clear();
+    }
+
+    if (chunkCardBuilders.isNotEmpty) {
+      final cardRows = [for (final pending in chunkCardBuilders) pending.row];
+      final ok = await client.upsertBatch(
+        table: 'fc_player_cards',
+        onConflict: 'provider,provider_card_id',
+        rows: cardRows,
+        returnRepresentation: false,
+      );
+      for (final pending in chunkCardBuilders) {
+        if (ok == null) {
+          rowsFailed++;
+        } else if (pending.wasExisting) {
+          rowsUpdated++;
+        } else {
+          rowsInserted++;
+        }
+      }
+      chunkCardBuilders.clear();
+    }
+  }
+
+  var rowIndex = 0;
   for (final rawRow in rawRows) {
+    rowIndex++;
     rowsRead++;
     String? col(String field) => _stringOrNull(rawRow[mapping.get(field)]);
     int? colInt(String field) => int.tryParse(col(field) ?? '');
@@ -280,6 +352,15 @@ Future<void> main(List<String> args) async {
     final clubName = col('club_name');
     final leagueName = col('league_name');
     final nationName = col('nation_name');
+    // Etapa 17B-2: auditoria do dataset Wrexist achou 42 clubes com o MESMO
+    // NOME em duas ligas distintas (times masculino/feminino homonimos, ex.
+    // "Arsenal" em Premier League E Barclays WSL) -- upsertByName resolve
+    // por nome sozinho, entao colidiria os dois num unico fc_clubs, com
+    // league_id de quem escreveu primeiro. club_external_id (quando a fonte
+    // declarar um -- 100% das linhas com clube no Wrexist, 0 colisao,
+    // confirmado por auditoria) evita isso sem inventar id nenhum: e o
+    // proprio identificador do clube que a fonte ja fornece.
+    final clubExternalId = col('club_external_id');
 
     if (clubName != null) dryRunClubs.add(clubName);
     if (leagueName != null) dryRunLeagues.add(leagueName);
@@ -302,6 +383,8 @@ Future<void> main(List<String> args) async {
               table: 'fc_clubs',
               provider: options.provider,
               name: clubName,
+              externalId: clubExternalId,
+              externalIdColumn: 'provider_club_id',
               extra: <String, dynamic>{'league_id': ?leagueId},
             );
       nationId = nationName == null
@@ -314,8 +397,9 @@ Future<void> main(List<String> args) async {
     }
 
     // fc_players e upsertado sempre que o item declarar identidade de
-    // jogador -- independente de tambem ser uma carta real ou nao.
-    String? fcPlayerId;
+    // jogador -- independente de tambem ser uma carta real ou nao. Em modo
+    // escrita isso vira uma linha no lote de fc_players (flush por
+    // --batch-size), nunca 1 request por linha.
     if (providerPlayerId != null) {
       touchedPlayerKeys.add(
         '${options.provider}:${options.gameVersion}:$providerPlayerId',
@@ -339,11 +423,8 @@ Future<void> main(List<String> args) async {
       );
 
       if (client != null) {
-        fcPlayerId = await client.upsertFcPlayer(
-          provider: externalPlayer.provider,
-          gameVersion: externalPlayer.gameVersion,
-          providerPlayerId: externalPlayer.providerPlayerId,
-          row: externalPlayer.toFcPlayersRow(
+        chunkPlayerRows.add(
+          externalPlayer.toFcPlayersRow(
             nationId: nationId,
             clubId: clubId,
             leagueId: leagueId,
@@ -354,12 +435,16 @@ Future<void> main(List<String> args) async {
     }
 
     if (!hasCardId) {
-      // Sem provider_card_id: fc_players ja foi upsertado acima (se
+      // Sem provider_card_id: fc_players ja foi enfileirado acima (se
       // providerPlayerId existia). NUNCA criar uma linha em
       // fc_player_cards so para satisfazer o picker, e NUNCA so por causa
       // de card_type/rarity sozinhos -- sem identidade externa, nao ha
       // chave pra upsertar de forma idempotente.
       playerOnlyCount++;
+      if (chunkPlayerRows.length >= options.batchSize ||
+          rowIndex == rawRows.length) {
+        await flushChunk();
+      }
       continue;
     }
     realCardCount++;
@@ -411,14 +496,17 @@ Future<void> main(List<String> args) async {
       clubId: clubId,
       leagueId: leagueId,
       nationId: nationId,
-      fcPlayerId: fcPlayerId,
+      // fcPlayerId e preenchido no flush do lote (depois do POST em array
+      // de fc_players), nunca aqui -- ver flushChunk.
+      fcPlayerId: null,
       syncedAt: DateTime.now().toUtc(),
     );
 
     seenProviderCardIds.add(providerCardId);
 
+    final wasExisting = existingProviderCardIds.contains(providerCardId);
     if (options.dryRun) {
-      if (existingProviderCardIds.contains(providerCardId)) {
+      if (wasExisting) {
         rowsUpdated++;
       } else {
         rowsInserted++;
@@ -426,20 +514,22 @@ Future<void> main(List<String> args) async {
       continue;
     }
 
-    final wasExisting = existingProviderCardIds.contains(providerCardId);
-    final ok = await client!.upsert(
-      table: 'fc_player_cards',
-      onConflict: 'provider,provider_card_id',
-      row: payload,
+    chunkCardBuilders.add(
+      _PendingCard(
+        row: payload,
+        providerPlayerId: providerPlayerId,
+        wasExisting: wasExisting,
+      ),
     );
-    if (!ok) {
-      rowsFailed++;
-    } else if (wasExisting) {
-      rowsUpdated++;
-    } else {
-      rowsInserted++;
+
+    final isLastRow = rowIndex == rawRows.length;
+    if (chunkCardBuilders.length >= options.batchSize ||
+        chunkPlayerRows.length >= options.batchSize ||
+        isLastRow) {
+      await flushChunk();
     }
   }
+  await flushChunk();
 
   stdout.writeln('${options.dryRun ? '[DRY-RUN] ' : ''}Resultado do sync:');
   stdout.writeln('  formato:        ${options.format.name}');
@@ -494,6 +584,7 @@ Future<void> main(List<String> args) async {
         'nesta rodada (arquivo tratado como parcial, de proposito).',
       );
     }
+    client.close();
   }
 }
 
@@ -506,6 +597,21 @@ String? _stringOrNull(Object? value) {
 
 enum _InputFormat { csv, json }
 
+/// Linha de fc_player_cards ainda sem `fc_player_id` -- resolvido no flush
+/// do lote (ver `flushChunk`), depois que o POST em array de fc_players
+/// devolve o id de cada `provider_player_id`.
+class _PendingCard {
+  _PendingCard({
+    required this.row,
+    required this.providerPlayerId,
+    required this.wasExisting,
+  });
+
+  final Map<String, dynamic> row;
+  final String? providerPlayerId;
+  final bool wasExisting;
+}
+
 class _Args {
   _Args({
     required this.filePath,
@@ -515,6 +621,7 @@ class _Args {
     required this.mapPath,
     required this.dryRun,
     required this.fullCatalog,
+    required this.batchSize,
     this.sourceUrl,
   });
 
@@ -525,6 +632,7 @@ class _Args {
   final String? mapPath;
   final bool dryRun;
   final bool fullCatalog;
+  final int batchSize;
   final String? sourceUrl;
 
   static _Args parse(List<String> args) {
@@ -536,6 +644,7 @@ class _Args {
     String? mapPath;
     var dryRun = false;
     var fullCatalog = false;
+    var batchSize = 500;
     String? sourceUrl;
 
     for (final arg in args) {
@@ -555,6 +664,9 @@ class _Args {
         mapPath = arg.substring('--map='.length);
       } else if (arg.startsWith('--source-url=')) {
         sourceUrl = arg.substring('--source-url='.length);
+      } else if (arg.startsWith('--batch-size=')) {
+        batchSize =
+            int.tryParse(arg.substring('--batch-size='.length)) ?? batchSize;
       } else if (arg == '--dry-run') {
         dryRun = true;
       } else if (arg == '--full-catalog') {
@@ -566,13 +678,20 @@ class _Args {
       stderr.writeln(
         'Uso: dart run tool/sync_fc_cards.dart --file=<path> '
         '[--provider=...] [--game-version=...] [--format=csv|json] '
-        '[--map=...] [--dry-run] [--full-catalog]\n'
+        '[--map=...] [--dry-run] [--full-catalog] [--batch-size=N]\n'
         '(--csv=<path> continua aceito como forma antiga, equivalente a '
         '--file=<path> --format=csv)\n'
         '--full-catalog autoriza desativar (is_active=false) cartas do '
         'provider ausentes desta rodada -- default e NAO desativar nada, '
-        'pra um arquivo parcial nunca apagar o resto do catalogo por engano.',
+        'pra um arquivo parcial nunca apagar o resto do catalogo por engano.\n'
+        '--batch-size=N (default 500) controla quantas linhas por POST em '
+        'array contra fc_players/fc_player_cards em modo escrita.',
       );
+      exit(1);
+    }
+
+    if (batchSize < 1) {
+      stderr.writeln('--batch-size precisa ser >= 1.');
       exit(1);
     }
 
@@ -592,6 +711,7 @@ class _Args {
       mapPath: mapPath,
       dryRun: dryRun,
       fullCatalog: fullCatalog,
+      batchSize: batchSize,
       sourceUrl: sourceUrl,
     );
   }
@@ -779,6 +899,8 @@ List<List<String>> _parseCsv(String content) {
 class _SupabaseAdmin {
   _SupabaseAdmin({required this.baseUrl, required this.secretKey});
 
+  final http.Client _httpClient = http.Client();
+
   final String baseUrl;
   final String secretKey;
 
@@ -788,6 +910,61 @@ class _SupabaseAdmin {
     'Content-Type': 'application/json',
   };
 
+  // Cache em memoria de "table:name" -> id, valido so pela duracao de uma
+  // execucao do script. Etapa 17B-2: auditado o comportamento de
+  // upsertByName e confirmado que, sem cache, o mesmo nome repetido em N
+  // linhas (uma liga/clube/nacao citada por milhares de cartas) disparava
+  // um GET por linha, mesmo ja resolvido antes na mesma rodada -- para o
+  // catalogo completo (17.873 linhas, 572 clubes/57 ligas/157 nacoes
+  // distintos) isso e a maior fonte de requests redundantes do importer.
+  // O cache elimina esses GETs repetidos sem mudar nenhum contrato de
+  // escrita: a fonte da verdade continua sendo o banco (lookup real na
+  // primeira vez que um nome aparece), so a repeticao dentro da mesma
+  // execucao e que passa a ser memoria local.
+  final Map<String, String?> _nameCache = <String, String?>{};
+
+  /// Upsert em lote (array body no PostgREST): 1 request para N linhas em
+  /// vez de N requests. `returnRepresentation: false` (usado para
+  /// fc_player_cards, que ninguem le de volta) reduz o payload de resposta;
+  /// `true` (default, usado para fc_players) devolve as linhas criadas/
+  /// atualizadas para o chamador linkar `fc_player_id` sem precisar de outro
+  /// request. Falha em qualquer request retorna null (nenhuma excecao) --
+  /// quem chama decide como contar isso no resumo.
+  Future<List<Map<String, dynamic>>?> upsertBatch({
+    required String table,
+    required String onConflict,
+    required List<Map<String, dynamic>> rows,
+    bool returnRepresentation = true,
+  }) async {
+    if (rows.isEmpty) {
+      return <Map<String, dynamic>>[];
+    }
+    final response = await _httpClient.post(
+      Uri.parse('$baseUrl/rest/v1/$table?on_conflict=$onConflict'),
+      headers: <String, String>{
+        ..._headers,
+        'Prefer':
+            'resolution=merge-duplicates,'
+            'return=${returnRepresentation ? 'representation' : 'minimal'}',
+      },
+      body: jsonEncode(rows),
+    );
+    if (response.statusCode >= 300) {
+      stderr.writeln(
+        'Falha ao upsertar lote de $table (${rows.length} linhas): '
+        '${response.statusCode} ${response.body}',
+      );
+      return null;
+    }
+    if (!returnRepresentation) {
+      return <Map<String, dynamic>>[];
+    }
+    final decoded = jsonDecode(response.body);
+    return decoded is List
+        ? decoded.cast<Map<String, dynamic>>()
+        : <Map<String, dynamic>>[];
+  }
+
   /// Upsert por nome (nacao/liga/clube). O "provider" so serve pra rastrear
   /// origem; o conflito real e por nome, pra nao duplicar "Brasil" a cada
   /// linha de carta que cita o mesmo pais.
@@ -795,20 +972,82 @@ class _SupabaseAdmin {
     required String table,
     required String provider,
     required String name,
+    String? externalId,
+    String? externalIdColumn,
     Map<String, dynamic> extra = const <String, dynamic>{},
   }) async {
-    final existing = await http.get(
+    // Quando a fonte declara um id externo proprio (ex. club_id do Wrexist,
+    // sempre presente e sem colisao, ao contrario do nome -- ver auditoria
+    // Etapa 17B-2), upsert por (provider, externalIdColumn) via on_conflict:
+    // resolve o mesmo nome aparecendo em contextos distintos (clube
+    // masculino/feminino homonimos em ligas diferentes) sem depender so do
+    // nome. Sem externalId, cai no comportamento historico (dedup por
+    // nome), inalterado.
+    if (externalId != null && externalIdColumn != null) {
+      final cacheKey = '$table:$externalIdColumn:$externalId';
+      if (_nameCache.containsKey(cacheKey)) {
+        return _nameCache[cacheKey];
+      }
+      final response = await _httpClient.post(
+        Uri.parse(
+          '$baseUrl/rest/v1/$table?on_conflict=provider,$externalIdColumn',
+        ),
+        headers: <String, String>{
+          ..._headers,
+          'Prefer': 'resolution=merge-duplicates,return=representation',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'provider': provider,
+          'name': name,
+          externalIdColumn: externalId,
+          ...extra,
+        }),
+      );
+      if (response.statusCode >= 300) {
+        stderr.writeln(
+          'Falha ao upsertar $table por $externalIdColumn="$externalId": '
+          '${response.statusCode} ${response.body}',
+        );
+        return null;
+      }
+      final created = jsonDecode(response.body);
+      final id = created is List && created.isNotEmpty
+          ? (created.first as Map<String, dynamic>)['id'] as String?
+          : null;
+      _nameCache[cacheKey] = id;
+      return id;
+    }
+
+    final cacheKey = '$table:$name';
+    if (_nameCache.containsKey(cacheKey)) {
+      return _nameCache[cacheKey];
+    }
+
+    final existing = await _httpClient.get(
       Uri.parse(
         '$baseUrl/rest/v1/$table?name=eq.${Uri.encodeComponent(name)}&select=id&limit=1',
       ),
       headers: _headers,
     );
+    // O corpo de erro do PostgREST e um objeto ({"code":...,"message":...}),
+    // nunca uma lista -- conferir o status ANTES do cast evita a excecao nao
+    // tratada que um erro de permissao (403, grant faltando pro service_role)
+    // disparava aqui (Etapa 17B-2, achado ao vivo com credencial real).
+    if (existing.statusCode >= 300) {
+      stderr.writeln(
+        'Falha ao buscar $table por nome: '
+        '${existing.statusCode} ${existing.body}',
+      );
+      return null;
+    }
     final rows = jsonDecode(existing.body) as List<dynamic>;
     if (rows.isNotEmpty) {
-      return (rows.first as Map<String, dynamic>)['id'] as String?;
+      final id = (rows.first as Map<String, dynamic>)['id'] as String?;
+      _nameCache[cacheKey] = id;
+      return id;
     }
 
-    final response = await http.post(
+    final response = await _httpClient.post(
       Uri.parse('$baseUrl/rest/v1/$table'),
       headers: <String, String>{..._headers, 'Prefer': 'return=representation'},
       body: jsonEncode(<String, dynamic>{
@@ -817,45 +1056,18 @@ class _SupabaseAdmin {
         ...extra,
       }),
     );
-    final created = jsonDecode(response.body);
-    if (created is List && created.isNotEmpty) {
-      return (created.first as Map<String, dynamic>)['id'] as String?;
-    }
-    return null;
-  }
-
-  /// Upsert de um atleta base por (provider, game_version,
-  /// provider_player_id). Mesmo padrao de `upsert`, mas precisa devolver o
-  /// id gerado/existente para a carta linkar `fc_player_id`.
-  Future<String?> upsertFcPlayer({
-    required String provider,
-    required String gameVersion,
-    required String providerPlayerId,
-    required Map<String, dynamic> row,
-  }) async {
-    final response = await http.post(
-      Uri.parse(
-        '$baseUrl/rest/v1/fc_players'
-        '?on_conflict=provider,game_version,provider_player_id',
-      ),
-      headers: <String, String>{
-        ..._headers,
-        'Prefer': 'resolution=merge-duplicates,return=representation',
-      },
-      body: jsonEncode(row),
-    );
     if (response.statusCode >= 300) {
       stderr.writeln(
-        'Falha ao upsertar fc_players ($provider/$gameVersion/'
-        '$providerPlayerId): ${response.statusCode} ${response.body}',
+        'Falha ao criar $table "$name": ${response.statusCode} ${response.body}',
       );
       return null;
     }
-    final decoded = jsonDecode(response.body);
-    if (decoded is List && decoded.isNotEmpty) {
-      return (decoded.first as Map<String, dynamic>)['id'] as String?;
-    }
-    return null;
+    final created = jsonDecode(response.body);
+    final id = created is List && created.isNotEmpty
+        ? (created.first as Map<String, dynamic>)['id'] as String?
+        : null;
+    _nameCache[cacheKey] = id;
+    return id;
   }
 
   /// Todos os ids externos ja existentes para este provider (carta:
@@ -867,7 +1079,7 @@ class _SupabaseAdmin {
     required String idColumn,
     required String provider,
   }) async {
-    final response = await http.get(
+    final response = await _httpClient.get(
       Uri.parse(
         '$baseUrl/rest/v1/$table?provider=eq.${Uri.encodeComponent(provider)}'
         '&select=$idColumn',
@@ -889,30 +1101,6 @@ class _SupabaseAdmin {
     };
   }
 
-  /// Retorna false em falha (sem lancar) -- quem chama conta sucesso/falha
-  /// para o relatorio final, nao interrompe o resto do sync por uma linha.
-  Future<bool> upsert({
-    required String table,
-    required String onConflict,
-    required Map<String, dynamic> row,
-  }) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/rest/v1/$table?on_conflict=$onConflict'),
-      headers: <String, String>{
-        ..._headers,
-        'Prefer': 'resolution=merge-duplicates,return=minimal',
-      },
-      body: jsonEncode(row),
-    );
-    if (response.statusCode >= 300) {
-      stderr.writeln(
-        'Falha ao upsertar $table: ${response.statusCode} ${response.body}',
-      );
-      return false;
-    }
-    return true;
-  }
-
   /// Marca is_active=false para toda carta DAQUELE provider que nao
   /// apareceu nesta rodada de sync -- nunca deleta.
   Future<int> deactivateMissing({
@@ -925,7 +1113,7 @@ class _SupabaseAdmin {
       return 0;
     }
     final idsList = keepIds.map((id) => '"$id"').join(',');
-    final response = await http.patch(
+    final response = await _httpClient.patch(
       Uri.parse(
         '$baseUrl/rest/v1/$table?provider=eq.$provider'
         '&$idColumn=not.in.($idsList)&is_active=eq.true',
@@ -936,4 +1124,6 @@ class _SupabaseAdmin {
     final updated = jsonDecode(response.body);
     return updated is List ? updated.length : 0;
   }
+
+  void close() => _httpClient.close();
 }

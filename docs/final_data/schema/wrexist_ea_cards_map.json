@@ -13,5 +13,6 @@
   "height_cm": "height",
   "club_name": "club",
   "league_name": "league",
-  "nation_name": "nationality"
+  "nation_name": "nationality",
+  "club_external_id": "club_id"
 }
