@@ -106,6 +106,20 @@ dono).
 
 ---
 
+**Validação do domínio do produto (2026-09-09)**: auditoria do app inteiro
+contra a lógica de produto, feita no código e não nos handoffs. A maior parte
+já estava correta (N:N Conta FC ↔ Time, FQ035 exigindo Conta vinculada antes
+de buscar, lock server-authoritative, resultado opcional no servidor, times
+público/privado, anti-duplicação no picker, campo, filtros). **Cinco
+divergências reais** foram corrigidas: a Home bloqueava por Time e não tinha
+presença nenhuma de Conta FC; não existia "não informar esta partida"; o
+histórico parava em "achou partida", sem conta/modalidade/resultado; a
+Weekend League tinha um único evento placeholder e nenhuma forma de criar
+semanas — com a janela em UTC, começando quinta 21:00 no Brasil. Duas
+correções de leitura vieram junto: escopo do histórico por `session_teams` (o
+Time era cego a buscas lideradas por outro Time) e join lateral da partida.
+Ver [`handoff_product_domain_validation.md`](handoff_product_domain_validation.md).
+
 ## 1. O que o produto é
 
 Coordena qual jogador de um grupo pode procurar partida no EA SPORTS FC /
@@ -165,6 +179,7 @@ Distinções que já custaram bug quando ignoradas:
 | `ios_release_mac.md` | Auditoria estática iOS + checklist de 21 passos pra continuar o release num Mac |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `handoff_ui_refresh.md` | UI/UX refresh — shell de 5 abas com Controle central, Times público/privado + página pública, Início/Histórico com identidade própria, AppBackground/FeatureHeader |
+| `handoff_product_domain_validation.md` | Validação do domínio do produto — Home liderada pela Conta FC, resultado descartável, histórico com a partida, semanas reais de Weekend League |
 | `handoff_gameplay_flows_refresh.md` | Gameplay flows refresh — Conta FC obrigatória antes de Time, anti-duplicação no picker, imagens de carta, overlap no campo, bottom sheet overflow, filtros hierárquicos, RivalsCard na Home |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
