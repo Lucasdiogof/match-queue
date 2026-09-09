@@ -1,3 +1,159 @@
+## 2026-09-09 (sessão de validação técnica) — Wrexist snapshot promovido a fonte de trabalho real
+
+**Mudança de decisão do dono do produto, registrada explicitamente**: até a
+sessão anterior o Wrexist snapshot era fixture de teste, nunca produção.
+Nesta sessão o dono do produto reverteu isso: como o arquivo real "oficial"
+da EA ainda não chegou e pode demorar, decidiu **"vamos trabalhar com esses
+dados que temos aí"** — o Wrexist snapshot vira fonte de trabalho real
+desta etapa, com expectativa de trocar por algo melhor no futuro. Isso não
+é uma decisão desta automação, é execução em cima de uma decisão já tomada.
+
+### Decisão de identidade (arquitetura) — registrada para não ser perdida
+
+`FC27_male_players_reconciled.csv`/`FC27_female_players.csv` são ratings
+base da EA (uma linha por jogador, sem item id de carta distinto). O
+próprio pacote de dados (`FINAL_HANDOFF.md`) documenta que "a tabela
+oficial da EA é a base Gold/Silver/Bronze de lançamento" — ou seja, a fonte
+SE APRESENTA como base de carta UT, só sem item id numerado à parte (ao
+contrário do dataset FC26/SoFIFA da Etapa 11, que nunca se apresentava como
+carta UT nenhuma). Decisão:
+
+- `fc_players.provider_player_id` = coluna `player_id` (confirmado idêntico
+  a `source_player_id` em 100% das 17.873 linhas — auditoria abaixo).
+- `fc_player_cards.provider_card_id` = `"{player_id}:BASE"` — string
+  determinística derivada SÓ do id real do jogador na fonte + marcador
+  fixo, nunca de nome/rating/índice. `card_type = 'BASE_LAUNCH'`.
+- Isso não é "inventar um id" (proibido pelo importer) — é usar o único id
+  real que a fonte fornece para a única versão de carta que ela representa.
+  Revisitar quando uma fonte com múltiplas versões (Gold/TOTW/Icon) chegar.
+- `provider = 'WREXIST_EA_FC27_SNAPSHOT'` (nunca `EA_FC27_RATINGS` — não
+  viemos da EA diretamente, viemos de uma republicação de terceiro MIT do
+  mesmo endpoint `ea-drop-api`). `game_version = 'FC27'`.
+
+### Parte 2 — Auditoria do arquivo (antes do import)
+
+Arquivo escolhido: `FC27_male_players_reconciled.csv` (tem `game_club_id`/
+`game_club_name`/`game_league_id` de reconciliação com clubes do jogo, que
+`FC27_male_players.csv` não tem) **combinado com** `FC27_female_players.csv`
+(não existe uma variante "reconciled" para feminino — usada como está,
+sem os campos de reconciliação de clube, que ficam nulos para essas
+linhas). `FC27_community_pack_input.csv` **não foi usado**: é formato
+sofifa legado (99 linhas menos que os outros por excluir registros sem
+`potential`) e o reconciled já cobre tudo que ele traria, com mais campos.
+Script de auditoria: `docs/final_data/scripts/audit_wrexist_reconciled.py`.
+
+Resultado (rodado nesta sessão, sem rede):
+
+| Métrica | male_players_reconciled | female_players |
+| --- | ---: | ---: |
+| Total de linhas | 16.228 | 1.645 |
+| `player_id` distintos | 16.228 (0 duplicados) | 1.645 (0 duplicados) |
+| `player_id` != `source_player_id` | 0 | 0 |
+| Linhas sem `overall` ou `position` | 0 | 0 |
+| Rating fora de 0-99 | 0 | 0 |
+| Posições distintas | 12 (todas conhecidas) | 12 (todas conhecidas) |
+| Clubes / ligas / nações distintos | 545 / 45 / 156 | 69 / 12 / 72 |
+| `club` nulo (sem clube atual) | 2.276 | 126 |
+| `source_url` presente | 16.228/16.228 (100%) | 1.645/1.645 (100%) |
+| `scraped_at` | `2026-08-28T09:08:58.508Z` (único valor) | idem |
+
+Overlap de `player_id` entre male/female: **0** (namespaces disjuntos,
+combinação segura). Total combinado: **17.873**, batendo exatamente com o
+total ao vivo da EA confirmado na pesquisa original (`card_provider_research.md`).
+
+**Campo inesperado/ausente mais relevante**: nenhuma das 4 variantes do
+snapshot tem coluna de imagem/foto do jogador (`player_face_url` ou
+equivalente) — ao contrário do dataset FC26/SoFIFA da Etapa 11, que tinha
+`player_face_url`. `player_image_url`/`card_image_url` ficam `NULL` para
+todo este import, honesto com a origem (achado de auditoria, não bug).
+
+**Diferença vs. fixtures anteriores (WEFUT/Hall of FUT)**: WEFUT já vinha
+com `provider_card_id` próprio (280 cards reais); este snapshot nunca
+declara isso — precisou da derivação `{player_id}:BASE` descrita acima.
+Hall of FUT não declarava `provider_player_id` nem `provider_card_id`
+nenhum (por isso 21/21 inválido no dry-run da Etapa 17B original) — este
+snapshot sempre declara `player_id` real.
+
+### Parte 3/4 — Normalização e dry-run completo
+
+Pipeline: `docs/final_data/scripts/build_wrexist_fc27_cards.py` lê os dois
+CSVs, deriva `provider_card_id`/`card_type` por linha, escreve
+`docs/final_data/data/wrexist_snapshot_normalized/fc27_cards_normalized.csv`
+(17.873 linhas, caminho rastreado pelo git — ver nota abaixo sobre
+`docs/final_data/output/`). Novo mapeamento de campos:
+`docs/final_data/schema/wrexist_ea_cards_map.json` (overrides para as
+colunas que diferem do default sofifa do importer: `player_id`, `name`,
+`position`/`alternative_positions` já separadas, `physical`, `gk_*`,
+`playstyles`, `height`, `club`, `league`, `nationality`).
+
+**Ajuste no importer** (`tool/sync_fc_cards.dart`): adicionado suporte a
+`source_url` por linha (antes só existia `--source-url` global via CLI).
+A fonte Wrexist traz uma URL real por jogador
+(`ea.com/.../ratings?playerId=...`) — sem esse ajuste, perderíamos essa
+granularidade real de auditoria por carta. Mudança de 1 linha
+(`sourceUrl: col('source_url') ?? options.sourceUrl`) + atualização do
+comentário de campos canônicos. `dart analyze tool lib` limpo depois.
+
+Dry-run completo (17.873 linhas, `--provider=WREXIST_EA_FC27_SNAPSHOT
+--game-version=FC27 --map=docs/final_data/schema/wrexist_ea_cards_map.json`):
+
+```
+lidos: 17873, validos: 17873, invalidos: 0
+players (fc_players) distintos: 17873
+cards reais (fc_player_cards): 17873
+player-only: 0
+linhas com posicoes alternativas: 11493
+cards -- inseridos: 17873, atualizados: 0, falhas: 0
+nations: 157, leagues: 57, clubs: 572
+```
+
+Zero inválido, zero JSON malformado, zero aviso de metadata-sem-id — sinal
+limpo para prosseguir à amostra.
+
+### Parte 5 — Amostra determinística (preparada, escrita em produção BLOQUEADA por credencial)
+
+Critério documentado ANTES de rodar: ordenar as 17.873 linhas por
+`player_id` numérico ascendente, amostragem sistemática com passo fixo
+`stride = 17873 // 40 = 446` (nunca `random()`) — reprodutível, sempre
+escolhe os mesmos 40 jogadores contra o mesmo arquivo de entrada. Script:
+`docs/final_data/scripts/select_wrexist_sample.py`, saída
+`docs/final_data/data/wrexist_snapshot_normalized/fc27_cards_sample40.csv`.
+
+Cobertura da amostra: 11/12 posições (falta só RB), 25 ligas distintas, 25
+nações distintas, rating 50-83. Lista completa dos 40 `player_id`
+registrada no log da sessão (reproduzível rodando o script). Dry-run da
+amostra isolada: 40 lidas, 40 válidas, 0 inválidas, 0 falhas — consistente
+com o dry-run do arquivo completo.
+
+**Bloqueador real encontrado**: este ambiente de execução não tem
+`SUPABASE_SECRET_KEY` (nem `SUPABASE_SERVICE_ROLE_KEY`) — só a chave
+pública (anon/publishable) está em `env/development.json`, de propósito
+(nunca a secret key vai para o client). Sem essa variável,
+`tool/sync_fc_cards.dart` não roda em modo de escrita real (ele mesmo
+recusa e sai com erro, por design). O único acesso de escrita confirmado
+nesta sessão é `npx supabase db query --linked -f arquivo.sql` (usa a
+autenticação de login do CLI, não a secret key do PostgREST) — confirmado
+funcionando para leitura (`select count(*) ... from fc_player_cards`
+retornou `50` linhas `provider=LOCAL`, batendo com o estado documentado).
+Escrever a amostra via SQL direto (espelhando o contrato exato do
+importer) é tecnicamente possível, mas **não testa o caminho de escrita
+real do `tool/sync_fc_cards.dart`** — só testa parsing/dry-run (já feito
+acima). Decisão de como prosseguir (rodar a ferramenta de verdade com a
+secret key exportada pelo dono do produto, ou aceitar SQL equivalente como
+substituto documentado) fica para o dono do produto — não decidida
+unilateralmente nesta sessão. Ver seção "Pendência" no fim deste arquivo.
+
+### Achado de repositório: `docs/final_data/output/` está no `.gitignore`
+
+O pedido original sugeria `docs/final_data/output/` ou `docs/final_data/data/`
+como destinos aceitáveis para os artefatos intermediários. Conferido:
+`docs/final_data/output/` está listado no `.gitignore` (linha adicionada
+junto com `ea_raw/`), então qualquer arquivo lá NÃO seria versionado.
+Usado `docs/final_data/data/wrexist_snapshot_normalized/` em vez disso —
+caminho já rastreado pelo git (mesmo padrão de `wrexist_snapshot/`).
+
+---
+
 # Handoff — Etapa 17B (importação real do catálogo FC27)
 
 Status em 2026-09-09: **ainda EM ANDAMENTO, bloqueada exclusivamente pela

@@ -1,0 +1,17 @@
+{
+  "provider_player_id": "player_id",
+  "player_name": "name",
+  "primary_position": "position",
+  "alternative_positions": "alternative_positions",
+  "physical": "physical",
+  "gk_diving": "gk_diving",
+  "gk_handling": "gk_handling",
+  "gk_kicking": "gk_kicking",
+  "gk_reflexes": "gk_reflexes",
+  "gk_positioning": "gk_positioning",
+  "playstyles": "playstyles",
+  "height_cm": "height",
+  "club_name": "club",
+  "league_name": "league",
+  "nation_name": "nationality"
+}

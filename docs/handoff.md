@@ -4,19 +4,24 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-08: **Etapas 1–17 fechadas** (17 foi auditoria, sem
+Estado em 2026-09-09: **Etapas 1–17 fechadas** (17 foi auditoria, sem
 feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
 de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
 inativo todos corrigidos e validados ao vivo, ver
 [`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B
-(importação real do catálogo FC27) segue EM ANDAMENTO** — importer
-adaptado e testado contra fixtures, catálogo real ainda não importado
-(falta o arquivo, baixado manualmente pelo usuário — reconfirmado em
-2026-09-09, ainda ausente; ver [`handoff_etapa17b.md`](handoff_etapa17b.md)
-para os achados dessa checagem, incluindo um achado de segurança de
-repositório pendente de decisão: fixtures da WEFUT commitadas no git).
-74 migrations locais =
-remotas, `flutter analyze` sem issues. Edge Functions:
+(importação real do catálogo FC27) segue EM ANDAMENTO, agora sobre dado
+real** — o dono do produto decidiu explicitamente promover o Wrexist
+snapshot (17.873 cartas, republicação MIT do endpoint da EA) de fixture de
+teste para fonte de trabalho real desta etapa, já que o arquivo "oficial"
+da EA ainda não chegou. Auditoria completa + normalização + dry-run
+completo (17.873/17.873 válidas, 0 inválidas) rodados e limpos nesta
+sessão; sample import de 40 cartas **preparado mas bloqueado**: este
+ambiente não tem `SUPABASE_SECRET_KEY` para rodar `tool/sync_fc_cards.dart`
+em modo de escrita — decisão de como prosseguir (secret key vs. SQL
+equivalente) pendente do dono do produto. Ver
+[`handoff_etapa17b.md`](handoff_etapa17b.md), seção "2026-09-09 (sessão de
+validação técnica)". 74 migrations locais = remotas, `flutter analyze` e
+`dart analyze tool lib` sem issues. Edge Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
 ACTIVE).
 
@@ -138,15 +143,22 @@ Distinções que já custaram bug quando ignoradas:
 
 **Bloqueado por dado externo:**
 
-- **Catálogo FC27 real ainda não importado (Etapa 17B em andamento).** O
-  importer (`tool/sync_fc_cards.dart`) foi auditado e adaptado contra
-  fixtures reais de teste (posições em colunas separadas, detailed_stats/
-  playstyles_plus/raw_metadata, `--full-catalog`); a correção de segurança
-  do `is_active` foi aplicada em produção. Falta só o arquivo do catálogo
-  real da EA (17.873+ itens confirmados ao vivo em `drop-api.ea.com/rating/
-  ea-sports-fc`), que precisa ser baixado manualmente pelo usuário — o
-  `robots.txt` da EA proíbe explicitamente mineração automatizada de dados, então
-  nada pode buscar isso automaticamente. Ver
+- **Catálogo FC27 real ainda não importado em produção (Etapa 17B em
+  andamento).** O arquivo oficial da EA continua não obtido (mesmo motivo
+  de sempre — `robots.txt` proíbe mineração automatizada, precisa vir de
+  download manual do usuário). **Mudança 2026-09-09**: o dono do produto
+  decidiu trabalhar com o Wrexist snapshot (17.873 cartas) como fonte real
+  desta etapa enquanto o arquivo da EA não chega. Importer auditado e
+  adaptado (posições em colunas separadas, detailed_stats/playstyles_plus/
+  raw_metadata, `--full-catalog`, `source_url` por linha); segurança do
+  `is_active` aplicada em produção; auditoria + normalização + dry-run
+  completo do Wrexist snapshot rodados e limpos (17.873/17.873 válidas).
+  **Bloqueador atual**: sample import de 40 cartas preparado mas não
+  escrito — este ambiente não tem `SUPABASE_SECRET_KEY` para rodar
+  `tool/sync_fc_cards.dart` sem `--dry-run`. Decisão pendente do dono do
+  produto: exportar a secret key numa sessão futura, ou aceitar um SQL
+  equivalente gerado à mão (`docs/final_data/scripts/
+  generate_sample_import_sql.py`, não executado) como substituto — ver
   `docs/handoff_etapa17b.md`. Nada no produto depende disso pra funcionar —
   o app roda com as 50 cartas `provider = 'LOCAL'` de dev e com catálogo
   real vazio até lá.

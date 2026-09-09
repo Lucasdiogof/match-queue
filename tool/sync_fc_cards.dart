@@ -69,7 +69,12 @@
 //   playstyles, playstyles_plus, detailed_stats, accelerate_rate,
 //   raw_metadata, height_cm, preferred_foot, player_roles, rarity,
 //   player_image_url, card_image_url, club_name, league_name, nation_name,
-//   card_type
+//   card_type, source_url
+//
+// source_url por linha (Etapa 17B, dataset Wrexist): quando o arquivo ja
+// declara uma URL de origem por jogador/carta, ela tem prioridade sobre
+// --source-url (que continua servindo de fallback global para fontes que
+// nao trazem isso por linha).
 //
 // alternative_positions e uma coluna PROPRIA quando a fonte ja separa
 // primaria de alternativas (WEFUT, EA) -- so cai no split combinado de um
@@ -399,7 +404,7 @@ Future<void> main(List<String> args) async {
       clubName: clubName,
       leagueName: leagueName,
       nationName: nationName,
-      sourceUrl: options.sourceUrl,
+      sourceUrl: col('source_url') ?? options.sourceUrl,
     );
 
     final payload = externalCard.toFcPlayerCardsRow(
