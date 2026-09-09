@@ -11,8 +11,11 @@ inativo todos corrigidos e validados ao vivo, ver
 [`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B
 (importação real do catálogo FC27) segue EM ANDAMENTO** — importer
 adaptado e testado contra fixtures, catálogo real ainda não importado
-(falta o arquivo, baixado manualmente pelo usuário — ver
-[`handoff_etapa17b.md`](handoff_etapa17b.md)). 74 migrations locais =
+(falta o arquivo, baixado manualmente pelo usuário — reconfirmado em
+2026-09-09, ainda ausente; ver [`handoff_etapa17b.md`](handoff_etapa17b.md)
+para os achados dessa checagem, incluindo um achado de segurança de
+repositório pendente de decisão: fixtures da WEFUT commitadas no git).
+74 migrations locais =
 remotas, `flutter analyze` sem issues. Edge Functions:
 `process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
 ACTIVE).

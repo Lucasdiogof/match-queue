@@ -1,10 +1,64 @@
 # Handoff — Etapa 17B (importação real do catálogo FC27)
 
-Status em 2026-09-08: **segurança corrigida e aplicada, importer adaptado e
-testado contra fixtures de teste; catálogo real de produção ainda NÃO
-importado** — falta o arquivo, que precisa ser baixado manualmente (ver
-seção 3). Não avançar para as etapas de Privacy/Termos/CI-CD ainda; esta
-etapa para aqui até o arquivo real chegar.
+Status em 2026-09-09: **ainda EM ANDAMENTO, bloqueada exclusivamente pela
+ausência do arquivo real da EA.** Segurança corrigida e aplicada (Etapa
+17B original + reconfirmada na Fase A), importer adaptado e testado contra
+fixtures de teste, HEAD/`origin/main` em `a542d58`, 74/74 migrations. Nesta
+sessão: procurei `docs/final_data/data/` inteiro por um arquivo real de
+catálogo — **não existe nenhum ainda**, só as fixtures já conhecidas
+(`hall_of_fut_21.csv`, `wrexist_snapshot/`) e documentos de instrução
+(`FINAL_HANDOFF.md`, `DATA_HANDOFF.md`, `STATUS_2026-09-08.md`).
+Nenhuma escrita em produção foi feita, nenhum dry-run novo rodou (não há
+dado real pra rodar contra). Fase A (bloqueadores de lançamento) e Privacy/
+Termos/CI-CD **já foram feitos em paralelo por outra etapa**, não estão
+mais bloqueados por esta.
+
+## 2026-09-09 — achados desta sessão (sem arquivo real disponível)
+
+1. **`FINAL_HANDOFF.md`/`DATA_HANDOFF.md` trazem instruções mais
+   específicas que a v1 deste handoff** (escritas por quem preparou o
+   pacote de dados, não por automação): total oficial da EA hoje é
+   **20.689** (não mais 17.873 — a EA parece ter expandido a tabela entre
+   a Etapa 17B original e agora), provider sugerido `EA_FC27_RATINGS`,
+   `card_type='BASE_LAUNCH'` pro item base, Hall of FUT como
+   `card_type='HALL_OF_FUT'` em provider/item **separado** (nunca fundido
+   ao player base), refresh obrigatório após 2026-09-10 (a EA anunciou
+   atualização de PlayStyles nessa data) antes de considerar qualquer
+   snapshot anterior "release candidate". `card_type` é campo de texto
+   livre no schema (sem `CHECK`/enum) — `'BASE_LAUNCH'`/`'HALL_OF_FUT'`
+   já passam sem nenhuma migration nova.
+2. **Ambiguidade genuína documentada, não resolvida** (por instrução
+   explícita: não forçar decisão sem o dado real): `schema/
+   supabase_mapping.json` sugere que, pra ratings base da EA sem item id
+   próprio, `provider_item_id` (→ `provider_card_id`) **pode igualar**
+   `provider_player_id`. Isso esbarra na regra já endurecida do importer
+   ("nunca inventar `provider_card_id` a partir de player id/nome/rating/
+   índice"). A diferença é sutil: se o endpoint real da EA de fato só
+   devolve um id por jogador (sem id de item distinto), usar esse mesmo id
+   como identidade da carta não é "inventar" — é o único id externo real
+   que existe pra aquele registro. Mas isso só pode ser confirmado
+   olhando o payload real; **decisão fica pendente até o arquivo chegar**,
+   documentada aqui pra não ser esquecida nem decidida às pressas.
+3. **Achado de segurança de repositório, fora do pipeline de import em
+   si**: `docs/final_data/legacy_samples/fc27_players_45_legacy.csv` (45
+   linhas) e `fc27_cards_280_legacy.csv` (280 linhas) — dado real da
+   WEFUT (nome, posições, stats, `player_image_url`, `source_url`) —
+   **estão commitados no git** (`git ls-files` confirma, desde uma sessão
+   anterior). Isso é dado de uma fonte que este projeto já decidiu nunca
+   raspar (robots.txt da WEFUT nomeia crawlers), trazido manualmente
+   pelo usuário como fixture de parser — mas **commitar conteúdo de
+   terceiro na íntegra num repositório público é uma exposição diferente
+   de "não fazer scraping"**, e diverge da regra reafirmada nesta sessão
+   ("dados de terceiros/restritos NÃO podem ser commitados"). **Não removi
+   nem reescrevi histórico** — é uma decisão do dono do produto (remover
+   os arquivos do tracking dali pra frente é simples; expurgar do
+   histórico do git, se já foi pushado publicamente, é uma operação
+   destrutiva que exige autorização explícita separada). Ver relatório
+   final para a pergunta direta.
+4. `docs/final_data/data/ea_raw/`, `.../wrexist_snapshot/`,
+   `.../data/*.json` continuam corretamente gitignorados (linha 83-87 do
+   `.gitignore`) — nada novo precisou ser adicionado, `git status` sem
+   saída (árvore limpa).
 
 ## 1. Dataset fornecido
 
