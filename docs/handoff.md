@@ -4,8 +4,21 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-09: **Etapas 1–18 fechadas** (17 e 18 foram auditoria,
-sem feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
+Estado em 2026-09-09: **Etapas 1–19 fechadas** (17, 18 e 19 foram
+auditoria, sem feature nova). **Etapa 19 (Release QA) encerrou com
+veredito NOT READY FOR STORE RELEASE — bloqueio 100% de ambiente, zero
+bug de código**: nenhuma das 3 plataformas conseguiu abrir uma tela real
+neste ambiente (Web trava antes do primeiro frame por bloqueio de rede
+do sandbox no `Supabase.initialize()` pré-`runApp`; Android falha no
+Gradle com "Unable to establish loopback connection"; iOS exige macOS) —
+os três motivos foram reconfirmados ao vivo, não presumidos. Tudo que dá
+pra validar sem tela (auth, times, contas, matchmaking ponta a ponta —
+fila FIFO, promoção automática — perfil público, segurança) foi
+validado ao vivo via REST contra produção e passou. `flutter analyze`/
+`flutter test` limpos, nenhum código mudou. Falta ainda gerar
+`android/key.properties` pro release Android real. Ver
+[`handoff_etapa19.md`](handoff_etapa19.md). **Fase A (bloqueadores de
+lançamento) FECHADA** — exclusão
 de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
 inativo todos corrigidos e validados ao vivo, ver
 [`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B/17B-2
@@ -103,6 +116,7 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa17b.md` | Importação real do catálogo FC27 — segurança corrigida, importer adaptado, sample de 40 escrito em produção |
 | `handoff_etapa17b2.md` | Validação em escala + full import real do catálogo FC27 (17.873 cartas), idempotência, QA REST, 32 fc_clubs órfãos diagnosticados |
 | `handoff_etapa18.md` | Validação do catálogo real dentro do app — Squad Builder/picker/busca/filtros contra as 17.873 cartas, performance real, sem bug encontrado |
+| `handoff_etapa19.md` | Release QA — veredito NOT READY, bloqueio 100% de ambiente (Web/Android/iOS), fluxos críticos validados via REST onde possível |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
