@@ -82,5 +82,7 @@ tool/data/
 # legacy_samples/) ficam versionados.
 docs/final_data/data/ea_raw/
 docs/final_data/data/*.json
+docs/final_data/data/wrexist_snapshot/
+docs/final_data/FC27_COMPLETE/
 docs/final_data/output/
 

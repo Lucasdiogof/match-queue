@@ -170,6 +170,48 @@ misturada, parsing produziu 45 players (não zero), rating/posição não
 vazios em massa, relação player/card 100% coerente, GK sem contaminação de
 stats de linha.
 
+## 5b. Segunda fixture, escala real (Wrexist/dynasty-manager, GitHub)
+
+O usuário depois trouxe 4 CSVs de `github.com/Wrexist/dynasty-manager`
+(commit `0fa46443...`, MIT, sem `robots.txt` restritivo — baixados
+por automação sem problema, ao contrário de EA/WeFUT): 16.228 players
+masculinos + 1.645 femininos + 16.129 (`community_pack_input`, formato
+sofifa) + a versão "reconciled" dos masculinos. Todos os 4 baixados e
+validados byte-a-byte contra o manifesto (`git_blob_sha1` batendo 4/4) —
+`docs/final_data/data/wrexist_snapshot/` (gitignored, nunca commitado).
+
+**Auditoria revelou proveniência real**: toda linha declara
+`source=ea-drop-api`, `source_url=ea.com/.../ratings?playerId=...` e
+`scraped_at=2026-08-28` — é uma republicação de terceiro do mesmo endpoint
+da EA identificado na seção 3, feita 11 dias atrás por quem mantém o
+repositório, não pela EA nem por automação. Total masculino+feminino
+(17.873) bate exatamente com o total ao vivo da EA hoje. `potential` é
+`FC26_20250921-carryover` em 16.129/16.228 linhas — rotulado
+honestamente, nunca fabricado, mas nosso schema não tem coluna
+`potential` mesmo, então isso não entra em lugar nenhum.
+
+**Decisão do usuário, consistente com a de WEFUT**: tratar como fixture de
+teste também, não como catálogo de produção — mesmo risco de proveniência
+(dado reservado da EA, redistribuído sem autorização explícita dela).
+
+Mapeamentos novos: `docs/final_data/schema/wrexist_ea_players_map.json`
+(masculino/feminino/reconciled) e `wrexist_community_pack_map.json`
+(`community_pack_input`, formato sofifa — só precisou de 1 override,
+`provider_player_id -> player_id`, o resto já batia com o default do
+importer). Dry-run em escala real, primeira vez testando > 100 linhas:
+
+| Arquivo | Linhas | Válidas | Alt. positions | Nations/Leagues/Clubs |
+| --- | ---: | ---: | ---: | --- |
+| male_players | 16.228 | 16.228 | 10.485 | 156 / 45 / 545 |
+| female_players | 1.645 | 1.645 | 1.008 | 72 / 12 / 69 |
+| community_pack_input | 16.129 | 16.129 | 10.422 | 156 / 45 / 545 |
+
+Parse de 16k linhas em ~1.5s (dry-run, sem chamada de rede). Zero posição
+desconhecida, zero `player_id` duplicado. GK do arquivo bruto às vezes traz
+`pace`/`shooting` preenchidos junto com `gk_diving`/`gk_handling` — o
+importer já neutraliza isso por código (`isGoalkeeper ? null : ...`),
+independente da higiene da fonte.
+
 ## 6. O que NÃO foi feito nesta etapa (limite deliberado)
 
 - **Nenhuma escrita real no Supabase** a partir das fixtures — só
