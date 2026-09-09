@@ -21,11 +21,22 @@ ver seção 9 de `release_checklist_android.md` para o detalhe completo:
   chave de debug, e `key.properties.example` já existem. Gerar o
   keystore e digitar as senhas é uma etapa operacional do usuário, não
   um blocker de readiness.
-- **READY TO BUILD RELEASE NESTA MÁQUINA: NÃO** — ambiente
-  Gradle/Windows (`Unable to establish loopback connection`).
-- **READY FOR STORE SUBMISSION: NÃO** — faltam keystore real, `env/
-  production.json`, um build assinado de verdade, Device QA e o setup
-  de metadata da Play Console.
+- **Atualização 2026-09-09**: keystore real gerado, `android/
+  key.properties` e `env/production.json` preenchidos, `storeFile`
+  corrigido (estava com o path placeholder do template), e **AAB de
+  release gerado com sucesso** — `build/app/outputs/bundle/release/
+  app-release.aab` (~65 MB), assinado com a release key de verdade.
+  Rodou no terminal do próprio usuário; nesta ferramenta de execução
+  (sandboxed) o mesmo comando ainda bate no erro de loopback — a
+  limitação é do processo que chama o Gradle, não da máquina Windows em
+  si. `APP_LINK_HOST` também já tem valor real (`lucksrei.com`) —
+  domínio decidido, desbloqueia Privacy Policy URL e App/Universal
+  Links quando alguém for implementar (não feito nesta sessão).
+- **READY TO BUILD RELEASE NESTA MÁQUINA: SIM, no terminal do usuário**
+  (confirmado com artefato real). Nesta ferramenta de execução
+  automatizada: ainda NÃO.
+- **READY FOR STORE SUBMISSION: AINDA NÃO** — falta Device QA num
+  aparelho físico com este AAB e o setup de metadata da Play Console.
 
 - `flutter build apk --release` e `flutter build appbundle --release`
   tentados de verdade nesta sessão: **ambos falham com

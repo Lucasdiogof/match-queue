@@ -22,7 +22,18 @@ uma frase só — `READY TO CREATE RELEASE KEY: SIM` (zero blocker de
 código), `READY TO BUILD RELEASE NESTA MÁQUINA: NÃO` (Gradle/Windows) e
 `READY FOR STORE SUBMISSION: NÃO` (keystore real + metadata faltando)
 são três respostas distintas, ver seção 9 de
-`release_checklist_android.md`. Ver
+`release_checklist_android.md`. **Atualização 2026-09-09: primeiro AAB
+de release real assinado, gerado com sucesso** — keystore real criado,
+`android/key.properties` e `env/production.json` preenchidos (com
+`APP_LINK_HOST=lucksrei.com`, domínio decidido, e `FIREBASE_ENABLED=true`),
+um bug real de path (`storeFile` ainda no placeholder do template)
+encontrado e corrigido no meio do caminho. Build rodou no terminal do
+próprio usuário — nesta ferramenta de execução automatizada o Gradle
+ainda bate no erro de loopback, confirmando que a limitação é do
+processo que chama o Gradle, não da máquina Windows como um todo.
+`READY TO BUILD RELEASE NESTA MÁQUINA` passa a **SIM** (no terminal do
+usuário). Falta ainda Device QA com este AAB e o setup de metadata da
+Play Console pra `READY FOR STORE SUBMISSION`. Ver
 [`handoff_etapa20.md`](handoff_etapa20.md),
 [`release_checklist_android.md`](release_checklist_android.md),
 [`release_checklist_ios.md`](release_checklist_ios.md) e

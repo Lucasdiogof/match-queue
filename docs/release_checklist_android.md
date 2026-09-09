@@ -125,16 +125,43 @@ silenciosa com a chave de debug já existe (`gradle.taskGraph.whenReady`),
 com senha real é uma dependência **operacional** do usuário (só ele deve
 escolher/digitar as senhas) — não é um blocker de readiness do projeto.
 
-**READY TO BUILD RELEASE NESTA MÁQUINA: NÃO.** Motivo: ambiente
-Gradle/Windows falha com `Unable to establish loopback connection`
-(reconfirmado ao vivo nas Etapas 19 e 20, `apk` e `appbundle`, debug e
-release). Isso bloqueia rodar o comando de build **nesta máquina
-específica**, independente do keystore existir ou não — precisa de uma
-máquina/CI onde o Gradle consiga subir.
+**Atualização 2026-09-09 — keystore real gerado, `env/production.json`
+criado, AAB de release produzido com sucesso.** O dono do produto gerou
+o keystore, preencheu `android/key.properties` e `env/production.json`,
+e rodou `flutter build appbundle --release` no próprio terminal (fora
+desta ferramenta de execução). Achado real no meio do caminho: o
+`storeFile` ficou com o valor placeholder do template
+(`/absolute/path/to/fifaqueue-release.jks`) — corrigido pro caminho
+real (`C:/Users/Computador/fifaqueue-release.jks`, barras normais;
+Java properties trata `\` como escape, então caminho absoluto do
+Windows precisa ir com `/` ou `\\`). Depois da correção, o build passou
+de `validateSigningRelease` e gerou
+`build/app/outputs/bundle/release/app-release.aab` (~65 MB, confirmado
+no disco) — **assinado com a release key de verdade**, não a de debug
+(o próprio `validateSigningRelease` só passa validando o keystore
+informado).
 
-**READY FOR STORE SUBMISSION: NÃO.** Faltam, nesta ordem: keystore real
-+ `key.properties` preenchido, `env/production.json` (só existe o
-`.example.json`), um build assinado gerado de verdade (depende do item
-anterior de ambiente), Device QA num aparelho físico, e o setup de
-metadata da Play Console (`docs/release_checklist_store_metadata.md`,
-~35% pronto).
+`env/production.json` real já existe com `FIREBASE_ENABLED: true`
+(corrigido em relação ao `.example.json`, que traz `false` — push real
+depende disso, ver auditoria de `env/production.json` desta sessão) e
+`APP_LINK_HOST: "lucksrei.com"` — **domínio decidido**, o que desbloqueia
+(quando alguém for implementar) o Privacy Policy URL público e os
+App/Universal Links, pendentes desde a Etapa 1. Nenhuma dessas duas
+integrações foi implementada nesta sessão (fora de escopo, não pedido)
+— só o valor da variável de ambiente já existe pronto pra quando forem.
+
+**READY TO BUILD RELEASE NESTA MÁQUINA (terminal do usuário): SIM,
+confirmado.** Achado importante: o bloqueio `Unable to establish
+loopback connection` reconfirmado nas Etapas 19/20 e nesta sessão **é
+específico do processo que invoca o Gradle, não do Windows como um
+todo** — no terminal do próprio usuário o Gradle sobe e builda
+normalmente; quando esta ferramenta de execução (sandboxed) tenta o
+mesmo comando, o erro de loopback ainda aparece. Ou seja: a máquina
+funciona, o ambiente sandboxed desta sessão de automação é que não.
+
+**READY FOR STORE SUBMISSION: AINDA NÃO**, mas o maior bloqueio caiu.
+Falta: `env/production.json` real (o build de sucesso usou
+`--dart-define-from-file` com um dos arquivos existentes — confirmar
+que é o de produção antes de qualquer upload real), Device QA num
+aparelho físico com este AAB, e o setup de metadata da Play Console
+(`docs/release_checklist_store_metadata.md`, ~35% pronto).
