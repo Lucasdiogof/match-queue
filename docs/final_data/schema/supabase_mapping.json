@@ -1,0 +1,69 @@
+{
+  "architecture": {
+    "fc_players": "canonical athlete identity; one player can have N card items",
+    "fc_player_cards": "Ultimate Team/base-dataset item; links through fc_player_id"
+  },
+  "fc_players": {
+    "conflict_key": [
+      "provider",
+      "game_version",
+      "provider_player_id"
+    ],
+    "fields": {
+      "provider": "source_provider",
+      "provider_player_id": "provider_player_id",
+      "game_version": "game_version",
+      "name": "name",
+      "common_name": "common_name",
+      "primary_position": "primary_position",
+      "alternative_positions": "alternative_positions",
+      "image_url": "player_image_url",
+      "height_cm": "height_cm",
+      "preferred_foot": "preferred_foot",
+      "weak_foot": "weak_foot",
+      "skill_moves": "skill_moves",
+      "raw_metadata": "raw_provider_data"
+    }
+  },
+  "fc_player_cards": {
+    "identity_rule": "Use a real provider_item_id when one exists. For EA base launch ratings with no distinct item id, provider_item_id may equal provider_player_id only when provider/card_type makes the namespace explicit.",
+    "fields": {
+      "provider": "source_provider",
+      "provider_card_id": "provider_item_id",
+      "game_version": "game_version",
+      "player_name": "name",
+      "rating": "rating",
+      "primary_position": "primary_position",
+      "alternative_positions": "alternative_positions",
+      "card_type": "card_type",
+      "rarity": "rarity",
+      "pace": "pace",
+      "shooting": "shooting",
+      "passing": "passing",
+      "dribbling": "dribbling",
+      "defending": "defending",
+      "physical": "physical",
+      "gk_diving": "gk_diving",
+      "gk_handling": "gk_handling",
+      "gk_kicking": "gk_kicking",
+      "gk_reflexes": "gk_reflexes",
+      "gk_speed": "gk_speed",
+      "gk_positioning": "gk_positioning",
+      "skill_moves": "skill_moves",
+      "weak_foot": "weak_foot",
+      "preferred_foot": "preferred_foot",
+      "playstyles": "playstyles",
+      "player_roles": "player_roles",
+      "source_url": "source_url",
+      "last_synced_at": "collected_at"
+    }
+  },
+  "rules": [
+    "Never fabricate missing values.",
+    "Do not merge special cards into base player identity.",
+    "EA ratings table is launch Gold/Silver/Bronze base items only; Heroes/Icons/Campaign items are separate.",
+    "Keep provider provenance on every row.",
+    "If provider_player_id is missing, preserve nullable fc_player_id behavior.",
+    "No destructive delete on refresh; deactivate missing items only after a complete successful provider run."
+  ]
+}

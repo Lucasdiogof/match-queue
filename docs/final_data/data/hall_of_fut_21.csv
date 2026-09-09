@@ -1,0 +1,22 @@
+source_provider,game_version,player_name,primary_position,reveal_rating,live_database_rating,pace,shooting,passing,dribbling,defending,physical,card_type,rarity,rating_status,reveal_source_url,database_source_url,checked_at
+FCDATA,FC27,Mario Balotelli,ST,85,85,85,87,71,84,34,81,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Jakub Błaszczykowski,RM,85,85,93,78,78,84,58,76,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Marouane Fellaini,CM,85,85,74,81,78,79,78,90,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Hulk,RW,85,85,89,86,81,86,46,87,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,David Luiz,CB,85,85,79,69,78,75,84,83,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Alexandre Pato,ST,85,85,90,85,71,86,33,73,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Micah Richards,RB,85,85,86,57,73,76,84,89,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Antonio Valencia,RM,85,85,90,75,81,83,79,87,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Theo Walcott,RW,85,85,96,79,74,85,39,65,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Adebayo Akinfenwa,ST,84,84,72,80,61,74,36,88,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Giovani dos Santos,ST,84,80,87,83,75,88,32,58,HALL_OF_FUT,SPECIAL,RATING_DISCREPANCY,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Seydou Doumbia,ST,84,84,93,84,68,83,43,75,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Eljero Elia,LW,84,84,91,74,77,87,34,68,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Emmanuel Emenike,ST,84,84,88,82,62,80,29,85,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Alessandro Florenzi,RB,84,84,86,80,80,82,78,77,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Gervinho,LW,84,84,94,76,78,86,40,70,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Fredy Guarín,CM,84,84,79,85,82,83,75,88,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Víctor Ibarbo,RW,84,84,93,81,71,84,42,82,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Miguel Layún,LB,84,84,86,76,80,80,78,74,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Aiden McGeady,RM,84,84,89,75,82,86,42,65,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08
+FCDATA,FC27,Loïc Rémy,ST,84,84,91,84,70,78,37,72,HALL_OF_FUT,SPECIAL,MATCHED_REVEAL_AND_DB,https://fcdata.io/blog/fc-27-hall-of-fut-players/,https://fcdata.io/players/latest/,2026-09-08

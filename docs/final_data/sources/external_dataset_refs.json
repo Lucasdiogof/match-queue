@@ -1,0 +1,8 @@
+{
+  "wrexist_snapshot_2026_08_28": {
+    "male_csv": "https://raw.githubusercontent.com/Wrexist/dynasty-manager/0fa46443e0bab1fdcb8e6f5c83f14a19a46b25c5/data/fc27/FC27_male_players.csv",
+    "female_csv": "https://raw.githubusercontent.com/Wrexist/dynasty-manager/0fa46443e0bab1fdcb8e6f5c83f14a19a46b25c5/data/fc27/FC27_female_players.csv",
+    "reconciled_male_csv": "https://raw.githubusercontent.com/Wrexist/dynasty-manager/0fa46443e0bab1fdcb8e6f5c83f14a19a46b25c5/data/fc27/FC27_male_players_reconciled.csv",
+    "warning": "Reference snapshot only. Validation report counted 16,228 male players at that time. Do not present this as the complete 2026-09-08 database."
+  }
+}

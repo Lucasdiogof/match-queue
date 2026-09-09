@@ -1,0 +1,69 @@
+{
+  "snapshot_date": "2026-09-08",
+  "target": "EA SPORTS FC 27",
+  "official_launch_base_count": 20689,
+  "official_base_scope": "Gold, Silver and Bronze Player Items available in Ultimate Team 27 at launch; excludes Heroes, Icons and Campaign Player Items",
+  "third_party_card_count_fcdata": 20710,
+  "known_special_reveals": 21,
+  "known_special_set": "Hall of FUT",
+  "ea_announced_database_update_date": "2026-09-10",
+  "sources": [
+    {
+      "id": "EA_RATINGS_WEB",
+      "tier": 1,
+      "official": true,
+      "url": "https://www.ea.com/games/ea-sports-fc/ratings",
+      "status": "reachable",
+      "use": "authoritative current count, base-player/card ratings pages, clubs/leagues/nations/positions and detailed player pages"
+    },
+    {
+      "id": "EA_DROP_API",
+      "tier": 1,
+      "official": true,
+      "url_pattern": "https://drop-api.ea.com/rating/ea-sports-fc-27?locale=en&limit=100&offset={offset}",
+      "status": "documented and known to back the EA ratings experience; may return 403 depending on egress/client",
+      "use": "preferred machine-readable bulk source when reachable",
+      "fields": "identity, demographics, club/league/nation, positions, overall, detailed attributes, gender, weak foot, skill moves, PlayStyles/PlayStyles+ (observed in public pipeline snapshot); no career potential"
+    },
+    {
+      "id": "FUT_FORGE",
+      "tier": 2,
+      "official": false,
+      "url": "https://futforgeofficial.com/fc27/players",
+      "status": "reachable",
+      "use": "cross-check coverage (20,689) and detailed player attributes; not used as the bulk dump in this package"
+    },
+    {
+      "id": "FCDATA",
+      "tier": 2,
+      "official": false,
+      "url": "https://fcdata.io/players/",
+      "status": "reachable",
+      "use": "card/item layer, rarity/item IDs/assets/AcceleRATE display and Hall of FUT; separate from EA base count"
+    },
+    {
+      "id": "WREXIST_SNAPSHOT",
+      "tier": 3,
+      "official": false,
+      "repo": "https://github.com/Wrexist/dynasty-manager",
+      "status": "public MIT code repository; dataset snapshot itself is dated 2026-08-28 and is not the current 20,689-row catalog",
+      "use": "reference implementation for EA Drop API normalization/validation, not authoritative current snapshot"
+    }
+  ],
+  "field_status": {
+    "base_catalog_count": "confirmed current: 20,689",
+    "identity_and_ids": "available",
+    "club_league_nation": "available",
+    "positions_and_alt_positions": "available",
+    "overall_and_face_stats": "available",
+    "detailed_attributes": "available",
+    "weak_foot_skill_moves_foot": "available via machine-readable/source detail; some web rendering may omit numeric stars",
+    "height_birthdate_gender": "available from EA machine-readable pipeline / supporting sources",
+    "playstyles": "observed from EA Drop API snapshot; treat as provisional until 2026-09-10 refresh",
+    "playstyles_plus": "observed from EA Drop API snapshot; player-specific public reveal is still rolling out; refresh after 2026-09-10",
+    "player_roles": "not found in the EA ratings payload/schema audited; leave null/[] until a trustworthy player-specific source publishes them",
+    "accelerate": "available/displayed by FCData for individual cards; treat as provider-derived unless EA exposes the player-specific value",
+    "career_potential": "not exposed by EA ratings API; outside base ratings scope",
+    "special_cards": "separate item layer; 21 Hall of FUT currently revealed"
+  }
+}

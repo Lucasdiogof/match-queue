@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FC27 normalized player/card source record",
+  "type": "object",
+  "properties": {
+    "source_provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provider_player_id": {
+      "type": [
+        "string",
+        "integer",
+        "null"
+      ]
+    },
+    "provider_item_id": {
+      "type": [
+        "string",
+        "integer",
+        "null"
+      ]
+    },
+    "game_version": {
+      "const": "FC27"
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "common_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "date_of_birth": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "age": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "height_cm": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "weight_kg": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gender": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "preferred_foot": {
+      "enum": [
+        "Right",
+        "Left",
+        null
+      ]
+    },
+    "weak_foot": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "skill_moves": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "nation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "club": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "league": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "primary_position": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "alternative_positions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rating": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 99
+    },
+    "pace": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "shooting": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "passing": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "dribbling": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "defending": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "physical": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gk_diving": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gk_handling": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gk_kicking": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gk_reflexes": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gk_speed": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "gk_positioning": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "detailed_stats": {
+      "type": "object"
+    },
+    "playstyles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "playstyles_plus": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "player_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "accelerate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "card_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rarity": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "player_image_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "card_image_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "collected_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_provider_data": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "game_version",
+    "name"
+  ]
+}

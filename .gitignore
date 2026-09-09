@@ -75,3 +75,12 @@ supabase/.branches/
 # nunca versionar arquivo de dados de outra licenca dentro do nosso repo.
 tool/data/
 
+# Catalogo real FC27 (Etapa 17B) -- o dump completo da EA (17k+ linhas) e
+# baixado a mao pelo usuario, nunca por automação (robots.txt da EA proibe
+# coleta automatizada). Nunca versionar o dump bruto; so os scripts,
+# schemas e as fixtures pequenas e curadas (data/hall_of_fut_21.csv,
+# legacy_samples/) ficam versionados.
+docs/final_data/data/ea_raw/
+docs/final_data/data/*.json
+docs/final_data/output/
+

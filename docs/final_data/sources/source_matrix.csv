@@ -1,0 +1,6 @@
+Source,Tier,Official,Current role,Bulk?,Key caveat
+EA Ratings web,1,yes,Authoritative count/base launch items + player detail pages,pagination web,DB update announced for 2026-09-10
+EA Drop API,1,yes,Preferred structured bulk source,yes when reachable,403 in some automated environments; no potential
+FUT Forge,2,no,Coverage + detailed-attribute cross-check,HTML/Next payload,do not use this package as an indiscriminate bulk mirror
+FCData,2,no,"Item/card layer, rarity, Hall of FUT, AcceleRATE display",site database,"20,710 includes 21 Hall of FUT beyond 20,689 EA base scope"
+Wrexist/dynasty-manager,3,no,Open-source reference pipeline/snapshot,static files,snapshot dated 2026-08-28; not current catalog
