@@ -39,24 +39,23 @@ mais bloqueados por esta.
    que existe pra aquele registro. Mas isso só pode ser confirmado
    olhando o payload real; **decisão fica pendente até o arquivo chegar**,
    documentada aqui pra não ser esquecida nem decidida às pressas.
-3. **Achado de segurança de repositório, fora do pipeline de import em
-   si**: `docs/final_data/legacy_samples/fc27_players_45_legacy.csv` (45
-   linhas) e `fc27_cards_280_legacy.csv` (280 linhas) — dado real da
-   WEFUT (nome, posições, stats, `player_image_url`, `source_url`) —
-   **estão commitados no git** (`git ls-files` confirma, desde uma sessão
-   anterior). Isso é dado de uma fonte que este projeto já decidiu nunca
-   raspar (robots.txt da WEFUT nomeia crawlers), trazido manualmente
-   pelo usuário como fixture de parser — mas **commitar conteúdo de
-   terceiro na íntegra num repositório público é uma exposição diferente
-   de "não fazer scraping"**, e diverge da regra reafirmada nesta sessão
-   ("dados de terceiros/restritos NÃO podem ser commitados"). **Não removi
-   nem reescrevi histórico** — é uma decisão do dono do produto (remover
-   os arquivos do tracking dali pra frente é simples; expurgar do
-   histórico do git, se já foi pushado publicamente, é uma operação
-   destrutiva que exige autorização explícita separada). Ver relatório
-   final para a pergunta direta.
-4. `docs/final_data/data/ea_raw/`, `.../wrexist_snapshot/`,
-   `.../data/*.json` continuam corretamente gitignorados (linha 83-87 do
+3. **Achado de repositório — RESOLVIDO por decisão explícita do dono do
+   produto (2026-09-09)**: as fixtures WEFUT (`legacy_samples/`) já
+   estavam commitadas desde uma sessão anterior; o Wrexist snapshot
+   (~19MB de CSV) estava gitignorado. O dono do produto decidiu
+   explicitamente que **todo dado deste projeto pode ser commitado e
+   versionado por inteiro** — é um projeto de resenha, sem pretensão
+   comercial, e não há razão pra manter esses arquivos fora do histórico.
+   `.gitignore` atualizado (commit `ad058e4`): removidas as exclusões de
+   `docs/final_data/data/*.json` e `.../wrexist_snapshot/`; o snapshot
+   inteiro foi commitado e pushado. **Único dado que continua fora do
+   git, deliberadamente**: um eventual dump bruto vindo direto da EA em
+   `docs/final_data/data/ea_raw/` — é a única fonte com reserva de
+   direitos explícita contra mineração automatizada de dados no robots.txt
+   dela, então mantém tratamento à parte independente da liberação geral
+   acima (não é uma questão de "dado de resenha", é o `ea.com` proibindo
+   isso especificamente). Se/quando esse arquivo chegar, resolver então.
+4. `docs/final_data/data/ea_raw/` continua corretamente gitignorado (ver
    `.gitignore`) — nada novo precisou ser adicionado, `git status` sem
    saída (árvore limpa).
 
