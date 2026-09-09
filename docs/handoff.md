@@ -139,6 +139,20 @@ imagens de carta, filtros de catálogo, matchmaking e Weekend League **não**
 puderam ser vistos (dependem de backend/catálogo). Ver
 [`handoff_visual_qa.md`](handoff_visual_qa.md).
 
+**Rodada de refinamento (2026-09-09) — INCOMPLETA, 13 de 23 itens.**
+Interrompida por limite de uso; retomar por
+[`handoff_refinement_round.md`](handoff_refinement_round.md), que lista item a
+item o que está feito e o que falta. Fechado: os três bugs de fluxo
+(Histórico não carregava por **função duplicada** no banco — `create or
+replace` com parâmetro novo cria sobrecarga em vez de substituir; buscar não
+respondia porque falha de ação nunca era exibida; "informar detalhes" não
+navegava por `context` desmontado), partidas pendentes múltiplas com
+`result_dismissed` separando decisão de desfecho, limite de 15 partidas da
+Weekend League na RPC e em constraint (FQ046), e a tela Jogar reordenada.
+**Realtime investigado e já funcionava** — não reconstruir. Falta:
+Rivals/WL como cards na Conta, Privacidade, pull-to-refresh, acessos
+rápidos, header/background global e filtros do Histórico.
+
 ## 1. O que o produto é
 
 Coordena qual jogador de um grupo pode procurar partida no EA SPORTS FC /
@@ -198,6 +212,7 @@ Distinções que já custaram bug quando ignoradas:
 | `ios_release_mac.md` | Auditoria estática iOS + checklist de 21 passos pra continuar o release num Mac |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `handoff_ui_refresh.md` | UI/UX refresh — shell de 5 abas com Controle central, Times público/privado + página pública, Início/Histórico com identidade própria, AppBackground/FeatureHeader |
+| `handoff_refinement_round.md` | **LEIA PRIMEIRO** — rodada de 23 itens, 13 fechados e 10 pendentes; histórico consertado, partidas pendentes múltiplas, limite da Weekend League |
 | `handoff_visual_qa.md` | QA visual/funcional — primeira execução real do app (Web), 8 bugs de UI corrigidos, o que continua bloqueado por ambiente |
 | `handoff_product_domain_validation.md` | Validação do domínio do produto — Home liderada pela Conta FC, resultado descartável, histórico com a partida, semanas reais de Weekend League |
 | `handoff_gameplay_flows_refresh.md` | Gameplay flows refresh — Conta FC obrigatória antes de Time, anti-duplicação no picker, imagens de carta, overlap no campo, bottom sheet overflow, filtros hierárquicos, RivalsCard na Home |
