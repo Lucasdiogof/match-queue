@@ -4,6 +4,17 @@ Feita na Etapa 11 (2026-09-08), via WebSearch/WebFetch. Objetivo: escolher a
 fonte dos dados reais de cartas que substituem as 50 cartas `provider =
 'LOCAL'` da Etapa 10 (`docs/handoff_etapa10.md`).
 
+**Atualização (Etapa 17B, 2026-09-08)**: o usuário obteve pesquisa/pipeline
+de importação prontos por fora (pacote em `docs/final_data/`) e forneceu
+duas fixtures pequenas de teste (45 players/280 cards WEFUT, 21 Hall of FUT
+FCData) — nenhuma delas é tratada como catálogo de produção, só fixture de
+pipeline, consistente com a recusa de WeFUT já registrada abaixo. Reconfirmei
+ao vivo a reserva de direitos contra scraping/mineração automatizada no
+`robots.txt` da EA (linha 24 da tabela abaixo) antes de rodar qualquer
+request contra `drop-api.ea.com` — o catálogo real de 20.689+ itens
+continua exigindo download manual feito pelo usuário, nunca por automação.
+Ver `docs/handoff_etapa17b.md` para o estado completo.
+
 ## Regra dura, repetida aqui de propósito
 
 Nunca contornar CAPTCHA, Cloudflare, nem usar cookies/tokens roubados ou

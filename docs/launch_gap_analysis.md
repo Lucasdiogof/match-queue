@@ -1,5 +1,18 @@
 # Launch Gap Analysis — auditoria pré-lançamento (Etapa 17)
 
+**Atualização (Etapa 17B, 2026-09-08)**: a seção 11 (catálogo FC27) desta
+auditoria dizia "bloqueador externo" no sentido de "nenhuma fonte de dado
+viável existe". Isso mudou de natureza, não de status: o usuário obteve
+pesquisa/pipeline de importação prontos (`docs/final_data/`), a correção de
+segurança do item citado abaixo (RLS de `fc_player_cards`/`fc_players` sem
+filtro `is_active`) **já foi aplicada em produção**, e o importer já foi
+adaptado e testado contra fixtures reais de teste (nunca produção). O que
+falta agora é só o arquivo do catálogo real da EA, que precisa ser baixado
+manualmente pelo usuário (o `robots.txt` da EA proíbe explicitamente
+mineração automatizada de dados — não é possível buscar isso ao
+vivo). Ver `docs/handoff_etapa17b.md` para o estado completo e o comando
+exato de download.
+
 Status em 2026-09-08. Esta é uma **auditoria**, não uma etapa de
 implementação: nenhuma feature nova foi construída. HEAD confirmado
 `28ecdf9` = `origin/main`, árvore de trabalho limpa, 71 migrations locais

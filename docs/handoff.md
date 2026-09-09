@@ -4,9 +4,13 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-Estado em 2026-09-08: **Etapas 1–16 fechadas**, Etapa 17 (auditoria de
-lançamento, sem feature nova) concluída, HEAD `28ecdf9` = `origin/main`,
-**71 migrations locais = 71 remotas**, `flutter analyze` sem issues. Edge
+Estado em 2026-09-08: **Etapas 1–17 fechadas** (17 foi auditoria, sem
+feature nova), **Etapa 17B (importação real do catálogo FC27) EM
+ANDAMENTO** — segurança corrigida e aplicada, importer adaptado e testado
+contra fixtures, catálogo real ainda não importado (falta o arquivo, que
+precisa ser baixado manualmente pelo usuário — ver
+[`handoff_etapa17b.md`](handoff_etapa17b.md)). HEAD `33efee9` = `origin/main`,
+**73 migrations locais = 73 remotas**, `flutter analyze` sem issues. Edge
 Function `process-notification-outbox` versão 3, ACTIVE.
 
 **Antes de decidir o que vem depois, leia
@@ -62,6 +66,7 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa15.md` | Central de Notificações, eventos sociais/esportivos, correção de dedupe_key |
 | `handoff_etapa16.md` | Perfil público opt-in + compartilhamento da Escalação Principal, rota `/u/:identifier` |
 | `handoff_etapa17.md` | Auditoria de lançamento (sem feature nova) — índice curto |
+| `handoff_etapa17b.md` | Importação real do catálogo FC27 — segurança corrigida, importer adaptado, aguardando arquivo real da EA |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
 | `card_provider_research.md` | pesquisa de fonte de cartas e por que cada uma foi descartada |
 | `architecture.md`, `database.md`, `supabase_setup.md`, `deep_links.md`, `branding.md` | referência transversal |
@@ -108,15 +113,32 @@ Distinções que já custaram bug quando ignoradas:
 - **`pg_cron`** aceita intervalo em segundos só até 59.
 - **`supabase db query`** injeta um comentário no fim do SQL, o que quebra
   blocos `DO $$...$$` — usar `-f arquivo`.
+- **`ea.com/robots.txt`** tem reserva de direitos explícita contra scraping/
+  mineração automatizada de dados — nada deve bater em `drop-api.ea.com`
+  automaticamente, mesmo que a requisição técnica funcione (200 OK). Dado
+  precisa vir de download manual do usuário. Ver `docs/handoff_etapa17b.md`.
+- **`tool/sync_fc_cards.dart`**: um `--map` que sobrescreve `primary_position`
+  sem também sobrescrever `alternative_positions` cai num default obsoleto
+  em silêncio (sempre zero alternativas) — corrigido na Etapa 17B pra
+  detectar isso e usar fallback seguro, mas vale conferir o dry-run report
+  ("linhas com posicoes alternativas") ao escrever um mapeamento novo.
 
 ## 6. O que está pendente
 
 **Bloqueado por dado externo:**
 
-- **Catálogo FC27 real ainda não importado.** O importer local
-  (CSV/JSON) está pronto; falta o dataset, que será obtido fora do
-  desenvolvimento. Nada no produto depende disso para funcionar — o app roda
-  com as 50 cartas `provider = 'LOCAL'` de dev e com catálogo vazio.
+- **Catálogo FC27 real ainda não importado (Etapa 17B em andamento).** O
+  importer (`tool/sync_fc_cards.dart`) foi auditado e adaptado contra
+  fixtures reais de teste (posições em colunas separadas, detailed_stats/
+  playstyles_plus/raw_metadata, `--full-catalog`); a correção de segurança
+  do `is_active` foi aplicada em produção. Falta só o arquivo do catálogo
+  real da EA (17.873+ itens confirmados ao vivo em `drop-api.ea.com/rating/
+  ea-sports-fc`), que precisa ser baixado manualmente pelo usuário — o
+  `robots.txt` da EA proíbe explicitamente mineração automatizada de dados, então
+  nada pode buscar isso automaticamente. Ver
+  `docs/handoff_etapa17b.md`. Nada no produto depende disso pra funcionar —
+  o app roda com as 50 cartas `provider = 'LOCAL'` de dev e com catálogo
+  real vazio até lá.
 - **Fontes de carta descartadas** (FUT.GG, FUTBIN, FUTWIZ, WeFUT, SoFIFA,
   fcratings): todas por `robots.txt` ou ToS. Razão de cada uma em
   `card_provider_research.md`. Não reabrir a pesquisa.
