@@ -7,6 +7,7 @@ import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart'
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_week_picker.dart';
 import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:flutter/material.dart';
@@ -31,18 +32,43 @@ class WeekendLeagueDetailPage extends StatefulWidget {
 
 class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
   late Future<WeekendLeagueAccountStats> _future;
+  late WeekendLeagueEvent _event;
+
+  /// Carregada uma vez e reusada: trocar de semana refaz so as estatisticas,
+  /// nunca a lista de semanas.
+  late Future<List<WeekendLeagueEvent>> _eventsFuture;
 
   @override
   void initState() {
     super.initState();
+    _event = widget.event;
+    _eventsFuture = getIt<FcAccountRepository>().fetchWeekendLeagueEvents();
     _load();
   }
 
   void _load() {
     _future = getIt<FcAccountRepository>().fetchWeekendLeagueAccountStats(
       accountId: widget.account.id,
-      eventId: widget.event.id,
+      eventId: _event.id,
     );
+  }
+
+  Future<void> _pickWeek() async {
+    final events = await _eventsFuture;
+    if (!mounted || events.isEmpty) {
+      return;
+    }
+    final picked = await showWeekendLeagueWeekPicker(
+      context: context,
+      events: events,
+      selectedId: _event.id,
+    );
+    if (picked != null && picked.id != _event.id && mounted) {
+      setState(() {
+        _event = picked;
+        _load();
+      });
+    }
   }
 
   @override
@@ -50,7 +76,7 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: AppAppBar(title: l10n.weekendLeagueBadge(widget.event.number)),
+      appBar: AppAppBar(title: l10n.weekendLeagueBadge(_event.number)),
       body: FutureBuilder<WeekendLeagueAccountStats>(
         future: _future,
         builder: (context, snapshot) {
@@ -74,8 +100,9 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
           }
           return _Body(
             account: widget.account,
-            event: widget.event,
+            event: _event,
             stats: stats,
+            onPickWeek: _pickWeek,
           );
         },
       ),
@@ -88,11 +115,13 @@ class _Body extends StatelessWidget {
     required this.account,
     required this.event,
     required this.stats,
+    required this.onPickWeek,
   });
 
   final FcAccount account;
   final WeekendLeagueEvent event;
   final WeekendLeagueAccountStats stats;
+  final Future<void> Function() onPickWeek;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -101,6 +130,8 @@ class _Body extends StatelessWidget {
       vertical: AppSpacing.xl,
     ),
     children: <Widget>[
+      WeekendLeagueWeekSelector(event: event, onTap: onPickWeek),
+      const SizedBox(height: AppSpacing.lg),
       _SummarySection(account: account, event: event, stats: stats),
       const SizedBox(height: AppSpacing.lg),
       _LeaderboardSection(

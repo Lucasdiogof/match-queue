@@ -32,6 +32,8 @@ abstract interface class FcAccountRemoteDataSource {
 
   Future<Map<String, dynamic>> getAccountStats(String accountId);
 
+  Future<List<Map<String, dynamic>>> listWeekendLeagueEvents();
+
   Future<Map<String, dynamic>> getWeekendLeagueAccountStats({
     required String accountId,
     required String eventId,
@@ -136,6 +138,17 @@ class SupabaseFcAccountRemoteDataSource implements FcAccountRemoteDataSource {
       params: <String, dynamic>{'p_fc_account_id': accountId},
     );
     return Map<String, dynamic>.from(response as Map);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> listWeekendLeagueEvents() async {
+    final response = await _client.rpc<dynamic>('list_weekend_league_events');
+    final items = (response as Map)['items'];
+    return <Map<String, dynamic>>[
+      if (items is List)
+        for (final item in items)
+          if (item is Map) Map<String, dynamic>.from(item),
+    ];
   }
 
   @override

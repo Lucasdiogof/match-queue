@@ -4,6 +4,8 @@ import 'package:fifa_queue/features/fc_accounts/data/models/fc_account_model.dar
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
+import 'package:fifa_queue/features/game/data/models/weekend_league_event_model.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 
 class SupabaseFcAccountRepository implements FcAccountRepository {
   const SupabaseFcAccountRepository(this._dataSource, this._errorMapper);
@@ -84,6 +86,15 @@ class SupabaseFcAccountRepository implements FcAccountRepository {
       _guard(() async {
         final json = await _dataSource.getAccountStats(accountId);
         return FcAccountStats.fromJson(json);
+      });
+
+  @override
+  Future<List<WeekendLeagueEvent>> fetchWeekendLeagueEvents() =>
+      _guard(() async {
+        final rows = await _dataSource.listWeekendLeagueEvents();
+        return <WeekendLeagueEvent>[
+          for (final row in rows) ?WeekendLeagueEventModel.fromResponse(row),
+        ];
       });
 
   @override

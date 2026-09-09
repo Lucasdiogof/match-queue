@@ -48,6 +48,9 @@ abstract interface class FcAccountRepository {
 
   /// Record de WL (computado x manual), artilharia e assistências de uma
   /// conta num evento.
+  /// Semanas de Weekend League ja iniciadas, mais recente primeiro.
+  Future<List<WeekendLeagueEvent>> fetchWeekendLeagueEvents();
+
   Future<WeekendLeagueAccountStats> fetchWeekendLeagueAccountStats({
     required String accountId,
     required String eventId,
