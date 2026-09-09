@@ -5,19 +5,25 @@ no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
 Estado em 2026-09-08: **Etapas 1–17 fechadas** (17 foi auditoria, sem
-feature nova), **Etapa 17B (importação real do catálogo FC27) EM
-ANDAMENTO** — segurança corrigida e aplicada, importer adaptado e testado
-contra fixtures, catálogo real ainda não importado (falta o arquivo, que
-precisa ser baixado manualmente pelo usuário — ver
-[`handoff_etapa17b.md`](handoff_etapa17b.md)). HEAD `33efee9` = `origin/main`,
-**73 migrations locais = 73 remotas**, `flutter analyze` sem issues. Edge
-Function `process-notification-outbox` versão 3, ACTIVE.
+feature nova), **Fase A (bloqueadores de lançamento) FECHADA** — exclusão
+de conta, Privacy/Terms, assinatura de release e vazamento de catálogo
+inativo todos corrigidos e validados ao vivo, ver
+[`handoff_fase_a_launch.md`](handoff_fase_a_launch.md). **Etapa 17B
+(importação real do catálogo FC27) segue EM ANDAMENTO** — importer
+adaptado e testado contra fixtures, catálogo real ainda não importado
+(falta o arquivo, baixado manualmente pelo usuário — ver
+[`handoff_etapa17b.md`](handoff_etapa17b.md)). 74 migrations locais =
+remotas, `flutter analyze` sem issues. Edge Functions:
+`process-notification-outbox` (v3, ACTIVE) e `delete-account` (v1,
+ACTIVE).
 
 **Antes de decidir o que vem depois, leia
-[`launch_gap_analysis.md`](launch_gap_analysis.md)** — diagnóstico
-completo do que falta para lançar de verdade (Política de Privacidade,
-exclusão de conta, assinatura de release, testes automatizados, risco de
-marca). Resumo em [`handoff_etapa17.md`](handoff_etapa17.md).
+[`launch_gap_analysis.md`](launch_gap_analysis.md)** (diagnóstico
+original) **e [`handoff_fase_a_launch.md`](handoff_fase_a_launch.md)**
+(o que já foi corrigido). Resumo da auditoria original em
+[`handoff_etapa17.md`](handoff_etapa17.md). Único P0 de marca ainda em
+aberto: decisão de renomear o produto (não implementada, é decisão do
+dono).
 
 ---
 
@@ -67,6 +73,8 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_etapa16.md` | Perfil público opt-in + compartilhamento da Escalação Principal, rota `/u/:identifier` |
 | `handoff_etapa17.md` | Auditoria de lançamento (sem feature nova) — índice curto |
 | `handoff_etapa17b.md` | Importação real do catálogo FC27 — segurança corrigida, importer adaptado, aguardando arquivo real da EA |
+| `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
+| `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
 | `card_provider_research.md` | pesquisa de fonte de cartas e por que cada uma foi descartada |
 | `architecture.md`, `database.md`, `supabase_setup.md`, `deep_links.md`, `branding.md` | referência transversal |
@@ -159,6 +167,10 @@ Distinções que já custaram bug quando ignoradas:
   atuais.
 - Hall histórico de ex-membros; empates (o domínio é WIN/LOSS).
 - `weekend_league_event_model.dart` órfão desde a Etapa 9.
+- **Renomear o produto** (risco de marca por citar "FIFA"/"EA SPORTS FC"/
+  "Ultimate Team") — disclaimer de não afiliação já em produção como
+  mitigação (Fase A), mas a decisão de rename em si segue do dono do
+  produto. Pontos de uso mapeados em `docs/handoff_fase_a_launch.md`.
 
 **Para a etapa final:**
 

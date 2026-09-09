@@ -172,6 +172,11 @@ handoffs:
 
 ## 5. P0 — bloqueadores de lançamento
 
+**Atualização (Fase A, 2026-09-08): itens 2-5 abaixo foram RESOLVIDOS.**
+Detalhe completo, com verificação ao vivo de cada um, em
+`docs/handoff_fase_a_launch.md`. O texto original de cada achado é mantido
+abaixo para registro histórico do estado em que foram encontrados.
+
 1. **Zero teste automatizado no repositório.** `test/` não existe, nenhum
    arquivo `_test.dart` em lugar nenhum (incluindo `ios/RunnerTests`, que é
    scaffold padrão do Xcode, não teste real). Todo o "QA" documentado nos
@@ -179,18 +184,18 @@ handoffs:
    e valiosa, mas não repetível automaticamente, não protege contra
    regressão silenciosa numa mudança futura, e não existe suíte para rodar
    em CI mesmo que um CI fosse criado amanhã.
-2. **Sem exclusão de conta.** Nenhuma RPC, nenhuma tela. A Apple exige
+2. **Sem exclusão de conta. (✅ RESOLVIDO — Fase A, ver handoff)** Nenhuma RPC, nenhuma tela. A Apple exige
    fluxo de exclusão de conta dentro do app desde 2022 para qualquer app
    que permita criar conta — isso bloqueia submissão à App Store
    diretamente, e é também exigência comum de LGPD/GDPR para retenção de
    dados.
-3. **Sem Política de Privacidade / Termos de Uso.** Nenhuma tela, nenhum
+3. **Sem Política de Privacidade / Termos de Uso. (✅ RESOLVIDO — Fase A, ver handoff)** Nenhuma tela, nenhum
    texto, nenhum link, em lugar nenhum do app ou do repositório. Ambas as
    lojas (Apple e Google Play) exigem link de Política de Privacidade
    preenchido no formulário de submissão, e o app coleta e-mail, avatar,
    token de push e dados de partida — a ausência de um texto explicando
    isso é bloqueador direto de submissão, não apenas boa prática.
-4. **Assinatura de release Android usa a chave de debug.**
+4. **Assinatura de release Android usa a chave de debug. (✅ RESOLVIDO — Fase A, ver handoff)**
    `android/app/build.gradle.kts` tem
    `signingConfig = signingConfigs.getByName("debug")` no bloco `release`
    com o comentário padrão do template Flutter ainda presente — nenhum
@@ -199,7 +204,7 @@ handoffs:
    Play Store (a Play Store aceita o primeiro upload com qualquer chave,
    mas travaria nela para sempre — publicar assim seria uma decisão
    irreversível errada).
-5. **Risco de marca não avaliado formalmente.** O nome do produto (`FIFA
+5. **Risco de marca não avaliado formalmente. (⚠️ PARCIAL — Fase A, ver handoff)** Disclaimer de não afiliação adicionado (About/Privacy/Terms); rename continua pendente, decisão do dono. O nome do produto (`FIFA
    Queue`), a descrição do `pubspec.yaml` ("... em EA SPORTS FC"), o
    README e múltiplas strings de usuário (`app_pt.arb`: "Suas contas de
    Ultimate Team") citam diretamente marcas de terceiros (FIFA — a

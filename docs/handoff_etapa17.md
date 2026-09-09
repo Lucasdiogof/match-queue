@@ -4,6 +4,12 @@ Status em 2026-09-08: **auditoria concluída, nenhuma feature nova
 implementada**, como pedido. HEAD `28ecdf9` = `origin/main`, 71 migrations
 locais = 71 remotas, `flutter analyze` — No issues found (reconfirmado).
 
+**Atualização (Fase A, mesmo dia): os P0s "sem exclusão de conta", "sem
+Privacy/Terms" e "assinatura de release em debug" listados abaixo como
+faltantes foram RESOLVIDOS** — ver `docs/handoff_fase_a_launch.md`. O
+disclaimer de não afiliação também foi adicionado; a decisão de renomear
+o produto continua pendente (é decisão do dono, não desta automação).
+
 ## O que esta etapa é
 
 Não é uma etapa de produto. É um raio-x do estado real do projeto contra
