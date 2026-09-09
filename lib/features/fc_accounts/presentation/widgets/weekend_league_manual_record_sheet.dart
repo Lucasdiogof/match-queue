@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Espelha public._weekend_league_max_matches(). A regra vale no servidor;
+/// aqui e so pra avisar antes de gastar uma ida ate ele.
+const int weekendLeagueMaxMatches = 15;
+
 Future<void> showWeekendLeagueManualRecordSheet({
   required BuildContext context,
   required FcAccount account,
@@ -34,6 +38,7 @@ class _ManualRecordForm extends StatefulWidget {
 
 class _ManualRecordFormState extends State<_ManualRecordForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? _limitError;
   late final TextEditingController _winsController = TextEditingController(
     text: '${widget.account.weekendLeagueRecord.$1}',
   );
@@ -48,17 +53,27 @@ class _ManualRecordFormState extends State<_ManualRecordForm> {
     super.dispose();
   }
 
+  /// A Weekend League tem 15 partidas, entao vitorias + derrotas nunca
+  /// passam disso. A RPC tambem barra (FQ046) -- isto aqui e so pra dizer
+  /// antes de gastar uma ida ao servidor.
   Future<void> _submit() async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
+    final wins = int.parse(_winsController.text);
+    final losses = int.parse(_lossesController.text);
+    if (wins + losses > weekendLeagueMaxMatches) {
+      setState(() => _limitError = context.l10n.errorWeekendLeagueLimit);
+      return;
+    }
+    setState(() => _limitError = null);
     final navigator = Navigator.of(context);
     final ok = await context
         .read<FcAccountsCubit>()
         .setWeekendLeagueManualRecord(
           accountId: widget.account.id,
-          wins: int.parse(_winsController.text),
-          losses: int.parse(_lossesController.text),
+          wins: wins,
+          losses: losses,
         );
     if (ok && mounted) {
       navigator.pop();
@@ -115,6 +130,9 @@ class _ManualRecordFormState extends State<_ManualRecordForm> {
                   tone: AppBannerTone.danger,
                   message: state.actionFailure!.localizedMessage(l10n),
                 ),
+                const SizedBox(height: AppSpacing.lg),
+              ] else if (_limitError != null) ...<Widget>[
+                AppBanner(tone: AppBannerTone.danger, message: _limitError!),
                 const SizedBox(height: AppSpacing.lg),
               ],
               Row(

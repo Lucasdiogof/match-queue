@@ -4243,6 +4243,72 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Nenhuma assistência registrada ainda.'**
   String get statsEmptyAssistsMessage;
+
+  /// No description provided for @pendingMatchesCardTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 partida sem resultado} other{{count} partidas sem resultado}}'**
+  String pendingMatchesCardTitle(int count);
+
+  /// No description provided for @pendingMatchesCardLatest.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais recente: {mode} · {date} às {time}'**
+  String pendingMatchesCardLatest(String mode, String date, String time);
+
+  /// No description provided for @pendingMatchesOpenListAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver partidas'**
+  String get pendingMatchesOpenListAction;
+
+  /// No description provided for @pendingMatchesDismissAllAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não informar'**
+  String get pendingMatchesDismissAllAction;
+
+  /// No description provided for @pendingMatchesDismissAllTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não informar nenhuma?'**
+  String get pendingMatchesDismissAllTitle;
+
+  /// No description provided for @pendingMatchesDismissAllMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas saem da lista sem contar como vitória nem derrota.'**
+  String get pendingMatchesDismissAllMessage;
+
+  /// No description provided for @pendingMatchesSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partidas sem resultado'**
+  String get pendingMatchesSheetTitle;
+
+  /// No description provided for @pendingMatchesSheetMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o que quiser. Deixar em branco não bloqueia nada.'**
+  String get pendingMatchesSheetMessage;
+
+  /// No description provided for @pendingMatchesSkipOneAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não informar'**
+  String get pendingMatchesSkipOneAction;
+
+  /// No description provided for @pendingMatchesAllClear.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma partida pendente.'**
+  String get pendingMatchesAllClear;
+
+  /// No description provided for @errorWeekendLeagueLimit.
+  ///
+  /// In pt, this message translates to:
+  /// **'A Weekend League tem 15 partidas: vitórias e derrotas somadas não podem passar disso.'**
+  String get errorWeekendLeagueLimit;
 }
 
 class _AppLocalizationsDelegate

@@ -10,17 +10,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// Retorna true quando o placar foi salvo com sucesso -- o chamador decide
 /// se oferece o detalhamento por jogador em seguida, com o BuildContext da
 /// própria página (o da sheet já estará desmontado nesse ponto).
-Future<bool?> showFinishMatchSheet(BuildContext context) =>
+/// [matchId] permite informar o placar de uma pendencia especifica da lista;
+/// sem ele, o cubit age sobre a mais recente.
+Future<bool?> showFinishMatchSheet(BuildContext context, {String? matchId}) =>
     showAppBottomSheet<bool>(
       context: context,
       builder: (sheetContext) => BlocProvider.value(
         value: context.read<PendingMatchCubit>(),
-        child: const _FinishMatchForm(),
+        child: _FinishMatchForm(matchId: matchId),
       ),
     );
 
 class _FinishMatchForm extends StatefulWidget {
-  const _FinishMatchForm();
+  const _FinishMatchForm({this.matchId});
+
+  final String? matchId;
 
   @override
   State<_FinishMatchForm> createState() => _FinishMatchFormState();
@@ -53,6 +57,7 @@ class _FinishMatchFormState extends State<_FinishMatchForm> {
     }
     final cubit = context.read<PendingMatchCubit>();
     final ok = await cubit.finish(
+      matchId: widget.matchId,
       goalsFor: goalsFor,
       goalsAgainst: goalsAgainst,
     );

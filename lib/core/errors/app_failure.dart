@@ -47,6 +47,7 @@ enum GameFailureReason {
   playerNotInSquad,
   noSquadSnapshot,
   matchNotFinished,
+  weekendLeagueLimit,
 }
 
 enum FcAccountFailureReason {

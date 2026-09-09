@@ -1017,7 +1017,6 @@
   },
   "fcAccountStatsTitle": "Stats",
   "fcAccountStatsEmptyMessage": "No matches recorded yet.",
-  "weekendLeagueDetailManualNote": "The manually entered result differs from what the detailed matches show so far.",
   "rivalsSectionTitle": "Division Rivals",
   "rivalsDetailTitle": "Division Rivals",
   "rivalsNoDivisionLabel": "Division not set yet",
@@ -1292,5 +1291,37 @@
   "controlNoTeamMessage": "The queue belongs to the team. Join one or create yours to start searching.",
   "controlNoTeamAction": "See teams",
   "statsEmptyScorersMessage": "No goals recorded yet.",
-  "statsEmptyAssistsMessage": "No assists recorded yet."
+  "statsEmptyAssistsMessage": "No assists recorded yet.",
+  "pendingMatchesCardTitle": "{count, plural, =1{1 match without a result} other{{count} matches without a result}}",
+  "pendingMatchesCardLatest": "Most recent: {mode} · {date} at {time}",
+  "pendingMatchesOpenListAction": "See matches",
+  "pendingMatchesDismissAllAction": "Skip all",
+  "pendingMatchesDismissAllTitle": "Skip all of them?",
+  "pendingMatchesDismissAllMessage": "They all leave the list without counting as a win or a loss.",
+  "pendingMatchesSheetTitle": "Matches without a result",
+  "pendingMatchesSheetMessage": "Report whichever you want. Leaving them blank blocks nothing.",
+  "pendingMatchesSkipOneAction": "Skip",
+  "pendingMatchesAllClear": "No pending matches.",
+  "@pendingMatchesCardTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@pendingMatchesCardLatest": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "errorWeekendLeagueLimit": "Weekend League has 15 matches: wins and losses together cannot exceed that."
 }

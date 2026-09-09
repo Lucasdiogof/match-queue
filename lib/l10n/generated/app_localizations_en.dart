@@ -2451,4 +2451,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statsEmptyAssistsMessage => 'No assists recorded yet.';
+
+  @override
+  String pendingMatchesCardTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count matches without a result',
+      one: '1 match without a result',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingMatchesCardLatest(String mode, String date, String time) {
+    return 'Most recent: $mode · $date at $time';
+  }
+
+  @override
+  String get pendingMatchesOpenListAction => 'See matches';
+
+  @override
+  String get pendingMatchesDismissAllAction => 'Skip all';
+
+  @override
+  String get pendingMatchesDismissAllTitle => 'Skip all of them?';
+
+  @override
+  String get pendingMatchesDismissAllMessage =>
+      'They all leave the list without counting as a win or a loss.';
+
+  @override
+  String get pendingMatchesSheetTitle => 'Matches without a result';
+
+  @override
+  String get pendingMatchesSheetMessage =>
+      'Report whichever you want. Leaving them blank blocks nothing.';
+
+  @override
+  String get pendingMatchesSkipOneAction => 'Skip';
+
+  @override
+  String get pendingMatchesAllClear => 'No pending matches.';
+
+  @override
+  String get errorWeekendLeagueLimit =>
+      'Weekend League has 15 matches: wins and losses together cannot exceed that.';
 }

@@ -23,6 +23,13 @@ class LocalGameRepository implements GameRepository {
   Future<void> discardMatch(String matchId) async {}
 
   @override
+  Future<List<PendingGameMatch>> fetchPendingMatches() async =>
+      const <PendingGameMatch>[];
+
+  @override
+  Future<void> dismissAllPendingMatches() async {}
+
+  @override
   Future<GameMatchDetails> fetchMatchDetails(String matchId) async {
     throw const NotFoundFailure();
   }

@@ -23,6 +23,12 @@ abstract interface class GameRepository {
   /// opcional: nao registrar nunca pode bloquear uma nova busca.
   Future<void> discardMatch(String matchId);
 
+  /// Todas as partidas sem resultado e nao dispensadas, da mais recente para
+  /// a mais antiga.
+  Future<List<PendingGameMatch>> fetchPendingMatches();
+
+  Future<void> dismissAllPendingMatches();
+
   Future<GameMatchDetails> fetchMatchDetails(String matchId);
 
   /// Edita resultado/placar de uma partida já FINISHED, sem limite de

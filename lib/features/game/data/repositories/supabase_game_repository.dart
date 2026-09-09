@@ -39,6 +39,18 @@ class SupabaseGameRepository implements GameRepository {
       _guard(() => _dataSource.discardMatch(matchId));
 
   @override
+  Future<List<PendingGameMatch>> fetchPendingMatches() => _guard(() async {
+    final rows = await _dataSource.listPendingMatches();
+    return <PendingGameMatch>[
+      for (final row in rows) ?PendingGameMatchModel.fromListItem(row),
+    ];
+  });
+
+  @override
+  Future<void> dismissAllPendingMatches() =>
+      _guard(_dataSource.dismissAllPendingMatches);
+
+  @override
   Future<GameMatchDetails> fetchMatchDetails(String matchId) =>
       _guard(() async {
         final json = await _dataSource.getMatchDetails(matchId);

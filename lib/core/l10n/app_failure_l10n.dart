@@ -64,6 +64,7 @@ extension AppFailureL10n on AppFailure {
     },
     GameFailure(:final reason) => switch (reason) {
       GameFailureReason.cooldown => l10n.errorGameCooldown,
+      GameFailureReason.weekendLeagueLimit => l10n.errorWeekendLeagueLimit,
       GameFailureReason.matchNotFound => l10n.errorGameMatchNotFound,
       GameFailureReason.matchAlreadyFinished =>
         l10n.errorGameMatchAlreadyFinished,

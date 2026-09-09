@@ -1017,7 +1017,6 @@
   },
   "fcAccountStatsTitle": "Estatísticas",
   "fcAccountStatsEmptyMessage": "Nenhuma partida registrada ainda.",
-  "weekendLeagueDetailManualNote": "O resultado informado manualmente é diferente do que as partidas detalhadas mostram até agora.",
   "rivalsSectionTitle": "Division Rivals",
   "rivalsDetailTitle": "Division Rivals",
   "rivalsNoDivisionLabel": "Divisão ainda não informada",
@@ -1292,5 +1291,37 @@
   "controlNoTeamMessage": "A fila é do time. Entre em um ou crie o seu para começar a buscar.",
   "controlNoTeamAction": "Ver times",
   "statsEmptyScorersMessage": "Nenhum gol registrado ainda.",
-  "statsEmptyAssistsMessage": "Nenhuma assistência registrada ainda."
+  "statsEmptyAssistsMessage": "Nenhuma assistência registrada ainda.",
+  "pendingMatchesCardTitle": "{count, plural, =1{1 partida sem resultado} other{{count} partidas sem resultado}}",
+  "pendingMatchesCardLatest": "Mais recente: {mode} · {date} às {time}",
+  "pendingMatchesOpenListAction": "Ver partidas",
+  "pendingMatchesDismissAllAction": "Não informar",
+  "pendingMatchesDismissAllTitle": "Não informar nenhuma?",
+  "pendingMatchesDismissAllMessage": "Todas saem da lista sem contar como vitória nem derrota.",
+  "pendingMatchesSheetTitle": "Partidas sem resultado",
+  "pendingMatchesSheetMessage": "Informe o que quiser. Deixar em branco não bloqueia nada.",
+  "pendingMatchesSkipOneAction": "Não informar",
+  "pendingMatchesAllClear": "Nenhuma partida pendente.",
+  "@pendingMatchesCardTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "@pendingMatchesCardLatest": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "errorWeekendLeagueLimit": "A Weekend League tem 15 partidas: vitórias e derrotas somadas não podem passar disso."
 }

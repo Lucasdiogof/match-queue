@@ -96,6 +96,7 @@ class SupabaseErrorMapper {
     'FQ037' => GameFailureReason.playerNotInSquad,
     'FQ038' => GameFailureReason.noSquadSnapshot,
     'FQ039' => GameFailureReason.matchNotFinished,
+    'FQ046' => GameFailureReason.weekendLeagueLimit,
     _ => null,
   };
 

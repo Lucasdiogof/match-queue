@@ -2467,4 +2467,50 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get statsEmptyAssistsMessage =>
       'Ninguna asistencia registrada todavía.';
+
+  @override
+  String pendingMatchesCardTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count partidos sin resultado',
+      one: '1 partido sin resultado',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingMatchesCardLatest(String mode, String date, String time) {
+    return 'Más reciente: $mode · $date a las $time';
+  }
+
+  @override
+  String get pendingMatchesOpenListAction => 'Ver partidos';
+
+  @override
+  String get pendingMatchesDismissAllAction => 'No informar';
+
+  @override
+  String get pendingMatchesDismissAllTitle => '¿No informar ninguno?';
+
+  @override
+  String get pendingMatchesDismissAllMessage =>
+      'Todos salen de la lista sin contar como victoria ni derrota.';
+
+  @override
+  String get pendingMatchesSheetTitle => 'Partidos sin resultado';
+
+  @override
+  String get pendingMatchesSheetMessage =>
+      'Informa los que quieras. Dejarlos en blanco no bloquea nada.';
+
+  @override
+  String get pendingMatchesSkipOneAction => 'No informar';
+
+  @override
+  String get pendingMatchesAllClear => 'Ningún partido pendiente.';
+
+  @override
+  String get errorWeekendLeagueLimit =>
+      'Weekend League tiene 15 partidos: victorias y derrotas juntas no pueden superarlo.';
 }

@@ -12,6 +12,10 @@ abstract interface class GameRemoteDataSource {
 
   Future<void> discardMatch(String matchId);
 
+  Future<List<Map<String, dynamic>>> listPendingMatches();
+
+  Future<void> dismissAllPendingMatches();
+
   Future<Map<String, dynamic>> getMatchDetails(String matchId);
 
   Future<void> updateMatchResult({
@@ -59,6 +63,21 @@ class SupabaseGameRemoteDataSource implements GameRemoteDataSource {
     'discard_game_match',
     params: <String, dynamic>{'p_match_id': matchId},
   );
+
+  @override
+  Future<List<Map<String, dynamic>>> listPendingMatches() async {
+    final response = await _client.rpc<dynamic>('list_pending_game_matches');
+    final items = (response as Map)['items'];
+    return <Map<String, dynamic>>[
+      if (items is List)
+        for (final item in items)
+          if (item is Map) Map<String, dynamic>.from(item),
+    ];
+  }
+
+  @override
+  Future<void> dismissAllPendingMatches() =>
+      _client.rpc<dynamic>('dismiss_all_pending_game_matches');
 
   @override
   Future<Map<String, dynamic>> getMatchDetails(String matchId) async {

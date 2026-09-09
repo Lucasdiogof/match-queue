@@ -193,13 +193,6 @@ class _SummarySection extends StatelessWidget {
               color: colors.textSecondary,
             ),
           ),
-          if (stats.manualDivergesFromComputed) ...<Widget>[
-            const SizedBox(height: AppSpacing.sm),
-            AppBanner(
-              tone: AppBannerTone.warning,
-              message: l10n.weekendLeagueDetailManualNote,
-            ),
-          ],
           const SizedBox(height: AppSpacing.md),
           Row(
             children: <Widget>[
