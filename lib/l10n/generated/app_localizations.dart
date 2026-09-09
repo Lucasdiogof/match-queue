@@ -1708,18 +1708,6 @@ abstract class AppLocalizations {
   /// **'Você'**
   String get matchmakingYouBadge;
 
-  /// No description provided for @matchmakingCancelConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Cancelar busca?'**
-  String get matchmakingCancelConfirmTitle;
-
-  /// No description provided for @matchmakingCancelConfirmMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você vai perder sua posição na busca atual.'**
-  String get matchmakingCancelConfirmMessage;
-
   /// No description provided for @matchmakingYourTurnTitle.
   ///
   /// In pt, this message translates to:

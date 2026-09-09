@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
+import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
@@ -99,14 +100,36 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
       );
   }
 
+  void _announceActionFailure(BuildContext context, AppFailure failure) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(failure.localizedMessage(context.l10n))),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocListener<MatchmakingCubit, MatchmakingState>(
-      listenWhen: (previous, current) =>
-          previous.promotionNonce != current.promotionNonce,
-      listener: (context, state) => _announceYourTurn(context),
+    return MultiBlocListener(
+      listeners: <BlocListener<MatchmakingCubit, MatchmakingState>>[
+        BlocListener<MatchmakingCubit, MatchmakingState>(
+          listenWhen: (previous, current) =>
+              previous.promotionNonce != current.promotionNonce,
+          listener: (context, state) => _announceYourTurn(context),
+        ),
+        // Falha de acao (buscar, cancelar, reportar) so ficava guardada no
+        // estado: a UI de erro depende de status == failure, que uma acao
+        // nunca produz. Resultado pratico -- o cooldown de 30s (FQ020)
+        // fazia o botao parecer morto, sem nenhuma explicacao na tela.
+        BlocListener<MatchmakingCubit, MatchmakingState>(
+          listenWhen: (previous, current) =>
+              current.failure != null && previous.failure != current.failure,
+          listener: (context, state) =>
+              _announceActionFailure(context, state.failure!),
+        ),
+      ],
       child: BlocBuilder<MatchmakingCubit, MatchmakingState>(
         builder: (context, state) => switch (state.status) {
           MatchmakingStatus.loading => const AppCard(
@@ -320,24 +343,11 @@ class _SearchingSelfCard extends StatelessWidget {
     }
   }
 
-  Future<void> _confirmCancel(BuildContext context) async {
-    final l10n = context.l10n;
-    final cubit = context.read<MatchmakingCubit>();
-    final confirmed = await showAppDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AppDialog(
-        title: l10n.matchmakingCancelConfirmTitle,
-        message: l10n.matchmakingCancelConfirmMessage,
-        confirmLabel: l10n.matchmakingCancelAction,
-        cancelLabel: l10n.actionCancel,
-        isDestructive: true,
-        onConfirm: () => Navigator.of(dialogContext).pop(true),
-        onCancel: () => Navigator.of(dialogContext).pop(false),
-      ),
-    );
-    if (confirmed == true) {
-      await cubit.cancel();
-    }
+  /// Sem confirmacao: cancelar a busca nao destroi nada e refazer custa um
+  /// toque. O erro, se a RPC falhar, aparece pelo listener de falha -- o
+  /// estado real continua vindo do servidor, nunca do otimismo do client.
+  Future<void> _cancel(BuildContext context) async {
+    await context.read<MatchmakingCubit>().cancel();
   }
 
   @override
@@ -379,7 +389,7 @@ class _SearchingSelfCard extends StatelessWidget {
                   isLoading: state.isActionPending,
                   onPressed: state.isActionPending
                       ? null
-                      : () => _confirmCancel(context),
+                      : () => _cancel(context),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

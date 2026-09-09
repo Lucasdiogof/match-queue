@@ -511,8 +511,6 @@
   "matchmakingQueueSectionTitle": "Waiting queue",
   "matchmakingQueueEmptyMessage": "No one in the queue.",
   "matchmakingYouBadge": "You",
-  "matchmakingCancelConfirmTitle": "Cancel search?",
-  "matchmakingCancelConfirmMessage": "You will lose your spot in the current search.",
   "matchmakingYourTurnTitle": "Your turn to search!",
   "matchmakingReconnecting": "Reconnecting…",
   "notificationsSectionTitle": "Notifications",

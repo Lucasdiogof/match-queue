@@ -24,6 +24,12 @@ Future<void> maybeOfferMatchDetails({
     return;
   }
   final l10n = context.l10n;
+  // O router e capturado ANTES do dialogo, de proposito. Salvar o resultado
+  // limpa a partida pendente, o card sai da arvore e este context desmonta
+  // enquanto o dialogo esta aberto -- entao um context.push depois dele caia
+  // num mounted falso e nao navegava, sem erro nenhum. O router nao depende
+  // do ciclo de vida deste widget.
+  final router = GoRouter.of(context);
   final wantsDetails = await showAppDialog<bool>(
     context: context,
     builder: (dialogContext) => AppDialog(
@@ -35,8 +41,8 @@ Future<void> maybeOfferMatchDetails({
       onCancel: () => Navigator.of(dialogContext).pop(false),
     ),
   );
-  if (wantsDetails == true && context.mounted) {
-    await context.push(AppRoutes.matchDetailLocation(match.id));
+  if (wantsDetails == true) {
+    await router.push(AppRoutes.matchDetailLocation(match.id));
   }
 }
 

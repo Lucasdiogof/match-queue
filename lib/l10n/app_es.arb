@@ -511,8 +511,6 @@
   "matchmakingQueueSectionTitle": "Cola de espera",
   "matchmakingQueueEmptyMessage": "Nadie en la cola.",
   "matchmakingYouBadge": "Tú",
-  "matchmakingCancelConfirmTitle": "¿Cancelar búsqueda?",
-  "matchmakingCancelConfirmMessage": "Vas a perder tu lugar en la búsqueda actual.",
   "matchmakingYourTurnTitle": "¡Tu turno de buscar!",
   "matchmakingReconnecting": "Reconectando…",
   "notificationsSectionTitle": "Notificaciones",

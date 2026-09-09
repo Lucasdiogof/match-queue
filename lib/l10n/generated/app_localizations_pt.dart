@@ -944,13 +944,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get matchmakingYouBadge => 'Você';
 
   @override
-  String get matchmakingCancelConfirmTitle => 'Cancelar busca?';
-
-  @override
-  String get matchmakingCancelConfirmMessage =>
-      'Você vai perder sua posição na busca atual.';
-
-  @override
   String get matchmakingYourTurnTitle => 'Sua vez de buscar!';
 
   @override
