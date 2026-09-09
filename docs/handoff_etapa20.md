@@ -9,6 +9,24 @@ pra eles.
 
 ## 1. Android — resumo (detalhe: `release_checklist_android.md`)
 
+**Correção de status (pedido do dono do produto, após o fechamento
+original desta etapa)**: a pergunta "está pronto para criar a release
+key?" é diferente de "está pronto pra buildar nesta máquina?", que é
+diferente de "está pronto pra Play Store?" — as três respostas não
+podem ser resumidas numa única frase "NOT READY". Distinção oficial,
+ver seção 9 de `release_checklist_android.md` para o detalhe completo:
+
+- **READY TO CREATE RELEASE KEY: SIM** — zero blocker de código;
+  `signingConfig` de release, a guarda contra assinatura silenciosa com
+  chave de debug, e `key.properties.example` já existem. Gerar o
+  keystore e digitar as senhas é uma etapa operacional do usuário, não
+  um blocker de readiness.
+- **READY TO BUILD RELEASE NESTA MÁQUINA: NÃO** — ambiente
+  Gradle/Windows (`Unable to establish loopback connection`).
+- **READY FOR STORE SUBMISSION: NÃO** — faltam keystore real, `env/
+  production.json`, um build assinado de verdade, Device QA e o setup
+  de metadata da Play Console.
+
 - `flutter build apk --release` e `flutter build appbundle --release`
   tentados de verdade nesta sessão: **ambos falham com
   `java.io.IOException: Unable to establish loopback connection`** —

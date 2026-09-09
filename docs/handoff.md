@@ -16,7 +16,13 @@ E debug de APK/AAB tentados de verdade, mesmo erro de loopback nos
 dois; Web compila mas não roda ao vivo no navegador de preview pelo mesmo
 bloqueio de sandbox já visto na Etapa 19; iOS exige macOS). Estimativa
 de completude de metadata: Google Play ~35%, App Store ~25%. Checklist
-manual de Device QA criado, execução pendente de aparelho físico. Ver
+manual de Device QA criado, execução pendente de aparelho físico.
+**Correção pós-fechamento**: a readiness de assinatura Android não é
+uma frase só — `READY TO CREATE RELEASE KEY: SIM` (zero blocker de
+código), `READY TO BUILD RELEASE NESTA MÁQUINA: NÃO` (Gradle/Windows) e
+`READY FOR STORE SUBMISSION: NÃO` (keystore real + metadata faltando)
+são três respostas distintas, ver seção 9 de
+`release_checklist_android.md`. Ver
 [`handoff_etapa20.md`](handoff_etapa20.md),
 [`release_checklist_android.md`](release_checklist_android.md),
 [`release_checklist_ios.md`](release_checklist_ios.md) e

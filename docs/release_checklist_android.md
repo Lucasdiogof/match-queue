@@ -114,8 +114,27 @@ específico do Gradle nesta máquina.
 
 ## 9. Veredito Android
 
-**NOT READY FOR STORE SUBMISSION — bloqueios de CONFIG (keystore ausente)
-e de ENVIRONMENT (Gradle não builda nesta máquina).** Zero bloqueio de
-código. Quando o keystore existir E o build rodar numa máquina/CI onde o
-Gradle funcione, o caminho já está pronto — nenhuma mudança de código é
-esperada.
+Três perguntas distintas, três respostas distintas — não misturar:
+
+**READY TO CREATE RELEASE KEY: SIM.** Zero bloqueio de código. O
+`signingConfig` de release já existe, a guarda contra assinatura
+silenciosa com a chave de debug já existe (`gradle.taskGraph.whenReady`),
+`android/key.properties.example` já existe sem credencial real, e
+`key.properties`/`*.jks`/`*.keystore` já estão gitignored (raiz e
+`android/`). Gerar o keystore com `keytool` e preencher `key.properties`
+com senha real é uma dependência **operacional** do usuário (só ele deve
+escolher/digitar as senhas) — não é um blocker de readiness do projeto.
+
+**READY TO BUILD RELEASE NESTA MÁQUINA: NÃO.** Motivo: ambiente
+Gradle/Windows falha com `Unable to establish loopback connection`
+(reconfirmado ao vivo nas Etapas 19 e 20, `apk` e `appbundle`, debug e
+release). Isso bloqueia rodar o comando de build **nesta máquina
+específica**, independente do keystore existir ou não — precisa de uma
+máquina/CI onde o Gradle consiga subir.
+
+**READY FOR STORE SUBMISSION: NÃO.** Faltam, nesta ordem: keystore real
++ `key.properties` preenchido, `env/production.json` (só existe o
+`.example.json`), um build assinado gerado de verdade (depende do item
+anterior de ambiente), Device QA num aparelho físico, e o setup de
+metadata da Play Console (`docs/release_checklist_store_metadata.md`,
+~35% pronto).
