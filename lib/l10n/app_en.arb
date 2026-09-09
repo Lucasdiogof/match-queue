@@ -52,8 +52,12 @@
   "teamPublicPageRecordLine": "{wins} wins • {losses} losses",
   "@teamPublicPageRecordLine": {
     "placeholders": {
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "teamPublicPageNotFoundTitle": "Team not found",
@@ -548,44 +552,68 @@
   "notificationsGroupEarlier": "Earlier",
   "@notificationTeamMemberJoined": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "teamName": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamMemberJoined": "{displayName} joined {teamName}.",
   "@notificationTeamLeaderChanged": {
     "placeholders": {
-      "leaderDisplayName": {"type": "String"}
+      "leaderDisplayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamLeaderChanged": "{leaderDisplayName} took the lead of the team ranking.",
   "notificationYouAreTeamLeader": "You took the lead of the team ranking!",
   "@notificationTeamTopScorerChanged": {
     "placeholders": {
-      "playerName": {"type": "String"},
-      "displayName": {"type": "String"}
+      "playerName": {
+        "type": "String"
+      },
+      "displayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamTopScorerChanged": "{playerName} ({displayName}) is the new team top scorer.",
   "@notificationTeamTopAssistChanged": {
     "placeholders": {
-      "playerName": {"type": "String"},
-      "displayName": {"type": "String"}
+      "playerName": {
+        "type": "String"
+      },
+      "displayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamTopAssistChanged": "{playerName} ({displayName}) now leads the team in assists.",
   "@notificationWeekendLeagueFinished": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "displayName": {
+        "type": "String"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "notificationWeekendLeagueFinished": "{displayName} finished the Weekend League {wins}-{losses}.",
   "@notificationRivalsDivisionChanged": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "division": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "division": {
+        "type": "String"
+      }
     }
   },
   "notificationRivalsDivisionChanged": "{displayName} reached {division} in Rivals.",
@@ -1239,5 +1267,19 @@
     }
   },
   "deleteAccountConfirmWord": "DELETE",
-  "deleteAccountAction": "Permanently delete my account"
+  "deleteAccountAction": "Permanently delete my account",
+  "homeFcAccountEyebrow": "ACTIVE FC ACCOUNT",
+  "homeFcAccountSwitchAction": "Switch",
+  "homeFcAccountNoTeams": "No team yet",
+  "homeFcAccountTeamCount": "{count, plural, =1{In 1 team} other{In {count} teams}}",
+  "homeNoTeamTitle": "Join a team",
+  "homeNoTeamMessage": "Searching for a match needs a team. Rivals and Weekend League already work.",
+  "@homeFcAccountTeamCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  }
 }

@@ -52,8 +52,12 @@
   "teamPublicPageRecordLine": "{wins} victorias • {losses} derrotas",
   "@teamPublicPageRecordLine": {
     "placeholders": {
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "teamPublicPageNotFoundTitle": "Equipo no encontrado",
@@ -548,44 +552,68 @@
   "notificationsGroupEarlier": "Anteriores",
   "@notificationTeamMemberJoined": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "teamName": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamMemberJoined": "{displayName} se unió a {teamName}.",
   "@notificationTeamLeaderChanged": {
     "placeholders": {
-      "leaderDisplayName": {"type": "String"}
+      "leaderDisplayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamLeaderChanged": "{leaderDisplayName} asumió el liderato del ranking del equipo.",
   "notificationYouAreTeamLeader": "¡Asumiste el liderato del ranking del equipo!",
   "@notificationTeamTopScorerChanged": {
     "placeholders": {
-      "playerName": {"type": "String"},
-      "displayName": {"type": "String"}
+      "playerName": {
+        "type": "String"
+      },
+      "displayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamTopScorerChanged": "{playerName} ({displayName}) es el nuevo goleador del equipo.",
   "@notificationTeamTopAssistChanged": {
     "placeholders": {
-      "playerName": {"type": "String"},
-      "displayName": {"type": "String"}
+      "playerName": {
+        "type": "String"
+      },
+      "displayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamTopAssistChanged": "{playerName} ({displayName}) ahora lidera las asistencias del equipo.",
   "@notificationWeekendLeagueFinished": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "displayName": {
+        "type": "String"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "notificationWeekendLeagueFinished": "{displayName} terminó la Weekend League {wins}-{losses}.",
   "@notificationRivalsDivisionChanged": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "division": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "division": {
+        "type": "String"
+      }
     }
   },
   "notificationRivalsDivisionChanged": "{displayName} llegó a {division} en Rivals.",
@@ -1239,5 +1267,19 @@
     }
   },
   "deleteAccountConfirmWord": "ELIMINAR",
-  "deleteAccountAction": "Eliminar mi cuenta permanentemente"
+  "deleteAccountAction": "Eliminar mi cuenta permanentemente",
+  "homeFcAccountEyebrow": "CUENTA FC ACTIVA",
+  "homeFcAccountSwitchAction": "Cambiar",
+  "homeFcAccountNoTeams": "Todavía sin equipo",
+  "homeFcAccountTeamCount": "{count, plural, =1{En 1 equipo} other{En {count} equipos}}",
+  "homeNoTeamTitle": "Entra en un equipo",
+  "homeNoTeamMessage": "Buscar partido requiere un equipo. Rivals y Weekend League ya puedes usarlos.",
+  "@homeFcAccountTeamCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  }
 }

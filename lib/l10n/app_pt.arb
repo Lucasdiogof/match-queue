@@ -52,8 +52,12 @@
   "teamPublicPageRecordLine": "{wins} vitórias • {losses} derrotas",
   "@teamPublicPageRecordLine": {
     "placeholders": {
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "teamPublicPageNotFoundTitle": "Time não encontrado",
@@ -548,44 +552,68 @@
   "notificationsGroupEarlier": "Anteriores",
   "@notificationTeamMemberJoined": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "teamName": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamMemberJoined": "{displayName} entrou em {teamName}.",
   "@notificationTeamLeaderChanged": {
     "placeholders": {
-      "leaderDisplayName": {"type": "String"}
+      "leaderDisplayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamLeaderChanged": "{leaderDisplayName} assumiu a liderança do ranking do time.",
   "notificationYouAreTeamLeader": "Você assumiu a liderança do ranking do time!",
   "@notificationTeamTopScorerChanged": {
     "placeholders": {
-      "playerName": {"type": "String"},
-      "displayName": {"type": "String"}
+      "playerName": {
+        "type": "String"
+      },
+      "displayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamTopScorerChanged": "{playerName} ({displayName}) é o novo artilheiro do time.",
   "@notificationTeamTopAssistChanged": {
     "placeholders": {
-      "playerName": {"type": "String"},
-      "displayName": {"type": "String"}
+      "playerName": {
+        "type": "String"
+      },
+      "displayName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamTopAssistChanged": "{playerName} ({displayName}) lidera as assistências do time.",
   "@notificationWeekendLeagueFinished": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "wins": {"type": "int"},
-      "losses": {"type": "int"}
+      "displayName": {
+        "type": "String"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
     }
   },
   "notificationWeekendLeagueFinished": "{displayName} terminou a Weekend League em {wins}-{losses}.",
   "@notificationRivalsDivisionChanged": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "division": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "division": {
+        "type": "String"
+      }
     }
   },
   "notificationRivalsDivisionChanged": "{displayName} chegou à {division} no Rivals.",
@@ -1239,5 +1267,19 @@
     }
   },
   "deleteAccountConfirmWord": "EXCLUIR",
-  "deleteAccountAction": "Excluir minha conta permanentemente"
+  "deleteAccountAction": "Excluir minha conta permanentemente",
+  "homeFcAccountEyebrow": "CONTA FC ATIVA",
+  "homeFcAccountSwitchAction": "Trocar",
+  "homeFcAccountNoTeams": "Ainda sem time",
+  "homeFcAccountTeamCount": "{count, plural, =1{Em 1 time} other{Em {count} times}}",
+  "homeNoTeamTitle": "Entre em um time",
+  "homeNoTeamMessage": "Buscar partida exige um time. Rivals e Weekend League você já pode usar.",
+  "@homeFcAccountTeamCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  }
 }

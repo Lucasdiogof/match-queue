@@ -5,11 +5,11 @@ import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
+import 'package:fifa_queue/features/home/presentation/widgets/home_fc_account_card.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -73,18 +73,64 @@ class _HomeBody extends StatelessWidget {
       );
     }
 
-    if (selected == null) {
-      return const TeamEmptyState();
-    }
-
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-      children: const <Widget>[
-        WeekendLeagueCard(),
-        RivalsCard(),
-        PendingMatchCard(),
-        _ShortcutsGrid(),
+      children: <Widget>[
+        const HomeFcAccountCard(),
+        const WeekendLeagueCard(),
+        const RivalsCard(),
+        const PendingMatchCard(),
+        if (selected == null) const _NoTeamCard(),
+        const _ShortcutsGrid(),
       ],
+    );
+  }
+}
+
+/// Sem time a Home continua util (Rivals e Weekend League sao da Conta FC),
+/// entao o convite para entrar num time e um card no fluxo -- nunca um
+/// bloqueio de tela inteira, que era o que escondia a identidade FC.
+class _NoTeamCard extends StatelessWidget {
+  const _NoTeamCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+      child: AppCard(
+        onTap: () => context.go(AppRoutes.team.path),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.groups_outlined,
+              size: AppSizing.iconLg,
+              color: context.colors.textSecondary,
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    l10n.homeNoTeamTitle,
+                    style: context.textStyles.titleSmall,
+                  ),
+                  const SizedBox(height: AppSpacing.xxs),
+                  Text(
+                    l10n.homeNoTeamMessage,
+                    style: context.textStyles.bodySmall?.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: context.colors.textTertiary),
+          ],
+        ),
+      ),
     );
   }
 }
