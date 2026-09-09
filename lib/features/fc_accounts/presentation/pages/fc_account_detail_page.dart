@@ -479,30 +479,6 @@ class _SettingsSection extends StatelessWidget {
 
   final FcAccount account;
 
-  Future<void> _confirmArchive(BuildContext context) async {
-    final l10n = context.l10n;
-    final cubit = context.read<FcAccountsCubit>();
-    final navigator = Navigator.of(context);
-    final confirmed = await showAppDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AppDialog(
-        title: l10n.fcAccountArchiveConfirmTitle,
-        message: l10n.fcAccountArchiveConfirmMessage,
-        confirmLabel: l10n.fcAccountArchiveAction,
-        cancelLabel: l10n.actionCancel,
-        isDestructive: true,
-        onConfirm: () => Navigator.of(dialogContext).pop(true),
-        onCancel: () => Navigator.of(dialogContext).pop(false),
-      ),
-    );
-    if (confirmed == true) {
-      final ok = await cubit.archiveAccount(account.id);
-      if (ok && navigator.canPop()) {
-        navigator.pop();
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -524,12 +500,6 @@ class _SettingsSection extends StatelessWidget {
               accountId: account.id,
               currentName: account.name,
             ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          AppButton.secondary(
-            label: l10n.fcAccountArchiveAction,
-            icon: Icons.archive_outlined,
-            onPressed: () => _confirmArchive(context),
           ),
         ],
       ),

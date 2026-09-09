@@ -4,6 +4,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
@@ -75,16 +76,24 @@ class _HomeBody extends StatelessWidget {
       );
     }
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-      children: <Widget>[
-        const HomeFcAccountCard(),
-        const WeekendLeagueCard(),
-        const RivalsCard(),
-        const PendingMatchCard(),
-        if (selected == null) const _NoTeamCard(),
-        const _ShortcutsGrid(),
-      ],
+    return RefreshIndicator(
+      onRefresh: () => Future.wait(<Future<void>>[
+        context.read<TeamsCubit>().refresh(),
+        context.read<FcAccountsCubit>().refresh(),
+        context.read<PendingMatchCubit>().refreshSilently(),
+      ]),
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+        children: <Widget>[
+          const HomeFcAccountCard(),
+          const WeekendLeagueCard(),
+          const RivalsCard(),
+          const PendingMatchCard(),
+          if (selected == null) const _NoTeamCard(),
+          const _ShortcutsGrid(),
+        ],
+      ),
     );
   }
 }
@@ -174,6 +183,26 @@ class _ShortcutsGrid extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: _ShortcutCard(
+                icon: Icons.sports_esports_outlined,
+                label: l10n.navControl,
+                onTap: () => context.go(AppRoutes.control.path),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _ShortcutCard(
+                icon: Icons.person_outlined,
+                label: l10n.profileFcAccountsRow,
+                onTap: () => context.push(AppRoutes.fcAccounts.path),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: _ShortcutCard(
                 icon: Icons.groups_outlined,
                 label: l10n.navTeam,
                 onTap: () => context.go(AppRoutes.team.path),
@@ -185,14 +214,6 @@ class _ShortcutsGrid extends StatelessWidget {
                 icon: Icons.history,
                 label: l10n.navHistory,
                 onTap: () => context.go(AppRoutes.history.path),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _ShortcutCard(
-                icon: Icons.sports_esports_outlined,
-                label: l10n.navControl,
-                onTap: () => context.go(AppRoutes.control.path),
               ),
             ),
           ],

@@ -127,14 +127,18 @@ class _MyTeamsTab extends StatelessWidget {
         );
       }
 
-      return ListView(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-        children: <Widget>[
-          for (final userTeam in state.teams) ...<Widget>[
-            _TeamListRow(userTeam: userTeam),
-            const SizedBox(height: AppSpacing.md),
+      return RefreshIndicator(
+        onRefresh: () => context.read<TeamsCubit>().refresh(),
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+          children: <Widget>[
+            for (final userTeam in state.teams) ...<Widget>[
+              _TeamListRow(userTeam: userTeam),
+              const SizedBox(height: AppSpacing.md),
+            ],
           ],
-        ],
+        ),
       );
     },
   );
@@ -256,14 +260,18 @@ class _ExploreTeamsTab extends StatelessWidget {
             );
           }
 
-          return ListView(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-            children: <Widget>[
-              for (final summary in state.teams) ...<Widget>[
-                _PublicTeamRow(summary: summary),
-                const SizedBox(height: AppSpacing.md),
+          return RefreshIndicator(
+            onRefresh: () => context.read<PublicTeamsCubit>().load(),
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+              children: <Widget>[
+                for (final summary in state.teams) ...<Widget>[
+                  _PublicTeamRow(summary: summary),
+                  const SizedBox(height: AppSpacing.md),
+                ],
               ],
-            ],
+            ),
           );
         },
       );

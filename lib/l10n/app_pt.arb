@@ -631,7 +631,7 @@
   "historyEmptyTitle": "Nenhuma busca ainda",
   "historyEmptyMessage": "As buscas de partida do time aparecem aqui quando terminam.",
   "activityScopeAll": "Tudo",
-  "activityScopeGames": "Partidas",
+  "activityScopeGames": "Jogos",
   "activityScopeSearches": "Buscas",
   "activityNoResult": "Resultado não informado",
   "activityDetailMode": "Modo",
@@ -1173,7 +1173,7 @@
     }
   },
   "profileSharingRow": "Compartilhamento",
-  "publicProfileSectionTitle": "Compartilhamento",
+  "publicProfileSectionTitle": "Privacidade",
   "publicProfileMasterSwitchLabel": "Perfil público",
   "publicProfileMasterSwitchHint": "Deixe seu perfil visível por um link público, sem precisar de conta no app.",
   "publicProfileStatusActive": "Perfil público: Ativo",

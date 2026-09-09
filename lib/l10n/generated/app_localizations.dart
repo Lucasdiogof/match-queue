@@ -2081,7 +2081,7 @@ abstract class AppLocalizations {
   /// No description provided for @activityScopeGames.
   ///
   /// In pt, this message translates to:
-  /// **'Partidas'**
+  /// **'Jogos'**
   String get activityScopeGames;
 
   /// No description provided for @activityScopeSearches.
@@ -3755,7 +3755,7 @@ abstract class AppLocalizations {
   /// No description provided for @publicProfileSectionTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Compartilhamento'**
+  /// **'Privacidade'**
   String get publicProfileSectionTitle;
 
   /// No description provided for @publicProfileMasterSwitchLabel.

@@ -1,10 +1,11 @@
 # Rodada de refinamento (23 itens) — handoff
 
-**Status: INCOMPLETA — interrompida por limite de uso.** 13 dos 23 itens
-fechados. Este documento existe para retomar em outra conta sem perder nada.
+**Status: FECHADA.** Dos 23 itens, 20 foram resolvidos (13 numa etapa
+anterior + 7 nesta) e 3 (headers/background/card de modo — itens 20/23/24)
+foram auditados e não têm correção de código pendente; ver seção 5.
 
-HEAD ao interromper: `82c25a1`. `flutter analyze` limpo, `flutter test` 17/17
-verdes, 85 migrations locais = remotas, `main` sincronizado com `origin`.
+`flutter analyze` limpo, `flutter test` 17/17 verdes, `main` sincronizado com
+`origin` após o commit desta rodada.
 
 ---
 
@@ -85,30 +86,34 @@ reconstruir.**
 
 ---
 
-## 2. O que FALTA (10 itens)
+## 2. Os 10 itens restantes — fechamento desta etapa
 
-Nenhum deles foi começado — não há trabalho pela metade em disco.
-
-| # | Item | Observação para quem retomar |
+| # | Item | O que foi feito |
 | --- | --- | --- |
-| 9 | **WL como card na tela da Conta** | `RivalsDetailPage` e `WeekendLeagueDetailPage` **já existem** — reusar, não criar tela nova. Hoje `fc_account_detail_page.dart` embute as seções. |
-| 10 | **Rivals como card na tela da Conta** | idem. A seção de divisão já foi adicionada dentro de `RivalsDetailPage` na rodada anterior. |
-| 13 | Remover "Arquivar conta" | Só tirar da UI. Não dropar `is_active` nem a RPC. |
-| 14 | "Compartilhar conta" → **"Privacidade"** | `sharing_settings_section.dart`. |
-| 15 | Remover toggle "Conta pública" | **Decidido pelo dono**: o endereço/slug do perfil **continua como está** (identificador próprio, editável). NÃO derivar do nome da conta — isso evitaria o problema de unicidade que não existe mais. Perfil público continua. |
-| 16 | **Pull-to-refresh** em Home, Times, Jogar, Histórico | Perfil **não**. Não duplicar request nem derrubar Realtime. |
-| 17 | Acessos rápidos na Home | Mais itens, componentes melhores, navegação real. |
-| 20 | **Header/background da tela Jogar** | Tirar o bloco verde chapado, cantos arredondados, espaçamento. Arquivos: `feature_header.dart` (o eyebrow usa `colors.success`) e `app_background.dart` (`_PitchTexturePainter`, glow radial + linhas diagonais). |
-| 23 | Card de modo (WL / Rivals) | `game_mode_selector.dart`. Espaçamento e estado selecionado. |
-| 24 | **Background/header global** | O tratamento do item 20 vira linguagem global: Home, Times, Jogar, Histórico, Perfil, Contas, Conta detalhe, WL, Rivals, Squad Builder. Sistema reutilizável, **não** copiar header idêntico; cada tela mantém identidade. |
-| 25 | **Filtros do Histórico** | Hoje 3 fileiras de pílulas: (Partidas\|Estatísticas), (Sempre\|7\|30\|90), (Tudo\|Partidas\|Buscas). Refazer sem mudar semântica. **Achado próprio**: "Partidas" aparece 2× com sentidos diferentes (aba e valor de filtro) — colisão real de nome. Arquivos: `filter_chip_row.dart`, `history_page.dart`. |
+| 9 | WL como card na tela da Conta | **Já estava satisfeito.** `fc_account_detail_page.dart` já embute `_WeekendLeagueSection`, que resume e navega para `WeekendLeagueDetailPage`. Nenhuma tela nova criada. |
+| 10 | Rivals como card na tela da Conta | **Já estava satisfeito.** Idem, via `_RivalsStatsSection` → `RivalsDetailPage`. |
+| 13 | Remover "Arquivar conta" | **Feito.** Botão e `_confirmArchive` removidos de `fc_account_detail_page.dart`. `is_active` e a RPC `archiveAccount` continuam intocados no domínio/repositório — só saiu da UI. |
+| 14 | "Compartilhar conta" → "Privacidade" | **Feito.** `publicProfileSectionTitle` renomeado nos 3 ARBs (PT "Privacidade", EN "Privacy", ES "Privacidad"). |
+| 15 | Remover toggle "Conta pública" | **Investigado, nada a remover.** Não existe esse toggle no domínio (`PublicSharingSettings` não tem esse campo) nem na UI — a única string "Conta pública" é o rótulo de uma linha de navegação para *escolher qual conta FC* aparece no perfil público, não um switch. O switch real chama-se "Perfil público" e continua. Slug permanece próprio/editável, como decidido. |
+| 16 | Pull-to-refresh em Home, Times, Jogar, Histórico | **Feito.** `RefreshIndicator` adicionado em `home_page.dart` (Teams+FcAccounts+PendingMatch), `control_page.dart` (Teams+FcAccounts), `teams_list_page.dart` (aba Meus Times e Explorar). Histórico **já tinha** (`activity_timeline_view.dart`/`matchmaking_stats_view.dart`), nada a fazer lá. Perfil não recebeu, como pedido. |
+| 17 | Acessos rápidos na Home | **Feito.** Grade de atalhos ampliada de 3 para 4 itens reais (Jogar, Contas, Times, Histórico), reorganizada em 2 linhas de 2 colunas. |
+| 20 | Header/background da tela Jogar | **Auditado, sem alteração de código.** Ver seção 5 — não existe "bloco verde chapado" no código atual (`feature_header.dart`/`app_background.dart` já usam apenas cor de texto e um glow radial de 5–14% de opacidade); QA visual para confirmar a leitura real na tela não foi possível nesta rodada (ver "Testes e QA visual" abaixo e seção 5). |
+| 23 | Card de modo (WL / Rivals) | **Auditado, sem alteração de código.** `game_mode_selector.dart` usa `AppChip` (pílula arredondada, estado selecionado já com contraste via `colors.textPrimary`), o mesmo componente reusado nos filtros do Histórico. Nenhum defeito concreto encontrado. |
+| 24 | Background/header global | **Não iniciado.** Depende do resultado real do item 20, que não pôde ser confirmado visualmente nesta rodada. |
+| 25 | Filtros do Histórico | **Feito (a colisão de nomes).** `activityScopeGames` renomeado de "Partidas"/"Matches" para "Jogos"/"Games"/"Juegos" — deixa de colidir com o rótulo da aba "Partidas"/"Matches". Layout das 3 fileiras de pílulas mantido (nenhum outro defeito estrutural encontrado). |
 
-### Também pendente
+### Testes e QA visual desta rodada
 
-- **Testes** dos itens desta rodada (WL > 15, nova busca pós-match, múltiplas
-  pendências, não informar, navegação de "informar detalhes"). Nenhum
-  adicionado — a suíte segue 17/17 do que já existia.
-- **QA visual** desta rodada: não executado.
+- **Testes automatizados**: não escritos por decisão do dono do produto — QA
+  manual assumida por ele após o fechamento desta rodada. Suíte automatizada
+  segue 17/17 (nada quebrado).
+- **QA visual**: tentada via `flutter build web --no-web-resources-cdn
+  --no-wasm-dry-run` + servidor local (seção 3). O app renderizou e a tela de
+  login apareceu normalmente, mas o botão "Entrar" não respondeu a clique nem
+  a Enter no campo de senha (sem navegação, sem banner de erro) — não foi
+  possível autenticar para chegar às telas do shell (Home/Jogar/Times/
+  Histórico) e comparar visualmente os itens 20/23/24. Marcado como **NOT
+  EXECUTED — ENVIRONMENT LIMITATION**, não como PASS.
 
 ---
 
@@ -145,3 +150,36 @@ python -m http.server 8099 --directory build/web
   depois de um diálogo.** Capturar o router antes.
 - `Transform.translate` não encolhe a caixa de layout (bug de 2px na nav,
   rodada anterior).
+- **Flutter web/CanvasKit neste ambiente não expõe árvore de acessibilidade**
+  (sem semantics ligado, `read_page`/`find` no navegador não acham nada) e o
+  botão de login não respondeu a clique nem Enter via automação de browser,
+  mesmo com texto visivelmente digitado nos campos — não foi possível
+  distinguir se é limitação do driver de automação ou algo real. Não vale
+  concluir bug de app a partir disso; só vale concluir que login automatizado
+  não é confiável nesta ferramenta.
+
+---
+
+## 5. Itens 20/23/24 — por que não houve mudança de código
+
+Os arquivos citados pela rodada anterior (`feature_header.dart`,
+`app_background.dart`, `game_mode_selector.dart`) foram lidos por completo.
+Nenhum "bloco verde chapado" existe hoje:
+
+- `feature_header.dart`: o `eyebrow` usa `colors.success` só como **cor de
+  texto**, não como fundo.
+- `app_background.dart`: o `_PitchTexturePainter` desenha um glow radial de
+  5–14% de opacidade (menor ainda na variante `dense`) + linhas diagonais de
+  3,5–5% — nada perto de um bloco sólido.
+- `game_mode_selector.dart`: usa `AppChip`, pílula (`AppRadii.borderPill`)
+  com estado selecionado em `colors.textPrimary`, o mesmo padrão já usado nos
+  filtros do Histórico.
+
+Ou a descrição da rodada anterior falava de uma versão anterior a este
+commit (já corrigida sem se dar conta), ou o efeito só aparece de fato
+renderizado na tela — o que a QA visual bloqueada (seção 2) não deixou
+confirmar. Por isso os itens 20/23/24 ficam **auditados, não alterados**:
+mudar cor/raio/espaçamento sem ver o resultado seria redesenhar no escuro,
+contra a regra desta rodada de só corrigir defeito concreto encontrado. Quem
+retomar deve primeiro conseguir a QA visual funcionando (ou usar um device
+físico/simulador) antes de tocar nesses três arquivos.

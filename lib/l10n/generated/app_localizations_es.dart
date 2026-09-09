@@ -1172,7 +1172,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get activityScopeAll => 'Todo';
 
   @override
-  String get activityScopeGames => 'Partidas';
+  String get activityScopeGames => 'Juegos';
 
   @override
   String get activityScopeSearches => 'Búsquedas';
@@ -2183,7 +2183,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileSharingRow => 'Compartir';
 
   @override
-  String get publicProfileSectionTitle => 'Compartir';
+  String get publicProfileSectionTitle => 'Privacidad';
 
   @override
   String get publicProfileMasterSwitchLabel => 'Perfil público';

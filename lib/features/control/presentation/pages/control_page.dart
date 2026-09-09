@@ -86,13 +86,56 @@ class _ControlBody extends StatelessWidget {
     // conta quem ja tinha, e pedia para "escolher um modo" quem nem time
     // tem -- instrucao que nao resolve nada.
     if (selected == null) {
-      return ListView(
+      return RefreshIndicator(
+        onRefresh: () => Future.wait(<Future<void>>[
+          context.read<TeamsCubit>().refresh(),
+          context.read<FcAccountsCubit>().refresh(),
+        ]),
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+          children: <Widget>[
+            BlocBuilder<FcAccountsCubit, FcAccountsState>(
+              buildWhen: (previous, current) =>
+                  previous.status != current.status ||
+                  previous.hasAccounts != current.hasAccounts,
+              builder: (context, fcState) {
+                if (fcState.isLoading && fcState.accounts.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                if (!fcState.hasAccounts) {
+                  return const FcAccountOnboardingCard();
+                }
+                return AppEmptyState(
+                  icon: Icons.groups_outlined,
+                  title: l10n.controlNoTeamTitle,
+                  message: l10n.controlNoTeamMessage,
+                  actionLabel: l10n.controlNoTeamAction,
+                  onAction: () => context.go(AppRoutes.team.path),
+                );
+              },
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            const _DiscoverySection(),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => Future.wait(<Future<void>>[
+        context.read<TeamsCubit>().refresh(),
+        context.read<FcAccountsCubit>().refresh(),
+      ]),
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         children: <Widget>[
           BlocBuilder<FcAccountsCubit, FcAccountsState>(
             buildWhen: (previous, current) =>
                 previous.status != current.status ||
-                previous.hasAccounts != current.hasAccounts,
+                previous.accounts != current.accounts ||
+                previous.selectedAccountId != current.selectedAccountId,
             builder: (context, fcState) {
               if (fcState.isLoading && fcState.accounts.isEmpty) {
                 return const SizedBox.shrink();
@@ -100,78 +143,49 @@ class _ControlBody extends StatelessWidget {
               if (!fcState.hasAccounts) {
                 return const FcAccountOnboardingCard();
               }
-              return AppEmptyState(
-                icon: Icons.groups_outlined,
-                title: l10n.controlNoTeamTitle,
-                message: l10n.controlNoTeamMessage,
-                actionLabel: l10n.controlNoTeamAction,
-                onAction: () => context.go(AppRoutes.team.path),
+              final account = fcState.selectedAccount;
+              final hasActiveQueueContext = account != null;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                // Ordem: quem sou (conta) -> com que time jogo (squad) ->
+                // o que vou jogar (modo) -> a fila. O card de busca fecha a
+                // sequencia porque e o foco da tela; squad e contexto, nao
+                // destino.
+                children: <Widget>[
+                  const FcAccountSelectorRow(),
+                  const SizedBox(height: AppSpacing.sm),
+                  const SquadSelectorRow(),
+                  const SizedBox(height: AppSpacing.lg),
+                  AppCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          l10n.gameModeSectionTitle,
+                          style: context.textStyles.labelSmall,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        const GameModeSelector(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  if (account != null)
+                    MatchmakingSection(
+                      fcAccountId: account.id,
+                      onMatchFound: () =>
+                          context.read<PendingMatchCubit>().refreshSilently(),
+                    ),
+                  if (!hasActiveQueueContext) ...<Widget>[
+                    const SizedBox(height: AppSpacing.xl),
+                    const _DiscoverySection(),
+                  ],
+                ],
               );
             },
           ),
-          const SizedBox(height: AppSpacing.xl),
-          const _DiscoverySection(),
         ],
-      );
-    }
-
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-      children: <Widget>[
-        BlocBuilder<FcAccountsCubit, FcAccountsState>(
-          buildWhen: (previous, current) =>
-              previous.status != current.status ||
-              previous.accounts != current.accounts ||
-              previous.selectedAccountId != current.selectedAccountId,
-          builder: (context, fcState) {
-            if (fcState.isLoading && fcState.accounts.isEmpty) {
-              return const SizedBox.shrink();
-            }
-            if (!fcState.hasAccounts) {
-              return const FcAccountOnboardingCard();
-            }
-            final account = fcState.selectedAccount;
-            final hasActiveQueueContext = account != null;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              // Ordem: quem sou (conta) -> com que time jogo (squad) ->
-              // o que vou jogar (modo) -> a fila. O card de busca fecha a
-              // sequencia porque e o foco da tela; squad e contexto, nao
-              // destino.
-              children: <Widget>[
-                const FcAccountSelectorRow(),
-                const SizedBox(height: AppSpacing.sm),
-                const SquadSelectorRow(),
-                const SizedBox(height: AppSpacing.lg),
-                AppCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        l10n.gameModeSectionTitle,
-                        style: context.textStyles.labelSmall,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      const GameModeSelector(),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                if (account != null)
-                  MatchmakingSection(
-                    fcAccountId: account.id,
-                    onMatchFound: () =>
-                        context.read<PendingMatchCubit>().refreshSilently(),
-                  ),
-                if (!hasActiveQueueContext) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xl),
-                  const _DiscoverySection(),
-                ],
-              ],
-            );
-          },
-        ),
-      ],
+      ),
     );
   }
 }

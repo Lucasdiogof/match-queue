@@ -631,7 +631,7 @@
   "historyEmptyTitle": "No searches yet",
   "historyEmptyMessage": "The team's match searches show up here once they finish.",
   "activityScopeAll": "All",
-  "activityScopeGames": "Matches",
+  "activityScopeGames": "Games",
   "activityScopeSearches": "Searches",
   "activityNoResult": "No result recorded",
   "activityDetailMode": "Mode",
@@ -1173,7 +1173,7 @@
     }
   },
   "profileSharingRow": "Sharing",
-  "publicProfileSectionTitle": "Sharing",
+  "publicProfileSectionTitle": "Privacy",
   "publicProfileMasterSwitchLabel": "Public profile",
   "publicProfileMasterSwitchHint": "Make your profile visible through a public link, no app account needed.",
   "publicProfileStatusActive": "Public profile: Active",

@@ -139,19 +139,27 @@ imagens de carta, filtros de catálogo, matchmaking e Weekend League **não**
 puderam ser vistos (dependem de backend/catálogo). Ver
 [`handoff_visual_qa.md`](handoff_visual_qa.md).
 
-**Rodada de refinamento (2026-09-09) — INCOMPLETA, 13 de 23 itens.**
-Interrompida por limite de uso; retomar por
-[`handoff_refinement_round.md`](handoff_refinement_round.md), que lista item a
-item o que está feito e o que falta. Fechado: os três bugs de fluxo
-(Histórico não carregava por **função duplicada** no banco — `create or
-replace` com parâmetro novo cria sobrecarga em vez de substituir; buscar não
-respondia porque falha de ação nunca era exibida; "informar detalhes" não
-navegava por `context` desmontado), partidas pendentes múltiplas com
-`result_dismissed` separando decisão de desfecho, limite de 15 partidas da
-Weekend League na RPC e em constraint (FQ046), e a tela Jogar reordenada.
-**Realtime investigado e já funcionava** — não reconstruir. Falta:
-Rivals/WL como cards na Conta, Privacidade, pull-to-refresh, acessos
-rápidos, header/background global e filtros do Histórico.
+**Rodada de refinamento (2026-09-09) — FECHADA, 20 de 23 itens.** Detalhe
+item a item em [`handoff_refinement_round.md`](handoff_refinement_round.md).
+Fechado nesta etapa (além dos 13 já fechados antes — três bugs de fluxo,
+partidas pendentes múltiplas, limite de 15 na Weekend League, Realtime
+confirmado funcionando): Rivals/WL como cards na Conta (já estavam
+satisfeitos por trabalho anterior, nada criado), "Arquivar conta" removido
+da UI (RPC/`is_active` intocados), "Compartilhar conta" → "Privacidade",
+"Conta pública" investigado e **não existe como toggle** (só um rótulo de
+seleção de conta — nada a remover), pull-to-refresh em Home/Jogar/Times
+(Histórico já tinha), grade de acessos rápidos da Home ampliada para 4 itens
+reais, e a colisão de nomes real do Histórico ("Partidas" como aba e como
+valor de filtro) corrigida renomeando o filtro para "Jogos"/"Games"/"Juegos".
+**Não alterados, só auditados**: os 3 itens de redesign visual
+(header/background da tela Jogar, card de modo, sistema global de
+header/background) — o código atual não tem o "bloco verde chapado" descrito,
+e a QA visual para confirmar como renderiza de fato ficou bloqueada (login
+não respondeu a clique/Enter no navegador de preview desta ferramenta); ver seção 5
+de `handoff_refinement_round.md` antes de tocar nesses três arquivos.
+Testes automatizados desta rodada foram deliberadamente deixados para QA
+manual do dono do produto — suíte automatizada segue 17/17, `flutter
+analyze` limpo.
 
 ## 1. O que o produto é
 
@@ -212,7 +220,7 @@ Distinções que já custaram bug quando ignoradas:
 | `ios_release_mac.md` | Auditoria estática iOS + checklist de 21 passos pra continuar o release num Mac |
 | `handoff_fase_a_launch.md` | Fase A — exclusão de conta, Privacy/Terms, assinatura de release Android, disclaimer de marca, catálogo is_active revalidado |
 | `handoff_ui_refresh.md` | UI/UX refresh — shell de 5 abas com Controle central, Times público/privado + página pública, Início/Histórico com identidade própria, AppBackground/FeatureHeader |
-| `handoff_refinement_round.md` | **LEIA PRIMEIRO** — rodada de 23 itens, 13 fechados e 10 pendentes; histórico consertado, partidas pendentes múltiplas, limite da Weekend League |
+| `handoff_refinement_round.md` | Rodada de 23 itens, FECHADA (20/23) — histórico consertado, partidas pendentes múltiplas, limite da Weekend League, pull-to-refresh, acessos rápidos; 3 itens de redesign visual auditados sem QA visual confirmada |
 | `handoff_visual_qa.md` | QA visual/funcional — primeira execução real do app (Web), 8 bugs de UI corrigidos, o que continua bloqueado por ambiente |
 | `handoff_product_domain_validation.md` | Validação do domínio do produto — Home liderada pela Conta FC, resultado descartável, histórico com a partida, semanas reais de Weekend League |
 | `handoff_gameplay_flows_refresh.md` | Gameplay flows refresh — Conta FC obrigatória antes de Time, anti-duplicação no picker, imagens de carta, overlap no campo, bottom sheet overflow, filtros hierárquicos, RivalsCard na Home |
