@@ -25,7 +25,7 @@ class AppBackground extends StatelessWidget {
             child: IgnorePointer(
               child: CustomPaint(
                 painter: _PitchTexturePainter(
-                  accent: colors.success,
+                  accent: colors.textPrimary,
                   background: colors.background,
                   isDark: context.isDarkMode,
                   dense: dense,
@@ -55,7 +55,9 @@ class _PitchTexturePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final glowOpacity = dense ? 0.05 : (isDark ? 0.14 : 0.08);
+    // Halo neutro e discreto: com accent branco/preto, a opacidade do
+    // gradiente colorido anterior lavaria a tela.
+    final glowOpacity = dense ? 0.02 : (isDark ? 0.06 : 0.035);
     final glowCenter = Offset(size.width * 0.85, size.height * 0.02);
     final glowRadius = size.width * 0.9;
     final glowPaint = Paint()

@@ -810,9 +810,9 @@
   "fcAccountWeekendLeagueSheetTitle": "Informar resultado",
   "fcAccountWeekendLeagueWinsLabel": "Victorias",
   "fcAccountWeekendLeagueLossesLabel": "Derrotas",
-  "fcAccountOnboardingTitle": "Crea tu primera cuenta",
-  "fcAccountOnboardingMessage": "Una cuenta representa un perfil tuyo en el Ultimate Team. Crea una para vincularla a tus equipos y empezar a buscar partidas.",
-  "fcAccountOnboardingCreateAction": "Crear cuenta",
+  "fcAccountOnboardingTitle": "Añade tu primera cuenta",
+  "fcAccountOnboardingMessage": "Registra la cuenta que juegas o gestionas para participar en equipos, buscar partidos y seguir tu progreso.",
+  "fcAccountOnboardingCreateAction": "Añadir cuenta",
   "pendingMatchElencoLabel": "Cuenta: {name}",
   "@pendingMatchElencoLabel": {
     "placeholders": {
@@ -1323,5 +1323,31 @@
     }
   },
   "errorWeekendLeagueLimit": "Weekend League tiene 15 partidos: victorias y derrotas juntas no pueden superarlo.",
-  "squadNoneSelectedHint": "Elige una plantilla para esta búsqueda"
+  "squadNoneSelectedHint": "Elige una plantilla para esta búsqueda",
+  "catalogCardsTitle": "Cartas",
+  "catalogCardsSearchLabel": "Buscar carta",
+  "catalogCardsSearchHint": "Nombre del jugador",
+  "catalogCardsEmptyTitle": "Ninguna carta encontrada",
+  "catalogCardsEmptyMessage": "Ajusta la búsqueda o los filtros para ver otras cartas.",
+  "catalogClubsTitle": "Clubes",
+  "catalogClubsSearchLabel": "Buscar club",
+  "catalogClubsSearchHint": "Nombre del club",
+  "catalogClubsEmptyTitle": "Ningún club encontrado",
+  "catalogClubsEmptyMessage": "Ajusta la búsqueda o los filtros para ver otros clubes.",
+  "catalogClubAverageLabel": "Media",
+  "catalogClubCardsCount": "{count, plural, =1{1 carta} other{{count} cartas}}",
+  "catalogGenderMen": "Masculino",
+  "catalogGenderWomen": "Femenino",
+  "filterAll": "Todas",
+  "@catalogClubCardsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startShortcutPlayHint": "Elige la cuenta y el modo, y entra en la fila.",
+  "startCatalogTitle": "Catálogo",
+  "startCatalogCardsHint": "Explora las cartas del juego.",
+  "startCatalogClubsHint": "Clubes por media de overall."
 }

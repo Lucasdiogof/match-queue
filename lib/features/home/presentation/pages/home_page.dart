@@ -164,6 +164,10 @@ class _NoTeamCardBody extends StatelessWidget {
   }
 }
 
+/// Atalhos com dois pesos, nao seis cards iguais: a acao principal ocupa a
+/// largura toda, o dia a dia vira uma fileira compacta e o catalogo (consulta,
+/// nao operacao) fica agrupado embaixo. Nenhum icone verde -- hierarquia aqui
+/// vem de tamanho e superficie.
 class _ShortcutsGrid extends StatelessWidget {
   const _ShortcutsGrid();
 
@@ -174,46 +178,62 @@ class _ShortcutsGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(
-          l10n.startShortcutsTitle.toUpperCase(),
-          style: context.textStyles.labelSmall,
+        _SectionLabel(text: l10n.startShortcutsTitle),
+        const SizedBox(height: AppSpacing.md),
+        _PrimaryShortcut(
+          icon: Icons.sports_esports_outlined,
+          label: l10n.navControl,
+          description: l10n.startShortcutPlayHint,
+          onTap: () => context.go(AppRoutes.control.path),
         ),
         const SizedBox(height: AppSpacing.md),
         Row(
           children: <Widget>[
             Expanded(
-              child: _ShortcutCard(
-                icon: Icons.sports_esports_outlined,
-                label: l10n.navControl,
-                onTap: () => context.go(AppRoutes.control.path),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _ShortcutCard(
-                icon: Icons.person_outlined,
+              child: _CompactShortcut(
+                icon: Icons.person_outline,
                 label: l10n.profileFcAccountsRow,
                 onTap: () => context.push(AppRoutes.fcAccounts.path),
               ),
             ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          children: <Widget>[
+            const SizedBox(width: AppSpacing.sm),
             Expanded(
-              child: _ShortcutCard(
+              child: _CompactShortcut(
                 icon: Icons.groups_outlined,
                 label: l10n.navTeam,
                 onTap: () => context.go(AppRoutes.team.path),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(
-              child: _ShortcutCard(
+              child: _CompactShortcut(
                 icon: Icons.history,
                 label: l10n.navHistory,
                 onTap: () => context.go(AppRoutes.history.path),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        _SectionLabel(text: l10n.startCatalogTitle),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: _CatalogShortcut(
+                icon: Icons.style_outlined,
+                label: l10n.catalogCardsTitle,
+                description: l10n.startCatalogCardsHint,
+                onTap: () => context.push(AppRoutes.cardsCatalog.path),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: _CatalogShortcut(
+                icon: Icons.shield_outlined,
+                label: l10n.catalogClubsTitle,
+                description: l10n.startCatalogClubsHint,
+                onTap: () => context.push(AppRoutes.clubsCatalog.path),
               ),
             ),
           ],
@@ -223,8 +243,82 @@ class _ShortcutsGrid extends StatelessWidget {
   }
 }
 
-class _ShortcutCard extends StatelessWidget {
-  const _ShortcutCard({
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text.toUpperCase(),
+    style: context.textStyles.labelSmall?.copyWith(
+      color: context.colors.textTertiary,
+      letterSpacing: 1.4,
+    ),
+  );
+}
+
+class _PrimaryShortcut extends StatelessWidget {
+  const _PrimaryShortcut({
+    required this.icon,
+    required this.label,
+    required this.description,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final String description;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return AppCard(
+      variant: AppCardVariant.elevated,
+      onTap: onTap,
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: AppSizing.iconXl,
+            height: AppSizing.iconXl,
+            decoration: BoxDecoration(
+              color: colors.surfaceHighest,
+              borderRadius: BorderRadius.circular(AppRadii.sm),
+            ),
+            alignment: Alignment.center,
+            child: Icon(
+              icon,
+              size: AppSizing.iconMd,
+              color: colors.textPrimary,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(label, style: context.textStyles.titleSmall),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  description,
+                  style: context.textStyles.bodySmall?.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.chevron_right, color: colors.textTertiary),
+        ],
+      ),
+    );
+  }
+}
+
+class _CompactShortcut extends StatelessWidget {
+  const _CompactShortcut({
     required this.icon,
     required this.label,
     required this.onTap,
@@ -237,13 +331,63 @@ class _ShortcutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AppCard(
     onTap: onTap,
+    padding: const EdgeInsets.symmetric(
+      horizontal: AppSpacing.sm,
+      vertical: AppSpacing.md,
+    ),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Icon(icon, color: context.colors.success),
+        Icon(icon, color: context.colors.textSecondary),
         const SizedBox(height: AppSpacing.sm),
-        Text(label, style: context.textStyles.bodyMedium),
+        Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: context.textStyles.bodySmall,
+        ),
       ],
     ),
   );
+}
+
+class _CatalogShortcut extends StatelessWidget {
+  const _CatalogShortcut({
+    required this.icon,
+    required this.label,
+    required this.description,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final String description;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return AppCard(
+      variant: AppCardVariant.outlined,
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Icon(icon, color: colors.textSecondary),
+          const SizedBox(height: AppSpacing.md),
+          Text(label, style: context.textStyles.titleSmall),
+          const SizedBox(height: AppSpacing.xxs),
+          Text(
+            description,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: context.textStyles.bodySmall?.copyWith(
+              color: colors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -78,6 +78,20 @@ class AppRoutes {
     'fc-accounts',
     '/app/fc-accounts',
   );
+  static const AppRoute cardsCatalog = AppRoute(
+    'cards-catalog',
+    '/app/catalog/cards',
+  );
+  static const AppRoute clubsCatalog = AppRoute(
+    'clubs-catalog',
+    '/app/catalog/clubs',
+  );
+  static const AppRoute clubDetail = AppRoute(
+    'club-detail',
+    '/app/catalog/clubs/:clubId',
+  );
+  static const String clubIdParam = 'clubId';
+
   static const AppRoute fcAccountDetail = AppRoute(
     'fc-account-detail',
     '/app/fc-accounts/:fcAccountId',
@@ -125,6 +139,9 @@ class AppRoutes {
   /// `/u/:identifier` (ver `isPublicProfileLocation`), mas path fixo em vez
   /// de prefixo.
   static const Set<String> alwaysPublicPaths = <String>{'/privacy', '/terms'};
+
+  static String clubDetailLocation(String clubId) =>
+      '/app/catalog/clubs/$clubId';
 
   static String joinTeamLocation(String inviteCode) => '/join/$inviteCode';
 

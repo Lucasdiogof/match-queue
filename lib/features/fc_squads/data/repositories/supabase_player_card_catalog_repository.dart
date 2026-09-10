@@ -34,6 +34,8 @@ class SupabasePlayerCardCatalogRepository
         'p_exclude_card_ids': query.excludeCardIds.isEmpty
             ? null
             : query.excludeCardIds,
+        'p_club_id': query.clubId,
+        'p_gender': query.gender,
       },
     );
     final json = Map<String, dynamic>.from(response as Map);
@@ -145,6 +147,57 @@ class SupabasePlayerCardCatalogRepository
             ? json['average_rating'] as int
             : (json['average_rating'] as num?)?.round(),
       );
+
+  static FcClubSummary _clubFromListJson(Map<String, dynamic> json) =>
+      FcClubSummary(
+        clubId: '${json['id']}',
+        name: '${json['name']}',
+        logoImageUrl: json['logo_image_url'] as String?,
+        leagueName: json['league_name'] as String?,
+        gender: json['gender'] as String?,
+        cardCount: json['cards_count'] is int
+            ? json['cards_count'] as int
+            : ((json['cards_count'] as num?)?.round() ?? 0),
+        averageRating: (json['average_rating'] as num?)?.round(),
+        topRating: (json['top_rating'] as num?)?.round(),
+      );
+
+  @override
+  Future<FcClubPage> listClubs({
+    String? query,
+    String? gender,
+    int limit = 30,
+    int offset = 0,
+  }) => _guard(() async {
+    final response = await _client.rpc<dynamic>(
+      'list_fc_clubs',
+      params: <String, dynamic>{
+        'p_query': query,
+        'p_gender': gender,
+        'p_limit': limit,
+        'p_offset': offset,
+      },
+    );
+    final json = Map<String, dynamic>.from(response as Map);
+    final items = json['items'];
+    return FcClubPage(
+      items: <FcClubSummary>[
+        if (items is List)
+          for (final item in items)
+            if (item is Map) _clubFromListJson(Map<String, dynamic>.from(item)),
+      ],
+      hasMore: json['has_more'] == true,
+    );
+  });
+
+  @override
+  Future<FcClubSummary> getClubSummary(String clubId) => _guard(() async {
+    final response = await _client.rpc<dynamic>(
+      'get_fc_club_summary',
+      params: <String, dynamic>{'p_club_id': clubId},
+    );
+    return _clubFromListJson(Map<String, dynamic>.from(response as Map));
+  });
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

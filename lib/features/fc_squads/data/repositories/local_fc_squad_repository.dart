@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
-
+import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
@@ -561,4 +561,17 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
   @override
   Future<List<FcClubSummary>> getClubCatalogSummary({int limit = 12}) async =>
       const <FcClubSummary>[];
+
+  @override
+  Future<FcClubPage> listClubs({
+    String? query,
+    String? gender,
+    int limit = 30,
+    int offset = 0,
+  }) async => const FcClubPage(items: <FcClubSummary>[], hasMore: false);
+
+  @override
+  Future<FcClubSummary> getClubSummary(String clubId) async {
+    throw const NotFoundFailure();
+  }
 }

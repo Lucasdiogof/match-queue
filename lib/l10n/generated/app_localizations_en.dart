@@ -1455,14 +1455,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fcAccountWeekendLeagueLossesLabel => 'Losses';
 
   @override
-  String get fcAccountOnboardingTitle => 'Create your first account';
+  String get fcAccountOnboardingTitle => 'Add your first account';
 
   @override
   String get fcAccountOnboardingMessage =>
-      'An account represents an Ultimate Team account. Create one to link it to your teams and start searching for matches.';
+      'Register the account you play or manage to join teams, search for matches and follow your progress.';
 
   @override
-  String get fcAccountOnboardingCreateAction => 'Create account';
+  String get fcAccountOnboardingCreateAction => 'Add account';
 
   @override
   String pendingMatchElencoLabel(String name) {
@@ -2492,4 +2492,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get squadNoneSelectedHint => 'Pick a squad for this search';
+
+  @override
+  String get catalogCardsTitle => 'Cards';
+
+  @override
+  String get catalogCardsSearchLabel => 'Search card';
+
+  @override
+  String get catalogCardsSearchHint => 'Player name';
+
+  @override
+  String get catalogCardsEmptyTitle => 'No cards found';
+
+  @override
+  String get catalogCardsEmptyMessage =>
+      'Adjust the search or the filters to see other cards.';
+
+  @override
+  String get catalogClubsTitle => 'Clubs';
+
+  @override
+  String get catalogClubsSearchLabel => 'Search club';
+
+  @override
+  String get catalogClubsSearchHint => 'Club name';
+
+  @override
+  String get catalogClubsEmptyTitle => 'No clubs found';
+
+  @override
+  String get catalogClubsEmptyMessage =>
+      'Adjust the search or the filters to see other clubs.';
+
+  @override
+  String get catalogClubAverageLabel => 'Average';
+
+  @override
+  String catalogClubCardsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cards',
+      one: '1 card',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogGenderMen => 'Men';
+
+  @override
+  String get catalogGenderWomen => 'Women';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get startShortcutPlayHint =>
+      'Pick the account and mode, then join the queue.';
+
+  @override
+  String get startCatalogTitle => 'Catalogue';
+
+  @override
+  String get startCatalogCardsHint => 'Browse the game\'s cards.';
+
+  @override
+  String get startCatalogClubsHint => 'Clubs by average overall.';
 }

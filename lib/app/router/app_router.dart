@@ -7,11 +7,14 @@ import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/login_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:fifa_queue/features/control/presentation/pages/control_page.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_account_detail_page.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_accounts_page.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/pages/cards_catalog_page.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/pages/club_detail_page.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/pages/clubs_catalog_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/squad_builder_page.dart';
 import 'package:fifa_queue/features/game/presentation/pages/match_details_page.dart';
-import 'package:fifa_queue/features/control/presentation/pages/control_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
@@ -27,11 +30,11 @@ import 'package:fifa_queue/features/profile/presentation/pages/profile_notificat
 import 'package:fifa_queue/features/profile/presentation/pages/profile_page.dart';
 import 'package:fifa_queue/features/public_profile/presentation/pages/public_profile_page.dart';
 import 'package:fifa_queue/features/public_profile/presentation/pages/public_profile_settings_page.dart';
+import 'package:fifa_queue/features/teams/presentation/pages/player_profile_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_detail_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_public_page.dart';
-import 'package:fifa_queue/features/teams/presentation/pages/teams_list_page.dart';
-import 'package:fifa_queue/features/teams/presentation/pages/player_profile_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_settings_page.dart';
+import 'package:fifa_queue/features/teams/presentation/pages/teams_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -166,6 +169,23 @@ class AppRouter {
         path: AppRoutes.fcAccounts.path,
         name: AppRoutes.fcAccounts.name,
         builder: (context, state) => const FcAccountsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.cardsCatalog.path,
+        name: AppRoutes.cardsCatalog.name,
+        builder: (context, state) => const CardsCatalogPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.clubsCatalog.path,
+        name: AppRoutes.clubsCatalog.name,
+        builder: (context, state) => const ClubsCatalogPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.clubDetail.path,
+        name: AppRoutes.clubDetail.name,
+        builder: (context, state) => ClubDetailPage(
+          clubId: state.pathParameters[AppRoutes.clubIdParam] ?? '',
+        ),
       ),
       GoRoute(
         path: AppRoutes.fcAccountDetail.path,

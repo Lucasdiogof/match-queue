@@ -1455,14 +1455,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get fcAccountWeekendLeagueLossesLabel => 'Derrotas';
 
   @override
-  String get fcAccountOnboardingTitle => 'Crie sua primeira conta';
+  String get fcAccountOnboardingTitle => 'Adicione sua primeira conta';
 
   @override
   String get fcAccountOnboardingMessage =>
-      'Uma conta representa um perfil seu no Ultimate Team. Crie uma para vincular aos seus times e começar a buscar partidas.';
+      'Cadastre a conta que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.';
 
   @override
-  String get fcAccountOnboardingCreateAction => 'Criar conta';
+  String get fcAccountOnboardingCreateAction => 'Adicionar conta';
 
   @override
   String pendingMatchElencoLabel(String name) {
@@ -2495,4 +2495,72 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get squadNoneSelectedHint => 'Escolha um squad para esta busca';
+
+  @override
+  String get catalogCardsTitle => 'Cartas';
+
+  @override
+  String get catalogCardsSearchLabel => 'Buscar carta';
+
+  @override
+  String get catalogCardsSearchHint => 'Nome do jogador';
+
+  @override
+  String get catalogCardsEmptyTitle => 'Nenhuma carta encontrada';
+
+  @override
+  String get catalogCardsEmptyMessage =>
+      'Ajuste a busca ou os filtros para ver outras cartas.';
+
+  @override
+  String get catalogClubsTitle => 'Clubes';
+
+  @override
+  String get catalogClubsSearchLabel => 'Buscar clube';
+
+  @override
+  String get catalogClubsSearchHint => 'Nome do clube';
+
+  @override
+  String get catalogClubsEmptyTitle => 'Nenhum clube encontrado';
+
+  @override
+  String get catalogClubsEmptyMessage =>
+      'Ajuste a busca ou os filtros para ver outros clubes.';
+
+  @override
+  String get catalogClubAverageLabel => 'Média';
+
+  @override
+  String catalogClubCardsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cartas',
+      one: '1 carta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogGenderMen => 'Masculino';
+
+  @override
+  String get catalogGenderWomen => 'Feminino';
+
+  @override
+  String get filterAll => 'Todas';
+
+  @override
+  String get startShortcutPlayHint =>
+      'Escolha a conta, o modo e entre na fila.';
+
+  @override
+  String get startCatalogTitle => 'Catálogo';
+
+  @override
+  String get startCatalogCardsHint => 'Explore as cartas do jogo.';
+
+  @override
+  String get startCatalogClubsHint => 'Clubes por overall médio.';
 }

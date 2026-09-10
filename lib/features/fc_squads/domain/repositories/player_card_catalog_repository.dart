@@ -21,6 +21,8 @@ class PlayerCardQuery extends Equatable {
     this.nationName,
     this.cardType,
     this.excludeCardIds = const <String>[],
+    this.clubId,
+    this.gender,
   });
 
   final String? query;
@@ -33,6 +35,14 @@ class PlayerCardQuery extends Equatable {
   final String? clubName;
   final String? nationName;
   final String? cardType;
+
+  /// Filtrar clube pelo id, nunca pelo nome: 42 nomes existem nos dois
+  /// gêneros (Arsenal, Liverpool, Real Madrid...) e por nome os dois viriam
+  /// juntos.
+  final String? clubId;
+
+  /// 'MALE' ou 'FEMALE'. Herdado da liga, que é onde a separação é limpa.
+  final String? gender;
 
   /// Cartas já ocupando outro slot do squad atual -- nunca oferecidas de
   /// novo no picker (gameplay flows refresh, item 4).
@@ -49,6 +59,8 @@ class PlayerCardQuery extends Equatable {
     clubName: clubName,
     nationName: nationName,
     cardType: cardType,
+    clubId: clubId,
+    gender: gender,
     excludeCardIds: excludeCardIds,
   );
 
@@ -65,6 +77,8 @@ class PlayerCardQuery extends Equatable {
     nationName,
     cardType,
     excludeCardIds,
+    clubId,
+    gender,
   ];
 }
 
@@ -72,6 +86,16 @@ class PlayerCardPage extends Equatable {
   const PlayerCardPage({required this.items, required this.hasMore});
 
   final List<PlayerCard> items;
+  final bool hasMore;
+
+  @override
+  List<Object?> get props => <Object?>[items, hasMore];
+}
+
+class FcClubPage extends Equatable {
+  const FcClubPage({required this.items, required this.hasMore});
+
+  final List<FcClubSummary> items;
   final bool hasMore;
 
   @override
@@ -100,4 +124,15 @@ abstract interface class PlayerCardCatalogRepository {
   /// Clubes com agregados (contagem de cartas + rating médio), para o card
   /// "Clubes" do Controle. Só clubes com pelo menos 1 carta ativa.
   Future<List<FcClubSummary>> getClubCatalogSummary({int limit = 12});
+
+  /// Clubes com pelo menos uma carta ativa, ordenados pelo overall médio
+  /// real. Sempre por id -- nunca fundir homônimos de gêneros diferentes.
+  Future<FcClubPage> listClubs({
+    String? query,
+    String? gender,
+    int limit,
+    int offset,
+  });
+
+  Future<FcClubSummary> getClubSummary(String clubId);
 }

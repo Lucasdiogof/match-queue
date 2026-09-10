@@ -2579,19 +2579,19 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountOnboardingTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Crie sua primeira conta'**
+  /// **'Adicione sua primeira conta'**
   String get fcAccountOnboardingTitle;
 
   /// No description provided for @fcAccountOnboardingMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Uma conta representa um perfil seu no Ultimate Team. Crie uma para vincular aos seus times e começar a buscar partidas.'**
+  /// **'Cadastre a conta que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.'**
   String get fcAccountOnboardingMessage;
 
   /// No description provided for @fcAccountOnboardingCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Criar conta'**
+  /// **'Adicionar conta'**
   String get fcAccountOnboardingCreateAction;
 
   /// No description provided for @pendingMatchElencoLabel.
@@ -4303,6 +4303,120 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Escolha um squad para esta busca'**
   String get squadNoneSelectedHint;
+
+  /// No description provided for @catalogCardsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cartas'**
+  String get catalogCardsTitle;
+
+  /// No description provided for @catalogCardsSearchLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar carta'**
+  String get catalogCardsSearchLabel;
+
+  /// No description provided for @catalogCardsSearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do jogador'**
+  String get catalogCardsSearchHint;
+
+  /// No description provided for @catalogCardsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma carta encontrada'**
+  String get catalogCardsEmptyTitle;
+
+  /// No description provided for @catalogCardsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ajuste a busca ou os filtros para ver outras cartas.'**
+  String get catalogCardsEmptyMessage;
+
+  /// No description provided for @catalogClubsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clubes'**
+  String get catalogClubsTitle;
+
+  /// No description provided for @catalogClubsSearchLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar clube'**
+  String get catalogClubsSearchLabel;
+
+  /// No description provided for @catalogClubsSearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do clube'**
+  String get catalogClubsSearchHint;
+
+  /// No description provided for @catalogClubsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum clube encontrado'**
+  String get catalogClubsEmptyTitle;
+
+  /// No description provided for @catalogClubsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ajuste a busca ou os filtros para ver outros clubes.'**
+  String get catalogClubsEmptyMessage;
+
+  /// No description provided for @catalogClubAverageLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Média'**
+  String get catalogClubAverageLabel;
+
+  /// No description provided for @catalogClubCardsCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 carta} other{{count} cartas}}'**
+  String catalogClubCardsCount(int count);
+
+  /// No description provided for @catalogGenderMen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Masculino'**
+  String get catalogGenderMen;
+
+  /// No description provided for @catalogGenderWomen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Feminino'**
+  String get catalogGenderWomen;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas'**
+  String get filterAll;
+
+  /// No description provided for @startShortcutPlayHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha a conta, o modo e entre na fila.'**
+  String get startShortcutPlayHint;
+
+  /// No description provided for @startCatalogTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Catálogo'**
+  String get startCatalogTitle;
+
+  /// No description provided for @startCatalogCardsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Explore as cartas do jogo.'**
+  String get startCatalogCardsHint;
+
+  /// No description provided for @startCatalogClubsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clubes por overall médio.'**
+  String get startCatalogClubsHint;
 }
 
 class _AppLocalizationsDelegate

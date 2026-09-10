@@ -810,9 +810,9 @@
   "fcAccountWeekendLeagueSheetTitle": "Report result",
   "fcAccountWeekendLeagueWinsLabel": "Wins",
   "fcAccountWeekendLeagueLossesLabel": "Losses",
-  "fcAccountOnboardingTitle": "Create your first account",
-  "fcAccountOnboardingMessage": "An account represents an Ultimate Team account. Create one to link it to your teams and start searching for matches.",
-  "fcAccountOnboardingCreateAction": "Create account",
+  "fcAccountOnboardingTitle": "Add your first account",
+  "fcAccountOnboardingMessage": "Register the account you play or manage to join teams, search for matches and follow your progress.",
+  "fcAccountOnboardingCreateAction": "Add account",
   "pendingMatchElencoLabel": "Account: {name}",
   "@pendingMatchElencoLabel": {
     "placeholders": {
@@ -1323,5 +1323,31 @@
     }
   },
   "errorWeekendLeagueLimit": "Weekend League has 15 matches: wins and losses together cannot exceed that.",
-  "squadNoneSelectedHint": "Pick a squad for this search"
+  "squadNoneSelectedHint": "Pick a squad for this search",
+  "catalogCardsTitle": "Cards",
+  "catalogCardsSearchLabel": "Search card",
+  "catalogCardsSearchHint": "Player name",
+  "catalogCardsEmptyTitle": "No cards found",
+  "catalogCardsEmptyMessage": "Adjust the search or the filters to see other cards.",
+  "catalogClubsTitle": "Clubs",
+  "catalogClubsSearchLabel": "Search club",
+  "catalogClubsSearchHint": "Club name",
+  "catalogClubsEmptyTitle": "No clubs found",
+  "catalogClubsEmptyMessage": "Adjust the search or the filters to see other clubs.",
+  "catalogClubAverageLabel": "Average",
+  "catalogClubCardsCount": "{count, plural, =1{1 card} other{{count} cards}}",
+  "catalogGenderMen": "Men",
+  "catalogGenderWomen": "Women",
+  "filterAll": "All",
+  "@catalogClubCardsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startShortcutPlayHint": "Pick the account and mode, then join the queue.",
+  "startCatalogTitle": "Catalogue",
+  "startCatalogCardsHint": "Browse the game's cards.",
+  "startCatalogClubsHint": "Clubs by average overall."
 }

@@ -50,6 +50,8 @@ class FcClubSummary extends Equatable {
     this.logoImageUrl,
     this.leagueName,
     this.averageRating,
+    this.gender,
+    this.topRating,
   });
 
   final String clubId;
@@ -59,10 +61,17 @@ class FcClubSummary extends Equatable {
   final int cardCount;
   final int? averageRating;
 
+  /// 'MALE' ou 'FEMALE', herdado da liga. Null quando o clube nao tem liga.
+  final String? gender;
+
+  final int? topRating;
+
   @override
   List<Object?> get props => <Object?>[
     clubId,
     name,
+    gender,
+    topRating,
     logoImageUrl,
     leagueName,
     cardCount,

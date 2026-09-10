@@ -38,9 +38,11 @@ class FeatureHeader extends StatelessWidget {
                 if (eyebrow != null) ...<Widget>[
                   Text(
                     eyebrow!.toUpperCase(),
+                    // Sem verde: hierarquia aqui vem de tamanho, peso e
+                    // espacamento de letra, nao de cor de destaque.
                     style: textStyles.labelSmall?.copyWith(
-                      color: colors.success,
-                      letterSpacing: 1.1,
+                      color: colors.textTertiary,
+                      letterSpacing: 1.4,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxs),
