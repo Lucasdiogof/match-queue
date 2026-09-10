@@ -6,46 +6,84 @@ nem de ambiente, este arquivo sim.
 
 ## Estado atual (2026-09-10) — leia esta seção primeiro
 
-HEAD `b04cd93`, `main` sincronizado com `origin`, árvore limpa,
-`flutter analyze` sem issues, `flutter test` 17/17, **86 migrations locais =
-remotas**.
+HEAD local pronto pra commit sobre `5614929` (`main` estava sincronizado com
+`origin` antes desta rodada), árvore com a troca de navegação abaixo,
+`flutter analyze` sem issues, `flutter test` 17/17, **87 migrations
+aplicadas** (nova: `20261010100000_fc_playstyle_search_and_summary`).
 
-Fechado nesta rodada, depois da rodada de refinamento
-([`handoff_refinement_round.md`](handoff_refinement_round.md), 20/23):
+**Central substitui a Home** (pedido explícito do dono do produto: "a
+Home... deixa de existir"). Nova navegação: **Central** | Times | Jogar |
+Histórico | Perfil. Central é o hub de consulta do FC 27 — nunca mostra
+estado de partida/fila (isso continua sendo só o Jogar):
 
-- **Catálogo navegável.** Telas novas de **Cartas** e **Clubes** (busca,
-  filtros, paginação server-side) mais **detalhe do clube**, alcançáveis pelo
-  bloco "Catálogo" da Home. A tela de Cartas **não é** o picker do Squad
-  Builder: tocar abre o detalhe, nunca seleciona.
-- **Gênero no catálogo** (migration `20261003100000`). O pacote FC27 traz
-  gênero por linha e o importador tinha descartado. **42 nomes de clube
-  existem nos dois gêneros** (Arsenal, Liverpool, Real Madrid, Barcelona) e
-  **nenhuma liga mistura** — por isso `gender` virou coluna de `fc_leagues`, e
-  clube/carta herdam dali. O banco já estava certo (`fc_clubs` tem uma linha
-  por clube+liga); o risco era **agregar por nome**, então `search_fc_player_cards`
-  ganhou `p_club_id` e as RPCs de clube nunca aceitam nome. Validado:
-  1.645 femininas / 16.228 masculinas, batendo com o CSV de origem.
-- **Home** reorganizada (atalhos com dois pesos + bloco Catálogo) e **verde
-  reduzido**: sobrou só onde comunica estado e no "Jogar" central.
-- **Arte de carta: BLOQUEADA na fonte.** Auditoria completa em
-  [`card_artwork_gap.md`](card_artwork_gap.md) — as 7 colunas de imagem do
-  catálogo estão **todas vazias**, o importador está pronto e não descartou
-  nada, e **nenhum arquivo do pacote FC27 tem coluna de imagem**. O card
-  desenhado "estilo FUT" foi abandonado; o componente agora usa a arte
-  quando existir e vira ficha de dados quando não.
+- **CATÁLOGO**: Jogadores (ex-"Cartas", mesma tela/RPC, só renomeada),
+  Clubes (inalterado), Managers e Consumíveis (ver bloqueios abaixo).
+- **MECÂNICAS**: PlayStyles (real, ver abaixo), Chemistry, Chemistry
+  Styles, Evolutions — conteúdo de referência estático, resumido a partir
+  de pesquisa (FIFPlay), nunca copiado literalmente.
+- **CONTROLES**: Dribles (Skill Moves por estrela), Passes, Finalização,
+  Defesa — guias de comando reais (PlayStation/Xbox), mesma fonte.
+- **Onboarding de Conta FC** migrou pra dentro da Central (reaproveita
+  `FcAccountOnboardingCard`, já existente): aparece só quando a conta ainda
+  não existe, some depois.
+- Os 3 cards que só existiam na Home (**Rivals**, **Weekend League**,
+  **partida pendente**) foram pro **Jogar** — é a única tela que já tinha
+  contexto de Conta FC pronto pra recebê-los sem inventar estado novo.
+
+**PlayStyles ganhou associação REAL com cartas** (auditoria antes de
+implementar, como pedido): `fc_player_cards.playstyles`/`playstyles_plus`
+já vinham preenchidos pelo importer desde a Etapa 17B-2 (coluna fonte
+`player_traits` do Wrexist) e nunca tinham sido expostos — 8.113/17.873
+cartas têm pelo menos 1 PlayStyle, 181 têm PlayStyle+. `search_fc_player_cards`
+ganhou `p_playstyle`/`p_playstyle_plus_only` (migration
+`20261010100000`, drop+create explícito — acrescentar parâmetro num
+`create or replace` cria sobrecarga, não substitui) e uma RPC nova,
+`get_fc_playstyle_summary`, dá a contagem real por estilo. O catálogo de
+35 nomes/categorias/efeitos é conteúdo estático autorado (não muda carta a
+carta); só a contagem e a lista de cartas são reais.
+
+**Bloqueios investigados e reportados, não inventados:**
+
+- **Managers**: `fc_managers` existe e tem `search_fc_managers`, mas hoje só
+  guarda **24 registros `provider=LOCAL` com nomes fictícios** (dev/teste,
+  usados só pelo seletor de técnico do Squad Builder) — nunca foi alimentado
+  por uma fonte real de managers do FC 27. A tela avisa o bloqueio em vez de
+  mostrar os 24 como se fossem um catálogo de verdade.
+- **Consumíveis**: nenhuma tabela modela contrato, cartão de treino ou
+  qualquer outro consumível fora do Chemistry Style, que já tem seção
+  própria em Mecânicas (mantido lá por decisão explícita do dono do
+  produto, não duplicado aqui). A tela avisa o bloqueio.
+- **Evolutions**: fica só como explicação de conceito — os programas reais
+  mudam dentro do próprio ciclo de Ultimate Team e não há fonte que
+  acompanhe isso ao vivo; não finge ser lista atualizada.
+
+**Conteúdo de Mecânicas/Controles é PT-only por enquanto.** É referência
+extensa (não chrome de app): navegação/rótulos/mensagens de bloqueio têm as
+3 traduções de sempre (ARB), mas o texto longo (Chemistry, Chemistry
+Styles, Evolutions, os 35 PlayStyles, os 4 guias de Controles) só existe em
+português. Tradução pra EN/ES fica como débito conhecido, não decisão
+escondida.
+
+**Home antiga**: removida por inteiro (`lib/features/home/`), rota
+`AppRoutes.home` virou `AppRoutes.central` (mesmo branch do shell, path
+`/app/central`).
 
 **Pendências reais:**
 
-- **QA visual das telas de Clubes e do detalhe do clube**: NÃO executado com
-  dados. O dado foi provado por SQL contra produção, mas as telas só foram
-  vistas no estado vazio (modo local não tem clubes). O dono testa
-  manualmente — ele pediu explicitamente para não ficar rodando o app.
+- **QA visual de tudo isto**: NÃO executado — nenhuma ferramenta de
+  preview/emulador Flutter esteve disponível nesta sessão. Verificação foi
+  só `flutter analyze` + `flutter test` + leitura de código + validação
+  direta das RPCs novas contra produção.
+- **QA visual das telas de Clubes e do detalhe do clube** (pendência já
+  existente, não desta rodada): idem, segue sem execução com dados reais.
 - 3 itens visuais da rodada anterior (20/23/24: header, background global,
   card de modo) seguem sem correção pendente conhecida, ver seção 5 do
   handoff daquela rodada.
 - Arte de carta depende de o dono fornecer dataset com `card_image_url` /
   `player_image_url` / `player_face_url` — a partir daí é **re-importação,
   zero código**.
+- Tradução EN/ES do conteúdo de Mecânicas/Controles (ver acima).
+- Managers real depende de uma fonte de dado que ainda não existe.
 
 ---
 

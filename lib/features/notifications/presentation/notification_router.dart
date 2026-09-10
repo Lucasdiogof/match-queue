@@ -72,7 +72,7 @@ class NotificationRouter {
       return;
     }
 
-    context.go(AppRoutes.home.path);
+    context.go(AppRoutes.central.path);
   }
 
   static String? _string(Object? value) {

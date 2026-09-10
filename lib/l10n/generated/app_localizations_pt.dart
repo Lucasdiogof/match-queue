@@ -48,7 +48,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionEdit => 'Editar';
 
   @override
-  String get navHome => 'Início';
+  String get navCentral => 'Central';
 
   @override
   String get navControl => 'Jogar';
@@ -2497,7 +2497,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadNoneSelectedHint => 'Escolha um squad para esta busca';
 
   @override
-  String get catalogCardsTitle => 'Cartas';
+  String get catalogCardsTitle => 'Jogadores';
 
   @override
   String get catalogCardsSearchLabel => 'Buscar carta';
@@ -2566,4 +2566,103 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get catalogClubsFilterAll => 'Todos';
+
+  @override
+  String get centralEyebrow => 'FIFA QUEUE';
+
+  @override
+  String get centralTitle => 'Central';
+
+  @override
+  String get centralSubtitle => 'Catálogo, mecânicas e controles do FC 27.';
+
+  @override
+  String get centralSectionCatalog => 'Catálogo';
+
+  @override
+  String get centralSectionMechanics => 'Mecânicas';
+
+  @override
+  String get centralSectionControls => 'Controles';
+
+  @override
+  String get catalogManagersEntryLabel => 'Managers';
+
+  @override
+  String get catalogConsumablesEntryLabel => 'Consumíveis';
+
+  @override
+  String get mechanicsPlaystylesLabel => 'PlayStyles';
+
+  @override
+  String get mechanicsPlaystylesHint => 'Habilidades especiais de cada carta.';
+
+  @override
+  String get mechanicsChemistryLabel => 'Chemistry';
+
+  @override
+  String get mechanicsChemistryHint => 'Como a química do squad funciona.';
+
+  @override
+  String get mechanicsChemistryStylesLabel => 'Chemistry Styles';
+
+  @override
+  String get mechanicsChemistryStylesHint => 'Estilos que reforçam atributos.';
+
+  @override
+  String get mechanicsEvolutionsLabel => 'Evolutions';
+
+  @override
+  String get mechanicsEvolutionsHint =>
+      'Como jogadores evoluem no Ultimate Team.';
+
+  @override
+  String mechanicsPlaystylesCardCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cartas',
+      one: '1 carta',
+      zero: 'Nenhuma carta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mechanicsPlaystyleEffectLabel => 'Efeito';
+
+  @override
+  String get mechanicsPlaystylePlusEffectLabel => 'Efeito Plus';
+
+  @override
+  String get mechanicsPlaystyleFilterAny => 'Todas';
+
+  @override
+  String get mechanicsPlaystyleFilterPlusOnly => 'Só Plus';
+
+  @override
+  String get controlsDribblingLabel => 'Dribles';
+
+  @override
+  String get controlsPassingLabel => 'Passes';
+
+  @override
+  String get controlsShootingLabel => 'Finalização';
+
+  @override
+  String get controlsDefendingLabel => 'Defesa';
+
+  @override
+  String get managersBlockedTitle => 'Ainda sem dado real';
+
+  @override
+  String get managersBlockedMessage =>
+      'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Squad Builder). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.';
+
+  @override
+  String get consumablesBlockedTitle => 'Ainda sem dado real';
+
+  @override
+  String get consumablesBlockedMessage =>
+      'Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.';
 }

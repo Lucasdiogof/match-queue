@@ -32,7 +32,7 @@ class NotificationDestinationResolver {
       return;
     }
 
-    await context.push(AppRoutes.home.path);
+    await context.push(AppRoutes.central.path);
   }
 
   static String? _string(Object? value) =>

@@ -29,7 +29,7 @@ class AppRoutes {
   static const AppRoute onboarding = AppRoute('onboarding', '/onboarding');
   static const AppRoute joinTeam = AppRoute('join-team', '/join/:inviteCode');
 
-  static const AppRoute home = AppRoute('home', '/app/home');
+  static const AppRoute central = AppRoute('central', '/app/central');
   static const AppRoute control = AppRoute('control', '/app/control');
   static const AppRoute team = AppRoute('team', '/app/team');
   static const AppRoute publicTeam = AppRoute(
@@ -92,6 +92,54 @@ class AppRoutes {
   );
   static const String clubIdParam = 'clubId';
 
+  static const AppRoute managersCatalog = AppRoute(
+    'managers-catalog',
+    '/app/catalog/managers',
+  );
+  static const AppRoute consumablesCatalog = AppRoute(
+    'consumables-catalog',
+    '/app/catalog/consumables',
+  );
+
+  static const AppRoute playstyles = AppRoute(
+    'playstyles',
+    '/app/mechanics/playstyles',
+  );
+  static const AppRoute playstyleDetail = AppRoute(
+    'playstyle-detail',
+    '/app/mechanics/playstyles/:playstyleName',
+  );
+  static const String playstyleNameParam = 'playstyleName';
+  static const AppRoute chemistry = AppRoute(
+    'chemistry',
+    '/app/mechanics/chemistry',
+  );
+  static const AppRoute chemistryStyles = AppRoute(
+    'chemistry-styles',
+    '/app/mechanics/chemistry-styles',
+  );
+  static const AppRoute evolutions = AppRoute(
+    'evolutions',
+    '/app/mechanics/evolutions',
+  );
+
+  static const AppRoute controlsDribbling = AppRoute(
+    'controls-dribbling',
+    '/app/controls/dribbling',
+  );
+  static const AppRoute controlsPassing = AppRoute(
+    'controls-passing',
+    '/app/controls/passing',
+  );
+  static const AppRoute controlsShooting = AppRoute(
+    'controls-shooting',
+    '/app/controls/shooting',
+  );
+  static const AppRoute controlsDefending = AppRoute(
+    'controls-defending',
+    '/app/controls/defending',
+  );
+
   static const AppRoute fcAccountDetail = AppRoute(
     'fc-account-detail',
     '/app/fc-accounts/:fcAccountId',
@@ -122,7 +170,7 @@ class AppRoutes {
   static const String identifierParam = 'identifier';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
-    home,
+    central,
     team,
     control,
     history,
@@ -142,6 +190,9 @@ class AppRoutes {
 
   static String clubDetailLocation(String clubId) =>
       '/app/catalog/clubs/$clubId';
+
+  static String playstyleDetailLocation(String playstyleName) =>
+      '/app/mechanics/playstyles/${Uri.encodeComponent(playstyleName)}';
 
   static String joinTeamLocation(String inviteCode) => '/join/$inviteCode';
 

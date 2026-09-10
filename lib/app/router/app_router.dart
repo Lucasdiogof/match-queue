@@ -16,10 +16,21 @@ import 'package:fifa_queue/features/fc_squads/presentation/pages/clubs_catalog_p
 import 'package:fifa_queue/features/fc_squads/presentation/pages/squad_builder_page.dart';
 import 'package:fifa_queue/features/game/presentation/pages/match_details_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
-import 'package:fifa_queue/features/home/presentation/pages/home_page.dart';
+import 'package:fifa_queue/features/central/presentation/pages/central_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
 import 'package:fifa_queue/features/legal/presentation/pages/privacy_policy_page.dart';
 import 'package:fifa_queue/features/legal/presentation/pages/terms_of_use_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/chemistry_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/chemistry_styles_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/consumables_catalog_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/controls/defending_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/controls/dribbling_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/controls/passing_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/controls/shooting_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/evolutions_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/managers_catalog_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/playstyle_detail_page.dart';
+import 'package:fifa_queue/features/mechanics/presentation/pages/playstyles_page.dart';
 import 'package:fifa_queue/features/notifications/presentation/pages/notifications_inbox_page.dart';
 import 'package:fifa_queue/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:fifa_queue/features/profile/presentation/pages/about_page.dart';
@@ -208,6 +219,65 @@ class AppRouter {
           matchId: state.pathParameters[AppRoutes.matchIdParam] ?? '',
         ),
       ),
+      GoRoute(
+        path: AppRoutes.managersCatalog.path,
+        name: AppRoutes.managersCatalog.name,
+        builder: (context, state) => const ManagersCatalogPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.consumablesCatalog.path,
+        name: AppRoutes.consumablesCatalog.name,
+        builder: (context, state) => const ConsumablesCatalogPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.playstyles.path,
+        name: AppRoutes.playstyles.name,
+        builder: (context, state) => const PlaystylesPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.playstyleDetail.path,
+        name: AppRoutes.playstyleDetail.name,
+        builder: (context, state) => PlaystyleDetailPage(
+          playstyleName: Uri.decodeComponent(
+            state.pathParameters[AppRoutes.playstyleNameParam] ?? '',
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.chemistry.path,
+        name: AppRoutes.chemistry.name,
+        builder: (context, state) => const ChemistryPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.chemistryStyles.path,
+        name: AppRoutes.chemistryStyles.name,
+        builder: (context, state) => const ChemistryStylesPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.evolutions.path,
+        name: AppRoutes.evolutions.name,
+        builder: (context, state) => const EvolutionsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.controlsDribbling.path,
+        name: AppRoutes.controlsDribbling.name,
+        builder: (context, state) => const DribblingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.controlsPassing.path,
+        name: AppRoutes.controlsPassing.name,
+        builder: (context, state) => const PassingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.controlsShooting.path,
+        name: AppRoutes.controlsShooting.name,
+        builder: (context, state) => const ShootingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.controlsDefending.path,
+        name: AppRoutes.controlsDefending.name,
+        builder: (context, state) => const DefendingPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShellPage(navigationShell: navigationShell),
@@ -215,9 +285,9 @@ class AppRouter {
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
-                path: AppRoutes.home.path,
-                name: AppRoutes.home.name,
-                builder: (context, state) => const HomePage(),
+                path: AppRoutes.central.path,
+                name: AppRoutes.central.name,
+                builder: (context, state) => const CentralPage(),
               ),
             ],
           ),
@@ -297,7 +367,7 @@ class AppRouter {
     }
 
     if (isSplash || isUnauthenticatedArea) {
-      return AppRoutes.home.path;
+      return AppRoutes.central.path;
     }
 
     return null;

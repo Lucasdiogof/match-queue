@@ -8,6 +8,9 @@ import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_selector_row.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_selector_row.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_section.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
@@ -140,11 +143,15 @@ class _ControlBody extends StatelessWidget {
               final account = fcState.selectedAccount;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                // Ordem: quem sou (conta) -> com que time jogo (squad) ->
-                // o que vou jogar (modo) -> a fila. O card de busca fecha a
-                // sequencia porque e o foco da tela; squad e contexto, nao
-                // destino.
+                // Ordem: onde estou (Rivals/Weekend League/pendencia) ->
+                // quem sou (conta) -> com que time jogo (squad) -> o que
+                // vou jogar (modo) -> a fila. Os 3 cards de status vieram
+                // da extinta Home -- sem ela, o unico lugar que ja tinha
+                // contexto de Conta FC pra mostra-los e aqui.
                 children: <Widget>[
+                  const WeekendLeagueCard(),
+                  const RivalsCard(),
+                  const PendingMatchCard(),
                   const FcAccountSelectorRow(),
                   const SizedBox(height: AppSpacing.sm),
                   const SquadSelectorRow(),

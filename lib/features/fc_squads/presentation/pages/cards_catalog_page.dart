@@ -31,9 +31,19 @@ class CardsCatalogPage extends StatelessWidget {
 /// -- o detalhe do clube embute isto sob o proprio cabecalho, e uma pagina
 /// inteira aninhada ali empilhava duas barras e escondia o botao voltar.
 class CardsCatalogView extends StatefulWidget {
-  const CardsCatalogView({this.clubId, super.key});
+  const CardsCatalogView({
+    this.clubId,
+    this.playstyle,
+    this.playstylePlusOnly = false,
+    super.key,
+  });
 
   final String? clubId;
+
+  /// Fixa a tela nas cartas que têm este PlayStyle -- usado pelo detalhe de
+  /// PlayStyle na Central.
+  final String? playstyle;
+  final bool playstylePlusOnly;
 
   @override
   State<CardsCatalogView> createState() => _CardsCatalogViewState();
@@ -101,6 +111,8 @@ class _CardsCatalogViewState extends State<CardsCatalogView> {
     minRating: _minRating,
     gender: _gender,
     clubId: widget.clubId,
+    playstyle: widget.playstyle,
+    playstylePlusOnly: widget.playstylePlusOnly,
     limit: 30,
     offset: offset,
   );

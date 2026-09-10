@@ -122,7 +122,7 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
     }
     await context.read<PendingInviteCubit>().consume();
     if (mounted) {
-      context.go(AppRoutes.home.path);
+      context.go(AppRoutes.central.path);
     }
   }
 
@@ -157,7 +157,7 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
 
   void _leaveInvitePage() {
     final isAuthenticated = context.read<AuthCubit>().state.isAuthenticated;
-    context.go(isAuthenticated ? AppRoutes.home.path : AppRoutes.login.path);
+    context.go(isAuthenticated ? AppRoutes.central.path : AppRoutes.login.path);
   }
 
   @override

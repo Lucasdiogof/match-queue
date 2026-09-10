@@ -68,12 +68,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       return;
     }
     messenger.showSnackBar(SnackBar(content: Text(successMessage)));
-    context.go(AppRoutes.home.path);
+    context.go(AppRoutes.central.path);
   }
 
   void _skip() {
     context.read<AuthCubit>().dismissPasswordRecovery();
-    context.go(AppRoutes.home.path);
+    context.go(AppRoutes.central.path);
   }
 
   @override

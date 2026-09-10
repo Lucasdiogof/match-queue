@@ -178,11 +178,11 @@ abstract class AppLocalizations {
   /// **'Editar'**
   String get actionEdit;
 
-  /// No description provided for @navHome.
+  /// No description provided for @navCentral.
   ///
   /// In pt, this message translates to:
-  /// **'Início'**
-  String get navHome;
+  /// **'Central'**
+  String get navCentral;
 
   /// No description provided for @navControl.
   ///
@@ -4307,7 +4307,7 @@ abstract class AppLocalizations {
   /// No description provided for @catalogCardsTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Cartas'**
+  /// **'Jogadores'**
   String get catalogCardsTitle;
 
   /// No description provided for @catalogCardsSearchLabel.
@@ -4423,6 +4423,180 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Todos'**
   String get catalogClubsFilterAll;
+
+  /// No description provided for @centralEyebrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'FIFA QUEUE'**
+  String get centralEyebrow;
+
+  /// No description provided for @centralTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Central'**
+  String get centralTitle;
+
+  /// No description provided for @centralSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Catálogo, mecânicas e controles do FC 27.'**
+  String get centralSubtitle;
+
+  /// No description provided for @centralSectionCatalog.
+  ///
+  /// In pt, this message translates to:
+  /// **'Catálogo'**
+  String get centralSectionCatalog;
+
+  /// No description provided for @centralSectionMechanics.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mecânicas'**
+  String get centralSectionMechanics;
+
+  /// No description provided for @centralSectionControls.
+  ///
+  /// In pt, this message translates to:
+  /// **'Controles'**
+  String get centralSectionControls;
+
+  /// No description provided for @catalogManagersEntryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Managers'**
+  String get catalogManagersEntryLabel;
+
+  /// No description provided for @catalogConsumablesEntryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consumíveis'**
+  String get catalogConsumablesEntryLabel;
+
+  /// No description provided for @mechanicsPlaystylesLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'PlayStyles'**
+  String get mechanicsPlaystylesLabel;
+
+  /// No description provided for @mechanicsPlaystylesHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Habilidades especiais de cada carta.'**
+  String get mechanicsPlaystylesHint;
+
+  /// No description provided for @mechanicsChemistryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chemistry'**
+  String get mechanicsChemistryLabel;
+
+  /// No description provided for @mechanicsChemistryHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como a química do squad funciona.'**
+  String get mechanicsChemistryHint;
+
+  /// No description provided for @mechanicsChemistryStylesLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chemistry Styles'**
+  String get mechanicsChemistryStylesLabel;
+
+  /// No description provided for @mechanicsChemistryStylesHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estilos que reforçam atributos.'**
+  String get mechanicsChemistryStylesHint;
+
+  /// No description provided for @mechanicsEvolutionsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Evolutions'**
+  String get mechanicsEvolutionsLabel;
+
+  /// No description provided for @mechanicsEvolutionsHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como jogadores evoluem no Ultimate Team.'**
+  String get mechanicsEvolutionsHint;
+
+  /// No description provided for @mechanicsPlaystylesCardCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nenhuma carta} =1{1 carta} other{{count} cartas}}'**
+  String mechanicsPlaystylesCardCount(int count);
+
+  /// No description provided for @mechanicsPlaystyleEffectLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Efeito'**
+  String get mechanicsPlaystyleEffectLabel;
+
+  /// No description provided for @mechanicsPlaystylePlusEffectLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Efeito Plus'**
+  String get mechanicsPlaystylePlusEffectLabel;
+
+  /// No description provided for @mechanicsPlaystyleFilterAny.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas'**
+  String get mechanicsPlaystyleFilterAny;
+
+  /// No description provided for @mechanicsPlaystyleFilterPlusOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só Plus'**
+  String get mechanicsPlaystyleFilterPlusOnly;
+
+  /// No description provided for @controlsDribblingLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dribles'**
+  String get controlsDribblingLabel;
+
+  /// No description provided for @controlsPassingLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passes'**
+  String get controlsPassingLabel;
+
+  /// No description provided for @controlsShootingLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização'**
+  String get controlsShootingLabel;
+
+  /// No description provided for @controlsDefendingLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa'**
+  String get controlsDefendingLabel;
+
+  /// No description provided for @managersBlockedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem dado real'**
+  String get managersBlockedTitle;
+
+  /// No description provided for @managersBlockedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Squad Builder). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.'**
+  String get managersBlockedMessage;
+
+  /// No description provided for @consumablesBlockedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda sem dado real'**
+  String get consumablesBlockedTitle;
+
+  /// No description provided for @consumablesBlockedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.'**
+  String get consumablesBlockedMessage;
 }
 
 class _AppLocalizationsDelegate

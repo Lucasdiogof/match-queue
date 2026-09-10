@@ -574,4 +574,8 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
   Future<FcClubSummary> getClubSummary(String clubId) async {
     throw const NotFoundFailure();
   }
+
+  @override
+  Future<List<FcPlaystyleSummary>> getPlaystyleSummary() async =>
+      const <FcPlaystyleSummary>[];
 }

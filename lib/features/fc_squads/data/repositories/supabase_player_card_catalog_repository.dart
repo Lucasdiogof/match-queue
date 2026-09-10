@@ -36,6 +36,8 @@ class SupabasePlayerCardCatalogRepository
             : query.excludeCardIds,
         'p_club_id': query.clubId,
         'p_gender': query.gender,
+        'p_playstyle': query.playstyle,
+        'p_playstyle_plus_only': query.playstylePlusOnly,
       },
     );
     final json = Map<String, dynamic>.from(response as Map);
@@ -197,6 +199,25 @@ class SupabasePlayerCardCatalogRepository
       params: <String, dynamic>{'p_club_id': clubId},
     );
     return _clubFromListJson(Map<String, dynamic>.from(response as Map));
+  });
+
+  @override
+  Future<List<FcPlaystyleSummary>> getPlaystyleSummary() => _guard(() async {
+    final response = await _client.rpc<dynamic>('get_fc_playstyle_summary');
+    return <FcPlaystyleSummary>[
+      if (response is List)
+        for (final entry in response)
+          if (entry is Map)
+            FcPlaystyleSummary(
+              style: '${entry['style']}',
+              cardCount: entry['card_count'] is int
+                  ? entry['card_count'] as int
+                  : 0,
+              plusCardCount: entry['plus_card_count'] is int
+                  ? entry['plus_card_count'] as int
+                  : 0,
+            ),
+    ];
   });
 
   Future<T> _guard<T>(Future<T> Function() action) async {

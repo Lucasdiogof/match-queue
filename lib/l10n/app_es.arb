@@ -13,7 +13,7 @@
   "actionNotNow": "Ahora no",
   "actionSignOut": "Salir",
   "actionEdit": "Editar",
-  "navHome": "Inicio",
+  "navCentral": "Central",
   "navControl": "Jugar",
   "navTeam": "Equipos",
   "navHistory": "Historial",
@@ -1324,7 +1324,7 @@
   },
   "errorWeekendLeagueLimit": "Weekend League tiene 15 partidos: victorias y derrotas juntas no pueden superarlo.",
   "squadNoneSelectedHint": "Elige una plantilla para esta búsqueda",
-  "catalogCardsTitle": "Cartas",
+  "catalogCardsTitle": "Jugadores",
   "catalogCardsSearchLabel": "Buscar carta",
   "catalogCardsSearchHint": "Nombre del jugador",
   "catalogCardsEmptyTitle": "Ninguna carta encontrada",
@@ -1350,5 +1350,41 @@
   "startCatalogTitle": "Catálogo",
   "startCatalogCardsHint": "Explora las cartas del juego.",
   "startCatalogClubsHint": "Clubes por media de overall.",
-  "catalogClubsFilterAll": "Todos"
+  "catalogClubsFilterAll": "Todos",
+  "centralEyebrow": "FIFA QUEUE",
+  "centralTitle": "Central",
+  "centralSubtitle": "Catálogo, mecánicas y controles de FC 27.",
+  "centralSectionCatalog": "Catálogo",
+  "centralSectionMechanics": "Mecánicas",
+  "centralSectionControls": "Controles",
+  "catalogManagersEntryLabel": "Managers",
+  "catalogConsumablesEntryLabel": "Consumibles",
+  "mechanicsPlaystylesLabel": "PlayStyles",
+  "mechanicsPlaystylesHint": "Habilidades especiales de cada carta.",
+  "mechanicsChemistryLabel": "Chemistry",
+  "mechanicsChemistryHint": "Cómo funciona la química del equipo.",
+  "mechanicsChemistryStylesLabel": "Chemistry Styles",
+  "mechanicsChemistryStylesHint": "Estilos que refuerzan atributos.",
+  "mechanicsEvolutionsLabel": "Evolutions",
+  "mechanicsEvolutionsHint": "Cómo evolucionan los jugadores en Ultimate Team.",
+  "mechanicsPlaystylesCardCount": "{count, plural, =0{Ninguna carta} =1{1 carta} other{{count} cartas}}",
+  "@mechanicsPlaystylesCardCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mechanicsPlaystyleEffectLabel": "Efecto",
+  "mechanicsPlaystylePlusEffectLabel": "Efecto Plus",
+  "mechanicsPlaystyleFilterAny": "Todas",
+  "mechanicsPlaystyleFilterPlusOnly": "Solo Plus",
+  "controlsDribblingLabel": "Regates",
+  "controlsPassingLabel": "Pases",
+  "controlsShootingLabel": "Definición",
+  "controlsDefendingLabel": "Defensa",
+  "managersBlockedTitle": "Todavía sin dato real",
+  "managersBlockedMessage": "Hoy solo existen registros de prueba (nombres ficticios usados en el selector de técnico del Squad Builder). Necesitamos una fuente real de managers de FC 27 antes de mostrar esto como catálogo.",
+  "consumablesBlockedTitle": "Todavía sin dato real",
+  "consumablesBlockedMessage": "Chemistry Styles ya tiene su propia sección en Mecánicas. Los demás consumibles no existen hoy en nuestro catálogo."
 }

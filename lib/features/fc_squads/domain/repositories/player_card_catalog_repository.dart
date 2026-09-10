@@ -23,6 +23,8 @@ class PlayerCardQuery extends Equatable {
     this.excludeCardIds = const <String>[],
     this.clubId,
     this.gender,
+    this.playstyle,
+    this.playstylePlusOnly = false,
   });
 
   final String? query;
@@ -44,6 +46,12 @@ class PlayerCardQuery extends Equatable {
   /// 'MALE' ou 'FEMALE'. Herdado da liga, que é onde a separação é limpa.
   final String? gender;
 
+  /// Nome exato do PlayStyle (ex.: "Finesse Shot"). Casa com [playstyles] OU
+  /// [playstylePlusOnly] == true restringe só ao Plus -- pro módulo
+  /// PlayStyles da Central.
+  final String? playstyle;
+  final bool playstylePlusOnly;
+
   /// Cartas já ocupando outro slot do squad atual -- nunca oferecidas de
   /// novo no picker (gameplay flows refresh, item 4).
   final List<String> excludeCardIds;
@@ -62,6 +70,8 @@ class PlayerCardQuery extends Equatable {
     clubId: clubId,
     gender: gender,
     excludeCardIds: excludeCardIds,
+    playstyle: playstyle,
+    playstylePlusOnly: playstylePlusOnly,
   );
 
   @override
@@ -79,6 +89,8 @@ class PlayerCardQuery extends Equatable {
     excludeCardIds,
     clubId,
     gender,
+    playstyle,
+    playstylePlusOnly,
   ];
 }
 
@@ -135,4 +147,26 @@ abstract interface class PlayerCardCatalogRepository {
   });
 
   Future<FcClubSummary> getClubSummary(String clubId);
+
+  /// Contagem real de cartas ativas por PlayStyle (normal e Plus). O
+  /// catálogo de nomes/categorias/efeitos é conteúdo estático (não muda
+  /// carta a carta); só a contagem precisa ser real.
+  Future<List<FcPlaystyleSummary>> getPlaystyleSummary();
+}
+
+/// Quantas cartas do nosso catálogo têm este PlayStyle -- nunca inventado,
+/// vem de `get_fc_playstyle_summary`.
+class FcPlaystyleSummary extends Equatable {
+  const FcPlaystyleSummary({
+    required this.style,
+    required this.cardCount,
+    required this.plusCardCount,
+  });
+
+  final String style;
+  final int cardCount;
+  final int plusCardCount;
+
+  @override
+  List<Object?> get props => <Object?>[style, cardCount, plusCardCount];
 }

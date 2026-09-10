@@ -24,15 +24,15 @@ class AppShellPage extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
-  /// Ordem == ordem dos branches em app_router.dart: Inicio, Times,
+  /// Ordem == ordem dos branches em app_router.dart: Central, Times,
   /// Controle, Historico, Perfil -- Controle no meio de proposito.
   List<AppShellDestination> _destinations(BuildContext context) {
     final l10n = context.l10n;
     return <AppShellDestination>[
       AppShellDestination(
-        icon: Icons.home_outlined,
-        selectedIcon: Icons.home,
-        label: l10n.navHome,
+        icon: Icons.grid_view_outlined,
+        selectedIcon: Icons.grid_view_rounded,
+        label: l10n.navCentral,
       ),
       AppShellDestination(
         icon: Icons.groups_outlined,
