@@ -4,6 +4,51 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
+## Estado atual (2026-09-10) — leia esta seção primeiro
+
+HEAD `b04cd93`, `main` sincronizado com `origin`, árvore limpa,
+`flutter analyze` sem issues, `flutter test` 17/17, **86 migrations locais =
+remotas**.
+
+Fechado nesta rodada, depois da rodada de refinamento
+([`handoff_refinement_round.md`](handoff_refinement_round.md), 20/23):
+
+- **Catálogo navegável.** Telas novas de **Cartas** e **Clubes** (busca,
+  filtros, paginação server-side) mais **detalhe do clube**, alcançáveis pelo
+  bloco "Catálogo" da Home. A tela de Cartas **não é** o picker do Squad
+  Builder: tocar abre o detalhe, nunca seleciona.
+- **Gênero no catálogo** (migration `20261003100000`). O pacote FC27 traz
+  gênero por linha e o importador tinha descartado. **42 nomes de clube
+  existem nos dois gêneros** (Arsenal, Liverpool, Real Madrid, Barcelona) e
+  **nenhuma liga mistura** — por isso `gender` virou coluna de `fc_leagues`, e
+  clube/carta herdam dali. O banco já estava certo (`fc_clubs` tem uma linha
+  por clube+liga); o risco era **agregar por nome**, então `search_fc_player_cards`
+  ganhou `p_club_id` e as RPCs de clube nunca aceitam nome. Validado:
+  1.645 femininas / 16.228 masculinas, batendo com o CSV de origem.
+- **Home** reorganizada (atalhos com dois pesos + bloco Catálogo) e **verde
+  reduzido**: sobrou só onde comunica estado e no "Jogar" central.
+- **Arte de carta: BLOQUEADA na fonte.** Auditoria completa em
+  [`card_artwork_gap.md`](card_artwork_gap.md) — as 7 colunas de imagem do
+  catálogo estão **todas vazias**, o importador está pronto e não descartou
+  nada, e **nenhum arquivo do pacote FC27 tem coluna de imagem**. O card
+  desenhado "estilo FUT" foi abandonado; o componente agora usa a arte
+  quando existir e vira ficha de dados quando não.
+
+**Pendências reais:**
+
+- **QA visual das telas de Clubes e do detalhe do clube**: NÃO executado com
+  dados. O dado foi provado por SQL contra produção, mas as telas só foram
+  vistas no estado vazio (modo local não tem clubes). O dono testa
+  manualmente — ele pediu explicitamente para não ficar rodando o app.
+- 3 itens visuais da rodada anterior (20/23/24: header, background global,
+  card de modo) seguem sem correção pendente conhecida, ver seção 5 do
+  handoff daquela rodada.
+- Arte de carta depende de o dono fornecer dataset com `card_image_url` /
+  `player_image_url` / `player_face_url` — a partir daí é **re-importação,
+  zero código**.
+
+---
+
 Estado em 2026-09-09: **Etapas 1–20 fechadas** (17-20 foram auditoria,
 sem feature nova). **Etapa 20 (Store Release Readiness / Device QA)
 encerrou com veredito NOT READY — CONFIG BLOCKERS**: zero bug de
