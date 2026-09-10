@@ -2900,12 +2900,6 @@ abstract class AppLocalizations {
   /// **'Sem squad'**
   String get squadNoneSelected;
 
-  /// No description provided for @squadDevCatalogNotice.
-  ///
-  /// In pt, this message translates to:
-  /// **'Cartas de desenvolvimento. O catálogo real chega na próxima etapa.'**
-  String get squadDevCatalogNotice;
-
   /// No description provided for @squadFilterLeagueLabel.
   ///
   /// In pt, this message translates to:

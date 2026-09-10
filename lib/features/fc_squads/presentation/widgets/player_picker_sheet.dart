@@ -3,6 +3,7 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/player_picker_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/catalog_picker_sheet.dart';
@@ -52,15 +53,6 @@ class _PlayerPickerBody extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             const _FilterRow(),
-            const SizedBox(height: AppSpacing.sm),
-            // Deixa explícito que o catálogo ainda é de desenvolvimento --
-            // melhor dizer do que deixar parecer dado oficial.
-            Text(
-              l10n.squadDevCatalogNotice,
-              style: context.textStyles.bodySmall?.copyWith(
-                color: context.colors.textTertiary,
-              ),
-            ),
             const SizedBox(height: AppSpacing.md),
             const Expanded(child: _PlayerList()),
           ],
@@ -109,18 +101,31 @@ class _PlayerList extends StatelessWidget {
             }
             return false;
           },
-          child: ListView.builder(
+          // Grade de cartas em vez de linhas: o jogador reconhece uma carta
+          // pelo conjunto (rating, posicao, atributos), nao lendo um nome
+          // numa lista.
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 158,
+              childAspectRatio: 0.72,
+              crossAxisSpacing: AppSpacing.sm,
+              mainAxisSpacing: AppSpacing.sm,
+            ),
             itemCount: state.cards.length + (state.hasMore ? 1 : 0),
             itemBuilder: (context, index) {
               if (index >= state.cards.length) {
-                return const Padding(
-                  padding: EdgeInsets.all(AppSpacing.lg),
-                  child: AppLoading.inline(),
-                );
+                return const Center(child: AppLoading.inline());
               }
-              return _PlayerRow(
-                card: state.cards[index],
-                positionCode: context.read<PlayerPickerCubit>().positionCode,
+              final card = state.cards[index];
+              final positionCode = context
+                  .read<PlayerPickerCubit>()
+                  .positionCode;
+              return PlayerCardFace(
+                card: card,
+                eligibility: positionCode == null
+                    ? null
+                    : eligibilityTier(card, positionCode),
+                onTap: () => Navigator.of(context).pop(card),
               );
             },
           ),
@@ -130,118 +135,6 @@ class _PlayerList extends StatelessWidget {
   }
 }
 
-class _PlayerRow extends StatelessWidget {
-  const _PlayerRow({required this.card, this.positionCode});
-
-  final PlayerCard card;
-  final String? positionCode;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final l10n = context.l10n;
-    final tier = positionCode == null
-        ? null
-        : eligibilityTier(card, positionCode!);
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: AppCard(
-        onTap: () => Navigator.of(context).pop(card),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: 36,
-              height: 36,
-              alignment: Alignment.center,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: colors.surfaceHighest,
-                shape: BoxShape.circle,
-                border: Border.all(color: colors.borderSubtle),
-              ),
-              // Mesmo padrão de fallback do card do campo (item 122): foto
-              // quando existe, iniciais quando não -- nunca placeholder
-              // quebrado.
-              child: card.playerImageUrl == null
-                  ? Text(
-                      card.displayName.isEmpty
-                          ? '?'
-                          : card.displayName[0].toUpperCase(),
-                      style: context.textStyles.labelSmall,
-                    )
-                  : Image.network(
-                      card.playerImageUrl!,
-                      fit: BoxFit.cover,
-                      width: 36,
-                      height: 36,
-                      errorBuilder: (context, error, stackTrace) => Text(
-                        card.displayName.isEmpty
-                            ? '?'
-                            : card.displayName[0].toUpperCase(),
-                        style: context.textStyles.labelSmall,
-                      ),
-                    ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            SizedBox(
-              width: 30,
-              child: Text(
-                '${card.rating}',
-                style: context.textStyles.titleMedium,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    card.displayName,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.textStyles.bodyLarge,
-                  ),
-                  Text(
-                    <String>[
-                      card.primaryPosition,
-                      ...card.alternativePositions,
-                    ].join(' · '),
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textTertiary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (tier != null)
-              AppBadge(
-                label: switch (tier) {
-                  0 => l10n.squadPositionBadgePrimary,
-                  1 => l10n.squadPositionBadgeAlternative,
-                  _ => l10n.squadPositionBadgeOutOfPosition,
-                },
-                tone: switch (tier) {
-                  0 => AppBadgeTone.success,
-                  1 => AppBadgeTone.info,
-                  _ => AppBadgeTone.neutral,
-                },
-              )
-            else if (card.cardType != null)
-              AppBadge(label: card.cardType!),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Filtros do picker (item 12 da Etapa 11): rating, liga, clube, nacao.
-/// Posicao ja e implicita (o slot filtra por elegibilidade), entao nao
-/// aparece aqui de novo.
 class _FilterRow extends StatelessWidget {
   const _FilterRow();
 

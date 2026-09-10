@@ -1635,10 +1635,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadNoneSelected => 'Sin equipo';
 
   @override
-  String get squadDevCatalogNotice =>
-      'Cartas de desarrollo. El catálogo real llega en la próxima etapa.';
-
-  @override
   String get squadFilterLeagueLabel => 'Liga';
 
   @override
