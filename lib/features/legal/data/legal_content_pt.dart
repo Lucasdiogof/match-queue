@@ -11,7 +11,7 @@ const String _nonAffiliationPt =
     'donos e são usados apenas para identificar do que o aplicativo trata.';
 
 const LegalDocument kPrivacyPolicyPt = LegalDocument(
-  updatedAt: '2026-09-08',
+  updatedAt: '2026-09-10',
   nonAffiliationDisclaimer: _nonAffiliationPt,
   sections: <LegalSection>[
     LegalSection(
@@ -27,13 +27,13 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           'Coletamos apenas o necessário para o app funcionar:\n\n'
           '• Dados de conta: e-mail e senha (armazenada de forma segura '
           'pelo provedor de autenticação, nunca em texto simples).\n'
-          '• Perfil: nome de exibição e, se você escolher enviar uma, foto '
-          'de avatar.\n'
-          '• Identificadores internos: um ID único gerado para sua conta e '
-          'para cada Time/Elenco que você cria ou participa.\n'
-          '• Elencos (Contas EA FC): nomes que você dá aos seus elencos, '
-          'divisão de Rivals e registro de Weekend League que você mesmo '
-          'informar.\n'
+          '• Perfil: nome de exibição.\n'
+          '• Identificadores internos: um ID único gerado para você e '
+          'para cada Time/Conta que você cria ou participa.\n'
+          '• Contas: nomes que você dá às suas Contas (os perfis de jogo '
+          'que você registra e gerencia no FIFA Queue), a escalação que '
+          'você monta para cada uma, divisão de Rivals e registro de '
+          'Weekend League que você mesmo informar.\n'
           '• Times: nome, tag e histórico de atividade dos times dos quais '
           'você participa.\n'
           '• Dados de partidas: buscas de partida, filas, resultados e '
@@ -41,9 +41,11 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           'registrarem.\n'
           '• Token de notificação push (Firebase Cloud Messaging), se você '
           'permitir notificações.\n'
-          '• Perfil público: somente se você ativar essa opção nas '
-          'configurações, um link público mostra seu nome, escalação '
-          'principal e estatísticas resumidas.',
+          '• Perfil público: se você ativar essa opção nas configurações, '
+          'escolhe um endereço público e uma Conta para vincular a ele; o '
+          'link exibe seu nome e essa Conta, e você decide individualmente '
+          'se ele também mostra a escalação, a divisão de Rivals, o '
+          'registro de Weekend League e as estatísticas dessa Conta.',
     ),
     LegalSection(
       title: '3. Provedores que usamos',
@@ -61,9 +63,9 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           'conta; organizar a fila de busca de partida do seu time; '
           'exibir seu histórico e estatísticas; enviar notificações sobre '
           'sua vez na fila ou eventos do time (se você permitir); e, caso '
-          'você ative o perfil público, exibi-lo no link que você '
-          'compartilhar. Não vendemos seus dados nem os usamos para '
-          'publicidade.',
+          'você ative o perfil público, exibir nele as informações que '
+          'você escolher mostrar. Não vendemos seus dados nem os usamos '
+          'para publicidade.',
     ),
     LegalSection(
       title: '5. Armazenamento e segurança',
@@ -87,7 +89,7 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
       title: '7. Exclusão de conta',
       body:
           'Você pode excluir sua conta a qualquer momento em Perfil → '
-          'Excluir minha conta. A exclusão remove seu perfil, elencos, '
+          'Excluir minha conta. A exclusão remove seu perfil, suas Contas, '
           'escalações, participação em times, dispositivos registrados, '
           'preferências de notificação e perfil público. Se você for o '
           'único integrante de um time que criou, o time inteiro é '
@@ -108,10 +110,12 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
       title: '9. Seus direitos',
       body:
           'Você pode, a qualquer momento: acessar e editar seu nome de '
-          'exibição e avatar pelo próprio app; ativar ou desativar seu '
-          'perfil público; e excluir sua conta e os dados associados a '
-          'ela. Para qualquer outra solicitação sobre seus dados, entre em '
-          'contato pelo $kSupportEmail.',
+          'exibição pelo próprio app; ativar ou desativar seu perfil '
+          'público e escolher quais informações ele exibe (a Conta '
+          'vinculada, a escalação, a divisão de Rivals, o registro de '
+          'Weekend League e as estatísticas); e excluir sua conta e os '
+          'dados associados a ela. Para qualquer outra solicitação sobre '
+          'seus dados, entre em contato pelo $kSupportEmail.',
     ),
     LegalSection(
       title: '10. Menores de idade',

@@ -10,7 +10,7 @@ const String _nonAffiliationEn =
     'are used solely to identify what the app is about.';
 
 const LegalDocument kPrivacyPolicyEn = LegalDocument(
-  updatedAt: '2026-09-08',
+  updatedAt: '2026-09-10',
   nonAffiliationDisclaimer: _nonAffiliationEn,
   sections: <LegalSection>[
     LegalSection(
@@ -26,20 +26,24 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           'We only collect what the app needs to work:\n\n'
           '• Account data: email and password (stored securely by our '
           'authentication provider, never in plain text).\n'
-          '• Profile: your display name and, if you choose to upload one, '
-          'an avatar picture.\n'
-          '• Internal identifiers: a unique ID generated for your account '
-          'and for each Team/Account you create or join.\n'
-          '• FC Accounts: the names you give your accounts, Rivals '
-          'division, and Weekend League records you enter yourself.\n'
+          '• Profile: your display name.\n'
+          '• Internal identifiers: a unique ID generated for you and for '
+          'each Team/Account you create or join.\n'
+          '• Accounts: the names you give your Accounts (the in-game '
+          'profiles you register and manage in FIFA Queue), the squad you '
+          'build for each one, Rivals division, and Weekend League '
+          'records you enter yourself.\n'
           '• Teams: name, tag, and activity history of the teams you '
           'belong to.\n'
           '• Match data: match searches, queues, results, and stats '
           '(goals, assists) that you or your team record.\n'
           '• Push notification token (Firebase Cloud Messaging), if you '
           'allow notifications.\n'
-          '• Public profile: only if you turn this on in settings, a '
-          'public link shows your name, main squad, and summary stats.',
+          '• Public profile: if you turn this on in settings, you choose '
+          'a public address and one Account to link to it; the link shows '
+          'your name and that Account, and you individually decide '
+          'whether it also shows the squad, Rivals division, Weekend '
+          'League record, and stats for that Account.',
     ),
     LegalSection(
       title: '3. Providers we use',
@@ -57,8 +61,8 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           'account; run your team\'s match search queue; show your '
           'history and stats; send notifications about your turn in the '
           'queue or team events (if you allow it); and, if you enable a '
-          'public profile, display it at the link you share. We do not '
-          'sell your data or use it for advertising.',
+          'public profile, display on it whatever you choose to show. We '
+          'do not sell your data or use it for advertising.',
     ),
     LegalSection(
       title: '5. Storage and security',
@@ -81,7 +85,7 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
       title: '7. Account deletion',
       body:
           'You can delete your account at any time under Profile → '
-          'Delete my account. Deletion removes your profile, FC accounts, '
+          'Delete my account. Deletion removes your profile, Accounts, '
           'squads, team memberships, registered devices, notification '
           'preferences, and public profile. If you are the sole member of '
           'a team you created, the whole team is removed; if there are '
@@ -99,11 +103,12 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '9. Your rights',
       body:
-          'You can, at any time: access and edit your display name and '
-          'avatar from within the app; turn your public profile on or '
-          'off; and delete your account and its associated data. For any '
-          'other request about your data, contact us at '
-          '$kSupportEmail.',
+          'You can, at any time: access and edit your display name from '
+          'within the app; turn your public profile on or off and choose '
+          'what it shows (the linked Account, squad, Rivals division, '
+          'Weekend League record, and stats); and delete your account and '
+          'its associated data. For any other request about your data, '
+          'contact us at $kSupportEmail.',
     ),
     LegalSection(
       title: '10. Children',
