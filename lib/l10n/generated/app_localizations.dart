@@ -385,7 +385,7 @@ abstract class AppLocalizations {
   /// No description provided for @teamPublicPageMembersTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco'**
+  /// **'Membros'**
   String get teamPublicPageMembersTitle;
 
   /// No description provided for @teamPublicPageRecordTitle.
@@ -3587,7 +3587,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadPrimaryLineupEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Você ainda não montou uma escalação para este elenco.'**
+  /// **'Você ainda não montou uma escalação para esta Conta.'**
   String get squadPrimaryLineupEmpty;
 
   /// No description provided for @squadOtherLineupsAction.
@@ -3995,7 +3995,7 @@ abstract class AppLocalizations {
   /// No description provided for @publicProfileNoAccountsHint.
   ///
   /// In pt, this message translates to:
-  /// **'Crie um Elenco antes de compartilhar.'**
+  /// **'Crie uma Conta antes de compartilhar.'**
   String get publicProfileNoAccountsHint;
 
   /// No description provided for @errorPublicProfileInvalidSlug.
@@ -4067,7 +4067,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutDescription.
   ///
   /// In pt, this message translates to:
-  /// **'FIFA Queue organiza a fila de busca de partida, elencos e estatísticas do seu time de EA SPORTS FC.'**
+  /// **'FIFA Queue organiza a fila de busca de partida, Contas e estatísticas do seu time de EA SPORTS FC.'**
   String get aboutDescription;
 
   /// No description provided for @privacyPolicyTitle.
@@ -4115,7 +4115,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteAccountConsequenceFcAccounts.
   ///
   /// In pt, this message translates to:
-  /// **'Todos os seus elencos (Contas EA FC) e a divisão de Rivals registrada'**
+  /// **'Todas as suas Contas e a divisão de Rivals registrada'**
   String get deleteAccountConsequenceFcAccounts;
 
   /// No description provided for @deleteAccountConsequenceSquads.

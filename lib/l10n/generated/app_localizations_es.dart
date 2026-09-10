@@ -157,7 +157,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'No aparece en Explorar ni en búsquedas públicas.';
 
   @override
-  String get teamPublicPageMembersTitle => 'Plantilla';
+  String get teamPublicPageMembersTitle => 'Miembros';
 
   @override
   String get teamPublicPageRecordTitle => 'Récord';
@@ -2052,7 +2052,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get squadPrimaryLineupEmpty =>
-      'Aún no has armado una alineación para este elenco.';
+      'Aún no has armado una alineación para esta Cuenta.';
 
   @override
   String squadOtherLineupsAction(int count) {
@@ -2389,7 +2389,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get deleteAccountConsequenceFcAccounts =>
-      'Todas tus cuentas de EA FC y la división de Rivals registrada';
+      'Todas tus Cuentas y la división de Rivals registrada';
 
   @override
   String get deleteAccountConsequenceSquads =>

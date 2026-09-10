@@ -47,7 +47,7 @@
   "teamVisibilityPrivate": "Private",
   "teamVisibilityPublicHint": "Shows up in Explore and has a public page.",
   "teamVisibilityPrivateHint": "Never appears in Explore or public search.",
-  "teamPublicPageMembersTitle": "Roster",
+  "teamPublicPageMembersTitle": "Members",
   "teamPublicPageRecordTitle": "Record",
   "teamPublicPageRecordLine": "{wins} wins • {losses} losses",
   "@teamPublicPageRecordLine": {
@@ -1275,7 +1275,7 @@
   "deleteAccountTitle": "Delete account",
   "deleteAccountWarningTitle": "This action is permanent",
   "deleteAccountWarningMessage": "Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.",
-  "deleteAccountConsequenceFcAccounts": "All your FC accounts and their recorded Rivals division",
+  "deleteAccountConsequenceFcAccounts": "All your Accounts and their recorded Rivals division",
   "deleteAccountConsequenceSquads": "Your squads (Squad Builder)",
   "deleteAccountConsequenceHistory": "Your membership in the teams you belong to",
   "deleteAccountConsequenceStats": "Your personal match history and stats",

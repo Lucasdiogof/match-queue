@@ -157,7 +157,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Never appears in Explore or public search.';
 
   @override
-  String get teamPublicPageMembersTitle => 'Roster';
+  String get teamPublicPageMembersTitle => 'Members';
 
   @override
   String get teamPublicPageRecordTitle => 'Record';
@@ -2374,7 +2374,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountConsequenceFcAccounts =>
-      'All your FC accounts and their recorded Rivals division';
+      'All your Accounts and their recorded Rivals division';
 
   @override
   String get deleteAccountConsequenceSquads => 'Your squads (Squad Builder)';

@@ -47,7 +47,7 @@
   "teamVisibilityPrivate": "Privado",
   "teamVisibilityPublicHint": "Aparece en Explorar y tiene página pública.",
   "teamVisibilityPrivateHint": "No aparece en Explorar ni en búsquedas públicas.",
-  "teamPublicPageMembersTitle": "Plantilla",
+  "teamPublicPageMembersTitle": "Miembros",
   "teamPublicPageRecordTitle": "Récord",
   "teamPublicPageRecordLine": "{wins} victorias • {losses} derrotas",
   "@teamPublicPageRecordLine": {
@@ -1103,7 +1103,7 @@
   "squadPrimaryLineupTitle": "Alineación principal",
   "squadPrimaryLineupEditAction": "Editar alineación",
   "squadPrimaryLineupCreateAction": "Armar alineación",
-  "squadPrimaryLineupEmpty": "Aún no has armado una alineación para este elenco.",
+  "squadPrimaryLineupEmpty": "Aún no has armado una alineación para esta Cuenta.",
   "squadOtherLineupsAction": "{count, plural, =1{Ver otra alineación} other{Ver otras {count} alineaciones}}",
   "@squadOtherLineupsAction": {
     "placeholders": {
@@ -1275,7 +1275,7 @@
   "deleteAccountTitle": "Eliminar cuenta",
   "deleteAccountWarningTitle": "Esta acción es permanente",
   "deleteAccountWarningMessage": "Al eliminar tu cuenta, pierdes acceso a todo lo que se indica abajo. No se puede deshacer ni recuperar después.",
-  "deleteAccountConsequenceFcAccounts": "Todas tus cuentas de EA FC y la división de Rivals registrada",
+  "deleteAccountConsequenceFcAccounts": "Todas tus Cuentas y la división de Rivals registrada",
   "deleteAccountConsequenceSquads": "Tus alineaciones (Squad Builder)",
   "deleteAccountConsequenceHistory": "Tu membresía en los equipos a los que perteneces",
   "deleteAccountConsequenceStats": "Tu historial y estadísticas personales de partidas",

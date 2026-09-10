@@ -157,7 +157,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não aparece em Explorar nem em buscas públicas.';
 
   @override
-  String get teamPublicPageMembersTitle => 'Elenco';
+  String get teamPublicPageMembersTitle => 'Membros';
 
   @override
   String get teamPublicPageRecordTitle => 'Retrospecto';
@@ -2039,7 +2039,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get squadPrimaryLineupEmpty =>
-      'Você ainda não montou uma escalação para este elenco.';
+      'Você ainda não montou uma escalação para esta Conta.';
 
   @override
   String squadOtherLineupsAction(int count) {
@@ -2301,7 +2301,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get publicProfileNoAccountsHint =>
-      'Crie um Elenco antes de compartilhar.';
+      'Crie uma Conta antes de compartilhar.';
 
   @override
   String get errorPublicProfileInvalidSlug =>
@@ -2348,7 +2348,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'FIFA Queue organiza a fila de busca de partida, elencos e estatísticas do seu time de EA SPORTS FC.';
+      'FIFA Queue organiza a fila de busca de partida, Contas e estatísticas do seu time de EA SPORTS FC.';
 
   @override
   String get privacyPolicyTitle => 'Política de Privacidade';
@@ -2376,7 +2376,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deleteAccountConsequenceFcAccounts =>
-      'Todos os seus elencos (Contas EA FC) e a divisão de Rivals registrada';
+      'Todas as suas Contas e a divisão de Rivals registrada';
 
   @override
   String get deleteAccountConsequenceSquads =>
