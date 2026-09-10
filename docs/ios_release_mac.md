@@ -1,96 +1,124 @@
 # iOS — continuar o release num Mac
 
-Auditoria 100% estática, feita no Windows — nenhum build real foi
-tentado nem poderia ser (Xcode não existe nesta plataforma). Este
-documento existe pra o dono do produto (ou outra sessão, já num Mac)
-seguir sem precisar reaudittar nada.
+> **Atualizado em 2026-09-10, numa sessão real de macOS** (Xcode 26.5,
+> Flutter 3.44.1 via FVM, iPhone 17 Pro Simulator / iOS 26.5). A versão
+> anterior deste documento era uma auditoria 100% estática feita no
+> Windows; três das conclusões dela estavam erradas e foram corrigidas
+> abaixo — ver "Correções à auditoria do Windows".
 
-## Estado confirmado por leitura de arquivo (2026-09-09)
+## O que já foi executado neste Mac
 
-| Item | Valor / achado | Status |
-| --- | --- | --- |
-| Bundle identifier | `com.lucasdiogof.fifaqueue` (Runner e alvo de testes) | READY |
-| `IPHONEOS_DEPLOYMENT_TARGET` | `13.0` | READY |
-| `CFBundleShortVersionString`/`CFBundleVersion` | `$(FLUTTER_BUILD_NAME)`/`$(FLUTTER_BUILD_NUMBER)` — herdam do `pubspec.yaml` (`0.1.0+1`) | READY |
-| `GoogleService-Info.plist` | Presente no disco, gitignored | READY (arquivo existe; **confirmar no Mac que é o real de produção**, não um placeholder) |
-| URL scheme (`CFBundleURLSchemes`) | `com.lucasdiogof.fifaqueue` — cobre recuperação de senha | READY |
-| `Runner.xcworkspace` | **Existe** (gerado pelo `flutter create`, não depende de CocoaPods) | READY |
-| `ios/Podfile` | **AUSENTE** — nunca foi gerado (só é criado pela primeira execução de `pod install`, que exige macOS/CocoaPods) | **MISSING — normal, primeiro passo no Mac** |
-| `.entitlements` (Push, Background Modes) | **AUSENTE** | **MISSING — criado pelo Xcode ao habilitar a capability** |
-| `UIBackgroundModes` no `Info.plist` | **AUSENTE** | **MISSING — mesma causa** |
-| Ícone (`AppIcon.appiconset`) | Gerado por `flutter_launcher_icons` (mesmo pipeline do Android) — não conferido visualmente | NEEDS macOS pra confirmar visualmente |
-| Splash | Gerado por `flutter_native_splash` — mesma fonte do Android | NEEDS macOS pra confirmar visualmente |
-
-**Sobre o `Podfile` ausente**: não é uma corrupção nem uma perda de
-configuração — este projeto simplesmente nunca teve uma sessão de
-desenvolvimento num Mac. `pod install` vai **gerar** o `Podfile` (não
-sobrescrever um customizado, porque não existe nenhum ainda) — seguro
-de rodar sem risco de perder personalização alguma.
-
-## Checklist operacional (nesta ordem exata)
-
-1. Instalar uma versão do Flutter compatível — mesma major/minor usada
-   no Windows (`3.44.x`) pra evitar diferença de `minSdk`/comportamento
-   entre plataformas. Confirmar com `flutter --version`.
-2. Instalar Xcode (App Store) — versão compatível com
-   `IPHONEOS_DEPLOYMENT_TARGET = 13.0` (qualquer Xcode recente serve).
-3. Instalar CocoaPods (`sudo gem install cocoapods` ou via Homebrew).
-4. `git clone` (ou `git pull` se o repo já existir no Mac) —
-   confirmar que está em `origin/main` no HEAD desta etapa.
-5. `flutter pub get` na raiz do projeto.
-6. `cd ios`.
-7. `pod install` — isso **gera** o `Podfile`/`Podfile.lock` que faltam
-   hoje. Primeira vez pode demorar (baixa todos os pods do Firebase).
-8. Abrir **`ios/Runner.xcworkspace`** no Xcode — nunca o
-   `.xcodeproj` isolado (plugins Flutter dependem do workspace).
-9. No target **Runner** → Signing & Capabilities: selecionar um
-   **Team** de desenvolvimento Apple real (**NEEDS APPLE DEVELOPER
-   ACCOUNT**).
-10. Confirmar `Bundle Identifier` = `com.lucasdiogof.fifaqueue` (já
-    está correto no projeto, só confirmar que não mudou ao abrir no
-    Xcode).
-11. Signing & Capabilities → deixar "Automatically manage signing"
-    ligado numa primeira tentativa (mais simples) ou configurar
-    provisioning manual se a conta exigir.
-12. **+ Capability → Push Notifications** — isso cria o
-    `.entitlements` automaticamente.
-13. **+ Capability → Background Modes** → marcar **Remote
-    notifications** (necessário pro FCM entregar em background).
-14. **+ Capability → Associated Domains** → adicionar
-    `applinks:lucksrei.com` (ver seção "App Links/Universal Links"
-    abaixo — o domínio já está decidido).
-15. Confirmar que `GoogleService-Info.plist` no projeto é o arquivo
-    real de produção e que `BUNDLE_ID` dentro dele bate com
-    `com.lucasdiogof.fifaqueue` (abrir o arquivo, checar o campo
-    `BUNDLE_ID`).
-16. Testar no Simulator primeiro (`flutter run` sem `--release`, mais
-    rápido pra achar erro de configuração), depois num iPhone físico
-    real conectado (**NEEDS PHYSICAL DEVICE** pra validação completa).
-17. Quando o app abrir e funcionar:
-    ```bash
-    flutter build ios --release --dart-define-from-file=env/production.json
-    ```
-18. No Xcode: **Product → Archive**.
-19. No Organizer, depois do archive: **Validate App** (contra a conta
-    Apple Developer configurada).
-20. **Distribute App → App Store Connect** (upload).
-21. No App Store Connect: criar um grupo interno de **TestFlight**,
-    convidar testadores, aguardar processamento do build.
-
-## Blockers específicos deste checklist
-
-| Blocker | Categoria |
+| Etapa | Resultado |
 | --- | --- |
-| Precisa de um Mac com Xcode | ENVIRONMENT |
-| Precisa de conta Apple Developer (paga, ~$99/ano) + Team configurado | APPLE DEVELOPER |
-| Provisioning/signing de distribuição | APPLE DEVELOPER |
-| Confirmar `GoogleService-Info.plist` real vs. placeholder | CONFIG (rápido de resolver no Mac) |
-| Validação visual de ícone/splash | NEEDS macOS |
-| Teste em device físico real | NEEDS PHYSICAL DEVICE |
+| Flutter fixado no projeto (`fvm use 3.44.1`) | **DONE** — `.fvmrc` versionado; Dart 3.12.1 satisfaz `sdk: ^3.12.1` |
+| Resolução de plugins nativos iOS | **DONE** — via Swift Package Manager (não CocoaPods; ver correções) |
+| `IPHONEOS_DEPLOYMENT_TARGET` 13.0 → **15.0** | **DONE** — era bloqueio real de build (ver correções) |
+| `ios/Runner/Runner.entitlements` criado | **DONE** — `aps-environment` + `applinks:lucksrei.com` |
+| `CODE_SIGN_ENTITLEMENTS` ligado nas 3 configs do target Runner | **DONE** — Debug, Profile e Release |
+| `UIBackgroundModes` → `remote-notification` no `Info.plist` | **DONE** |
+| Build iOS real | **PASS** — `flutter build ios --simulator --debug`, Xcode build em 48s, exit 0 |
+| App rodando no Simulator | **PASS** — tela de login renderiza com a marca correta |
+| Ícone no springboard | **PASS** — conferido visualmente ("FIFA Queue", sem alpha no 1024×1024) |
+| `flutter analyze` | **PASS** — `No issues found` (exigiu excluir `build/**`, ver correções) |
+| Build phase de upload de dSYM do Crashlytics | **DONE** — hoje é a phase oficial do `flutterfire configure`; ver `ios_warnings_audit.md` |
+
+## Correções à auditoria do Windows
+
+1. **CocoaPods não é mais usado.** O `Podfile` nunca vai aparecer, e isso
+   não é um gap: o Flutter 3.44 integra os plugins iOS por **Swift
+   Package Manager**. O `Runner.xcodeproj` já vem com a integração SPM, e
+   `ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage`
+   resolve os 9 plugins (incluindo os 3 do Firebase). Os passos 3, 6 e 7
+   do checklist antigo (`sudo gem install cocoapods`, `cd ios`,
+   `pod install`) estão **obsoletos** — não execute.
+2. **`GoogleService-Info.plist` NÃO existe neste checkout.** A auditoria
+   antiga marcou como "READY (arquivo existe)"; isso era verdade só na
+   máquina Windows de origem. Aqui não há nem ele, nem
+   `android/app/google-services.json`, nem `lib/firebase_options.dart` —
+   os três são gitignored e precisam ser gerados (ver pendências).
+3. **`IPHONEOS_DEPLOYMENT_TARGET = 13.0` era um bloqueio de build.**
+   `firebase_core 4.14`, `firebase_messaging 16.6` e
+   `firebase_crashlytics 5.3` declaram `.iOS("15.0")` no `Package.swift`.
+   Com 13.0 o SPM recusa o grafo. Subido para **15.0** nas três configs.
+   Efeito de produto: o app deixa de suportar iOS 13 e 14.
+4. **`flutter analyze` quebrava depois do primeiro build iOS.** Os
+   checkouts do SPM caem em `build/ios/SourcePackages/` e trazem os
+   testes `.dart` dos próprios plugins — 116 erros de código de
+   terceiro. `build/**` foi adicionado ao `exclude` do
+   `analysis_options.yaml`. Isso também consertaria o step
+   `flutter analyze` do Codemagic assim que ele passar a buildar iOS.
+
+## Pendências — só você pode resolver (conta/credencial)
+
+| # | Pendência | Como resolver |
+| --- | --- | --- |
+| 1 | `lib/firebase_options.dart`, `ios/Runner/GoogleService-Info.plist` e `android/app/google-services.json` ausentes | `dart pub global activate flutterfire_cli` + `npm i -g firebase-tools` + `firebase login` + `flutterfire configure --project=fifa-queue`. O app iOS já está registrado no projeto Firebase (`1:927848400584:ios:c43993856e4893bef187fd`, ver `firebase.json`) |
+| 2 | `env/production.json` ausente (só existe o `.example.json`) | Copiar do exemplo e preencher `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `APP_LINK_HOST=lucksrei.com`, `FIREBASE_ENABLED=true` |
+| 3 | Conta Apple Developer + Team no target Runner | Xcode → Runner → Signing & Capabilities → Team (deixar "Automatically manage signing" ligado na primeira vez) |
+| 4 | Chave de APNs no Firebase | Apple Developer → Keys → criar chave APNs (.p8) → subir em Firebase Console → Project Settings → Cloud Messaging → iOS app |
+| 5 | `apple-app-site-association` em `lucksrei.com` | Conteúdo pronto em `docs/deep_links.md`. Sem isso o Universal Link não abre o app (mas **não** quebra build nem submissão) |
+| 6 | Teste em iPhone físico | Push real (APNs) não funciona no Simulator |
+
+## Checklist operacional atualizado (nesta ordem)
+
+1. Resolver as pendências 1 e 2 acima (Firebase + `env/production.json`).
+2. Abrir **`ios/Runner.xcworkspace`** no Xcode — nunca o `.xcodeproj`.
+3. Runner → Signing & Capabilities → selecionar o **Team**.
+   O `Runner.entitlements` já está ligado, então o Xcode vai mostrar
+   **Push Notifications**, **Background Modes → Remote notifications** e
+   **Associated Domains** já preenchidos — com signing automático ele
+   habilita essas capabilities no App ID sozinho. Não precisa clicar em
+   "+ Capability".
+4. Confirmar `Bundle Identifier` = `com.lucasdiogof.fifaqueue` e que o
+   `BUNDLE_ID` dentro do `GoogleService-Info.plist` bate com ele.
+5. Rodar no Simulator primeiro:
+   ```bash
+   fvm flutter run --dart-define-from-file=env/production.json
+   ```
+6. Rodar num iPhone físico e validar o push de ponta a ponta.
+7. Build de release:
+   ```bash
+   fvm flutter build ipa --release --dart-define-from-file=env/production.json
+   ```
+   (`build ipa` já gera o archive; `build ios` + Product → Archive no
+   Xcode também serve.)
+8. Xcode → Organizer → **Validate App** → **Distribute App → App Store
+   Connect**.
+9. App Store Connect: grupo interno de TestFlight, convidar testadores.
+
+## Crashlytics — upload de dSYM
+
+**Substituído.** A phase manual que existia aqui (*Firebase Crashlytics
+dSYM Upload*) foi **removida** em 2026-09-10: o `flutterfire configure`
+criou a phase oficial *FlutterFire: "flutterfire upload-crashlytics-symbols"*,
+que faz o mesmo de forma mais robusta, e manter as duas subia o mesmo
+dSYM duas vezes.
+
+Detalhes, guardas e o porquê de a phase rodar em toda build estão em
+[`ios_warnings_audit.md`](ios_warnings_audit.md), seção 4.
+
+## Pinos do Swift Package Manager
+
+Os dois `Package.resolved`
+(`ios/Runner.xcworkspace/xcshareddata/swiftpm/` e
+`ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/`)
+apareceram como arquivos novos nesta sessão. Eles fazem o papel que o
+`Podfile.lock` faria — fixam a versão exata do SDK nativo do Firebase.
+**Devem ser commitados**, senão cada máquina/CI resolve uma versão
+diferente do Firebase iOS SDK.
+
+## Detalhe sobre `aps-environment`
+
+O `Runner.entitlements` está com `aps-environment = development`, que é
+o que o Xcode gera ao habilitar a capability. No archive de distribuição
+o valor efetivo vem do provisioning profile da App Store (`production`) —
+não precisa editar o arquivo. Se algum dia o push funcionar em debug mas
+não em TestFlight, é aqui que se olha primeiro.
 
 ## Status
 
-**NOT EXECUTED — REQUIRES macOS.** Auditoria estática completa, zero
-inconsistência encontrada no que já existe. Os gaps (Podfile,
-entitlements, capabilities) são esperados — nunca houve sessão iOS
-antes — não são regressão.
+**iOS BUILDA E RODA.** O bloqueio de ENVIRONMENT (falta de macOS) está
+resolvido e os gaps de configuração nativa (entitlements, background
+modes, deployment target) foram fechados e versionados. O que resta é
+**exclusivamente credencial/conta** — Firebase, Supabase, Apple
+Developer — nada de código.

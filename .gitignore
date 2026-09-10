@@ -85,3 +85,6 @@ docs/final_data/data/ea_raw/
 docs/final_data/FC27_COMPLETE/
 docs/final_data/output/
 
+
+# FVM Version Cache
+.fvm/

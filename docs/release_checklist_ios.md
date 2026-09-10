@@ -1,71 +1,61 @@
 # Checklist de release — iOS
 
-Auditoria 100% estática (lendo arquivos de projeto) feita no Windows —
-**nenhum build real foi tentado nem poderia ser** (Xcode não existe nesta
-plataforma). Nada aqui foi marcado como PASS sem execução real; tudo que
-depende de rodar de fato fica como `NOT EXECUTED — REQUIRES macOS`.
+> **Executado em 2026-09-10 num Mac real** (Xcode 26.5, Flutter 3.44.1
+> via FVM, iPhone 17 Pro Simulator / iOS 26.5). Substitui a auditoria
+> estática anterior, feita no Windows. O passo a passo detalhado, com as
+> correções à auditoria antiga, está em `docs/ios_release_mac.md`.
 
-## 1. Estado confirmado por leitura de arquivo
+## 1. Verificado por execução real
 
 | Item | Valor / achado | Status |
 | --- | --- | --- |
-| Bundle identifier | `com.lucasdiogof.fifaqueue` (Runner e alvo de testes) | READY |
-| `IPHONEOS_DEPLOYMENT_TARGET` | `13.0` | READY |
-| `CFBundleShortVersionString` / `CFBundleVersion` | `$(FLUTTER_BUILD_NAME)` / `$(FLUTTER_BUILD_NUMBER)` — herdam de `pubspec.yaml` (`0.1.0+1`) | READY |
-| `GoogleService-Info.plist` | Presente no disco, gitignored corretamente | READY (arquivo existe; **não verificado se é o real de produção ou um placeholder** — confirmar antes do archive) |
-| URL scheme (`CFBundleURLSchemes`) | `com.lucasdiogof.fifaqueue` registrado — cobre a recuperação de senha | READY |
-| Ícone (`AppIcon.appiconset`) | Não conferido nesta etapa (fora do escopo de arquivo de projeto simples de auditar sem Xcode); assets de ícone existem no repo | NEEDS macOS pra confirmar visualmente |
-| Splash (`LaunchScreen.storyboard`) | Não conferido em detalhe — existe por padrão do template Flutter, sem customização visível auditada | NEEDS macOS pra confirmar visualmente |
-| `Podfile` | **AUSENTE** — nunca foi gerado (precisa de `pod install`, que exige macOS/CocoaPods) | **MISSING — só é gerado na primeira vez que o projeto for aberto/buildado num Mac** |
+| Build iOS | `flutter build ios --simulator --debug` → exit 0, Xcode build 48s | **PASS** |
+| App em execução | Sobe no Simulator, tela de login com a marca correta | **PASS** |
+| `flutter analyze` | `No issues found` | **PASS** |
+| `flutter test` | 17 testes, todos passando | **PASS** |
+| Bundle identifier | `com.lucasdiogof.fifaqueue` (Runner e RunnerTests) | **PASS** |
+| `IPHONEOS_DEPLOYMENT_TARGET` | **15.0** (era 13.0; subido porque o Firebase exige 15) | **PASS** |
+| `CFBundleShortVersionString` / `CFBundleVersion` | `$(FLUTTER_BUILD_NAME)` / `$(FLUTTER_BUILD_NUMBER)` ← `pubspec.yaml` (`0.1.0+1`) | **PASS** |
+| URL scheme | `com.lucasdiogof.fifaqueue` — cobre a recuperação de senha | **PASS** |
+| Ícone (`AppIcon.appiconset`) | Conferido no springboard; 1024×1024 sem canal alpha | **PASS** |
+| Plugins nativos | 9 plugins resolvidos via **Swift Package Manager** — sem CocoaPods, sem `Podfile` | **PASS** |
+| `Runner.entitlements` | Criado e ligado (`CODE_SIGN_ENTITLEMENTS`) nas 3 configs do Runner | **PASS** |
+| `UIBackgroundModes` (`remote-notification`) | Presente no `Info.plist` | **PASS** |
+| Upload de dSYM do Crashlytics | Build phase criada (não existia); guardas testadas, upload a confirmar no 1º archive | **PASS (parcial)** |
+| Associated Domains | `applinks:lucksrei.com` no entitlements | **PASS** (falta publicar o AASA no domínio) |
 
-## 2. Faltando — precisa ser feito no Xcode (Mac)
+## 2. Faltando — bloqueios de conta/credencial
 
-Nenhum destes existe hoje neste checkout, porque nunca houve uma sessão
-num Mac para este projeto:
+Nenhum bloqueio de código ou de configuração nativa continua aberto.
+O que resta depende de credencial que só o dono do produto tem:
 
 | Item | Status |
 | --- | --- |
-| `.entitlements` (Push Notifications, Background Modes) | **MISSING** |
-| `UIBackgroundModes` (`remote-notification`) no `Info.plist` | **MISSING** |
-| Capability *Push Notifications* habilitada no target Runner | **MISSING** |
-| Provisioning profile / Team de desenvolvimento | **NEEDS USER INPUT** (conta Apple Developer) |
-| Signing de distribuição (App Store Connect) | **NEEDS USER INPUT** |
-| Associated Domains (Universal Links) | **MISSING** — mesma pendência de domínio do Android (não é gap desta etapa, é decisão de produto ainda não tomada) |
-| `Podfile` + `pod install` | **MISSING** — primeiro passo obrigatório antes de qualquer build |
+| `lib/firebase_options.dart` + `GoogleService-Info.plist` + `google-services.json` | **NEEDS FIREBASE LOGIN** (`flutterfire configure --project=fifa-queue`) |
+| `env/production.json` (Supabase URL + publishable key) | **NEEDS USER INPUT** |
+| Team / provisioning de distribuição | **NEEDS APPLE DEVELOPER ACCOUNT** |
+| Chave APNs (.p8) enviada ao Firebase | **NEEDS APPLE DEVELOPER ACCOUNT** |
+| `apple-app-site-association` em `lucksrei.com` | **NEEDS WEBSITE** (não bloqueia build nem submissão) |
+| Teste de push em iPhone físico | **NEEDS PHYSICAL DEVICE** |
 
-## 3. Checklist operacional para executar no Mac (nesta ordem)
+## 3. Ordem de execução até o TestFlight
 
-1. Instalar Xcode + CocoaPods, abrir `ios/Runner.xcworkspace` (não o
-   `.xcodeproj` isolado — plugins Flutter dependem do workspace).
-2. `flutter pub get` e `cd ios && pod install` — isso gera o `Podfile`/
-   `Podfile.lock` que faltam.
-3. Selecionar um *Team* de desenvolvimento real no target Runner
-   (Signing & Capabilities).
-4. Adicionar a capability **Push Notifications** — isso cria o
-   `.entitlements` automaticamente.
-5. Adicionar **Background Modes → Remote notifications** (necessário
-   pro FCM entregar em background).
-6. Confirmar que `GoogleService-Info.plist` no projeto é o arquivo real
-   de produção (não um placeholder de dev) e que o `BUNDLE_ID` dentro
-   dele bate com `com.lucasdiogof.fifaqueue`.
-7. Se/quando o domínio dos App/Universal Links existir: habilitar
-   **Associated Domains**, adicionar `applinks:<domínio>`, publicar
-   `apple-app-site-association` (passo a passo em `docs/deep_links.md`).
-8. `flutter build ios --release` (ou Product → Archive no Xcode).
-9. Validar o archive (Xcode Organizer → Validate App) antes de subir.
-10. Upload pro App Store Connect, criar um grupo interno de TestFlight,
-    convidar testadores.
+Passo a passo completo em `docs/ios_release_mac.md`, seção "Checklist
+operacional atualizado". Resumo:
 
-## 4. Resultado desta etapa
-
-**NOT EXECUTED — REQUIRES macOS.** Nenhum item da seção 3 pôde ser
-executado neste ambiente Windows. A auditoria estática (seção 1) não
-encontrou nenhuma inconsistência de configuração no que já existe — os
-gaps da seção 2 são esperados (nunca houve build iOS antes), não
-regressões.
+1. `flutterfire configure --project=fifa-queue`
+2. Preencher `env/production.json`
+3. Xcode (`ios/Runner.xcworkspace`) → Runner → Signing & Capabilities →
+   selecionar o Team (as capabilities já vêm do entitlements versionado)
+4. `fvm flutter run --dart-define-from-file=env/production.json` no
+   Simulator, depois num iPhone físico
+5. `fvm flutter build ipa --release --dart-define-from-file=env/production.json`
+6. Organizer → Validate App → Distribute App → App Store Connect
+7. TestFlight: grupo interno, convidar testadores
 
 ## Veredito iOS
 
-**NOT READY FOR STORE SUBMISSION — bloqueio de ENVIRONMENT (falta
-macOS) e alguns itens de CONFIG que só podem ser criados dentro do
-Xcode.** Zero bloqueio de código Dart/Flutter conhecido.
+**BUILDA, RODA E ANALISA LIMPO.** Os bloqueios de ENVIRONMENT e de
+CONFIG nativa da auditoria anterior estão fechados e versionados.
+Submissão à App Store depende agora só de credenciais — Firebase,
+Supabase e Apple Developer.
