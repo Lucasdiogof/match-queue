@@ -2576,4 +2576,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get startCatalogClubsHint => 'Clubes por media de overall.';
+
+  @override
+  String get catalogClubsFilterAll => 'Todos';
 }

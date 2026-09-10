@@ -4417,6 +4417,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Clubes por overall médio.'**
   String get startCatalogClubsHint;
+
+  /// No description provided for @catalogClubsFilterAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get catalogClubsFilterAll;
 }
 
 class _AppLocalizationsDelegate

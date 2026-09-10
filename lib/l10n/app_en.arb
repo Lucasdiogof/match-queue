@@ -1349,5 +1349,6 @@
   "startShortcutPlayHint": "Pick the account and mode, then join the queue.",
   "startCatalogTitle": "Catalogue",
   "startCatalogCardsHint": "Browse the game's cards.",
-  "startCatalogClubsHint": "Clubs by average overall."
+  "startCatalogClubsHint": "Clubs by average overall.",
+  "catalogClubsFilterAll": "All"
 }

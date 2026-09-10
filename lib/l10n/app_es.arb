@@ -1349,5 +1349,6 @@
   "startShortcutPlayHint": "Elige la cuenta y el modo, y entra en la fila.",
   "startCatalogTitle": "Catálogo",
   "startCatalogCardsHint": "Explora las cartas del juego.",
-  "startCatalogClubsHint": "Clubes por media de overall."
+  "startCatalogClubsHint": "Clubes por media de overall.",
+  "catalogClubsFilterAll": "Todos"
 }

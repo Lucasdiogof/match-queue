@@ -17,17 +17,29 @@ import 'package:flutter/material.dart';
 ///
 /// [clubId] fixa a tela nas cartas de um clube. Sempre por id: 42 nomes de
 /// clube existem nos dois generos, e filtrar por nome traria os dois.
-class CardsCatalogPage extends StatefulWidget {
-  const CardsCatalogPage({this.clubId, this.title, super.key});
-
-  final String? clubId;
-  final String? title;
+class CardsCatalogPage extends StatelessWidget {
+  const CardsCatalogPage({super.key});
 
   @override
-  State<CardsCatalogPage> createState() => _CardsCatalogPageState();
+  Widget build(BuildContext context) => AppScaffold(
+    appBar: AppAppBar(title: context.l10n.catalogCardsTitle),
+    body: const AppBackground(dense: true, child: CardsCatalogView()),
+  );
 }
 
-class _CardsCatalogPageState extends State<CardsCatalogPage> {
+/// So o corpo: busca, filtros e grade. Sem Scaffold nem AppBar de proposito
+/// -- o detalhe do clube embute isto sob o proprio cabecalho, e uma pagina
+/// inteira aninhada ali empilhava duas barras e escondia o botao voltar.
+class CardsCatalogView extends StatefulWidget {
+  const CardsCatalogView({this.clubId, super.key});
+
+  final String? clubId;
+
+  @override
+  State<CardsCatalogView> createState() => _CardsCatalogViewState();
+}
+
+class _CardsCatalogViewState extends State<CardsCatalogView> {
   static const List<String> _positions = <String>[
     'GK',
     'CB',
@@ -153,47 +165,41 @@ class _CardsCatalogPageState extends State<CardsCatalogPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return AppScaffold(
-      appBar: AppAppBar(title: widget.title ?? l10n.catalogCardsTitle),
-      body: AppBackground(
-        dense: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            AppTextField(
-              label: l10n.catalogCardsSearchLabel,
-              hintText: l10n.catalogCardsSearchHint,
-              controller: _search,
-              prefixIcon: Icons.search,
-              onChanged: _onSearchChanged,
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            _Filters(
-              position: _position,
-              minRating: _minRating,
-              gender: _gender,
-              // Dentro de um clube o genero ja esta determinado pela liga
-              // dele -- oferecer o filtro ali so criaria combinacao vazia.
-              showGender: widget.clubId == null,
-              positions: _positions,
-              onPosition: (value) {
-                setState(() => _position = value);
-                unawaited(_load());
-              },
-              onMinRating: (value) {
-                setState(() => _minRating = value);
-                unawaited(_load());
-              },
-              onGender: (value) {
-                setState(() => _gender = value);
-                unawaited(_load());
-              },
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Expanded(child: _body(context)),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        AppTextField(
+          label: l10n.catalogCardsSearchLabel,
+          hintText: l10n.catalogCardsSearchHint,
+          controller: _search,
+          prefixIcon: Icons.search,
+          onChanged: _onSearchChanged,
         ),
-      ),
+        const SizedBox(height: AppSpacing.sm),
+        _Filters(
+          position: _position,
+          minRating: _minRating,
+          gender: _gender,
+          // Dentro de um clube o genero ja esta determinado pela liga
+          // dele -- oferecer o filtro ali so criaria combinacao vazia.
+          showGender: widget.clubId == null,
+          positions: _positions,
+          onPosition: (value) {
+            setState(() => _position = value);
+            unawaited(_load());
+          },
+          onMinRating: (value) {
+            setState(() => _minRating = value);
+            unawaited(_load());
+          },
+          onGender: (value) {
+            setState(() => _gender = value);
+            unawaited(_load());
+          },
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Expanded(child: _body(context)),
+      ],
     );
   }
 

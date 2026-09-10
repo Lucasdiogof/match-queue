@@ -146,7 +146,9 @@ class _ClubsCatalogPageState extends State<ClubsCatalogPage> {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   AppChip(
-                    label: l10n.filterAll,
+                    // "Todos" e nao "Todas": clube e masculino em PT/ES, e a
+                    // chave compartilhada com cartas concordava errado aqui.
+                    label: l10n.catalogClubsFilterAll,
                     isSelected: _gender == null,
                     onPressed: () {
                       setState(() => _gender = null);
@@ -274,8 +276,15 @@ class _ClubRow extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
+                  // Genero explicito em toda linha, nao so nos homonimos:
+                  // saber que "Barclays WSL" e feminina nao pode ser
+                  // pre-requisito pra ler a lista.
                   <String>[
                     if (club.leagueName != null) club.leagueName!,
+                    if (club.gender != null)
+                      club.gender == 'FEMALE'
+                          ? l10n.catalogGenderWomen
+                          : l10n.catalogGenderMen,
                     l10n.catalogClubCardsCount(club.cardCount),
                   ].join(' · '),
                   overflow: TextOverflow.ellipsis,
