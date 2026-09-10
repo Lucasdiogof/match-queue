@@ -19,6 +19,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
 
 type NotificationType =
   | 'YOUR_TURN'
+  | 'PRIORITY_REQUESTED'
   | 'SEARCH_EXPIRING'
   | 'SEARCH_EXPIRED'
   | 'TEAM_MEMBER_JOINED'
@@ -34,6 +35,7 @@ type NotificationType =
 const HIGH_PRIORITY_TYPES = new Set<NotificationType>(['YOUR_TURN']);
 const QUEUE_ALERT_TYPES = new Set<NotificationType>([
   'YOUR_TURN',
+  'PRIORITY_REQUESTED',
   'SEARCH_EXPIRING',
   'SEARCH_EXPIRED',
 ]);
@@ -63,6 +65,10 @@ const str = (payload: Record<string, unknown>, key: string, fallback = '') => {
 const COPY: Record<string, Record<NotificationType, CopyBuilder>> = {
   pt: {
     YOUR_TURN: () => ({ title: 'Sua vez de buscar!', body: 'Chegou a sua vez na fila. Abra o app e comece a busca.' }),
+    PRIORITY_REQUESTED: (p) => ({
+      title: 'Solicitação de prioridade',
+      body: `${str(p, 'requested_by_display_name', 'Alguém')}, do Time ${str(p, 'team_name', '')}, solicitou prioridade para buscar partida.`,
+    }),
     SEARCH_EXPIRING: () => ({ title: 'Faltam 30 segundos', body: 'Sua busca está perto de terminar.' }),
     SEARCH_EXPIRED: () => ({ title: 'Seu tempo de busca terminou', body: 'A vez passou para o próximo da fila.' }),
     TEAM_MEMBER_JOINED: (p) => ({
@@ -92,6 +98,10 @@ const COPY: Record<string, Record<NotificationType, CopyBuilder>> = {
   },
   en: {
     YOUR_TURN: () => ({ title: 'Your turn to search!', body: 'You are up in the queue. Open the app and start searching.' }),
+    PRIORITY_REQUESTED: (p) => ({
+      title: 'Priority request',
+      body: `${str(p, 'requested_by_display_name', 'Someone')} from Team ${str(p, 'team_name', '')} asked for priority to search for a match.`,
+    }),
     SEARCH_EXPIRING: () => ({ title: '30 seconds left', body: 'Your search is about to end.' }),
     SEARCH_EXPIRED: () => ({ title: 'Your search time is over', body: 'The turn moved to the next player in the queue.' }),
     TEAM_MEMBER_JOINED: (p) => ({
@@ -121,6 +131,10 @@ const COPY: Record<string, Record<NotificationType, CopyBuilder>> = {
   },
   es: {
     YOUR_TURN: () => ({ title: '¡Tu turno de buscar!', body: 'Llegó tu turno en la fila. Abre la app y empieza la búsqueda.' }),
+    PRIORITY_REQUESTED: (p) => ({
+      title: 'Solicitud de prioridad',
+      body: `${str(p, 'requested_by_display_name', 'Alguien')}, del Equipo ${str(p, 'team_name', '')}, solicitó prioridad para buscar partida.`,
+    }),
     SEARCH_EXPIRING: () => ({ title: 'Quedan 30 segundos', body: 'Tu búsqueda está por terminar.' }),
     SEARCH_EXPIRED: () => ({ title: 'Tu tiempo de búsqueda terminó', body: 'El turno pasó al siguiente de la fila.' }),
     TEAM_MEMBER_JOINED: (p) => ({

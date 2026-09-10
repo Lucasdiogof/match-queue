@@ -8,6 +8,7 @@ class NotificationPreferencesModel {
   static const String columnQueueTurn = 'queue_turn_enabled';
   static const String columnSearchExpiring = 'search_expiring_enabled';
   static const String columnSearchExpired = 'search_expired_enabled';
+  static const String columnPriorityRequested = 'priority_requested_enabled';
   static const String columnMatchmaking = 'matchmaking_enabled';
   static const String columnTeams = 'teams_enabled';
   static const String columnWeekendLeague = 'weekend_league_enabled';
@@ -19,6 +20,7 @@ class NotificationPreferencesModel {
         queueTurnEnabled: _bool(json[columnQueueTurn]),
         searchExpiringEnabled: _bool(json[columnSearchExpiring]),
         searchExpiredEnabled: _bool(json[columnSearchExpired]),
+        priorityRequestedEnabled: _bool(json[columnPriorityRequested]),
         matchmakingEnabled: _bool(json[columnMatchmaking]),
         teamsEnabled: _bool(json[columnTeams]),
         weekendLeagueEnabled: _bool(json[columnWeekendLeague]),
@@ -34,6 +36,7 @@ class NotificationPreferencesModel {
     columnQueueTurn: preferences.queueTurnEnabled,
     columnSearchExpiring: preferences.searchExpiringEnabled,
     columnSearchExpired: preferences.searchExpiredEnabled,
+    columnPriorityRequested: preferences.priorityRequestedEnabled,
     columnMatchmaking: preferences.matchmakingEnabled,
     columnTeams: preferences.teamsEnabled,
     columnWeekendLeague: preferences.weekendLeagueEnabled,

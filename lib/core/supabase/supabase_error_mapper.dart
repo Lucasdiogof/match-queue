@@ -83,6 +83,8 @@ class SupabaseErrorMapper {
         'FQ016' => MatchmakingFailureReason.notCurrentSearcher,
         'FQ017' => MatchmakingFailureReason.alreadyInOtherState,
         'FQ018' => MatchmakingFailureReason.teamInactive,
+        'FQ047' => MatchmakingFailureReason.notInQueue,
+        'FQ048' => MatchmakingFailureReason.noActiveSearchToPrioritize,
         _ => null,
       };
 

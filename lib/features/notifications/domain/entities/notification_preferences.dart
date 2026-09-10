@@ -7,6 +7,7 @@ class NotificationPreferences extends Equatable {
     this.queueTurnEnabled = true,
     this.searchExpiringEnabled = true,
     this.searchExpiredEnabled = true,
+    this.priorityRequestedEnabled = true,
     this.matchmakingEnabled = true,
     this.teamsEnabled = true,
     this.weekendLeagueEnabled = true,
@@ -21,6 +22,7 @@ class NotificationPreferences extends Equatable {
   final bool queueTurnEnabled;
   final bool searchExpiringEnabled;
   final bool searchExpiredEnabled;
+  final bool priorityRequestedEnabled;
 
   /// Master switch da categoria Matchmaking -- as 3 colunas granulares acima
   /// continuam existindo, mas a UI so oferece este toggle unico (item 20).
@@ -36,6 +38,8 @@ class NotificationPreferences extends Equatable {
       matchmakingEnabled && searchExpiringEnabled,
     PushNotificationType.searchExpired =>
       matchmakingEnabled && searchExpiredEnabled,
+    PushNotificationType.priorityRequested =>
+      matchmakingEnabled && priorityRequestedEnabled,
   };
 
   bool isCategoryEnabled(NotificationCategory category) => switch (category) {
@@ -54,6 +58,9 @@ class NotificationPreferences extends Equatable {
         ),
         PushNotificationType.searchExpired => _copyWith(
           searchExpiredEnabled: value,
+        ),
+        PushNotificationType.priorityRequested => _copyWith(
+          priorityRequestedEnabled: value,
         ),
       };
 
@@ -74,6 +81,7 @@ class NotificationPreferences extends Equatable {
     bool? queueTurnEnabled,
     bool? searchExpiringEnabled,
     bool? searchExpiredEnabled,
+    bool? priorityRequestedEnabled,
     bool? matchmakingEnabled,
     bool? teamsEnabled,
     bool? weekendLeagueEnabled,
@@ -83,6 +91,8 @@ class NotificationPreferences extends Equatable {
     queueTurnEnabled: queueTurnEnabled ?? this.queueTurnEnabled,
     searchExpiringEnabled: searchExpiringEnabled ?? this.searchExpiringEnabled,
     searchExpiredEnabled: searchExpiredEnabled ?? this.searchExpiredEnabled,
+    priorityRequestedEnabled:
+        priorityRequestedEnabled ?? this.priorityRequestedEnabled,
     matchmakingEnabled: matchmakingEnabled ?? this.matchmakingEnabled,
     teamsEnabled: teamsEnabled ?? this.teamsEnabled,
     weekendLeagueEnabled: weekendLeagueEnabled ?? this.weekendLeagueEnabled,
@@ -95,6 +105,7 @@ class NotificationPreferences extends Equatable {
     queueTurnEnabled,
     searchExpiringEnabled,
     searchExpiredEnabled,
+    priorityRequestedEnabled,
     matchmakingEnabled,
     teamsEnabled,
     weekendLeagueEnabled,

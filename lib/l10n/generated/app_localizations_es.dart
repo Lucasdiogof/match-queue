@@ -887,6 +887,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este equipo está inactivo en este momento.';
 
   @override
+  String get errorMatchmakingNotInQueue =>
+      'No estás en la fila de este equipo.';
+
+  @override
+  String get errorMatchmakingNoActiveSearchToPrioritize =>
+      'Nadie está buscando partida por este equipo ahora.';
+
+  @override
   String get errorGameCooldown => 'Espera un momento antes de buscar de nuevo.';
 
   @override
@@ -955,6 +963,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get matchmakingReconnecting => 'Reconectando…';
+
+  @override
+  String get matchmakingBottomSheetTitle => 'Búsqueda en curso';
+
+  @override
+  String matchmakingBottomSheetMessage(String name, String teamName) {
+    return '$name está buscando partida por el Equipo $teamName.';
+  }
+
+  @override
+  String get matchmakingRequestPriorityAction => 'Solicitar prioridad';
+
+  @override
+  String get matchmakingPriorityRequestedConfirmation => 'Prioridad solicitada';
+
+  @override
+  String matchmakingSearchingElsewhereMessage(String teamName) {
+    return 'Estás buscando partida por el Equipo $teamName.';
+  }
+
+  @override
+  String get matchmakingNotLinkedMessage =>
+      'Esta Cuenta FC no está vinculada a este equipo.';
 
   @override
   String get notificationsSectionTitle => 'Notificaciones';

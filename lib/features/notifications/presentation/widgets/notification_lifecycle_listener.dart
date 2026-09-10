@@ -5,6 +5,7 @@ import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/push_permission_status.dart';
 import 'package:fifa_queue/features/notifications/domain/repositories/notification_inbox_repository.dart';
@@ -56,6 +57,7 @@ class _NotificationLifecycleListenerState
     _logger,
     inboxRepository: getIt<NotificationInboxRepository>(),
     unreadCubit: context.read<NotificationUnreadCubit>(),
+    fcAccountsCubit: getIt<FcAccountsCubit>(),
   );
 
   StreamSubscription<Map<String, dynamic>>? _taps;

@@ -4,19 +4,24 @@ import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_real
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class MatchmakingRemoteDataSource {
-  Future<Map<String, dynamic>> getMyStatus(String fcAccountId);
+  Future<Map<String, dynamic>> getMyStatus(String fcAccountId, String teamId);
 
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId);
 
   Future<Map<String, dynamic>> requestSearch(
     String fcAccountId,
+    String teamId,
     String? fcSquadId,
     String gameMode,
   );
 
   Future<Map<String, dynamic>> cancelSearch(String fcAccountId);
 
+  Future<Map<String, dynamic>> leaveQueue(String fcAccountId, String teamId);
+
   Future<Map<String, dynamic>> reportMatchFound(String fcAccountId);
+
+  Future<void> requestPriority(String fcAccountId, String teamId);
 }
 
 class SupabaseMatchmakingRemoteDataSource
@@ -29,12 +34,24 @@ class SupabaseMatchmakingRemoteDataSource
   final SupabaseClient _client;
 
   @override
-  Future<Map<String, dynamic>> getMyStatus(String fcAccountId) =>
-      _call('get_my_matchmaking_status', 'p_fc_account_id', fcAccountId);
+  Future<Map<String, dynamic>> getMyStatus(
+    String fcAccountId,
+    String teamId,
+  ) async {
+    final response = await _client.rpc<dynamic>(
+      'get_my_matchmaking_status',
+      params: <String, dynamic>{
+        'p_fc_account_id': fcAccountId,
+        'p_team_id': teamId,
+      },
+    );
+    return Map<String, dynamic>.from(response as Map);
+  }
 
   @override
   Future<Map<String, dynamic>> requestSearch(
     String fcAccountId,
+    String teamId,
     String? fcSquadId,
     String gameMode,
   ) async {
@@ -42,6 +59,7 @@ class SupabaseMatchmakingRemoteDataSource
       'request_match_search',
       params: <String, dynamic>{
         'p_fc_account_id': fcAccountId,
+        'p_team_id': teamId,
         'p_fc_squad_id': fcSquadId,
         'p_game_mode': gameMode,
       },
@@ -50,25 +68,41 @@ class SupabaseMatchmakingRemoteDataSource
   }
 
   @override
-  Future<Map<String, dynamic>> cancelSearch(String fcAccountId) =>
-      _call('cancel_match_search', 'p_fc_account_id', fcAccountId);
+  Future<Map<String, dynamic>> cancelSearch(String fcAccountId) => _call(
+    'cancel_match_search',
+    <String, dynamic>{'p_fc_account_id': fcAccountId},
+  );
+
+  @override
+  Future<Map<String, dynamic>> leaveQueue(String fcAccountId, String teamId) =>
+      _call('leave_match_search_queue', <String, dynamic>{
+        'p_fc_account_id': fcAccountId,
+        'p_team_id': teamId,
+      });
 
   @override
   Future<Map<String, dynamic>> reportMatchFound(String fcAccountId) => _call(
     'report_match_found_and_start_game',
-    'p_fc_account_id',
-    fcAccountId,
+    <String, dynamic>{'p_fc_account_id': fcAccountId},
   );
+
+  @override
+  Future<void> requestPriority(String fcAccountId, String teamId) async {
+    await _client.rpc<dynamic>(
+      'request_match_search_priority',
+      params: <String, dynamic>{
+        'p_fc_account_id': fcAccountId,
+        'p_team_id': teamId,
+      },
+    );
+  }
 
   /// Postgres Changes em public.team_matchmaking_revisions, filtrado pelo
   /// time. A tabela nao carrega estado nenhum -- so "o time X mudou" -- e a
-  /// RLS dela so deixa membros do time enxergarem a linha, entao a
-  /// autorizacao do canal e a mesma do resto do produto, nao a obscuridade
-  /// do nome do topico.
+  /// RLS dela so deixa membros do time enxergarem a linha.
   ///
   /// O canal nasce quando alguem escuta o stream e morre quando a
-  /// subscription e cancelada: nao existe canal orfao sobrevivendo a troca
-  /// de time ou ao dispose do cubit.
+  /// subscription e cancelada.
   @override
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId) {
     late final StreamController<MatchmakingRealtimeEvent> controller;
@@ -134,13 +168,9 @@ class SupabaseMatchmakingRemoteDataSource
 
   Future<Map<String, dynamic>> _call(
     String function,
-    String paramName,
-    String paramValue,
+    Map<String, dynamic> params,
   ) async {
-    final response = await _client.rpc<dynamic>(
-      function,
-      params: <String, dynamic>{paramName: paramValue},
-    );
+    final response = await _client.rpc<dynamic>(function, params: params);
     return Map<String, dynamic>.from(response as Map);
   }
 }

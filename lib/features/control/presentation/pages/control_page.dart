@@ -141,6 +141,7 @@ class _ControlBody extends StatelessWidget {
                 return const FcAccountOnboardingCard();
               }
               final account = fcState.selectedAccount;
+              final team = selected!;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 // Ordem: onde estou (Rivals/Weekend League/pendencia) ->
@@ -173,6 +174,8 @@ class _ControlBody extends StatelessWidget {
                   if (account != null)
                     MatchmakingSection(
                       fcAccountId: account.id,
+                      teamId: team.id,
+                      teamName: team.team.name,
                       onMatchFound: () =>
                           context.read<PendingMatchCubit>().refreshSilently(),
                     ),

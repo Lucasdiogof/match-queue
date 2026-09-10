@@ -3,9 +3,7 @@ import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 
 enum MyMatchmakingStatus { searching, queued, none }
 
-/// Quem esta ocupando um dos times vinculados a minha conta agora -- explica
-/// por que estou na fila mesmo sem ver a fila inteira (a conta so enxerga o
-/// que toca os PROPRIOS times, nunca a fila de outra conta sem overlap).
+/// Quem esta buscando pelo time agora, quando nao sou eu.
 class BlockingSearch extends Equatable {
   const BlockingSearch({
     required this.userId,
@@ -13,6 +11,7 @@ class BlockingSearch extends Equatable {
     required this.expiresAt,
     this.avatarUrl,
     this.fcAccountName,
+    this.gameMode,
   });
 
   final String userId;
@@ -20,6 +19,7 @@ class BlockingSearch extends Equatable {
   final String? avatarUrl;
   final DateTime expiresAt;
   final String? fcAccountName;
+  final GameMode? gameMode;
 
   @override
   List<Object?> get props => <Object?>[
@@ -28,6 +28,7 @@ class BlockingSearch extends Equatable {
     avatarUrl,
     expiresAt,
     fcAccountName,
+    gameMode,
   ];
 }
 
@@ -59,29 +60,96 @@ class MySearching extends Equatable {
   ];
 }
 
-/// Read model centrado em CONTA (nao em time) que alimenta a tela Jogar
-/// desde a Etapa 11 -- espelha get_my_matchmaking_status. Uma conta pode
-/// estar ligada a varios times; buscar ocupa todos eles de uma vez, entao a
-/// UI nunca mais escolhe um time para mostrar estado.
+/// Uma outra busca ATIVA da mesma Conta FC, num time diferente do que esta
+/// tela mostra agora -- o lock global impede a mesma conta de buscar em
+/// dois times, e a UI precisa explicar isso em vez de so esconder o botao
+/// (item 9 do pedido).
+class SearchingElsewhere extends Equatable {
+  const SearchingElsewhere({
+    required this.teamId,
+    required this.teamName,
+    required this.expiresAt,
+  });
+
+  final String teamId;
+  final String teamName;
+  final DateTime expiresAt;
+
+  @override
+  List<Object?> get props => <Object?>[teamId, teamName, expiresAt];
+}
+
+/// Uma linha da fila VISIVEL de um time (item 2/25: mostrar quem esta
+/// esperando, nao so "sua posicao").
+class QueueEntry extends Equatable {
+  const QueueEntry({
+    required this.position,
+    required this.userId,
+    required this.displayName,
+    required this.isMe,
+    this.fcAccountId,
+    this.avatarUrl,
+    this.fcAccountName,
+    this.gameMode,
+  });
+
+  final int position;
+  final String userId;
+  final String? fcAccountId;
+  final String displayName;
+  final String? avatarUrl;
+  final String? fcAccountName;
+  final GameMode? gameMode;
+  final bool isMe;
+
+  @override
+  List<Object?> get props => <Object?>[
+    position,
+    userId,
+    fcAccountId,
+    displayName,
+    avatarUrl,
+    fcAccountName,
+    gameMode,
+    isMe,
+  ];
+}
+
+/// Read model de Conta + TIME (fila real por time): reflete
+/// get_my_matchmaking_status(fc_account_id, team_id). Cada Time tem sua
+/// propria fila e seu proprio estado -- a mesma Conta pode estar em 1o
+/// lugar no Time A e 3o no Time B ao mesmo tempo, mas so pode estar
+/// SEARCHING em UM time por vez (lock global por Conta FC).
 class MyMatchmakingSnapshot extends Equatable {
   const MyMatchmakingSnapshot({
     required this.fcAccountId,
-    required this.linkedTeamIds,
+    required this.teamId,
+    required this.accountLinkedToTeam,
     required this.myStatus,
     required this.serverNow,
     this.searchDurationSeconds,
     this.searching,
     this.myPosition,
     this.blockingSearch,
+    this.searchingElsewhere,
+    this.queue = const <QueueEntry>[],
   });
 
   final String fcAccountId;
-  final List<String> linkedTeamIds;
+  final String teamId;
+
+  /// Falso quando a Conta FC selecionada nao esta vinculada a este time --
+  /// buscar exige o vinculo (fc_account_teams), a UI precisa direcionar pra
+  /// tela de vincular em vez de mostrar um erro generico.
+  final bool accountLinkedToTeam;
+
   final int? searchDurationSeconds;
   final MySearching? searching;
   final MyMatchmakingStatus myStatus;
   final int? myPosition;
   final BlockingSearch? blockingSearch;
+  final SearchingElsewhere? searchingElsewhere;
+  final List<QueueEntry> queue;
   final DateTime serverNow;
 
   bool get isSearchingByMe => myStatus == MyMatchmakingStatus.searching;
@@ -90,17 +158,20 @@ class MyMatchmakingSnapshot extends Equatable {
 
   bool get isIdle => myStatus == MyMatchmakingStatus.none;
 
-  bool get hasNoLinkedTeam => linkedTeamIds.isEmpty;
+  bool get isBusyElsewhere => searchingElsewhere != null;
 
   @override
   List<Object?> get props => <Object?>[
     fcAccountId,
-    linkedTeamIds,
+    teamId,
+    accountLinkedToTeam,
     searchDurationSeconds,
     searching,
     myStatus,
     myPosition,
     blockingSearch,
+    searchingElsewhere,
+    queue,
     serverNow,
   ];
 }

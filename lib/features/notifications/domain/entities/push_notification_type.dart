@@ -6,7 +6,8 @@
 enum PushNotificationType {
   yourTurn('YOUR_TURN'),
   searchExpiring('SEARCH_EXPIRING'),
-  searchExpired('SEARCH_EXPIRED');
+  searchExpired('SEARCH_EXPIRED'),
+  priorityRequested('PRIORITY_REQUESTED');
 
   const PushNotificationType(this.key);
 

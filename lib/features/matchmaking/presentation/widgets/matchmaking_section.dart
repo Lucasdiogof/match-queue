@@ -25,37 +25,49 @@ import 'package:go_router/go_router.dart';
 /// tela e o evento, nao o relogio.
 const Duration _safetyRefreshInterval = Duration(seconds: 90);
 
-/// Bloco "Buscar partida" da tela Jogar (Etapa 11) -- centrado na CONTA
-/// selecionada, nunca num time. O card de Conta/Modo/Escalacao ficam acima
-/// dele, em blocos separados: este widget so cuida do estado de
-/// busca/fila/CTA.
+/// Bloco "Buscar partida" da tela Jogar -- fila real por TIME (Conta +
+/// Time selecionados). O card de Conta/Modo/Escalacao ficam acima dele, em
+/// blocos separados: este widget so cuida do estado de busca/fila/CTA
+/// daquele time especifico.
 class MatchmakingSection extends StatelessWidget {
   const MatchmakingSection({
     required this.fcAccountId,
+    required this.teamId,
+    required this.teamName,
     this.onMatchFound,
     super.key,
   });
 
   final String fcAccountId;
+  final String teamId;
+
+  /// So pra compor a mensagem do bottom sheet do item 1 ("... pelo Time
+  /// X") -- nunca usado pra decidir nada, o servidor ja sabe o time pelo id.
+  final String teamName;
 
   /// Chamado depois de um "Encontrei" bem-sucedido.
   final VoidCallback? onMatchFound;
 
   @override
   Widget build(BuildContext context) => BlocProvider<MatchmakingCubit>(
-    key: ValueKey(fcAccountId),
+    key: ValueKey('$fcAccountId:$teamId'),
     create: (_) => MatchmakingCubit(
       getIt<MatchmakingRepository>(),
       getIt<AppLogger>(),
       fcAccountId: fcAccountId,
+      teamId: teamId,
     )..start(),
-    child: _MatchmakingSectionBody(onMatchFound: onMatchFound),
+    child: _MatchmakingSectionBody(
+      teamName: teamName,
+      onMatchFound: onMatchFound,
+    ),
   );
 }
 
 class _MatchmakingSectionBody extends StatefulWidget {
-  const _MatchmakingSectionBody({this.onMatchFound});
+  const _MatchmakingSectionBody({required this.teamName, this.onMatchFound});
 
+  final String teamName;
   final VoidCallback? onMatchFound;
 
   @override
@@ -144,6 +156,7 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
           ),
           MatchmakingStatus.ready => _MatchmakingReadyBody(
             state: state,
+            teamName: widget.teamName,
             onMatchFound: widget.onMatchFound,
           ),
         },
@@ -153,9 +166,14 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
 }
 
 class _MatchmakingReadyBody extends StatelessWidget {
-  const _MatchmakingReadyBody({required this.state, this.onMatchFound});
+  const _MatchmakingReadyBody({
+    required this.state,
+    required this.teamName,
+    this.onMatchFound,
+  });
 
   final MatchmakingState state;
+  final String teamName;
   final VoidCallback? onMatchFound;
 
   @override
@@ -166,25 +184,35 @@ class _MatchmakingReadyBody extends StatelessWidget {
     }
 
     final card = switch (snapshot) {
+      _ when !snapshot.accountLinkedToTeam => _NotLinkedCard(
+        snapshot: snapshot,
+      ),
       _ when snapshot.isSearchingByMe => _SearchingSelfCard(
         state: state,
         snapshot: snapshot,
         onMatchFound: onMatchFound,
       ),
-      _ when snapshot.isQueuedByMe || snapshot.blockingSearch != null =>
-        _BlockedCard(state: state, snapshot: snapshot),
-      _ => _IdleCard(state: state, snapshot: snapshot),
+      _ when snapshot.isQueuedByMe => _QueuedCard(
+        state: state,
+        snapshot: snapshot,
+      ),
+      _ => _IdleCard(state: state, snapshot: snapshot, teamName: teamName),
     };
-
-    if (state.connection != MatchmakingConnection.disconnected) {
-      return card;
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        const _ReconnectingIndicator(),
-        const SizedBox(height: AppSpacing.sm),
+        if (snapshot.isBusyElsewhere)
+          Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: _SearchingElsewhereBanner(
+              elsewhere: snapshot.searchingElsewhere!,
+            ),
+          ),
+        if (state.connection == MatchmakingConnection.disconnected) ...<Widget>[
+          const _ReconnectingIndicator(),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         card,
       ],
     );
@@ -220,39 +248,87 @@ class _ReconnectingIndicator extends StatelessWidget {
   }
 }
 
-class _IdleCard extends StatelessWidget {
-  const _IdleCard({required this.state, required this.snapshot});
+class _SearchingElsewhereBanner extends StatelessWidget {
+  const _SearchingElsewhereBanner({required this.elsewhere});
 
-  final MatchmakingState state;
+  final SearchingElsewhere elsewhere;
+
+  @override
+  Widget build(BuildContext context) => AppBanner(
+    tone: AppBannerTone.neutral,
+    message: context.l10n.matchmakingSearchingElsewhereMessage(
+      elsewhere.teamName,
+    ),
+  );
+}
+
+class _NotLinkedCard extends StatelessWidget {
+  const _NotLinkedCard({required this.snapshot});
+
   final MyMatchmakingSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
 
-    if (snapshot.hasNoLinkedTeam) {
-      return AppCard(
-        variant: AppCardVariant.elevated,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            AppBanner(
-              tone: AppBannerTone.warning,
-              message: l10n.errorFcAccountNotLinkedToAnyTeam,
+    return AppCard(
+      variant: AppCardVariant.elevated,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          AppBanner(
+            tone: AppBannerTone.warning,
+            message: l10n.matchmakingNotLinkedMessage,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          AppButton.secondary(
+            label: l10n.fcAccountLinkedTeamsTitle,
+            icon: Icons.link,
+            onPressed: () => context.push(
+              AppRoutes.fcAccountDetailLocation(snapshot.fcAccountId),
             ),
-            const SizedBox(height: AppSpacing.lg),
-            AppButton.secondary(
-              label: l10n.fcAccountLinkedTeamsTitle,
-              icon: Icons.link,
-              onPressed: () => context.push(
-                AppRoutes.fcAccountDetailLocation(snapshot.fcAccountId),
-              ),
-            ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IdleCard extends StatelessWidget {
+  const _IdleCard({
+    required this.state,
+    required this.snapshot,
+    required this.teamName,
+  });
+
+  final MatchmakingState state;
+  final MyMatchmakingSnapshot snapshot;
+  final String teamName;
+
+  Future<void> _onStartPressed(BuildContext context) async {
+    final blocking = snapshot.blockingSearch;
+    if (blocking == null) {
+      unawaited(
+        context.read<MatchmakingCubit>().startSearch(
+          context.read<GameModeCubit>().state,
+          fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
         ),
       );
+      return;
     }
+    await showMatchmakingQueueSheet(
+      context: context,
+      cubit: context.read<MatchmakingCubit>(),
+      blocking: blocking,
+      teamName: teamName,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+    final blocking = snapshot.blockingSearch;
 
     return AppCard(
       variant: AppCardVariant.elevated,
@@ -269,7 +345,11 @@ class _IdleCard extends StatelessWidget {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
-                  l10n.matchmakingIdleTitle,
+                  blocking == null
+                      ? l10n.matchmakingIdleTitle
+                      : l10n.matchmakingSearchingOtherTitle(
+                          blocking.displayName,
+                        ),
                   style: context.textStyles.titleMedium,
                 ),
               ),
@@ -277,52 +357,28 @@ class _IdleCard extends StatelessWidget {
           ),
           const AppDivider(spacing: AppSpacing.xl),
           Text(
-            l10n.matchmakingIdleMessage,
+            blocking == null
+                ? l10n.matchmakingIdleMessage
+                : l10n.matchmakingQueueEmptyMessage,
             style: context.textStyles.bodyMedium?.copyWith(
               color: colors.textSecondary,
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
-          _StartSearchButton(
-            isActionPending: state.isActionPending,
-            label: l10n.matchmakingSearchAction,
-            icon: Icons.search,
-            variant: AppButtonVariant.primary,
+          AppButton(
+            label: blocking == null
+                ? l10n.matchmakingSearchAction
+                : l10n.matchmakingJoinQueueAction,
+            icon: blocking == null ? Icons.search : Icons.playlist_add,
+            isLoading: state.isActionPending,
+            onPressed: state.isActionPending
+                ? null
+                : () => _onStartPressed(context),
           ),
         ],
       ),
     );
   }
-}
-
-class _StartSearchButton extends StatelessWidget {
-  const _StartSearchButton({
-    required this.isActionPending,
-    required this.label,
-    required this.icon,
-    required this.variant,
-  });
-
-  final bool isActionPending;
-  final String label;
-  final IconData icon;
-  final AppButtonVariant variant;
-
-  @override
-  Widget build(BuildContext context) => AppButton(
-    label: label,
-    icon: icon,
-    variant: variant,
-    isLoading: isActionPending,
-    onPressed: isActionPending
-        ? null
-        // O squad e opcional: sem nenhum configurado a busca acontece
-        // igual, so sem escalacao associada (item 63).
-        : () => context.read<MatchmakingCubit>().startSearch(
-            context.read<GameModeCubit>().state,
-            fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
-          ),
-  );
 }
 
 class _SearchingSelfCard extends StatelessWidget {
@@ -411,10 +467,13 @@ class _SearchingSelfCard extends StatelessWidget {
   }
 }
 
-/// Fila ou bloqueio: alguem mais esta buscando com um dos meus times
-/// vinculados, ou eu mesmo entrei na fila esperando a vez.
-class _BlockedCard extends StatelessWidget {
-  const _BlockedCard({required this.state, required this.snapshot});
+/// Estou na fila deste time: mostra minha posicao E a fila inteira e
+/// visivel (item 2/25 -- nao so "posicao 2", a lista com quem esta na
+/// frente). Sair da fila usa [MatchmakingCubit.leaveQueue], nunca
+/// [MatchmakingCubit.cancel] -- cancel encerra a busca ATIVA (em qualquer
+/// time), sair da fila e por TIME especifico.
+class _QueuedCard extends StatelessWidget {
+  const _QueuedCard({required this.state, required this.snapshot});
 
   final MatchmakingState state;
   final MyMatchmakingSnapshot snapshot;
@@ -423,37 +482,17 @@ class _BlockedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
-    final blocking = snapshot.blockingSearch;
-    final isQueued = snapshot.isQueuedByMe;
 
     return AppCard(
       variant: AppCardVariant.elevated,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          if (blocking != null)
-            Row(
-              children: <Widget>[
-                AppAvatar(
-                  label: blocking.displayName,
-                  imageUrl: blocking.avatarUrl,
-                  size: AppSizing.avatarMd,
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Text(
-                    l10n.matchmakingSearchingOtherTitle(blocking.displayName),
-                    style: context.textStyles.titleMedium,
-                  ),
-                ),
-              ],
-            )
-          else
-            Text(
-              l10n.matchmakingQueueSectionTitle,
-              style: context.textStyles.titleMedium,
-            ),
-          if (isQueued && snapshot.myPosition != null) ...<Widget>[
+          Text(
+            l10n.matchmakingQueueSectionTitle,
+            style: context.textStyles.titleMedium,
+          ),
+          if (snapshot.myPosition != null) ...<Widget>[
             const SizedBox(height: AppSpacing.md),
             AppBadge(
               label: l10n.matchmakingQueuePositionLabel(snapshot.myPosition!),
@@ -461,31 +500,145 @@ class _BlockedCard extends StatelessWidget {
             ),
           ],
           const SizedBox(height: AppSpacing.lg),
+          for (final entry in snapshot.queue)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 24,
+                    child: Text(
+                      '${entry.position}',
+                      style: context.textStyles.bodySmall?.copyWith(
+                        color: colors.textTertiary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      entry.isMe
+                          ? '${entry.displayName} · ${l10n.matchmakingYouBadge}'
+                          : entry.displayName,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textStyles.bodyMedium?.copyWith(
+                        fontWeight: entry.isMe
+                            ? FontWeight.w600
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: AppSpacing.md),
+          AppButton.secondary(
+            label: l10n.matchmakingLeaveQueueAction,
+            icon: Icons.close,
+            isLoading: state.isActionPending,
+            onPressed: state.isActionPending
+                ? null
+                : () => context.read<MatchmakingCubit>().leaveQueue(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Bottom sheet do item 1: aberta ao tocar "Buscar partida" quando ja existe
+/// alguem buscando por este time. Entrar na fila E solicitar prioridade sao
+/// os dois caminhos -- nenhum dos dois muda quem esta buscando agora.
+Future<void> showMatchmakingQueueSheet({
+  required BuildContext context,
+  required MatchmakingCubit cubit,
+  required BlockingSearch blocking,
+  required String teamName,
+}) => showAppBottomSheet<void>(
+  context: context,
+  builder: (sheetContext) => BlocProvider<MatchmakingCubit>.value(
+    value: cubit,
+    child: _MatchmakingQueueSheetBody(blocking: blocking, teamName: teamName),
+  ),
+);
+
+class _MatchmakingQueueSheetBody extends StatelessWidget {
+  const _MatchmakingQueueSheetBody({
+    required this.blocking,
+    required this.teamName,
+  });
+
+  final BlockingSearch blocking;
+  final String teamName;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+
+    return BlocConsumer<MatchmakingCubit, MatchmakingState>(
+      listenWhen: (previous, current) =>
+          current.failure != null && previous.failure != current.failure,
+      listener: (context, state) => ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text(state.failure!.localizedMessage(l10n))),
+        ),
+      builder: (context, state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
           Text(
-            isQueued
-                ? l10n.matchmakingSearchingSelfMessage
-                : l10n.matchmakingQueueEmptyMessage,
-            style: context.textStyles.bodySmall?.copyWith(
+            l10n.matchmakingBottomSheetTitle,
+            style: context.textStyles.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            l10n.matchmakingBottomSheetMessage(blocking.displayName, teamName),
+            style: context.textStyles.bodyMedium?.copyWith(
               color: colors.textSecondary,
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
-          if (isQueued)
+          AppButton(
+            label: l10n.matchmakingJoinQueueAction,
+            icon: Icons.playlist_add,
+            isLoading: state.isActionPending,
+            onPressed: state.isActionPending
+                ? null
+                : () async {
+                    final cubit = context.read<MatchmakingCubit>();
+                    final navigator = Navigator.of(context);
+                    final ok = await cubit.startSearch(
+                      context.read<GameModeCubit>().state,
+                      fcSquadId: context
+                          .read<FcSquadsCubit>()
+                          .state
+                          .selectedSquadId,
+                    );
+                    if (ok && navigator.mounted) {
+                      navigator.pop();
+                    }
+                  },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          if (state.priorityRequestSent)
+            AppBanner(
+              tone: AppBannerTone.neutral,
+              message: l10n.matchmakingPriorityRequestedConfirmation,
+            )
+          else
             AppButton.secondary(
-              label: l10n.matchmakingLeaveQueueAction,
-              icon: Icons.close,
+              label: l10n.matchmakingRequestPriorityAction,
+              icon: Icons.priority_high,
               isLoading: state.isActionPending,
               onPressed: state.isActionPending
                   ? null
-                  : () => context.read<MatchmakingCubit>().cancel(),
-            )
-          else
-            _StartSearchButton(
-              isActionPending: state.isActionPending,
-              label: l10n.matchmakingJoinQueueAction,
-              icon: Icons.playlist_add,
-              variant: AppButtonVariant.primary,
+                  : () => context.read<MatchmakingCubit>().requestPriority(),
             ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
+            label: l10n.actionClose,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ],
       ),
     );

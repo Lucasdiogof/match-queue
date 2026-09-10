@@ -1594,6 +1594,18 @@ abstract class AppLocalizations {
   /// **'Este time está inativo no momento.'**
   String get errorMatchmakingTeamInactive;
 
+  /// No description provided for @errorMatchmakingNotInQueue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você não está na fila deste time.'**
+  String get errorMatchmakingNotInQueue;
+
+  /// No description provided for @errorMatchmakingNoActiveSearchToPrioritize.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ninguém está buscando partida por este time agora.'**
+  String get errorMatchmakingNoActiveSearchToPrioritize;
+
   /// No description provided for @errorGameCooldown.
   ///
   /// In pt, this message translates to:
@@ -1719,6 +1731,42 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Reconectando…'**
   String get matchmakingReconnecting;
+
+  /// No description provided for @matchmakingBottomSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Busca em andamento'**
+  String get matchmakingBottomSheetTitle;
+
+  /// No description provided for @matchmakingBottomSheetMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} está buscando partida pelo Time {teamName}.'**
+  String matchmakingBottomSheetMessage(String name, String teamName);
+
+  /// No description provided for @matchmakingRequestPriorityAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Solicitar prioridade'**
+  String get matchmakingRequestPriorityAction;
+
+  /// No description provided for @matchmakingPriorityRequestedConfirmation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Prioridade solicitada'**
+  String get matchmakingPriorityRequestedConfirmation;
+
+  /// No description provided for @matchmakingSearchingElsewhereMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você está buscando partida pelo Time {teamName}.'**
+  String matchmakingSearchingElsewhereMessage(String teamName);
+
+  /// No description provided for @matchmakingNotLinkedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta Conta FC não está vinculada a este time.'**
+  String get matchmakingNotLinkedMessage;
 
   /// No description provided for @notificationsSectionTitle.
   ///

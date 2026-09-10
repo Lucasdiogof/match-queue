@@ -6,10 +6,85 @@ nem de ambiente, este arquivo sim.
 
 ## Estado atual (2026-09-10) — leia esta seção primeiro
 
+Fila real de matchmaking POR TIME (evolução deliberada da Etapa 11), HEAD
+pronto pra commit sobre `b9cb8c4`, `flutter analyze` sem issues, `flutter
+test` 17/17, **90 migrations aplicadas** (3 novas:
+`20261011090000_add_priority_requested_notification_type`,
+`20261011100000_matchmaking_per_team_queue`,
+`20261011110000_matchmaking_lock_ordering_fix`).
+
+**Mudança de arquitetura, pedida explicitamente**: a Etapa 11 tinha feito
+"buscar" ocupar TODOS os times vinculados à Conta FC de uma vez (um
+superbloco). Essa rodada reverte isso: cada TIME tem sua própria fila,
+independente — a mesma Conta pode estar em 1º no Time A e 3º no Time B ao
+mesmo tempo, e só não pode estar **SEARCHING** em dois times ao mesmo
+tempo (lock global por `fc_account_id`, não `user_id` — a identidade que
+efetivamente joga é a Conta FC/EA, e um usuário pode ter mais de uma).
+`request_match_search`/`get_my_matchmaking_status` ganharam `p_team_id`
+explícito; `cancel_match_search` cancela a busca ATIVA (única, em qualquer
+time); `leave_match_search_queue` (nova RPC) sai de UMA fila específica.
+
+**O que foi implementado, ponto a ponto do pedido:**
+
+- **Bottom sheet ao tocar "Buscar partida"** com alguém já buscando: Entrar
+  na fila / Solicitar prioridade / Fechar (`showMatchmakingQueueSheet` em
+  `matchmaking_section.dart`).
+- **Fila visível**: `get_my_matchmaking_status` devolve a lista ordenada
+  inteira (nome, "você" destacado), não só "sua posição".
+- **Promoção automática transacional**: `_promote_next_queued_player_for_team`,
+  chamada dentro da mesma transação de cancelar/reportar/expirar — nunca
+  2 requests separadas do Flutter.
+- **"Passa a vez" (item 9)**: se o topo da fila de um time já está
+  SEARCHING em outro time, a entrada dele volta pro FINAL da fila (novo
+  `sequence`), sem notificar, e o próximo candidato é tentado — resolvido
+  dentro do mesmo loop de promoção, limitado ao tamanho da fila no início
+  da chamada (nunca infinito).
+- **`YOUR_TURN`** continua só em promoção automática (nunca em busca
+  manual — confirmado pela auditoria antes de implementar).
+- **`PRIORITY_REQUESTED`** (tipo novo): `request_match_search_priority`,
+  dedupe por (sessão, solicitante) via `dedupe_key` customizado em
+  `_enqueue_notification` — dois companheiros diferentes pedindo geram
+  dois pushes, o mesmo companheiro repetindo não spamma.
+- **Deep link corrigido**: `YOUR_TURN`/`PRIORITY_REQUESTED`/
+  `SEARCH_EXPIRING`/`SEARCH_EXPIRED` agora levam pro **Jogar** (selecionando
+  time E conta), não mais pro Central — nunca tinham rota dedicada antes.
+- **Concorrência**: `pg_advisory_xact_lock` por time (já existia) + um novo
+  por `fc_account_id`; ordem de lock consistente (times ordenados, depois
+  conta) em `request_match_search`/`cancel_match_search`/
+  `report_match_found_and_start_game` — corrigido um deadlock real (não
+  corrupção — o Postgres aborta uma das transações) achado na própria
+  revisão, ver `20261011110000`. Risco residual documentado (não
+  escondido): `_expire_team_search_if_needed` ainda pode colidir em
+  teoria com outra expiração simultânea cruzada, porque todo chamador já
+  trava o time antes dela — mudar isso pediria revisar toda RPC que expira
+  preguiçosamente, fora do escopo desta rodada.
+- **Notificações de Time**: `TEAM_MEMBER_JOINED` já existia e cobre o único
+  evento real ("novo membro"). `TEAM_INVITE_RECEIVED`/`TEAM_JOIN_APPROVED`/
+  `TEAM_MEMBER_LEFT`/`TEAM_MEMBER_REMOVED` **não foram criados**: convite é
+  por link/código (nunca sabe quem vai usar, não há "destinatário" pra
+  notificar) e não existe fluxo de aprovação nem de sair/remover membro no
+  domínio hoje — inventar esses eventos seria simular feature que não
+  existe.
+- Preferência de notificação nova (`priority_requested_enabled`), mesmo
+  padrão dos 3 toggles granulares já existentes (sub-toggle de
+  `matchmaking_enabled`, sem UI própria — igual aos outros 3, que também
+  não têm).
+
+**Pendência real desta rodada**: QA visual **NÃO executado** — sem
+emulador/preview disponível, verificação foi `flutter analyze` + `flutter
+test` + leitura de código + migrations aplicadas e validadas por
+assinatura contra produção via `npx supabase db query`. Nenhuma simulação
+de concorrência real (2 clientes de verdade) foi rodada — a garantia vem
+do desenho (locks + índices únicos), não de teste de carga.
+
+---
+
+## Estado em 2026-09-10 (Central substitui a Home)
+
 HEAD local pronto pra commit sobre `5614929` (`main` estava sincronizado com
-`origin` antes desta rodada), árvore com a troca de navegação abaixo,
-`flutter analyze` sem issues, `flutter test` 17/17, **87 migrations
-aplicadas** (nova: `20261010100000_fc_playstyle_search_and_summary`).
+`origin` antes daquela rodada), `flutter analyze` sem issues, `flutter test`
+17/17, **87 migrations aplicadas** (nova:
+`20261010100000_fc_playstyle_search_and_summary`).
 
 **Central substitui a Home** (pedido explícito do dono do produto: "a
 Home... deixa de existir"). Nova navegação: **Central** | Times | Jogar |

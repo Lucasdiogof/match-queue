@@ -61,6 +61,9 @@ extension AppFailureL10n on AppFailure {
         l10n.errorMatchmakingAlreadyInOtherState,
       MatchmakingFailureReason.teamInactive =>
         l10n.errorMatchmakingTeamInactive,
+      MatchmakingFailureReason.notInQueue => l10n.errorMatchmakingNotInQueue,
+      MatchmakingFailureReason.noActiveSearchToPrioritize =>
+        l10n.errorMatchmakingNoActiveSearchToPrioritize,
     },
     GameFailure(:final reason) => switch (reason) {
       GameFailureReason.cooldown => l10n.errorGameCooldown,

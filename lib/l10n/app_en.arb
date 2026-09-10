@@ -476,6 +476,8 @@
   "errorMatchmakingNotCurrentSearcher": "You are no longer the one searching for a match.",
   "errorMatchmakingAlreadyInOtherState": "You are already in another queue state.",
   "errorMatchmakingTeamInactive": "This team is currently inactive.",
+  "errorMatchmakingNotInQueue": "You are not in this team's queue.",
+  "errorMatchmakingNoActiveSearchToPrioritize": "No one is searching for this team right now.",
   "errorGameCooldown": "Wait a bit before searching again.",
   "errorGameMatchNotFound": "Match not found.",
   "errorGameMatchAlreadyFinished": "This match has already been finished.",
@@ -513,6 +515,32 @@
   "matchmakingYouBadge": "You",
   "matchmakingYourTurnTitle": "Your turn to search!",
   "matchmakingReconnecting": "Reconnecting…",
+  "matchmakingBottomSheetTitle": "Search in progress",
+  "matchmakingBottomSheetMessage": "{name} is searching for a match for Team {teamName}.",
+  "@matchmakingBottomSheetMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucas"
+      },
+      "teamName": {
+        "type": "String",
+        "example": "Goiás"
+      }
+    }
+  },
+  "matchmakingRequestPriorityAction": "Request priority",
+  "matchmakingPriorityRequestedConfirmation": "Priority requested",
+  "matchmakingSearchingElsewhereMessage": "You are searching for a match for Team {teamName}.",
+  "@matchmakingSearchingElsewhereMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String",
+        "example": "Goiás"
+      }
+    }
+  },
+  "matchmakingNotLinkedMessage": "This FC Account is not linked to this team.",
   "notificationsSectionTitle": "Notifications",
   "notificationsToggleYourTurn": "Your turn to search",
   "notificationsToggleYourTurnHint": "When it becomes your turn in the team queue.",

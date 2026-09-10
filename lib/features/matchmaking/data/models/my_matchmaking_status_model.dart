@@ -7,14 +7,13 @@ class MyMatchmakingSnapshotModel {
   static MyMatchmakingSnapshot fromJson(Map<String, dynamic> json) {
     final searchingJson = json['searching'] as Map<String, dynamic>?;
     final blockingJson = json['blocking_search'] as Map<String, dynamic>?;
-    final linkedTeamIds =
-        (json['linked_team_ids'] as List<dynamic>? ?? const <dynamic>[])
-            .map((dynamic id) => '$id')
-            .toList(growable: false);
+    final elsewhereJson = json['searching_elsewhere'] as Map<String, dynamic>?;
+    final queueJson = json['queue'] as List<dynamic>? ?? const <dynamic>[];
 
     return MyMatchmakingSnapshot(
       fcAccountId: '${json['fc_account_id']}',
-      linkedTeamIds: linkedTeamIds,
+      teamId: '${json['team_id']}',
+      accountLinkedToTeam: json['account_linked_to_team'] as bool? ?? true,
       searchDurationSeconds: json['search_duration_seconds'] as int?,
       searching: searchingJson == null
           ? null
@@ -40,7 +39,29 @@ class MyMatchmakingSnapshotModel {
               avatarUrl: blockingJson['avatar_url'] as String?,
               expiresAt: DateTime.parse('${blockingJson['expires_at']}'),
               fcAccountName: blockingJson['fc_account_name'] as String?,
+              gameMode: GameMode.tryFromKey(blockingJson['game_mode']),
             ),
+      searchingElsewhere: elsewhereJson == null
+          ? null
+          : SearchingElsewhere(
+              teamId: '${elsewhereJson['team_id']}',
+              teamName: '${elsewhereJson['team_name']}',
+              expiresAt: DateTime.parse('${elsewhereJson['expires_at']}'),
+            ),
+      queue: <QueueEntry>[
+        for (final entry in queueJson)
+          if (entry is Map)
+            QueueEntry(
+              position: entry['position'] as int? ?? 0,
+              userId: '${entry['user_id']}',
+              fcAccountId: entry['fc_account_id'] as String?,
+              displayName: '${entry['display_name']}',
+              avatarUrl: entry['avatar_url'] as String?,
+              fcAccountName: entry['fc_account_name'] as String?,
+              gameMode: GameMode.tryFromKey(entry['game_mode']),
+              isMe: entry['is_me'] as bool? ?? false,
+            ),
+      ],
       serverNow: DateTime.parse('${json['server_now']}'),
     );
   }

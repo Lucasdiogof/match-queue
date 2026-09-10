@@ -476,6 +476,8 @@
   "errorMatchmakingNotCurrentSearcher": "Você não é mais quem está buscando partida.",
   "errorMatchmakingAlreadyInOtherState": "Você já está em outro estado da fila.",
   "errorMatchmakingTeamInactive": "Este time está inativo no momento.",
+  "errorMatchmakingNotInQueue": "Você não está na fila deste time.",
+  "errorMatchmakingNoActiveSearchToPrioritize": "Ninguém está buscando partida por este time agora.",
   "errorGameCooldown": "Espere um pouco antes de buscar de novo.",
   "errorGameMatchNotFound": "Partida não encontrada.",
   "errorGameMatchAlreadyFinished": "Esta partida já foi finalizada.",
@@ -513,6 +515,32 @@
   "matchmakingYouBadge": "Você",
   "matchmakingYourTurnTitle": "Sua vez de buscar!",
   "matchmakingReconnecting": "Reconectando…",
+  "matchmakingBottomSheetTitle": "Busca em andamento",
+  "matchmakingBottomSheetMessage": "{name} está buscando partida pelo Time {teamName}.",
+  "@matchmakingBottomSheetMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Lucas"
+      },
+      "teamName": {
+        "type": "String",
+        "example": "Goiás"
+      }
+    }
+  },
+  "matchmakingRequestPriorityAction": "Solicitar prioridade",
+  "matchmakingPriorityRequestedConfirmation": "Prioridade solicitada",
+  "matchmakingSearchingElsewhereMessage": "Você está buscando partida pelo Time {teamName}.",
+  "@matchmakingSearchingElsewhereMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String",
+        "example": "Goiás"
+      }
+    }
+  },
+  "matchmakingNotLinkedMessage": "Esta Conta FC não está vinculada a este time.",
   "notificationsSectionTitle": "Notificações",
   "notificationsToggleYourTurn": "Sua vez de buscar",
   "notificationsToggleYourTurnHint": "Quando chegar a sua vez na fila do time.",

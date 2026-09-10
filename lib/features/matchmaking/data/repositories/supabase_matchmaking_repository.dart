@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
-import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/data/datasources/matchmaking_remote_data_source.dart';
 import 'package:fifa_queue/features/matchmaking/data/models/my_matchmaking_status_model.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
@@ -17,20 +17,24 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
       _dataSource.watchTeam(teamId);
 
   @override
-  Future<MyMatchmakingSnapshot> getMyStatus(String fcAccountId) =>
-      _guard(() async {
-        final json = await _dataSource.getMyStatus(fcAccountId);
-        return MyMatchmakingSnapshotModel.fromJson(json);
-      });
+  Future<MyMatchmakingSnapshot> getMyStatus({
+    required String fcAccountId,
+    required String teamId,
+  }) => _guard(() async {
+    final json = await _dataSource.getMyStatus(fcAccountId, teamId);
+    return MyMatchmakingSnapshotModel.fromJson(json);
+  });
 
   @override
   Future<MyMatchmakingSnapshot> requestSearch({
     required String fcAccountId,
+    required String teamId,
     String? fcSquadId,
     required GameMode mode,
   }) => _guard(() async {
     final json = await _dataSource.requestSearch(
       fcAccountId,
+      teamId,
       fcSquadId,
       mode.key,
     );
@@ -45,11 +49,26 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
       });
 
   @override
+  Future<MyMatchmakingSnapshot> leaveQueue({
+    required String fcAccountId,
+    required String teamId,
+  }) => _guard(() async {
+    final json = await _dataSource.leaveQueue(fcAccountId, teamId);
+    return MyMatchmakingSnapshotModel.fromJson(json);
+  });
+
+  @override
   Future<MyMatchmakingSnapshot> reportMatchFound(String fcAccountId) =>
       _guard(() async {
         final json = await _dataSource.reportMatchFound(fcAccountId);
         return MyMatchmakingSnapshotModel.fromJson(json);
       });
+
+  @override
+  Future<void> requestPriority({
+    required String fcAccountId,
+    required String teamId,
+  }) => _guard(() => _dataSource.requestPriority(fcAccountId, teamId));
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
