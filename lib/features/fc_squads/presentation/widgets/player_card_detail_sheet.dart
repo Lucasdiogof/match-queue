@@ -28,7 +28,6 @@ class _PlayerCardDetailBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
 
     return AppBottomSheet(
       title: card.displayName,
@@ -41,33 +40,31 @@ class _PlayerCardDetailBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // Com arte, ela lidera e ocupa o topo inteiro -- o resto da folha
+            // complementa. Sem arte, nada de moldura vazia: os dados sobem
+            // direto, que e o unico conteudo que existe.
+            if ((card.cardImageUrl ?? card.playerImageUrl)
+                case final art?) ...<Widget>[
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 260),
+                  child: AspectRatio(
+                    aspectRatio: 0.72,
+                    child: Image.network(
+                      art,
+                      fit: BoxFit.contain,
+                      loadingBuilder: (context, child, progress) =>
+                          progress == null ? child : const AppLoading.inline(),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+            ],
             Row(
               children: <Widget>[
-                Container(
-                  width: 56,
-                  height: 56,
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    color: colors.surfaceHighest,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: colors.borderSubtle),
-                  ),
-                  child: card.playerImageUrl == null
-                      ? Text(
-                          card.initials,
-                          style: context.textStyles.titleMedium,
-                        )
-                      : Image.network(
-                          card.playerImageUrl!,
-                          fit: BoxFit.cover,
-                          width: 56,
-                          height: 56,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Text(card.initials),
-                        ),
-                ),
-                const SizedBox(width: AppSpacing.lg),
                 Expanded(
                   child: Wrap(
                     spacing: AppSpacing.sm,

@@ -34,7 +34,7 @@ class PlayerCardFace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final tier = _CardTier.of(card.rating, colors);
+    final art = card.cardImageUrl ?? card.playerImageUrl;
 
     return GestureDetector(
       onTap: onTap,
@@ -43,57 +43,19 @@ class PlayerCardFace extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadii.md),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[tier.top, tier.bottom],
-            ),
+            color: colors.surfaceElevated,
             border: Border.all(
-              color: isSelected ? colors.textPrimary : tier.border,
+              color: isSelected ? colors.textPrimary : colors.borderSubtle,
               width: isSelected ? 2 : 1,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _Header(card: card, tier: tier, eligibility: eligibility),
-                Expanded(
-                  child: _Monogram(card: card, tier: tier),
-                ),
-                Text(
-                  card.displayName,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: context.textStyles.labelMedium?.copyWith(
-                    color: tier.ink,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xxs),
-                Divider(height: 1, color: tier.border),
-                const SizedBox(height: AppSpacing.xs),
-                _Attributes(card: card, tier: tier),
-                if (card.clubName != null ||
-                    card.nationName != null) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    <String>[
-                      if (card.nationName != null) card.nationName!,
-                      if (card.clubName != null) card.clubName!,
-                    ].join(' · '),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: context.textStyles.labelSmall?.copyWith(
-                      color: tier.inkFaded,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadii.md),
+            // Com arte real a carta E a imagem: nada de moldura desenhada por
+            // cima, porque a arte ja traz overall, posicao, clube e nacao.
+            child: art == null
+                ? _DataCard(card: card, eligibility: eligibility)
+                : _ArtCard(art: art, card: card, eligibility: eligibility),
           ),
         ),
       ),
@@ -101,141 +63,147 @@ class PlayerCardFace extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({
+class _ArtCard extends StatelessWidget {
+  const _ArtCard({
+    required this.art,
     required this.card,
-    required this.tier,
     required this.eligibility,
   });
 
+  final String art;
   final PlayerCard card;
-  final _CardTier tier;
   final int? eligibility;
 
   @override
-  Widget build(BuildContext context) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) => Stack(
+    fit: StackFit.expand,
     children: <Widget>[
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            '${card.rating}',
-            style: context.textStyles.headlineSmall?.copyWith(
-              color: tier.ink,
-              fontWeight: FontWeight.w800,
-              height: 1,
-            ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                card.primaryPosition,
-                style: context.textStyles.labelSmall?.copyWith(color: tier.ink),
-              ),
-              // Elegibilidade para o slot que abriu o picker. Sem slot
-              // (explorar catalogo) nao existe marcador nenhum.
-              if (eligibility != null) ...<Widget>[
-                const SizedBox(width: AppSpacing.xxs),
-                Container(
-                  width: 6,
-                  height: 6,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: switch (eligibility!) {
-                      0 => context.colors.success,
-                      1 => context.colors.info,
-                      _ => context.colors.textTertiary,
-                    },
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ],
+      Image.network(
+        art,
+        fit: BoxFit.contain,
+        loadingBuilder: (context, child, progress) =>
+            progress == null ? child : const AppLoading.inline(),
+        errorBuilder: (context, error, stackTrace) =>
+            _DataCard(card: card, eligibility: eligibility),
       ),
-      const Spacer(),
-      // Perna ruim e dribles so aparecem quando o dado existe -- carta sem
-      // eles nao ganha um "0" inventado.
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (card.skillMoves != null)
-            Text(
-              '${card.skillMoves}★',
-              style: context.textStyles.labelSmall?.copyWith(color: tier.ink),
-            ),
-          if (card.weakFoot != null)
-            Text(
-              '${card.weakFoot}◆',
-              style: context.textStyles.labelSmall?.copyWith(
-                color: tier.inkFaded,
-              ),
-            ),
-        ],
-      ),
+      if (eligibility != null)
+        Positioned(
+          top: AppSpacing.xs,
+          right: AppSpacing.xs,
+          child: _EligibilityDot(eligibility: eligibility!),
+        ),
     ],
   );
 }
 
-class _Monogram extends StatelessWidget {
-  const _Monogram({required this.card, required this.tier});
+/// Sem arte, a carta deixa de fingir ser um retrato e vira o que de fato e:
+/// uma ficha. Um monograma gigante no meio so anunciava a imagem que falta --
+/// aqui o espaco vai para o que existe de verdade.
+class _DataCard extends StatelessWidget {
+  const _DataCard({required this.card, required this.eligibility});
 
   final PlayerCard card;
-  final _CardTier tier;
+  final int? eligibility;
 
   @override
   Widget build(BuildContext context) {
-    final url = card.playerImageUrl;
-    if (url != null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
-        child: Image.network(
-          url,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) => _initials(context),
-        ),
-      );
-    }
-    return _initials(context);
-  }
+    final colors = context.colors;
+    final accent = _tierAccent(card.rating, colors);
+    final context_ = <String>[
+      if (card.clubName != null) card.clubName!,
+      if (card.nationName != null) card.nationName!,
+    ];
 
-  Widget _initials(BuildContext context) => FittedBox(
-    child: Padding(
-      padding: const EdgeInsets.all(AppSpacing.xs),
-      child: Text(
-        _monogramOf(card.displayName),
-        style: context.textStyles.headlineSmall?.copyWith(
-          color: tier.inkFaded,
-          fontWeight: FontWeight.w800,
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(AppSpacing.sm),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '${card.rating}',
+                style: context.textStyles.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  height: 1,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.xs),
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text(
+                  card.primaryPosition,
+                  style: context.textStyles.labelSmall?.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              if (eligibility != null)
+                _EligibilityDot(eligibility: eligibility!),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          // Faixa fina por tier: o suficiente pra distinguir de relance, sem
+          // o gradiente dourado que imitava a arte de outra marca.
+          Container(width: 28, height: 2, color: accent),
+          const Spacer(),
+          Text(
+            card.displayName,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: context.textStyles.titleSmall?.copyWith(height: 1.15),
+          ),
+          if (context_.isNotEmpty) ...<Widget>[
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              context_.join(' · '),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.textStyles.labelSmall?.copyWith(
+                color: colors.textTertiary,
+              ),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.sm),
+          _Attributes(card: card),
+        ],
       ),
-    ),
-  );
-
-  static String _monogramOf(String name) {
-    final parts = name.trim().split(RegExp(r'\s+'));
-    if (parts.isEmpty || parts.first.isEmpty) {
-      return '?';
-    }
-    if (parts.length == 1) {
-      return parts.first.substring(0, 1).toUpperCase();
-    }
-    return (parts.first.substring(0, 1) + parts.last.substring(0, 1))
-        .toUpperCase();
+    );
   }
 }
 
-/// Goleiro tem os proprios seis atributos -- mostrar PAC/SHO num goleiro
-/// seria mostrar campo vazio.
+class _EligibilityDot extends StatelessWidget {
+  const _EligibilityDot({required this.eligibility});
+
+  final int eligibility;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 8,
+    height: 8,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: switch (eligibility) {
+        0 => context.colors.success,
+        1 => context.colors.info,
+        _ => context.colors.textTertiary,
+      },
+    ),
+  );
+}
+
+Color _tierAccent(int rating, AppSemanticColors colors) => switch (rating) {
+  >= 85 => colors.textPrimary,
+  >= 75 => colors.textSecondary,
+  _ => colors.borderStrong,
+};
+
 class _Attributes extends StatelessWidget {
-  const _Attributes({required this.card, required this.tier});
+  const _Attributes({required this.card});
 
   final PlayerCard card;
-  final _CardTier tier;
 
   @override
   Widget build(BuildContext context) {
@@ -266,19 +234,18 @@ class _Attributes extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _AttributeRow(entries: entries.sublist(0, 3), tier: tier),
+        _AttributeRow(entries: entries.sublist(0, 3)),
         const SizedBox(height: AppSpacing.xxs),
-        _AttributeRow(entries: entries.sublist(3), tier: tier),
+        _AttributeRow(entries: entries.sublist(3)),
       ],
     );
   }
 }
 
 class _AttributeRow extends StatelessWidget {
-  const _AttributeRow({required this.entries, required this.tier});
+  const _AttributeRow({required this.entries});
 
   final List<(String, int?)> entries;
-  final _CardTier tier;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -292,7 +259,7 @@ class _AttributeRow extends StatelessWidget {
                 entry.$2 == null ? '-' : '${entry.$2}',
                 maxLines: 1,
                 style: context.textStyles.labelSmall?.copyWith(
-                  color: tier.ink,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w700,
                   height: 1,
                 ),
@@ -304,7 +271,7 @@ class _AttributeRow extends StatelessWidget {
                 softWrap: false,
                 overflow: TextOverflow.clip,
                 style: context.textStyles.labelSmall?.copyWith(
-                  color: tier.inkFaded,
+                  color: context.colors.textTertiary,
                   fontSize: 8,
                   height: 1,
                 ),
@@ -314,44 +281,4 @@ class _AttributeRow extends StatelessWidget {
         ),
     ],
   );
-}
-
-class _CardTier {
-  const _CardTier({
-    required this.top,
-    required this.bottom,
-    required this.border,
-    required this.ink,
-    required this.inkFaded,
-  });
-
-  final Color top;
-  final Color bottom;
-  final Color border;
-  final Color ink;
-  final Color inkFaded;
-
-  static _CardTier of(int rating, AppSemanticColors colors) {
-    final accent = switch (rating) {
-      >= 75 => colors.warning,
-      >= 65 => colors.info,
-      _ => colors.textTertiary,
-    };
-    return _CardTier(
-      top: Color.alphaBlend(
-        accent.withValues(alpha: 0.22),
-        colors.surfaceElevated,
-      ),
-      bottom: Color.alphaBlend(
-        accent.withValues(alpha: 0.06),
-        colors.surfaceElevated,
-      ),
-      border: Color.alphaBlend(
-        accent.withValues(alpha: 0.35),
-        colors.borderSubtle,
-      ),
-      ink: colors.textPrimary,
-      inkFaded: colors.textSecondary,
-    );
-  }
 }

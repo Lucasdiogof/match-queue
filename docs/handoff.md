@@ -231,6 +231,7 @@ Distinções que já custaram bug quando ignoradas:
 | `handoff_gameplay_flows_refresh.md` | Gameplay flows refresh — Conta FC obrigatória antes de Time, anti-duplicação no picker, imagens de carta, overlap no campo, bottom sheet overflow, filtros hierárquicos, RivalsCard na Home |
 | `android_signing.md` | Como gerar keystore e configurar `key.properties` para build de release Android |
 | `launch_gap_analysis.md` | Diagnóstico completo de gaps para lançamento: features, segurança, testes, loja, marca |
+| `card_artwork_gap.md` | Por que não há arte de carta: auditoria das 7 colunas de imagem (todas vazias), do importador (pronto) e da fonte (sem coluna); o que destrava |
 | `card_provider_research.md` | pesquisa de fonte de cartas e por que cada uma foi descartada |
 | `architecture.md`, `database.md`, `supabase_setup.md`, `deep_links.md`, `branding.md` | referência transversal |
 
