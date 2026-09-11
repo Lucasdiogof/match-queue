@@ -85,47 +85,17 @@ class BrandWordmark extends StatelessWidget {
   final TextStyle? style;
   final double height;
 
-  // Inverte RGB preservando alpha -- letras quase pretas sobre fundo
-  // transparente viram letras quase brancas sobre o mesmo fundo
-  // transparente. So usado no dark mode; no light a arte ja funciona como
-  // veio (tinta escura sobre qualquer superficie clara).
-  static const ColorFilter _invertForDark = ColorFilter.matrix(<double>[
-    -1,
-    0,
-    0,
-    0,
-    255,
-    0,
-    -1,
-    0,
-    0,
-    255,
-    0,
-    0,
-    -1,
-    0,
-    255,
-    0,
-    0,
-    0,
-    1,
-    0,
-  ]);
-
   @override
   Widget build(BuildContext context) {
     const wordmark = BrandAssets.wordmark;
     if (wordmark != null) {
-      final isDark = context.isDarkMode;
-      final image = Image.asset(wordmark, height: height);
+      // A arte atual (cromada/teal com glow proprio) ja tem contraste
+      // suficiente em fundo claro ou escuro -- sem inversao de cor por
+      // tema, diferente da versao anterior (tinta solida).
       return Semantics(
         label: BrandAssets.productName,
         image: true,
-        child: ExcludeSemantics(
-          child: isDark
-              ? ColorFiltered(colorFilter: _invertForDark, child: image)
-              : image,
-        ),
+        child: ExcludeSemantics(child: Image.asset(wordmark, height: height)),
       );
     }
 
