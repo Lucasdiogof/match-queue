@@ -69,7 +69,7 @@ class _TeamsListPageState extends State<TeamsListPage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            FeatureHeader(eyebrow: l10n.teamsEyebrow, title: l10n.navTeam),
+            FeatureHeader(title: l10n.navTeam),
             TabBar(
               controller: _tabController,
               tabs: <Widget>[

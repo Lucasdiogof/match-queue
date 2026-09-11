@@ -28,11 +28,7 @@ class CentralPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            FeatureHeader(
-              eyebrow: l10n.centralEyebrow,
-              title: l10n.centralTitle,
-              subtitle: l10n.centralSubtitle,
-            ),
+            FeatureHeader(title: l10n.navCentral),
             const Expanded(child: _CentralBody()),
           ],
         ),

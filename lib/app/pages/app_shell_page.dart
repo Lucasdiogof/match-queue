@@ -130,7 +130,9 @@ class _BottomNavigation extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.surface,
+        // Levemente elevada em relacao ao fundo da pagina: a barra precisa
+        // se destacar do conteudo sem virar um bloco preto chapado.
+        color: colors.backgroundRaised,
         border: Border(top: BorderSide(color: colors.borderSubtle)),
       ),
       child: SafeArea(
@@ -187,6 +189,19 @@ class _NavItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Um tracinho de acento marca a aba ativa. Antes a selecao era
+            // so um cinza um pouco mais claro que o outro cinza -- dava para
+            // olhar a barra e nao saber onde se estava.
+            AnimatedContainer(
+              duration: AppDurations.fast,
+              width: isSelected ? 16 : 0,
+              height: 2,
+              decoration: BoxDecoration(
+                color: colors.accent,
+                borderRadius: AppRadii.borderPill,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xs),
             Icon(
               isSelected ? destination.selectedIcon : destination.icon,
               color: color,
@@ -226,8 +241,12 @@ class _PrimaryNavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final background = isSelected ? colors.success : colors.surfaceHighest;
-    final foreground = isSelected ? colors.onAccent : colors.textPrimary;
+    // Selecionado, o circulo e preenchido pelo acento. Fora dele continua
+    // fisicamente dominante -- mesmo tamanho, mesma elevacao -- mas com
+    // superficie neutra e aro de acento, entao nunca parece ativo por
+    // engano. No tema claro isso tambem evita um disco verde gigante sobre
+    // branco: o verde vira contorno, nao area.
+    final foreground = isSelected ? colors.onAccent : colors.accent;
 
     return Semantics(
       selected: isSelected,
@@ -255,14 +274,24 @@ class _PrimaryNavItem extends StatelessWidget {
                   height: 52,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: background,
+                    color: isSelected ? null : colors.surfaceElevated,
+                    gradient: isSelected ? AppGradients.play : null,
                     shape: BoxShape.circle,
-                    border: Border.all(color: colors.background, width: 3),
+                    border: Border.all(
+                      color: isSelected
+                          ? colors.backgroundRaised
+                          : colors.accent.withValues(alpha: 0.45),
+                      width: isSelected ? 3 : 1.5,
+                    ),
                     boxShadow: <BoxShadow>[
+                      // Halo so quando ativo, e curto. Glow permanente vira
+                      // ruido e e o que faz um app parecer neon barato.
                       BoxShadow(
-                        color: colors.success.withValues(alpha: 0.28),
-                        blurRadius: 16,
-                        offset: const Offset(0, 6),
+                        color: colors.accent.withValues(
+                          alpha: isSelected ? 0.34 : 0.10,
+                        ),
+                        blurRadius: isSelected ? 18 : 8,
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
@@ -284,7 +313,7 @@ class _PrimaryNavItem extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: context.textStyles.labelSmall?.copyWith(
-                  color: isSelected ? colors.success : colors.textTertiary,
+                  color: isSelected ? colors.accent : colors.textTertiary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -329,7 +358,7 @@ class _SideNavigation extends StatelessWidget {
           icon: Icon(destination.icon),
           selectedIcon: Icon(
             destination.selectedIcon,
-            color: destination.isPrimary ? context.colors.success : null,
+            color: destination.isPrimary ? context.colors.accent : null,
           ),
           label: Text(destination.label),
         ),

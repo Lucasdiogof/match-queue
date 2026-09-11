@@ -74,7 +74,9 @@ class AppButton extends StatelessWidget {
       Color foreground,
       Color? border,
     ) = switch (variant) {
-      AppButtonVariant.primary => (colors.textPrimary, colors.background, null),
+      // O primario era literalmente branco no escuro e preto no claro. E o
+      // CTA da tela inteira -- e por ele que "acao" precisa ter cor.
+      AppButtonVariant.primary => (colors.accent, colors.onAccent, null),
       AppButtonVariant.secondary => (
         colors.surfaceElevated,
         colors.textPrimary,
@@ -97,7 +99,13 @@ class AppButton extends StatelessWidget {
             ? colors.textTertiary
             : foreground,
       ),
-      overlayColor: WidgetStateProperty.all(foreground.withValues(alpha: 0.08)),
+      overlayColor: WidgetStateProperty.resolveWith(
+        (states) =>
+            states.contains(WidgetState.pressed) &&
+                variant == AppButtonVariant.primary
+            ? colors.accentPressed.withValues(alpha: 0.35)
+            : foreground.withValues(alpha: 0.08),
+      ),
       side: border == null
           ? null
           : WidgetStateProperty.all(BorderSide(color: border)),

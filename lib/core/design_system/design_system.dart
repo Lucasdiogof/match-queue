@@ -25,6 +25,7 @@ export 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dar
 export 'package:fifa_queue/core/design_system/tokens/app_breakpoints.dart';
 export 'package:fifa_queue/core/design_system/tokens/app_colors.dart';
 export 'package:fifa_queue/core/design_system/tokens/app_durations.dart';
+export 'package:fifa_queue/core/design_system/tokens/app_gradients.dart';
 export 'package:fifa_queue/core/design_system/tokens/app_radii.dart';
 export 'package:fifa_queue/core/design_system/tokens/app_sizing.dart';
 export 'package:fifa_queue/core/design_system/tokens/app_spacing.dart';

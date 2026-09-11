@@ -21,15 +21,19 @@ class AppChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final foreground = isSelected ? colors.background : colors.textSecondary;
+    // Selecionado nao pinta o chip inteiro de acento: fundo tingido, borda
+    // e texto no acento. Uma fileira de chips totalmente preenchidos
+    // competiria com o CTA da tela, e selecao nao e acao.
+    final foreground = isSelected ? colors.accent : colors.textSecondary;
 
     return Material(
-      color: isSelected ? colors.textPrimary : colors.surfaceElevated,
+      color: isSelected ? colors.accentContainer : colors.surfaceElevated,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: AppRadii.borderPill,
         side: BorderSide(
-          color: isSelected ? colors.textPrimary : colors.borderSubtle,
+          color: isSelected ? colors.accent : colors.borderSubtle,
+          width: isSelected ? AppSizing.borderWidthStrong : AppSizing.borderWidth,
         ),
       ),
       child: InkWell(

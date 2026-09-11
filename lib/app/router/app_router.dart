@@ -367,7 +367,10 @@ class AppRouter {
     }
 
     if (isSplash || isUnauthenticatedArea) {
-      return AppRoutes.central.path;
+      // Jogar e a tela inicial: matchmaking e o que traz a pessoa ao app.
+      // Continua sendo redirect (substitui), nao push, entao a raiz do shell
+      // segue sem nada para voltar.
+      return AppRoutes.control.path;
     }
 
     return null;

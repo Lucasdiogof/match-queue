@@ -250,24 +250,6 @@ abstract class AppLocalizations {
   /// **'Atalhos'**
   String get startShortcutsTitle;
 
-  /// No description provided for @controlEyebrow.
-  ///
-  /// In pt, this message translates to:
-  /// **'JOGAR'**
-  String get controlEyebrow;
-
-  /// No description provided for @controlTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sua vez na fila'**
-  String get controlTitle;
-
-  /// No description provided for @controlSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Fila, adversário e squad em um só lugar.'**
-  String get controlSubtitle;
-
   /// No description provided for @controlDiscoverCardsTitle.
   ///
   /// In pt, this message translates to:
@@ -315,12 +297,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Jogadores, cargos e convites.'**
   String get teamSubtitle;
-
-  /// No description provided for @teamsEyebrow.
-  ///
-  /// In pt, this message translates to:
-  /// **'FIFA QUEUE'**
-  String get teamsEyebrow;
 
   /// No description provided for @teamsListSubtitle.
   ///
@@ -411,36 +387,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Este time não existe ou não está disponível publicamente.'**
   String get teamPublicPageNotFoundMessage;
-
-  /// No description provided for @historyEyebrow.
-  ///
-  /// In pt, this message translates to:
-  /// **'FIFA QUEUE'**
-  String get historyEyebrow;
-
-  /// No description provided for @historyTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Histórico'**
-  String get historyTitle;
-
-  /// No description provided for @historySubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Buscas, partidas encontradas e expirações.'**
-  String get historySubtitle;
-
-  /// No description provided for @profileTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil'**
-  String get profileTitle;
-
-  /// No description provided for @profileSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Conta, aparência e idioma.'**
-  String get profileSubtitle;
 
   /// No description provided for @authSignIn.
   ///
@@ -4477,24 +4423,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Todos'**
   String get catalogClubsFilterAll;
-
-  /// No description provided for @centralEyebrow.
-  ///
-  /// In pt, this message translates to:
-  /// **'FIFA QUEUE'**
-  String get centralEyebrow;
-
-  /// No description provided for @centralTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Central'**
-  String get centralTitle;
-
-  /// No description provided for @centralSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Catálogo, mecânicas e controles do FC 27.'**
-  String get centralSubtitle;
 
   /// No description provided for @centralSectionCatalog.
   ///

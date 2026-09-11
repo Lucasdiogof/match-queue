@@ -85,15 +85,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startShortcutsTitle => 'Accesos rápidos';
 
   @override
-  String get controlEyebrow => 'JUGAR';
-
-  @override
-  String get controlTitle => 'Tu turno en la fila';
-
-  @override
-  String get controlSubtitle => 'Cola, rival y plantilla en un solo lugar.';
-
-  @override
   String get controlDiscoverCardsTitle => 'Explorar cartas';
 
   @override
@@ -119,9 +110,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get teamSubtitle => 'Jugadores, roles e invitaciones.';
-
-  @override
-  String get teamsEyebrow => 'FIFA QUEUE';
 
   @override
   String get teamsListSubtitle => 'Tus equipos y su estado operacional.';
@@ -173,22 +161,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get teamPublicPageNotFoundMessage =>
       'Este equipo no existe o no está disponible públicamente.';
-
-  @override
-  String get historyEyebrow => 'FIFA QUEUE';
-
-  @override
-  String get historyTitle => 'Historial';
-
-  @override
-  String get historySubtitle =>
-      'Búsquedas, partidos encontrados y expiraciones.';
-
-  @override
-  String get profileTitle => 'Perfil';
-
-  @override
-  String get profileSubtitle => 'Cuenta, apariencia e idioma.';
 
   @override
   String get authSignIn => 'Entrar';
@@ -2613,15 +2585,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get catalogClubsFilterAll => 'Todos';
-
-  @override
-  String get centralEyebrow => 'FIFA QUEUE';
-
-  @override
-  String get centralTitle => 'Central';
-
-  @override
-  String get centralSubtitle => 'Catálogo, mecánicas y controles de FC 27.';
 
   @override
   String get centralSectionCatalog => 'Catálogo';

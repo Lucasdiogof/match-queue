@@ -13,37 +13,36 @@ class AppTheme {
   static ThemeData get dark => _build(
     brightness: Brightness.dark,
     colors: AppSemanticColors.dark,
-    accent: AppColors.pureWhite,
-    onAccent: AppColors.darkBackground,
     statusBarStyle: SystemUiOverlayStyle.light,
   );
 
   static ThemeData get light => _build(
     brightness: Brightness.light,
     colors: AppSemanticColors.light,
-    accent: AppColors.lightTextPrimary,
-    onAccent: AppColors.pureWhite,
     statusBarStyle: SystemUiOverlayStyle.dark,
   );
 
   static ThemeData _build({
     required Brightness brightness,
     required AppSemanticColors colors,
-    required Color accent,
-    required Color onAccent,
     required SystemUiOverlayStyle statusBarStyle,
   }) {
+    // O acento era literalmente branco no escuro e preto no claro -- por isso
+    // o app inteiro lia como cinza. Agora vem do token de acao, e desce
+    // sozinho para CTA, foco de input, progresso e acao de snackbar.
+    final accent = colors.accent;
+    final onAccent = colors.onAccent;
     final colorScheme = ColorScheme(
       brightness: brightness,
       primary: accent,
       onPrimary: onAccent,
-      primaryContainer: colors.surfaceHighest,
-      onPrimaryContainer: colors.textPrimary,
-      secondary: colors.textSecondary,
+      primaryContainer: colors.accentContainer,
+      onPrimaryContainer: colors.accent,
+      secondary: colors.content,
       onSecondary: onAccent,
-      secondaryContainer: colors.surfaceElevated,
-      onSecondaryContainer: colors.textPrimary,
-      tertiary: colors.info,
+      secondaryContainer: colors.contentContainer,
+      onSecondaryContainer: colors.content,
+      tertiary: colors.competitive,
       onTertiary: onAccent,
       error: colors.danger,
       onError: onAccent,
@@ -113,6 +112,7 @@ class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: accent,
           foregroundColor: onAccent,
+          overlayColor: colors.accentPressed,
           disabledBackgroundColor: colors.surfaceHighest,
           disabledForegroundColor: colors.textTertiary,
           minimumSize: const Size.fromHeight(AppSizing.buttonHeightMedium),
@@ -211,7 +211,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colors.surface,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: colors.surfaceHighest,
+        indicatorColor: colors.accentContainer,
         indicatorShape: const RoundedRectangleBorder(
           borderRadius: AppRadii.borderPill,
         ),
@@ -234,7 +234,7 @@ class AppTheme {
       ),
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: colors.surface,
-        indicatorColor: colors.surfaceHighest,
+        indicatorColor: colors.accentContainer,
         indicatorShape: const RoundedRectangleBorder(
           borderRadius: AppRadii.borderPill,
         ),

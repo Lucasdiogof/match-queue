@@ -27,11 +27,7 @@ class HistoryPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                FeatureHeader(
-                  eyebrow: l10n.historyEyebrow,
-                  title: l10n.historyTitle,
-                  subtitle: l10n.historySubtitle,
-                ),
+                FeatureHeader(title: l10n.navHistory),
                 Expanded(
                   child: selected == null
                       ? AppEmptyState(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   const AppSemanticColors({
     required this.background,
+    required this.backgroundRaised,
     required this.surface,
     required this.surfaceElevated,
     required this.surfaceHighest,
@@ -14,6 +15,13 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     required this.textSecondary,
     required this.textTertiary,
     required this.overlay,
+    required this.accent,
+    required this.accentPressed,
+    required this.accentContainer,
+    required this.content,
+    required this.contentContainer,
+    required this.competitive,
+    required this.competitiveContainer,
     required this.success,
     required this.warning,
     required this.danger,
@@ -23,6 +31,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
 
   static const AppSemanticColors dark = AppSemanticColors(
     background: AppColors.darkBackground,
+    backgroundRaised: AppColors.darkBackgroundRaised,
     surface: AppColors.darkSurface,
     surfaceElevated: AppColors.darkSurfaceElevated,
     surfaceHighest: AppColors.darkSurfaceHighest,
@@ -32,6 +41,13 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     textSecondary: AppColors.darkTextSecondary,
     textTertiary: AppColors.darkTextTertiary,
     overlay: AppColors.darkOverlay,
+    accent: AppColors.fcGreen,
+    accentPressed: AppColors.fcGreenStrong,
+    accentContainer: AppColors.darkSurfaceGreen,
+    content: AppColors.fcPurpleSoft,
+    contentContainer: AppColors.darkSurfacePurple,
+    competitive: AppColors.gold,
+    competitiveContainer: AppColors.darkSurfaceGold,
     success: AppColors.darkSuccess,
     warning: AppColors.darkWarning,
     danger: AppColors.darkDanger,
@@ -41,6 +57,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
 
   static const AppSemanticColors light = AppSemanticColors(
     background: AppColors.lightBackground,
+    backgroundRaised: AppColors.lightBackgroundRaised,
     surface: AppColors.lightSurface,
     surfaceElevated: AppColors.lightSurfaceElevated,
     surfaceHighest: AppColors.lightSurfaceHighest,
@@ -50,6 +67,13 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     textSecondary: AppColors.lightTextSecondary,
     textTertiary: AppColors.lightTextTertiary,
     overlay: AppColors.lightOverlay,
+    accent: AppColors.fcGreenDeep,
+    accentPressed: AppColors.lightSuccess,
+    accentContainer: AppColors.lightSurfaceGreen,
+    content: AppColors.fcPurpleStrong,
+    contentContainer: AppColors.lightSurfacePurple,
+    competitive: AppColors.goldDeep,
+    competitiveContainer: AppColors.lightSurfaceGold,
     success: AppColors.lightSuccess,
     warning: AppColors.lightWarning,
     danger: AppColors.lightDanger,
@@ -58,6 +82,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   );
 
   final Color background;
+  final Color backgroundRaised;
   final Color surface;
   final Color surfaceElevated;
   final Color surfaceHighest;
@@ -67,6 +92,19 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color textSecondary;
   final Color textTertiary;
   final Color overlay;
+
+  /// Acao: CTA, foco, selecao, matchmaking ativo.
+  final Color accent;
+  final Color accentPressed;
+  final Color accentContainer;
+
+  /// Conteudo do FC: catalogo, mecanicas, destaque editorial.
+  final Color content;
+  final Color contentContainer;
+
+  /// Competitivo: ranking, premium, Champions/Rivals.
+  final Color competitive;
+  final Color competitiveContainer;
   final Color success;
   final Color warning;
   final Color danger;
@@ -76,6 +114,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   @override
   AppSemanticColors copyWith({
     Color? background,
+    Color? backgroundRaised,
     Color? surface,
     Color? surfaceElevated,
     Color? surfaceHighest,
@@ -85,6 +124,13 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? textSecondary,
     Color? textTertiary,
     Color? overlay,
+    Color? accent,
+    Color? accentPressed,
+    Color? accentContainer,
+    Color? content,
+    Color? contentContainer,
+    Color? competitive,
+    Color? competitiveContainer,
     Color? success,
     Color? warning,
     Color? danger,
@@ -92,6 +138,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? onAccent,
   }) => AppSemanticColors(
     background: background ?? this.background,
+    backgroundRaised: backgroundRaised ?? this.backgroundRaised,
     surface: surface ?? this.surface,
     surfaceElevated: surfaceElevated ?? this.surfaceElevated,
     surfaceHighest: surfaceHighest ?? this.surfaceHighest,
@@ -101,6 +148,13 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     textSecondary: textSecondary ?? this.textSecondary,
     textTertiary: textTertiary ?? this.textTertiary,
     overlay: overlay ?? this.overlay,
+    accent: accent ?? this.accent,
+    accentPressed: accentPressed ?? this.accentPressed,
+    accentContainer: accentContainer ?? this.accentContainer,
+    content: content ?? this.content,
+    contentContainer: contentContainer ?? this.contentContainer,
+    competitive: competitive ?? this.competitive,
+    competitiveContainer: competitiveContainer ?? this.competitiveContainer,
     success: success ?? this.success,
     warning: warning ?? this.warning,
     danger: danger ?? this.danger,
@@ -116,6 +170,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color mix(Color a, Color b) => Color.lerp(a, b, t) ?? a;
     return AppSemanticColors(
       background: mix(background, other.background),
+      backgroundRaised: mix(backgroundRaised, other.backgroundRaised),
       surface: mix(surface, other.surface),
       surfaceElevated: mix(surfaceElevated, other.surfaceElevated),
       surfaceHighest: mix(surfaceHighest, other.surfaceHighest),
@@ -125,6 +180,13 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       textSecondary: mix(textSecondary, other.textSecondary),
       textTertiary: mix(textTertiary, other.textTertiary),
       overlay: mix(overlay, other.overlay),
+      accent: mix(accent, other.accent),
+      accentPressed: mix(accentPressed, other.accentPressed),
+      accentContainer: mix(accentContainer, other.accentContainer),
+      content: mix(content, other.content),
+      contentContainer: mix(contentContainer, other.contentContainer),
+      competitive: mix(competitive, other.competitive),
+      competitiveContainer: mix(competitiveContainer, other.competitiveContainer),
       success: mix(success, other.success),
       warning: mix(warning, other.warning),
       danger: mix(danger, other.danger),

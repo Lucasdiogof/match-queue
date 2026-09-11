@@ -40,11 +40,7 @@ class ControlPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                FeatureHeader(
-                  eyebrow: l10n.controlEyebrow,
-                  title: l10n.controlTitle,
-                  subtitle: l10n.controlSubtitle,
-                ),
+                FeatureHeader(title: l10n.navControl),
                 Expanded(
                   child: _ControlBody(state: state, selected: selected),
                 ),

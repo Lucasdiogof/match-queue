@@ -1,71 +1,60 @@
 import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dart';
+import 'package:fifa_queue/core/design_system/tokens/app_gradients.dart';
+import 'package:fifa_queue/core/design_system/tokens/app_radii.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_spacing.dart';
 import 'package:flutter/material.dart';
 
-/// Header de conteudo para as telas principais do shell (Inicio, Times,
-/// Controle, Historico) -- diferente do [AppAppBar], que continua cuidando
-/// da barra de sistema (voltar, acoes). O [FeatureHeader] entra como
-/// primeiro item do corpo rolavel, dando hierarquia de produto (eyebrow +
-/// titulo + subtitulo curto + status/acao opcional) sem depender de sliver.
+/// Header das telas raiz do shell (Central, Times, Jogar, Historico, Perfil).
+///
+/// So o titulo. As linhas de apoio sairam de proposito: "Catalogo, mecanicas
+/// e controles do FC 27" descrevia para quem ja estava olhando a tela, e
+/// empurrava o conteudo real para baixo em todo scroll. A hierarquia agora
+/// vem de tamanho e de um acento curto, nao de uma segunda frase.
+///
+/// O acento e uma barra de 3px: presente o bastante para dar identidade,
+/// pequeno o bastante para nao virar decoracao. Gradiente aqui e destaque
+/// pontual -- e o unico do header.
 class FeatureHeader extends StatelessWidget {
-  const FeatureHeader({
-    required this.title,
-    this.eyebrow,
-    this.subtitle,
-    this.trailing,
-    super.key,
-  });
+  const FeatureHeader({required this.title, this.trailing, super.key});
 
   final String title;
-  final String? eyebrow;
-  final String? subtitle;
   final Widget? trailing;
 
   @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final textStyles = context.textStyles;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                if (eyebrow != null) ...<Widget>[
-                  Text(
-                    eyebrow!.toUpperCase(),
-                    // Sem verde: hierarquia aqui vem de tamanho, peso e
-                    // espacamento de letra, nao de cor de destaque.
-                    style: textStyles.labelSmall?.copyWith(
-                      color: colors.textTertiary,
-                      letterSpacing: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                ],
-                Text(title, style: textStyles.headlineSmall),
-                if (subtitle != null) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    subtitle!,
-                    style: textStyles.bodyMedium?.copyWith(
-                      color: colors.textSecondary,
-                    ),
-                  ),
-                ],
-              ],
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(
+      top: AppSpacing.xs,
+      bottom: AppSpacing.lg,
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: 3,
+          height: 26,
+          decoration: const BoxDecoration(
+            gradient: AppGradients.brandAccent,
+            borderRadius: AppRadii.borderPill,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.textStyles.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.4,
+              color: context.colors.textPrimary,
             ),
           ),
-          if (trailing != null) ...<Widget>[
-            const SizedBox(width: AppSpacing.md),
-            trailing!,
-          ],
+        ),
+        if (trailing != null) ...<Widget>[
+          const SizedBox(width: AppSpacing.md),
+          trailing!,
         ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
 }
