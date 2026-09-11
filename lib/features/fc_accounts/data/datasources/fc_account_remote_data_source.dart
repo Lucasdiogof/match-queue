@@ -30,6 +30,19 @@ abstract interface class FcAccountRemoteDataSource {
     required String eventId,
   });
 
+  Future<void> incrementWeekendLeagueManualRecord({
+    required String accountId,
+    required String eventId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  });
+
+  Future<void> incrementRivalsManualRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  });
+
   Future<Map<String, dynamic>> getAccountStats(String accountId);
 
   Future<List<Map<String, dynamic>>> listWeekendLeagueEvents();
@@ -128,6 +141,36 @@ class SupabaseFcAccountRemoteDataSource implements FcAccountRemoteDataSource {
     params: <String, dynamic>{
       'p_fc_account_id': accountId,
       'p_event_id': eventId,
+    },
+  );
+
+  @override
+  Future<void> incrementWeekendLeagueManualRecord({
+    required String accountId,
+    required String eventId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _client.rpc<dynamic>(
+    'increment_weekend_league_manual_record',
+    params: <String, dynamic>{
+      'p_fc_account_id': accountId,
+      'p_event_id': eventId,
+      'p_win_delta': winDelta,
+      'p_loss_delta': lossDelta,
+    },
+  );
+
+  @override
+  Future<void> incrementRivalsManualRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _client.rpc<dynamic>(
+    'increment_rivals_manual_record',
+    params: <String, dynamic>{
+      'p_fc_account_id': accountId,
+      'p_win_delta': winDelta,
+      'p_loss_delta': lossDelta,
     },
   );
 

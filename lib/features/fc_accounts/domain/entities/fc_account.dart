@@ -15,6 +15,8 @@ class FcAccount extends Equatable {
     this.weekendLeagueComputedLosses = 0,
     this.weekendLeagueManualWins,
     this.weekendLeagueManualLosses,
+    this.rivalsWins = 0,
+    this.rivalsLosses = 0,
   });
 
   final String id;
@@ -27,14 +29,19 @@ class FcAccount extends Equatable {
   final int? weekendLeagueManualWins;
   final int? weekendLeagueManualLosses;
 
+  /// Contador manual (+1 vitoria / +1 derrota) de Division Rivals -- unica
+  /// fonte hoje, nao ha mais calculo a partir de partida real na UI.
+  final int rivalsWins;
+  final int rivalsLosses;
+
   bool get hasWeekendLeagueManualOverride => weekendLeagueManualWins != null;
 
-  /// O record "principal" a mostrar: manual quando existe (mais confiável,
-  /// é o que o usuário disse que aconteceu), senão o computado das partidas.
+  /// O contador manual (+1 vitoria / +1 derrota) e a UNICA fonte que a UI
+  /// mostra hoje -- nunca mais cai pro computado de partida real.
+  /// [weekendLeagueComputedWins]/[weekendLeagueComputedLosses] continuam
+  /// existindo no servidor (RPCs antigas), so nao aparecem mais aqui.
   (int wins, int losses) get weekendLeagueRecord =>
-      hasWeekendLeagueManualOverride
-      ? (weekendLeagueManualWins!, weekendLeagueManualLosses!)
-      : (weekendLeagueComputedWins, weekendLeagueComputedLosses);
+      (weekendLeagueManualWins ?? 0, weekendLeagueManualLosses ?? 0);
 
   bool isLinkedTo(String teamId) => teamIds.contains(teamId);
 
@@ -49,5 +56,7 @@ class FcAccount extends Equatable {
     weekendLeagueComputedLosses,
     weekendLeagueManualWins,
     weekendLeagueManualLosses,
+    rivalsWins,
+    rivalsLosses,
   ];
 }

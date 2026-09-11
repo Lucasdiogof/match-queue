@@ -127,6 +127,37 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
     );
   }
 
+  Future<bool> incrementWeekendLeagueRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) async {
+    final eventId = state.weekendLeagueEvent?.id;
+    if (eventId == null) {
+      return false;
+    }
+    return _mutate(
+      () => _repository.incrementWeekendLeagueManualRecord(
+        accountId: accountId,
+        eventId: eventId,
+        winDelta: winDelta,
+        lossDelta: lossDelta,
+      ),
+    );
+  }
+
+  Future<bool> incrementRivalsRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _mutate(
+    () => _repository.incrementRivalsManualRecord(
+      accountId: accountId,
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    ),
+  );
+
   void clearActionFailure() {
     if (state.actionFailure != null) {
       emit(state.copyWith(clearActionFailure: true));

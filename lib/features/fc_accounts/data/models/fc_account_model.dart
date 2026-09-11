@@ -23,6 +23,7 @@ class FcAccountModel {
     final manual = json['weekend_league_manual'];
     final manualWins = manual is Map ? manual['wins'] as int? : null;
     final manualLosses = manual is Map ? manual['losses'] as int? : null;
+    final rivalsManual = json['rivals_manual'];
     final teamIds = json['team_ids'];
     return FcAccount(
       id: '${json['id']}',
@@ -38,6 +39,10 @@ class FcAccountModel {
           json['weekend_league_computed_losses'] as int? ?? 0,
       weekendLeagueManualWins: manualWins,
       weekendLeagueManualLosses: manualLosses,
+      rivalsWins: rivalsManual is Map ? rivalsManual['wins'] as int? ?? 0 : 0,
+      rivalsLosses: rivalsManual is Map
+          ? rivalsManual['losses'] as int? ?? 0
+          : 0,
     );
   }
 

@@ -124,21 +124,34 @@ class WeekendLeagueAccountStats extends Equatable {
 class RivalsAccountStats extends Equatable {
   const RivalsAccountStats({
     required this.aggregate,
+    required this.manual,
     required this.topScorers,
     required this.topAssists,
   });
 
   final FcAccountStats aggregate;
+
+  /// Contador manual (+1 vitoria / +1 derrota) -- fonte unica do record
+  /// mostrado na UI hoje, `aggregate` fica so pra artilharia/assistencias.
+  final ManualRecord manual;
   final List<PlayerLeaderboardEntry> topScorers;
   final List<PlayerLeaderboardEntry> topAssists;
 
   static RivalsAccountStats fromJson(Map<String, dynamic> json) =>
       RivalsAccountStats(
         aggregate: FcAccountStats.fromJson(json['aggregate']),
+        manual:
+            ManualRecord.fromJson(json['manual']) ??
+            const ManualRecord(wins: 0, losses: 0),
         topScorers: PlayerLeaderboardEntry.listFromJson(json['top_scorers']),
         topAssists: PlayerLeaderboardEntry.listFromJson(json['top_assists']),
       );
 
   @override
-  List<Object?> get props => <Object?>[aggregate, topScorers, topAssists];
+  List<Object?> get props => <Object?>[
+    aggregate,
+    manual,
+    topScorers,
+    topAssists,
+  ];
 }

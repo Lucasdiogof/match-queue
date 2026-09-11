@@ -122,13 +122,83 @@ class LocalFcAccountRepository implements FcAccountRepository {
     required String eventId,
     required int wins,
     required int losses,
-  }) async {}
+  }) async {
+    final accounts = _readAccounts();
+    final index = accounts.indexWhere((account) => account.id == accountId);
+    if (index < 0) {
+      return;
+    }
+    accounts[index] = _copyWith(
+      accounts[index],
+      weekendLeagueManualWins: wins,
+      weekendLeagueManualLosses: losses,
+    );
+    await _writeAccounts(accounts);
+  }
 
   @override
   Future<void> clearWeekendLeagueManualRecord({
     required String accountId,
     required String eventId,
-  }) async {}
+  }) async {
+    final accounts = _readAccounts();
+    final index = accounts.indexWhere((account) => account.id == accountId);
+    if (index < 0) {
+      return;
+    }
+    accounts[index] = _copyWith(
+      accounts[index],
+      clearWeekendLeagueManual: true,
+    );
+    await _writeAccounts(accounts);
+  }
+
+  @override
+  Future<void> incrementWeekendLeagueManualRecord({
+    required String accountId,
+    required String eventId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) async {
+    final accounts = _readAccounts();
+    final index = accounts.indexWhere((account) => account.id == accountId);
+    if (index < 0) {
+      return;
+    }
+    final current = accounts[index];
+    accounts[index] = _copyWith(
+      current,
+      weekendLeagueManualWins: max(
+        0,
+        (current.weekendLeagueManualWins ?? 0) + winDelta,
+      ),
+      weekendLeagueManualLosses: max(
+        0,
+        (current.weekendLeagueManualLosses ?? 0) + lossDelta,
+      ),
+    );
+    await _writeAccounts(accounts);
+  }
+
+  @override
+  Future<void> incrementRivalsManualRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) async {
+    final accounts = _readAccounts();
+    final index = accounts.indexWhere((account) => account.id == accountId);
+    if (index < 0) {
+      return;
+    }
+    final current = accounts[index];
+    accounts[index] = _copyWith(
+      current,
+      rivalsWins: max(0, current.rivalsWins + winDelta),
+      rivalsLosses: max(0, current.rivalsLosses + lossDelta),
+    );
+    await _writeAccounts(accounts);
+  }
 
   @override
   Future<FcAccountStats> fetchAccountStats(String accountId) async =>
@@ -142,19 +212,34 @@ class LocalFcAccountRepository implements FcAccountRepository {
   Future<WeekendLeagueAccountStats> fetchWeekendLeagueAccountStats({
     required String accountId,
     required String eventId,
-  }) async => const WeekendLeagueAccountStats(
-    computed: FcAccountStats.empty,
-    topScorers: <PlayerLeaderboardEntry>[],
-    topAssists: <PlayerLeaderboardEntry>[],
-  );
+  }) async {
+    final account = _readAccounts().where((a) => a.id == accountId).firstOrNull;
+    return WeekendLeagueAccountStats(
+      computed: FcAccountStats.empty,
+      manual: account?.hasWeekendLeagueManualOverride ?? false
+          ? ManualRecord(
+              wins: account!.weekendLeagueManualWins!,
+              losses: account.weekendLeagueManualLosses!,
+            )
+          : null,
+      topScorers: const <PlayerLeaderboardEntry>[],
+      topAssists: const <PlayerLeaderboardEntry>[],
+    );
+  }
 
   @override
-  Future<RivalsAccountStats> fetchRivalsAccountStats(String accountId) async =>
-      const RivalsAccountStats(
-        aggregate: FcAccountStats.empty,
-        topScorers: <PlayerLeaderboardEntry>[],
-        topAssists: <PlayerLeaderboardEntry>[],
-      );
+  Future<RivalsAccountStats> fetchRivalsAccountStats(String accountId) async {
+    final account = _readAccounts().where((a) => a.id == accountId).firstOrNull;
+    return RivalsAccountStats(
+      aggregate: FcAccountStats.empty,
+      manual: ManualRecord(
+        wins: account?.rivalsWins ?? 0,
+        losses: account?.rivalsLosses ?? 0,
+      ),
+      topScorers: const <PlayerLeaderboardEntry>[],
+      topAssists: const <PlayerLeaderboardEntry>[],
+    );
+  }
 
   FcAccount _copyWith(
     FcAccount account, {
@@ -163,6 +248,11 @@ class LocalFcAccountRepository implements FcAccountRepository {
     List<String>? teamIds,
     RivalsDivision? rivalsDivision,
     bool clearRivalsDivision = false,
+    int? weekendLeagueManualWins,
+    int? weekendLeagueManualLosses,
+    bool clearWeekendLeagueManual = false,
+    int? rivalsWins,
+    int? rivalsLosses,
   }) => FcAccount(
     id: account.id,
     name: name ?? account.name,
@@ -171,6 +261,14 @@ class LocalFcAccountRepository implements FcAccountRepository {
     rivalsDivision: clearRivalsDivision
         ? null
         : (rivalsDivision ?? account.rivalsDivision),
+    weekendLeagueManualWins: clearWeekendLeagueManual
+        ? null
+        : (weekendLeagueManualWins ?? account.weekendLeagueManualWins),
+    weekendLeagueManualLosses: clearWeekendLeagueManual
+        ? null
+        : (weekendLeagueManualLosses ?? account.weekendLeagueManualLosses),
+    rivalsWins: rivalsWins ?? account.rivalsWins,
+    rivalsLosses: rivalsLosses ?? account.rivalsLosses,
   );
 
   List<FcAccount> _readAccounts() {
@@ -210,6 +308,10 @@ class LocalFcAccountRepository implements FcAccountRepository {
         .map((id) => '$id')
         .toList(),
     rivalsDivision: RivalsDivision.tryFromKey(json['rivals_division']),
+    weekendLeagueManualWins: json['weekend_league_manual_wins'] as int?,
+    weekendLeagueManualLosses: json['weekend_league_manual_losses'] as int?,
+    rivalsWins: json['rivals_wins'] as int? ?? 0,
+    rivalsLosses: json['rivals_losses'] as int? ?? 0,
   );
 
   Map<String, dynamic> _toJson(FcAccount account) => <String, dynamic>{
@@ -218,6 +320,10 @@ class LocalFcAccountRepository implements FcAccountRepository {
     'is_active': account.isActive,
     'team_ids': account.teamIds,
     'rivals_division': account.rivalsDivision?.key,
+    'weekend_league_manual_wins': account.weekendLeagueManualWins,
+    'weekend_league_manual_losses': account.weekendLeagueManualLosses,
+    'rivals_wins': account.rivalsWins,
+    'rivals_losses': account.rivalsLosses,
   };
 
   String _uuidV4() {

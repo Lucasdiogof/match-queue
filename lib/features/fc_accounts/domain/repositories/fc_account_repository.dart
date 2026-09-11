@@ -43,6 +43,21 @@ abstract interface class FcAccountRepository {
     required String eventId,
   });
 
+  /// Delta pode ser negativo (corrigir um toque em "+" a mais). Servidor
+  /// nunca deixa o total ficar negativo nem passar de 15 jogos.
+  Future<void> incrementWeekendLeagueManualRecord({
+    required String accountId,
+    required String eventId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  });
+
+  Future<void> incrementRivalsManualRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  });
+
   /// Partidas registradas/W/L/gols pró-contra-saldo da conta, todos os modos.
   Future<FcAccountStats> fetchAccountStats(String accountId);
 

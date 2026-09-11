@@ -82,6 +82,34 @@ class SupabaseFcAccountRepository implements FcAccountRepository {
   );
 
   @override
+  Future<void> incrementWeekendLeagueManualRecord({
+    required String accountId,
+    required String eventId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _guard(
+    () => _dataSource.incrementWeekendLeagueManualRecord(
+      accountId: accountId,
+      eventId: eventId,
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    ),
+  );
+
+  @override
+  Future<void> incrementRivalsManualRecord({
+    required String accountId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _guard(
+    () => _dataSource.incrementRivalsManualRecord(
+      accountId: accountId,
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    ),
+  );
+
+  @override
   Future<FcAccountStats> fetchAccountStats(String accountId) =>
       _guard(() async {
         final json = await _dataSource.getAccountStats(accountId);
