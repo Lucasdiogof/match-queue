@@ -15,7 +15,6 @@ recorta, redesenha ou distorce o desenho.
 from PIL import Image
 import numpy as np
 import os
-from collections import deque
 
 BRAND_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(BRAND_DIR, "..", "..", "assets", "brand")
@@ -42,54 +41,35 @@ def pad_to_square_white(im, canvas_size, content_fraction):
     return canvas
 
 
-def remove_black_background(im_rgb, tolerance=18, crop_padding=20):
+def remove_black_background(im_rgb, low=45, high=110, crop_padding=20):
     """Usada no wordmark atual: arte cromada/teal com brilho proprio sobre um
-    fundo preto solido (nao um simbolo com letras escuras sobre fundo claro
-    como a versao anterior -- por isso NAO usa mais corte por brilho).
-    Flood-fill a partir das bordas da imagem remove só o preto contíguo à
-    moldura, preservando o glow teal do meio (que não é preto puro) como um
-    halo intencional. Depois corta pro bounding box do conteudo visivel
-    (+ padding) pra nao sobrar moldura transparente enorme quando exibido
-    por altura fixa. A arte ja tem contraste proprio em qualquer fundo, entao
-    BrandWordmark NAO aplica mais inversao de cor no dark mode (isso so fazia
-    sentido pra tinta solida da versao anterior)."""
-    arr = np.array(im_rgb).astype(int)
-    h, w, _ = arr.shape
-    visited = np.zeros((h, w), dtype=bool)
-    black = np.array([0, 0, 0])
+    fundo preto solido, com um glow radial largo em volta das letras (nao um
+    simbolo com letras escuras sobre fundo claro como a versao anterior --
+    por isso NAO usa mais corte por brilho).
 
-    def similar(p):
-        return (
-            abs(p[0] - black[0]) <= tolerance
-            and abs(p[1] - black[1]) <= tolerance
-            and abs(p[2] - black[2]) <= tolerance
-        )
+    Alpha por luminancia (rampa suave de `low` a `high`), nao flood-fill
+    binario: um corte binario (dentro/fora de um raio de tolerancia da cor
+    preta) deixava a borda do glow com um contorno duro e irregular -- lia
+    como uma "nuvem" preta chapada por cima de fundo claro, em vez de um
+    brilho. A rampa suave faz esse limite desaparecer gradualmente qualquer
+    que seja o fundo (testado sobre branco e sobre preto). `low`/`high` altos
+    de proposito: cortam a maior parte do bloom difuso do fundo, deixando so
+    um halo justo perto das letras -- o glow mais amplo da arte original nao
+    sobrevive por bem sem fundo escuro fixo por tras.
 
-    queue = deque()
-    border_pixels = (
-        [(0, x) for x in range(w)]
-        + [(h - 1, x) for x in range(w)]
-        + [(y, 0) for y in range(h)]
-        + [(y, w - 1) for y in range(h)]
-    )
-    for y, x in border_pixels:
-        if not visited[y, x] and similar(arr[y, x]):
-            visited[y, x] = True
-            queue.append((y, x))
-
-    while queue:
-        y, x = queue.popleft()
-        for dy, dx in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-            ny, nx = y + dy, x + dx
-            if 0 <= ny < h and 0 <= nx < w and not visited[ny, nx] and similar(arr[ny, nx]):
-                visited[ny, nx] = True
-                queue.append((ny, nx))
-
-    alpha = np.where(visited, 0, 255).astype(np.uint8)
+    Corta pro bounding box do conteudo visivel (+ padding) pra nao sobrar
+    moldura transparente enorme quando exibido por altura fixa. A arte ja tem
+    contraste proprio em qualquer fundo, entao BrandWordmark NAO aplica mais
+    inversao de cor no dark mode (isso so fazia sentido pra tinta solida da
+    versao anterior)."""
+    arr = np.array(im_rgb).astype(float)
+    luma = 0.299 * arr[:, :, 0] + 0.587 * arr[:, :, 1] + 0.114 * arr[:, :, 2]
+    alpha = np.clip((luma - low) / (high - low) * 255, 0, 255).astype(np.uint8)
     rgba = np.dstack([arr.astype(np.uint8), alpha])
     out = Image.fromarray(rgba, mode="RGBA")
 
-    ys, xs = np.where(alpha > 10)
+    ys, xs = np.where(alpha > 20)
+    h, w = alpha.shape
     x0, x1 = max(0, xs.min() - crop_padding), min(w, xs.max() + crop_padding)
     y0, y1 = max(0, ys.min() - crop_padding), min(h, ys.max() + crop_padding)
     return out.crop((x0, y0, x1, y1))
@@ -123,9 +103,22 @@ logo = load("logo.png")
 logo.resize((512, 512), Image.LANCZOS).save(os.path.join(ASSETS_DIR, "icon.png"), optimize=True)
 
 # Wordmark: solid black frame cut to transparent, teal glow kept as a halo,
-# cropped to content -- see remove_black_background.
+# cropped to content -- see remove_black_background. The biggest usage in
+# the app is BrandWordmark(height: 76) -- at typical 3x device pixel ratio
+# that is ~228px. Shipping the full-resolution crop (643px tall) made the
+# app downscale it live by >8x every frame; Flutter's default bilinear
+# filtering (no mipmaps) muddies thin bright strokes at that ratio -- the
+# chrome letters and teal glow read as a dull grey smudge instead of
+# bright metal. Baking the resize down to ~3x the largest real usage with
+# LANCZOS here (once, at build time) keeps the live scale factor small
+# enough that bilinear filtering doesn't lose the highlights.
 escrito_transparent = remove_black_background(escrito_rgba.convert("RGB"))
-escrito_transparent.save(os.path.join(ASSETS_DIR, "wordmark.png"), optimize=True)
+target_h = 260
+scale = target_h / escrito_transparent.height
+escrito_resized = escrito_transparent.resize(
+    (round(escrito_transparent.width * scale), target_h), Image.LANCZOS
+)
+escrito_resized.save(os.path.join(ASSETS_DIR, "wordmark.png"), optimize=True)
 
 # No separate splash.png: BrandAssets.splashMark is null on purpose (see its
 # doc comment) -- SplashPage composes the icon + wordmark above live from
