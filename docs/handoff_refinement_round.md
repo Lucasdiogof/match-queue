@@ -141,6 +141,13 @@ reconstruir.**
   precisam de correção — o código, na leitura estática, não mostra o defeito
   descrito (ver seção 5).
 
+  **Atualização 2026-09-11**: numa sessão seguinte (QA da Etapa 3), o mesmo
+  fluxo de login via `computer{action:"type"}` funcionou de primeira, sem
+  nenhuma das 3 técnicas acima — ambiente intermitente, não permanentemente
+  quebrado. Antes de repetir as 3 técnicas descritas aqui, vale só tentar o
+  fluxo normal de novo; se funcionar, a QA visual real fica possível. Ver
+  `handoff.md`, seção "QA visual da Etapa 3 (2026-09-11)".
+
 ---
 
 ## 3. Como rodar o app (vale ouro, custou tempo)

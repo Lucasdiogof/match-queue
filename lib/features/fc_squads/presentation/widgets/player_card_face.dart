@@ -142,12 +142,18 @@ class PlayerCardDataFace extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppSpacing.xs),
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Text(
-                  card.primaryPosition,
-                  style: context.textStyles.labelSmall?.copyWith(
-                    color: colors.textSecondary,
+              // Flexible + elipse: posicao longa ou escala de fonte grande
+              // encolhe aqui em vez de empurrar a Row para fora da carta.
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(
+                    card.primaryPosition,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.textStyles.labelSmall?.copyWith(
+                      color: colors.textSecondary,
+                    ),
                   ),
                 ),
               ),
@@ -264,31 +270,43 @@ class _AttributeRow extends StatelessWidget {
     children: <Widget>[
       for (final entry in entries)
         Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                entry.$2 == null ? '-' : '${entry.$2}',
-                maxLines: 1,
-                style: context.textStyles.labelSmall?.copyWith(
-                  color: context.colors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                  height: 1,
+          // `overflow: clip` so corta a PINTURA: o Text continua informando a
+          // largura inteira ao Row, que entao estoura por fracao de pixel
+          // assim que valor + rotulo passam da coluna -- foi dai que veio o
+          // "overflowed by 0.403 pixels".
+          //
+          // scaleDown resolve pela geometria: no tamanho normal nada muda, e
+          // quando nao couber (3 digitos, escala de fonte do aparelho, tela
+          // estreita) o par encolhe junto, mantendo alinhamento e leitura.
+          // Nao e reduzir fonte a esmo -- e o unico caso do arquivo em que a
+          // unidade e pequena e indivisivel.
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  entry.$2 == null ? '-' : '${entry.$2}',
+                  maxLines: 1,
+                  style: context.textStyles.labelSmall?.copyWith(
+                    color: context.colors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                    height: 1,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 2),
-              Text(
-                entry.$1,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.clip,
-                style: context.textStyles.labelSmall?.copyWith(
-                  color: context.colors.textTertiary,
-                  fontSize: 8,
-                  height: 1,
+                const SizedBox(width: 2),
+                Text(
+                  entry.$1,
+                  maxLines: 1,
+                  softWrap: false,
+                  style: context.textStyles.labelSmall?.copyWith(
+                    color: context.colors.textTertiary,
+                    fontSize: 8,
+                    height: 1,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
     ],

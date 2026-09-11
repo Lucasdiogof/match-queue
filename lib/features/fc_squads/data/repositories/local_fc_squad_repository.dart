@@ -76,6 +76,66 @@ class LocalFcSquadRepository implements FcSquadRepository {
   }) => _update(squadId, (s) => _copy(s, name: name));
 
   @override
+  Future<int> previewChemistry({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+  }) async {
+    // Sem servidor nao ha regra de quimica: o modo local devolve o que o
+    // elenco ja tinha em vez de fabricar um numero.
+    final squad = await getBuilder(squadId);
+    return squad.chemistry;
+  }
+
+  @override
+  Future<FcSquadDetail> saveLineup({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+    DateTime? expectedUpdatedAt,
+  }) async {
+    // Mesma resolucao de setManager: o real save_fc_squad_lineup tambem
+    // grava manager_id/manager_league_id, entao o modo local precisa
+    // resolve-los aqui em vez de descartar o que o rascunho mandou.
+    final managers = await _catalog.searchManagers();
+    final leagues = await _catalog.getLeagues();
+    final manager = managerId == null
+        ? null
+        : managers.where((m) => m.id == managerId).firstOrNull;
+    return _update(squadId, (s) {
+      // Em memoria nao ha concorrencia para checar: expectedUpdatedAt e
+      // aceito e ignorado de proposito, para o modo local nao divergir do
+      // contrato.
+      final next = _formation(formationCode);
+      final cards = <String, PlayerCard>{
+        for (final slot in s.slots) slot.card.id: slot.card,
+      };
+      return _copy(
+        s,
+        formation: next,
+        slots: <SquadSlot>[
+          for (final entry in slots.entries)
+            if (cards[entry.value] case final card?)
+              SquadSlot(
+                type: SquadSlotType.starting,
+                slotCode: entry.key,
+                card: card,
+              ),
+        ],
+        manager: manager,
+        managerLeague: manager == null || managerLeagueId == null
+            ? null
+            : leagues.where((l) => l.id == managerLeagueId).firstOrNull,
+        clearManager: manager == null,
+      );
+    });
+  }
+
+  @override
   Future<FcSquadDetail> setFormation({
     required String squadId,
     required String formationCode,
@@ -356,6 +416,12 @@ class LocalFcSquadRepository implements FcSquadRepository {
           .where((x) => x.type == SquadSlotType.starting)
           .length,
       starterCount: formation.slots.length,
+      manager: LocalPlayerCardCatalogRepository.managers
+          .where((m) => m.id == json['manager_id'])
+          .firstOrNull,
+      managerLeague: LocalPlayerCardCatalogRepository.leagues
+          .where((l) => l.id == json['manager_league_id'])
+          .firstOrNull,
     );
     return FcSquadDetail(
       id: base.id,
@@ -369,6 +435,8 @@ class LocalFcSquadRepository implements FcSquadRepository {
       overall: _overall(base),
       filledStarters: base.filledStarters,
       starterCount: base.starterCount,
+      manager: base.manager,
+      managerLeague: base.managerLeague,
     );
   }
 
@@ -522,35 +590,40 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
   Future<PlayerCard?> getCard(String id) async =>
       cards.where((c) => c.id == id).firstOrNull;
 
-  @override
-  Future<List<FcManager>> searchManagers({
-    String? nationId,
-    String? query,
-  }) async {
-    final nations = await getNations();
-    return <FcManager>[
-      for (var i = 0; i < 8; i++)
-        FcManager(
-          id: 'local-manager-$i',
-          name: 'Técnico ${String.fromCharCode(65 + i)}',
-          nation: nations[i % nations.length],
-        ),
-    ].where((m) => nationId == null || m.nation?.id == nationId).toList();
-  }
-
-  @override
-  Future<List<FcNation>> getNations() async => const <FcNation>[
+  static const List<FcNation> nations = <FcNation>[
     FcNation(id: 'local-nation-1', name: 'Brasil'),
     FcNation(id: 'local-nation-2', name: 'Argentina'),
     FcNation(id: 'local-nation-3', name: 'Portugal'),
     FcNation(id: 'local-nation-4', name: 'Espanha'),
   ];
 
-  @override
-  Future<List<FcLeague>> getLeagues() async => const <FcLeague>[
+  static final List<FcManager> managers = <FcManager>[
+    for (var i = 0; i < 8; i++)
+      FcManager(
+        id: 'local-manager-$i',
+        name: 'Técnico ${String.fromCharCode(65 + i)}',
+        nation: nations[i % nations.length],
+      ),
+  ];
+
+  static const List<FcLeague> leagues = <FcLeague>[
     FcLeague(id: 'local-league-1', name: 'Liga Nacional'),
     FcLeague(id: 'local-league-2', name: 'Liga Continental'),
   ];
+
+  @override
+  Future<List<FcManager>> searchManagers({
+    String? nationId,
+    String? query,
+  }) async => managers
+      .where((m) => nationId == null || m.nation?.id == nationId)
+      .toList();
+
+  @override
+  Future<List<FcNation>> getNations() async => nations;
+
+  @override
+  Future<List<FcLeague>> getLeagues() async => leagues;
 
   @override
   Future<List<FcClub>> getClubs({String? leagueName}) async => const <FcClub>[

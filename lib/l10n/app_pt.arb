@@ -1407,5 +1407,33 @@
   "managersBlockedTitle": "Ainda sem dado real",
   "managersBlockedMessage": "Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Elenco). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.",
   "consumablesBlockedTitle": "Ainda sem dado real",
-  "consumablesBlockedMessage": "Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje."
+  "consumablesBlockedMessage": "Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.",
+  "errorSquadEditConflict": "Este elenco foi alterado em outro dispositivo. Recarregue a versão mais recente antes de continuar.",
+  "errorSquadDuplicatedPlayer": "O mesmo jogador não pode ocupar duas posições.",
+  "errorSquadInvalidLineup": "Não foi possível salvar esta escalação.",
+  "squadSaveAction": "Salvar",
+  "squadSavedFeedback": "Elenco salvo",
+  "squadDiscardTitle": "Descartar alterações?",
+  "squadDiscardMessage": "Existem alterações no elenco que ainda não foram salvas.",
+  "squadDiscardKeep": "Continuar editando",
+  "squadDiscardConfirm": "Descartar",
+  "squadReloadAction": "Recarregar",
+  "squadChemistryUpdating": "Recalculando…",
+  "squadChemistryUnavailable": "Não foi possível recalcular a química.",
+  "squadManagerLabel": "Técnico",
+  "squadManagerEmpty": "Selecionar técnico",
+  "squadShareAction": "Compartilhar elenco",
+  "squadOverallLabel": "Overall",
+  "squadChemistryLabel": "Química",
+  "squadFormationDroppedPlayers": "{count, plural, =1{1 jogador saiu da escalação: não tem posição compatível na nova formação ({names}).} other{{count} jogadores saíram da escalação: não têm posição compatível na nova formação ({names}).}}",
+  "@squadFormationDroppedPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  }
 }

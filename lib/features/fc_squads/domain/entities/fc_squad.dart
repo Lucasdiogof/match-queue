@@ -161,6 +161,7 @@ class FcSquadDetail extends Equatable {
     required this.slots,
     required this.isDefault,
     required this.benchSize,
+    this.updatedAt,
     this.reserveSize = 0,
     this.overall,
     this.chemistry = 0,
@@ -178,6 +179,11 @@ class FcSquadDetail extends Equatable {
   final List<SquadSlot> slots;
   final bool isDefault;
   final int benchSize;
+
+  /// Quando o servidor gravou este elenco pela ultima vez. E a baseline de
+  /// concorrencia: o rascunho leva este valor e o devolve no save, para o
+  /// servidor recusar (FQ049) se outro aparelho tiver salvo no meio.
+  final DateTime? updatedAt;
   final int reserveSize;
 
   /// Média dos titulares preenchidos, `null` sem nenhum (nunca 0).
@@ -251,5 +257,6 @@ class FcSquadDetail extends Equatable {
     starterCount,
     manager,
     managerLeague,
+    updatedAt,
   ];
 }

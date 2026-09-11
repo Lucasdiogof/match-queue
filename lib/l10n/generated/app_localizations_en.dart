@@ -2669,4 +2669,71 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get consumablesBlockedMessage =>
       'Chemistry Styles already has its own section under Mechanics. No other consumable is modelled in our catalogue today.';
+
+  @override
+  String get errorSquadEditConflict =>
+      'This squad was changed on another device. Reload the latest version before continuing.';
+
+  @override
+  String get errorSquadDuplicatedPlayer =>
+      'The same player cannot fill two positions.';
+
+  @override
+  String get errorSquadInvalidLineup => 'This lineup could not be saved.';
+
+  @override
+  String get squadSaveAction => 'Save';
+
+  @override
+  String get squadSavedFeedback => 'Squad saved';
+
+  @override
+  String get squadDiscardTitle => 'Discard changes?';
+
+  @override
+  String get squadDiscardMessage => 'There are unsaved changes to this squad.';
+
+  @override
+  String get squadDiscardKeep => 'Keep editing';
+
+  @override
+  String get squadDiscardConfirm => 'Discard';
+
+  @override
+  String get squadReloadAction => 'Reload';
+
+  @override
+  String get squadChemistryUpdating => 'Recalculating…';
+
+  @override
+  String get squadChemistryUnavailable =>
+      'Chemistry could not be recalculated.';
+
+  @override
+  String get squadManagerLabel => 'Manager';
+
+  @override
+  String get squadManagerEmpty => 'Select manager';
+
+  @override
+  String get squadShareAction => 'Share squad';
+
+  @override
+  String get squadOverallLabel => 'Overall';
+
+  @override
+  String get squadChemistryLabel => 'Chemistry';
+
+  @override
+  String squadFormationDroppedPlayers(int count, String names) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count players left the lineup: no compatible position in the new formation ($names).',
+      one:
+          '1 player left the lineup: no compatible position in the new formation ($names).',
+    );
+    return '$_temp0';
+  }
 }

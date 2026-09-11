@@ -193,6 +193,7 @@ class FcSquadModel {
       id: '${json['id']}',
       fcAccountId: '${json['fc_account_id']}',
       name: '${json['name']}',
+      updatedAt: DateTime.tryParse('${json['updated_at']}')?.toUtc(),
       formation: formation is Map
           ? formationFromJson(Map<String, dynamic>.from(formation))
           : FormationDefinition(

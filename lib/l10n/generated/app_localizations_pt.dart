@@ -2674,4 +2674,73 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get consumablesBlockedMessage =>
       'Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.';
+
+  @override
+  String get errorSquadEditConflict =>
+      'Este elenco foi alterado em outro dispositivo. Recarregue a versão mais recente antes de continuar.';
+
+  @override
+  String get errorSquadDuplicatedPlayer =>
+      'O mesmo jogador não pode ocupar duas posições.';
+
+  @override
+  String get errorSquadInvalidLineup =>
+      'Não foi possível salvar esta escalação.';
+
+  @override
+  String get squadSaveAction => 'Salvar';
+
+  @override
+  String get squadSavedFeedback => 'Elenco salvo';
+
+  @override
+  String get squadDiscardTitle => 'Descartar alterações?';
+
+  @override
+  String get squadDiscardMessage =>
+      'Existem alterações no elenco que ainda não foram salvas.';
+
+  @override
+  String get squadDiscardKeep => 'Continuar editando';
+
+  @override
+  String get squadDiscardConfirm => 'Descartar';
+
+  @override
+  String get squadReloadAction => 'Recarregar';
+
+  @override
+  String get squadChemistryUpdating => 'Recalculando…';
+
+  @override
+  String get squadChemistryUnavailable =>
+      'Não foi possível recalcular a química.';
+
+  @override
+  String get squadManagerLabel => 'Técnico';
+
+  @override
+  String get squadManagerEmpty => 'Selecionar técnico';
+
+  @override
+  String get squadShareAction => 'Compartilhar elenco';
+
+  @override
+  String get squadOverallLabel => 'Overall';
+
+  @override
+  String get squadChemistryLabel => 'Química';
+
+  @override
+  String squadFormationDroppedPlayers(int count, String names) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count jogadores saíram da escalação: não têm posição compatível na nova formação ($names).',
+      one:
+          '1 jogador saiu da escalação: não tem posição compatível na nova formação ($names).',
+    );
+    return '$_temp0';
+  }
 }

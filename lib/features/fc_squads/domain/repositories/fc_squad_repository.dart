@@ -8,6 +8,17 @@ abstract interface class FcSquadRepository {
 
   Future<FcSquadDetail> getBuilder(String squadId);
 
+  /// Quimica do rascunho, sem persistir. Mesma regra e mesmas validacoes do
+  /// save -- a funcao no servidor e `stable`, entao gravar nao e apenas
+  /// improvavel: o motor recusa.
+  Future<int> previewChemistry({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+  });
+
   Future<FcSquadDetail> createSquad({
     required String fcAccountId,
     required String name,
@@ -17,6 +28,22 @@ abstract interface class FcSquadRepository {
   Future<FcSquadDetail> renameSquad({
     required String squadId,
     required String name,
+  });
+
+  /// Grava o Elenco inteiro numa transacao. E o unico caminho de escrita do
+  /// builder desde que a edicao virou rascunho local -- as RPCs por acao
+  /// abaixo seguem existindo para nao quebrar nada, mas o builder nao as usa.
+  ///
+  /// [expectedUpdatedAt] e a baseline de concorrencia: veio do servidor ao
+  /// carregar e volta aqui. Se o elenco mudou nesse meio tempo, o servidor
+  /// recusa em vez de sobrescrever.
+  Future<FcSquadDetail> saveLineup({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+    DateTime? expectedUpdatedAt,
   });
 
   Future<FcSquadDetail> setFormation({

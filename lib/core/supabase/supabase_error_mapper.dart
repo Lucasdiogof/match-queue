@@ -118,6 +118,10 @@ class SupabaseErrorMapper {
     'FQ032' => SquadFailureReason.invalidSlot,
     'FQ033' => SquadFailureReason.cardCannotPlayPosition,
     'FQ034' => SquadFailureReason.inUseByActiveSearch,
+    'FQ049' => SquadFailureReason.editConflict,
+    'FQ050' => SquadFailureReason.invalidLineup,
+    'FQ051' => SquadFailureReason.duplicatedPlayer,
+    'FQ052' => SquadFailureReason.cardCannotPlayPosition,
     _ => null,
   };
 

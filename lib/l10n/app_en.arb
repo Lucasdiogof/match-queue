@@ -1407,5 +1407,33 @@
   "managersBlockedTitle": "No real data yet",
   "managersBlockedMessage": "Today there are only 24 test records (fake names used by the Squad's manager picker). We need a real FC 27 manager source before showing this as a catalogue.",
   "consumablesBlockedTitle": "No real data yet",
-  "consumablesBlockedMessage": "Chemistry Styles already has its own section under Mechanics. No other consumable is modelled in our catalogue today."
+  "consumablesBlockedMessage": "Chemistry Styles already has its own section under Mechanics. No other consumable is modelled in our catalogue today.",
+  "errorSquadEditConflict": "This squad was changed on another device. Reload the latest version before continuing.",
+  "errorSquadDuplicatedPlayer": "The same player cannot fill two positions.",
+  "errorSquadInvalidLineup": "This lineup could not be saved.",
+  "squadSaveAction": "Save",
+  "squadSavedFeedback": "Squad saved",
+  "squadDiscardTitle": "Discard changes?",
+  "squadDiscardMessage": "There are unsaved changes to this squad.",
+  "squadDiscardKeep": "Keep editing",
+  "squadDiscardConfirm": "Discard",
+  "squadReloadAction": "Reload",
+  "squadChemistryUpdating": "Recalculating…",
+  "squadChemistryUnavailable": "Chemistry could not be recalculated.",
+  "squadManagerLabel": "Manager",
+  "squadManagerEmpty": "Select manager",
+  "squadShareAction": "Share squad",
+  "squadOverallLabel": "Overall",
+  "squadChemistryLabel": "Chemistry",
+  "squadFormationDroppedPlayers": "{count, plural, =1{1 player left the lineup: no compatible position in the new formation ({names}).} other{{count} players left the lineup: no compatible position in the new formation ({names}).}}",
+  "@squadFormationDroppedPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  }
 }

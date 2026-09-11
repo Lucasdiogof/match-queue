@@ -4603,6 +4603,114 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.'**
   String get consumablesBlockedMessage;
+
+  /// No description provided for @errorSquadEditConflict.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este elenco foi alterado em outro dispositivo. Recarregue a versão mais recente antes de continuar.'**
+  String get errorSquadEditConflict;
+
+  /// No description provided for @errorSquadDuplicatedPlayer.
+  ///
+  /// In pt, this message translates to:
+  /// **'O mesmo jogador não pode ocupar duas posições.'**
+  String get errorSquadDuplicatedPlayer;
+
+  /// No description provided for @errorSquadInvalidLineup.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível salvar esta escalação.'**
+  String get errorSquadInvalidLineup;
+
+  /// No description provided for @squadSaveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar'**
+  String get squadSaveAction;
+
+  /// No description provided for @squadSavedFeedback.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elenco salvo'**
+  String get squadSavedFeedback;
+
+  /// No description provided for @squadDiscardTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar alterações?'**
+  String get squadDiscardTitle;
+
+  /// No description provided for @squadDiscardMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Existem alterações no elenco que ainda não foram salvas.'**
+  String get squadDiscardMessage;
+
+  /// No description provided for @squadDiscardKeep.
+  ///
+  /// In pt, this message translates to:
+  /// **'Continuar editando'**
+  String get squadDiscardKeep;
+
+  /// No description provided for @squadDiscardConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar'**
+  String get squadDiscardConfirm;
+
+  /// No description provided for @squadReloadAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recarregar'**
+  String get squadReloadAction;
+
+  /// No description provided for @squadChemistryUpdating.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recalculando…'**
+  String get squadChemistryUpdating;
+
+  /// No description provided for @squadChemistryUnavailable.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível recalcular a química.'**
+  String get squadChemistryUnavailable;
+
+  /// No description provided for @squadManagerLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Técnico'**
+  String get squadManagerLabel;
+
+  /// No description provided for @squadManagerEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecionar técnico'**
+  String get squadManagerEmpty;
+
+  /// No description provided for @squadShareAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar elenco'**
+  String get squadShareAction;
+
+  /// No description provided for @squadOverallLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Overall'**
+  String get squadOverallLabel;
+
+  /// No description provided for @squadChemistryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Química'**
+  String get squadChemistryLabel;
+
+  /// No description provided for @squadFormationDroppedPlayers.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 jogador saiu da escalação: não tem posição compatível na nova formação ({names}).} other{{count} jogadores saíram da escalação: não têm posição compatível na nova formação ({names}).}}'**
+  String squadFormationDroppedPlayers(int count, String names);
 }
 
 class _AppLocalizationsDelegate

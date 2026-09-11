@@ -13,6 +13,47 @@ Future<T?> showAppDialog<T>({
   builder: builder,
 );
 
+/// Confirmacao com duas acoes, resolvida em `true`/`false`. Atalho para o
+/// caso mais comum, sem cada tela remontar o mesmo AppDialog.
+Future<bool> showAppConfirm({
+  required BuildContext context,
+  required String title,
+  required String message,
+  required String confirmLabel,
+  required String cancelLabel,
+  bool isDestructive = false,
+}) async =>
+    await showAppDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AppDialog(
+        title: title,
+        message: message,
+        confirmLabel: confirmLabel,
+        cancelLabel: cancelLabel,
+        isDestructive: isDestructive,
+        onConfirm: () => Navigator.of(dialogContext).pop(true),
+        onCancel: () => Navigator.of(dialogContext).pop(false),
+      ),
+    ) ??
+    false;
+
+/// Aviso curto e nao bloqueante.
+void showAppSnack(
+  BuildContext context, {
+  required String message,
+  bool isError = false,
+}) {
+  final colors = context.colors;
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? colors.danger : colors.surfaceHighest,
+      ),
+    );
+}
+
 class AppDialog extends StatelessWidget {
   const AppDialog({
     required this.title,

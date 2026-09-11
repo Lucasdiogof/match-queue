@@ -1407,5 +1407,33 @@
   "managersBlockedTitle": "Todavía sin dato real",
   "managersBlockedMessage": "Hoy solo existen registros de prueba (nombres ficticios usados en el selector de técnico del Plantilla). Necesitamos una fuente real de managers de FC 27 antes de mostrar esto como catálogo.",
   "consumablesBlockedTitle": "Todavía sin dato real",
-  "consumablesBlockedMessage": "Chemistry Styles ya tiene su propia sección en Mecánicas. Los demás consumibles no existen hoy en nuestro catálogo."
+  "consumablesBlockedMessage": "Chemistry Styles ya tiene su propia sección en Mecánicas. Los demás consumibles no existen hoy en nuestro catálogo.",
+  "errorSquadEditConflict": "Esta plantilla se modificó en otro dispositivo. Recarga la versión más reciente antes de continuar.",
+  "errorSquadDuplicatedPlayer": "El mismo jugador no puede ocupar dos posiciones.",
+  "errorSquadInvalidLineup": "No se pudo guardar esta alineación.",
+  "squadSaveAction": "Guardar",
+  "squadSavedFeedback": "Plantilla guardada",
+  "squadDiscardTitle": "¿Descartar cambios?",
+  "squadDiscardMessage": "Hay cambios sin guardar en esta plantilla.",
+  "squadDiscardKeep": "Seguir editando",
+  "squadDiscardConfirm": "Descartar",
+  "squadReloadAction": "Recargar",
+  "squadChemistryUpdating": "Recalculando…",
+  "squadChemistryUnavailable": "No se pudo recalcular la química.",
+  "squadManagerLabel": "Entrenador",
+  "squadManagerEmpty": "Seleccionar entrenador",
+  "squadShareAction": "Compartir plantilla",
+  "squadOverallLabel": "Media",
+  "squadChemistryLabel": "Química",
+  "squadFormationDroppedPlayers": "{count, plural, =1{1 jugador salió de la alineación: no tiene posición compatible en la nueva formación ({names}).} other{{count} jugadores salieron de la alineación: no tienen posición compatible en la nueva formación ({names}).}}",
+  "@squadFormationDroppedPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  }
 }

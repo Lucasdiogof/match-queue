@@ -4,7 +4,182 @@
 no repositório de propósito: anotação local não atravessa troca de máquina
 nem de ambiente, este arquivo sim.
 
-## Estado atual (2026-09-10) — leia esta seção primeiro
+## Estado atual (2026-09-11) — leia esta seção primeiro
+
+Repaginada visual + Elenco Builder. **Etapas 1 e 2 já em `main`
+(`c61adba`, com o wordmark novo). Etapa 3 está numa branch NÃO MERGEADA,
+com QA visual real do builder já feita.**
+
+```
+main                             c61adba
+redesign-etapa3-lineup-builder   afbb074   <- 13 commits, pushada, sem merge
+```
+
+`flutter analyze` limpo, `flutter test` **55/55**, **96 migrations local ==
+remoto**.
+
+**QA visual do builder executada de verdade nesta rodada** (campo, técnico,
+share, light/dark, 360×600/360×740) — pela primeira vez o ambiente de
+preview Web deste sandbox não travou no login (achado anterior de "CanvasKit
+não sincroniza texto digitado" não se repetiu; ver seção logo abaixo). Três
+bugs reais achados e corrigidos ao vivo, ver "QA visual da Etapa 3
+(2026-09-11)".
+
+### Como rodar as coisas neste projeto
+
+Sem Docker e sem `supabase start`. O CLI fala com o projeto remoto:
+
+```bash
+npx supabase db push                      # aplica migrations
+npx supabase db query --linked "<sql>"    # roda SQL avulso
+npx supabase db query --linked -f arquivo.sql
+```
+
+Fixtures de química (passa quando devolve `ALL CHEMISTRY FIXTURES PASSED`):
+
+```bash
+npx supabase db query --linked -f supabase/tests/chemistry_fixtures.sql
+```
+
+### ⚠️ Armadilha: migrations estão à frente do relógio
+
+As migrations `20261012*` foram aplicadas em **setembro**. Toda migration
+nova precisa ordenar **acima de `20261012100500`** — uma data real de
+setembro ordenaria antes delas e o `db push` recusa com "Found local
+migration files to be inserted before the last migration on remote
+database". Não renomear nem editar migration aplicada.
+
+### Etapa 1 — design system (em `main`)
+
+`AppColors` reescrito com significado: **verde = ação, roxo = conteúdo FC,
+dourado = competitivo, vinho = só Champions (nunca erro)**. Antes o acento
+era literalmente branco no escuro e preto no claro — daí o app inteiro ler
+como cinza. `AppGradients` novo. `AppSemanticColors` ganhou `accent`,
+`accentPressed`, `accentContainer`, `content`, `contentContainer`,
+`competitive`, `competitiveContainer`, `backgroundRaised`.
+
+Dois HEX da paleta proposta foram ajustados por contraste medido: CTA claro
+`#118948` → `#0F8043` (dava 4.47:1) e dourado claro `#9E7628` → `#8F6A24`
+(4.14:1).
+
+Headers das 5 raízes sem eyebrow/subtítulo, bottom nav com traço de acento,
+**app abre em Jogar**.
+
+### Etapa 2 — Jogar/Conta (em `main`)
+
+Ordem nova: pendência → **card unificado Conta+Elenco** → modo → busca →
+Champions → Rivals. `CompetitiveModeCard` compartilhado, escuro nos dois
+temas de propósito. Weekend League → **Champions** e Division Rivals →
+**Rivals** só em valor de ARB; chaves, enums e tabelas intactos.
+
+### Etapa 3 — Elenco Builder (BRANCH, não mergeada)
+
+- **1 Conta = 1 Elenco** garantido por índice único **parcial em
+  `is_active`** (elenco é arquivado, não deletado). Auditoria antes: zero
+  duplicidade. `create_fc_squad` virou idempotente.
+- **Save atômico**: `save_fc_squad_lineup` numa transação, revalidando tudo
+  server-side. Concorrência por `updated_at` (FQ049), sem coluna nova.
+- **Química com UM core**: `_fc_lineup_chemistry(formation, slots, manager,
+  league)`; `_fc_squad_chemistry(squad_id)` virou wrapper;
+  `preview_fc_squad_lineup` é a porta do rascunho e é `stable` (o Postgres
+  proíbe escrita). Paridade provada por asserção dentro da migration + diff
+  byte a byte + fixtures sintéticos.
+- **Rascunho local**: `SquadBuilderCubit` com baseline/draft, `isDirty` por
+  fingerprint de conteúdo, preview debounced 300ms **com contador de
+  geração** (resposta atrasada não vence rascunho novo), overall calculado
+  no Dart (só ele — é média), back sujo com confirmação via `PopScope`.
+- **Remapeamento de formação** em `lineup_remap.dart`. A passada antiga do
+  servidor que encaixava jogador **incompatível** por proximidade foi
+  removida — era ela que escalava atacante de lateral.
+- **Overflow do card** corrigido por geometria (`FittedBox.scaleDown`). Não
+  era o Tom Davies: era escala de fonte × largura da coluna. 6 testes, 5
+  reprovam no código antigo.
+- **Picker prioriza** quem é elegível (ordena pra cima), mas só ESCONDE
+  quem não joga ali quando "Compatíveis" está ligado — ver correção do dia
+  09-11 abaixo, essa frase já foi "filtra incompatível" e isso era o bug.
+- Banco/reservas, `X/11` e `Padrão` saíram da tela. **Dados legados
+  intactos** e já eram ignorados por overall/química (ambos filtram
+  `STARTING`).
+- **Share** gera imagem do rascunho, sem passar por Privacidade.
+
+### QA visual da Etapa 3 (2026-09-11) — 3 bugs achados e corrigidos
+
+Primeira sessão em que o login funcionou de ponta a ponta no navegador de preview
+deste ambiente (duas sessões/três técnicas anteriores tinham falhado — ver
+`handoff_refinement_round.md`). Ambiente local (`flutter build web
+--no-web-resources-cdn`, sem `--dart-define-from-file`, repositórios
+`Local*`). Três bugs reais, nenhum deles no schema/RPC de produção:
+
+1. **Elenco criado ficava sem elenco de novo** — `LocalFcSquadRepository`
+   (o repositório de dev, nunca o de produção) tinha DOIS defeitos que se
+   mascaravam: `saveLineup` recebia `managerId`/`managerLeagueId` e nunca
+   usava (o `save_fc_squad_lineup` real grava os dois); e `_fromJson`
+   nunca reconstruía `manager`/`managerLeague` a partir dos ids salvos no
+   `SharedPreferences`, então o técnico sumia até de quem já tinha sido
+   salvo antes. Corrigido nos dois pontos, com managers/nações/ligas
+   virando listas estáticas compartilhadas entre busca e desserialização.
+2. **Item 19 fechado de verdade**: `SquadsSection` ainda carregava o
+   "ver outras N escalações" (`_showAll`) que a migration
+   `one_squad_per_account` já tinha tornado inalcançável (`list_fc_squads`
+   só devolve `is_active`, e o índice único garante no máximo 1). Código
+   morto removido.
+3. **Bug real de produção, não só do modo local**: com "Compatíveis"
+   desligado (o padrão), o picker buscava uma página ordenada por rating
+   sem filtro de posição — igual a RPC `search_fc_player_cards` faz quando
+   `p_position` é nulo — e então `_sortByEligibility` **filtrava** essa
+   página já cortada em vez de só reordenar, contradizendo o próprio
+   comentário do `setCompatibleOnly` ("sem o filtro, mostra TODO o
+   catálogo, só ordenado"). Resultado: uma posição cujas cartas rankeiam
+   baixo no geral (GK foi o achado, com as 17.873 cartas reais isso também
+   pode acontecer) podia ficar com **zero** resultados na tela, sem
+   nenhuma pista de que dava pra rolar mais. Corrigido: elegível sobe pro
+   topo, nada é escondido a não ser que "Compatíveis" esteja realmente
+   ligado. Teste de regressão em `player_picker_eligibility_test.dart`.
+
+Também confirmado ao vivo, sem correção necessária: campo renderiza as 11
+posições certas por formação sem overflow (4-4-2 testado), módulo do campo
+continua escuro de propósito nos dois temas (claro só muda header/topo),
+sheet de técnico com progressive disclosure (país → técnico → liga) sem
+overflow, share gera a imagem sem erro de console, 360×600 e 360×740 cabem
+o campo inteiro sem scroll cortado.
+
+**Achado à parte, sem relação com a Etapa 3**: 3 PNGs de marca
+(`design/brand/*.png`) apareciam staged para exclusão no início desta
+sessão — eram os masters ativos que outra sessão está editando em `main`
+agora (novo wordmark). Restaurados (ver commit `398c00d`); não deletar.
+
+### Pendências reais
+
+1. ~~Merge da Etapa 3 — falta QA visual do builder~~ **QA visual feita,
+   ver seção acima.** Falta só a decisão de merge em si.
+2. ~~Item 19 da Etapa 3~~ **FECHADO nesta rodada.**
+3. **RPCs antigas sem consumidor**: `set_fc_squad_formation`,
+   `set_fc_squad_manager`, `set_slot`, `clear_slot`, `swap_fc_squad_slots`,
+   `clear_slots`. Mantidas de propósito; limpeza é rodada separada **depois
+   de QA real**.
+4. **Web + share**: arte remota por `<img>` sem CORS contamina o canvas e
+   `toImage()` falha. No Web o cartão usa as fichas próprias. Não fazer
+   proxy improvisado.
+5. **Etapas 4 e 5** não começaram: matchmaking (remover cooldown),
+   histórico imediato, resultado editável, validação Champions 0–15,
+   defaults de privacidade públicos.
+6. **Managers**: funcionalidade existe ponta a ponta, mas os 24 registros
+   são **fictícios (`provider = LOCAL`)**. Importar dados reais é rodada
+   própria, e depende de separar carta/retrato em `image_url` antes.
+7. **Artwork**: 13.516 de 17.873 cartas com `card_image_url`. O CDN da EA
+   **não tem CORS** — no Flutter Web é obrigatório
+   `webHtmlElementStrategy: prefer`.
+
+### Regras do dono que valem sempre
+
+- Nunca `service_role` no app Flutter (tool server-side é o padrão aceito).
+- Nunca versionar secret; não inventar credencial.
+- Não editar migration já aplicada; correção é migration nova.
+- O dono testa o app manualmente — não ficar renderizando.
+
+---
+
+## Estado anterior (2026-09-10)
 
 Fila real de matchmaking POR TIME (evolução deliberada da Etapa 11), HEAD
 pronto pra commit sobre `b9cb8c4`, `flutter analyze` sem issues, `flutter

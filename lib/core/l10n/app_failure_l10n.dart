@@ -51,6 +51,9 @@ extension AppFailureL10n on AppFailure {
       SquadFailureReason.invalidSlot => l10n.errorSquadSlotInvalid,
       SquadFailureReason.cardCannotPlayPosition => l10n.errorSquadCardPosition,
       SquadFailureReason.inUseByActiveSearch => l10n.errorSquadInUse,
+      SquadFailureReason.editConflict => l10n.errorSquadEditConflict,
+      SquadFailureReason.duplicatedPlayer => l10n.errorSquadDuplicatedPlayer,
+      SquadFailureReason.invalidLineup => l10n.errorSquadInvalidLineup,
     },
     MatchmakingFailure(:final reason) => switch (reason) {
       MatchmakingFailureReason.noActiveSearch =>
