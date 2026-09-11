@@ -9,6 +9,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_s
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/weekend_league_detail_page.dart';
 import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,12 +44,23 @@ class _WeekendLeagueCardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
     final record = account.weekendLeagueRecord;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
-      child: AppCard(
+      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+      child: CompetitiveModeCard(
+        mode: CompetitiveMode.champions,
+        title: l10n.gameModeWeekendLeague,
+        trailing: event.isActive
+            ? Container(
+                width: 7,
+                height: 7,
+                decoration: const BoxDecoration(
+                  color: AppColors.championsGold,
+                  shape: BoxShape.circle,
+                ),
+              )
+            : null,
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) =>
@@ -59,50 +71,36 @@ class _WeekendLeagueCardBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Icon(
-                  Icons.emoji_events_outlined,
-                  size: AppSizing.iconLg,
-                  color: colors.textSecondary,
+                CompetitiveStat(
+                  value: '${record.$1}',
+                  label: l10n.statsWinsLabel,
                 ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        l10n.weekendLeagueBadge(event.number),
-                        style: context.textStyles.titleSmall,
-                      ),
-                      const SizedBox(height: AppSpacing.xxs),
-                      Text(
-                        account.hasWeekendLeagueManualOverride
-                            ? l10n.fcAccountWeekendLeagueManualLabel(
-                                record.$1,
-                                record.$2,
-                              )
-                            : l10n.weekendLeagueWindow(
-                                l10n.historyEntryDate(event.startsAt),
-                                l10n.historyEntryDate(event.endsAt),
-                              ),
-                        style: context.textStyles.bodySmall?.copyWith(
-                          color: colors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
+                const SizedBox(width: AppSpacing.xl),
+                CompetitiveStat(
+                  value: '${record.$2}',
+                  label: l10n.statsLossesLabel,
                 ),
-                Text(
-                  '${record.$1}–${record.$2}',
-                  style: context.textStyles.headlineSmall,
+                const Spacer(),
+                const Icon(
+                  Icons.chevron_right,
+                  size: AppSizing.iconMd,
+                  color: AppColors.championsGold,
                 ),
-                const SizedBox(width: AppSpacing.md),
-                if (event.isActive)
-                  AppBadge(
-                    label: l10n.weekendLeagueActiveBadge,
-                    tone: AppBadgeTone.success,
-                  ),
               ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              account.hasWeekendLeagueManualOverride
+                  ? l10n.weekendLeagueBadge(event.number)
+                  : '${l10n.weekendLeagueBadge(event.number)} · '
+                        '${l10n.weekendLeagueWindow(l10n.historyEntryDate(event.startsAt), l10n.historyEntryDate(event.endsAt))}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: context.textStyles.bodySmall?.copyWith(
+                color: AppColors.darkTextSecondary,
+              ),
             ),
             FutureBuilder<WeekendLeagueAccountStats>(
               future: getIt<FcAccountRepository>()
@@ -118,14 +116,16 @@ class _WeekendLeagueCardBody extends StatelessWidget {
                   return const SizedBox.shrink();
                 }
                 return Padding(
-                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  padding: const EdgeInsets.only(top: AppSpacing.xs),
                   child: Text(
                     l10n.statsTopScorerInlineLabel(
                       scorers.first.playerName,
                       scorers.first.goals,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textSecondary,
+                      color: AppColors.darkTextSecondary,
                     ),
                   ),
                 );

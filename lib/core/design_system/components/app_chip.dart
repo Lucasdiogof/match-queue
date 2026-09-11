@@ -9,6 +9,7 @@ class AppChip extends StatelessWidget {
     required this.label,
     this.icon,
     this.isSelected = false,
+    this.accentColor,
     this.onPressed,
     super.key,
   });
@@ -16,6 +17,11 @@ class AppChip extends StatelessWidget {
   final String label;
   final IconData? icon;
   final bool isSelected;
+
+  /// Sobrescreve o acento da selecao. Serve para chip que representa um
+  /// CONTEXTO proprio (Champions, Rivals) em vez de uma acao do produto --
+  /// sem isso, escolher o modo pintaria de verde, que e a cor de acao.
+  final Color? accentColor;
   final VoidCallback? onPressed;
 
   @override
@@ -24,15 +30,18 @@ class AppChip extends StatelessWidget {
     // Selecionado nao pinta o chip inteiro de acento: fundo tingido, borda
     // e texto no acento. Uma fileira de chips totalmente preenchidos
     // competiria com o CTA da tela, e selecao nao e acao.
-    final foreground = isSelected ? colors.accent : colors.textSecondary;
+    final accent = accentColor ?? colors.accent;
+    final foreground = isSelected ? accent : colors.textSecondary;
 
     return Material(
-      color: isSelected ? colors.accentContainer : colors.surfaceElevated,
+      color: isSelected
+          ? accent.withValues(alpha: 0.14)
+          : colors.surfaceElevated,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: AppRadii.borderPill,
         side: BorderSide(
-          color: isSelected ? colors.accent : colors.borderSubtle,
+          color: isSelected ? accent : colors.borderSubtle,
           width: isSelected ? AppSizing.borderWidthStrong : AppSizing.borderWidth,
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
@@ -23,6 +24,10 @@ class GameModeSelector extends StatelessWidget {
               label: mode.label(l10n),
               icon: mode.icon,
               isSelected: mode == selected,
+              // Modo carrega a identidade competitiva; a ACAO (Buscar
+              // partida) continua verde. Sao coisas diferentes e nao podem
+              // usar a mesma cor.
+              accentColor: mode.competitive.accentOn(context),
               onPressed: () => context.read<GameModeCubit>().select(mode),
             ),
         ],
@@ -35,6 +40,11 @@ extension GameModeL10n on GameMode {
   String label(AppLocalizations l10n) => switch (this) {
     GameMode.weekendLeague => l10n.gameModeWeekendLeague,
     GameMode.divisionRivals => l10n.gameModeDivisionRivals,
+  };
+
+  CompetitiveMode get competitive => switch (this) {
+    GameMode.weekendLeague => CompetitiveMode.champions,
+    GameMode.divisionRivals => CompetitiveMode.rivals,
   };
 
   IconData get icon => switch (this) {

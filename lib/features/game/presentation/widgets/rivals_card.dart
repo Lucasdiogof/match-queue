@@ -5,6 +5,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_c
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/rivals_detail_page.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,12 +39,13 @@ class _RivalsCardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
     final division = account.rivalsDivision;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
-      child: AppCard(
+      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+      child: CompetitiveModeCard(
+        mode: CompetitiveMode.rivals,
+        title: l10n.rivalsSectionTitle,
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => RivalsDetailPage(account: account),
@@ -51,33 +53,27 @@ class _RivalsCardBody extends StatelessWidget {
         ),
         child: Row(
           children: <Widget>[
-            Icon(
-              Icons.military_tech_outlined,
-              size: AppSizing.iconLg,
-              color: colors.textSecondary,
-            ),
-            const SizedBox(width: AppSpacing.md),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    l10n.rivalsSectionTitle,
-                    style: context.textStyles.titleSmall,
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    division == null
-                        ? l10n.rivalsNoDivisionLabel
-                        : division.label(l10n),
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textSecondary,
-                    ),
-                  ),
-                ],
+              child: Text(
+                division == null
+                    ? l10n.rivalsNoDivisionLabel
+                    : division.label(l10n),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: context.textStyles.titleMedium?.copyWith(
+                  color: division == null
+                      ? AppColors.darkTextSecondary
+                      : AppColors.darkTextPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            Icon(Icons.chevron_right, color: colors.textTertiary),
+            const SizedBox(width: AppSpacing.sm),
+            const Icon(
+              Icons.chevron_right,
+              size: AppSizing.iconMd,
+              color: AppColors.rivalsGold,
+            ),
           ],
         ),
       ),

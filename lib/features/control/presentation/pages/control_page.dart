@@ -5,8 +5,7 @@ import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_onboarding_card.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_selector_row.dart';
-import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_selector_row.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/account_squad_card.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
@@ -140,18 +139,19 @@ class _ControlBody extends StatelessWidget {
               final team = selected!;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                // Ordem: onde estou (Rivals/Weekend League/pendencia) ->
-                // quem sou (conta) -> com que time jogo (squad) -> o que
-                // vou jogar (modo) -> a fila. Os 3 cards de status vieram
-                // da extinta Home -- sem ela, o unico lugar que ja tinha
-                // contexto de Conta FC pra mostra-los e aqui.
+                // Matchmaking primeiro. A ordem antiga abria com progresso
+                // competitivo, entao a primeira dobra falava do fim de
+                // semana passado em vez de "voce pode buscar agora". Agora a
+                // dobra responde: que conta, que elenco, que modo, quem esta
+                // na fila, e o botao. Champions e Rivals sao consequencia --
+                // vem depois.
+                //
+                // A pendencia de resultado fica no topo por ser transitoria e
+                // acionavel: ela some assim que respondida, entao nao disputa
+                // a dobra em estado normal.
                 children: <Widget>[
-                  const WeekendLeagueCard(),
-                  const RivalsCard(),
                   const PendingMatchCard(),
-                  const FcAccountSelectorRow(),
-                  const SizedBox(height: AppSpacing.sm),
-                  const SquadSelectorRow(),
+                  const AccountSquadCard(),
                   const SizedBox(height: AppSpacing.lg),
                   AppCard(
                     child: Column(
@@ -166,7 +166,7 @@ class _ControlBody extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.lg),
                   if (account != null)
                     MatchmakingSection(
                       fcAccountId: account.id,
@@ -175,6 +175,9 @@ class _ControlBody extends StatelessWidget {
                       onMatchFound: () =>
                           context.read<PendingMatchCubit>().refreshSilently(),
                     ),
+                  const SizedBox(height: AppSpacing.xl),
+                  const WeekendLeagueCard(),
+                  const RivalsCard(),
                 ],
               );
             },
