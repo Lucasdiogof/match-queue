@@ -76,6 +76,36 @@ class LocalFcSquadRepository implements FcSquadRepository {
   }) => _update(squadId, (s) => _copy(s, name: name));
 
   @override
+  Future<FcSquadDetail> saveLineup({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+    DateTime? expectedUpdatedAt,
+  }) => _update(squadId, (s) {
+    // Em memoria nao ha concorrencia para checar: expectedUpdatedAt e aceito
+    // e ignorado de proposito, para o modo local nao divergir do contrato.
+    final next = _formation(formationCode);
+    final cards = <String, PlayerCard>{
+      for (final slot in s.slots) slot.card.id: slot.card,
+    };
+    return _copy(
+      s,
+      formation: next,
+      slots: <SquadSlot>[
+        for (final entry in slots.entries)
+          if (cards[entry.value] case final card?)
+            SquadSlot(
+              type: SquadSlotType.starting,
+              slotCode: entry.key,
+              card: card,
+            ),
+      ],
+    );
+  });
+
+  @override
   Future<FcSquadDetail> setFormation({
     required String squadId,
     required String formationCode,

@@ -23,6 +23,15 @@ abstract interface class FcSquadRemoteDataSource {
     required String formationCode,
   });
 
+  Future<Map<String, dynamic>> saveLineup({
+    required String squadId,
+    required String formationCode,
+    required List<Map<String, String>> slots,
+    String? managerId,
+    String? managerLeagueId,
+    DateTime? expectedUpdatedAt,
+  });
+
   Future<Map<String, dynamic>> setDefault(String squadId);
 
   Future<void> archiveSquad(String squadId);
@@ -131,6 +140,25 @@ class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
   }) => _map('set_fc_squad_formation', <String, dynamic>{
     'p_squad_id': squadId,
     'p_formation_code': formationCode,
+  });
+
+  @override
+  Future<Map<String, dynamic>> saveLineup({
+    required String squadId,
+    required String formationCode,
+    required List<Map<String, String>> slots,
+    String? managerId,
+    String? managerLeagueId,
+    DateTime? expectedUpdatedAt,
+  }) => _map('save_fc_squad_lineup', <String, dynamic>{
+    'p_squad_id': squadId,
+    'p_formation_code': formationCode,
+    'p_slots': slots,
+    'p_manager_id': managerId,
+    'p_manager_league_id': managerLeagueId,
+    // UTC em ISO-8601: o servidor compara com o timestamptz que ele mesmo
+    // emitiu, entao qualquer conversao de fuso aqui viraria falso conflito.
+    'p_expected_updated_at': expectedUpdatedAt?.toUtc().toIso8601String(),
   });
 
   @override

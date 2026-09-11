@@ -56,6 +56,33 @@ class SupabaseFcSquadRepository implements FcSquadRepository {
   );
 
   @override
+  Future<FcSquadDetail> saveLineup({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+    DateTime? expectedUpdatedAt,
+  }) => _guard(
+    () async => FcSquadModel.detailFromJson(
+      await _dataSource.saveLineup(
+        squadId: squadId,
+        formationCode: formationCode,
+        slots: <Map<String, String>>[
+          for (final entry in slots.entries)
+            <String, String>{
+              'slot_code': entry.key,
+              'player_card_id': entry.value,
+            },
+        ],
+        managerId: managerId,
+        managerLeagueId: managerLeagueId,
+        expectedUpdatedAt: expectedUpdatedAt,
+      ),
+    ),
+  );
+
+  @override
   Future<FcSquadDetail> setFormation({
     required String squadId,
     required String formationCode,
