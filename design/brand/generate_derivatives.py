@@ -127,9 +127,10 @@ logo.resize((512, 512), Image.LANCZOS).save(os.path.join(ASSETS_DIR, "icon.png")
 escrito_transparent = remove_black_background(escrito_rgba.convert("RGB"))
 escrito_transparent.save(os.path.join(ASSETS_DIR, "wordmark.png"), optimize=True)
 
-# Splash lockup shown by the in-app SplashPage widget (not full-bleed native
-# splash) -- 640px is comfortable for the size it's actually displayed at.
-logo.resize((640, 640), Image.LANCZOS).save(os.path.join(ASSETS_DIR, "splash.png"), optimize=True)
+# No separate splash.png: BrandAssets.splashMark is null on purpose (see its
+# doc comment) -- SplashPage composes the icon + wordmark above live from
+# assets/brand/icon.png and assets/brand/wordmark.png instead of a flattened
+# lockup that can go stale on its own.
 
 # ---- Build-time-only sources (flutter_launcher_icons / flutter_native_splash) ----
 

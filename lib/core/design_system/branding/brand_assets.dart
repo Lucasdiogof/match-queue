@@ -21,10 +21,17 @@ class BrandAssets {
   /// icone do app precisar divergir da marca usada dentro do app.
   static const String? appIcon = 'assets/brand/icon.png';
 
-  /// Lockup controle + wordmark, usado pela SplashPage (a splash do proprio
-  /// Flutter, nao a nativa -- essa vive em android/ e ios/, geradas via
-  /// flutter_native_splash a partir de design/brand/generated/).
-  static const String? splashMark = 'assets/brand/splash.png';
+  /// Lockup controle + wordmark pronto (uma unica imagem achatada), usado
+  /// pela SplashPage (a splash do proprio Flutter, nao a nativa -- essa vive
+  /// em android/ e ios/, geradas via flutter_native_splash a partir de
+  /// design/brand/generated/). Fica null de proposito: nao existe mais um
+  /// asset combinado gerado -- [logo]/[wordmark] mudam de arte com mais
+  /// frequencia que essa combinacao era atualizada, e ja tivemos um
+  /// derivado assim ficar desatualizado silenciosamente. Com null, a
+  /// SplashPage cai no fallback BrandLockup (BrandMark + BrandWordmark
+  /// compostos ao vivo a partir dos dois assets atuais, mesmo padrao do
+  /// onboarding), que nunca fica dessincronizado.
+  static const String? splashMark = null;
 
   static bool get hasLogo => logo != null;
 
