@@ -7,15 +7,23 @@ nem de ambiente, este arquivo sim.
 ## Estado atual (2026-09-11) — leia esta seção primeiro
 
 Repaginada visual + Elenco Builder. **Etapas 1 e 2 já em `main`
-(`2948c6a`). Etapa 3 está numa branch NÃO MERGEADA.**
+(`c61adba`, com o wordmark novo). Etapa 3 está numa branch NÃO MERGEADA,
+com QA visual real do builder já feita.**
 
 ```
-main                             2948c6a
-redesign-etapa3-lineup-builder   7a915f3   <- 9 commits, pushada, sem merge
+main                             c61adba
+redesign-etapa3-lineup-builder   afbb074   <- 13 commits, pushada, sem merge
 ```
 
-`flutter analyze` limpo, `flutter test` **53/53**, **96 migrations local ==
+`flutter analyze` limpo, `flutter test` **55/55**, **96 migrations local ==
 remoto**.
+
+**QA visual do builder executada de verdade nesta rodada** (campo, técnico,
+share, light/dark, 360×600/360×740) — pela primeira vez o ambiente de
+preview Web deste sandbox não travou no login (achado anterior de "CanvasKit
+não sincroniza texto digitado" não se repetiu; ver seção logo abaixo). Três
+bugs reais achados e corrigidos ao vivo, ver "QA visual da Etapa 3
+(2026-09-11)".
 
 ### Como rodar as coisas neste projeto
 
@@ -86,18 +94,65 @@ temas de propósito. Weekend League → **Champions** e Division Rivals →
 - **Overflow do card** corrigido por geometria (`FittedBox.scaleDown`). Não
   era o Tom Davies: era escala de fonte × largura da coluna. 6 testes, 5
   reprovam no código antigo.
-- **Picker filtra** incompatível em vez de só reordenar.
+- **Picker prioriza** quem é elegível (ordena pra cima), mas só ESCONDE
+  quem não joga ali quando "Compatíveis" está ligado — ver correção do dia
+  09-11 abaixo, essa frase já foi "filtra incompatível" e isso era o bug.
 - Banco/reservas, `X/11` e `Padrão` saíram da tela. **Dados legados
   intactos** e já eram ignorados por overall/química (ambos filtram
   `STARTING`).
 - **Share** gera imagem do rascunho, sem passar por Privacidade.
 
+### QA visual da Etapa 3 (2026-09-11) — 3 bugs achados e corrigidos
+
+Primeira sessão em que o login funcionou de ponta a ponta no navegador de preview
+deste ambiente (duas sessões/três técnicas anteriores tinham falhado — ver
+`handoff_refinement_round.md`). Ambiente local (`flutter build web
+--no-web-resources-cdn`, sem `--dart-define-from-file`, repositórios
+`Local*`). Três bugs reais, nenhum deles no schema/RPC de produção:
+
+1. **Elenco criado ficava sem elenco de novo** — `LocalFcSquadRepository`
+   (o repositório de dev, nunca o de produção) tinha DOIS defeitos que se
+   mascaravam: `saveLineup` recebia `managerId`/`managerLeagueId` e nunca
+   usava (o `save_fc_squad_lineup` real grava os dois); e `_fromJson`
+   nunca reconstruía `manager`/`managerLeague` a partir dos ids salvos no
+   `SharedPreferences`, então o técnico sumia até de quem já tinha sido
+   salvo antes. Corrigido nos dois pontos, com managers/nações/ligas
+   virando listas estáticas compartilhadas entre busca e desserialização.
+2. **Item 19 fechado de verdade**: `SquadsSection` ainda carregava o
+   "ver outras N escalações" (`_showAll`) que a migration
+   `one_squad_per_account` já tinha tornado inalcançável (`list_fc_squads`
+   só devolve `is_active`, e o índice único garante no máximo 1). Código
+   morto removido.
+3. **Bug real de produção, não só do modo local**: com "Compatíveis"
+   desligado (o padrão), o picker buscava uma página ordenada por rating
+   sem filtro de posição — igual a RPC `search_fc_player_cards` faz quando
+   `p_position` é nulo — e então `_sortByEligibility` **filtrava** essa
+   página já cortada em vez de só reordenar, contradizendo o próprio
+   comentário do `setCompatibleOnly` ("sem o filtro, mostra TODO o
+   catálogo, só ordenado"). Resultado: uma posição cujas cartas rankeiam
+   baixo no geral (GK foi o achado, com as 17.873 cartas reais isso também
+   pode acontecer) podia ficar com **zero** resultados na tela, sem
+   nenhuma pista de que dava pra rolar mais. Corrigido: elegível sobe pro
+   topo, nada é escondido a não ser que "Compatíveis" esteja realmente
+   ligado. Teste de regressão em `player_picker_eligibility_test.dart`.
+
+Também confirmado ao vivo, sem correção necessária: campo renderiza as 11
+posições certas por formação sem overflow (4-4-2 testado), módulo do campo
+continua escuro de propósito nos dois temas (claro só muda header/topo),
+sheet de técnico com progressive disclosure (país → técnico → liga) sem
+overflow, share gera a imagem sem erro de console, 360×600 e 360×740 cabem
+o campo inteiro sem scroll cortado.
+
+**Achado à parte, sem relação com a Etapa 3**: 3 PNGs de marca
+(`design/brand/*.png`) apareciam staged para exclusão no início desta
+sessão — eram os masters ativos que outra sessão está editando em `main`
+agora (novo wordmark). Restaurados (ver commit `398c00d`); não deletar.
+
 ### Pendências reais
 
-1. **Merge da Etapa 3** — falta QA visual do builder (campo, técnico,
-   share). Os caminhos de risco têm teste automatizado.
-2. **Item 19 da Etapa 3**: a seção Elenco na Conta ainda lista elencos;
-   com 1:1 deveria ir direto para montar/editar.
+1. ~~Merge da Etapa 3 — falta QA visual do builder~~ **QA visual feita,
+   ver seção acima.** Falta só a decisão de merge em si.
+2. ~~Item 19 da Etapa 3~~ **FECHADO nesta rodada.**
 3. **RPCs antigas sem consumidor**: `set_fc_squad_formation`,
    `set_fc_squad_manager`, `set_slot`, `clear_slot`, `swap_fc_squad_slots`,
    `clear_slots`. Mantidas de propósito; limpeza é rodada separada **depois
