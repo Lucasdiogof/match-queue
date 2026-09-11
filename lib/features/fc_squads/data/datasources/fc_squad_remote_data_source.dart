@@ -23,6 +23,14 @@ abstract interface class FcSquadRemoteDataSource {
     required String formationCode,
   });
 
+  Future<Map<String, dynamic>> previewLineup({
+    required String squadId,
+    required String formationCode,
+    required List<Map<String, String>> slots,
+    String? managerId,
+    String? managerLeagueId,
+  });
+
   Future<Map<String, dynamic>> saveLineup({
     required String squadId,
     required String formationCode,
@@ -140,6 +148,21 @@ class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
   }) => _map('set_fc_squad_formation', <String, dynamic>{
     'p_squad_id': squadId,
     'p_formation_code': formationCode,
+  });
+
+  @override
+  Future<Map<String, dynamic>> previewLineup({
+    required String squadId,
+    required String formationCode,
+    required List<Map<String, String>> slots,
+    String? managerId,
+    String? managerLeagueId,
+  }) => _map('preview_fc_squad_lineup', <String, dynamic>{
+    'p_squad_id': squadId,
+    'p_formation_code': formationCode,
+    'p_slots': slots,
+    'p_manager_id': managerId,
+    'p_manager_league_id': managerLeagueId,
   });
 
   @override

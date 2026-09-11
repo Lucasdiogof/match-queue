@@ -8,6 +8,17 @@ abstract interface class FcSquadRepository {
 
   Future<FcSquadDetail> getBuilder(String squadId);
 
+  /// Quimica do rascunho, sem persistir. Mesma regra e mesmas validacoes do
+  /// save -- a funcao no servidor e `stable`, entao gravar nao e apenas
+  /// improvavel: o motor recusa.
+  Future<int> previewChemistry({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+  });
+
   Future<FcSquadDetail> createSquad({
     required String fcAccountId,
     required String name,

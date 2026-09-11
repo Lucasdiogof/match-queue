@@ -67,6 +67,12 @@ enum SquadFailureReason {
   invalidSlot,
   cardCannotPlayPosition,
   inUseByActiveSearch,
+
+  /// O elenco mudou em outro aparelho desde que o rascunho foi carregado.
+  /// Tratado a parte porque a saida nao e "tentar de novo", e recarregar.
+  editConflict,
+  duplicatedPlayer,
+  invalidLineup,
 }
 
 enum PublicProfileFailureReason {

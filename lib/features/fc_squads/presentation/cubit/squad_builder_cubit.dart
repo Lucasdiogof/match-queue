@@ -1,100 +1,148 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/lineup_draft.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
+import 'package:fifa_queue/features/fc_squads/domain/lineup_remap.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/fc_squad_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum SquadBuilderStatus { loading, ready, failure }
 
-/// Slot marcado para mover. Guardar o alvo em vez de arrastar mantém a troca
-/// possível no mobile sem depender de drag (item 37).
-class PendingMove extends Equatable {
-  const PendingMove({required this.type, required this.slotCode});
-
-  final SquadSlotType type;
-  final String slotCode;
-
-  @override
-  List<Object?> get props => <Object?>[type, slotCode];
-}
+enum LineupPreviewStatus { idle, updating, failure }
 
 class SquadBuilderState extends Equatable {
   const SquadBuilderState({
     this.status = SquadBuilderStatus.loading,
-    this.squad,
+    this.baseline,
+    this.draft,
     this.formations = const <FormationDefinition>[],
-    this.pendingMove,
-    this.savingSlot,
+    this.chemistry,
+    this.previewStatus = LineupPreviewStatus.idle,
     this.isSaving = false,
     this.failure,
-    this.actionFailure,
+    this.saveFailure,
+    this.hasConflict = false,
+    this.droppedByFormationChange = const <PlayerCard>[],
   });
 
   final SquadBuilderStatus status;
-  final FcSquadDetail? squad;
-  final List<FormationDefinition> formations;
-  final PendingMove? pendingMove;
 
-  /// Qual slot está gravando agora. Serve para o spinner ficar NO slot em vez
-  /// de travar o campo inteiro a cada ação (item 105).
-  final String? savingSlot;
+  /// O que o servidor confirmou. Nunca alterado por edicao local.
+  final FcSquadDetail? baseline;
+
+  /// O que o usuario esta montando.
+  final LineupDraft? draft;
+
+  final List<FormationDefinition> formations;
+
+  /// Quimica correspondente ao rascunho. Vem do servidor -- ver
+  /// [LineupDraft.overall] para o porque de overall ser a excecao.
+  final int? chemistry;
+  final LineupPreviewStatus previewStatus;
 
   final bool isSaving;
   final AppFailure? failure;
-  final AppFailure? actionFailure;
+  final AppFailure? saveFailure;
+
+  /// Elenco alterado em outro aparelho. Nao e "erro de save": a saida e
+  /// recarregar, e salvar por cima fica bloqueado ate isso acontecer.
+  final bool hasConflict;
+
+  /// Quem saiu na ultima troca de formacao. E feedback da operacao, nao um
+  /// lugar onde jogadores ficam guardados -- some na proxima mutacao.
+  final List<PlayerCard> droppedByFormationChange;
+
+  /// Diferenca REAL entre rascunho e baseline. Trocar um jogador e voltar ao
+  /// anterior devolve false, porque compara conteudo e nao "houve toque".
+  bool get isDirty {
+    final current = draft;
+    final saved = baseline;
+    if (current == null || saved == null) {
+      return false;
+    }
+    return current.fingerprint != LineupDraft.fromDetail(saved).fingerprint;
+  }
+
+  bool get canSave => isDirty && !isSaving && !hasConflict;
+
+  int? get overall => draft?.overall;
 
   SquadBuilderState copyWith({
     SquadBuilderStatus? status,
-    FcSquadDetail? squad,
+    FcSquadDetail? baseline,
+    LineupDraft? draft,
     List<FormationDefinition>? formations,
-    PendingMove? pendingMove,
-    bool clearPendingMove = false,
-    String? savingSlot,
-    bool clearSavingSlot = false,
+    int? chemistry,
+    bool clearChemistry = false,
+    LineupPreviewStatus? previewStatus,
     bool? isSaving,
     AppFailure? failure,
     bool clearFailure = false,
-    AppFailure? actionFailure,
-    bool clearActionFailure = false,
+    AppFailure? saveFailure,
+    bool clearSaveFailure = false,
+    bool? hasConflict,
+    List<PlayerCard>? droppedByFormationChange,
   }) => SquadBuilderState(
     status: status ?? this.status,
-    squad: squad ?? this.squad,
+    baseline: baseline ?? this.baseline,
+    draft: draft ?? this.draft,
     formations: formations ?? this.formations,
-    pendingMove: clearPendingMove ? null : (pendingMove ?? this.pendingMove),
-    savingSlot: clearSavingSlot ? null : (savingSlot ?? this.savingSlot),
+    chemistry: clearChemistry ? null : (chemistry ?? this.chemistry),
+    previewStatus: previewStatus ?? this.previewStatus,
     isSaving: isSaving ?? this.isSaving,
     failure: clearFailure ? null : (failure ?? this.failure),
-    actionFailure: clearActionFailure
-        ? null
-        : (actionFailure ?? this.actionFailure),
+    saveFailure: clearSaveFailure ? null : (saveFailure ?? this.saveFailure),
+    hasConflict: hasConflict ?? this.hasConflict,
+    droppedByFormationChange:
+        droppedByFormationChange ?? this.droppedByFormationChange,
   );
 
   @override
   List<Object?> get props => <Object?>[
     status,
-    squad,
+    baseline,
+    draft,
     formations,
-    pendingMove,
-    savingSlot,
+    chemistry,
+    previewStatus,
     isSaving,
     failure,
-    actionFailure,
+    saveFailure,
+    hasConflict,
+    droppedByFormationChange,
   ];
 }
 
-/// Estado do Squad Builder, escopado a UM squad.
+/// Editor do Elenco.
 ///
-/// Persistência é por ação: cada mudança chama a RPC e o estado passa a ser a
-/// resposta dela. Não existe botão "salvar tudo" -- e, se uma chamada falhar,
-/// o que fica na tela é o estado que o servidor devolveu, nunca um campo
-/// otimista divergente do backend (item 106).
+/// Antes cada toque ia direto ao servidor por uma RPC propria. Agora toda
+/// edicao acontece no rascunho e so `save()` persiste, numa transacao.
+///
+/// As RPCs por acao continuam existindo e funcionando; este cubit apenas
+/// deixou de usa-las. A limpeza delas e uma rodada separada, depois do fluxo
+/// novo rodar com dados reais.
 class SquadBuilderCubit extends Cubit<SquadBuilderState> {
   SquadBuilderCubit(this._repository, {required this.squadId})
     : super(const SquadBuilderState());
 
   final FcSquadRepository _repository;
   final String squadId;
+
+  Timer? _previewDebounce;
+
+  /// Contador de geracao do preview. Sem ele, uma resposta lenta de um
+  /// rascunho antigo chegaria depois de uma rapida do rascunho novo e
+  /// sobrescreveria a quimica correta. Debounce sozinho nao resolve isso --
+  /// so reduz a frequencia.
+  int _previewGeneration = 0;
+
+  static const Duration _previewDelay = Duration(milliseconds: 300);
 
   Future<void> load() async {
     emit(
@@ -111,9 +159,16 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
       emit(
         state.copyWith(
           status: SquadBuilderStatus.ready,
-          squad: squad,
+          baseline: squad,
+          draft: LineupDraft.fromDetail(squad),
           formations: formations,
+          chemistry: squad.chemistry,
+          previewStatus: LineupPreviewStatus.idle,
+          isSaving: false,
+          hasConflict: false,
           clearFailure: true,
+          clearSaveFailure: true,
+          droppedByFormationChange: const <PlayerCard>[],
         ),
       );
     } on AppFailure catch (failure) {
@@ -125,167 +180,235 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
     }
   }
 
-  Future<bool> rename(String name) =>
-      _run(() => _repository.renameSquad(squadId: squadId, name: name));
+  /// Depois de um conflito: o servidor e a autoridade, entao o rascunho e
+  /// descartado e tudo recomeca do estado atual. Sem merge automatico e sem
+  /// "salvar assim mesmo".
+  Future<void> reloadAfterConflict() => load();
 
-  Future<bool> setFormation(String formationCode) => _run(
-    () => _repository.setFormation(
-      squadId: squadId,
-      formationCode: formationCode,
-    ),
-  );
+  // -------------------------------------------------------------- mutacoes
 
-  Future<bool> setDefault() => _run(() => _repository.setDefault(squadId));
-
-  Future<bool> assignCard({
-    required SquadSlotType type,
-    required String slotCode,
-    required String playerCardId,
-  }) => _run(
-    () => _repository.setSlot(
-      squadId: squadId,
-      type: type,
-      slotCode: slotCode,
-      playerCardId: playerCardId,
-    ),
-    slot: slotCode,
-  );
-
-  Future<bool> clearSlot({
-    required SquadSlotType type,
-    required String slotCode,
-  }) => _run(
-    () =>
-        _repository.clearSlot(squadId: squadId, type: type, slotCode: slotCode),
-    slot: slotCode,
-  );
-
-  /// Move/troca vindo de um drop (drag and drop). Reusa a MESMA RPC atômica
-  /// do tap-to-swap (`swap_fc_squad_slots`) -- nunca um clear+set em dois
-  /// passos, que deixaria o squad inconsistente se o segundo passo falhasse.
-  /// Soltar em cima do próprio slot de origem é um no-op silencioso.
-  Future<bool> moveOrSwap({
-    required SquadSlotType fromType,
-    required String fromSlotCode,
-    required SquadSlotType toType,
-    required String toSlotCode,
-  }) {
-    if (fromType == toType && fromSlotCode == toSlotCode) {
-      return Future.value(false);
+  void assignCard({required String slotCode, required PlayerCard card}) {
+    final draft = state.draft;
+    if (draft == null) {
+      return;
     }
-    if (state.pendingMove != null) {
-      emit(state.copyWith(clearPendingMove: true));
+    final next = Map<String, PlayerCard>.of(draft.starters);
+    // Mesmo jogador em dois slots nunca acontece: se ele ja estava escalado,
+    // sai de onde estava. Na pratica isso vira uma troca quando o destino
+    // tambem esta ocupado, que e o que a pessoa espera ao arrastar.
+    final previous = draft.slotOf(card.id);
+    if (previous != null && previous != slotCode) {
+      final displaced = next[slotCode];
+      next.remove(previous);
+      if (displaced != null) {
+        next[previous] = displaced;
+      }
     }
-    return _run(
-      () => _repository.swapSlots(
-        squadId: squadId,
-        fromType: fromType,
-        fromCode: fromSlotCode,
-        toType: toType,
-        toCode: toSlotCode,
+    next[slotCode] = card;
+    _mutate(draft.copyWith(starters: next));
+  }
+
+  void clearSlot(String slotCode) {
+    final draft = state.draft;
+    if (draft == null || !draft.starters.containsKey(slotCode)) {
+      return;
+    }
+    _mutate(
+      draft.copyWith(
+        starters: Map<String, PlayerCard>.of(draft.starters)
+          ..remove(slotCode),
       ),
-      slot: toSlotCode,
     );
   }
 
-  /// "Limpar escalação": apaga só os slots (titular+banco+reserva), nunca o
-  /// squad em si. Confirmação mora na UI.
-  Future<bool> clearAllSlots() => _run(() => _repository.clearSlots(squadId));
-
-  Future<bool> setManager({String? managerId, String? managerLeagueId}) => _run(
-    () => _repository.setManager(
-      squadId: squadId,
-      managerId: managerId,
-      managerLeagueId: managerLeagueId,
-    ),
-  );
-
-  /// Primeiro toque marca a origem; o segundo executa a troca. Tocar de novo
-  /// no mesmo slot cancela.
-  Future<void> tapForMove({
-    required SquadSlotType type,
-    required String slotCode,
-  }) async {
-    final pending = state.pendingMove;
-    if (pending == null) {
-      emit(
-        state.copyWith(
-          pendingMove: PendingMove(type: type, slotCode: slotCode),
-        ),
-      );
+  void clearAll() {
+    final draft = state.draft;
+    if (draft == null || draft.isEmpty) {
       return;
     }
-    if (pending.type == type && pending.slotCode == slotCode) {
-      emit(state.copyWith(clearPendingMove: true));
+    _mutate(draft.copyWith(starters: const <String, PlayerCard>{}));
+  }
+
+  void setManager({FcManager? manager, FcLeague? league}) {
+    final draft = state.draft;
+    if (draft == null) {
       return;
     }
-    emit(state.copyWith(clearPendingMove: true));
-    await _run(
-      () => _repository.swapSlots(
-        squadId: squadId,
-        fromType: pending.type,
-        fromCode: pending.slotCode,
-        toType: type,
-        toCode: slotCode,
+    _mutate(
+      draft.copyWith(
+        manager: manager,
+        clearManager: manager == null,
+        managerLeague: league,
+        clearManagerLeague: league == null,
       ),
-      slot: slotCode,
     );
   }
 
-  void cancelMove() {
-    if (state.pendingMove != null) {
-      emit(state.copyWith(clearPendingMove: true));
+  /// Troca de formacao, local. Reaproveita quem cabe e avisa quem saiu.
+  void setFormation(String formationCode) {
+    final draft = state.draft;
+    if (draft == null || draft.formation.code == formationCode) {
+      return;
     }
+    final target = state.formations
+        .where((f) => f.code == formationCode)
+        .firstOrNull;
+    if (target == null) {
+      return;
+    }
+
+    final result = remapLineup(
+      current: <RemapEntry>[
+        for (final entry in draft.starters.entries)
+          if (draft.formation.slots
+                  .where((s) => s.slotCode == entry.key)
+                  .firstOrNull
+              case final slot?)
+            RemapEntry(
+              slotCode: entry.key,
+              card: entry.value,
+              positionCode: slot.positionCode,
+              x: slot.x,
+              y: slot.y,
+            ),
+      ],
+      target: target.slots,
+    );
+
+    _mutate(
+      draft.copyWith(formation: target, starters: result.assigned),
+      dropped: result.dropped,
+    );
   }
 
-  void clearActionFailure() {
-    if (state.actionFailure != null) {
-      emit(state.copyWith(clearActionFailure: true));
-    }
-  }
-
-  Future<bool> _run(
-    Future<FcSquadDetail> Function() action, {
-    String? slot,
-  }) async {
-    if (state.isSaving) {
-      return false;
-    }
+  /// Toda mutacao passa por aqui: emite o rascunho novo, limpa erro de save
+  /// anterior e reagenda o preview.
+  void _mutate(LineupDraft next, {List<PlayerCard>? dropped}) {
     emit(
       state.copyWith(
-        isSaving: true,
-        savingSlot: slot,
-        clearSavingSlot: slot == null,
-        clearActionFailure: true,
+        draft: next,
+        droppedByFormationChange: dropped ?? const <PlayerCard>[],
+        clearSaveFailure: true,
       ),
     );
+    _schedulePreview();
+  }
+
+  // --------------------------------------------------------------- preview
+
+  void _schedulePreview() {
+    _previewDebounce?.cancel();
+    final draft = state.draft;
+    if (draft == null) {
+      return;
+    }
+    // Marca "recalculando" imediatamente: o valor na tela ainda e o anterior,
+    // e ele nao corresponde mais ao rascunho.
+    emit(state.copyWith(previewStatus: LineupPreviewStatus.updating));
+    _previewDebounce = Timer(_previewDelay, _runPreview);
+  }
+
+  Future<void> _runPreview() async {
+    final draft = state.draft;
+    if (draft == null) {
+      return;
+    }
+    final generation = ++_previewGeneration;
     try {
-      final squad = await action();
-      if (!isClosed) {
-        emit(
-          state.copyWith(
-            status: SquadBuilderStatus.ready,
-            squad: squad,
-            isSaving: false,
-            clearSavingSlot: true,
-          ),
-        );
+      final chemistry = await _repository.previewChemistry(
+        squadId: squadId,
+        formationCode: draft.formation.code,
+        slots: draft.slotIds,
+        managerId: draft.manager?.id,
+        managerLeagueId: draft.managerLeague?.id,
+      );
+      // Chegou tarde: outro rascunho ja pediu preview depois deste.
+      if (isClosed || generation != _previewGeneration) {
+        return;
       }
-      return true;
-    } on AppFailure catch (failure) {
-      if (!isClosed) {
-        emit(
-          state.copyWith(
-            isSaving: false,
-            clearSavingSlot: true,
-            actionFailure: failure,
-          ),
-        );
-        // Recarrega o estado autoritativo: melhor uma ida a mais ao servidor
-        // do que a tela seguir mostrando algo que não aconteceu.
-        await load();
+      emit(
+        state.copyWith(
+          chemistry: chemistry,
+          previewStatus: LineupPreviewStatus.idle,
+        ),
+      );
+    } on AppFailure {
+      if (isClosed || generation != _previewGeneration) {
+        return;
       }
+      // Preview e conforto, nao autoridade: falhar aqui nao pode mexer no
+      // rascunho nem zerar a quimica exibida.
+      emit(state.copyWith(previewStatus: LineupPreviewStatus.failure));
+    }
+  }
+
+  void retryPreview() => _runPreview();
+
+  /// Dispara o preview sem esperar o debounce. Existe para o teste conseguir
+  /// provocar a corrida de respostas -- o unico jeito de verificar que uma
+  /// resposta atrasada nao vence o rascunho atual.
+  @visibleForTesting
+  Future<void> debugPreviewNow() => _runPreview();
+
+  // ------------------------------------------------------------------ save
+
+  Future<bool> save() async {
+    final draft = state.draft;
+    final baseline = state.baseline;
+    if (draft == null || baseline == null || !state.canSave) {
       return false;
     }
+    emit(state.copyWith(isSaving: true, clearSaveFailure: true));
+    try {
+      final saved = await _repository.saveLineup(
+        squadId: squadId,
+        formationCode: draft.formation.code,
+        slots: draft.slotIds,
+        managerId: draft.manager?.id,
+        managerLeagueId: draft.managerLeague?.id,
+        expectedUpdatedAt: baseline.updatedAt,
+      );
+      if (isClosed) {
+        return true;
+      }
+      // O baseline vira o que o servidor confirmou, inclusive o updated_at
+      // novo -- sem isso o segundo save seguido levaria a baseline velha e
+      // tomaria um conflito que nao existe.
+      emit(
+        state.copyWith(
+          baseline: saved,
+          draft: LineupDraft.fromDetail(saved),
+          chemistry: saved.chemistry,
+          previewStatus: LineupPreviewStatus.idle,
+          isSaving: false,
+          clearSaveFailure: true,
+          droppedByFormationChange: const <PlayerCard>[],
+        ),
+      );
+      return true;
+    } on AppFailure catch (failure) {
+      if (isClosed) {
+        return false;
+      }
+      final isConflict =
+          failure is SquadFailure &&
+          failure.reason == SquadFailureReason.editConflict;
+      // O rascunho NAO volta para o baseline: perder a montagem por causa de
+      // uma falha de rede seria pior do que o erro em si.
+      emit(
+        state.copyWith(
+          isSaving: false,
+          saveFailure: failure,
+          hasConflict: isConflict,
+        ),
+      );
+      return false;
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _previewDebounce?.cancel();
+    return super.close();
   }
 }

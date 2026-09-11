@@ -2686,4 +2686,71 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get consumablesBlockedMessage =>
       'Chemistry Styles ya tiene su propia sección en Mecánicas. Los demás consumibles no existen hoy en nuestro catálogo.';
+
+  @override
+  String get errorSquadEditConflict =>
+      'Esta plantilla se modificó en otro dispositivo. Recarga la versión más reciente antes de continuar.';
+
+  @override
+  String get errorSquadDuplicatedPlayer =>
+      'El mismo jugador no puede ocupar dos posiciones.';
+
+  @override
+  String get errorSquadInvalidLineup => 'No se pudo guardar esta alineación.';
+
+  @override
+  String get squadSaveAction => 'Guardar';
+
+  @override
+  String get squadSavedFeedback => 'Plantilla guardada';
+
+  @override
+  String get squadDiscardTitle => '¿Descartar cambios?';
+
+  @override
+  String get squadDiscardMessage =>
+      'Hay cambios sin guardar en esta plantilla.';
+
+  @override
+  String get squadDiscardKeep => 'Seguir editando';
+
+  @override
+  String get squadDiscardConfirm => 'Descartar';
+
+  @override
+  String get squadReloadAction => 'Recargar';
+
+  @override
+  String get squadChemistryUpdating => 'Recalculando…';
+
+  @override
+  String get squadChemistryUnavailable => 'No se pudo recalcular la química.';
+
+  @override
+  String get squadManagerLabel => 'Entrenador';
+
+  @override
+  String get squadManagerEmpty => 'Seleccionar entrenador';
+
+  @override
+  String get squadShareAction => 'Compartir plantilla';
+
+  @override
+  String get squadOverallLabel => 'Media';
+
+  @override
+  String get squadChemistryLabel => 'Química';
+
+  @override
+  String squadFormationDroppedPlayers(int count, String names) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count jugadores salieron de la alineación: no tienen posición compatible en la nueva formación ($names).',
+      one:
+          '1 jugador salió de la alineación: no tiene posición compatible en la nueva formación ($names).',
+    );
+    return '$_temp0';
+  }
 }

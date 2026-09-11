@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_drag_payload.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,9 @@ import 'package:flutter/material.dart';
 /// as linhas como teto -- todos os cards do campo continuam do mesmo
 /// tamanho entre si (nunca variação caótica por posição), só o teto
 /// respeita a formação mais apertada. Função livre (não método privado) só
-/// para poder ser testada isoladamente sem montar widget.
-@visibleForTesting
+/// para poder ser testada isoladamente sem montar widget -- e reusada
+/// pelo cartao de compartilhamento, que precisa do MESMO tamanho de
+/// carta para a imagem sair igual ao campo da tela.
 double cardWidthForFormation(List<FormationSlot> slots, double width) {
   final byRow = <double, List<double>>{};
   for (final slot in slots) {
@@ -63,21 +65,22 @@ double cardWidthForFormation(List<FormationSlot> slots, double width) {
 /// formação é só mudar a lista de slots.
 class SquadField extends StatelessWidget {
   const SquadField({
-    required this.squad,
+    required this.formation,
+    required this.starters,
     required this.onSlotTap,
     required this.onSlotLongPress,
     required this.onSlotDrop,
-    this.pendingSlotCode,
-    this.savingSlotCode,
     super.key,
   });
 
-  final FcSquadDetail squad;
+  /// Recebe o RASCUNHO, nao o elenco persistido: o campo tem de desenhar o
+  /// que a pessoa esta montando, nao o que esta gravado.
+  final FormationDefinition formation;
+  final Map<String, PlayerCard> starters;
+
   final void Function(FormationSlot slot) onSlotTap;
   final void Function(FormationSlot slot) onSlotLongPress;
   final void Function(FormationSlot slot, SquadDragPayload payload) onSlotDrop;
-  final String? pendingSlotCode;
-  final String? savingSlotCode;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +92,7 @@ class SquadField extends StatelessWidget {
         // Proporção de campo. Um pouco mais alto que largo para os cards
         // caberem sem encostar uns nos outros.
         final height = width * 1.32;
-        final cardWidth = cardWidthForFormation(squad.formation.slots, width);
+        final cardWidth = cardWidthForFormation(formation.slots, width);
         final cardHeight = cardWidth / SquadPlayerCard.aspectRatio;
 
         // Margem interna para o card não vazar do campo nas bordas.
@@ -117,7 +120,7 @@ class SquadField extends StatelessWidget {
                   ),
                 ),
               ),
-              for (final slot in squad.formation.slots)
+              for (final slot in formation.slots)
                 Positioned(
                   // y do domínio cresce em direção ao gol adversário; a tela
                   // cresce para baixo. Inverter aqui é o que põe o goleiro
@@ -128,28 +131,19 @@ class SquadField extends StatelessWidget {
                   height: cardHeight,
                   child: Builder(
                     builder: (context) {
-                      final squadSlot = squad.slotAt(
-                        SquadSlotType.starting,
-                        slot.slotCode,
-                      );
-                      final card = squadSlot?.card;
-                      final outOfPosition =
-                          card != null && squadSlot?.positionEligible == false;
+                      final card = starters[slot.slotCode];
                       return DraggableSquadSlot(
                         type: SquadSlotType.starting,
                         slotCode: slot.slotCode,
                         positionCode: slot.positionCode,
                         width: cardWidth,
                         card: card,
-                        chemistry: squadSlot?.chemistry,
-                        state: pendingSlotCode == slot.slotCode
-                            ? SquadPlayerCardState.selected
-                            : card == null
+                        // Fora de posicao deixou de ser representavel: o
+                        // picker so oferece quem joga ali e o remapeamento
+                        // nunca encaixa incompativel.
+                        state: card == null
                             ? SquadPlayerCardState.empty
-                            : outOfPosition
-                            ? SquadPlayerCardState.outOfPosition
                             : SquadPlayerCardState.filled,
-                        isSaving: savingSlotCode == slot.slotCode,
                         onTap: () => onSlotTap(slot),
                         onLongPress: () => onSlotLongPress(slot),
                         onAccept: (payload) => onSlotDrop(slot, payload),

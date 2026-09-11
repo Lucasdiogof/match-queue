@@ -76,6 +76,20 @@ class LocalFcSquadRepository implements FcSquadRepository {
   }) => _update(squadId, (s) => _copy(s, name: name));
 
   @override
+  Future<int> previewChemistry({
+    required String squadId,
+    required String formationCode,
+    required Map<String, String> slots,
+    String? managerId,
+    String? managerLeagueId,
+  }) async {
+    // Sem servidor nao ha regra de quimica: o modo local devolve o que o
+    // elenco ja tinha em vez de fabricar um numero.
+    final squad = await getBuilder(squadId);
+    return squad.chemistry;
+  }
+
+  @override
   Future<FcSquadDetail> saveLineup({
     required String squadId,
     required String formationCode,
