@@ -84,8 +84,6 @@ class SquadField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
@@ -106,17 +104,21 @@ class SquadField extends StatelessWidget {
           height: height,
           child: Stack(
             children: <Widget>[
-              Positioned.fill(
+              const Positioned.fill(
+                // O campo e escuro nos DOIS temas. Ele nao e uma superficie
+                // da tela, e o modulo onde a montagem acontece -- e um
+                // gramado claro tiraria o contraste justamente das cartas
+                // Gold, que sao o assunto.
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: colors.surface,
+                    gradient: AppGradients.darkBrandSurface,
                     borderRadius: AppRadii.borderLg,
-                    border: Border.all(color: colors.borderSubtle),
+                    border: Border.fromBorderSide(
+                      BorderSide(color: Color(0x2939E27D)),
+                    ),
                   ),
                   child: CustomPaint(
-                    painter: _FieldPainter(
-                      line: colors.borderStrong.withValues(alpha: 0.55),
-                    ),
+                    painter: _FieldPainter(line: Color(0x1F39E27D)),
                   ),
                 ),
               ),
@@ -161,7 +163,8 @@ class SquadField extends StatelessWidget {
 
 /// Linhas do campo. Minimalista de propósito: só o que dá leitura de campo
 /// (meio, círculo, áreas, pequenas áreas) usando a cor de borda do tema, para
-/// funcionar em claro e escuro sem nenhum verde fixo.
+/// o campo ler como campo. Agora com o verde da marca, porque o campo e
+/// escuro nos dois temas -- ver a decoracao acima.
 class _FieldPainter extends CustomPainter {
   const _FieldPainter({required this.line});
 
