@@ -14,12 +14,10 @@ extension CompetitiveModeAccent on CompetitiveMode {
   Color accentOn(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return switch (this) {
-      CompetitiveMode.champions => isDark
-          ? AppColors.championsGold
-          : AppColors.championsWine,
-      CompetitiveMode.rivals => isDark
-          ? AppColors.rivalsGold
-          : AppColors.goldDeep,
+      CompetitiveMode.champions =>
+        isDark ? AppColors.championsGold : AppColors.championsWine,
+      CompetitiveMode.rivals =>
+        isDark ? AppColors.rivalsGold : AppColors.goldDeep,
     };
   }
 }

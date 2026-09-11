@@ -6,11 +6,16 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_week_picker.dart';
 import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/win_loss_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Detalhe de uma campanha de Weekend League de uma conta: record
 /// computado x manual (nunca somados), artilharia e assistencias. Secoes
@@ -51,6 +56,27 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
       accountId: widget.account.id,
       eventId: _event.id,
     );
+  }
+
+  Future<void> _increment({int winDelta = 0, int lossDelta = 0}) async {
+    await context.read<FcAccountsCubit>().incrementWeekendLeagueRecord(
+      accountId: widget.account.id,
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    );
+    if (mounted) {
+      setState(_load);
+    }
+  }
+
+  Future<void> _openManualEdit() async {
+    await showWeekendLeagueManualRecordSheet(
+      context: context,
+      account: widget.account,
+    );
+    if (mounted) {
+      setState(_load);
+    }
   }
 
   Future<void> _pickWeek() async {
@@ -103,6 +129,8 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
             event: _event,
             stats: stats,
             onPickWeek: _pickWeek,
+            onIncrement: _increment,
+            onEditManual: _openManualEdit,
           );
         },
       ),
@@ -116,12 +144,16 @@ class _Body extends StatelessWidget {
     required this.event,
     required this.stats,
     required this.onPickWeek,
+    required this.onIncrement,
+    required this.onEditManual,
   });
 
   final FcAccount account;
   final WeekendLeagueEvent event;
   final WeekendLeagueAccountStats stats;
   final Future<void> Function() onPickWeek;
+  final Future<void> Function({int winDelta, int lossDelta}) onIncrement;
+  final Future<void> Function() onEditManual;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -132,7 +164,11 @@ class _Body extends StatelessWidget {
     children: <Widget>[
       WeekendLeagueWeekSelector(event: event, onTap: onPickWeek),
       const SizedBox(height: AppSpacing.lg),
-      _SummarySection(account: account, event: event, stats: stats),
+      _SummarySection(
+        stats: stats,
+        onIncrement: onIncrement,
+        onEditManual: onEditManual,
+      ),
       const SizedBox(height: AppSpacing.lg),
       _LeaderboardSection(
         title: context.l10n.statsTopScorersTitle,
@@ -151,105 +187,53 @@ class _Body extends StatelessWidget {
 
 class _SummarySection extends StatelessWidget {
   const _SummarySection({
-    required this.account,
-    required this.event,
     required this.stats,
+    required this.onIncrement,
+    required this.onEditManual,
   });
 
-  final FcAccount account;
-  final WeekendLeagueEvent event;
   final WeekendLeagueAccountStats stats;
+  final Future<void> Function({int winDelta, int lossDelta}) onIncrement;
+  final Future<void> Function() onEditManual;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
-    final computed = stats.computed;
     final manual = stats.manual;
+    final wins = manual?.wins ?? 0;
+    final losses = manual?.losses ?? 0;
+    final rank = WeekendLeagueRank.fromWins(wins);
+    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return AppCard(
       variant: AppCardVariant.elevated,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            manual != null
-                ? '${manual.wins}–${manual.losses}'
-                : '${computed.wins}–${computed.losses}',
-            style: context.textStyles.headlineSmall,
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            manual != null
-                ? l10n.fcAccountWeekendLeagueManualLabel(
-                    manual.wins,
-                    manual.losses,
-                  )
-                : l10n.fcAccountWeekendLeagueComputedLabel(
-                    computed.wins,
-                    computed.losses,
-                  ),
-            style: context.textStyles.bodySmall?.copyWith(
-              color: colors.textSecondary,
-            ),
+          if (rank != null) ...<Widget>[
+            AppBadge(label: rank.label),
+            const SizedBox(height: AppSpacing.md),
+          ],
+          WinLossCounter(
+            wins: wins,
+            losses: losses,
+            winsLabel: l10n.statsWinsLabel,
+            lossesLabel: l10n.statsLossesLabel,
+            addWinTooltip: l10n.recordAddWinTooltip,
+            addLossTooltip: l10n.recordAddLossTooltip,
+            onAddWin: isSaving ? null : () => onIncrement(winDelta: 1),
+            onAddLoss: isSaving ? null : () => onIncrement(lossDelta: 1),
           ),
           const SizedBox(height: AppSpacing.md),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _StatTile(
-                  label: l10n.statsGoalsLabel,
-                  value: '${computed.goalsFor}',
-                ),
-              ),
-              Expanded(
-                child: _StatTile(
-                  label: l10n.statsGoalDiffLabel,
-                  value: '${computed.goalDiff}',
-                ),
-              ),
-              Expanded(
-                child: _StatTile(
-                  label: l10n.statsMatchesLabel,
-                  value: '${computed.matchesCount}',
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          AppButton.secondary(
+          AppButton.ghost(
             label: l10n.fcAccountWeekendLeagueEditAction,
             icon: Icons.edit_outlined,
-            onPressed: () => showWeekendLeagueManualRecordSheet(
-              context: context,
-              account: account,
-            ),
+            onPressed: isSaving ? null : onEditManual,
           ),
         ],
       ),
     );
   }
-}
-
-class _StatTile extends StatelessWidget {
-  const _StatTile({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: <Widget>[
-      Text(value, style: context.textStyles.titleMedium),
-      const SizedBox(height: AppSpacing.xxs),
-      Text(
-        label,
-        style: context.textStyles.labelSmall?.copyWith(
-          color: context.colors.textSecondary,
-        ),
-      ),
-    ],
-  );
 }
 
 class _LeaderboardSection extends StatelessWidget {

@@ -13,8 +13,10 @@ import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rename_fc_a
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_picker_sheet.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/win_loss_counter.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
@@ -66,9 +68,7 @@ class _FcAccountDetailBody extends StatelessWidget {
     children: <Widget>[
       SquadsSection(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
-      _DivisionSection(account: account),
-      const SizedBox(height: AppSpacing.lg),
-      _RivalsStatsSection(account: account),
+      _RivalsSection(account: account),
       const SizedBox(height: AppSpacing.lg),
       _WeekendLeagueSection(
         account: account,
@@ -114,24 +114,33 @@ class _ShareAccountRow extends StatelessWidget {
   );
 }
 
-class _DivisionSection extends StatelessWidget {
-  const _DivisionSection({required this.account});
+/// Divisão + placar num card só: eram dois antes (um pra divisão, outro pra
+/// vitórias/derrotas), o que lia como duas seções de assuntos diferentes
+/// quando é a mesma coisa -- como a Conta está indo em Rivals.
+class _RivalsSection extends StatelessWidget {
+  const _RivalsSection({required this.account});
 
   final FcAccount account;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final cubit = context.read<FcAccountsCubit>();
+    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return AppCard(
       accent: AppCardAccent.left,
       accentColor: CompetitiveMode.rivals.accentOn(context),
-
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => RivalsDetailPage(account: account),
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            l10n.fcAccountDivisionTitle.toUpperCase(),
+            l10n.rivalsSectionTitle.toUpperCase(),
             style: context.textStyles.labelSmall,
           ),
           const SizedBox(height: AppSpacing.md),
@@ -155,6 +164,27 @@ class _DivisionSection extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: AppSpacing.lg),
+          WinLossCounter(
+            wins: account.rivalsWins,
+            losses: account.rivalsLosses,
+            winsLabel: l10n.statsWinsLabel,
+            lossesLabel: l10n.statsLossesLabel,
+            addWinTooltip: l10n.recordAddWinTooltip,
+            addLossTooltip: l10n.recordAddLossTooltip,
+            onAddWin: isSaving
+                ? null
+                : () => cubit.incrementRivalsRecord(
+                    accountId: account.id,
+                    winDelta: 1,
+                  ),
+            onAddLoss: isSaving
+                ? null
+                : () => cubit.incrementRivalsRecord(
+                    accountId: account.id,
+                    lossDelta: 1,
+                  ),
+          ),
         ],
       ),
     );
@@ -177,6 +207,9 @@ class _WeekendLeagueSection extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final record = account.weekendLeagueRecord;
+    final rank = WeekendLeagueRank.fromWins(record.$1);
+    final cubit = context.read<FcAccountsCubit>();
+    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return AppCard(
       accent: AppCardAccent.left,
@@ -193,100 +226,37 @@ class _WeekendLeagueSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            l10n.fcAccountWeekendLeagueTitle.toUpperCase(),
-            style: context.textStyles.labelSmall,
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  l10n.fcAccountWeekendLeagueTitle.toUpperCase(),
+                  style: context.textStyles.labelSmall,
+                ),
+              ),
+              if (rank != null) AppBadge(label: rank.label),
+            ],
           ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            '${record.$1}–${record.$2}',
-            style: context.textStyles.headlineSmall,
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            account.hasWeekendLeagueManualOverride
-                ? l10n.fcAccountWeekendLeagueManualLabel(record.$1, record.$2)
-                : l10n.fcAccountWeekendLeagueComputedLabel(
-                    record.$1,
-                    record.$2,
+          const SizedBox(height: AppSpacing.lg),
+          WinLossCounter(
+            wins: record.$1,
+            losses: record.$2,
+            winsLabel: l10n.statsWinsLabel,
+            lossesLabel: l10n.statsLossesLabel,
+            addWinTooltip: l10n.recordAddWinTooltip,
+            addLossTooltip: l10n.recordAddLossTooltip,
+            onAddWin: isSaving
+                ? null
+                : () => cubit.incrementWeekendLeagueRecord(
+                    accountId: account.id,
+                    winDelta: 1,
                   ),
-            style: context.textStyles.bodySmall?.copyWith(
-              color: context.colors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          AppButton.secondary(
-            label: l10n.fcAccountWeekendLeagueEditAction,
-            icon: Icons.edit_outlined,
-            onPressed: () => showWeekendLeagueManualRecordSheet(
-              context: context,
-              account: account,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _RivalsStatsSection extends StatelessWidget {
-  const _RivalsStatsSection({required this.account});
-
-  final FcAccount account;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final colors = context.colors;
-
-    return AppCard(
-      accent: AppCardAccent.left,
-      accentColor: CompetitiveMode.rivals.accentOn(context),
-
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (_) => RivalsDetailPage(account: account),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            l10n.rivalsSectionTitle.toUpperCase(),
-            style: context.textStyles.labelSmall,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          FutureBuilder<RivalsAccountStats>(
-            future: getIt<FcAccountRepository>().fetchRivalsAccountStats(
-              account.id,
-            ),
-            builder: (context, snapshot) {
-              final stats = snapshot.data;
-              if (stats == null) {
-                return const SizedBox(height: 24);
-              }
-              final aggregate = stats.aggregate;
-              return Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      '${aggregate.wins}–${aggregate.losses}',
-                      style: context.textStyles.titleMedium,
-                    ),
+            onAddLoss: isSaving
+                ? null
+                : () => cubit.incrementWeekendLeagueRecord(
+                    accountId: account.id,
+                    lossDelta: 1,
                   ),
-                  if (stats.topScorers.isNotEmpty)
-                    Text(
-                      l10n.statsTopScorerInlineLabel(
-                        stats.topScorers.first.playerName,
-                        stats.topScorers.first.goals,
-                      ),
-                      style: context.textStyles.bodySmall?.copyWith(
-                        color: colors.textSecondary,
-                      ),
-                    ),
-                ],
-              );
-            },
           ),
         ],
       ),

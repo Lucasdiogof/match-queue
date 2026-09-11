@@ -51,28 +51,48 @@ class _RivalsCardBody extends StatelessWidget {
             builder: (_) => RivalsDetailPage(account: account),
           ),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Expanded(
-              child: Text(
-                division == null
-                    ? l10n.rivalsNoDivisionLabel
-                    : division.label(l10n),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: context.textStyles.titleMedium?.copyWith(
-                  color: division == null
-                      ? AppColors.darkTextSecondary
-                      : AppColors.darkTextPrimary,
-                  fontWeight: FontWeight.w700,
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    division == null
+                        ? l10n.rivalsNoDivisionLabel
+                        : division.label(l10n),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.textStyles.titleMedium?.copyWith(
+                      color: division == null
+                          ? AppColors.darkTextSecondary
+                          : AppColors.darkTextPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: AppSpacing.sm),
+                const Icon(
+                  Icons.chevron_right,
+                  size: AppSizing.iconMd,
+                  color: AppColors.rivalsGold,
+                ),
+              ],
             ),
-            const SizedBox(width: AppSpacing.sm),
-            const Icon(
-              Icons.chevron_right,
-              size: AppSizing.iconMd,
-              color: AppColors.rivalsGold,
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                CompetitiveStat(
+                  value: '${account.rivalsWins}',
+                  label: l10n.statsWinsLabel,
+                ),
+                const SizedBox(width: AppSpacing.xl),
+                CompetitiveStat(
+                  value: '${account.rivalsLosses}',
+                  label: l10n.statsLossesLabel,
+                ),
+              ],
             ),
           ],
         ),
