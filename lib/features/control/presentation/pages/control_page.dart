@@ -36,6 +36,11 @@ class ControlPage extends StatelessWidget {
         return AppScaffold(
           appBar: const AppAppBar(actions: <Widget>[NotificationBellButton()]),
           body: AppBackground(
+            // Unica tela com halo tingido: o verde nasce atras da area
+            // de busca, que e o assunto da tela. Nas outras o halo segue
+            // neutro -- se todas tivessem cor, nenhuma teria.
+            glow: context.colors.accent,
+            glowAlignment: const Alignment(0.15, 0.35),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[

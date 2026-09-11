@@ -36,7 +36,6 @@ class AppColors {
   static const Color fcPurpleStrong = Color(0xFF6237E8);
   static const Color fcPurpleSoft = Color(0xFFB7A0FF);
 
-  static const Color fcLime = Color(0xFFB9F227);
 
   // --------------------------------------------------------- competitivo
 

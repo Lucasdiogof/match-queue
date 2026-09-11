@@ -330,17 +330,30 @@ class _IdleCard extends StatelessWidget {
     final colors = context.colors;
     final blocking = snapshot.blockingSearch;
 
+    // Este e o card da ACAO da tela, entao ele se anuncia: faixa de acento,
+    // icone em disco tingido e o botao logo abaixo do texto. Antes era icone
+    // cinza, divisor e paragrafo -- lia como aviso, nao como convite.
     return AppCard(
       variant: AppCardVariant.elevated,
+      accent: AppCardAccent.left,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Row(
             children: <Widget>[
-              Icon(
-                Icons.sports_esports_outlined,
-                size: AppSizing.iconLg,
-                color: colors.textSecondary,
+              Container(
+                width: AppSizing.iconXl,
+                height: AppSizing.iconXl,
+                decoration: BoxDecoration(
+                  color: colors.accentContainer,
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.sports_esports_outlined,
+                  size: AppSizing.iconMd,
+                  color: colors.accent,
+                ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
@@ -350,12 +363,14 @@ class _IdleCard extends StatelessWidget {
                       : l10n.matchmakingSearchingOtherTitle(
                           blocking.displayName,
                         ),
-                  style: context.textStyles.titleMedium,
+                  style: context.textStyles.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
           ),
-          const AppDivider(spacing: AppSpacing.xl),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             blocking == null
                 ? l10n.matchmakingIdleMessage
@@ -364,7 +379,7 @@ class _IdleCard extends StatelessWidget {
               color: colors.textSecondary,
             ),
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: AppSpacing.lg),
           AppButton(
             label: blocking == null
                 ? l10n.matchmakingSearchAction

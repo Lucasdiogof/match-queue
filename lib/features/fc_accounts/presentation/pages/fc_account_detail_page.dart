@@ -11,6 +11,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_c
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rename_fc_account_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
@@ -58,11 +59,12 @@ class _FcAccountDetailBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(
     padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+    // Ordem: o que a conta E (elenco), como ela vai (Rivals, Champions),
+    // como foi (historico) e so entao acoes sobre ela. Compartilhar estava
+    // em segundo lugar, acima do proprio desempenho -- uma acao ocupando o
+    // lugar do conteudo.
     children: <Widget>[
-      // Squads primeiro: é o que o usuário vem editar com mais frequência.
       SquadsSection(fcAccountId: account.id),
-      const SizedBox(height: AppSpacing.lg),
-      _ShareAccountRow(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
       _DivisionSection(account: account),
       const SizedBox(height: AppSpacing.lg),
@@ -76,6 +78,8 @@ class _FcAccountDetailBody extends StatelessWidget {
       _StatsSection(account: account),
       const SizedBox(height: AppSpacing.lg),
       _LinkedTeamsSection(account: account),
+      const SizedBox(height: AppSpacing.lg),
+      _ShareAccountRow(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
       _SettingsSection(account: account),
     ],
@@ -120,6 +124,9 @@ class _DivisionSection extends StatelessWidget {
     final l10n = context.l10n;
 
     return AppCard(
+      accent: AppCardAccent.left,
+      accentColor: CompetitiveMode.rivals.accentOn(context),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -172,6 +179,9 @@ class _WeekendLeagueSection extends StatelessWidget {
     final record = account.weekendLeagueRecord;
 
     return AppCard(
+      accent: AppCardAccent.left,
+      accentColor: CompetitiveMode.champions.accentOn(context),
+
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => WeekendLeagueDetailPage(
@@ -230,6 +240,9 @@ class _RivalsStatsSection extends StatelessWidget {
     final colors = context.colors;
 
     return AppCard(
+      accent: AppCardAccent.left,
+      accentColor: CompetitiveMode.rivals.accentOn(context),
+
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => RivalsDetailPage(account: account),
