@@ -12,9 +12,10 @@ import 'package:go_router/go_router.dart';
 
 /// "Escalação Principal" no detalhe da Conta.
 ///
-/// A UX principal trata UMA escalação como a do elenco, mesmo com o backend
-/// suportando N (item 2). Quem tem mais de uma chega nelas por um caminho
-/// secundário, em vez de a tela virar um gerenciador de squads.
+/// Uma Conta tem no máximo um Elenco ativo (índice único parcial em
+/// `is_active`, `list_fc_squads` já filtra por ele) — não há mais "outras
+/// escalações" a listar, então a tela vai direto de "sem elenco" para
+/// "montar" ou de "tem elenco" para "editar", sem gerenciador de lista.
 class SquadsSection extends StatelessWidget {
   const SquadsSection({required this.fcAccountId, super.key});
 
@@ -33,7 +34,6 @@ class SquadsSection extends StatelessWidget {
         }
 
         final primary = state.defaultSquad ?? state.squads.firstOrNull;
-        final others = state.squads.where((s) => s.id != primary?.id).length;
 
         return AppCard(
           child: Column(
@@ -81,14 +81,6 @@ class SquadsSection extends StatelessWidget {
                     },
                   ),
                 ),
-                if (others > 0) ...<Widget>[
-                  const SizedBox(height: AppSpacing.sm),
-                  AppButton.ghost(
-                    label: l10n.squadOtherLineupsAction(others),
-                    expanded: true,
-                    onPressed: () => _showAll(context, state),
-                  ),
-                ],
               ],
             ],
           ),
@@ -114,84 +106,6 @@ class SquadsSection extends StatelessWidget {
       formationCode: result.formationCode!,
     );
   }
-
-  Future<void> _showAll(BuildContext context, FcSquadsState state) async {
-    final l10n = context.l10n;
-
-    await showAppBottomSheet<void>(
-      context: context,
-      builder: (sheetContext) => AppBottomSheet(
-        title: l10n.squadsSectionTitle,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            for (final squad in state.squads)
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                child: AppCard(
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                    context.pushNamed(
-                      AppRoutes.squadBuilder.name,
-                      pathParameters: <String, String>{
-                        AppRoutes.squadIdParam: squad.id,
-                      },
-                    );
-                  },
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              squad.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: sheetContext.textStyles.bodyLarge,
-                            ),
-                            Text(
-                              _summaryLine(sheetContext, squad),
-                              style: sheetContext.textStyles.bodySmall
-                                  ?.copyWith(
-                                    color: sheetContext.colors.textSecondary,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (squad.isDefault)
-                        AppBadge(label: l10n.squadDefaultBadge),
-                    ],
-                  ),
-                ),
-              ),
-            const SizedBox(height: AppSpacing.sm),
-            AppButton.secondary(
-              label: l10n.squadCreateAction,
-              icon: Icons.add,
-              onPressed: () async {
-                Navigator.of(sheetContext).pop();
-                await _create(context, state);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-String _summaryLine(BuildContext context, FcSquadSummary squad) {
-  final l10n = context.l10n;
-  final overall = squad.overall == null
-      ? l10n.squadOverallUnknown
-      : l10n.squadOverallValue(squad.overall!);
-  return '${squad.formationCode} · $overall · '
-      '${l10n.squadChemistryValue(squad.chemistry)}';
 }
 
 class _PrimarySummary extends StatelessWidget {
