@@ -269,24 +269,32 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     }
   }
 
-  /// Ordena por elegibilidade (item 43): (1) posição primária, (2) posição
-  /// alternativa, (3) demais -- NUNCA remove ninguém da lista, só reordena.
-  /// `List.sort` não é garantido estável em Dart, mas o desempate por rating
-  /// já vem pronto do servidor (`order by rating desc`) dentro de cada
-  /// página, então o pior caso é uma reordenação cosmética dentro do mesmo
-  /// rating -- aceitável para esta etapa.
+  /// Filtra e ordena por elegibilidade: posicao primaria primeiro, depois
+  /// alternativa real. Quem nao joga ali FICA DE FORA.
+  ///
+  /// Antes so reordenava, entao um ST aparecia como sugestao de LB, apenas no
+  /// fim da lista -- e a busca por texto atravessava a lista inteira. Sugerir
+  /// jogador que nao atua na posicao nao e uma sugestao pior, e uma sugestao
+  /// errada.
+  ///
+  /// A regra continua sendo a de [eligibilityTier]: posicao principal mais as
+  /// alternativas declaradas na carta. Nada de equivalencia inventada do tipo
+  /// "LB aceita qualquer defensor".
+  ///
+  /// `List.sort` nao e estavel em Dart, mas o desempate por rating ja vem do
+  /// servidor (`order by rating desc`) dentro de cada pagina, entao o pior
+  /// caso e reordenacao cosmetica dentro do mesmo rating.
   List<PlayerCard> _sortByEligibility(List<PlayerCard> cards) {
-    if (positionCode == null) {
+    final code = positionCode;
+    if (code == null) {
       return cards;
     }
-    final sorted = List<PlayerCard>.of(cards)
-      ..sort(
-        (a, b) => eligibilityTier(
-          a,
-          positionCode!,
-        ).compareTo(eligibilityTier(b, positionCode!)),
-      );
-    return sorted;
+    return List<PlayerCard>.of(
+      cards.where((card) => eligibilityTier(card, code) < 2),
+    )..sort(
+      (a, b) =>
+          eligibilityTier(a, code).compareTo(eligibilityTier(b, code)),
+    );
   }
 
   @override
