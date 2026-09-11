@@ -1249,7 +1249,7 @@ abstract class AppLocalizations {
   /// No description provided for @playerProfileWeekendLeagueEmptyMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhum evento de Weekend League registrado.'**
+  /// **'Nenhum evento de Champions registrado.'**
   String get playerProfileWeekendLeagueEmptyMessage;
 
   /// No description provided for @playerProfileWeekendLeagueRecordLabel.
@@ -1807,7 +1807,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsChannelAppUpdatesDescription.
   ///
   /// In pt, this message translates to:
-  /// **'Novos membros, ranking, Weekend League e Rivals.'**
+  /// **'Novos membros, ranking, Champions e Rivals.'**
   String get notificationsChannelAppUpdatesDescription;
 
   /// No description provided for @notificationsCategoryMatchmaking.
@@ -1837,13 +1837,13 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsCategoryWeekendLeague.
   ///
   /// In pt, this message translates to:
-  /// **'Weekend League'**
+  /// **'Champions'**
   String get notificationsCategoryWeekendLeague;
 
   /// No description provided for @notificationsCategoryWeekendLeagueHint.
   ///
   /// In pt, this message translates to:
-  /// **'Quando uma Weekend League termina.'**
+  /// **'Quando o Champions termina.'**
   String get notificationsCategoryWeekendLeagueHint;
 
   /// No description provided for @notificationsCategoryRivals.
@@ -1963,7 +1963,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationWeekendLeagueFinished.
   ///
   /// In pt, this message translates to:
-  /// **'{displayName} terminou a Weekend League em {wins}-{losses}.'**
+  /// **'{displayName} terminou o Champions em {wins}-{losses}.'**
   String notificationWeekendLeagueFinished(
     String displayName,
     int wins,
@@ -2225,13 +2225,13 @@ abstract class AppLocalizations {
   /// No description provided for @gameModeWeekendLeague.
   ///
   /// In pt, this message translates to:
-  /// **'Weekend League'**
+  /// **'Champions'**
   String get gameModeWeekendLeague;
 
   /// No description provided for @gameModeDivisionRivals.
   ///
   /// In pt, this message translates to:
-  /// **'Division Rivals'**
+  /// **'Rivals'**
   String get gameModeDivisionRivals;
 
   /// No description provided for @pendingMatchTitle.
@@ -2303,7 +2303,7 @@ abstract class AppLocalizations {
   /// No description provided for @weekendLeagueBadge.
   ///
   /// In pt, this message translates to:
-  /// **'Weekend League #{number}'**
+  /// **'Champions #{number}'**
   String weekendLeagueBadge(int number);
 
   /// No description provided for @weekendLeagueWindow.
@@ -2525,7 +2525,7 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountWeekendLeagueTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Weekend League'**
+  /// **'Champions'**
   String get fcAccountWeekendLeagueTitle;
 
   /// No description provided for @fcAccountWeekendLeagueComputedLabel.
@@ -2675,7 +2675,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadsSectionTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Squads'**
+  /// **'Elencos'**
   String get squadsSectionTitle;
 
   /// No description provided for @squadBuilderSaved.
@@ -2693,25 +2693,25 @@ abstract class AppLocalizations {
   /// No description provided for @squadsEmptyTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhum squad configurado'**
+  /// **'Nenhum elenco configurado'**
   String get squadsEmptyTitle;
 
   /// No description provided for @squadsEmptyMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Crie um squad para montar sua escalação. Você pode buscar partida mesmo sem um.'**
+  /// **'Crie um elenco para montar sua escalação. Você pode buscar partida mesmo sem um.'**
   String get squadsEmptyMessage;
 
   /// No description provided for @squadCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Criar squad'**
+  /// **'Criar elenco'**
   String get squadCreateAction;
 
   /// No description provided for @squadCreateTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Novo squad'**
+  /// **'Novo elenco'**
   String get squadCreateTitle;
 
   /// No description provided for @squadCreateSubtitle.
@@ -2723,7 +2723,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadNameLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Nome do squad'**
+  /// **'Nome do elenco'**
   String get squadNameLabel;
 
   /// No description provided for @squadNameHint.
@@ -2741,7 +2741,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadRenameTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Renomear squad'**
+  /// **'Renomear elenco'**
   String get squadRenameTitle;
 
   /// No description provided for @squadRenameAction.
@@ -2765,13 +2765,13 @@ abstract class AppLocalizations {
   /// No description provided for @squadArchiveAction.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar squad'**
+  /// **'Arquivar elenco'**
   String get squadArchiveAction;
 
   /// No description provided for @squadArchiveConfirmTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar squad?'**
+  /// **'Arquivar elenco?'**
   String get squadArchiveConfirmTitle;
 
   /// No description provided for @squadArchiveConfirmMessage.
@@ -2879,19 +2879,43 @@ abstract class AppLocalizations {
   /// No description provided for @squadIncompleteLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Squad incompleto'**
+  /// **'Elenco incompleto'**
   String get squadIncompleteLabel;
 
   /// No description provided for @squadLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Squad'**
+  /// **'Elenco'**
   String get squadLabel;
+
+  /// No description provided for @playAccountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta'**
+  String get playAccountLabel;
+
+  /// No description provided for @playSquadEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum elenco montado'**
+  String get playSquadEmpty;
+
+  /// No description provided for @playSquadBuildAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Montar elenco'**
+  String get playSquadBuildAction;
+
+  /// No description provided for @playSquadEditAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar elenco'**
+  String get playSquadEditAction;
 
   /// No description provided for @squadNoneSelected.
   ///
   /// In pt, this message translates to:
-  /// **'Sem squad'**
+  /// **'Sem elenco'**
   String get squadNoneSelected;
 
   /// No description provided for @squadFilterLeagueLabel.
@@ -2915,7 +2939,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorSquadNotFound.
   ///
   /// In pt, this message translates to:
-  /// **'Squad não encontrado.'**
+  /// **'Elenco não encontrado.'**
   String get errorSquadNotFound;
 
   /// No description provided for @errorSquadNameInvalid.
@@ -2945,7 +2969,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorSquadInUse.
   ///
   /// In pt, this message translates to:
-  /// **'Este squad está sendo usado em uma busca ativa.'**
+  /// **'Este elenco está sendo usado em uma busca ativa.'**
   String get errorSquadInUse;
 
   /// No description provided for @squadCompletionLabel.
@@ -3005,7 +3029,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadClearConfirmMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Isso remove todos os jogadores dos titulares, do banco e das reservas. O squad em si não é apagado.'**
+  /// **'Isso remove todos os jogadores dos titulares, do banco e das reservas. O elenco em si não é apagado.'**
   String get squadClearConfirmMessage;
 
   /// No description provided for @squadFormationChangeConfirmTitle.
@@ -3395,13 +3419,13 @@ abstract class AppLocalizations {
   /// No description provided for @rivalsSectionTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Division Rivals'**
+  /// **'Rivals'**
   String get rivalsSectionTitle;
 
   /// No description provided for @rivalsDetailTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Division Rivals'**
+  /// **'Rivals'**
   String get rivalsDetailTitle;
 
   /// No description provided for @rivalsNoDivisionLabel.
@@ -3425,7 +3449,7 @@ abstract class AppLocalizations {
   /// No description provided for @playerProfileRivalsLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Division Rivals'**
+  /// **'Rivals'**
   String get playerProfileRivalsLabel;
 
   /// No description provided for @playerProfileNoStatsMessage.
@@ -3617,13 +3641,13 @@ abstract class AppLocalizations {
   /// No description provided for @teamSportsWeekendLeagueTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Weekend League'**
+  /// **'Champions'**
   String get teamSportsWeekendLeagueTitle;
 
   /// No description provided for @teamSportsRivalsTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Division Rivals'**
+  /// **'Rivals'**
   String get teamSportsRivalsTitle;
 
   /// No description provided for @teamSportsActivityTitle.
@@ -3833,13 +3857,13 @@ abstract class AppLocalizations {
   /// No description provided for @publicProfileToggleWeekendLeague.
   ///
   /// In pt, this message translates to:
-  /// **'Weekend League'**
+  /// **'Champions'**
   String get publicProfileToggleWeekendLeague;
 
   /// No description provided for @publicProfileToggleRivals.
   ///
   /// In pt, this message translates to:
-  /// **'Division Rivals'**
+  /// **'Rivals'**
   String get publicProfileToggleRivals;
 
   /// No description provided for @publicProfileToggleStats.
@@ -4073,7 +4097,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteAccountConsequenceSquads.
   ///
   /// In pt, this message translates to:
-  /// **'Suas escalações (Squad Builder)'**
+  /// **'Suas escalações (Elenco)'**
   String get deleteAccountConsequenceSquads;
 
   /// No description provided for @deleteAccountConsequenceHistory.
@@ -4151,7 +4175,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeNoTeamMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Buscar partida exige um time. Rivals e Weekend League você já pode usar.'**
+  /// **'Buscar partida exige um time. Rivals e Champions você já pode usar.'**
   String get homeNoTeamMessage;
 
   /// No description provided for @pendingMatchSkipAction.
@@ -4295,13 +4319,13 @@ abstract class AppLocalizations {
   /// No description provided for @errorWeekendLeagueLimit.
   ///
   /// In pt, this message translates to:
-  /// **'A Weekend League tem 15 partidas: vitórias e derrotas somadas não podem passar disso.'**
+  /// **'O Champions tem 15 partidas: vitórias e derrotas somadas não podem passar disso.'**
   String get errorWeekendLeagueLimit;
 
   /// No description provided for @squadNoneSelectedHint.
   ///
   /// In pt, this message translates to:
-  /// **'Escolha um squad para esta busca'**
+  /// **'Escolha um elenco para esta busca'**
   String get squadNoneSelectedHint;
 
   /// No description provided for @catalogCardsTitle.
@@ -4475,7 +4499,7 @@ abstract class AppLocalizations {
   /// No description provided for @mechanicsChemistryHint.
   ///
   /// In pt, this message translates to:
-  /// **'Como a química do squad funciona.'**
+  /// **'Como a química do elenco funciona.'**
   String get mechanicsChemistryHint;
 
   /// No description provided for @mechanicsChemistryStylesLabel.
@@ -4565,7 +4589,7 @@ abstract class AppLocalizations {
   /// No description provided for @managersBlockedMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Squad Builder). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.'**
+  /// **'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Elenco). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.'**
   String get managersBlockedMessage;
 
   /// No description provided for @consumablesBlockedTitle.

@@ -654,7 +654,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playerProfileWeekendLeagueEmptyMessage =>
-      'No Weekend League event recorded.';
+      'No Champions event recorded.';
 
   @override
   String playerProfileWeekendLeagueRecordLabel(int wins, int losses) {
@@ -1007,7 +1007,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsChannelAppUpdatesDescription =>
-      'New members, ranking, Weekend League and Rivals.';
+      'New members, ranking, Champions and Rivals.';
 
   @override
   String get notificationsCategoryMatchmaking => 'Matchmaking';
@@ -1023,11 +1023,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsCategoryTeamsHint => 'New members joining the team.';
 
   @override
-  String get notificationsCategoryWeekendLeague => 'Weekend League';
+  String get notificationsCategoryWeekendLeague => 'Champions';
 
   @override
-  String get notificationsCategoryWeekendLeagueHint =>
-      'When a Weekend League ends.';
+  String get notificationsCategoryWeekendLeagueHint => 'When a Champions ends.';
 
   @override
   String get notificationsCategoryRivals => 'Rivals';
@@ -1108,7 +1107,7 @@ class AppLocalizationsEn extends AppLocalizations {
     int wins,
     int losses,
   ) {
-    return '$displayName finished the Weekend League $wins-$losses.';
+    return '$displayName finished the Champions $wins-$losses.';
   }
 
   @override
@@ -1263,10 +1262,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameModeSectionTitle => 'Mode';
 
   @override
-  String get gameModeWeekendLeague => 'Weekend League';
+  String get gameModeWeekendLeague => 'Champions';
 
   @override
-  String get gameModeDivisionRivals => 'Division Rivals';
+  String get gameModeDivisionRivals => 'Rivals';
 
   @override
   String get pendingMatchTitle => 'You have a match without a result';
@@ -1303,7 +1302,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String weekendLeagueBadge(int number) {
-    return 'Weekend League #$number';
+    return 'Champions #$number';
   }
 
   @override
@@ -1430,7 +1429,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fcAccountDivisionNone => 'No division set';
 
   @override
-  String get fcAccountWeekendLeagueTitle => 'Weekend League';
+  String get fcAccountWeekendLeagueTitle => 'Champions';
 
   @override
   String fcAccountWeekendLeagueComputedLabel(int wins, int losses) {
@@ -1622,6 +1621,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get squadLabel => 'Squad';
+
+  @override
+  String get playAccountLabel => 'Account';
+
+  @override
+  String get playSquadEmpty => 'No squad built yet';
+
+  @override
+  String get playSquadBuildAction => 'Build squad';
+
+  @override
+  String get playSquadEditAction => 'Edit squad';
 
   @override
   String get squadNoneSelected => 'No squad';
@@ -1901,10 +1912,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fcAccountStatsEmptyMessage => 'No matches recorded yet.';
 
   @override
-  String get rivalsSectionTitle => 'Division Rivals';
+  String get rivalsSectionTitle => 'Rivals';
 
   @override
-  String get rivalsDetailTitle => 'Division Rivals';
+  String get rivalsDetailTitle => 'Rivals';
 
   @override
   String get rivalsNoDivisionLabel => 'Division not set yet';
@@ -1917,7 +1928,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playerProfileSportSummaryTitle => 'Sport summary';
 
   @override
-  String get playerProfileRivalsLabel => 'Division Rivals';
+  String get playerProfileRivalsLabel => 'Rivals';
 
   @override
   String get playerProfileNoStatsMessage => 'No detailed matches yet.';
@@ -2061,10 +2072,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamSportsAssistsTitle => 'Assists';
 
   @override
-  String get teamSportsWeekendLeagueTitle => 'Weekend League';
+  String get teamSportsWeekendLeagueTitle => 'Champions';
 
   @override
-  String get teamSportsRivalsTitle => 'Division Rivals';
+  String get teamSportsRivalsTitle => 'Rivals';
 
   @override
   String get teamSportsActivityTitle => 'Recent activity';
@@ -2215,10 +2226,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get publicProfileToggleSquad => 'Main lineup';
 
   @override
-  String get publicProfileToggleWeekendLeague => 'Weekend League';
+  String get publicProfileToggleWeekendLeague => 'Champions';
 
   @override
-  String get publicProfileToggleRivals => 'Division Rivals';
+  String get publicProfileToggleRivals => 'Rivals';
 
   @override
   String get publicProfileToggleStats => 'General stats';
@@ -2353,7 +2364,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'All your Accounts and their recorded Rivals division';
 
   @override
-  String get deleteAccountConsequenceSquads => 'Your squads (Squad Builder)';
+  String get deleteAccountConsequenceSquads => 'Your squads (Squad)';
 
   @override
   String get deleteAccountConsequenceHistory =>
@@ -2407,7 +2418,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeNoTeamMessage =>
-      'Searching for a match needs a team. Rivals and Weekend League already work.';
+      'Searching for a match needs a team. Rivals and Champions already work.';
 
   @override
   String get pendingMatchSkipAction => 'Don\'t report this match';
@@ -2494,7 +2505,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorWeekendLeagueLimit =>
-      'Weekend League has 15 matches: wins and losses together cannot exceed that.';
+      'Champions has 15 matches: wins and losses together cannot exceed that.';
 
   @override
   String get squadNoneSelectedHint => 'Pick a squad for this search';
@@ -2650,7 +2661,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get managersBlockedMessage =>
-      'Today there are only 24 test records (fake names used by the Squad Builder\'s manager picker). We need a real FC 27 manager source before showing this as a catalogue.';
+      'Today there are only 24 test records (fake names used by the Squad\'s manager picker). We need a real FC 27 manager source before showing this as a catalogue.';
 
   @override
   String get consumablesBlockedTitle => 'No real data yet';

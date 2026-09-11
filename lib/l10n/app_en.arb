@@ -328,7 +328,7 @@
     }
   },
   "playerProfileSelectAccountTitle": "This player has more than one account on this team",
-  "playerProfileWeekendLeagueEmptyMessage": "No Weekend League event recorded.",
+  "playerProfileWeekendLeagueEmptyMessage": "No Champions event recorded.",
   "playerProfileWeekendLeagueRecordLabel": "{wins}W–{losses}L",
   "@playerProfileWeekendLeagueRecordLabel": {
     "placeholders": {
@@ -547,13 +547,13 @@
   "notificationsChannelQueueAlertsName": "Queue alerts",
   "notificationsChannelQueueAlertsDescription": "Alerts about your turn to search and how your search is going.",
   "notificationsChannelAppUpdatesName": "Team updates",
-  "notificationsChannelAppUpdatesDescription": "New members, ranking, Weekend League and Rivals.",
+  "notificationsChannelAppUpdatesDescription": "New members, ranking, Champions and Rivals.",
   "notificationsCategoryMatchmaking": "Matchmaking",
   "notificationsCategoryMatchmakingHint": "Your turn, search expiry alerts.",
   "notificationsCategoryTeams": "Teams",
   "notificationsCategoryTeamsHint": "New members joining the team.",
-  "notificationsCategoryWeekendLeague": "Weekend League",
-  "notificationsCategoryWeekendLeagueHint": "When a Weekend League ends.",
+  "notificationsCategoryWeekendLeague": "Champions",
+  "notificationsCategoryWeekendLeagueHint": "When a Champions ends.",
   "notificationsCategoryRivals": "Rivals",
   "notificationsCategoryRivalsHint": "A team account changes division.",
   "notificationsCategoryRankings": "Rankings",
@@ -622,7 +622,7 @@
       }
     }
   },
-  "notificationWeekendLeagueFinished": "{displayName} finished the Weekend League {wins}-{losses}.",
+  "notificationWeekendLeagueFinished": "{displayName} finished the Champions {wins}-{losses}.",
   "@notificationRivalsDivisionChanged": {
     "placeholders": {
       "displayName": {
@@ -699,8 +699,8 @@
     }
   },
   "gameModeSectionTitle": "Mode",
-  "gameModeWeekendLeague": "Weekend League",
-  "gameModeDivisionRivals": "Division Rivals",
+  "gameModeWeekendLeague": "Champions",
+  "gameModeDivisionRivals": "Rivals",
   "pendingMatchTitle": "You have a match without a result",
   "pendingMatchWinAction": "Win",
   "pendingMatchLossAction": "Loss",
@@ -712,7 +712,7 @@
   "finishMatchGoalsRequired": "Enter a valid number.",
   "finishMatchDrawError": "A draw is not a valid final result.",
   "finishMatchSubmitAction": "Save result",
-  "weekendLeagueBadge": "Weekend League #{number}",
+  "weekendLeagueBadge": "Champions #{number}",
   "@weekendLeagueBadge": {
     "placeholders": {
       "number": {
@@ -797,7 +797,7 @@
   "fcAccountDivisionTitle": "Rivals Division",
   "fcAccountDivisionPickerTitle": "Select division",
   "fcAccountDivisionNone": "No division set",
-  "fcAccountWeekendLeagueTitle": "Weekend League",
+  "fcAccountWeekendLeagueTitle": "Champions",
   "fcAccountWeekendLeagueComputedLabel": "Tracked from matches: {wins}–{losses}",
   "@fcAccountWeekendLeagueComputedLabel": {
     "placeholders": {
@@ -898,6 +898,10 @@
   "squadMoveHint": "Tap another slot to swap.",
   "squadIncompleteLabel": "Incomplete squad",
   "squadLabel": "Squad",
+  "playAccountLabel": "Account",
+  "playSquadEmpty": "No squad built yet",
+  "playSquadBuildAction": "Build squad",
+  "playSquadEditAction": "Edit squad",
   "squadNoneSelected": "No squad",
   "squadFilterLeagueLabel": "League",
   "squadFilterClubLabel": "Club",
@@ -1036,12 +1040,12 @@
   },
   "fcAccountStatsTitle": "Stats",
   "fcAccountStatsEmptyMessage": "No matches recorded yet.",
-  "rivalsSectionTitle": "Division Rivals",
-  "rivalsDetailTitle": "Division Rivals",
+  "rivalsSectionTitle": "Rivals",
+  "rivalsDetailTitle": "Rivals",
   "rivalsNoDivisionLabel": "Division not set yet",
   "rivalsAllTimeNote": "Stats from all recorded matches (no season/week breakdown yet).",
   "playerProfileSportSummaryTitle": "Sport summary",
-  "playerProfileRivalsLabel": "Division Rivals",
+  "playerProfileRivalsLabel": "Rivals",
   "playerProfileNoStatsMessage": "No detailed matches yet.",
   "squadChemistryDetailTitle": "Squad chemistry",
   "squadChemistryPlayerTitle": "Player chemistry",
@@ -1115,8 +1119,8 @@
   "teamSportsRankingTitle": "Ranking",
   "teamSportsScorersTitle": "Top scorers",
   "teamSportsAssistsTitle": "Assists",
-  "teamSportsWeekendLeagueTitle": "Weekend League",
-  "teamSportsRivalsTitle": "Division Rivals",
+  "teamSportsWeekendLeagueTitle": "Champions",
+  "teamSportsRivalsTitle": "Rivals",
   "teamSportsActivityTitle": "Recent activity",
   "teamSportsSeeAll": "See all",
   "teamSportsSmallSample": "Small sample",
@@ -1206,8 +1210,8 @@
   "publicProfileAccountLabel": "Public account",
   "publicProfileAccountEmpty": "No account selected",
   "publicProfileToggleSquad": "Main lineup",
-  "publicProfileToggleWeekendLeague": "Weekend League",
-  "publicProfileToggleRivals": "Division Rivals",
+  "publicProfileToggleWeekendLeague": "Champions",
+  "publicProfileToggleRivals": "Rivals",
   "publicProfileToggleStats": "General stats",
   "publicProfileCopyLinkAction": "Copy link",
   "publicProfileLinkCopied": "Link copied",
@@ -1268,7 +1272,7 @@
   "deleteAccountWarningTitle": "This action is permanent",
   "deleteAccountWarningMessage": "Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.",
   "deleteAccountConsequenceFcAccounts": "All your Accounts and their recorded Rivals division",
-  "deleteAccountConsequenceSquads": "Your squads (Squad Builder)",
+  "deleteAccountConsequenceSquads": "Your squads (Squad)",
   "deleteAccountConsequenceHistory": "Your membership in the teams you belong to",
   "deleteAccountConsequenceStats": "Your personal match history and stats",
   "deleteAccountConsequencePreferences": "Your notification preferences and registered devices",
@@ -1289,7 +1293,7 @@
   "homeFcAccountNoTeams": "No team yet",
   "homeFcAccountTeamCount": "{count, plural, =1{In 1 team} other{In {count} teams}}",
   "homeNoTeamTitle": "Join a team",
-  "homeNoTeamMessage": "Searching for a match needs a team. Rivals and Weekend League already work.",
+  "homeNoTeamMessage": "Searching for a match needs a team. Rivals and Champions already work.",
   "@homeFcAccountTeamCount": {
     "placeholders": {
       "count": {
@@ -1342,7 +1346,7 @@
       }
     }
   },
-  "errorWeekendLeagueLimit": "Weekend League has 15 matches: wins and losses together cannot exceed that.",
+  "errorWeekendLeagueLimit": "Champions has 15 matches: wins and losses together cannot exceed that.",
   "squadNoneSelectedHint": "Pick a squad for this search",
   "catalogCardsTitle": "Players",
   "catalogCardsSearchLabel": "Search card",
@@ -1401,7 +1405,7 @@
   "controlsShootingLabel": "Shooting",
   "controlsDefendingLabel": "Defending",
   "managersBlockedTitle": "No real data yet",
-  "managersBlockedMessage": "Today there are only 24 test records (fake names used by the Squad Builder's manager picker). We need a real FC 27 manager source before showing this as a catalogue.",
+  "managersBlockedMessage": "Today there are only 24 test records (fake names used by the Squad's manager picker). We need a real FC 27 manager source before showing this as a catalogue.",
   "consumablesBlockedTitle": "No real data yet",
   "consumablesBlockedMessage": "Chemistry Styles already has its own section under Mechanics. No other consumable is modelled in our catalogue today."
 }

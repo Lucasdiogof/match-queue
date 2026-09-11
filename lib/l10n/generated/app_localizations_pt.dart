@@ -654,7 +654,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get playerProfileWeekendLeagueEmptyMessage =>
-      'Nenhum evento de Weekend League registrado.';
+      'Nenhum evento de Champions registrado.';
 
   @override
   String playerProfileWeekendLeagueRecordLabel(int wins, int losses) {
@@ -1007,7 +1007,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get notificationsChannelAppUpdatesDescription =>
-      'Novos membros, ranking, Weekend League e Rivals.';
+      'Novos membros, ranking, Champions e Rivals.';
 
   @override
   String get notificationsCategoryMatchmaking => 'Matchmaking';
@@ -1023,11 +1023,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get notificationsCategoryTeamsHint => 'Novos membros no time.';
 
   @override
-  String get notificationsCategoryWeekendLeague => 'Weekend League';
+  String get notificationsCategoryWeekendLeague => 'Champions';
 
   @override
   String get notificationsCategoryWeekendLeagueHint =>
-      'Quando uma Weekend League termina.';
+      'Quando o Champions termina.';
 
   @override
   String get notificationsCategoryRivals => 'Rivals';
@@ -1108,7 +1108,7 @@ class AppLocalizationsPt extends AppLocalizations {
     int wins,
     int losses,
   ) {
-    return '$displayName terminou a Weekend League em $wins-$losses.';
+    return '$displayName terminou o Champions em $wins-$losses.';
   }
 
   @override
@@ -1263,10 +1263,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get gameModeSectionTitle => 'Modo';
 
   @override
-  String get gameModeWeekendLeague => 'Weekend League';
+  String get gameModeWeekendLeague => 'Champions';
 
   @override
-  String get gameModeDivisionRivals => 'Division Rivals';
+  String get gameModeDivisionRivals => 'Rivals';
 
   @override
   String get pendingMatchTitle => 'Você tem uma partida sem resultado';
@@ -1303,7 +1303,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String weekendLeagueBadge(int number) {
-    return 'Weekend League #$number';
+    return 'Champions #$number';
   }
 
   @override
@@ -1431,7 +1431,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get fcAccountDivisionNone => 'Sem divisão definida';
 
   @override
-  String get fcAccountWeekendLeagueTitle => 'Weekend League';
+  String get fcAccountWeekendLeagueTitle => 'Champions';
 
   @override
   String fcAccountWeekendLeagueComputedLabel(int wins, int losses) {
@@ -1515,7 +1515,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rivalsDivisionElite => 'Elite';
 
   @override
-  String get squadsSectionTitle => 'Squads';
+  String get squadsSectionTitle => 'Elencos';
 
   @override
   String get squadBuilderSaved => 'Salvo';
@@ -1524,23 +1524,23 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadBuilderSaving => 'Salvando…';
 
   @override
-  String get squadsEmptyTitle => 'Nenhum squad configurado';
+  String get squadsEmptyTitle => 'Nenhum elenco configurado';
 
   @override
   String get squadsEmptyMessage =>
-      'Crie um squad para montar sua escalação. Você pode buscar partida mesmo sem um.';
+      'Crie um elenco para montar sua escalação. Você pode buscar partida mesmo sem um.';
 
   @override
-  String get squadCreateAction => 'Criar squad';
+  String get squadCreateAction => 'Criar elenco';
 
   @override
-  String get squadCreateTitle => 'Novo squad';
+  String get squadCreateTitle => 'Novo elenco';
 
   @override
   String get squadCreateSubtitle => 'Dê um nome e escolha a formação inicial.';
 
   @override
-  String get squadNameLabel => 'Nome do squad';
+  String get squadNameLabel => 'Nome do elenco';
 
   @override
   String get squadNameHint => 'Ex.: Principal';
@@ -1549,7 +1549,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadFormationLabel => 'Formação';
 
   @override
-  String get squadRenameTitle => 'Renomear squad';
+  String get squadRenameTitle => 'Renomear elenco';
 
   @override
   String get squadRenameAction => 'Renomear';
@@ -1561,10 +1561,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadDefaultBadge => 'Padrão';
 
   @override
-  String get squadArchiveAction => 'Arquivar squad';
+  String get squadArchiveAction => 'Arquivar elenco';
 
   @override
-  String get squadArchiveConfirmTitle => 'Arquivar squad?';
+  String get squadArchiveConfirmTitle => 'Arquivar elenco?';
 
   @override
   String get squadArchiveConfirmMessage =>
@@ -1620,13 +1620,25 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadMoveHint => 'Toque em outro slot para trocar.';
 
   @override
-  String get squadIncompleteLabel => 'Squad incompleto';
+  String get squadIncompleteLabel => 'Elenco incompleto';
 
   @override
-  String get squadLabel => 'Squad';
+  String get squadLabel => 'Elenco';
 
   @override
-  String get squadNoneSelected => 'Sem squad';
+  String get playAccountLabel => 'Conta';
+
+  @override
+  String get playSquadEmpty => 'Nenhum elenco montado';
+
+  @override
+  String get playSquadBuildAction => 'Montar elenco';
+
+  @override
+  String get playSquadEditAction => 'Editar elenco';
+
+  @override
+  String get squadNoneSelected => 'Sem elenco';
 
   @override
   String get squadFilterLeagueLabel => 'Liga';
@@ -1638,7 +1650,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadFilterNationLabel => 'Nação';
 
   @override
-  String get errorSquadNotFound => 'Squad não encontrado.';
+  String get errorSquadNotFound => 'Elenco não encontrado.';
 
   @override
   String get errorSquadNameInvalid => 'Escolha um nome de 1 a 40 caracteres.';
@@ -1654,7 +1666,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorSquadInUse =>
-      'Este squad está sendo usado em uma busca ativa.';
+      'Este elenco está sendo usado em uma busca ativa.';
 
   @override
   String squadCompletionLabel(int filled, int total) {
@@ -1695,7 +1707,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get squadClearConfirmMessage =>
-      'Isso remove todos os jogadores dos titulares, do banco e das reservas. O squad em si não é apagado.';
+      'Isso remove todos os jogadores dos titulares, do banco e das reservas. O elenco em si não é apagado.';
 
   @override
   String get squadFormationChangeConfirmTitle => 'Trocar formação?';
@@ -1902,10 +1914,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get fcAccountStatsEmptyMessage => 'Nenhuma partida registrada ainda.';
 
   @override
-  String get rivalsSectionTitle => 'Division Rivals';
+  String get rivalsSectionTitle => 'Rivals';
 
   @override
-  String get rivalsDetailTitle => 'Division Rivals';
+  String get rivalsDetailTitle => 'Rivals';
 
   @override
   String get rivalsNoDivisionLabel => 'Divisão ainda não informada';
@@ -1918,7 +1930,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get playerProfileSportSummaryTitle => 'Resumo esportivo';
 
   @override
-  String get playerProfileRivalsLabel => 'Division Rivals';
+  String get playerProfileRivalsLabel => 'Rivals';
 
   @override
   String get playerProfileNoStatsMessage => 'Ainda sem partidas detalhadas.';
@@ -2062,10 +2074,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamSportsAssistsTitle => 'Assistências';
 
   @override
-  String get teamSportsWeekendLeagueTitle => 'Weekend League';
+  String get teamSportsWeekendLeagueTitle => 'Champions';
 
   @override
-  String get teamSportsRivalsTitle => 'Division Rivals';
+  String get teamSportsRivalsTitle => 'Rivals';
 
   @override
   String get teamSportsActivityTitle => 'Atividade recente';
@@ -2216,10 +2228,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get publicProfileToggleSquad => 'Escalação Principal';
 
   @override
-  String get publicProfileToggleWeekendLeague => 'Weekend League';
+  String get publicProfileToggleWeekendLeague => 'Champions';
 
   @override
-  String get publicProfileToggleRivals => 'Division Rivals';
+  String get publicProfileToggleRivals => 'Rivals';
 
   @override
   String get publicProfileToggleStats => 'Estatísticas gerais';
@@ -2355,8 +2367,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Todas as suas Contas e a divisão de Rivals registrada';
 
   @override
-  String get deleteAccountConsequenceSquads =>
-      'Suas escalações (Squad Builder)';
+  String get deleteAccountConsequenceSquads => 'Suas escalações (Elenco)';
 
   @override
   String get deleteAccountConsequenceHistory =>
@@ -2410,7 +2421,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get homeNoTeamMessage =>
-      'Buscar partida exige um time. Rivals e Weekend League você já pode usar.';
+      'Buscar partida exige um time. Rivals e Champions você já pode usar.';
 
   @override
   String get pendingMatchSkipAction => 'Não informar esta partida';
@@ -2498,10 +2509,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorWeekendLeagueLimit =>
-      'A Weekend League tem 15 partidas: vitórias e derrotas somadas não podem passar disso.';
+      'O Champions tem 15 partidas: vitórias e derrotas somadas não podem passar disso.';
 
   @override
-  String get squadNoneSelectedHint => 'Escolha um squad para esta busca';
+  String get squadNoneSelectedHint => 'Escolha um elenco para esta busca';
 
   @override
   String get catalogCardsTitle => 'Jogadores';
@@ -2599,7 +2610,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mechanicsChemistryLabel => 'Chemistry';
 
   @override
-  String get mechanicsChemistryHint => 'Como a química do squad funciona.';
+  String get mechanicsChemistryHint => 'Como a química do elenco funciona.';
 
   @override
   String get mechanicsChemistryStylesLabel => 'Chemistry Styles';
@@ -2655,7 +2666,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get managersBlockedMessage =>
-      'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Squad Builder). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.';
+      'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Elenco). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.';
 
   @override
   String get consumablesBlockedTitle => 'Ainda sem dado real';
