@@ -6,17 +6,16 @@ nem de ambiente, este arquivo sim.
 
 ## Estado atual (2026-09-11) — leia esta seção primeiro
 
-Repaginada visual + Elenco Builder. **Etapas 1 e 2 já em `main`
-(`c61adba`, com o wordmark novo). Etapa 3 está numa branch NÃO MERGEADA,
-com QA visual real do builder já feita.**
+Repaginada visual + Elenco Builder. **Etapas 1, 2 e 3 já em `main`**,
+mergeada em 2026-09-11 depois da QA visual real do builder.
 
 ```
-main                             c61adba
-redesign-etapa3-lineup-builder   afbb074   <- 13 commits, pushada, sem merge
+main   85ef270   <- merge da Etapa 3, main==origin/main
 ```
 
 `flutter analyze` limpo, `flutter test` **55/55**, **96 migrations local ==
-remoto**.
+remoto**. Etapas 4 (matchmaking/histórico) e 5 (acabamento) ainda não
+começaram.
 
 **QA visual do builder executada de verdade nesta rodada** (campo, técnico,
 share, light/dark, 360×600/360×740) — pela primeira vez o ambiente de
@@ -150,8 +149,8 @@ agora (novo wordmark). Restaurados (ver commit `398c00d`); não deletar.
 
 ### Pendências reais
 
-1. ~~Merge da Etapa 3 — falta QA visual do builder~~ **QA visual feita,
-   ver seção acima.** Falta só a decisão de merge em si.
+1. ~~Merge da Etapa 3~~ **FEITO em 2026-09-11 (`85ef270`), aprovado
+   depois da QA visual real.** `main` == `origin/main`.
 2. ~~Item 19 da Etapa 3~~ **FECHADO nesta rodada.**
 3. **RPCs antigas sem consumidor**: `set_fc_squad_formation`,
    `set_fc_squad_manager`, `set_slot`, `clear_slot`, `swap_fc_squad_slots`,
