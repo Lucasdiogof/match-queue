@@ -3164,6 +3164,12 @@ abstract class AppLocalizations {
   /// **'Direito'**
   String get squadCardDetailPreferredFootRight;
 
+  /// No description provided for @squadCardDetailPlaystylesPlusTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'PlayStyles+'**
+  String get squadCardDetailPlaystylesPlusTitle;
+
   /// No description provided for @squadCardDetailPlaystylesTitle.
   ///
   /// In pt, this message translates to:

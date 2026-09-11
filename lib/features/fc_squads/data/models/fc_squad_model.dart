@@ -75,6 +75,7 @@ class FcSquadModel {
     skillMoves: json['skill_moves'] as int?,
     weakFoot: json['weak_foot'] as int?,
     playstyles: _toStringList(json['playstyles']),
+    playstylesPlus: _toStringList(json['playstyles_plus']),
     heightCm: json['height_cm'] as int?,
     preferredFoot: json['preferred_foot'] as String?,
     playerRoles: _toStringList(json['player_roles']),

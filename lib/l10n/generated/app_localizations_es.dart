@@ -1788,6 +1788,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadCardDetailPreferredFootRight => 'Derecho';
 
   @override
+  String get squadCardDetailPlaystylesPlusTitle => 'PlayStyles+';
+
+  @override
   String get squadCardDetailPlaystylesTitle => 'Playstyles';
 
   @override

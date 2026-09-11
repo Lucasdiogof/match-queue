@@ -172,6 +172,30 @@ class _PlayerCardDetailBody extends StatelessWidget {
                 ),
               ),
             ],
+            // Plus primeiro: e o atributo mais raro e o que o usuario procura.
+            // A distincao vem das DUAS COLUNAS do banco, que sao disjuntas --
+            // nunca de heuristica sobre o nome.
+            if (card.playstylesPlus.isNotEmpty) ...<Widget>[
+              const SizedBox(height: AppSpacing.lg),
+              _Section(
+                title: l10n.squadCardDetailPlaystylesPlusTitle,
+                child: Wrap(
+                  spacing: AppSpacing.xs,
+                  runSpacing: AppSpacing.xs,
+                  children: <Widget>[
+                    // Tres sinais, nao so a cor: icone, o '+' que ja vem no
+                    // proprio valor, e a secao separada com titulo proprio.
+                    // So a cor excluiria quem nao a distingue.
+                    for (final p in card.playstylesPlus)
+                      AppBadge(
+                        label: p,
+                        tone: AppBadgeTone.warning,
+                        icon: Icons.auto_awesome,
+                      ),
+                  ],
+                ),
+              ),
+            ],
             if (card.playstyles.isNotEmpty) ...<Widget>[
               const SizedBox(height: AppSpacing.lg),
               _Section(

@@ -46,6 +46,7 @@ class PlayerCard extends Equatable {
     this.skillMoves,
     this.weakFoot,
     this.playstyles = const <String>[],
+    this.playstylesPlus = const <String>[],
     this.heightCm,
     this.preferredFoot,
     this.playerRoles = const <String>[],
@@ -77,6 +78,11 @@ class PlayerCard extends Equatable {
   final int? skillMoves;
   final int? weakFoot;
   final List<String> playstyles;
+
+  /// PlayStyles+ vem do banco em coluna PROPRIA e disjunta de
+  /// [playstyles] -- nunca deduzir qual e Plus pelo nome. Os valores ja
+  /// chegam com o sufixo '+' (ex.: 'Rapid+').
+  final List<String> playstylesPlus;
   final int? heightCm;
   final String? preferredFoot;
   final List<String> playerRoles;

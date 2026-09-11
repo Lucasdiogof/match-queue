@@ -1777,6 +1777,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get squadCardDetailPreferredFootRight => 'Right';
 
   @override
+  String get squadCardDetailPlaystylesPlusTitle => 'PlayStyles+';
+
+  @override
   String get squadCardDetailPlaystylesTitle => 'Playstyles';
 
   @override
