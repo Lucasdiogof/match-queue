@@ -219,7 +219,7 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
           cards: _sortByEligibility(<PlayerCard>[
             ...state.cards,
             ...page.items,
-          ]),
+          ], compatibleOnly: state.compatibleOnly),
           hasMore: page.hasMore,
           isLoadingMore: false,
         ),
@@ -255,7 +255,10 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
       emit(
         state.copyWith(
           status: PlayerPickerStatus.ready,
-          cards: _sortByEligibility(page.items),
+          cards: _sortByEligibility(
+            page.items,
+            compatibleOnly: state.compatibleOnly,
+          ),
           hasMore: page.hasMore,
           clearFailure: true,
         ),
@@ -269,31 +272,38 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     }
   }
 
-  /// Filtra e ordena por elegibilidade: posicao primaria primeiro, depois
-  /// alternativa real. Quem nao joga ali FICA DE FORA.
+  /// Ordena por elegibilidade: posicao primaria primeiro, depois alternativa
+  /// real, fora de posicao por ultimo -- nunca escondido (item 43).
   ///
-  /// Antes so reordenava, entao um ST aparecia como sugestao de LB, apenas no
-  /// fim da lista -- e a busca por texto atravessava a lista inteira. Sugerir
-  /// jogador que nao atua na posicao nao e uma sugestao pior, e uma sugestao
-  /// errada.
+  /// So FILTRA (esconde quem nao joga ali) quando [compatibleOnly] esta
+  /// ligado -- exatamente o que [setCompatibleOnly] promete. Sem isso, uma
+  /// pagina buscada sem filtro de posicao (ordenada por rating no servidor,
+  /// que e o caso padrao com "Compatíveis" desligado) pode nao trazer NENHUM
+  /// jogador da posicao pedida dentro do limite da pagina -- um goleiro
+  /// nunca aparece pra montar o slot GK, por exemplo, porque os 30 cartas de
+  /// maior overall do catalogo inteiro raramente incluem um goleiro. Achado
+  /// ao vivo numa sessao de QA visual do Squad Builder.
   ///
-  /// A regra continua sendo a de [eligibilityTier]: posicao principal mais as
-  /// alternativas declaradas na carta. Nada de equivalencia inventada do tipo
-  /// "LB aceita qualquer defensor".
+  /// A regra de elegibilidade continua sendo a de [eligibilityTier]: posicao
+  /// principal mais as alternativas declaradas na carta. Nada de
+  /// equivalencia inventada do tipo "LB aceita qualquer defensor".
   ///
   /// `List.sort` nao e estavel em Dart, mas o desempate por rating ja vem do
   /// servidor (`order by rating desc`) dentro de cada pagina, entao o pior
   /// caso e reordenacao cosmetica dentro do mesmo rating.
-  List<PlayerCard> _sortByEligibility(List<PlayerCard> cards) {
+  List<PlayerCard> _sortByEligibility(
+    List<PlayerCard> cards, {
+    required bool compatibleOnly,
+  }) {
     final code = positionCode;
     if (code == null) {
       return cards;
     }
-    return List<PlayerCard>.of(
-      cards.where((card) => eligibilityTier(card, code) < 2),
-    )..sort(
-      (a, b) =>
-          eligibilityTier(a, code).compareTo(eligibilityTier(b, code)),
+    final base = compatibleOnly
+        ? cards.where((card) => eligibilityTier(card, code) < 2)
+        : cards;
+    return List<PlayerCard>.of(base)..sort(
+      (a, b) => eligibilityTier(a, code).compareTo(eligibilityTier(b, code)),
     );
   }
 
