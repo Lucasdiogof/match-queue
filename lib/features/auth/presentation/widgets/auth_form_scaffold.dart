@@ -115,7 +115,10 @@ class AuthFormScaffold extends StatelessWidget {
               ),
             ],
           )
-        : SafeArea(child: _buildForm(context)),
+        : AppBackground(
+            dense: true,
+            child: SafeArea(child: _buildForm(context)),
+          ),
   );
 }
 
