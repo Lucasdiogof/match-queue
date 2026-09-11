@@ -1,6 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
 import 'package:flutter/material.dart';
 
 /// Detalhe completo de uma carta -- só mostra os campos que EXISTEM hoje no
@@ -53,10 +54,16 @@ class _PlayerCardDetailBody extends StatelessWidget {
                     child: Image.network(
                       art,
                       fit: BoxFit.contain,
+                      // Mesma razao do grid: sem CORS no CDN, o caminho por
+                      // bytes falha na Web e o <img> resolve.
+                      webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
                       loadingBuilder: (context, child, progress) =>
                           progress == null ? child : const AppLoading.inline(),
+                      // O AspectRatio reserva a altura de qualquer jeito, entao
+                      // encolher o filho so deixava um buraco. A ficha ocupa o
+                      // mesmo espaco com o conteudo que existe.
                       errorBuilder: (context, error, stackTrace) =>
-                          const SizedBox.shrink(),
+                          PlayerCardDataFace(card: card),
                     ),
                   ),
                 ),

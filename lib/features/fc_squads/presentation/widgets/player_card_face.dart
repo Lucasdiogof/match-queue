@@ -54,7 +54,7 @@ class PlayerCardFace extends StatelessWidget {
             // Com arte real a carta E a imagem: nada de moldura desenhada por
             // cima, porque a arte ja traz overall, posicao, clube e nacao.
             child: art == null
-                ? _DataCard(card: card, eligibility: eligibility)
+                ? PlayerCardDataFace(card: card, eligibility: eligibility)
                 : _ArtCard(art: art, card: card, eligibility: eligibility),
           ),
         ),
@@ -81,10 +81,16 @@ class _ArtCard extends StatelessWidget {
       Image.network(
         art,
         fit: BoxFit.contain,
+        // Na Web o CDN da arte permite hotlink por <img> mas nao devolve
+        // Access-Control-Allow-Origin, e o caminho padrao do Flutter busca os
+        // bytes por XHR -- que o navegador bloqueia. Com `fallback`, ele tenta
+        // os bytes e, se o CORS barrar, carrega num <img>, que funciona.
+        // Fora da Web o parametro e ignorado.
+        webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
         loadingBuilder: (context, child, progress) =>
             progress == null ? child : const AppLoading.inline(),
         errorBuilder: (context, error, stackTrace) =>
-            _DataCard(card: card, eligibility: eligibility),
+            PlayerCardDataFace(card: card, eligibility: eligibility),
       ),
       if (eligibility != null)
         Positioned(
@@ -99,8 +105,11 @@ class _ArtCard extends StatelessWidget {
 /// Sem arte, a carta deixa de fingir ser um retrato e vira o que de fato e:
 /// uma ficha. Um monograma gigante no meio so anunciava a imagem que falta --
 /// aqui o espaco vai para o que existe de verdade.
-class _DataCard extends StatelessWidget {
-  const _DataCard({required this.card, required this.eligibility});
+///
+/// Publica porque e o fallback em dois lugares: aqui e no detalhe, que antes
+/// deixava um vazio de 260px quando a imagem falhava.
+class PlayerCardDataFace extends StatelessWidget {
+  const PlayerCardDataFace({required this.card, this.eligibility, super.key});
 
   final PlayerCard card;
   final int? eligibility;
