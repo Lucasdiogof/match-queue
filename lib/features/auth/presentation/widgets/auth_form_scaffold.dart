@@ -53,7 +53,7 @@ class AuthFormScaffold extends StatelessWidget {
       Expanded(
         child: Align(
           alignment: backgroundImage != null
-              ? Alignment.bottomCenter
+              ? const Alignment(0, 0.45)
               : Alignment.center,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
