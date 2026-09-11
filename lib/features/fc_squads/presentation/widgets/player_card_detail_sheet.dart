@@ -55,8 +55,9 @@ class _PlayerCardDetailBody extends StatelessWidget {
                       art,
                       fit: BoxFit.contain,
                       // Mesma razao do grid: sem CORS no CDN, o caminho por
-                      // bytes falha na Web e o <img> resolve.
-                      webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
+                      // bytes falha na Web e o <img> resolve -- entao vai
+                      // direto nele, sem a tentativa condenada antes.
+                      webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                       loadingBuilder: (context, child, progress) =>
                           progress == null ? child : const AppLoading.inline(),
                       // O AspectRatio reserva a altura de qualquer jeito, entao

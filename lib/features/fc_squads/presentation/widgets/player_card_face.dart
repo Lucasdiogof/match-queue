@@ -83,10 +83,13 @@ class _ArtCard extends StatelessWidget {
         fit: BoxFit.contain,
         // Na Web o CDN da arte permite hotlink por <img> mas nao devolve
         // Access-Control-Allow-Origin, e o caminho padrao do Flutter busca os
-        // bytes por XHR -- que o navegador bloqueia. Com `fallback`, ele tenta
-        // os bytes e, se o CORS barrar, carrega num <img>, que funciona.
-        // Fora da Web o parametro e ignorado.
-        webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
+        // bytes por XHR -- que o navegador bloqueia.
+        //
+        // `prefer` e nao `fallback`: como o CORS aqui nunca vai passar, tentar
+        // os bytes antes so gastaria uma requisicao condenada e sujaria o
+        // console com um erro por carta. Vai direto ao <img>, que e o caminho
+        // que de fato funciona. Fora da Web o parametro e ignorado.
+        webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
         loadingBuilder: (context, child, progress) =>
             progress == null ? child : const AppLoading.inline(),
         errorBuilder: (context, error, stackTrace) =>
