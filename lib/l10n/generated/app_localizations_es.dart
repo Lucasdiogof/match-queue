@@ -934,9 +934,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get matchmakingYourTurnTitle => '¡Tu turno de buscar!';
 
   @override
-  String get matchmakingReconnecting => 'Reconectando…';
-
-  @override
   String get matchmakingBottomSheetTitle => 'Búsqueda en curso';
 
   @override
@@ -957,7 +954,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get matchmakingNotLinkedMessage =>
-      'Esta Cuenta FC no está vinculada a este equipo.';
+      'Vincula esta Cuenta FC a este equipo para poder buscar partida.';
+
+  @override
+  String get matchmakingLinkAccountAction => 'Vincular cuenta al equipo';
 
   @override
   String get notificationsSectionTitle => 'Notificaciones';
@@ -1897,6 +1897,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get statsLossesLabel => 'Derrotas';
 
   @override
+  String get recordAddWinTooltip => 'Agregar victoria';
+
+  @override
+  String get recordAddLossTooltip => 'Agregar derrota';
+
+  @override
   String get statsGoalDiffLabel => 'Diferencia de goles';
 
   @override
@@ -1935,7 +1941,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rivalsAllTimeNote =>
-      'Estadísticas de todos los partidos registrados (todavía sin separación por temporada/semana).';
+      'Contador manual, todavía sin separación por temporada/semana.';
 
   @override
   String get playerProfileSportSummaryTitle => 'Resumen deportivo';

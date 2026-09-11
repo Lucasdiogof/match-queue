@@ -505,7 +505,6 @@
   "matchmakingQueueEmptyMessage": "No one in the queue.",
   "matchmakingYouBadge": "You",
   "matchmakingYourTurnTitle": "Your turn to search!",
-  "matchmakingReconnecting": "Reconnecting…",
   "matchmakingBottomSheetTitle": "Search in progress",
   "matchmakingBottomSheetMessage": "{name} is searching for a match for Team {teamName}.",
   "@matchmakingBottomSheetMessage": {
@@ -531,7 +530,8 @@
       }
     }
   },
-  "matchmakingNotLinkedMessage": "This FC Account is not linked to this team.",
+  "matchmakingNotLinkedMessage": "Link this FC Account to this team to search for matches.",
+  "matchmakingLinkAccountAction": "Link account to team",
   "notificationsSectionTitle": "Notifications",
   "notificationsToggleYourTurn": "Your turn to search",
   "notificationsToggleYourTurnHint": "When it becomes your turn in the team queue.",
@@ -1022,6 +1022,8 @@
   "statsMatchesLabel": "Matches",
   "statsWinsLabel": "Wins",
   "statsLossesLabel": "Losses",
+  "recordAddWinTooltip": "Add win",
+  "recordAddLossTooltip": "Add loss",
   "statsGoalDiffLabel": "Goal difference",
   "statsGoalsAgainstLabel": "Goals conceded",
   "statsTopScorersTitle": "Top scorers",
@@ -1043,7 +1045,7 @@
   "rivalsSectionTitle": "Rivals",
   "rivalsDetailTitle": "Rivals",
   "rivalsNoDivisionLabel": "Division not set yet",
-  "rivalsAllTimeNote": "Stats from all recorded matches (no season/week breakdown yet).",
+  "rivalsAllTimeNote": "Manual counter, no season/week breakdown yet.",
   "playerProfileSportSummaryTitle": "Sport summary",
   "playerProfileRivalsLabel": "Rivals",
   "playerProfileNoStatsMessage": "No detailed matches yet.",

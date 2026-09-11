@@ -142,6 +142,11 @@ class _ControlBody extends StatelessWidget {
               }
               final account = fcState.selectedAccount;
               final team = selected!;
+              // Modo e busca so fazem sentido pra quem pode buscar de
+              // verdade: Conta FC selecionada E vinculada a ESTE time. Sem
+              // isso os dois cards apareciam sempre, um deles so pra avisar
+              // que nao dava pra usar o outro.
+              final canSearch = account != null && account.isLinkedTo(team.id);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 // Matchmaking primeiro. A ordem antiga abria com progresso
@@ -158,21 +163,21 @@ class _ControlBody extends StatelessWidget {
                   const PendingMatchCard(),
                   const AccountSquadCard(),
                   const SizedBox(height: AppSpacing.lg),
-                  AppCard(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          l10n.gameModeSectionTitle,
-                          style: context.textStyles.labelSmall,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        const GameModeSelector(),
-                      ],
+                  if (canSearch) ...<Widget>[
+                    AppCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            l10n.gameModeSectionTitle,
+                            style: context.textStyles.labelSmall,
+                          ),
+                          const SizedBox(height: AppSpacing.md),
+                          const GameModeSelector(),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  if (account != null)
+                    const SizedBox(height: AppSpacing.lg),
                     MatchmakingSection(
                       fcAccountId: account.id,
                       teamId: team.id,
@@ -180,12 +185,49 @@ class _ControlBody extends StatelessWidget {
                       onMatchFound: () =>
                           context.read<PendingMatchCubit>().refreshSilently(),
                     ),
+                  ] else if (account != null)
+                    _AccountNotLinkedCard(accountId: account.id),
                   const SizedBox(height: AppSpacing.xl),
                   const WeekendLeagueCard(),
                   const RivalsCard(),
                 ],
               );
             },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Conta selecionada mas nao vinculada a ESTE time -- modo e busca ficam
+/// escondidos (nenhum dos dois funciona sem o vinculo) e este card e o
+/// unico CTA da dobra, com uma acao real em vez de reaproveitar o titulo
+/// da secao "Times vinculados" como rotulo de botao.
+class _AccountNotLinkedCard extends StatelessWidget {
+  const _AccountNotLinkedCard({required this.accountId});
+
+  final String accountId;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AppCard(
+      variant: AppCardVariant.elevated,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          AppBanner(
+            tone: AppBannerTone.warning,
+            message: l10n.matchmakingNotLinkedMessage,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          AppButton.secondary(
+            label: l10n.matchmakingLinkAccountAction,
+            icon: Icons.link,
+            onPressed: () =>
+                context.push(AppRoutes.fcAccountDetailLocation(accountId)),
           ),
         ],
       ),

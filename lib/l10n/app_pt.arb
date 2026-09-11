@@ -505,7 +505,6 @@
   "matchmakingQueueEmptyMessage": "Ninguém na fila.",
   "matchmakingYouBadge": "Você",
   "matchmakingYourTurnTitle": "Sua vez de buscar!",
-  "matchmakingReconnecting": "Reconectando…",
   "matchmakingBottomSheetTitle": "Busca em andamento",
   "matchmakingBottomSheetMessage": "{name} está buscando partida pelo Time {teamName}.",
   "@matchmakingBottomSheetMessage": {
@@ -531,7 +530,8 @@
       }
     }
   },
-  "matchmakingNotLinkedMessage": "Esta Conta FC não está vinculada a este time.",
+  "matchmakingNotLinkedMessage": "Vincule esta Conta FC a este time para poder buscar partida.",
+  "matchmakingLinkAccountAction": "Vincular Conta ao time",
   "notificationsSectionTitle": "Notificações",
   "notificationsToggleYourTurn": "Sua vez de buscar",
   "notificationsToggleYourTurnHint": "Quando chegar a sua vez na fila do time.",
@@ -1022,6 +1022,8 @@
   "statsMatchesLabel": "Partidas",
   "statsWinsLabel": "Vitórias",
   "statsLossesLabel": "Derrotas",
+  "recordAddWinTooltip": "Adicionar vitória",
+  "recordAddLossTooltip": "Adicionar derrota",
   "statsGoalDiffLabel": "Saldo de gols",
   "statsGoalsAgainstLabel": "Gols sofridos",
   "statsTopScorersTitle": "Artilharia",
@@ -1043,7 +1045,7 @@
   "rivalsSectionTitle": "Rivals",
   "rivalsDetailTitle": "Rivals",
   "rivalsNoDivisionLabel": "Divisão ainda não informada",
-  "rivalsAllTimeNote": "Estatísticas de todas as partidas registradas (ainda sem separação por season/semana).",
+  "rivalsAllTimeNote": "Contador manual, sem separação por season/semana ainda.",
   "playerProfileSportSummaryTitle": "Resumo esportivo",
   "playerProfileRivalsLabel": "Rivals",
   "playerProfileNoStatsMessage": "Ainda sem partidas detalhadas.",

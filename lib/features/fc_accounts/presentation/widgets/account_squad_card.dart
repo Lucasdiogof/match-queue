@@ -62,6 +62,7 @@ class AccountSquadCard extends StatelessWidget {
                       AppIconButton(
                         icon: Icons.swap_horiz,
                         tooltip: l10n.fcAccountSwitchTitle,
+                        variant: AppIconButtonVariant.surface,
                         onPressed: () => showFcAccountSwitcherSheet(
                           context: context,
                           accounts: accountsState.accounts,
@@ -90,7 +91,9 @@ class _SquadRow extends StatelessWidget {
   const _SquadRow();
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<FcSquadsCubit, FcSquadsState>(
+  Widget build(
+    BuildContext context,
+  ) => BlocBuilder<FcSquadsCubit, FcSquadsState>(
     builder: (context, state) {
       final l10n = context.l10n;
       final colors = context.colors;

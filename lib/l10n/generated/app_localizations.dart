@@ -1672,12 +1672,6 @@ abstract class AppLocalizations {
   /// **'Sua vez de buscar!'**
   String get matchmakingYourTurnTitle;
 
-  /// No description provided for @matchmakingReconnecting.
-  ///
-  /// In pt, this message translates to:
-  /// **'Reconectando…'**
-  String get matchmakingReconnecting;
-
   /// No description provided for @matchmakingBottomSheetTitle.
   ///
   /// In pt, this message translates to:
@@ -1711,8 +1705,14 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingNotLinkedMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Esta Conta FC não está vinculada a este time.'**
+  /// **'Vincule esta Conta FC a este time para poder buscar partida.'**
   String get matchmakingNotLinkedMessage;
+
+  /// No description provided for @matchmakingLinkAccountAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vincular Conta ao time'**
+  String get matchmakingLinkAccountAction;
 
   /// No description provided for @notificationsSectionTitle.
   ///
@@ -3368,6 +3368,18 @@ abstract class AppLocalizations {
   /// **'Derrotas'**
   String get statsLossesLabel;
 
+  /// No description provided for @recordAddWinTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar vitória'**
+  String get recordAddWinTooltip;
+
+  /// No description provided for @recordAddLossTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar derrota'**
+  String get recordAddLossTooltip;
+
   /// No description provided for @statsGoalDiffLabel.
   ///
   /// In pt, this message translates to:
@@ -3437,7 +3449,7 @@ abstract class AppLocalizations {
   /// No description provided for @rivalsAllTimeNote.
   ///
   /// In pt, this message translates to:
-  /// **'Estatísticas de todas as partidas registradas (ainda sem separação por season/semana).'**
+  /// **'Contador manual, sem separação por season/semana ainda.'**
   String get rivalsAllTimeNote;
 
   /// No description provided for @playerProfileSportSummaryTitle.

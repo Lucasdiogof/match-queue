@@ -209,40 +209,7 @@ class _MatchmakingReadyBody extends StatelessWidget {
               elsewhere: snapshot.searchingElsewhere!,
             ),
           ),
-        if (state.connection == MatchmakingConnection.disconnected) ...<Widget>[
-          const _ReconnectingIndicator(),
-          const SizedBox(height: AppSpacing.sm),
-        ],
         card,
-      ],
-    );
-  }
-}
-
-class _ReconnectingIndicator extends StatelessWidget {
-  const _ReconnectingIndicator();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return Row(
-      children: <Widget>[
-        SizedBox(
-          width: 12,
-          height: 12,
-          child: CircularProgressIndicator(
-            strokeWidth: 1.5,
-            color: colors.textTertiary,
-          ),
-        ),
-        const SizedBox(width: AppSpacing.sm),
-        Text(
-          context.l10n.matchmakingReconnecting,
-          style: context.textStyles.bodySmall?.copyWith(
-            color: colors.textTertiary,
-          ),
-        ),
       ],
     );
   }
@@ -282,7 +249,7 @@ class _NotLinkedCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           AppButton.secondary(
-            label: l10n.fcAccountLinkedTeamsTitle,
+            label: l10n.matchmakingLinkAccountAction,
             icon: Icons.link,
             onPressed: () => context.push(
               AppRoutes.fcAccountDetailLocation(snapshot.fcAccountId),

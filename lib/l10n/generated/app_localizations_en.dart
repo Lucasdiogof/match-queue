@@ -928,9 +928,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matchmakingYourTurnTitle => 'Your turn to search!';
 
   @override
-  String get matchmakingReconnecting => 'Reconnecting…';
-
-  @override
   String get matchmakingBottomSheetTitle => 'Search in progress';
 
   @override
@@ -951,7 +948,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get matchmakingNotLinkedMessage =>
-      'This FC Account is not linked to this team.';
+      'Link this FC Account to this team to search for matches.';
+
+  @override
+  String get matchmakingLinkAccountAction => 'Link account to team';
 
   @override
   String get notificationsSectionTitle => 'Notifications';
@@ -1885,6 +1885,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsLossesLabel => 'Losses';
 
   @override
+  String get recordAddWinTooltip => 'Add win';
+
+  @override
+  String get recordAddLossTooltip => 'Add loss';
+
+  @override
   String get statsGoalDiffLabel => 'Goal difference';
 
   @override
@@ -1922,7 +1928,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rivalsAllTimeNote =>
-      'Stats from all recorded matches (no season/week breakdown yet).';
+      'Manual counter, no season/week breakdown yet.';
 
   @override
   String get playerProfileSportSummaryTitle => 'Sport summary';
