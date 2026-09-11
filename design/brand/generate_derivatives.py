@@ -12,7 +12,7 @@ como referencia historica.
 So faz resize/pad sobre fundo branco identico ao das artes originais -- nunca
 recorta, redesenha ou distorce o desenho.
 """
-from PIL import Image
+from PIL import Image, ImageFilter
 import numpy as np
 import os
 
@@ -41,30 +41,68 @@ def pad_to_square_white(im, canvas_size, content_fraction):
     return canvas
 
 
-def remove_black_background(im_rgb, low=45, high=110, crop_padding=20):
+def remove_black_background(
+    im_rgb,
+    bright_low=150,
+    bright_high=185,
+    teal_low=25,
+    teal_high=60,
+    peak_spread=3,
+    crop_padding=15,
+):
     """Usada no wordmark atual: arte cromada/teal com brilho proprio sobre um
-    fundo preto solido, com um glow radial largo em volta das letras (nao um
-    simbolo com letras escuras sobre fundo claro como a versao anterior --
-    por isso NAO usa mais corte por brilho).
+    fundo preto solido, com um glow radial LARGO e difuso em volta das letras
+    -- nao um simbolo com letras escuras sobre fundo claro como a versao
+    anterior, por isso nao e corte por chroma-key de uma cor so.
 
-    Alpha por luminancia (rampa suave de `low` a `high`), nao flood-fill
-    binario: um corte binario (dentro/fora de um raio de tolerancia da cor
-    preta) deixava a borda do glow com um contorno duro e irregular -- lia
-    como uma "nuvem" preta chapada por cima de fundo claro, em vez de um
-    brilho. A rampa suave faz esse limite desaparecer gradualmente qualquer
-    que seja o fundo (testado sobre branco e sobre preto). `low`/`high` altos
-    de proposito: cortam a maior parte do bloom difuso do fundo, deixando so
-    um halo justo perto das letras -- o glow mais amplo da arte original nao
-    sobrevive por bem sem fundo escuro fixo por tras.
+    Duas tentativas anteriores erraram pro lado contrario:
+    1. Flood-fill binario a partir da borda (so remove preto continguo):
+       qualquer pixel do glow que nao fosse "perto o suficiente" do preto
+       ficava 100% opaco -- contorno duro e irregular, lia como uma nuvem
+       preta chapada.
+    2. Rampa suave de alpha por luminancia sobre TODO o range de brilho:
+       reintroduz o mesmo bloom difuso so que com borda macia -- ainda uma
+       nuvem visivel, so com menos serrilhado.
 
-    Corta pro bounding box do conteudo visivel (+ padding) pra nao sobrar
-    moldura transparente enorme quando exibido por altura fixa. A arte ja tem
-    contraste proprio em qualquer fundo, entao BrandWordmark NAO aplica mais
-    inversao de cor no dark mode (isso so fazia sentido pra tinta solida da
-    versao anterior)."""
+    A saida real e reconhecer que "letra" e "glow difuso de fundo" nao se
+    separam por um unico corte de brilho: o bloom do fundo tem o MESMO tom
+    (cinza claro / branco) que a carroceria cromada das letras, so que
+    espalhado por uma area enorme. Em vez de brilho absoluto, dois sinais
+    mais especificos:
+    - `bright_*`: cinza/branco quase neutro E bem acima do bloom mais forte
+      (que nunca chega no branco puro da chapa cromada) -- pega corpo das
+      letras e do texto, ignora o glow.
+    - `teal_*`: canais G bem acima de R/B (o ciano da arte), captura QUEUE,
+      as linhas do traco e os dois pontos de brilho ciano no topo -- sem
+      depender de brilho absoluto, so da cor.
+
+    Traco fino (o "PLAY TOGETHER") tem so 1-2px de nucleo brilhante depois
+    do anti-aliasing original, mais fino que a rampa `bright_*` sozinha
+    capturava por inteiro -- por isso o brilho e espalhado (`peak_spread`,
+    um max-filter) antes do corte: qualquer pixel a poucos px de um pico
+    de brilho conta como parte do traco, sem alargar perceptivelmente o
+    contorno das letras grandes (que ja eram solidas).
+
+    Corta pro bounding box do conteudo visivel (+ padding). A arte ja tem
+    contraste proprio em qualquer fundo, entao BrandWordmark NAO aplica
+    inversao de cor no dark mode."""
     arr = np.array(im_rgb).astype(float)
     luma = 0.299 * arr[:, :, 0] + 0.587 * arr[:, :, 1] + 0.114 * arr[:, :, 2]
-    alpha = np.clip((luma - low) / (high - low) * 255, 0, 255).astype(np.uint8)
+    teal_chroma = arr[:, :, 1] - np.maximum(arr[:, :, 0], arr[:, :, 2])
+
+    luma_img = Image.fromarray(np.clip(luma, 0, 255).astype(np.uint8), mode="L")
+    luma_spread = np.array(luma_img.filter(ImageFilter.MaxFilter(peak_spread))).astype(
+        float
+    )
+
+    bright_alpha = np.clip(
+        (luma_spread - bright_low) / (bright_high - bright_low) * 255, 0, 255
+    )
+    teal_alpha = np.clip(
+        (teal_chroma - teal_low) / (teal_high - teal_low) * 255, 0, 255
+    )
+    alpha = np.clip(np.maximum(bright_alpha, teal_alpha), 0, 255).astype(np.uint8)
+
     rgba = np.dstack([arr.astype(np.uint8), alpha])
     out = Image.fromarray(rgba, mode="RGBA")
 
