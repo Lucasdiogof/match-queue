@@ -91,65 +91,73 @@ class _RivalsSection extends StatelessWidget {
     final l10n = context.l10n;
     final cubit = context.read<FcAccountsCubit>();
 
-    return AppCard(
-      accent: AppCardAccent.left,
-      accentColor: CompetitiveMode.rivals.accentOn(context),
+    return CompetitiveModeCard(
+      mode: CompetitiveMode.rivals,
+      title: l10n.rivalsSectionTitle,
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => RivalsDetailPage(account: account),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            l10n.rivalsSectionTitle.toUpperCase(),
-            style: context.textStyles.labelSmall,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Row(
+      // Tema escuro pro subtree inteiro: o contador (+/- de vitorias e
+      // derrotas) usa context.colors/textStyles pra pintar botao e texto, e
+      // esses so viram claro-sobre-escuro se o Theme ambiente for o dark --
+      // o merge de DefaultTextStyle/IconTheme do CompetitiveModeCard nao
+      // alcanca widgets que leem cor direto do tema (AppIconButton).
+      child: Theme(
+        data: AppTheme.dark,
+        child: Builder(
+          builder: (context) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Expanded(
-                child: Text(
-                  account.rivalsDivision?.label(l10n) ??
-                      l10n.fcAccountDivisionNone,
-                  style: context.textStyles.titleMedium,
-                ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      account.rivalsDivision?.label(l10n) ??
+                          l10n.fcAccountDivisionNone,
+                      style: context.textStyles.titleMedium?.copyWith(
+                        color: AppColors.darkTextPrimary,
+                      ),
+                    ),
+                  ),
+                  AppIconButton(
+                    icon: Icons.edit_outlined,
+                    tooltip: l10n.actionEdit,
+                    onPressed: () => showRivalsDivisionPickerSheet(
+                      context: context,
+                      accountId: account.id,
+                      selected: account.rivalsDivision,
+                    ),
+                  ),
+                ],
               ),
-              AppIconButton(
-                icon: Icons.edit_outlined,
-                tooltip: l10n.actionEdit,
-                onPressed: () => showRivalsDivisionPickerSheet(
-                  context: context,
-                  accountId: account.id,
-                  selected: account.rivalsDivision,
-                ),
+              const SizedBox(height: AppSpacing.lg),
+              DebouncedWinLossCounter(
+                wins: account.rivalsWins,
+                losses: account.rivalsLosses,
+                winsLabel: l10n.statsWinsLabel,
+                lossesLabel: l10n.statsLossesLabel,
+                addWinTooltip: l10n.recordAddWinTooltip,
+                addLossTooltip: l10n.recordAddLossTooltip,
+                removeWinTooltip: l10n.recordRemoveWinTooltip,
+                removeLossTooltip: l10n.recordRemoveLossTooltip,
+                onFlush: (wd, ld) async {
+                  final ok = await cubit.incrementRivalsRecord(
+                    accountId: account.id,
+                    winDelta: wd,
+                    lossDelta: ld,
+                  );
+                  if (ok) return null;
+                  final failure = cubit.state.actionFailure;
+                  cubit.clearActionFailure();
+                  return failure?.localizedMessage(l10n) ??
+                      l10n.errorUnexpected;
+                },
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
-          DebouncedWinLossCounter(
-            wins: account.rivalsWins,
-            losses: account.rivalsLosses,
-            winsLabel: l10n.statsWinsLabel,
-            lossesLabel: l10n.statsLossesLabel,
-            addWinTooltip: l10n.recordAddWinTooltip,
-            addLossTooltip: l10n.recordAddLossTooltip,
-            removeWinTooltip: l10n.recordRemoveWinTooltip,
-            removeLossTooltip: l10n.recordRemoveLossTooltip,
-            onFlush: (wd, ld) async {
-              final ok = await cubit.incrementRivalsRecord(
-                accountId: account.id,
-                winDelta: wd,
-                lossDelta: ld,
-              );
-              if (ok) return null;
-              final failure = cubit.state.actionFailure;
-              cubit.clearActionFailure();
-              return failure?.localizedMessage(l10n) ?? l10n.errorUnexpected;
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -174,10 +182,10 @@ class _WeekendLeagueSection extends StatelessWidget {
     final rank = WeekendLeagueRank.fromWins(record.$1);
     final cubit = context.read<FcAccountsCubit>();
 
-    return AppCard(
-      accent: AppCardAccent.left,
-      accentColor: CompetitiveMode.champions.accentOn(context),
-
+    return CompetitiveModeCard(
+      mode: CompetitiveMode.champions,
+      title: l10n.fcAccountWeekendLeagueTitle,
+      trailing: rank == null ? null : AppBadge(label: rank.label),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => WeekendLeagueDetailPage(
@@ -186,43 +194,30 @@ class _WeekendLeagueSection extends StatelessWidget {
           ),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  l10n.fcAccountWeekendLeagueTitle.toUpperCase(),
-                  style: context.textStyles.labelSmall,
-                ),
-              ),
-              if (rank != null) AppBadge(label: rank.label),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          DebouncedWinLossCounter(
-            wins: record.$1,
-            losses: record.$2,
-            winsLabel: l10n.statsWinsLabel,
-            lossesLabel: l10n.statsLossesLabel,
-            addWinTooltip: l10n.recordAddWinTooltip,
-            addLossTooltip: l10n.recordAddLossTooltip,
-            removeWinTooltip: l10n.recordRemoveWinTooltip,
-            removeLossTooltip: l10n.recordRemoveLossTooltip,
-            onFlush: (wd, ld) async {
-              final ok = await cubit.incrementWeekendLeagueRecord(
-                accountId: account.id,
-                winDelta: wd,
-                lossDelta: ld,
-              );
-              if (ok) return null;
-              final failure = cubit.state.actionFailure;
-              cubit.clearActionFailure();
-              return failure?.localizedMessage(l10n) ?? l10n.errorUnexpected;
-            },
-          ),
-        ],
+      // Ver comentario da mesma tecnica em _RivalsSection.
+      child: Theme(
+        data: AppTheme.dark,
+        child: DebouncedWinLossCounter(
+          wins: record.$1,
+          losses: record.$2,
+          winsLabel: l10n.statsWinsLabel,
+          lossesLabel: l10n.statsLossesLabel,
+          addWinTooltip: l10n.recordAddWinTooltip,
+          addLossTooltip: l10n.recordAddLossTooltip,
+          removeWinTooltip: l10n.recordRemoveWinTooltip,
+          removeLossTooltip: l10n.recordRemoveLossTooltip,
+          onFlush: (wd, ld) async {
+            final ok = await cubit.incrementWeekendLeagueRecord(
+              accountId: account.id,
+              winDelta: wd,
+              lossDelta: ld,
+            );
+            if (ok) return null;
+            final failure = cubit.state.actionFailure;
+            cubit.clearActionFailure();
+            return failure?.localizedMessage(l10n) ?? l10n.errorUnexpected;
+          },
+        ),
       ),
     );
   }

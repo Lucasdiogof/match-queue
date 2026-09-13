@@ -1,15 +1,40 @@
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
-import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
+import 'package:fifa_queue/features/fc_squads/data/models/fc_squad_model.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 
 class PlayerProfileModel {
   const PlayerProfileModel._();
 
+  static PlayerProfileSquad? _squadFromJson(Object? json) {
+    if (json is! Map) {
+      return null;
+    }
+    final map = Map<String, dynamic>.from(json);
+    final formationJson = map['formation'];
+    if (formationJson is! Map) {
+      return null;
+    }
+    final startersJson =
+        map['starters'] as List<dynamic>? ?? const <dynamic>[];
+    return PlayerProfileSquad(
+      name: '${map['name']}',
+      formation: FcSquadModel.formationFromJson(
+        Map<String, dynamic>.from(formationJson),
+      ),
+      starters: <String, PlayerCard>{
+        for (final row in startersJson.whereType<Map<String, dynamic>>())
+          if (row['card'] is Map)
+            '${row['slot_code']}': FcSquadModel.cardFromJson(
+              Map<String, dynamic>.from(row['card'] as Map),
+            ),
+      },
+    );
+  }
+
   static PlayerProfile fromJson(Map<String, dynamic> json) {
     final candidatesJson =
         json['candidate_accounts'] as List<dynamic>? ?? const <dynamic>[];
     final accountJson = json['account'] as Map<String, dynamic>?;
-    final squadJson = json['squad'] as Map<String, dynamic>?;
     final wlJson =
         json['weekend_league_history'] as List<dynamic>? ?? const <dynamic>[];
 
@@ -33,16 +58,10 @@ class PlayerProfileModel {
               id: '${accountJson['id']}',
               name: '${accountJson['name']}',
               rivalsDivision: accountJson['rivals_division'] as String?,
+              rivalsWins: accountJson['rivals_wins'] as int? ?? 0,
+              rivalsLosses: accountJson['rivals_losses'] as int? ?? 0,
             ),
-      squad: squadJson == null
-          ? null
-          : PlayerProfileSquadSummary(
-              id: '${squadJson['id']}',
-              name: '${squadJson['name']}',
-              formationCode: '${squadJson['formation_code']}',
-              startingCount: squadJson['starting_count'] as int? ?? 0,
-              startingTotal: squadJson['starting_total'] as int? ?? 11,
-            ),
+      squad: _squadFromJson(json['squad']),
       weekendLeagueHistory: wlJson
           .whereType<Map<String, dynamic>>()
           .map(
@@ -56,19 +75,6 @@ class PlayerProfileModel {
             ),
           )
           .toList(growable: false),
-      sportSummary: json['sport_summary'] == null
-          ? null
-          : PlayerProfileSportSummary(
-              rivals: FcAccountStats.fromJson(
-                (json['sport_summary'] as Map<String, dynamic>)['rivals'],
-              ),
-              topScorers: PlayerLeaderboardEntry.listFromJson(
-                (json['sport_summary'] as Map<String, dynamic>)['top_scorers'],
-              ),
-              topAssists: PlayerLeaderboardEntry.listFromJson(
-                (json['sport_summary'] as Map<String, dynamic>)['top_assists'],
-              ),
-            ),
     );
   }
 }

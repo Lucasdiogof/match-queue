@@ -90,7 +90,6 @@ class _HistoryTabsState extends State<_HistoryTabs> {
       children: <Widget>[
         const SizedBox(height: AppSpacing.md),
         Wrap(
-          alignment: WrapAlignment.center,
           spacing: AppSpacing.sm,
           children: <Widget>[
             AppChip(

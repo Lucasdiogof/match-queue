@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
-import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
+import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 
 /// Perfil publico de um membro do time (Etapa 11, Parte B). So o que
 /// qualquer companheiro de time pode ver -- nunca historico de busca, nunca
@@ -19,43 +19,45 @@ class PlayerProfileAccount extends Equatable {
   const PlayerProfileAccount({
     required this.id,
     required this.name,
+    required this.rivalsWins,
+    required this.rivalsLosses,
     this.rivalsDivision,
   });
 
   final String id;
   final String name;
   final String? rivalsDivision;
-
-  @override
-  List<Object?> get props => <Object?>[id, name, rivalsDivision];
-}
-
-class PlayerProfileSquadSummary extends Equatable {
-  const PlayerProfileSquadSummary({
-    required this.id,
-    required this.name,
-    required this.formationCode,
-    required this.startingCount,
-    required this.startingTotal,
-  });
-
-  final String id;
-  final String name;
-  final String formationCode;
-  final int startingCount;
-  final int startingTotal;
-
-  double get completeness =>
-      startingTotal == 0 ? 0 : startingCount / startingTotal;
+  final int rivalsWins;
+  final int rivalsLosses;
 
   @override
   List<Object?> get props => <Object?>[
     id,
     name,
-    formationCode,
-    startingCount,
-    startingTotal,
+    rivalsDivision,
+    rivalsWins,
+    rivalsLosses,
   ];
+}
+
+/// Escalação principal completa -- mesma forma de formação/titulares que o
+/// próprio Squad Builder usa, pro perfil desenhar o mesmo campinho (só
+/// leitura, sem callback nenhum).
+class PlayerProfileSquad extends Equatable {
+  const PlayerProfileSquad({
+    required this.name,
+    required this.formation,
+    required this.starters,
+  });
+
+  final String name;
+  final FormationDefinition formation;
+
+  /// slotCode -> carta.
+  final Map<String, PlayerCard> starters;
+
+  @override
+  List<Object?> get props => <Object?>[name, formation, starters];
 }
 
 class PlayerProfileWeekendLeagueEntry extends Equatable {
@@ -86,26 +88,6 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
   ];
 }
 
-/// Resumo esportivo do perfil publico -- Rivals all-time e ate 3 lideres de
-/// gols/assistencias da conta. Nunca busca/historico operacional.
-class PlayerProfileSportSummary extends Equatable {
-  const PlayerProfileSportSummary({
-    required this.rivals,
-    required this.topScorers,
-    required this.topAssists,
-  });
-
-  final FcAccountStats rivals;
-  final List<PlayerLeaderboardEntry> topScorers;
-  final List<PlayerLeaderboardEntry> topAssists;
-
-  bool get hasAnyStats =>
-      rivals.matchesCount > 0 || topScorers.isNotEmpty || topAssists.isNotEmpty;
-
-  @override
-  List<Object?> get props => <Object?>[rivals, topScorers, topAssists];
-}
-
 class PlayerProfile extends Equatable {
   const PlayerProfile({
     required this.userId,
@@ -116,7 +98,6 @@ class PlayerProfile extends Equatable {
     this.avatarUrl,
     this.account,
     this.squad,
-    this.sportSummary,
   });
 
   final String userId;
@@ -125,9 +106,8 @@ class PlayerProfile extends Equatable {
   final List<PlayerProfileAccountCandidate> candidateAccounts;
   final bool needsAccountSelection;
   final PlayerProfileAccount? account;
-  final PlayerProfileSquadSummary? squad;
+  final PlayerProfileSquad? squad;
   final List<PlayerProfileWeekendLeagueEntry> weekendLeagueHistory;
-  final PlayerProfileSportSummary? sportSummary;
 
   @override
   List<Object?> get props => <Object?>[
@@ -139,6 +119,5 @@ class PlayerProfile extends Equatable {
     account,
     squad,
     weekendLeagueHistory,
-    sportSummary,
   ];
 }
