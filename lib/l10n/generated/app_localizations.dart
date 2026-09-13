@@ -1270,11 +1270,11 @@ abstract class AppLocalizations {
   /// **'Dono'**
   String get teamRoleOwner;
 
-  /// No description provided for @teamRoleAdmin.
+  /// No description provided for @teamRoleManager.
   ///
   /// In pt, this message translates to:
-  /// **'Admin'**
-  String get teamRoleAdmin;
+  /// **'Gerente'**
+  String get teamRoleManager;
 
   /// No description provided for @teamRolePlayer.
   ///
@@ -4117,6 +4117,258 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ver times'**
   String get controlNoTeamAction;
+
+  /// No description provided for @controlAccountNotLinkedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie ou vincule esta conta a algum time para poder buscar partidas.'**
+  String get controlAccountNotLinkedMessage;
+
+  /// No description provided for @controlGoToTeamsAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ir para Times'**
+  String get controlGoToTeamsAction;
+
+  /// No description provided for @navRequests.
+  ///
+  /// In pt, this message translates to:
+  /// **'Solicitações'**
+  String get navRequests;
+
+  /// No description provided for @requestsPageTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Solicitações'**
+  String get requestsPageTitle;
+
+  /// No description provided for @requestsSegmentRequests.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos'**
+  String get requestsSegmentRequests;
+
+  /// No description provided for @requestsSegmentInvites.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convites'**
+  String get requestsSegmentInvites;
+
+  /// No description provided for @requestsEmptyRequestsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum pedido pendente'**
+  String get requestsEmptyRequestsTitle;
+
+  /// No description provided for @requestsEmptyRequestsMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos de entrada nos times que você administra aparecem aqui.'**
+  String get requestsEmptyRequestsMessage;
+
+  /// No description provided for @requestsEmptyInvitesTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum convite pendente'**
+  String get requestsEmptyInvitesTitle;
+
+  /// No description provided for @requestsEmptyInvitesMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convites que você receber de outros times aparecem aqui.'**
+  String get requestsEmptyInvitesMessage;
+
+  /// No description provided for @requestsMemberCountLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 membro} other{{count} membros}}'**
+  String requestsMemberCountLabel(int count);
+
+  /// No description provided for @requestsJoinRequestWantsToJoin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quer entrar com {account}'**
+  String requestsJoinRequestWantsToJoin(String account);
+
+  /// No description provided for @requestsApproveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aprovar'**
+  String get requestsApproveAction;
+
+  /// No description provided for @requestsRejectAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recusar'**
+  String get requestsRejectAction;
+
+  /// No description provided for @requestsAcceptAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aceitar'**
+  String get requestsAcceptAction;
+
+  /// No description provided for @requestsDeclineAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recusar'**
+  String get requestsDeclineAction;
+
+  /// No description provided for @requestsApprovedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido aprovado.'**
+  String get requestsApprovedMessage;
+
+  /// No description provided for @requestsRejectedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido recusado.'**
+  String get requestsRejectedMessage;
+
+  /// No description provided for @requestsInvitationAcceptedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite aceito.'**
+  String get requestsInvitationAcceptedMessage;
+
+  /// No description provided for @requestsInvitationRejectedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite recusado.'**
+  String get requestsInvitationRejectedMessage;
+
+  /// No description provided for @requestsLoadErrorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar as solicitações'**
+  String get requestsLoadErrorTitle;
+
+  /// No description provided for @teamPublicRequestToJoinAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedir para entrar'**
+  String get teamPublicRequestToJoinAction;
+
+  /// No description provided for @teamPublicRequestSentAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Solicitação enviada'**
+  String get teamPublicRequestSentAction;
+
+  /// No description provided for @teamPublicRequestCancelAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar solicitação'**
+  String get teamPublicRequestCancelAction;
+
+  /// No description provided for @teamPublicChooseAccountTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Qual Elenco você quer vincular?'**
+  String get teamPublicChooseAccountTitle;
+
+  /// No description provided for @teamPublicRequestSentMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido enviado. O dono do time vai revisar.'**
+  String get teamPublicRequestSentMessage;
+
+  /// No description provided for @teamPublicRequestCancelledMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Solicitação cancelada.'**
+  String get teamPublicRequestCancelledMessage;
+
+  /// No description provided for @teamDetailInviteAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidar jogador'**
+  String get teamDetailInviteAction;
+
+  /// No description provided for @teamInviteSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidar jogador'**
+  String get teamInviteSheetTitle;
+
+  /// No description provided for @teamInviteSlugFieldLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Link do perfil (@usuario)'**
+  String get teamInviteSlugFieldLabel;
+
+  /// No description provided for @teamInviteSlugFieldHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Peça para a pessoa compartilhar o link do perfil público dela'**
+  String get teamInviteSlugFieldHint;
+
+  /// No description provided for @teamInviteSendAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviar convite'**
+  String get teamInviteSendAction;
+
+  /// No description provided for @teamInviteNotFoundMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum perfil público encontrado com esse link.'**
+  String get teamInviteNotFoundMessage;
+
+  /// No description provided for @teamInviteSentMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite enviado.'**
+  String get teamInviteSentMessage;
+
+  /// No description provided for @teamPendingRequestsSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos pendentes'**
+  String get teamPendingRequestsSectionTitle;
+
+  /// No description provided for @teamMemberPromoteAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tornar gerente'**
+  String get teamMemberPromoteAction;
+
+  /// No description provided for @teamMemberDemoteAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover da gerência'**
+  String get teamMemberDemoteAction;
+
+  /// No description provided for @teamMemberRemoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover do time'**
+  String get teamMemberRemoveAction;
+
+  /// No description provided for @teamMemberRemoveConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover {name} do time?'**
+  String teamMemberRemoveConfirmTitle(String name);
+
+  /// No description provided for @teamMemberRemoveConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa pessoa deixa de fazer parte do time. O histórico dela é preservado.'**
+  String get teamMemberRemoveConfirmMessage;
+
+  /// No description provided for @teamMemberRemovedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogador removido do time.'**
+  String get teamMemberRemovedMessage;
+
+  /// No description provided for @teamMemberRoleUpdatedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cargo atualizado.'**
+  String get teamMemberRoleUpdatedMessage;
 
   /// No description provided for @pendingMatchesCardTitle.
   ///

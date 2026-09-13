@@ -350,7 +350,7 @@
     }
   },
   "teamRoleOwner": "Dono",
-  "teamRoleAdmin": "Admin",
+  "teamRoleManager": "Gerente",
   "teamRolePlayer": "Jogador",
   "teamYou": "Você",
   "teamManageAction": "Configurações do time",
@@ -1243,6 +1243,63 @@
   "controlNoTeamTitle": "Você precisa de um time",
   "controlNoTeamMessage": "A fila é do time. Entre em um ou crie o seu para começar a buscar.",
   "controlNoTeamAction": "Ver times",
+  "controlAccountNotLinkedMessage": "Crie ou vincule esta conta a algum time para poder buscar partidas.",
+  "controlGoToTeamsAction": "Ir para Times",
+  "navRequests": "Solicitações",
+  "requestsPageTitle": "Solicitações",
+  "requestsSegmentRequests": "Pedidos",
+  "requestsSegmentInvites": "Convites",
+  "requestsEmptyRequestsTitle": "Nenhum pedido pendente",
+  "requestsEmptyRequestsMessage": "Pedidos de entrada nos times que você administra aparecem aqui.",
+  "requestsEmptyInvitesTitle": "Nenhum convite pendente",
+  "requestsEmptyInvitesMessage": "Convites que você receber de outros times aparecem aqui.",
+  "requestsMemberCountLabel": "{count, plural, =1{1 membro} other{{count} membros}}",
+  "@requestsMemberCountLabel": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "requestsJoinRequestWantsToJoin": "Quer entrar com {account}",
+  "@requestsJoinRequestWantsToJoin": {
+    "placeholders": {
+      "account": {"type": "String"}
+    }
+  },
+  "requestsApproveAction": "Aprovar",
+  "requestsRejectAction": "Recusar",
+  "requestsAcceptAction": "Aceitar",
+  "requestsDeclineAction": "Recusar",
+  "requestsApprovedMessage": "Pedido aprovado.",
+  "requestsRejectedMessage": "Pedido recusado.",
+  "requestsInvitationAcceptedMessage": "Convite aceito.",
+  "requestsInvitationRejectedMessage": "Convite recusado.",
+  "requestsLoadErrorTitle": "Não foi possível carregar as solicitações",
+  "teamPublicRequestToJoinAction": "Pedir para entrar",
+  "teamPublicRequestSentAction": "Solicitação enviada",
+  "teamPublicRequestCancelAction": "Cancelar solicitação",
+  "teamPublicChooseAccountTitle": "Qual Elenco você quer vincular?",
+  "teamPublicRequestSentMessage": "Pedido enviado. O dono do time vai revisar.",
+  "teamPublicRequestCancelledMessage": "Solicitação cancelada.",
+  "teamDetailInviteAction": "Convidar jogador",
+  "teamInviteSheetTitle": "Convidar jogador",
+  "teamInviteSlugFieldLabel": "Link do perfil (@usuario)",
+  "teamInviteSlugFieldHint": "Peça para a pessoa compartilhar o link do perfil público dela",
+  "teamInviteSendAction": "Enviar convite",
+  "teamInviteNotFoundMessage": "Nenhum perfil público encontrado com esse link.",
+  "teamInviteSentMessage": "Convite enviado.",
+  "teamPendingRequestsSectionTitle": "Pedidos pendentes",
+  "teamMemberPromoteAction": "Tornar gerente",
+  "teamMemberDemoteAction": "Remover da gerência",
+  "teamMemberRemoveAction": "Remover do time",
+  "teamMemberRemoveConfirmTitle": "Remover {name} do time?",
+  "@teamMemberRemoveConfirmTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "teamMemberRemoveConfirmMessage": "Essa pessoa deixa de fazer parte do time. O histórico dela é preservado.",
+  "teamMemberRemovedMessage": "Jogador removido do time.",
+  "teamMemberRoleUpdatedMessage": "Cargo atualizado.",
   "pendingMatchesCardTitle": "{count, plural, =1{1 partida sem resultado} other{{count} partidas sem resultado}}",
   "pendingMatchesCardLatest": "Mais recente: {mode} · {date} às {time}",
   "pendingMatchesOpenListAction": "Ver partidas",

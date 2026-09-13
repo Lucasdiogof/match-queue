@@ -350,7 +350,7 @@
     }
   },
   "teamRoleOwner": "Owner",
-  "teamRoleAdmin": "Admin",
+  "teamRoleManager": "Manager",
   "teamRolePlayer": "Player",
   "teamYou": "You",
   "teamManageAction": "Team settings",
@@ -1243,6 +1243,63 @@
   "controlNoTeamTitle": "You need a team",
   "controlNoTeamMessage": "The queue belongs to the team. Join one or create yours to start searching.",
   "controlNoTeamAction": "See teams",
+  "controlAccountNotLinkedMessage": "Create or link this account to a team to be able to search for matches.",
+  "controlGoToTeamsAction": "Go to Teams",
+  "navRequests": "Requests",
+  "requestsPageTitle": "Requests",
+  "requestsSegmentRequests": "Requests",
+  "requestsSegmentInvites": "Invites",
+  "requestsEmptyRequestsTitle": "No pending requests",
+  "requestsEmptyRequestsMessage": "Join requests for teams you manage show up here.",
+  "requestsEmptyInvitesTitle": "No pending invites",
+  "requestsEmptyInvitesMessage": "Invites you receive from other teams show up here.",
+  "requestsMemberCountLabel": "{count, plural, =1{1 member} other{{count} members}}",
+  "@requestsMemberCountLabel": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "requestsJoinRequestWantsToJoin": "Wants to join with {account}",
+  "@requestsJoinRequestWantsToJoin": {
+    "placeholders": {
+      "account": {"type": "String"}
+    }
+  },
+  "requestsApproveAction": "Approve",
+  "requestsRejectAction": "Reject",
+  "requestsAcceptAction": "Accept",
+  "requestsDeclineAction": "Decline",
+  "requestsApprovedMessage": "Request approved.",
+  "requestsRejectedMessage": "Request rejected.",
+  "requestsInvitationAcceptedMessage": "Invite accepted.",
+  "requestsInvitationRejectedMessage": "Invite declined.",
+  "requestsLoadErrorTitle": "Could not load requests",
+  "teamPublicRequestToJoinAction": "Ask to join",
+  "teamPublicRequestSentAction": "Request sent",
+  "teamPublicRequestCancelAction": "Cancel request",
+  "teamPublicChooseAccountTitle": "Which account do you want to link?",
+  "teamPublicRequestSentMessage": "Request sent. The team owner will review it.",
+  "teamPublicRequestCancelledMessage": "Request cancelled.",
+  "teamDetailInviteAction": "Invite player",
+  "teamInviteSheetTitle": "Invite player",
+  "teamInviteSlugFieldLabel": "Profile link (@username)",
+  "teamInviteSlugFieldHint": "Ask the player to share their public profile link",
+  "teamInviteSendAction": "Send invite",
+  "teamInviteNotFoundMessage": "No public profile found with that link.",
+  "teamInviteSentMessage": "Invite sent.",
+  "teamPendingRequestsSectionTitle": "Pending requests",
+  "teamMemberPromoteAction": "Make manager",
+  "teamMemberDemoteAction": "Remove from management",
+  "teamMemberRemoveAction": "Remove from team",
+  "teamMemberRemoveConfirmTitle": "Remove {name} from the team?",
+  "@teamMemberRemoveConfirmTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "teamMemberRemoveConfirmMessage": "This person stops being part of the team. Their history is preserved.",
+  "teamMemberRemovedMessage": "Player removed from the team.",
+  "teamMemberRoleUpdatedMessage": "Role updated.",
   "pendingMatchesCardTitle": "{count, plural, =1{1 match without a result} other{{count} matches without a result}}",
   "pendingMatchesCardLatest": "Most recent: {mode} · {date} at {time}",
   "pendingMatchesOpenListAction": "See matches",

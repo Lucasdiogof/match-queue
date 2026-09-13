@@ -186,7 +186,7 @@ class _ControlBody extends StatelessWidget {
                           context.read<PendingMatchCubit>().refreshSilently(),
                     ),
                   ] else if (account != null)
-                    _AccountNotLinkedCard(accountId: account.id),
+                    const _AccountNotLinkedCard(),
                   const SizedBox(height: AppSpacing.xl),
                   const WeekendLeagueCard(),
                   const RivalsCard(),
@@ -205,9 +205,7 @@ class _ControlBody extends StatelessWidget {
 /// unico CTA da dobra, com uma acao real em vez de reaproveitar o titulo
 /// da secao "Times vinculados" como rotulo de botao.
 class _AccountNotLinkedCard extends StatelessWidget {
-  const _AccountNotLinkedCard({required this.accountId});
-
-  final String accountId;
+  const _AccountNotLinkedCard();
 
   @override
   Widget build(BuildContext context) {
@@ -220,14 +218,13 @@ class _AccountNotLinkedCard extends StatelessWidget {
         children: <Widget>[
           AppBanner(
             tone: AppBannerTone.warning,
-            message: l10n.matchmakingNotLinkedMessage,
+            message: l10n.controlAccountNotLinkedMessage,
           ),
           const SizedBox(height: AppSpacing.lg),
           AppButton.secondary(
-            label: l10n.matchmakingLinkAccountAction,
-            icon: Icons.link,
-            onPressed: () =>
-                context.push(AppRoutes.fcAccountDetailLocation(accountId)),
+            label: l10n.controlGoToTeamsAction,
+            icon: Icons.groups_outlined,
+            onPressed: () => context.go(AppRoutes.team.path),
           ),
         ],
       ),

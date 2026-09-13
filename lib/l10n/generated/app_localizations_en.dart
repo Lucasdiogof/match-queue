@@ -677,7 +677,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamRoleOwner => 'Owner';
 
   @override
-  String get teamRoleAdmin => 'Admin';
+  String get teamRoleManager => 'Manager';
 
   @override
   String get teamRolePlayer => 'Player';
@@ -2376,6 +2376,152 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get controlNoTeamAction => 'See teams';
+
+  @override
+  String get controlAccountNotLinkedMessage =>
+      'Create or link this account to a team to be able to search for matches.';
+
+  @override
+  String get controlGoToTeamsAction => 'Go to Teams';
+
+  @override
+  String get navRequests => 'Requests';
+
+  @override
+  String get requestsPageTitle => 'Requests';
+
+  @override
+  String get requestsSegmentRequests => 'Requests';
+
+  @override
+  String get requestsSegmentInvites => 'Invites';
+
+  @override
+  String get requestsEmptyRequestsTitle => 'No pending requests';
+
+  @override
+  String get requestsEmptyRequestsMessage =>
+      'Join requests for teams you manage show up here.';
+
+  @override
+  String get requestsEmptyInvitesTitle => 'No pending invites';
+
+  @override
+  String get requestsEmptyInvitesMessage =>
+      'Invites you receive from other teams show up here.';
+
+  @override
+  String requestsMemberCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String requestsJoinRequestWantsToJoin(String account) {
+    return 'Wants to join with $account';
+  }
+
+  @override
+  String get requestsApproveAction => 'Approve';
+
+  @override
+  String get requestsRejectAction => 'Reject';
+
+  @override
+  String get requestsAcceptAction => 'Accept';
+
+  @override
+  String get requestsDeclineAction => 'Decline';
+
+  @override
+  String get requestsApprovedMessage => 'Request approved.';
+
+  @override
+  String get requestsRejectedMessage => 'Request rejected.';
+
+  @override
+  String get requestsInvitationAcceptedMessage => 'Invite accepted.';
+
+  @override
+  String get requestsInvitationRejectedMessage => 'Invite declined.';
+
+  @override
+  String get requestsLoadErrorTitle => 'Could not load requests';
+
+  @override
+  String get teamPublicRequestToJoinAction => 'Ask to join';
+
+  @override
+  String get teamPublicRequestSentAction => 'Request sent';
+
+  @override
+  String get teamPublicRequestCancelAction => 'Cancel request';
+
+  @override
+  String get teamPublicChooseAccountTitle =>
+      'Which account do you want to link?';
+
+  @override
+  String get teamPublicRequestSentMessage =>
+      'Request sent. The team owner will review it.';
+
+  @override
+  String get teamPublicRequestCancelledMessage => 'Request cancelled.';
+
+  @override
+  String get teamDetailInviteAction => 'Invite player';
+
+  @override
+  String get teamInviteSheetTitle => 'Invite player';
+
+  @override
+  String get teamInviteSlugFieldLabel => 'Profile link (@username)';
+
+  @override
+  String get teamInviteSlugFieldHint =>
+      'Ask the player to share their public profile link';
+
+  @override
+  String get teamInviteSendAction => 'Send invite';
+
+  @override
+  String get teamInviteNotFoundMessage =>
+      'No public profile found with that link.';
+
+  @override
+  String get teamInviteSentMessage => 'Invite sent.';
+
+  @override
+  String get teamPendingRequestsSectionTitle => 'Pending requests';
+
+  @override
+  String get teamMemberPromoteAction => 'Make manager';
+
+  @override
+  String get teamMemberDemoteAction => 'Remove from management';
+
+  @override
+  String get teamMemberRemoveAction => 'Remove from team';
+
+  @override
+  String teamMemberRemoveConfirmTitle(String name) {
+    return 'Remove $name from the team?';
+  }
+
+  @override
+  String get teamMemberRemoveConfirmMessage =>
+      'This person stops being part of the team. Their history is preserved.';
+
+  @override
+  String get teamMemberRemovedMessage => 'Player removed from the team.';
+
+  @override
+  String get teamMemberRoleUpdatedMessage => 'Role updated.';
 
   @override
   String pendingMatchesCardTitle(int count) {

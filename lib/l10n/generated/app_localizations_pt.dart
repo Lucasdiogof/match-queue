@@ -677,7 +677,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamRoleOwner => 'Dono';
 
   @override
-  String get teamRoleAdmin => 'Admin';
+  String get teamRoleManager => 'Gerente';
 
   @override
   String get teamRolePlayer => 'Jogador';
@@ -2378,6 +2378,152 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get controlNoTeamAction => 'Ver times';
+
+  @override
+  String get controlAccountNotLinkedMessage =>
+      'Crie ou vincule esta conta a algum time para poder buscar partidas.';
+
+  @override
+  String get controlGoToTeamsAction => 'Ir para Times';
+
+  @override
+  String get navRequests => 'Solicitações';
+
+  @override
+  String get requestsPageTitle => 'Solicitações';
+
+  @override
+  String get requestsSegmentRequests => 'Pedidos';
+
+  @override
+  String get requestsSegmentInvites => 'Convites';
+
+  @override
+  String get requestsEmptyRequestsTitle => 'Nenhum pedido pendente';
+
+  @override
+  String get requestsEmptyRequestsMessage =>
+      'Pedidos de entrada nos times que você administra aparecem aqui.';
+
+  @override
+  String get requestsEmptyInvitesTitle => 'Nenhum convite pendente';
+
+  @override
+  String get requestsEmptyInvitesMessage =>
+      'Convites que você receber de outros times aparecem aqui.';
+
+  @override
+  String requestsMemberCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membros',
+      one: '1 membro',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String requestsJoinRequestWantsToJoin(String account) {
+    return 'Quer entrar com $account';
+  }
+
+  @override
+  String get requestsApproveAction => 'Aprovar';
+
+  @override
+  String get requestsRejectAction => 'Recusar';
+
+  @override
+  String get requestsAcceptAction => 'Aceitar';
+
+  @override
+  String get requestsDeclineAction => 'Recusar';
+
+  @override
+  String get requestsApprovedMessage => 'Pedido aprovado.';
+
+  @override
+  String get requestsRejectedMessage => 'Pedido recusado.';
+
+  @override
+  String get requestsInvitationAcceptedMessage => 'Convite aceito.';
+
+  @override
+  String get requestsInvitationRejectedMessage => 'Convite recusado.';
+
+  @override
+  String get requestsLoadErrorTitle =>
+      'Não foi possível carregar as solicitações';
+
+  @override
+  String get teamPublicRequestToJoinAction => 'Pedir para entrar';
+
+  @override
+  String get teamPublicRequestSentAction => 'Solicitação enviada';
+
+  @override
+  String get teamPublicRequestCancelAction => 'Cancelar solicitação';
+
+  @override
+  String get teamPublicChooseAccountTitle => 'Qual Elenco você quer vincular?';
+
+  @override
+  String get teamPublicRequestSentMessage =>
+      'Pedido enviado. O dono do time vai revisar.';
+
+  @override
+  String get teamPublicRequestCancelledMessage => 'Solicitação cancelada.';
+
+  @override
+  String get teamDetailInviteAction => 'Convidar jogador';
+
+  @override
+  String get teamInviteSheetTitle => 'Convidar jogador';
+
+  @override
+  String get teamInviteSlugFieldLabel => 'Link do perfil (@usuario)';
+
+  @override
+  String get teamInviteSlugFieldHint =>
+      'Peça para a pessoa compartilhar o link do perfil público dela';
+
+  @override
+  String get teamInviteSendAction => 'Enviar convite';
+
+  @override
+  String get teamInviteNotFoundMessage =>
+      'Nenhum perfil público encontrado com esse link.';
+
+  @override
+  String get teamInviteSentMessage => 'Convite enviado.';
+
+  @override
+  String get teamPendingRequestsSectionTitle => 'Pedidos pendentes';
+
+  @override
+  String get teamMemberPromoteAction => 'Tornar gerente';
+
+  @override
+  String get teamMemberDemoteAction => 'Remover da gerência';
+
+  @override
+  String get teamMemberRemoveAction => 'Remover do time';
+
+  @override
+  String teamMemberRemoveConfirmTitle(String name) {
+    return 'Remover $name do time?';
+  }
+
+  @override
+  String get teamMemberRemoveConfirmMessage =>
+      'Essa pessoa deixa de fazer parte do time. O histórico dela é preservado.';
+
+  @override
+  String get teamMemberRemovedMessage => 'Jogador removido do time.';
+
+  @override
+  String get teamMemberRoleUpdatedMessage => 'Cargo atualizado.';
 
   @override
   String pendingMatchesCardTitle(int count) {

@@ -5,13 +5,13 @@ import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 extension TeamRoleL10n on TeamRole {
   String label(AppLocalizations l10n) => switch (this) {
     TeamRole.owner => l10n.teamRoleOwner,
-    TeamRole.admin => l10n.teamRoleAdmin,
+    TeamRole.manager => l10n.teamRoleManager,
     TeamRole.player => l10n.teamRolePlayer,
   };
 
   AppBadgeTone get badgeTone => switch (this) {
     TeamRole.owner => AppBadgeTone.info,
-    TeamRole.admin => AppBadgeTone.neutral,
+    TeamRole.manager => AppBadgeTone.neutral,
     TeamRole.player => AppBadgeTone.neutral,
   };
 }
