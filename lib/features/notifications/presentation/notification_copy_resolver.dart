@@ -43,6 +43,22 @@ class NotificationCopyResolver {
           _s(params, 'display_name'),
           _divisionLabel(l10n, params['division']),
         ),
+      'notification_team_join_request_received' =>
+        l10n.notificationTeamJoinRequestReceived(
+          _s(params, 'requester_display_name'),
+          _s(params, 'team_name'),
+        ),
+      'notification_team_join_request_approved' =>
+        l10n.notificationTeamJoinRequestApproved(_s(params, 'team_name')),
+      'notification_team_join_request_rejected' =>
+        l10n.notificationTeamJoinRequestRejected(_s(params, 'team_name')),
+      'notification_team_invitation_received' =>
+        l10n.notificationTeamInvitationReceived(_s(params, 'team_name')),
+      'notification_team_invitation_accepted' =>
+        l10n.notificationTeamInvitationAccepted(
+          _s(params, 'display_name'),
+          _s(params, 'team_name'),
+        ),
       _ => notification.titleKey,
     };
   }

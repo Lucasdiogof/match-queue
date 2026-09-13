@@ -1964,6 +1964,42 @@ abstract class AppLocalizations {
   /// **'{displayName} chegou à {division} no Rivals.'**
   String notificationRivalsDivisionChanged(String displayName, String division);
 
+  /// No description provided for @notificationTeamJoinRequestReceived.
+  ///
+  /// In pt, this message translates to:
+  /// **'{requesterDisplayName} pediu para entrar no {teamName}.'**
+  String notificationTeamJoinRequestReceived(
+    String requesterDisplayName,
+    String teamName,
+  );
+
+  /// No description provided for @notificationTeamJoinRequestApproved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu pedido para entrar no {teamName} foi aprovado.'**
+  String notificationTeamJoinRequestApproved(String teamName);
+
+  /// No description provided for @notificationTeamJoinRequestRejected.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu pedido para entrar no {teamName} foi recusado.'**
+  String notificationTeamJoinRequestRejected(String teamName);
+
+  /// No description provided for @notificationTeamInvitationReceived.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você recebeu um convite para o {teamName}.'**
+  String notificationTeamInvitationReceived(String teamName);
+
+  /// No description provided for @notificationTeamInvitationAccepted.
+  ///
+  /// In pt, this message translates to:
+  /// **'{displayName} aceitou seu convite para o {teamName}.'**
+  String notificationTeamInvitationAccepted(
+    String displayName,
+    String teamName,
+  );
+
   /// No description provided for @historyTabMatches.
   ///
   /// In pt, this message translates to:

@@ -620,6 +620,38 @@
     }
   },
   "notificationRivalsDivisionChanged": "{displayName} reached {division} in Rivals.",
+  "@notificationTeamJoinRequestReceived": {
+    "placeholders": {
+      "requesterDisplayName": {"type": "String"},
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamJoinRequestReceived": "{requesterDisplayName} asked to join {teamName}.",
+  "@notificationTeamJoinRequestApproved": {
+    "placeholders": {
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamJoinRequestApproved": "Your request to join {teamName} was approved.",
+  "@notificationTeamJoinRequestRejected": {
+    "placeholders": {
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamJoinRequestRejected": "Your request to join {teamName} was rejected.",
+  "@notificationTeamInvitationReceived": {
+    "placeholders": {
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamInvitationReceived": "You received an invite to join {teamName}.",
+  "@notificationTeamInvitationAccepted": {
+    "placeholders": {
+      "displayName": {"type": "String"},
+      "teamName": {"type": "String"}
+    }
+  },
+  "notificationTeamInvitationAccepted": "{displayName} accepted your invite to {teamName}.",
   "historyTabMatches": "Matches",
   "historyTabStats": "Statistics",
   "historyPeriodAll": "All time",

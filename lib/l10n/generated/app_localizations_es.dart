@@ -1118,6 +1118,37 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String notificationTeamJoinRequestReceived(
+    String requesterDisplayName,
+    String teamName,
+  ) {
+    return '$requesterDisplayName pidió entrar en $teamName.';
+  }
+
+  @override
+  String notificationTeamJoinRequestApproved(String teamName) {
+    return 'Tu solicitud para entrar en $teamName fue aprobada.';
+  }
+
+  @override
+  String notificationTeamJoinRequestRejected(String teamName) {
+    return 'Tu solicitud para entrar en $teamName fue rechazada.';
+  }
+
+  @override
+  String notificationTeamInvitationReceived(String teamName) {
+    return 'Recibiste una invitación para entrar en $teamName.';
+  }
+
+  @override
+  String notificationTeamInvitationAccepted(
+    String displayName,
+    String teamName,
+  ) {
+    return '$displayName aceptó tu invitación para $teamName.';
+  }
+
+  @override
   String get historyTabMatches => 'Partidos';
 
   @override

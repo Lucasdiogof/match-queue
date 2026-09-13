@@ -18,6 +18,13 @@ class NotificationDestinationResolver {
     final teamId = _string(params['team_id']);
     final fcAccountId = _string(params['fc_account_id']);
 
+    // Pedido/convite recebido: a acao mora na tab Solicitacoes, nao no
+    // detalhe do time (que nem existe ainda pra quem so recebeu convite).
+    if (notification.deepLinkType == 'requests') {
+      await context.push(AppRoutes.requests.path);
+      return;
+    }
+
     if (teamId != null) {
       await context.read<TeamsCubit>().selectTeam(teamId);
       if (!context.mounted) {
