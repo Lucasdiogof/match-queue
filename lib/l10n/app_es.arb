@@ -1002,31 +1002,13 @@
   "playerStatsEditorSaveAction": "Guardar detalles",
   "statsGoalsLabel": "Goles",
   "statsAssistsLabel": "Asistencias",
-  "statsMatchesLabel": "Partidos",
   "statsWinsLabel": "Victorias",
   "statsLossesLabel": "Derrotas",
   "recordAddWinTooltip": "Agregar victoria",
   "recordAddLossTooltip": "Agregar derrota",
   "recordRemoveWinTooltip": "Quitar victoria",
   "recordRemoveLossTooltip": "Quitar derrota",
-  "statsGoalDiffLabel": "Diferencia de goles",
-  "statsGoalsAgainstLabel": "Goles recibidos",
-  "statsTopScorersTitle": "Goleadores",
-  "statsTopAssistsTitle": "Asistencias",
   "statsEmptyLeaderboardMessage": "Todavía no hay goles ni asistencias registrados.",
-  "statsTopScorerInlineLabel": "{name} · {goals} goles",
-  "@statsTopScorerInlineLabel": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "goals": {
-        "type": "int"
-      }
-    }
-  },
-  "fcAccountStatsTitle": "Estadísticas",
-  "fcAccountStatsEmptyMessage": "Todavía no hay partidos registrados.",
   "rivalsSectionTitle": "Rivals",
   "rivalsDetailTitle": "Rivals",
   "rivalsNoDivisionLabel": "División todavía no informada",
@@ -1103,31 +1085,15 @@
   "teamSportsGoalsFor": "Goles",
   "teamSportsGoalsAgainst": "Recibidos",
   "teamSportsGoalDifference": "Diferencia",
-  "teamSportsRankingTitle": "Clasificación",
-  "teamSportsScorersTitle": "Goleadores",
-  "teamSportsAssistsTitle": "Asistencias",
   "teamSportsWeekendLeagueTitle": "Champions",
   "teamSportsRivalsTitle": "Rivals",
   "teamSportsActivityTitle": "Actividad reciente",
-  "teamSportsSeeAll": "Ver todo",
-  "teamSportsSmallSample": "Muestra pequeña",
   "teamSportsNoMatchesYet": "Este equipo aún no ha registrado partidos.",
-  "teamSportsNoMatchesMember": "Sin partidos",
-  "teamSportsNoScorersYet": "Aún no hay goles registrados.",
-  "teamSportsNoAssistsYet": "Aún no hay asistencias registradas.",
   "teamSportsNoActivityYet": "Aún no hay partidos terminados.",
   "teamSportsManualRecord": "Manual",
   "teamSportsNoDivision": "Sin división",
   "teamSportsActivityWin": "ganó",
   "teamSportsActivityLoss": "perdió",
-  "teamSportsAccountsCount": "{count, plural, =1{1 cuenta} other{{count} cuentas}}",
-  "@teamSportsAccountsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "teamSportsMembersCount": "{count, plural, =1{1 miembro} other{{count} miembros}}",
   "@teamSportsMembersCount": {
     "placeholders": {
@@ -1138,28 +1104,6 @@
   },
   "teamSportsMatchesCount": "{count, plural, =1{1 partido registrado} other{{count} partidos registrados}}",
   "@teamSportsMatchesCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "teamSportsRecordLine": "{matches}P · {wins}V · {losses}D",
-  "@teamSportsRecordLine": {
-    "placeholders": {
-      "matches": {
-        "type": "int"
-      },
-      "wins": {
-        "type": "int"
-      },
-      "losses": {
-        "type": "int"
-      }
-    }
-  },
-  "teamSportsMinSampleHint": "Clasificado a partir de {count} partidos.",
-  "@teamSportsMinSampleHint": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -1211,7 +1155,6 @@
   "publicProfilePageTitle": "Perfil",
   "publicProfileNotFoundTitle": "Perfil no encontrado",
   "publicProfileNotFoundMessage": "Este enlace no existe o ya no está disponible.",
-  "publicProfileShareAccountCta": "Compartir esta Cuenta",
   "publicProfileShareSquadCta": "Compartir alineación",
   "publicProfileEnableFirstMessage": "Activa tu perfil público para compartir tu alineación.",
   "publicProfileGoToSettingsAction": "Ir a Compartir",
@@ -1300,8 +1243,6 @@
   "controlNoTeamTitle": "Necesitas un equipo",
   "controlNoTeamMessage": "La fila es del equipo. Entra en uno o crea el tuyo para empezar a buscar.",
   "controlNoTeamAction": "Ver equipos",
-  "statsEmptyScorersMessage": "Ningún gol registrado todavía.",
-  "statsEmptyAssistsMessage": "Ninguna asistencia registrada todavía.",
   "pendingMatchesCardTitle": "{count, plural, =1{1 partido sin resultado} other{{count} partidos sin resultado}}",
   "pendingMatchesCardLatest": "Más reciente: {mode} · {date} a las {time}",
   "pendingMatchesOpenListAction": "Ver partidos",

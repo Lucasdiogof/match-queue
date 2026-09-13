@@ -1860,9 +1860,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsAssistsLabel => 'Assists';
 
   @override
-  String get statsMatchesLabel => 'Matches';
-
-  @override
   String get statsWinsLabel => 'Wins';
 
   @override
@@ -1881,31 +1878,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recordRemoveLossTooltip => 'Remove loss';
 
   @override
-  String get statsGoalDiffLabel => 'Goal difference';
-
-  @override
-  String get statsGoalsAgainstLabel => 'Goals conceded';
-
-  @override
-  String get statsTopScorersTitle => 'Top scorers';
-
-  @override
-  String get statsTopAssistsTitle => 'Assists';
-
-  @override
   String get statsEmptyLeaderboardMessage =>
       'No goals or assists recorded yet.';
-
-  @override
-  String statsTopScorerInlineLabel(String name, int goals) {
-    return '$name · $goals goals';
-  }
-
-  @override
-  String get fcAccountStatsTitle => 'Stats';
-
-  @override
-  String get fcAccountStatsEmptyMessage => 'No matches recorded yet.';
 
   @override
   String get rivalsSectionTitle => 'Rivals';
@@ -2059,15 +2033,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamSportsGoalDifference => 'Difference';
 
   @override
-  String get teamSportsRankingTitle => 'Ranking';
-
-  @override
-  String get teamSportsScorersTitle => 'Top scorers';
-
-  @override
-  String get teamSportsAssistsTitle => 'Assists';
-
-  @override
   String get teamSportsWeekendLeagueTitle => 'Champions';
 
   @override
@@ -2077,23 +2042,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamSportsActivityTitle => 'Recent activity';
 
   @override
-  String get teamSportsSeeAll => 'See all';
-
-  @override
-  String get teamSportsSmallSample => 'Small sample';
-
-  @override
   String get teamSportsNoMatchesYet =>
       'This team has not recorded any matches yet.';
-
-  @override
-  String get teamSportsNoMatchesMember => 'No matches';
-
-  @override
-  String get teamSportsNoScorersYet => 'No goals recorded yet.';
-
-  @override
-  String get teamSportsNoAssistsYet => 'No assists recorded yet.';
 
   @override
   String get teamSportsNoActivityYet => 'No finished matches yet.';
@@ -2109,17 +2059,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get teamSportsActivityLoss => 'lost';
-
-  @override
-  String teamSportsAccountsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count accounts',
-      one: '1 account',
-    );
-    return '$_temp0';
-  }
 
   @override
   String teamSportsMembersCount(int count) {
@@ -2141,16 +2080,6 @@ class AppLocalizationsEn extends AppLocalizations {
       one: '1 recorded match',
     );
     return '$_temp0';
-  }
-
-  @override
-  String teamSportsRecordLine(int matches, int wins, int losses) {
-    return '${matches}M · ${wins}W · ${losses}L';
-  }
-
-  @override
-  String teamSportsMinSampleHint(int count) {
-    return 'Ranked from $count matches onward.';
   }
 
   @override
@@ -2264,9 +2193,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get publicProfileNotFoundMessage =>
       'This link doesn\'t exist or is no longer available.';
-
-  @override
-  String get publicProfileShareAccountCta => 'Share this Account';
 
   @override
   String get publicProfileShareSquadCta => 'Share lineup';
@@ -2450,12 +2376,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get controlNoTeamAction => 'See teams';
-
-  @override
-  String get statsEmptyScorersMessage => 'No goals recorded yet.';
-
-  @override
-  String get statsEmptyAssistsMessage => 'No assists recorded yet.';
 
   @override
   String pendingMatchesCardTitle(int count) {

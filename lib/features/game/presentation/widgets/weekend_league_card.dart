@@ -1,13 +1,9 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
-import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/weekend_league_detail_page.dart';
-import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:flutter/material.dart';
@@ -101,35 +97,6 @@ class _WeekendLeagueCardBody extends StatelessWidget {
               style: context.textStyles.bodySmall?.copyWith(
                 color: AppColors.darkTextSecondary,
               ),
-            ),
-            FutureBuilder<WeekendLeagueAccountStats>(
-              future: getIt<FcAccountRepository>()
-                  .fetchWeekendLeagueAccountStats(
-                    accountId: account.id,
-                    eventId: event.id,
-                  ),
-              builder: (context, snapshot) {
-                final scorers =
-                    snapshot.data?.topScorers ??
-                    const <PlayerLeaderboardEntry>[];
-                if (scorers.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(top: AppSpacing.xs),
-                  child: Text(
-                    l10n.statsTopScorerInlineLabel(
-                      scorers.first.playerName,
-                      scorers.first.goals,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: AppColors.darkTextSecondary,
-                    ),
-                  ),
-                );
-              },
             ),
           ],
         ),

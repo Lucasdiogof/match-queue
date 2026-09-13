@@ -91,17 +91,4 @@ class TeamSportsCubit extends Cubit<TeamSportsState> {
       }
     }
   }
-
-  Future<List<TeamPlayerLeaderboardEntry>> fullLeaderboard({
-    required bool byAssists,
-  }) async {
-    try {
-      return await _repository.fetchPlayerLeaderboard(
-        teamId: teamId,
-        byAssists: byAssists,
-      );
-    } on AppFailure {
-      return const <TeamPlayerLeaderboardEntry>[];
-    }
-  }
 }

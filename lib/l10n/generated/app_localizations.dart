@@ -3320,12 +3320,6 @@ abstract class AppLocalizations {
   /// **'Assistências'**
   String get statsAssistsLabel;
 
-  /// No description provided for @statsMatchesLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Partidas'**
-  String get statsMatchesLabel;
-
   /// No description provided for @statsWinsLabel.
   ///
   /// In pt, this message translates to:
@@ -3362,53 +3356,11 @@ abstract class AppLocalizations {
   /// **'Remover derrota'**
   String get recordRemoveLossTooltip;
 
-  /// No description provided for @statsGoalDiffLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Saldo de gols'**
-  String get statsGoalDiffLabel;
-
-  /// No description provided for @statsGoalsAgainstLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Gols sofridos'**
-  String get statsGoalsAgainstLabel;
-
-  /// No description provided for @statsTopScorersTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Artilharia'**
-  String get statsTopScorersTitle;
-
-  /// No description provided for @statsTopAssistsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Assistências'**
-  String get statsTopAssistsTitle;
-
   /// No description provided for @statsEmptyLeaderboardMessage.
   ///
   /// In pt, this message translates to:
   /// **'Nenhum gol ou assistência registrado ainda.'**
   String get statsEmptyLeaderboardMessage;
-
-  /// No description provided for @statsTopScorerInlineLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'{name} · {goals} gols'**
-  String statsTopScorerInlineLabel(String name, int goals);
-
-  /// No description provided for @fcAccountStatsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Estatísticas'**
-  String get fcAccountStatsTitle;
-
-  /// No description provided for @fcAccountStatsEmptyMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma partida registrada ainda.'**
-  String get fcAccountStatsEmptyMessage;
 
   /// No description provided for @rivalsSectionTitle.
   ///
@@ -3614,24 +3566,6 @@ abstract class AppLocalizations {
   /// **'Saldo'**
   String get teamSportsGoalDifference;
 
-  /// No description provided for @teamSportsRankingTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ranking'**
-  String get teamSportsRankingTitle;
-
-  /// No description provided for @teamSportsScorersTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Artilharia'**
-  String get teamSportsScorersTitle;
-
-  /// No description provided for @teamSportsAssistsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Assistências'**
-  String get teamSportsAssistsTitle;
-
   /// No description provided for @teamSportsWeekendLeagueTitle.
   ///
   /// In pt, this message translates to:
@@ -3650,41 +3584,11 @@ abstract class AppLocalizations {
   /// **'Atividade recente'**
   String get teamSportsActivityTitle;
 
-  /// No description provided for @teamSportsSeeAll.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ver tudo'**
-  String get teamSportsSeeAll;
-
-  /// No description provided for @teamSportsSmallSample.
-  ///
-  /// In pt, this message translates to:
-  /// **'Amostra pequena'**
-  String get teamSportsSmallSample;
-
   /// No description provided for @teamSportsNoMatchesYet.
   ///
   /// In pt, this message translates to:
   /// **'Este Time ainda não registrou partidas.'**
   String get teamSportsNoMatchesYet;
-
-  /// No description provided for @teamSportsNoMatchesMember.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem partidas'**
-  String get teamSportsNoMatchesMember;
-
-  /// No description provided for @teamSportsNoScorersYet.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum gol registrado ainda.'**
-  String get teamSportsNoScorersYet;
-
-  /// No description provided for @teamSportsNoAssistsYet.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma assistência registrada ainda.'**
-  String get teamSportsNoAssistsYet;
 
   /// No description provided for @teamSportsNoActivityYet.
   ///
@@ -3716,12 +3620,6 @@ abstract class AppLocalizations {
   /// **'perdeu'**
   String get teamSportsActivityLoss;
 
-  /// No description provided for @teamSportsAccountsCount.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 Conta} other{{count} Contas}}'**
-  String teamSportsAccountsCount(int count);
-
   /// No description provided for @teamSportsMembersCount.
   ///
   /// In pt, this message translates to:
@@ -3733,18 +3631,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{count, plural, =1{1 partida registrada} other{{count} partidas registradas}}'**
   String teamSportsMatchesCount(int count);
-
-  /// No description provided for @teamSportsRecordLine.
-  ///
-  /// In pt, this message translates to:
-  /// **'{matches}J · {wins}V · {losses}D'**
-  String teamSportsRecordLine(int matches, int wins, int losses);
-
-  /// No description provided for @teamSportsMinSampleHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ranqueado a partir de {count} partidas.'**
-  String teamSportsMinSampleHint(int count);
 
   /// No description provided for @teamSportsGoalsShort.
   ///
@@ -3931,12 +3817,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Este link não existe ou não está mais disponível.'**
   String get publicProfileNotFoundMessage;
-
-  /// No description provided for @publicProfileShareAccountCta.
-  ///
-  /// In pt, this message translates to:
-  /// **'Compartilhar esta Conta'**
-  String get publicProfileShareAccountCta;
 
   /// No description provided for @publicProfileShareSquadCta.
   ///
@@ -4237,18 +4117,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ver times'**
   String get controlNoTeamAction;
-
-  /// No description provided for @statsEmptyScorersMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum gol registrado ainda.'**
-  String get statsEmptyScorersMessage;
-
-  /// No description provided for @statsEmptyAssistsMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma assistência registrada ainda.'**
-  String get statsEmptyAssistsMessage;
 
   /// No description provided for @pendingMatchesCardTitle.
   ///

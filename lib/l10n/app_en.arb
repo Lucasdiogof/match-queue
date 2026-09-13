@@ -1002,31 +1002,13 @@
   "playerStatsEditorSaveAction": "Save details",
   "statsGoalsLabel": "Goals",
   "statsAssistsLabel": "Assists",
-  "statsMatchesLabel": "Matches",
   "statsWinsLabel": "Wins",
   "statsLossesLabel": "Losses",
   "recordAddWinTooltip": "Add win",
   "recordAddLossTooltip": "Add loss",
   "recordRemoveWinTooltip": "Remove win",
   "recordRemoveLossTooltip": "Remove loss",
-  "statsGoalDiffLabel": "Goal difference",
-  "statsGoalsAgainstLabel": "Goals conceded",
-  "statsTopScorersTitle": "Top scorers",
-  "statsTopAssistsTitle": "Assists",
   "statsEmptyLeaderboardMessage": "No goals or assists recorded yet.",
-  "statsTopScorerInlineLabel": "{name} · {goals} goals",
-  "@statsTopScorerInlineLabel": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "goals": {
-        "type": "int"
-      }
-    }
-  },
-  "fcAccountStatsTitle": "Stats",
-  "fcAccountStatsEmptyMessage": "No matches recorded yet.",
   "rivalsSectionTitle": "Rivals",
   "rivalsDetailTitle": "Rivals",
   "rivalsNoDivisionLabel": "Division not set yet",
@@ -1103,31 +1085,15 @@
   "teamSportsGoalsFor": "Goals",
   "teamSportsGoalsAgainst": "Conceded",
   "teamSportsGoalDifference": "Difference",
-  "teamSportsRankingTitle": "Ranking",
-  "teamSportsScorersTitle": "Top scorers",
-  "teamSportsAssistsTitle": "Assists",
   "teamSportsWeekendLeagueTitle": "Champions",
   "teamSportsRivalsTitle": "Rivals",
   "teamSportsActivityTitle": "Recent activity",
-  "teamSportsSeeAll": "See all",
-  "teamSportsSmallSample": "Small sample",
   "teamSportsNoMatchesYet": "This team has not recorded any matches yet.",
-  "teamSportsNoMatchesMember": "No matches",
-  "teamSportsNoScorersYet": "No goals recorded yet.",
-  "teamSportsNoAssistsYet": "No assists recorded yet.",
   "teamSportsNoActivityYet": "No finished matches yet.",
   "teamSportsManualRecord": "Manual",
   "teamSportsNoDivision": "No division",
   "teamSportsActivityWin": "won",
   "teamSportsActivityLoss": "lost",
-  "teamSportsAccountsCount": "{count, plural, =1{1 account} other{{count} accounts}}",
-  "@teamSportsAccountsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "teamSportsMembersCount": "{count, plural, =1{1 member} other{{count} members}}",
   "@teamSportsMembersCount": {
     "placeholders": {
@@ -1138,28 +1104,6 @@
   },
   "teamSportsMatchesCount": "{count, plural, =1{1 recorded match} other{{count} recorded matches}}",
   "@teamSportsMatchesCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "teamSportsRecordLine": "{matches}M · {wins}W · {losses}L",
-  "@teamSportsRecordLine": {
-    "placeholders": {
-      "matches": {
-        "type": "int"
-      },
-      "wins": {
-        "type": "int"
-      },
-      "losses": {
-        "type": "int"
-      }
-    }
-  },
-  "teamSportsMinSampleHint": "Ranked from {count} matches onward.",
-  "@teamSportsMinSampleHint": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -1211,7 +1155,6 @@
   "publicProfilePageTitle": "Profile",
   "publicProfileNotFoundTitle": "Profile not found",
   "publicProfileNotFoundMessage": "This link doesn't exist or is no longer available.",
-  "publicProfileShareAccountCta": "Share this Account",
   "publicProfileShareSquadCta": "Share lineup",
   "publicProfileEnableFirstMessage": "Enable your public profile to share your lineup.",
   "publicProfileGoToSettingsAction": "Go to Sharing",
@@ -1300,8 +1243,6 @@
   "controlNoTeamTitle": "You need a team",
   "controlNoTeamMessage": "The queue belongs to the team. Join one or create yours to start searching.",
   "controlNoTeamAction": "See teams",
-  "statsEmptyScorersMessage": "No goals recorded yet.",
-  "statsEmptyAssistsMessage": "No assists recorded yet.",
   "pendingMatchesCardTitle": "{count, plural, =1{1 match without a result} other{{count} matches without a result}}",
   "pendingMatchesCardLatest": "Most recent: {mode} · {date} at {time}",
   "pendingMatchesOpenListAction": "See matches",

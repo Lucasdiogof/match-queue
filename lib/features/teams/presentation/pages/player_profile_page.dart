@@ -51,34 +51,6 @@ class _SportSummaryCard extends StatelessWidget {
                 ),
               ],
             ),
-            if (summary.topScorers.isNotEmpty) ...<Widget>[
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                l10n.statsTopScorersTitle.toUpperCase(),
-                style: context.textStyles.labelSmall,
-              ),
-              for (final entry in summary.topScorers)
-                Text(
-                  l10n.statsTopScorerInlineLabel(entry.playerName, entry.goals),
-                  style: context.textStyles.bodySmall?.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                ),
-            ],
-            if (summary.topAssists.isNotEmpty) ...<Widget>[
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                l10n.statsTopAssistsTitle.toUpperCase(),
-                style: context.textStyles.labelSmall,
-              ),
-              for (final entry in summary.topAssists)
-                Text(
-                  '${entry.playerName} · ${entry.assists}',
-                  style: context.textStyles.bodySmall?.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                ),
-            ],
           ],
         ],
       ),

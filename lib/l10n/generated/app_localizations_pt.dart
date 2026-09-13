@@ -1861,9 +1861,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get statsAssistsLabel => 'Assistências';
 
   @override
-  String get statsMatchesLabel => 'Partidas';
-
-  @override
   String get statsWinsLabel => 'Vitórias';
 
   @override
@@ -1882,31 +1879,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get recordRemoveLossTooltip => 'Remover derrota';
 
   @override
-  String get statsGoalDiffLabel => 'Saldo de gols';
-
-  @override
-  String get statsGoalsAgainstLabel => 'Gols sofridos';
-
-  @override
-  String get statsTopScorersTitle => 'Artilharia';
-
-  @override
-  String get statsTopAssistsTitle => 'Assistências';
-
-  @override
   String get statsEmptyLeaderboardMessage =>
       'Nenhum gol ou assistência registrado ainda.';
-
-  @override
-  String statsTopScorerInlineLabel(String name, int goals) {
-    return '$name · $goals gols';
-  }
-
-  @override
-  String get fcAccountStatsTitle => 'Estatísticas';
-
-  @override
-  String get fcAccountStatsEmptyMessage => 'Nenhuma partida registrada ainda.';
 
   @override
   String get rivalsSectionTitle => 'Rivals';
@@ -2060,15 +2034,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamSportsGoalDifference => 'Saldo';
 
   @override
-  String get teamSportsRankingTitle => 'Ranking';
-
-  @override
-  String get teamSportsScorersTitle => 'Artilharia';
-
-  @override
-  String get teamSportsAssistsTitle => 'Assistências';
-
-  @override
   String get teamSportsWeekendLeagueTitle => 'Champions';
 
   @override
@@ -2078,23 +2043,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamSportsActivityTitle => 'Atividade recente';
 
   @override
-  String get teamSportsSeeAll => 'Ver tudo';
-
-  @override
-  String get teamSportsSmallSample => 'Amostra pequena';
-
-  @override
   String get teamSportsNoMatchesYet =>
       'Este Time ainda não registrou partidas.';
-
-  @override
-  String get teamSportsNoMatchesMember => 'Sem partidas';
-
-  @override
-  String get teamSportsNoScorersYet => 'Nenhum gol registrado ainda.';
-
-  @override
-  String get teamSportsNoAssistsYet => 'Nenhuma assistência registrada ainda.';
 
   @override
   String get teamSportsNoActivityYet => 'Nenhuma partida concluída ainda.';
@@ -2110,17 +2060,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get teamSportsActivityLoss => 'perdeu';
-
-  @override
-  String teamSportsAccountsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count Contas',
-      one: '1 Conta',
-    );
-    return '$_temp0';
-  }
 
   @override
   String teamSportsMembersCount(int count) {
@@ -2142,16 +2081,6 @@ class AppLocalizationsPt extends AppLocalizations {
       one: '1 partida registrada',
     );
     return '$_temp0';
-  }
-
-  @override
-  String teamSportsRecordLine(int matches, int wins, int losses) {
-    return '${matches}J · ${wins}V · ${losses}D';
-  }
-
-  @override
-  String teamSportsMinSampleHint(int count) {
-    return 'Ranqueado a partir de $count partidas.';
   }
 
   @override
@@ -2265,9 +2194,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get publicProfileNotFoundMessage =>
       'Este link não existe ou não está mais disponível.';
-
-  @override
-  String get publicProfileShareAccountCta => 'Compartilhar esta Conta';
 
   @override
   String get publicProfileShareSquadCta => 'Compartilhar escalação';
@@ -2452,13 +2378,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get controlNoTeamAction => 'Ver times';
-
-  @override
-  String get statsEmptyScorersMessage => 'Nenhum gol registrado ainda.';
-
-  @override
-  String get statsEmptyAssistsMessage =>
-      'Nenhuma assistência registrada ainda.';
 
   @override
   String pendingMatchesCardTitle(int count) {
