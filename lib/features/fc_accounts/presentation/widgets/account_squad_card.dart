@@ -98,19 +98,22 @@ class _SquadRow extends StatelessWidget {
       final l10n = context.l10n;
       final colors = context.colors;
       final squad = state.selectedSquad;
+      // Só formação escolhida e nenhum titular ainda não é "um elenco" pra
+      // quem olha este card de relance -- trata igual a nenhum elenco, e a
+      // química nem entra aqui (é detalhe do builder, não deste resumo).
+      final hasCompleteSquad = squad != null && squad.isComplete;
 
       // Um elenco por conta e a regra de produto daqui pra frente. O schema
       // ainda permite varios (fc_squads nao tem unico por conta), entao aqui
       // mostramos o selecionado como "o" elenco e a lista completa continua
       // na tela da Conta. Fechar isso no dominio fica pra etapa funcional.
-      final value = squad == null
+      final value = !hasCompleteSquad
           ? l10n.playSquadEmpty
           : <String>[
               squad.formationCode,
               squad.overall == null
                   ? l10n.squadOverallUnknown
                   : l10n.squadOverallValue(squad.overall!),
-              l10n.squadChemistryValue(squad.chemistry),
             ].join(' · ');
 
       return Padding(
@@ -126,12 +129,12 @@ class _SquadRow extends StatelessWidget {
               child: _Field(
                 label: l10n.squadLabel,
                 value: value,
-                isMuted: squad == null,
+                isMuted: !hasCompleteSquad,
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
             Text(
-              squad == null
+              !hasCompleteSquad
                   ? l10n.playSquadBuildAction
                   : l10n.playSquadEditAction,
               style: context.textStyles.labelSmall?.copyWith(
