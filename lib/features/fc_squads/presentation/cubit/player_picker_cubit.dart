@@ -15,11 +15,9 @@ class PlayerPickerState extends Equatable {
     this.query = '',
     this.hasMore = false,
     this.isLoadingMore = false,
-    this.minRating,
     this.leagueName,
-    this.clubName,
     this.nationName,
-    this.compatibleOnly = false,
+    this.compatibleOnly = true,
     this.failure,
   });
 
@@ -28,23 +26,17 @@ class PlayerPickerState extends Equatable {
   final String query;
   final bool hasMore;
   final bool isLoadingMore;
-  final int? minRating;
   final String? leagueName;
-  final String? clubName;
   final String? nationName;
 
-  /// Quando `true`, a busca é filtrada no servidor para só cartas elegíveis
-  /// no slot -- fora de posição nunca fica escondido por padrão (item 43),
-  /// isto é um filtro OPCIONAL que o usuário liga.
+  /// Ligado por padrão quando o picker abre por um slot: só quem joga
+  /// naquela posição aparece navegando. O usuário pode desligar aqui, e
+  /// digitar um nome na busca também libera (ver doc da classe).
   final bool compatibleOnly;
   final AppFailure? failure;
 
   bool get hasActiveFilters =>
-      minRating != null ||
-      leagueName != null ||
-      clubName != null ||
-      nationName != null ||
-      compatibleOnly;
+      leagueName != null || nationName != null || !compatibleOnly;
 
   PlayerPickerState copyWith({
     PlayerPickerStatus? status,
@@ -52,12 +44,8 @@ class PlayerPickerState extends Equatable {
     String? query,
     bool? hasMore,
     bool? isLoadingMore,
-    int? minRating,
-    bool clearMinRating = false,
     String? leagueName,
     bool clearLeagueName = false,
-    String? clubName,
-    bool clearClubName = false,
     String? nationName,
     bool clearNationName = false,
     bool? compatibleOnly,
@@ -69,9 +57,7 @@ class PlayerPickerState extends Equatable {
     query: query ?? this.query,
     hasMore: hasMore ?? this.hasMore,
     isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-    minRating: clearMinRating ? null : (minRating ?? this.minRating),
     leagueName: clearLeagueName ? null : (leagueName ?? this.leagueName),
-    clubName: clearClubName ? null : (clubName ?? this.clubName),
     nationName: clearNationName ? null : (nationName ?? this.nationName),
     compatibleOnly: compatibleOnly ?? this.compatibleOnly,
     failure: clearFailure ? null : (failure ?? this.failure),
@@ -84,9 +70,7 @@ class PlayerPickerState extends Equatable {
     query,
     hasMore,
     isLoadingMore,
-    minRating,
     leagueName,
-    clubName,
     nationName,
     compatibleOnly,
     failure,
@@ -96,8 +80,11 @@ class PlayerPickerState extends Equatable {
 /// Busca do catálogo para um slot.
 ///
 /// [positionCode] nulo = banco, onde qualquer carta serve. Com posição, a
-/// busca já vem filtrada por elegibilidade (item 43), então o usuário não
-/// consegue escolher alguém que a RPC recusaria depois.
+/// navegação (sem termo de busca, com "Compatíveis" ligado) só mostra quem
+/// joga ali -- decisão explícita do dono do produto, substituindo o
+/// comportamento anterior (item 43, "nunca esconder por padrão"). Digitar um
+/// nome na busca sempre libera o filtro de posição, mesmo com "Compatíveis"
+/// ligado: a intenção já é clara, o usuário quer aquela carta específica.
 class PlayerPickerCubit extends Cubit<PlayerPickerState> {
   PlayerPickerCubit(
     this._repository, {
@@ -130,29 +117,11 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     });
   }
 
-  void setMinRating(int? minRating) {
-    emit(
-      minRating == null
-          ? state.copyWith(clearMinRating: true)
-          : state.copyWith(minRating: minRating),
-    );
-    unawaited(_search(state.query));
-  }
-
   void setLeagueName(String? leagueName) {
     emit(
       leagueName == null
-          ? state.copyWith(clearLeagueName: true, clearClubName: true)
-          : state.copyWith(leagueName: leagueName, clearClubName: true),
-    );
-    unawaited(_search(state.query));
-  }
-
-  void setClubName(String? clubName) {
-    emit(
-      clubName == null
-          ? state.copyWith(clearClubName: true)
-          : state.copyWith(clubName: clubName),
+          ? state.copyWith(clearLeagueName: true)
+          : state.copyWith(leagueName: leagueName),
     );
     unawaited(_search(state.query));
   }
@@ -166,23 +135,6 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     unawaited(_search(state.query));
   }
 
-  void clearFilters() {
-    emit(
-      state.copyWith(
-        clearMinRating: true,
-        clearLeagueName: true,
-        clearClubName: true,
-        clearNationName: true,
-        compatibleOnly: false,
-      ),
-    );
-    unawaited(_search(state.query));
-  }
-
-  /// Filtro "Compatíveis": liga a mesma restrição de posição que a RPC já
-  /// aplicava antes (`_fc_card_can_play`), agora OPCIONAL -- sem ele, o
-  /// picker mostra TODO o catálogo, só ordenado por elegibilidade (item 43:
-  /// nunca esconder fora de posição por padrão).
   void setCompatibleOnly(bool value) {
     if (positionCode == null) {
       return;
@@ -190,6 +142,22 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     emit(state.copyWith(compatibleOnly: value));
     unawaited(_search(state.query));
   }
+
+  void clearFilters() {
+    emit(
+      state.copyWith(
+        clearLeagueName: true,
+        clearNationName: true,
+        compatibleOnly: true,
+      ),
+    );
+    unawaited(_search(state.query));
+  }
+
+  /// Filtro de posição só entra navegando (sem termo de busca) com
+  /// "Compatíveis" ligado -- ver doc da classe.
+  String? _positionFilterFor(String query) =>
+      state.compatibleOnly && query.trim().isEmpty ? positionCode : null;
 
   Future<void> loadMore() async {
     if (!state.hasMore || state.isLoadingMore || isClosed) {
@@ -201,12 +169,10 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
       final page = await _repository.searchCards(
         PlayerCardQuery(
           query: state.query.isEmpty ? null : state.query,
-          position: state.compatibleOnly ? positionCode : null,
+          position: _positionFilterFor(state.query),
           limit: pageSize,
           offset: state.cards.length,
-          minRating: state.minRating,
           leagueName: state.leagueName,
-          clubName: state.clubName,
           nationName: state.nationName,
           excludeCardIds: excludeCardIds,
         ),
@@ -219,7 +185,7 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
           cards: _sortByEligibility(<PlayerCard>[
             ...state.cards,
             ...page.items,
-          ], compatibleOnly: state.compatibleOnly),
+          ]),
           hasMore: page.hasMore,
           isLoadingMore: false,
         ),
@@ -240,11 +206,9 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
       final page = await _repository.searchCards(
         PlayerCardQuery(
           query: query.isEmpty ? null : query,
-          position: state.compatibleOnly ? positionCode : null,
+          position: _positionFilterFor(query),
           limit: pageSize,
-          minRating: state.minRating,
           leagueName: state.leagueName,
-          clubName: state.clubName,
           nationName: state.nationName,
           excludeCardIds: excludeCardIds,
         ),
@@ -255,10 +219,7 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
       emit(
         state.copyWith(
           status: PlayerPickerStatus.ready,
-          cards: _sortByEligibility(
-            page.items,
-            compatibleOnly: state.compatibleOnly,
-          ),
+          cards: _sortByEligibility(page.items),
           hasMore: page.hasMore,
           clearFailure: true,
         ),
@@ -272,37 +233,18 @@ class PlayerPickerCubit extends Cubit<PlayerPickerState> {
     }
   }
 
-  /// Ordena por elegibilidade: posicao primaria primeiro, depois alternativa
-  /// real, fora de posicao por ultimo -- nunca escondido (item 43).
-  ///
-  /// So FILTRA (esconde quem nao joga ali) quando [compatibleOnly] esta
-  /// ligado -- exatamente o que [setCompatibleOnly] promete. Sem isso, uma
-  /// pagina buscada sem filtro de posicao (ordenada por rating no servidor,
-  /// que e o caso padrao com "Compatíveis" desligado) pode nao trazer NENHUM
-  /// jogador da posicao pedida dentro do limite da pagina -- um goleiro
-  /// nunca aparece pra montar o slot GK, por exemplo, porque os 30 cartas de
-  /// maior overall do catalogo inteiro raramente incluem um goleiro. Achado
-  /// ao vivo numa sessao de QA visual do Squad Builder.
-  ///
-  /// A regra de elegibilidade continua sendo a de [eligibilityTier]: posicao
-  /// principal mais as alternativas declaradas na carta. Nada de
-  /// equivalencia inventada do tipo "LB aceita qualquer defensor".
-  ///
-  /// `List.sort` nao e estavel em Dart, mas o desempate por rating ja vem do
-  /// servidor (`order by rating desc`) dentro de cada pagina, entao o pior
-  /// caso e reordenacao cosmetica dentro do mesmo rating.
-  List<PlayerCard> _sortByEligibility(
-    List<PlayerCard> cards, {
-    required bool compatibleOnly,
-  }) {
+  /// Sempre ORDENA por elegibilidade (posição primária, depois alternativa,
+  /// depois fora de posição) -- nunca filtra aqui: quando a posição deveria
+  /// restringir a lista, isso já aconteceu no servidor via
+  /// [_positionFilterFor]. Filtrar de novo no cliente reintroduziria o bug
+  /// de página vazia (ex.: GK nunca aparecia nos 30 cards de maior overall)
+  /// que motivou o filtro ir para o servidor.
+  List<PlayerCard> _sortByEligibility(List<PlayerCard> cards) {
     final code = positionCode;
     if (code == null) {
       return cards;
     }
-    final base = compatibleOnly
-        ? cards.where((card) => eligibilityTier(card, code) < 2)
-        : cards;
-    return List<PlayerCard>.of(base)..sort(
+    return List<PlayerCard>.of(cards)..sort(
       (a, b) => eligibilityTier(a, code).compareTo(eligibilityTier(b, code)),
     );
   }

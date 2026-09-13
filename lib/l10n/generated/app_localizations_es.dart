@@ -1636,10 +1636,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadFilterLeagueLabel => 'Liga';
 
   @override
-  String get squadFilterClubLabel => 'Club';
+  String get squadFilterNationLabel => 'Nación';
 
   @override
-  String get squadFilterNationLabel => 'Nación';
+  String get squadFilterClearAction => 'Limpiar filtros';
 
   @override
   String get errorSquadNotFound => 'Equipo no encontrado.';

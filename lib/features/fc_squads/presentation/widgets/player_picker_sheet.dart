@@ -138,8 +138,6 @@ class _PlayerList extends StatelessWidget {
 class _FilterRow extends StatelessWidget {
   const _FilterRow();
 
-  static const List<int?> _ratingOptions = <int?>[null, 75, 80, 85, 90];
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -163,15 +161,6 @@ class _FilterRow extends StatelessWidget {
                         cubit.setCompatibleOnly(!state.compatibleOnly),
                   ),
                 ),
-              for (final rating in _ratingOptions)
-                Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.sm),
-                  child: AppChip(
-                    label: rating == null ? l10n.historyStatusAll : '$rating+',
-                    isSelected: state.minRating == rating,
-                    onPressed: () => cubit.setMinRating(rating),
-                  ),
-                ),
               Padding(
                 padding: const EdgeInsets.only(right: AppSpacing.sm),
                 child: AppChip(
@@ -181,17 +170,6 @@ class _FilterRow extends StatelessWidget {
                   onPressed: () => _pickLeague(context, cubit),
                 ),
               ),
-              if (state.leagueName != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.sm),
-                  child: AppChip(
-                    label: state.clubName ?? l10n.squadFilterClubLabel,
-                    icon: Icons.shield_outlined,
-                    isSelected: state.clubName != null,
-                    onPressed: () =>
-                        _pickClub(context, cubit, state.leagueName),
-                  ),
-                ),
               Padding(
                 padding: const EdgeInsets.only(right: AppSpacing.sm),
                 child: AppChip(
@@ -203,7 +181,7 @@ class _FilterRow extends StatelessWidget {
               ),
               if (state.hasActiveFilters)
                 AppChip(
-                  label: l10n.actionCancel,
+                  label: l10n.squadFilterClearAction,
                   icon: Icons.close,
                   onPressed: cubit.clearFilters,
                 ),
@@ -231,45 +209,6 @@ class _FilterRow extends StatelessWidget {
     );
     if (name != null) {
       cubit.setLeagueName(name);
-    }
-  }
-
-  // Clube e hierarquico (item 10): faixa alfabetica de Liga -> Liga ->
-  // Clubes daquela liga. ~572-646 clubes no catalogo real nunca cabem numa
-  // lista plana.
-  Future<void> _pickClub(
-    BuildContext context,
-    PlayerPickerCubit cubit,
-    String? leagueName,
-  ) async {
-    var effectiveLeagueName = leagueName;
-    if (effectiveLeagueName == null) {
-      final leagues = await getIt<PlayerCardCatalogRepository>().getLeagues();
-      if (!context.mounted) {
-        return;
-      }
-      effectiveLeagueName = await showAlphabeticalPickerSheet(
-        context: context,
-        title: context.l10n.squadFilterLeagueLabel,
-        names: leagues.map((l) => l.name).toList(growable: false),
-      );
-      if (effectiveLeagueName == null || !context.mounted) {
-        return;
-      }
-    }
-    final clubs = await getIt<PlayerCardCatalogRepository>().getClubs(
-      leagueName: effectiveLeagueName,
-    );
-    if (!context.mounted) {
-      return;
-    }
-    final name = await showFlatCatalogPickerSheet(
-      context: context,
-      title: context.l10n.squadFilterClubLabel,
-      names: clubs.map((c) => c.name).toList(growable: false),
-    );
-    if (name != null) {
-      cubit.setClubName(name);
     }
   }
 

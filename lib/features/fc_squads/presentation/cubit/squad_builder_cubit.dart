@@ -215,8 +215,7 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
     }
     _mutate(
       draft.copyWith(
-        starters: Map<String, PlayerCard>.of(draft.starters)
-          ..remove(slotCode),
+        starters: Map<String, PlayerCard>.of(draft.starters)..remove(slotCode),
       ),
     );
   }

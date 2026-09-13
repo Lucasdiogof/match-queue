@@ -115,7 +115,8 @@ class _SquadBuilderView extends StatelessWidget {
               SquadBuilderStatus.failure => AppErrorState(
                 title: l10n.errorUnexpected,
                 message:
-                    state.failure?.localizedMessage(l10n) ?? l10n.errorUnexpected,
+                    state.failure?.localizedMessage(l10n) ??
+                    l10n.errorUnexpected,
                 retryLabel: l10n.actionRetry,
                 onRetry: cubit.load,
               ),
@@ -184,7 +185,8 @@ class _Body extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
       children: <Widget>[
-        if (state.hasConflict) _ConflictBanner(onReload: cubit.reloadAfterConflict),
+        if (state.hasConflict)
+          _ConflictBanner(onReload: cubit.reloadAfterConflict),
         _SummaryRow(state: state, draft: draft),
         const SizedBox(height: AppSpacing.lg),
         SquadField(
@@ -210,6 +212,7 @@ class _Body extends StatelessWidget {
     final card = await showPlayerPickerSheet(
       context: context,
       positionCode: slot.positionCode,
+      excludeCardIds: draft.usedCardIds,
     );
     if (card != null) {
       cubit.assignCard(slotCode: slot.slotCode, card: card);

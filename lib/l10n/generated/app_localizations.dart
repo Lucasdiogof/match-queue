@@ -2894,17 +2894,17 @@ abstract class AppLocalizations {
   /// **'Liga'**
   String get squadFilterLeagueLabel;
 
-  /// No description provided for @squadFilterClubLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Clube'**
-  String get squadFilterClubLabel;
-
   /// No description provided for @squadFilterNationLabel.
   ///
   /// In pt, this message translates to:
   /// **'Nação'**
   String get squadFilterNationLabel;
+
+  /// No description provided for @squadFilterClearAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar filtros'**
+  String get squadFilterClearAction;
 
   /// No description provided for @errorSquadNotFound.
   ///

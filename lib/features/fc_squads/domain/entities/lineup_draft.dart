@@ -59,6 +59,11 @@ class LineupDraft extends Equatable {
   bool contains(String cardId) =>
       starters.values.any((card) => card.id == cardId);
 
+  /// Ids já escalados -- nunca oferecidos de novo no picker de outro slot
+  /// (gameplay flows refresh, item 4).
+  List<String> get usedCardIds =>
+      starters.values.map((card) => card.id).toList(growable: false);
+
   String? slotOf(String cardId) {
     for (final entry in starters.entries) {
       if (entry.value.id == cardId) {

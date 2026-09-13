@@ -32,6 +32,13 @@ class _FakeCatalogRepository implements PlayerCardCatalogRepository {
             .where(
               (c) => query.position == null || c.canPlayIn(query.position!),
             )
+            .where(
+              (c) =>
+                  query.query == null ||
+                  c.playerName.toLowerCase().contains(
+                    query.query!.toLowerCase(),
+                  ),
+            )
             .toList()
           ..sort((a, b) => b.rating.compareTo(a.rating));
     final end = (query.offset + query.limit).clamp(0, filtered.length);
@@ -78,8 +85,32 @@ void main() {
     });
   });
 
-  group('PlayerPickerCubit sem "Compatíveis"', () {
-    test('nunca esconde quem nao joga ali (item 43), so ordena', () async {
+  group('PlayerPickerCubit', () {
+    test(
+      '"Compatíveis" ligado por padrão filtra ao navegar (sem busca)',
+      () async {
+        // Decisao de produto: navegando por um slot, so quem joga ali
+        // aparece. Buscar por nome (testado abaixo) e o jeito de escalar
+        // fora de posicao.
+        final cards = <PlayerCard>[
+          _card('st1', 'ST', const <String>[], rating: 90),
+          _card('st2', 'ST', const <String>[], rating: 89),
+          _card('gk1', 'GK', const <String>[], rating: 70),
+        ];
+        final cubit = PlayerPickerCubit(
+          _FakeCatalogRepository(cards),
+          positionCode: 'GK',
+        );
+        addTearDown(cubit.close);
+
+        await cubit.load();
+
+        expect(cubit.state.compatibleOnly, isTrue);
+        expect(cubit.state.cards.map((c) => c.id), <String>['gk1']);
+      },
+    );
+
+    test('"Compatíveis" desligado mostra todo mundo, so ordenado', () async {
       // Reproduz o bug achado ao vivo: um catalogo onde os GK sao os
       // ratings mais baixos nunca aparecia na primeira pagina, porque a
       // RPC ordena por rating (sem filtrar posicao quando o toggle esta
@@ -97,28 +128,35 @@ void main() {
       );
       addTearDown(cubit.close);
 
-      await cubit.load();
+      cubit.setCompatibleOnly(false);
+      await Future<void>.delayed(Duration.zero);
 
       // Nada some: os 3 seguem visiveis, so o elegivel (GK) sobe pro
       // topo em vez de ficar escondido atras dos outros.
       expect(cubit.state.cards.map((c) => c.id), <String>['gk1', 'st1', 'st2']);
     });
 
-    test('"Compatíveis" ligado filtra de verdade', () async {
-      final cards = <PlayerCard>[
-        _card('st1', 'ST', const <String>[], rating: 90),
-        _card('gk1', 'GK', const <String>[], rating: 70),
-      ];
-      final cubit = PlayerPickerCubit(
-        _FakeCatalogRepository(cards),
-        positionCode: 'GK',
-      );
-      addTearDown(cubit.close);
+    test(
+      'digitar um nome libera o filtro de posicao mesmo com "Compatíveis" ligado',
+      () async {
+        final cards = <PlayerCard>[
+          _card('haaland', 'ST', const <String>[], rating: 91),
+          _card('gk1', 'GK', const <String>[], rating: 70),
+        ];
+        final cubit = PlayerPickerCubit(
+          _FakeCatalogRepository(cards),
+          positionCode: 'GK',
+        );
+        addTearDown(cubit.close);
 
-      cubit.setCompatibleOnly(true);
-      await Future<void>.delayed(Duration.zero);
+        await cubit.load();
+        expect(cubit.state.cards.map((c) => c.id), <String>['gk1']);
 
-      expect(cubit.state.cards.map((c) => c.id), <String>['gk1']);
-    });
+        cubit.search('haaland');
+        await Future<void>.delayed(PlayerPickerCubit.searchDebounce * 2);
+
+        expect(cubit.state.cards.map((c) => c.id), <String>['haaland']);
+      },
+    );
   });
 }
