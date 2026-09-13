@@ -23,7 +23,22 @@ WHITE = (255, 255, 255)
 
 
 def load(name):
-    return Image.open(os.path.join(BRAND_DIR, name)).convert("RGB")
+    """RGBA source alpha-composited onto white, never a naive .convert("RGB")
+    (which keeps whatever RGB happens to sit under a transparent pixel --
+    logo.png's transparent corners are black underneath, not white, so that
+    naive convert was silently baking a black border into every derivative
+    that used it: the app icon AND the splash source both had it)."""
+    im = Image.open(os.path.join(BRAND_DIR, name)).convert("RGBA")
+    bg = Image.new("RGB", im.size, WHITE)
+    bg.paste(im, mask=im.split()[-1])
+    return bg
+
+
+def load_rgba(name):
+    """Same source, alpha kept intact -- for derivatives that must stay
+    transparent (the splash source), where baking a white square behind the
+    squircle would be just as wrong as the black border it replaces."""
+    return Image.open(os.path.join(BRAND_DIR, name)).convert("RGBA")
 
 
 def pad_to_square_white(im, canvas_size, content_fraction):
@@ -38,6 +53,21 @@ def pad_to_square_white(im, canvas_size, content_fraction):
     canvas = Image.new("RGB", (canvas_size, canvas_size), WHITE)
     offset = ((canvas_size - new_w) // 2, (canvas_size - new_h) // 2)
     canvas.paste(resized, offset)
+    return canvas
+
+
+def pad_to_square_transparent(im_rgba, canvas_size, content_fraction):
+    """Same resize-and-center as pad_to_square_white, but onto a fully
+    transparent canvas instead of a white one -- for native splash screens,
+    which composite the image over their own background color and would
+    show a wrong/visible edge around any solid fill we added ourselves."""
+    src_w, src_h = im_rgba.size
+    scale = (canvas_size * content_fraction) / src_w
+    new_w, new_h = round(src_w * scale), round(src_h * scale)
+    resized = im_rgba.resize((new_w, new_h), Image.LANCZOS)
+    canvas = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
+    offset = ((canvas_size - new_w) // 2, (canvas_size - new_h) // 2)
+    canvas.paste(resized, offset, mask=resized.split()[-1])
     return canvas
 
 
@@ -177,9 +207,14 @@ icon_general.save(os.path.join(GENERATED_DIR, "icon_general_1024.png"), optimize
 icon_adaptive_fg = pad_to_square_white(logo, 1024, content_fraction=0.6)
 icon_adaptive_fg.save(os.path.join(GENERATED_DIR, "icon_adaptive_fg_1024.png"), optimize=True)
 
-# Native splash source: some margin so Android 12's own splash-icon safe
-# zone (similar ~66% constraint) doesn't clip the wordmark under the pad.
-splash_source = pad_to_square_white(logo, 1024, content_fraction=0.72)
+# Native splash source: transparent, not white-padded -- flutter_native_splash
+# already paints its own background color behind it (color/color_dark in
+# pubspec.yaml). A white-filled square here duplicated that background
+# clumsily; a black one (the bug this replaced) showed as a border that was
+# never supposed to exist. Same margin as before so Android 12's own
+# splash-icon safe zone (~66% constraint) doesn't clip the wordmark under it.
+logo_rgba = load_rgba("logo.png")
+splash_source = pad_to_square_transparent(logo_rgba, 1024, content_fraction=0.72)
 splash_source.save(os.path.join(GENERATED_DIR, "splash_source_1024.png"), optimize=True)
 
 print("Generated:")
