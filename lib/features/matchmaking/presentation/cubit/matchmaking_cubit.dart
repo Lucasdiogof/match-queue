@@ -85,24 +85,47 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     }
   }
 
-  Future<bool> startSearch(GameMode mode, {String? fcSquadId}) => _runAction(
-    () => _repository.requestSearch(
-      fcAccountId: fcAccountId,
-      teamId: teamId,
-      fcSquadId: fcSquadId,
-      mode: mode,
-    ),
-  );
+  Future<bool> startSearch(GameMode mode, {String? fcSquadId}) async {
+    final ok = await _runAction(
+      () => _repository.requestSearch(
+        fcAccountId: fcAccountId,
+        teamId: teamId,
+        fcSquadId: fcSquadId,
+        mode: mode,
+      ),
+    );
+    if (ok && !isClosed) {
+      emit(state.copyWith(clearCooldown: true));
+    }
+    return ok;
+  }
 
-  Future<bool> cancel() =>
-      _runAction(() => _repository.cancelSearch(fcAccountId));
+  static const Duration _cooldownDuration = Duration(seconds: 30);
+
+  Future<bool> cancel() async {
+    final ok = await _runAction(() => _repository.cancelSearch(fcAccountId));
+    if (ok && !isClosed) {
+      emit(state.copyWith(
+        cooldownEndsAt: DateTime.now().add(_cooldownDuration),
+      ));
+    }
+    return ok;
+  }
 
   Future<bool> leaveQueue() => _runAction(
     () => _repository.leaveQueue(fcAccountId: fcAccountId, teamId: teamId),
   );
 
-  Future<bool> matchFound() =>
-      _runAction(() => _repository.reportMatchFound(fcAccountId));
+  Future<bool> matchFound() async {
+    final ok =
+        await _runAction(() => _repository.reportMatchFound(fcAccountId));
+    if (ok && !isClosed) {
+      emit(state.copyWith(
+        cooldownEndsAt: DateTime.now().add(_cooldownDuration),
+      ));
+    }
+    return ok;
+  }
 
   Future<bool> requestPriority() async {
     if (state.isActionPending) {
@@ -202,7 +225,15 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       return true;
     } on AppFailure catch (failure) {
       if (!isClosed) {
-        emit(state.copyWith(isActionPending: false, failure: failure));
+        final isCooldown = failure is GameFailure &&
+            failure.reason == GameFailureReason.cooldown;
+        emit(state.copyWith(
+          isActionPending: false,
+          failure: failure,
+          cooldownEndsAt: isCooldown
+              ? DateTime.now().add(_cooldownDuration)
+              : state.cooldownEndsAt,
+        ));
       }
       return false;
     }

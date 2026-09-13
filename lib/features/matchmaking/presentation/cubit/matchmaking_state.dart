@@ -21,6 +21,7 @@ class MatchmakingState extends Equatable {
     this.promotionNonce = 0,
     this.priorityRequestSent = false,
     this.serverOffset = Duration.zero,
+    this.cooldownEndsAt,
   });
 
   final MatchmakingStatus status;
@@ -53,6 +54,11 @@ class MatchmakingState extends Equatable {
   /// decide quando algo expira.
   final Duration serverOffset;
 
+  final DateTime? cooldownEndsAt;
+
+  bool get isInCooldown =>
+      cooldownEndsAt != null && DateTime.now().isBefore(cooldownEndsAt!);
+
   DateTime estimatedServerNow() => DateTime.now().add(serverOffset);
 
   MatchmakingState copyWith({
@@ -66,6 +72,8 @@ class MatchmakingState extends Equatable {
     int? promotionNonce,
     bool? priorityRequestSent,
     Duration? serverOffset,
+    DateTime? cooldownEndsAt,
+    bool clearCooldown = false,
   }) => MatchmakingState(
     status: status ?? this.status,
     snapshot: snapshot ?? this.snapshot,
@@ -76,6 +84,7 @@ class MatchmakingState extends Equatable {
     promotionNonce: promotionNonce ?? this.promotionNonce,
     priorityRequestSent: priorityRequestSent ?? this.priorityRequestSent,
     serverOffset: serverOffset ?? this.serverOffset,
+    cooldownEndsAt: clearCooldown ? null : (cooldownEndsAt ?? this.cooldownEndsAt),
   );
 
   @override
@@ -89,5 +98,6 @@ class MatchmakingState extends Equatable {
     promotionNonce,
     priorityRequestSent,
     serverOffset,
+    cooldownEndsAt,
   ];
 }

@@ -16,7 +16,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_divi
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
-import 'package:fifa_queue/features/game/presentation/widgets/win_loss_counter.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/debounced_win_loss_counter.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
@@ -126,7 +126,6 @@ class _RivalsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final cubit = context.read<FcAccountsCubit>();
-    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return AppCard(
       accent: AppCardAccent.left,
@@ -165,25 +164,20 @@ class _RivalsSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          WinLossCounter(
+          DebouncedWinLossCounter(
             wins: account.rivalsWins,
             losses: account.rivalsLosses,
             winsLabel: l10n.statsWinsLabel,
             lossesLabel: l10n.statsLossesLabel,
             addWinTooltip: l10n.recordAddWinTooltip,
             addLossTooltip: l10n.recordAddLossTooltip,
-            onAddWin: isSaving
-                ? null
-                : () => cubit.incrementRivalsRecord(
-                    accountId: account.id,
-                    winDelta: 1,
-                  ),
-            onAddLoss: isSaving
-                ? null
-                : () => cubit.incrementRivalsRecord(
-                    accountId: account.id,
-                    lossDelta: 1,
-                  ),
+            removeWinTooltip: l10n.recordRemoveWinTooltip,
+            removeLossTooltip: l10n.recordRemoveLossTooltip,
+            onFlush: (wd, ld) => cubit.incrementRivalsRecord(
+              accountId: account.id,
+              winDelta: wd,
+              lossDelta: ld,
+            ),
           ),
         ],
       ),
@@ -209,7 +203,6 @@ class _WeekendLeagueSection extends StatelessWidget {
     final record = account.weekendLeagueRecord;
     final rank = WeekendLeagueRank.fromWins(record.$1);
     final cubit = context.read<FcAccountsCubit>();
-    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return AppCard(
       accent: AppCardAccent.left,
@@ -238,25 +231,20 @@ class _WeekendLeagueSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          WinLossCounter(
+          DebouncedWinLossCounter(
             wins: record.$1,
             losses: record.$2,
             winsLabel: l10n.statsWinsLabel,
             lossesLabel: l10n.statsLossesLabel,
             addWinTooltip: l10n.recordAddWinTooltip,
             addLossTooltip: l10n.recordAddLossTooltip,
-            onAddWin: isSaving
-                ? null
-                : () => cubit.incrementWeekendLeagueRecord(
-                    accountId: account.id,
-                    winDelta: 1,
-                  ),
-            onAddLoss: isSaving
-                ? null
-                : () => cubit.incrementWeekendLeagueRecord(
-                    accountId: account.id,
-                    lossDelta: 1,
-                  ),
+            removeWinTooltip: l10n.recordRemoveWinTooltip,
+            removeLossTooltip: l10n.recordRemoveLossTooltip,
+            onFlush: (wd, ld) => cubit.incrementWeekendLeagueRecord(
+              accountId: account.id,
+              winDelta: wd,
+              lossDelta: ld,
+            ),
           ),
         ],
       ),

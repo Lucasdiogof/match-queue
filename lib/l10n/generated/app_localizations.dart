@@ -1639,8 +1639,8 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingSearchingOtherTitle.
   ///
   /// In pt, this message translates to:
-  /// **'{name} está buscando partida'**
-  String matchmakingSearchingOtherTitle(String name);
+  /// **'Alguém está buscando partida'**
+  String get matchmakingSearchingOtherTitle;
 
   /// No description provided for @matchmakingQueuePositionLabel.
   ///
@@ -1681,8 +1681,20 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingBottomSheetMessage.
   ///
   /// In pt, this message translates to:
-  /// **'{name} está buscando partida pelo Time {teamName}.'**
-  String matchmakingBottomSheetMessage(String name, String teamName);
+  /// **'Alguém está buscando partida pelo Time {teamName}.'**
+  String matchmakingBottomSheetMessage(String teamName);
+
+  /// No description provided for @matchmakingPlayerLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogador {position}'**
+  String matchmakingPlayerLabel(int position);
+
+  /// No description provided for @matchmakingCooldownLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aguarde {seconds}s'**
+  String matchmakingCooldownLabel(int seconds);
 
   /// No description provided for @matchmakingRequestPriorityAction.
   ///
@@ -3379,6 +3391,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Adicionar derrota'**
   String get recordAddLossTooltip;
+
+  /// No description provided for @recordRemoveWinTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover vitória'**
+  String get recordRemoveWinTooltip;
+
+  /// No description provided for @recordRemoveLossTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover derrota'**
+  String get recordRemoveLossTooltip;
 
   /// No description provided for @statsGoalDiffLabel.
   ///

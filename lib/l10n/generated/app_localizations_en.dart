@@ -906,9 +906,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'When you get into the match, mark that you found it.';
 
   @override
-  String matchmakingSearchingOtherTitle(String name) {
-    return '$name is searching for a match';
-  }
+  String get matchmakingSearchingOtherTitle =>
+      'Someone is searching for a match';
 
   @override
   String matchmakingQueuePositionLabel(int position) {
@@ -931,8 +930,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matchmakingBottomSheetTitle => 'Search in progress';
 
   @override
-  String matchmakingBottomSheetMessage(String name, String teamName) {
-    return '$name is searching for a match for Team $teamName.';
+  String matchmakingBottomSheetMessage(String teamName) {
+    return 'Someone is searching for a match for Team $teamName.';
+  }
+
+  @override
+  String matchmakingPlayerLabel(int position) {
+    return 'Player $position';
+  }
+
+  @override
+  String matchmakingCooldownLabel(int seconds) {
+    return 'Wait ${seconds}s';
   }
 
   @override
@@ -1889,6 +1898,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recordAddLossTooltip => 'Add loss';
+
+  @override
+  String get recordRemoveWinTooltip => 'Remove win';
+
+  @override
+  String get recordRemoveLossTooltip => 'Remove loss';
 
   @override
   String get statsGoalDiffLabel => 'Goal difference';

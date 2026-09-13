@@ -17,7 +17,6 @@ import 'package:fifa_queue/features/notifications/presentation/cubit/notificatio
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_lifecycle_listener.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/locale_sync_listener.dart';
-import 'package:fifa_queue/features/profile/presentation/widgets/presence_heartbeat_listener.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/profile_session_listener.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
@@ -93,14 +92,12 @@ class FifaQueueApp extends StatelessWidget {
                   child: FcSquadsSessionListener(
                     child: PendingMatchSessionListener(
                       child: LocaleSyncListener(
-                        child: PresenceHeartbeatListener(
-                          child: NotificationLifecycleListener(
+                        child: NotificationLifecycleListener(
                             child: PendingInviteListener(
                               child: child ?? const SizedBox.shrink(),
                             ),
                           ),
                         ),
-                      ),
                     ),
                   ),
                 ),

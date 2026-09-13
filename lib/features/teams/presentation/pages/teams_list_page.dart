@@ -5,7 +5,6 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/invitations/presentation/widgets/join_by_code_sheet.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
-import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/public_teams_cubit.dart';
@@ -124,6 +123,9 @@ class _MyTeamsTab extends StatelessWidget {
           icon: Icons.groups_2_outlined,
           title: l10n.teamNoTeamTitle,
           message: l10n.teamNoTeamMessage,
+          alignment: const Alignment(0, -0.3),
+          actionLabel: l10n.teamCreateCta,
+          onAction: () => showCreateTeamSheet(context),
         );
       }
 
@@ -184,34 +186,6 @@ class _TeamListRow extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SizedBox(height: AppSpacing.xs),
-                FutureBuilder<List<TeamMemberStatus>>(
-                  future: getIt<TeamRepository>().fetchPlayerStatuses(team.id),
-                  builder: (context, snapshot) {
-                    final members = snapshot.data;
-                    if (members == null) {
-                      return Text(
-                        '…',
-                        style: context.textStyles.bodySmall?.copyWith(
-                          color: colors.textTertiary,
-                        ),
-                      );
-                    }
-                    final active = members
-                        .where(
-                          (member) =>
-                              member.status != PlayerOperationalStatus.offline,
-                        )
-                        .length;
-                    return Text(
-                      '${l10n.teamMembersCount(members.length)} · '
-                      '${l10n.teamActiveCount(active)}',
-                      style: context.textStyles.bodySmall?.copyWith(
-                        color: colors.textSecondary,
-                      ),
-                    );
-                  },
-                ),
               ],
             ),
           ),

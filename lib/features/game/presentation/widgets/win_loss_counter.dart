@@ -1,9 +1,8 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
-/// Placar como contador manual: numero grande + um "+" logo abaixo, um por
-/// coluna (vitorias/derrotas). Sem digitar nada -- um toque de cada vez,
-/// pensado pra registrar 15-0 aos poucos durante a campanha.
+/// Placar como contador manual: numero grande com "+" e "−" para ajustar,
+/// um por coluna (vitorias/derrotas). Sem digitar nada -- um toque de cada vez.
 class WinLossCounter extends StatelessWidget {
   const WinLossCounter({
     required this.wins,
@@ -12,8 +11,12 @@ class WinLossCounter extends StatelessWidget {
     required this.lossesLabel,
     required this.addWinTooltip,
     required this.addLossTooltip,
+    required this.removeWinTooltip,
+    required this.removeLossTooltip,
     this.onAddWin,
     this.onAddLoss,
+    this.onRemoveWin,
+    this.onRemoveLoss,
     super.key,
   });
 
@@ -23,8 +26,12 @@ class WinLossCounter extends StatelessWidget {
   final String lossesLabel;
   final String addWinTooltip;
   final String addLossTooltip;
+  final String removeWinTooltip;
+  final String removeLossTooltip;
   final VoidCallback? onAddWin;
   final VoidCallback? onAddLoss;
+  final VoidCallback? onRemoveWin;
+  final VoidCallback? onRemoveLoss;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -33,8 +40,10 @@ class WinLossCounter extends StatelessWidget {
         child: _Column(
           value: wins,
           label: winsLabel,
-          tooltip: addWinTooltip,
+          addTooltip: addWinTooltip,
+          removeTooltip: removeWinTooltip,
           onAdd: onAddWin,
+          onRemove: wins > 0 ? onRemoveWin : null,
         ),
       ),
       const SizedBox(width: AppSpacing.xl),
@@ -42,8 +51,10 @@ class WinLossCounter extends StatelessWidget {
         child: _Column(
           value: losses,
           label: lossesLabel,
-          tooltip: addLossTooltip,
+          addTooltip: addLossTooltip,
+          removeTooltip: removeLossTooltip,
           onAdd: onAddLoss,
+          onRemove: losses > 0 ? onRemoveLoss : null,
         ),
       ),
     ],
@@ -54,14 +65,18 @@ class _Column extends StatelessWidget {
   const _Column({
     required this.value,
     required this.label,
-    required this.tooltip,
+    required this.addTooltip,
+    required this.removeTooltip,
     this.onAdd,
+    this.onRemove,
   });
 
   final int value;
   final String label;
-  final String tooltip;
+  final String addTooltip;
+  final String removeTooltip;
   final VoidCallback? onAdd;
+  final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -75,11 +90,23 @@ class _Column extends StatelessWidget {
         ),
       ),
       const SizedBox(height: AppSpacing.sm),
-      AppIconButton(
-        icon: Icons.add,
-        tooltip: tooltip,
-        variant: AppIconButtonVariant.surface,
-        onPressed: onAdd,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          AppIconButton(
+            icon: Icons.remove,
+            tooltip: removeTooltip,
+            variant: AppIconButtonVariant.surface,
+            onPressed: onRemove,
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          AppIconButton(
+            icon: Icons.add,
+            tooltip: addTooltip,
+            variant: AppIconButtonVariant.surface,
+            onPressed: onAdd,
+          ),
+        ],
       ),
     ],
   );

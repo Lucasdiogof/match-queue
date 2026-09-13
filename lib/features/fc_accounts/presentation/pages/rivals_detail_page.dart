@@ -11,7 +11,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_c
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_picker_sheet.dart';
-import 'package:fifa_queue/features/game/presentation/widgets/win_loss_counter.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/debounced_win_loss_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -75,40 +75,16 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
   }
 }
 
-class _Body extends StatefulWidget {
+class _Body extends StatelessWidget {
   const _Body({required this.accountId, required this.stats});
 
   final String accountId;
   final RivalsAccountStats stats;
 
   @override
-  State<_Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<_Body> {
-  // Rascunho local pra o "+" responder na hora -- FcAccountsCubit refaz a
-  // chamada inteira de contas a cada incremento (_mutate), o que pisca o
-  // placar por um instante sem isto.
-  late int _wins = widget.stats.manual.wins;
-  late int _losses = widget.stats.manual.losses;
-
-  Future<void> _add({int winDelta = 0, int lossDelta = 0}) async {
-    setState(() {
-      _wins += winDelta;
-      _losses += lossDelta;
-    });
-    await context.read<FcAccountsCubit>().incrementRivalsRecord(
-      accountId: widget.accountId,
-      winDelta: winDelta,
-      lossDelta: lossDelta,
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
-    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return ListView(
       padding: const EdgeInsets.symmetric(
@@ -116,22 +92,28 @@ class _BodyState extends State<_Body> {
         vertical: AppSpacing.xl,
       ),
       children: <Widget>[
-        _DivisionSection(accountId: widget.accountId),
+        _DivisionSection(accountId: accountId),
         const SizedBox(height: AppSpacing.lg),
         AppCard(
           variant: AppCardVariant.elevated,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              WinLossCounter(
-                wins: _wins,
-                losses: _losses,
+              DebouncedWinLossCounter(
+                wins: stats.manual.wins,
+                losses: stats.manual.losses,
                 winsLabel: l10n.statsWinsLabel,
                 lossesLabel: l10n.statsLossesLabel,
                 addWinTooltip: l10n.recordAddWinTooltip,
                 addLossTooltip: l10n.recordAddLossTooltip,
-                onAddWin: isSaving ? null : () => _add(winDelta: 1),
-                onAddLoss: isSaving ? null : () => _add(lossDelta: 1),
+                removeWinTooltip: l10n.recordRemoveWinTooltip,
+                removeLossTooltip: l10n.recordRemoveLossTooltip,
+                onFlush: (wd, ld) =>
+                    context.read<FcAccountsCubit>().incrementRivalsRecord(
+                      accountId: accountId,
+                      winDelta: wd,
+                      lossDelta: ld,
+                    ),
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
@@ -146,13 +128,13 @@ class _BodyState extends State<_Body> {
         const SizedBox(height: AppSpacing.lg),
         _LeaderboardCard(
           title: l10n.statsTopScorersTitle,
-          entries: widget.stats.topScorers,
+          entries: stats.topScorers,
           showGoals: true,
         ),
         const SizedBox(height: AppSpacing.lg),
         _LeaderboardCard(
           title: l10n.statsTopAssistsTitle,
-          entries: widget.stats.topAssists,
+          entries: stats.topAssists,
           showGoals: false,
         ),
       ],

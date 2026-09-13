@@ -483,15 +483,7 @@
   "matchmakingMatchFoundAction": "Encontrei",
   "matchmakingSearchingSelfTitle": "Buscando partida",
   "matchmakingSearchingSelfMessage": "Quando entrar na partida, marque que encontrou.",
-  "matchmakingSearchingOtherTitle": "{name} está buscando partida",
-  "@matchmakingSearchingOtherTitle": {
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Lucas"
-      }
-    }
-  },
+  "matchmakingSearchingOtherTitle": "Alguém está buscando partida",
   "matchmakingQueuePositionLabel": "Posição {position} na fila",
   "@matchmakingQueuePositionLabel": {
     "placeholders": {
@@ -506,16 +498,30 @@
   "matchmakingYouBadge": "Você",
   "matchmakingYourTurnTitle": "Sua vez de buscar!",
   "matchmakingBottomSheetTitle": "Busca em andamento",
-  "matchmakingBottomSheetMessage": "{name} está buscando partida pelo Time {teamName}.",
+  "matchmakingBottomSheetMessage": "Alguém está buscando partida pelo Time {teamName}.",
   "@matchmakingBottomSheetMessage": {
     "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Lucas"
-      },
       "teamName": {
         "type": "String",
         "example": "Goiás"
+      }
+    }
+  },
+  "matchmakingPlayerLabel": "Jogador {position}",
+  "@matchmakingPlayerLabel": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "matchmakingCooldownLabel": "Aguarde {seconds}s",
+  "@matchmakingCooldownLabel": {
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "25"
       }
     }
   },
@@ -1024,6 +1030,8 @@
   "statsLossesLabel": "Derrotas",
   "recordAddWinTooltip": "Adicionar vitória",
   "recordAddLossTooltip": "Adicionar derrota",
+  "recordRemoveWinTooltip": "Remover vitória",
+  "recordRemoveLossTooltip": "Remover derrota",
   "statsGoalDiffLabel": "Saldo de gols",
   "statsGoalsAgainstLabel": "Gols sofridos",
   "statsTopScorersTitle": "Artilharia",

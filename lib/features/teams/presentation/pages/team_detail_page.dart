@@ -14,9 +14,9 @@ import 'package:fifa_queue/features/teams/presentation/cubit/team_status_cubit.d
 import 'package:fifa_queue/features/teams/presentation/cubit/team_status_state.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/edit_team_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_sports_sections.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,10 +41,11 @@ class TeamDetailPage extends StatelessWidget {
           actions: <Widget>[
             if (userTeam != null && userTeam.canManageTeam)
               AppIconButton(
-                icon: Icons.settings_outlined,
-                tooltip: context.l10n.teamManageAction,
+                icon: Icons.edit_outlined,
+                tooltip: context.l10n.actionEdit,
                 variant: AppIconButtonVariant.surface,
-                onPressed: () => context.push(AppRoutes.teamSettings.path),
+                onPressed: () =>
+                    showEditTeamSheet(context, userTeam.team),
               ),
           ],
         ),
@@ -270,8 +271,6 @@ class _MemberStatusRow extends StatelessWidget {
               style: context.textStyles.bodyLarge,
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
-          TeamStatusBadge(member: member),
         ],
       ),
     ),

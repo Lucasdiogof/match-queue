@@ -12,6 +12,7 @@ class AppEmptyState extends StatelessWidget {
     this.icon = Icons.inbox_outlined,
     this.actionLabel,
     this.onAction,
+    this.alignment = Alignment.center,
     super.key,
   });
 
@@ -20,12 +21,14 @@ class AppEmptyState extends StatelessWidget {
   final IconData icon;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return Center(
+    return Align(
+      alignment: alignment,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 360),
         child: Padding(

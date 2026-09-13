@@ -7,13 +7,12 @@ import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart'
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_manual_record_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_week_picker.dart';
 import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/debounced_win_loss_counter.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
-import 'package:fifa_queue/features/game/presentation/widgets/win_loss_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,25 +57,14 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
     );
   }
 
-  Future<void> _increment({int winDelta = 0, int lossDelta = 0}) async {
-    await context.read<FcAccountsCubit>().incrementWeekendLeagueRecord(
+  Future<bool> _flushIncrement(int winDelta, int lossDelta) async {
+    final ok = await context.read<FcAccountsCubit>().incrementWeekendLeagueRecord(
       accountId: widget.account.id,
       winDelta: winDelta,
       lossDelta: lossDelta,
     );
-    if (mounted) {
-      setState(_load);
-    }
-  }
-
-  Future<void> _openManualEdit() async {
-    await showWeekendLeagueManualRecordSheet(
-      context: context,
-      account: widget.account,
-    );
-    if (mounted) {
-      setState(_load);
-    }
+    if (mounted && ok) setState(_load);
+    return ok;
   }
 
   Future<void> _pickWeek() async {
@@ -129,8 +117,7 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
             event: _event,
             stats: stats,
             onPickWeek: _pickWeek,
-            onIncrement: _increment,
-            onEditManual: _openManualEdit,
+            onFlushIncrement: _flushIncrement,
           );
         },
       ),
@@ -144,16 +131,14 @@ class _Body extends StatelessWidget {
     required this.event,
     required this.stats,
     required this.onPickWeek,
-    required this.onIncrement,
-    required this.onEditManual,
+    required this.onFlushIncrement,
   });
 
   final FcAccount account;
   final WeekendLeagueEvent event;
   final WeekendLeagueAccountStats stats;
   final Future<void> Function() onPickWeek;
-  final Future<void> Function({int winDelta, int lossDelta}) onIncrement;
-  final Future<void> Function() onEditManual;
+  final Future<bool> Function(int winDelta, int lossDelta) onFlushIncrement;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -166,8 +151,7 @@ class _Body extends StatelessWidget {
       const SizedBox(height: AppSpacing.lg),
       _SummarySection(
         stats: stats,
-        onIncrement: onIncrement,
-        onEditManual: onEditManual,
+        onFlush: onFlushIncrement,
       ),
       const SizedBox(height: AppSpacing.lg),
       _LeaderboardSection(
@@ -188,13 +172,11 @@ class _Body extends StatelessWidget {
 class _SummarySection extends StatelessWidget {
   const _SummarySection({
     required this.stats,
-    required this.onIncrement,
-    required this.onEditManual,
+    required this.onFlush,
   });
 
   final WeekendLeagueAccountStats stats;
-  final Future<void> Function({int winDelta, int lossDelta}) onIncrement;
-  final Future<void> Function() onEditManual;
+  final Future<bool> Function(int winDelta, int lossDelta) onFlush;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +185,6 @@ class _SummarySection extends StatelessWidget {
     final wins = manual?.wins ?? 0;
     final losses = manual?.losses ?? 0;
     final rank = WeekendLeagueRank.fromWins(wins);
-    final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
 
     return AppCard(
       variant: AppCardVariant.elevated,
@@ -214,21 +195,16 @@ class _SummarySection extends StatelessWidget {
             AppBadge(label: rank.label),
             const SizedBox(height: AppSpacing.md),
           ],
-          WinLossCounter(
+          DebouncedWinLossCounter(
             wins: wins,
             losses: losses,
             winsLabel: l10n.statsWinsLabel,
             lossesLabel: l10n.statsLossesLabel,
             addWinTooltip: l10n.recordAddWinTooltip,
             addLossTooltip: l10n.recordAddLossTooltip,
-            onAddWin: isSaving ? null : () => onIncrement(winDelta: 1),
-            onAddLoss: isSaving ? null : () => onIncrement(lossDelta: 1),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          AppButton.ghost(
-            label: l10n.fcAccountWeekendLeagueEditAction,
-            icon: Icons.edit_outlined,
-            onPressed: isSaving ? null : onEditManual,
+            removeWinTooltip: l10n.recordRemoveWinTooltip,
+            removeLossTooltip: l10n.recordRemoveLossTooltip,
+            onFlush: onFlush,
           ),
         ],
       ),

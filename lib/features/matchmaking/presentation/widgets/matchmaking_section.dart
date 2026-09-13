@@ -261,7 +261,7 @@ class _NotLinkedCard extends StatelessWidget {
   }
 }
 
-class _IdleCard extends StatelessWidget {
+class _IdleCard extends StatefulWidget {
   const _IdleCard({
     required this.state,
     required this.snapshot,
@@ -272,8 +272,52 @@ class _IdleCard extends StatelessWidget {
   final MyMatchmakingSnapshot snapshot;
   final String teamName;
 
-  Future<void> _onStartPressed(BuildContext context) async {
-    final blocking = snapshot.blockingSearch;
+  @override
+  State<_IdleCard> createState() => _IdleCardState();
+}
+
+class _IdleCardState extends State<_IdleCard> {
+  Timer? _cooldownTick;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCooldownTickIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(_IdleCard old) {
+    super.didUpdateWidget(old);
+    if (old.state.cooldownEndsAt != widget.state.cooldownEndsAt) {
+      _startCooldownTickIfNeeded();
+    }
+  }
+
+  void _startCooldownTickIfNeeded() {
+    _cooldownTick?.cancel();
+    _cooldownTick = null;
+    if (widget.state.isInCooldown) {
+      _cooldownTick = Timer.periodic(
+        const Duration(seconds: 1),
+        (_) {
+          if (!widget.state.isInCooldown) {
+            _cooldownTick?.cancel();
+            _cooldownTick = null;
+          }
+          if (mounted) setState(() {});
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _cooldownTick?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _onStartPressed() async {
+    final blocking = widget.snapshot.blockingSearch;
     if (blocking == null) {
       unawaited(
         context.read<MatchmakingCubit>().startSearch(
@@ -287,7 +331,7 @@ class _IdleCard extends StatelessWidget {
       context: context,
       cubit: context.read<MatchmakingCubit>(),
       blocking: blocking,
-      teamName: teamName,
+      teamName: widget.teamName,
     );
   }
 
@@ -295,11 +339,14 @@ class _IdleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
-    final blocking = snapshot.blockingSearch;
+    final blocking = widget.snapshot.blockingSearch;
+    final cooldownEndsAt = widget.state.cooldownEndsAt;
+    final inCooldown = widget.state.isInCooldown;
+    final cooldownSeconds = inCooldown
+        ? cooldownEndsAt!.difference(DateTime.now()).inSeconds + 1
+        : 0;
+    final busy = widget.state.isActionPending || inCooldown;
 
-    // Este e o card da ACAO da tela, entao ele se anuncia: faixa de acento,
-    // icone em disco tingido e o botao logo abaixo do texto. Antes era icone
-    // cinza, divisor e paragrafo -- lia como aviso, nao como convite.
     return AppCard(
       variant: AppCardVariant.elevated,
       accent: AppCardAccent.left,
@@ -327,9 +374,7 @@ class _IdleCard extends StatelessWidget {
                 child: Text(
                   blocking == null
                       ? l10n.matchmakingIdleTitle
-                      : l10n.matchmakingSearchingOtherTitle(
-                          blocking.displayName,
-                        ),
+                      : l10n.matchmakingSearchingOtherTitle,
                   style: context.textStyles.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -348,14 +393,18 @@ class _IdleCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           AppButton(
-            label: blocking == null
-                ? l10n.matchmakingSearchAction
-                : l10n.matchmakingJoinQueueAction,
-            icon: blocking == null ? Icons.search : Icons.playlist_add,
-            isLoading: state.isActionPending,
-            onPressed: state.isActionPending
-                ? null
-                : () => _onStartPressed(context),
+            label: inCooldown
+                ? l10n.matchmakingCooldownLabel(cooldownSeconds)
+                : blocking == null
+                    ? l10n.matchmakingSearchAction
+                    : l10n.matchmakingJoinQueueAction,
+            icon: inCooldown
+                ? Icons.hourglass_empty
+                : blocking == null
+                    ? Icons.search
+                    : Icons.playlist_add,
+            isLoading: widget.state.isActionPending,
+            onPressed: busy ? null : _onStartPressed,
           ),
         ],
       ),
@@ -499,8 +548,8 @@ class _QueuedCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       entry.isMe
-                          ? '${entry.displayName} · ${l10n.matchmakingYouBadge}'
-                          : entry.displayName,
+                          ? '${l10n.matchmakingPlayerLabel(entry.position)} · ${l10n.matchmakingYouBadge}'
+                          : l10n.matchmakingPlayerLabel(entry.position),
                       overflow: TextOverflow.ellipsis,
                       style: context.textStyles.bodyMedium?.copyWith(
                         fontWeight: entry.isMe
@@ -574,7 +623,7 @@ class _MatchmakingQueueSheetBody extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            l10n.matchmakingBottomSheetMessage(blocking.displayName, teamName),
+            l10n.matchmakingBottomSheetMessage(teamName),
             style: context.textStyles.bodyMedium?.copyWith(
               color: colors.textSecondary,
             ),

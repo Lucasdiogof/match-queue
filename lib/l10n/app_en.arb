@@ -483,15 +483,7 @@
   "matchmakingMatchFoundAction": "Found it",
   "matchmakingSearchingSelfTitle": "Searching for a match",
   "matchmakingSearchingSelfMessage": "When you get into the match, mark that you found it.",
-  "matchmakingSearchingOtherTitle": "{name} is searching for a match",
-  "@matchmakingSearchingOtherTitle": {
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Lucas"
-      }
-    }
-  },
+  "matchmakingSearchingOtherTitle": "Someone is searching for a match",
   "matchmakingQueuePositionLabel": "Position {position} in the queue",
   "@matchmakingQueuePositionLabel": {
     "placeholders": {
@@ -506,16 +498,30 @@
   "matchmakingYouBadge": "You",
   "matchmakingYourTurnTitle": "Your turn to search!",
   "matchmakingBottomSheetTitle": "Search in progress",
-  "matchmakingBottomSheetMessage": "{name} is searching for a match for Team {teamName}.",
+  "matchmakingBottomSheetMessage": "Someone is searching for a match for Team {teamName}.",
   "@matchmakingBottomSheetMessage": {
     "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Lucas"
-      },
       "teamName": {
         "type": "String",
         "example": "Goiás"
+      }
+    }
+  },
+  "matchmakingPlayerLabel": "Player {position}",
+  "@matchmakingPlayerLabel": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "matchmakingCooldownLabel": "Wait {seconds}s",
+  "@matchmakingCooldownLabel": {
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "25"
       }
     }
   },
@@ -1024,6 +1030,8 @@
   "statsLossesLabel": "Losses",
   "recordAddWinTooltip": "Add win",
   "recordAddLossTooltip": "Add loss",
+  "recordRemoveWinTooltip": "Remove win",
+  "recordRemoveLossTooltip": "Remove loss",
   "statsGoalDiffLabel": "Goal difference",
   "statsGoalsAgainstLabel": "Goals conceded",
   "statsTopScorersTitle": "Top scorers",
