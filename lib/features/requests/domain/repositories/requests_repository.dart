@@ -12,6 +12,11 @@ abstract interface class RequestsRepository {
     required String fcAccountId,
   });
 
+  /// Id do proprio pedido PENDING pra este time, se houver -- pra tela
+  /// publica do time saber se deve mostrar "Pedir para entrar" ou
+  /// "Solicitacao enviada" sem depender so de estado local em memoria.
+  Future<String?> myPendingRequestId(String teamId);
+
   /// So o proprio solicitante cancela, e so enquanto PENDING.
   Future<void> cancelJoinRequest(String requestId);
 

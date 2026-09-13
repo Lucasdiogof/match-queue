@@ -14,7 +14,8 @@ class SupabaseRequestsRepository implements RequestsRepository {
 
   @override
   Future<RequestsInbox> fetchInbox() => _guard(
-    () async => RequestsInboxModel.fromJson(await _dataSource.getRequestsInbox()),
+    () async =>
+        RequestsInboxModel.fromJson(await _dataSource.getRequestsInbox()),
   );
 
   @override
@@ -39,8 +40,9 @@ class SupabaseRequestsRepository implements RequestsRepository {
 
   @override
   Future<InviteTargetPreview> resolveInviteTarget(String slug) => _guard(
-    () async =>
-        InviteTargetPreviewModel.fromJson(await _dataSource.resolveInviteTarget(slug)),
+    () async => InviteTargetPreviewModel.fromJson(
+      await _dataSource.resolveInviteTarget(slug),
+    ),
   );
 
   @override
@@ -50,6 +52,12 @@ class SupabaseRequestsRepository implements RequestsRepository {
   @override
   Future<void> revokeInvitation(String invitationId) =>
       _guard(() => _dataSource.revokeTeamInvitation(invitationId));
+
+  @override
+  Future<String?> myPendingRequestId(String teamId) => _guard(() async {
+    final row = await _dataSource.fetchMyPendingRequest(teamId);
+    return row == null ? null : '${row['id']}';
+  });
 
   @override
   Future<void> respondInvitation({

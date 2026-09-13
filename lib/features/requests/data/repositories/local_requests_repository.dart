@@ -36,6 +36,9 @@ class LocalRequestsRepository implements RequestsRepository {
   }
 
   @override
+  Future<String?> myPendingRequestId(String teamId) async => null;
+
+  @override
   Future<InviteTargetPreview> resolveInviteTarget(String slug) async =>
       const InviteTargetPreview.notFound();
 

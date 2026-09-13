@@ -332,6 +332,13 @@ class _SettingsSection extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton.secondary(
+            label: l10n.navHistory,
+            icon: Icons.history_outlined,
+            onPressed: () =>
+                context.push(AppRoutes.fcAccountHistoryLocation(account.id)),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
             label: l10n.publicProfileSectionTitle,
             icon: Icons.lock_outline,
             onPressed: () => context.push(

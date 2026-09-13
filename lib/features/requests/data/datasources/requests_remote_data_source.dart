@@ -24,6 +24,8 @@ abstract interface class RequestsRemoteDataSource {
     required String invitationId,
     required bool accept,
   });
+
+  Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId);
 }
 
 class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
@@ -56,11 +58,10 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
   );
 
   @override
-  Future<void> approveTeamJoinRequest(String requestId) =>
-      _client.rpc<dynamic>(
-        'approve_team_join_request',
-        params: <String, dynamic>{'p_request_id': requestId},
-      );
+  Future<void> approveTeamJoinRequest(String requestId) => _client.rpc<dynamic>(
+    'approve_team_join_request',
+    params: <String, dynamic>{'p_request_id': requestId},
+  );
 
   @override
   Future<void> rejectTeamJoinRequest(String requestId) => _client.rpc<dynamic>(
@@ -104,4 +105,23 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
       'p_accept': accept,
     },
   );
+
+  @override
+  Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId) async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      return null;
+    }
+    // user_id explicito mesmo com a RLS ja restringindo: a policy tambem
+    // libera leitura pra quem administra o time, e aqui so importa a
+    // PROPRIA solicitacao.
+    final row = await _client
+        .from('team_join_requests')
+        .select('id')
+        .eq('team_id', teamId)
+        .eq('user_id', userId)
+        .eq('status', 'PENDING')
+        .maybeSingle();
+    return row;
+  }
 }
