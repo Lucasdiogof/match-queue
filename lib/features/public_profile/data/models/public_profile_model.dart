@@ -1,3 +1,4 @@
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_profile.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_sharing_settings.dart';
 
@@ -75,11 +76,11 @@ PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
     accountName: account?['name'] as String?,
     rivalsDivision: account?['rivals_division'] as String?,
     stats: _aggregateFromJson(json['stats']),
-    weekendLeague: _aggregateFromJson(
-      (json['weekend_league'] as Map<dynamic, dynamic>?)?['computed'],
+    weekendLeague: ManualRecord.fromJson(
+      (json['weekend_league'] as Map<dynamic, dynamic>?)?['manual'],
     ),
-    rivals: _aggregateFromJson(
-      (json['rivals'] as Map<dynamic, dynamic>?)?['aggregate'],
+    rivals: ManualRecord.fromJson(
+      (json['rivals'] as Map<dynamic, dynamic>?)?['manual'],
     ),
     squad: _squadFromJson(json['squad']),
   );

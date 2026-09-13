@@ -1,9 +1,11 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// Pagina publica de um time (aba Explorar). `found = false` cobre tanto
 /// "nao existe" quanto "e privado" -- get_public_team nunca revela a
@@ -137,27 +139,45 @@ class _TeamPublicBody extends StatelessWidget {
               ),
               if (team.members.isNotEmpty) ...<Widget>[
                 const SizedBox(height: AppSpacing.md),
+                // Um membro so aparece aqui se ele mesmo habilitou o
+                // proprio perfil publico (get_public_team ja filtra) --
+                // por isso todo mundo na lista tem slug e pode ser aberto.
                 for (final member in team.members)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.xs,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        AppAvatar(
-                          label: member.displayName,
-                          imageUrl: member.avatarUrl,
-                          size: AppSizing.avatarSm,
-                        ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Expanded(
-                          child: Text(
-                            member.displayName,
-                            overflow: TextOverflow.ellipsis,
-                            style: context.textStyles.bodyMedium,
+                  InkWell(
+                    onTap: member.publicProfileSlug == null
+                        ? null
+                        : () => context.push(
+                            AppRoutes.publicProfileLocation(
+                              member.publicProfileSlug!,
+                            ),
                           ),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.xs,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          AppAvatar(
+                            label: member.displayName,
+                            imageUrl: member.avatarUrl,
+                            size: AppSizing.avatarSm,
+                          ),
+                          const SizedBox(width: AppSpacing.sm),
+                          Expanded(
+                            child: Text(
+                              member.displayName,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textStyles.bodyMedium,
+                            ),
+                          ),
+                          if (member.publicProfileSlug != null)
+                            Icon(
+                              Icons.chevron_right,
+                              size: AppSizing.iconMd,
+                              color: colors.textTertiary,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
               ],

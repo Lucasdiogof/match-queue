@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 
 /// Agregado publico de partidas (W/L/gols) de um recorte -- mesmo formato
 /// que _fc_account_match_aggregate devolve, so que ja whitelisted pela RPC
@@ -128,8 +129,11 @@ class PublicProfile extends Equatable {
   final String? accountName;
   final String? rivalsDivision;
   final PublicMatchAggregate? stats;
-  final PublicMatchAggregate? weekendLeague;
-  final PublicMatchAggregate? rivals;
+
+  /// Contador manual -- unica fonte que Rivals e Champions mostram hoje em
+  /// qualquer outra tela do app (ver FcAccount.weekendLeagueRecord).
+  final ManualRecord? weekendLeague;
+  final ManualRecord? rivals;
   final PublicSquad? squad;
 
   bool get hasAccount => accountName != null;
