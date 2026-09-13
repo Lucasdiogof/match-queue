@@ -1,15 +1,14 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
 import 'package:flutter/material.dart';
 
 enum SquadPlayerCardState { empty, filled, selected, outOfPosition }
 
-/// Carta no campo ou no banco.
-///
-/// Sem arte de carta de propósito: nada aqui imita um visual oficial de EA
-/// FC. É um card próprio do FIFA Queue, com iniciais no lugar da foto
-/// enquanto o catálogo real não existe -- e o dia em que existir só troca o
-/// miolo, não o formato.
+/// Carta no campo. Preenchida, usa a MESMA carta visual do resto do app
+/// ([PlayerCardFace] -- picker, catalogo, compartilhar): a pessoa ja
+/// escolheu aquela carta, faz sentido ver a mesma arte no campo em vez de
+/// uma versao simplificada so com foto e nome.
 class SquadPlayerCard extends StatelessWidget {
   const SquadPlayerCard({
     required this.positionCode,
@@ -20,6 +19,7 @@ class SquadPlayerCard extends StatelessWidget {
     this.chemistry,
     this.onTap,
     this.onLongPress,
+    this.onRemove,
     super.key,
   });
 
@@ -38,24 +38,23 @@ class SquadPlayerCard extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
+  /// Some do slot com um toque -- alternativa mais descobrível ao toque
+  /// longo, que continua funcionando igual. `null` quando o slot está vazio
+  /// (nada para remover).
+  final VoidCallback? onRemove;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final isSelected = state == SquadPlayerCardState.selected;
-    final isEmpty = card == null;
-
-    final border = switch (state) {
-      SquadPlayerCardState.selected => colors.textPrimary,
-      SquadPlayerCardState.outOfPosition => colors.warning,
-      _ => isEmpty ? colors.borderSubtle : colors.borderStrong,
-    };
+    final card = this.card;
 
     return Semantics(
       button: true,
       selected: isSelected,
-      label: isEmpty
+      label: card == null
           ? '$positionCode, vazio'
-          : '${card!.displayName}, $positionCode, ${card!.rating}'
+          : '${card.displayName}, $positionCode, ${card.rating}'
                 '${chemistry == null ? '' : ', química $chemistry'}',
       child: SizedBox(
         width: width,
@@ -63,22 +62,30 @@ class SquadPlayerCard extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: <Widget>[
-            Material(
-              color: isEmpty
-                  ? colors.surface.withValues(alpha: 0.72)
-                  : colors.surfaceElevated,
-              clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(
-                borderRadius: AppRadii.borderSm,
-                side: BorderSide(color: border, width: isSelected ? 2 : 1),
-              ),
-              child: InkWell(
+            if (card == null)
+              _EmptySlot(
+                positionCode: positionCode,
                 onTap: onTap,
                 onLongPress: onLongPress,
-                child: Padding(
-                  padding: EdgeInsets.all(width * 0.06),
-                  child: isSaving
-                      ? Center(
+              )
+            else
+              Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  PlayerCardFace(
+                    card: card,
+                    isSelected: isSelected,
+                    onTap: isSaving ? null : onTap,
+                    onLongPress: isSaving ? null : onLongPress,
+                  ),
+                  if (isSaving)
+                    Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: AppRadii.borderMd,
+                          color: colors.surface.withValues(alpha: 0.72),
+                        ),
+                        child: Center(
                           child: SizedBox(
                             width: width * 0.28,
                             height: width * 0.28,
@@ -87,17 +94,11 @@ class SquadPlayerCard extends StatelessWidget {
                               color: colors.textSecondary,
                             ),
                           ),
-                        )
-                      : isEmpty
-                      ? _Empty(positionCode: positionCode, width: width)
-                      : _Filled(
-                          card: card!,
-                          positionCode: positionCode,
-                          width: width,
                         ),
-                ),
+                      ),
+                    ),
+                ],
               ),
-            ),
             if (state == SquadPlayerCardState.outOfPosition)
               Positioned(
                 top: -4,
@@ -110,11 +111,47 @@ class SquadPlayerCard extends StatelessWidget {
               ),
             if (chemistry != null)
               Positioned(
-                bottom: 2,
-                left: 2,
+                bottom: 4,
+                left: 4,
                 child: _ChemistryPips(value: chemistry!, width: width),
               ),
+            if (card != null && onRemove != null && !isSaving)
+              Positioned(
+                top: -8,
+                right: -8,
+                child: _RemoveButton(width: width, onPressed: onRemove!),
+              ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RemoveButton extends StatelessWidget {
+  const _RemoveButton({required this.width, required this.onPressed});
+
+  final double width;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = (width * 0.26).clamp(20.0, 28.0);
+    return Material(
+      color: context.colors.surfaceElevated,
+      shape: const CircleBorder(side: BorderSide(color: Colors.black26)),
+      elevation: 2,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onPressed,
+        child: SizedBox(
+          width: size,
+          height: size,
+          child: Icon(
+            Icons.close,
+            size: size * 0.65,
+            color: context.colors.textPrimary,
+          ),
         ),
       ),
     );
@@ -149,6 +186,7 @@ class _ChemistryPips extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: i < value ? dotColor : colors.borderSubtle,
+              border: Border.all(color: Colors.black38, width: 0.5),
             ),
           ),
       ],
@@ -156,136 +194,50 @@ class _ChemistryPips extends StatelessWidget {
   }
 }
 
-class _Empty extends StatelessWidget {
-  const _Empty({required this.positionCode, required this.width});
+class _EmptySlot extends StatelessWidget {
+  const _EmptySlot({required this.positionCode, this.onTap, this.onLongPress});
 
   final String positionCode;
-  final double width;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(Icons.add, size: width * 0.34, color: colors.textTertiary),
-        SizedBox(height: width * 0.06),
-        Text(
-          positionCode,
-          maxLines: 1,
-          style: TextStyle(
-            fontSize: width * 0.20,
-            height: 1,
-            letterSpacing: 0.4,
-            fontWeight: FontWeight.w600,
-            color: colors.textTertiary,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _Filled extends StatelessWidget {
-  const _Filled({
-    required this.card,
-    required this.positionCode,
-    required this.width,
-  });
-
-  final PlayerCard card;
-  final String positionCode;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              '${card.rating}',
-              style: TextStyle(
-                fontSize: width * 0.26,
-                height: 1,
-                fontWeight: FontWeight.w700,
-                color: colors.textPrimary,
-              ),
-            ),
-            Text(
-              positionCode,
-              style: TextStyle(
-                fontSize: width * 0.16,
-                height: 1,
-                fontWeight: FontWeight.w600,
-                color: colors.textTertiary,
-              ),
-            ),
-          ],
-        ),
-        Center(
-          child: Container(
-            width: width * 0.40,
-            height: width * 0.40,
-            alignment: Alignment.center,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: colors.surfaceHighest,
-              shape: BoxShape.circle,
-              border: Border.all(color: colors.borderSubtle),
-            ),
-            // Carta real com foto usa a imagem; sem foto (ou catalogo de
-            // dev, provider LOCAL) cai nas iniciais -- nunca um placeholder
-            // quebrado (item 122).
-            child: card.playerImageUrl == null
-                ? _Initials(card: card, width: width)
-                : Image.network(
-                    card.playerImageUrl!,
-                    fit: BoxFit.cover,
-                    width: width * 0.40,
-                    height: width * 0.40,
-                    errorBuilder: (context, error, stackTrace) =>
-                        _Initials(card: card, width: width),
+    return Material(
+      color: colors.surface.withValues(alpha: 0.72),
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadii.borderSm,
+        side: BorderSide(color: colors.borderSubtle),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(Icons.add, size: width * 0.34, color: colors.textTertiary),
+                SizedBox(height: width * 0.06),
+                Text(
+                  positionCode,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: width * 0.20,
+                    height: 1,
+                    letterSpacing: 0.4,
+                    fontWeight: FontWeight.w600,
+                    color: colors.textTertiary,
                   ),
-          ),
+                ),
+              ],
+            );
+          },
         ),
-        Text(
-          card.displayName,
-          maxLines: 1,
-          textAlign: TextAlign.center,
-          // Nome longo trunca de forma controlada; o campo nunca alarga.
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: width * 0.155,
-            height: 1.1,
-            fontWeight: FontWeight.w500,
-            color: colors.textPrimary,
-          ),
-        ),
-      ],
+      ),
     );
   }
-}
-
-class _Initials extends StatelessWidget {
-  const _Initials({required this.card, required this.width});
-
-  final PlayerCard card;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) => Text(
-    card.initials,
-    style: TextStyle(
-      fontSize: width * 0.17,
-      height: 1,
-      fontWeight: FontWeight.w600,
-      color: context.colors.textSecondary,
-    ),
-  );
 }

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
@@ -5,6 +7,11 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_drag_payload.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
 import 'package:flutter/material.dart';
+
+/// Campo mais alto que largo, pro card caber sem encostar no vizinho.
+/// Compartilhada com [cardWidthForFormation] (escala do eixo Y) e com o
+/// cartão de compartilhamento, que desenha o mesmo campo numa imagem.
+const double fieldHeightRatio = 1.32;
 
 /// Tamanho do card do campo, adaptado à formação ativa (gameplay flows
 /// refresh, item 4). Antes era um `width/5.4` fixo, que ficava maior que o
@@ -22,22 +29,25 @@ import 'package:flutter/material.dart';
 /// pelo cartao de compartilhamento, que precisa do MESMO tamanho de
 /// carta para a imagem sair igual ao campo da tela.
 double cardWidthForFormation(List<FormationSlot> slots, double width) {
-  final byRow = <double, List<double>>{};
-  for (final slot in slots) {
-    final rowKey = (slot.y * 100).round() / 100;
-    (byRow[rowKey] ??= <double>[]).add(slot.x);
-  }
-
+  // Distância mínima entre QUALQUER par de slots, não só os da mesma linha:
+  // uma coluna central (ex. CAM logo acima de dois CM) fica mais perto na
+  // diagonal do que os dois CM ficam um do outro na horizontal, e olhar só
+  // pra linha deixava esse caso passar batido -- overlap real visto num
+  // 4-1-2-1-2 com CAM/CDM entre os CM.
+  //
+  // x e y são frações de dimensões DIFERENTES (largura vs altura do campo,
+  // que é mais alto que largo -- fieldHeightRatio), então dy é escalado por
+  // esse fator antes do hipotenusa: sem isso, a mesma fração em x e em y
+  // representaria distâncias reais diferentes e o cálculo subestimaria o
+  // quão perto duas linhas realmente ficam.
   var minGapFraction = double.infinity;
-  for (final xs in byRow.values) {
-    if (xs.length < 2) {
-      continue;
-    }
-    final sorted = xs..sort();
-    for (var i = 1; i < sorted.length; i++) {
-      final gap = sorted[i] - sorted[i - 1];
-      if (gap < minGapFraction) {
-        minGapFraction = gap;
+  for (var i = 0; i < slots.length; i++) {
+    for (var j = i + 1; j < slots.length; j++) {
+      final dx = slots[i].x - slots[j].x;
+      final dy = (slots[i].y - slots[j].y) * fieldHeightRatio;
+      final distance = _hypot(dx, dy);
+      if (distance < minGapFraction) {
+        minGapFraction = distance;
       }
     }
   }
@@ -48,16 +58,18 @@ double cardWidthForFormation(List<FormationSlot> slots, double width) {
   if (minGapFraction.isInfinite) {
     return baseline;
   }
-  // Espaçamento em pixels, com uma pequena folga (0.9x) para o card nunca
-  // encostar no vizinho mesmo com arredondamento. Nunca menor que o mínimo
-  // absoluto -- prefere manter os cards legíveis a eliminar 100% do overlap
-  // numa formação extrema.
-  final maxByDensity = (minGapFraction * width * 0.9).clamp(
+  // Espaçamento em pixels, com uma folga (0.82x) para sobrar uma zona de
+  // segurança visivel entre cards vizinhos mesmo com arredondamento. Nunca
+  // menor que o mínimo absoluto -- prefere manter os cards legíveis a
+  // eliminar 100% do overlap numa formação extrema.
+  final maxByDensity = (minGapFraction * width * 0.82).clamp(
     minCardWidth,
     maxCardWidth,
   );
   return baseline < maxByDensity ? baseline : maxByDensity;
 }
+
+double _hypot(double dx, double dy) => math.sqrt(dx * dx + dy * dy);
 
 /// Campo desenhado, nunca uma imagem com posições embutidas (item 24): as
 /// linhas são pintadas pelo [_FieldPainter] e os slots ficam por cima,
@@ -89,7 +101,7 @@ class SquadField extends StatelessWidget {
         final width = constraints.maxWidth;
         // Proporção de campo. Um pouco mais alto que largo para os cards
         // caberem sem encostar uns nos outros.
-        final height = width * 1.32;
+        final height = width * fieldHeightRatio;
         final cardWidth = cardWidthForFormation(formation.slots, width);
         final cardHeight = cardWidth / SquadPlayerCard.aspectRatio;
 
@@ -148,6 +160,9 @@ class SquadField extends StatelessWidget {
                             : SquadPlayerCardState.filled,
                         onTap: () => onSlotTap(slot),
                         onLongPress: () => onSlotLongPress(slot),
+                        onRemove: card == null
+                            ? null
+                            : () => onSlotLongPress(slot),
                         onAccept: (payload) => onSlotDrop(slot, payload),
                       );
                     },

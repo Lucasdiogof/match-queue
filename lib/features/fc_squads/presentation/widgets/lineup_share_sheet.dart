@@ -210,7 +210,7 @@ class _ShareField extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       final width = constraints.maxWidth;
-      final height = width * 1.32;
+      final height = width * fieldHeightRatio;
       final cardWidth = cardWidthForFormation(draft.formation.slots, width);
       final cardHeight = cardWidth / 0.72;
       final insetX = cardWidth / 2 + 4;

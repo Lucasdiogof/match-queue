@@ -18,6 +18,7 @@ class PlayerCardFace extends StatelessWidget {
   const PlayerCardFace({
     required this.card,
     this.onTap,
+    this.onLongPress,
     this.isSelected = false,
     this.eligibility,
     super.key,
@@ -25,6 +26,7 @@ class PlayerCardFace extends StatelessWidget {
 
   final PlayerCard card;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final bool isSelected;
 
   /// 0 = posicao principal, 1 = alternativa, 2 = fora de posicao. Null
@@ -38,6 +40,7 @@ class PlayerCardFace extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: AspectRatio(
         aspectRatio: 0.72,
         child: DecoratedBox(

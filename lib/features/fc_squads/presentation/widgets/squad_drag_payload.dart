@@ -49,6 +49,7 @@ class DraggableSquadSlot extends StatelessWidget {
     this.useLongPress = false,
     this.onTap,
     this.onLongPress,
+    this.onRemove,
     this.onAccept,
     super.key,
   });
@@ -67,6 +68,7 @@ class DraggableSquadSlot extends StatelessWidget {
   final bool useLongPress;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
+  final VoidCallback? onRemove;
   final void Function(SquadDragPayload payload)? onAccept;
 
   @override
@@ -93,6 +95,7 @@ class DraggableSquadSlot extends StatelessWidget {
           chemistry: chemistry,
           onTap: onTap,
           onLongPress: onLongPress,
+          onRemove: onRemove,
         );
 
         if (incoming == null) {
