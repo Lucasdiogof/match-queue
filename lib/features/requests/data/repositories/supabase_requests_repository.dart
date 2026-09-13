@@ -70,6 +70,9 @@ class SupabaseRequestsRepository implements RequestsRepository {
     ),
   );
 
+  @override
+  Stream<void> watchChanges() => _dataSource.watchMyRequests();
+
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
       return await action();

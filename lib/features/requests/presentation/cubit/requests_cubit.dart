@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/requests/domain/entities/requests_inbox.dart';
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
@@ -10,6 +12,29 @@ class RequestsCubit extends Cubit<RequestsState> {
   RequestsCubit(this._repository) : super(const RequestsState());
 
   final RequestsRepository _repository;
+  StreamSubscription<void>? _revisionSubscription;
+
+  /// Carrega o inbox e comeca a ouvir o Realtime -- chamado no login (a
+  /// stream e por usuario, entao so faz sentido depois que ha sessao).
+  Future<void> start() async {
+    await load();
+    _revisionSubscription ??= _repository.watchChanges().listen(
+      (_) => refresh(),
+    );
+  }
+
+  /// Para de ouvir o Realtime -- chamado no logout, pra nao manter um canal
+  /// vivo apontando pro user_id da sessao que acabou de sair.
+  Future<void> stop() async {
+    await _revisionSubscription?.cancel();
+    _revisionSubscription = null;
+  }
+
+  @override
+  Future<void> close() {
+    unawaited(_revisionSubscription?.cancel());
+    return super.close();
+  }
 
   Future<void> load() async {
     emit(state.copyWith(status: RequestsStatus.loading, clearFailure: true));
@@ -39,10 +64,8 @@ class RequestsCubit extends Cubit<RequestsState> {
 
   Future<void> acceptInvitation(String invitationId) => _runAction(
     invitationId,
-    () => _repository.respondInvitation(
-      invitationId: invitationId,
-      accept: true,
-    ),
+    () =>
+        _repository.respondInvitation(invitationId: invitationId, accept: true),
   );
 
   Future<void> declineInvitation(String invitationId) => _runAction(

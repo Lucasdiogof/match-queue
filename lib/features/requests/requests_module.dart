@@ -7,7 +7,10 @@ import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.d
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-void registerRequestsModule(GetIt sl, {required SupabaseClient? supabaseClient}) {
+void registerRequestsModule(
+  GetIt sl, {
+  required SupabaseClient? supabaseClient,
+}) {
   if (supabaseClient == null) {
     sl.registerLazySingleton<RequestsRepository>(
       () => const LocalRequestsRepository(),

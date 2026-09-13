@@ -88,5 +88,8 @@ class RequestsInbox extends Equatable {
       invitationsReceived.length + joinRequestsToReview.length;
 
   @override
-  List<Object?> get props => <Object?>[invitationsReceived, joinRequestsToReview];
+  List<Object?> get props => <Object?>[
+    invitationsReceived,
+    joinRequestsToReview,
+  ];
 }

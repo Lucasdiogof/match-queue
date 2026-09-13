@@ -40,4 +40,9 @@ abstract interface class RequestsRepository {
     required String invitationId,
     required bool accept,
   });
+
+  /// Emite um evento sempre que algo pendente pra este usuario muda (pedido
+  /// recebido por um time que ele administra, ou convite direto). Nunca
+  /// carrega dado -- so avisa pra re-buscar [fetchInbox].
+  Stream<void> watchChanges();
 }

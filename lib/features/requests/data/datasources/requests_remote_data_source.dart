@@ -1,7 +1,14 @@
+import 'dart:async';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class RequestsRemoteDataSource {
   Future<Map<String, dynamic>> getRequestsInbox();
+
+  /// Emite um evento sempre que a propria revisao (user_requests_revisions)
+  /// muda -- nunca carrega dado, so avisa "algo mudou, re-busque o inbox".
+  /// Stream vazia se ninguem estiver autenticado.
+  Stream<void> watchMyRequests();
 
   Future<void> requestTeamJoin({
     required String teamId,
@@ -105,6 +112,55 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
       'p_accept': accept,
     },
   );
+
+  static const String _revisionsTable = 'user_requests_revisions';
+  static const String _channelPrefix = 'requests:';
+
+  @override
+  Stream<void> watchMyRequests() {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      return const Stream<void>.empty();
+    }
+
+    late final StreamController<void> controller;
+    RealtimeChannel? channel;
+
+    void open() {
+      channel = _client
+          .channel('$_channelPrefix$userId')
+          .onPostgresChanges(
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            table: _revisionsTable,
+            filter: PostgresChangeFilter(
+              type: PostgresChangeFilterType.eq,
+              column: 'user_id',
+              value: userId,
+            ),
+            callback: (payload) {
+              if (!controller.isClosed) {
+                controller.add(null);
+              }
+            },
+          )
+          .subscribe();
+    }
+
+    Future<void> close() async {
+      final active = channel;
+      channel = null;
+      if (active != null) {
+        await _client.removeChannel(active);
+      }
+      if (!controller.isClosed) {
+        unawaited(controller.close());
+      }
+    }
+
+    controller = StreamController<void>(onListen: open, onCancel: close);
+    return controller.stream;
+  }
 
   @override
   Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId) async {

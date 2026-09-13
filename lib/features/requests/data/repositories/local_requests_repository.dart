@@ -62,4 +62,7 @@ class LocalRequestsRepository implements RequestsRepository {
   }) async {
     throw const TeamFailure(reason: TeamFailureReason.requestNotFound);
   }
+
+  @override
+  Stream<void> watchChanges() => const Stream<void>.empty();
 }

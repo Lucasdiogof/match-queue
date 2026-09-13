@@ -74,7 +74,7 @@ class _NotificationLifecycleListenerState
     if (context.read<AuthCubit>().state.isAuthenticated) {
       unawaited(_coordinator.onSignedIn());
       unawaited(context.read<NotificationUnreadCubit>().refresh());
-      unawaited(context.read<RequestsCubit>().refresh());
+      unawaited(context.read<RequestsCubit>().start());
     }
 
     _taps = _messaging.notificationTaps().listen(
@@ -155,12 +155,13 @@ class _NotificationLifecycleListenerState
           if (state.isAuthenticated) {
             unawaited(_coordinator.onSignedIn());
             unawaited(context.read<NotificationUnreadCubit>().refresh());
-            unawaited(context.read<RequestsCubit>().refresh());
+            unawaited(context.read<RequestsCubit>().start());
           } else {
             _promptedThisRun = false;
             unawaited(_coordinator.onSignedOut());
             // Item 94/95: badge nunca pode sobreviver a troca de sessão.
             context.read<NotificationUnreadCubit>().clear();
+            unawaited(context.read<RequestsCubit>().stop());
             context.read<RequestsCubit>().clear();
           }
         },
