@@ -122,8 +122,6 @@ class _TeamStatusBody extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.lg),
               TeamRivalsSection(entries: sports.dashboard!.rivals),
-              const SizedBox(height: AppSpacing.lg),
-              TeamSportsActivitySection(activity: sports.dashboard!.activity),
             ],
           ],
         ),

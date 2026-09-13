@@ -18,8 +18,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final bool showDivider;
 
+  /// Sem título nenhum (telas raiz do shell, que já têm o próprio título no
+  /// corpo via [FeatureHeader]), a barra existe só pra caber as ações --
+  /// não precisa da altura toda de uma barra com texto.
   @override
-  Size get preferredSize => Size.fromHeight(subtitle == null ? 56 : 72);
+  Size get preferredSize =>
+      Size.fromHeight(title == null ? 44 : (subtitle == null ? 56 : 72));
 
   @override
   Widget build(BuildContext context) => AppBar(
