@@ -9,6 +9,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_s
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/create_fc_account_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/team_logo_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,6 +100,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _tagController = TextEditingController();
   late Set<String> _selectedAccountIds;
+  PickedTeamLogo? _pickedLogo;
 
   @override
   void initState() {
@@ -148,8 +150,26 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     for (final accountId in _selectedAccountIds) {
       await fcAccountsCubit.linkToTeam(accountId: accountId, teamId: team.id);
     }
+    final logo = _pickedLogo;
+    if (logo != null) {
+      // Best-effort: o time ja existe nesse ponto: uma falha aqui nunca
+      // desfaz a criacao, so deixa sem logo pra tentar de novo depois na
+      // edicao do time.
+      await teamsCubit.uploadAndSetTeamLogo(
+        teamId: team.id,
+        bytes: logo.bytes,
+        contentType: logo.contentType,
+      );
+    }
     if (mounted) {
       navigator.pop(true);
+    }
+  }
+
+  Future<void> _pickLogo() async {
+    final picked = await pickTeamLogoBytes();
+    if (picked != null && mounted) {
+      setState(() => _pickedLogo = picked);
     }
   }
 
@@ -188,6 +208,20 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                Center(
+                  child: Column(
+                    children: <Widget>[
+                      _LogoPreview(logo: _pickedLogo),
+                      const SizedBox(height: AppSpacing.sm),
+                      AppButton.ghost(
+                        label: l10n.teamLogoAddAction,
+                        icon: Icons.photo_camera_outlined,
+                        onPressed: state.isSaving ? null : _pickLogo,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
                 if (state.actionFailure != null) ...<Widget>[
                   AppBanner(
                     tone: AppBannerTone.danger,
@@ -250,6 +284,40 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _LogoPreview extends StatelessWidget {
+  const _LogoPreview({required this.logo});
+
+  final PickedTeamLogo? logo;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final picked = logo;
+
+    return SizedBox(
+      width: AppSizing.avatarXl,
+      height: AppSizing.avatarXl,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.surfaceHighest,
+          borderRadius: BorderRadius.circular(AppSizing.avatarXl * 0.28),
+          border: Border.all(color: colors.borderSubtle),
+        ),
+        child: picked == null
+            ? Icon(
+                Icons.groups_outlined,
+                color: colors.textTertiary,
+                size: AppSizing.avatarXl * 0.5,
+              )
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(AppSizing.avatarXl * 0.28),
+                child: Image.memory(picked.bytes, fit: BoxFit.cover),
+              ),
       ),
     );
   }

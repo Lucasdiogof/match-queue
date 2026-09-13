@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
@@ -79,6 +80,7 @@ class LocalTeamRepository implements TeamRepository {
     String? tag,
     bool clearTag = false,
     Duration? defaultSearchDuration,
+    String? logoUrl,
   }) async {
     final userId = _requireUserId();
     final records = _readRecords();
@@ -95,6 +97,7 @@ class LocalTeamRepository implements TeamRepository {
       tag: tag,
       clearTag: clearTag,
       defaultSearchDuration: defaultSearchDuration,
+      logoUrl: logoUrl,
       updatedAt: DateTime.now().toUtc(),
     );
     records[index] = _LocalTeamRecord(team: updated, ownerId: userId);
@@ -306,6 +309,16 @@ class LocalTeamRepository implements TeamRepository {
     required TeamRole role,
   }) async {
     throw const TeamFailure(reason: TeamFailureReason.notFound);
+  }
+
+  // Modo local nao tem Storage nenhum -- nao existe onde hospedar a logo.
+  @override
+  Future<String> uploadTeamLogo({
+    required String teamId,
+    required Uint8List bytes,
+    required String contentType,
+  }) async {
+    throw const TeamFailure(reason: TeamFailureReason.permissionDenied);
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/features/profile/data/models/profile_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
@@ -58,6 +60,13 @@ abstract interface class TeamRemoteDataSource {
     required String teamId,
     required String userId,
     required String role,
+  });
+
+  Future<String> uploadTeamLogo({
+    required String teamId,
+    required Uint8List bytes,
+    required String contentType,
+    required String extension,
   });
 }
 
@@ -232,13 +241,14 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   }
 
   @override
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  }) => _client.rpc<dynamic>(
-    'remove_team_member',
-    params: <String, dynamic>{'p_team_id': teamId, 'p_target_user_id': userId},
-  );
+  Future<void> removeMember({required String teamId, required String userId}) =>
+      _client.rpc<dynamic>(
+        'remove_team_member',
+        params: <String, dynamic>{
+          'p_team_id': teamId,
+          'p_target_user_id': userId,
+        },
+      );
 
   @override
   Future<void> setMemberRole({
@@ -253,4 +263,34 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
       'p_role': role,
     },
   );
+
+  static const String _logoBucket = 'team-logos';
+
+  @override
+  Future<String> uploadTeamLogo({
+    required String teamId,
+    required Uint8List bytes,
+    required String contentType,
+    required String extension,
+  }) async {
+    final path = '$teamId/logo.$extension';
+    await _client.storage
+        .from(_logoBucket)
+        .uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(contentType: contentType, upsert: true),
+        );
+    // Cache-busting: o path e fixo por time (upsert), entao sem um
+    // parametro que muda a cada upload o app (e qualquer CDN no meio)
+    // continuaria servindo a logo antiga com o mesmo URL.
+    final publicUrl = _client.storage.from(_logoBucket).getPublicUrl(path);
+    return Uri.parse(publicUrl)
+        .replace(
+          queryParameters: <String, String>{
+            'v': '${DateTime.now().millisecondsSinceEpoch}',
+          },
+        )
+        .toString();
+  }
 }

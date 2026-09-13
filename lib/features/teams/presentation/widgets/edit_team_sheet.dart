@@ -8,27 +8,34 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/create_team_sheet.dart'
     show UpperCaseTextFormatter;
+import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/team_logo_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<bool> showEditTeamSheet(BuildContext context, Team team) async {
+Future<bool> showEditTeamSheet(
+  BuildContext context,
+  Team team, {
+  required bool isOwner,
+}) async {
   final cubit = context.read<TeamsCubit>();
   cubit.clearActionFailure();
   final saved = await showAppBottomSheet<bool>(
     context: context,
     builder: (sheetContext) => BlocProvider<TeamsCubit>.value(
       value: cubit,
-      child: _EditTeamForm(team: team),
+      child: _EditTeamForm(team: team, isOwner: isOwner),
     ),
   );
   return saved ?? false;
 }
 
 class _EditTeamForm extends StatefulWidget {
-  const _EditTeamForm({required this.team});
+  const _EditTeamForm({required this.team, required this.isOwner});
 
   final Team team;
+  final bool isOwner;
 
   @override
   State<_EditTeamForm> createState() => _EditTeamFormState();
@@ -111,6 +118,19 @@ class _EditTeamFormState extends State<_EditTeamForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              if (widget.isOwner) ...<Widget>[
+                Center(
+                  child: TeamLogoPicker(
+                    teamId: widget.team.id,
+                    isSaving: state.isSaving,
+                    preview: TeamAvatar(
+                      team: widget.team,
+                      size: AppSizing.avatarXl,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+              ],
               if (state.actionFailure != null) ...<Widget>[
                 AppBanner(
                   tone: AppBannerTone.danger,

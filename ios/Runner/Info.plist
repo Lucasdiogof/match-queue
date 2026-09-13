@@ -87,5 +87,7 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Usado para escolher a logo do seu time.</string>
 	</dict>
 </plist>

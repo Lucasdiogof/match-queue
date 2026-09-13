@@ -2566,6 +2566,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamMemberRoleUpdatedMessage => 'Cargo atualizado.';
 
   @override
+  String get teamLogoChangeAction => 'Alterar logo';
+
+  @override
+  String get teamLogoAddAction => 'Adicionar logo';
+
+  @override
   String pendingMatchesCardTitle(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

@@ -1335,6 +1335,8 @@
   "teamMemberRemoveConfirmMessage": "Esta persona deja de formar parte del equipo. Su historial se conserva.",
   "teamMemberRemovedMessage": "Jugador quitado del equipo.",
   "teamMemberRoleUpdatedMessage": "Cargo actualizado.",
+  "teamLogoChangeAction": "Cambiar logo",
+  "teamLogoAddAction": "Añadir logo",
   "pendingMatchesCardTitle": "{count, plural, =1{1 partido sin resultado} other{{count} partidos sin resultado}}",
   "pendingMatchesCardLatest": "Más reciente: {mode} · {date} a las {time}",
   "pendingMatchesOpenListAction": "Ver partidos",

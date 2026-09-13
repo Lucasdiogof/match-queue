@@ -48,7 +48,11 @@ class _TeamSettingsBody extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
       children: <Widget>[
-        _InfoSection(team: team, canManage: canManage),
+        _InfoSection(
+          team: team,
+          canManage: canManage,
+          isOwner: userTeam.role.isOwner,
+        ),
         const SizedBox(height: AppSpacing.lg),
         _VisibilitySection(team: team, canManage: canManage),
         const SizedBox(height: AppSpacing.lg),
@@ -63,10 +67,15 @@ class _TeamSettingsBody extends StatelessWidget {
 }
 
 class _InfoSection extends StatelessWidget {
-  const _InfoSection({required this.team, required this.canManage});
+  const _InfoSection({
+    required this.team,
+    required this.canManage,
+    required this.isOwner,
+  });
 
   final Team team;
   final bool canManage;
+  final bool isOwner;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +96,8 @@ class _InfoSection extends StatelessWidget {
                 AppIconButton(
                   icon: Icons.edit_outlined,
                   tooltip: l10n.actionEdit,
-                  onPressed: () => showEditTeamSheet(context, team),
+                  onPressed: () =>
+                      showEditTeamSheet(context, team, isOwner: isOwner),
                 ),
             ],
           ),

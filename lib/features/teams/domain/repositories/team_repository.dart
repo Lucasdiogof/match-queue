@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
@@ -20,6 +22,16 @@ abstract interface class TeamRepository {
     String? tag,
     bool clearTag = false,
     Duration? defaultSearchDuration,
+    String? logoUrl,
+  });
+
+  /// Envia a logo para o Storage e devolve a URL publica -- so grava em
+  /// teams.logo_url quem chamar [updateTeam] com o resultado depois.
+  /// Servidor recusa (FQ012) se quem chama nao for o OWNER do time.
+  Future<String> uploadTeamLogo({
+    required String teamId,
+    required Uint8List bytes,
+    required String contentType,
   });
 
   /// Único caminho de escrita da duração de busca -- nunca via [updateTeam],
@@ -70,10 +82,7 @@ abstract interface class TeamRepository {
 
   /// OWNER remove PLAYER ou ADMIN (gerente); ADMIN remove só PLAYER. Nunca
   /// remove o OWNER -- o servidor recusa antes de chegar aqui.
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  });
+  Future<void> removeMember({required String teamId, required String userId});
 
   /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER.
   Future<void> setMemberRole({

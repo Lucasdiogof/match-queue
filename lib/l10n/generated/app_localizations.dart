@@ -4424,6 +4424,18 @@ abstract class AppLocalizations {
   /// **'Cargo atualizado.'**
   String get teamMemberRoleUpdatedMessage;
 
+  /// No description provided for @teamLogoChangeAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar logo'**
+  String get teamLogoChangeAction;
+
+  /// No description provided for @teamLogoAddAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar logo'**
+  String get teamLogoAddAction;
+
   /// No description provided for @pendingMatchesCardTitle.
   ///
   /// In pt, this message translates to:

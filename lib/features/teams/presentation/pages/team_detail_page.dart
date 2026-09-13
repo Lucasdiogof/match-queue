@@ -52,7 +52,11 @@ class TeamDetailPage extends StatelessWidget {
                 icon: Icons.edit_outlined,
                 tooltip: context.l10n.actionEdit,
                 variant: AppIconButtonVariant.surface,
-                onPressed: () => showEditTeamSheet(context, userTeam.team),
+                onPressed: () => showEditTeamSheet(
+                  context,
+                  userTeam.team,
+                  isOwner: userTeam.role.isOwner,
+                ),
               ),
           ],
         ),

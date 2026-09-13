@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/teams/data/datasources/team_remote_data_source.dart';
@@ -50,18 +52,39 @@ class SupabaseTeamRepository implements TeamRepository {
     String? tag,
     bool clearTag = false,
     Duration? defaultSearchDuration,
+    String? logoUrl,
   }) => _guard(() async {
     final values = <String, dynamic>{
       TeamModel.columnName: ?name,
       if (clearTag) TeamModel.columnTag: null else TeamModel.columnTag: ?tag,
       if (defaultSearchDuration != null)
         TeamModel.columnSearchDuration: defaultSearchDuration.inSeconds,
+      'logo_url': ?logoUrl,
     };
     if (values.isEmpty) {
       throw const TeamFailure(reason: TeamFailureReason.invalidName);
     }
     final row = await _dataSource.updateTeam(teamId: teamId, values: values);
     return TeamModel.fromJson(row);
+  });
+
+  @override
+  Future<String> uploadTeamLogo({
+    required String teamId,
+    required Uint8List bytes,
+    required String contentType,
+  }) => _guard(() {
+    final extension = switch (contentType) {
+      'image/png' => 'png',
+      'image/webp' => 'webp',
+      _ => 'jpg',
+    };
+    return _dataSource.uploadTeamLogo(
+      teamId: teamId,
+      bytes: bytes,
+      contentType: contentType,
+      extension: extension,
+    );
   });
 
   @override
@@ -169,12 +192,8 @@ class SupabaseTeamRepository implements TeamRepository {
   });
 
   @override
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  }) => _guard(
-    () => _dataSource.removeMember(teamId: teamId, userId: userId),
-  );
+  Future<void> removeMember({required String teamId, required String userId}) =>
+      _guard(() => _dataSource.removeMember(teamId: teamId, userId: userId));
 
   @override
   Future<void> setMemberRole({

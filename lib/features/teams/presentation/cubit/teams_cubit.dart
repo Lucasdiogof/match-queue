@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/teams/data/selected_team_store.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
@@ -116,6 +118,7 @@ class TeamsCubit extends Cubit<TeamsState> {
     String? tag,
     bool clearTag = false,
     Duration? defaultSearchDuration,
+    String? logoUrl,
   }) async {
     if (state.isSaving) {
       return false;
@@ -128,6 +131,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         tag: tag,
         clearTag: clearTag,
         defaultSearchDuration: defaultSearchDuration,
+        logoUrl: logoUrl,
       );
       final teams = state.teams
           .map(
@@ -142,6 +146,34 @@ class TeamsCubit extends Cubit<TeamsState> {
           .toList(growable: false);
       emit(state.copyWith(teams: teams, isSaving: false));
       return true;
+    } on AppFailure catch (failure) {
+      if (!isClosed) {
+        emit(state.copyWith(isSaving: false, actionFailure: failure));
+      }
+      return false;
+    }
+  }
+
+  /// Envia a logo pro Storage e ja persiste a URL em teams.logo_url --
+  /// combinados numa chamada so pra tela nao ter que orquestrar as duas
+  /// etapas nem lidar com um estado "enviado mas nao salvo".
+  Future<bool> uploadAndSetTeamLogo({
+    required String teamId,
+    required Uint8List bytes,
+    required String contentType,
+  }) async {
+    if (state.isSaving) {
+      return false;
+    }
+    emit(state.copyWith(isSaving: true, clearActionFailure: true));
+    try {
+      final logoUrl = await _repository.uploadTeamLogo(
+        teamId: teamId,
+        bytes: bytes,
+        contentType: contentType,
+      );
+      emit(state.copyWith(isSaving: false));
+      return updateTeam(teamId: teamId, logoUrl: logoUrl);
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(state.copyWith(isSaving: false, actionFailure: failure));
