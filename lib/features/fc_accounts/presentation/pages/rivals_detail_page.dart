@@ -6,17 +6,19 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
-import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_picker_sheet.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/debounced_win_loss_counter.dart';
+import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Detalhe de Division Rivals de uma conta -- all-time nesta etapa (sem
-/// season/semana modelada ainda, simplificacao consciente).
+/// season/semana modelada ainda, simplificacao consciente). Artilharia/
+/// assistencia saiu -- o produto nao rastreia mais gol/assistencia por
+/// partida, so o placar que o usuario preenche.
 class RivalsDetailPage extends StatefulWidget {
   const RivalsDetailPage({required this.account, super.key});
 
@@ -29,9 +31,18 @@ class RivalsDetailPage extends StatefulWidget {
 class _RivalsDetailPageState extends State<RivalsDetailPage> {
   late Future<RivalsAccountStats> _future;
 
+  /// Capturados uma vez, nunca via `context.read`/`context.l10n` dentro do
+  /// closure de onFlush -- ele pode ser chamado pelo dispose() do contador
+  /// debounced, quando o context deste State pode ja estar desativado (ver
+  /// doc de DebouncedWinLossCounter).
+  late final FcAccountsCubit _cubit;
+  late final AppLocalizations _l10n;
+
   @override
   void initState() {
     super.initState();
+    _cubit = context.read<FcAccountsCubit>();
+    _l10n = context.l10n;
     _load();
   }
 
@@ -39,6 +50,18 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
     _future = getIt<FcAccountRepository>().fetchRivalsAccountStats(
       widget.account.id,
     );
+  }
+
+  Future<String?> _flushIncrement(int winDelta, int lossDelta) async {
+    final ok = await _cubit.incrementRivalsRecord(
+      accountId: widget.account.id,
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    );
+    if (ok) return null;
+    final failure = _cubit.state.actionFailure;
+    _cubit.clearActionFailure();
+    return failure?.localizedMessage(_l10n) ?? _l10n.errorUnexpected;
   }
 
   @override
@@ -68,7 +91,11 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
           if (stats == null) {
             return const SizedBox.shrink();
           }
-          return _Body(accountId: widget.account.id, stats: stats);
+          return _Body(
+            accountId: widget.account.id,
+            stats: stats,
+            onFlush: _flushIncrement,
+          );
         },
       ),
     );
@@ -76,10 +103,15 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({required this.accountId, required this.stats});
+  const _Body({
+    required this.accountId,
+    required this.stats,
+    required this.onFlush,
+  });
 
   final String accountId;
   final RivalsAccountStats stats;
+  final Future<String?> Function(int winDelta, int lossDelta) onFlush;
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +140,7 @@ class _Body extends StatelessWidget {
                 addLossTooltip: l10n.recordAddLossTooltip,
                 removeWinTooltip: l10n.recordRemoveWinTooltip,
                 removeLossTooltip: l10n.recordRemoveLossTooltip,
-                onFlush: (wd, ld) =>
-                    context.read<FcAccountsCubit>().incrementRivalsRecord(
-                      accountId: accountId,
-                      winDelta: wd,
-                      lossDelta: ld,
-                    ),
+                onFlush: onFlush,
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
@@ -124,18 +151,6 @@ class _Body extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        _LeaderboardCard(
-          title: l10n.statsTopScorersTitle,
-          entries: stats.topScorers,
-          showGoals: true,
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        _LeaderboardCard(
-          title: l10n.statsTopAssistsTitle,
-          entries: stats.topAssists,
-          showGoals: false,
         ),
       ],
     );
@@ -204,60 +219,4 @@ class _DivisionSection extends StatelessWidget {
           );
         },
       );
-}
-
-class _LeaderboardCard extends StatelessWidget {
-  const _LeaderboardCard({
-    required this.title,
-    required this.entries,
-    required this.showGoals,
-  });
-
-  final String title;
-  final List<PlayerLeaderboardEntry> entries;
-  final bool showGoals;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final colors = context.colors;
-
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(title.toUpperCase(), style: context.textStyles.labelSmall),
-          const SizedBox(height: AppSpacing.md),
-          if (entries.isEmpty)
-            Text(
-              showGoals
-                  ? l10n.statsEmptyScorersMessage
-                  : l10n.statsEmptyAssistsMessage,
-              style: context.textStyles.bodySmall?.copyWith(
-                color: colors.textSecondary,
-              ),
-            )
-          else
-            for (final entry in entries)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        entry.playerName,
-                        style: context.textStyles.bodyMedium,
-                      ),
-                    ),
-                    Text(
-                      showGoals ? '${entry.goals}' : '${entry.assists}',
-                      style: context.textStyles.titleSmall,
-                    ),
-                  ],
-                ),
-              ),
-        ],
-      ),
-    );
-  }
 }

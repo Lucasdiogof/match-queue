@@ -8,17 +8,18 @@ import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/weekend_league_week_picker.dart';
-import 'package:fifa_queue/features/game/domain/entities/player_leaderboard_entry.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/debounced_win_loss_counter.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
+import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Detalhe de uma campanha de Weekend League de uma conta: record
-/// computado x manual (nunca somados), artilharia e assistencias. Secoes
-/// em vez de abas -- simples e suficiente pro volume de dados aqui.
+/// Detalhe de uma campanha de Weekend League de uma conta: record manual
+/// (unica fonte, ver FcAccount.weekendLeagueRecord). Artilharia/assistencia
+/// saiu -- o produto nao rastreia mais gol/assistencia por partida, so o
+/// placar que o usuario preenche.
 class WeekendLeagueDetailPage extends StatefulWidget {
   const WeekendLeagueDetailPage({
     required this.account,
@@ -38,6 +39,13 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
   late Future<WeekendLeagueAccountStats> _future;
   late WeekendLeagueEvent _event;
 
+  /// Capturados uma vez, nunca via `context.read`/`context.l10n` dentro do
+  /// closure de onFlush -- ele pode ser chamado pelo dispose() do contador
+  /// debounced, quando o context deste State pode ja estar desativado (ver
+  /// doc de DebouncedWinLossCounter).
+  late final FcAccountsCubit _cubit;
+  late final AppLocalizations _l10n;
+
   /// Carregada uma vez e reusada: trocar de semana refaz so as estatisticas,
   /// nunca a lista de semanas.
   late Future<List<WeekendLeagueEvent>> _eventsFuture;
@@ -45,6 +53,8 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
   @override
   void initState() {
     super.initState();
+    _cubit = context.read<FcAccountsCubit>();
+    _l10n = context.l10n;
     _event = widget.event;
     _eventsFuture = getIt<FcAccountRepository>().fetchWeekendLeagueEvents();
     _load();
@@ -57,14 +67,19 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
     );
   }
 
-  Future<bool> _flushIncrement(int winDelta, int lossDelta) async {
-    final ok = await context.read<FcAccountsCubit>().incrementWeekendLeagueRecord(
+  Future<String?> _flushIncrement(int winDelta, int lossDelta) async {
+    final ok = await _cubit.incrementWeekendLeagueRecord(
       accountId: widget.account.id,
       winDelta: winDelta,
       lossDelta: lossDelta,
     );
-    if (mounted && ok) setState(_load);
-    return ok;
+    if (ok) {
+      if (mounted) setState(_load);
+      return null;
+    }
+    final failure = _cubit.state.actionFailure;
+    _cubit.clearActionFailure();
+    return failure?.localizedMessage(_l10n) ?? _l10n.errorUnexpected;
   }
 
   Future<void> _pickWeek() async {
@@ -138,7 +153,7 @@ class _Body extends StatelessWidget {
   final WeekendLeagueEvent event;
   final WeekendLeagueAccountStats stats;
   final Future<void> Function() onPickWeek;
-  final Future<bool> Function(int winDelta, int lossDelta) onFlushIncrement;
+  final Future<String?> Function(int winDelta, int lossDelta) onFlushIncrement;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -149,34 +164,16 @@ class _Body extends StatelessWidget {
     children: <Widget>[
       WeekendLeagueWeekSelector(event: event, onTap: onPickWeek),
       const SizedBox(height: AppSpacing.lg),
-      _SummarySection(
-        stats: stats,
-        onFlush: onFlushIncrement,
-      ),
-      const SizedBox(height: AppSpacing.lg),
-      _LeaderboardSection(
-        title: context.l10n.statsTopScorersTitle,
-        entries: stats.topScorers,
-        showGoals: true,
-      ),
-      const SizedBox(height: AppSpacing.lg),
-      _LeaderboardSection(
-        title: context.l10n.statsTopAssistsTitle,
-        entries: stats.topAssists,
-        showGoals: false,
-      ),
+      _SummarySection(stats: stats, onFlush: onFlushIncrement),
     ],
   );
 }
 
 class _SummarySection extends StatelessWidget {
-  const _SummarySection({
-    required this.stats,
-    required this.onFlush,
-  });
+  const _SummarySection({required this.stats, required this.onFlush});
 
   final WeekendLeagueAccountStats stats;
-  final Future<bool> Function(int winDelta, int lossDelta) onFlush;
+  final Future<String?> Function(int winDelta, int lossDelta) onFlush;
 
   @override
   Widget build(BuildContext context) {
@@ -206,62 +203,6 @@ class _SummarySection extends StatelessWidget {
             removeLossTooltip: l10n.recordRemoveLossTooltip,
             onFlush: onFlush,
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LeaderboardSection extends StatelessWidget {
-  const _LeaderboardSection({
-    required this.title,
-    required this.entries,
-    required this.showGoals,
-  });
-
-  final String title;
-  final List<PlayerLeaderboardEntry> entries;
-  final bool showGoals;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final colors = context.colors;
-
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(title.toUpperCase(), style: context.textStyles.labelSmall),
-          const SizedBox(height: AppSpacing.md),
-          if (entries.isEmpty)
-            Text(
-              showGoals
-                  ? l10n.statsEmptyScorersMessage
-                  : l10n.statsEmptyAssistsMessage,
-              style: context.textStyles.bodySmall?.copyWith(
-                color: colors.textSecondary,
-              ),
-            )
-          else
-            for (final entry in entries)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        entry.playerName,
-                        style: context.textStyles.bodyMedium,
-                      ),
-                    ),
-                    Text(
-                      showGoals ? '${entry.goals}' : '${entry.assists}',
-                      style: context.textStyles.titleSmall,
-                    ),
-                  ],
-                ),
-              ),
         ],
       ),
     );

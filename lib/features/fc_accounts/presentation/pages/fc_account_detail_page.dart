@@ -1,9 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
-import 'package:fifa_queue/core/di/injector.dart';
+import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/rivals_detail_page.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/pages/weekend_league_detail_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squads_section.dart';
@@ -62,9 +60,7 @@ class _FcAccountDetailBody extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
     // Ordem: o que a conta E (elenco), como ela vai (Rivals, Champions),
-    // como foi (historico) e so entao acoes sobre ela. Compartilhar estava
-    // em segundo lugar, acima do proprio desempenho -- uma acao ocupando o
-    // lugar do conteudo.
+    // times vinculados e so entao configuracoes da conta.
     children: <Widget>[
       SquadsSection(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
@@ -75,42 +71,10 @@ class _FcAccountDetailBody extends StatelessWidget {
         weekendLeagueEvent: state.weekendLeagueEvent,
       ),
       const SizedBox(height: AppSpacing.lg),
-      _StatsSection(account: account),
-      const SizedBox(height: AppSpacing.lg),
       _LinkedTeamsSection(account: account),
-      const SizedBox(height: AppSpacing.lg),
-      _ShareAccountRow(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
       _SettingsSection(account: account),
     ],
-  );
-}
-
-class _ShareAccountRow extends StatelessWidget {
-  const _ShareAccountRow({required this.fcAccountId});
-
-  final String fcAccountId;
-
-  @override
-  Widget build(BuildContext context) => AppCard(
-    child: InkWell(
-      onTap: () => context.push(
-        AppRoutes.profileSharingLocation(preselectFcAccountId: fcAccountId),
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.ios_share, color: context.colors.textSecondary),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Text(
-              context.l10n.publicProfileShareAccountCta,
-              style: context.textStyles.bodyLarge,
-            ),
-          ),
-          Icon(Icons.chevron_right, color: context.colors.textTertiary),
-        ],
-      ),
-    ),
   );
 }
 
@@ -173,11 +137,17 @@ class _RivalsSection extends StatelessWidget {
             addLossTooltip: l10n.recordAddLossTooltip,
             removeWinTooltip: l10n.recordRemoveWinTooltip,
             removeLossTooltip: l10n.recordRemoveLossTooltip,
-            onFlush: (wd, ld) => cubit.incrementRivalsRecord(
-              accountId: account.id,
-              winDelta: wd,
-              lossDelta: ld,
-            ),
+            onFlush: (wd, ld) async {
+              final ok = await cubit.incrementRivalsRecord(
+                accountId: account.id,
+                winDelta: wd,
+                lossDelta: ld,
+              );
+              if (ok) return null;
+              final failure = cubit.state.actionFailure;
+              cubit.clearActionFailure();
+              return failure?.localizedMessage(l10n) ?? l10n.errorUnexpected;
+            },
           ),
         ],
       ),
@@ -240,129 +210,22 @@ class _WeekendLeagueSection extends StatelessWidget {
             addLossTooltip: l10n.recordAddLossTooltip,
             removeWinTooltip: l10n.recordRemoveWinTooltip,
             removeLossTooltip: l10n.recordRemoveLossTooltip,
-            onFlush: (wd, ld) => cubit.incrementWeekendLeagueRecord(
-              accountId: account.id,
-              winDelta: wd,
-              lossDelta: ld,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatsSection extends StatelessWidget {
-  const _StatsSection({required this.account});
-
-  final FcAccount account;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final colors = context.colors;
-
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            l10n.fcAccountStatsTitle.toUpperCase(),
-            style: context.textStyles.labelSmall,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          FutureBuilder<FcAccountStats>(
-            future: getIt<FcAccountRepository>().fetchAccountStats(account.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return const SizedBox(height: 24, child: AppLoading.inline());
-              }
-              final stats = snapshot.data;
-              if (stats == null || stats.matchesCount == 0) {
-                return Text(
-                  l10n.fcAccountStatsEmptyMessage,
-                  style: context.textStyles.bodySmall?.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                );
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: _MiniStat(
-                          label: l10n.statsMatchesLabel,
-                          value: '${stats.matchesCount}',
-                        ),
-                      ),
-                      Expanded(
-                        child: _MiniStat(
-                          label: l10n.statsWinsLabel,
-                          value: '${stats.wins}',
-                        ),
-                      ),
-                      Expanded(
-                        child: _MiniStat(
-                          label: l10n.statsLossesLabel,
-                          value: '${stats.losses}',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: _MiniStat(
-                          label: l10n.statsGoalsLabel,
-                          value: '${stats.goalsFor}',
-                        ),
-                      ),
-                      Expanded(
-                        child: _MiniStat(
-                          label: l10n.statsGoalsAgainstLabel,
-                          value: '${stats.goalsAgainst}',
-                        ),
-                      ),
-                      Expanded(
-                        child: _MiniStat(
-                          label: l10n.statsGoalDiffLabel,
-                          value: '${stats.goalDiff}',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            onFlush: (wd, ld) async {
+              final ok = await cubit.incrementWeekendLeagueRecord(
+                accountId: account.id,
+                winDelta: wd,
+                lossDelta: ld,
               );
+              if (ok) return null;
+              final failure = cubit.state.actionFailure;
+              cubit.clearActionFailure();
+              return failure?.localizedMessage(l10n) ?? l10n.errorUnexpected;
             },
           ),
         ],
       ),
     );
   }
-}
-
-class _MiniStat extends StatelessWidget {
-  const _MiniStat({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: <Widget>[
-      Text(value, style: context.textStyles.titleMedium),
-      const SizedBox(height: AppSpacing.xxs),
-      Text(
-        label,
-        style: context.textStyles.labelSmall?.copyWith(
-          color: context.colors.textSecondary,
-        ),
-      ),
-    ],
-  );
 }
 
 class _LinkedTeamsSection extends StatelessWidget {
@@ -470,6 +333,16 @@ class _SettingsSection extends StatelessWidget {
               context: context,
               accountId: account.id,
               currentName: account.name,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
+            label: l10n.publicProfileSectionTitle,
+            icon: Icons.lock_outline,
+            onPressed: () => context.push(
+              AppRoutes.profileSharingLocation(
+                preselectFcAccountId: account.id,
+              ),
             ),
           ),
         ],
