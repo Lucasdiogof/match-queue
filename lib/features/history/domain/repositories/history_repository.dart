@@ -29,6 +29,7 @@ abstract interface class HistoryRepository {
     GameResult? gameResult,
     MatchSearchStatus? searchStatus,
     String? userId,
+    String? fcAccountId,
     DateTime? from,
     DateTime? to,
   });

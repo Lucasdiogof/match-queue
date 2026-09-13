@@ -1,6 +1,8 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppShellDestination {
@@ -9,6 +11,7 @@ class AppShellDestination {
     required this.selectedIcon,
     required this.label,
     this.isPrimary = false,
+    this.badgeCount = 0,
   });
 
   final IconData icon;
@@ -17,6 +20,9 @@ class AppShellDestination {
 
   /// O Controle -- item central, visualmente dominante na barra.
   final bool isPrimary;
+
+  /// Total pendente (pedidos + convites) na aba Solicitacoes. 0 = sem badge.
+  final int badgeCount;
 }
 
 class AppShellPage extends StatelessWidget {
@@ -28,6 +34,11 @@ class AppShellPage extends StatelessWidget {
   /// Controle, Historico, Perfil -- Controle no meio de proposito.
   List<AppShellDestination> _destinations(BuildContext context) {
     final l10n = context.l10n;
+    final pendingCount = context
+        .watch<RequestsCubit>()
+        .state
+        .inbox
+        .pendingCount;
     return <AppShellDestination>[
       AppShellDestination(
         icon: Icons.grid_view_outlined,
@@ -46,9 +57,10 @@ class AppShellPage extends StatelessWidget {
         isPrimary: true,
       ),
       AppShellDestination(
-        icon: Icons.history_outlined,
-        selectedIcon: Icons.history,
-        label: l10n.navHistory,
+        icon: Icons.mail_outline,
+        selectedIcon: Icons.mail,
+        label: l10n.navRequests,
+        badgeCount: pendingCount,
       ),
       AppShellDestination(
         icon: Icons.person_outline,
@@ -202,10 +214,16 @@ class _NavItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.xs),
-            Icon(
-              isSelected ? destination.selectedIcon : destination.icon,
-              color: color,
-              size: AppSizing.iconMd,
+            Badge(
+              isLabelVisible: destination.badgeCount > 0,
+              label: Text(
+                destination.badgeCount > 99 ? '99+' : '${destination.badgeCount}',
+              ),
+              child: Icon(
+                isSelected ? destination.selectedIcon : destination.icon,
+                color: color,
+                size: AppSizing.iconMd,
+              ),
             ),
             const SizedBox(height: AppSpacing.xxs),
             // Flexible + uma linha: o rotulo nunca empurra a barra alem dos
@@ -355,10 +373,22 @@ class _SideNavigation extends StatelessWidget {
     destinations: <NavigationRailDestination>[
       for (final destination in destinations)
         NavigationRailDestination(
-          icon: Icon(destination.icon),
-          selectedIcon: Icon(
-            destination.selectedIcon,
-            color: destination.isPrimary ? context.colors.accent : null,
+          icon: Badge(
+            isLabelVisible: destination.badgeCount > 0,
+            label: Text(
+              destination.badgeCount > 99 ? '99+' : '${destination.badgeCount}',
+            ),
+            child: Icon(destination.icon),
+          ),
+          selectedIcon: Badge(
+            isLabelVisible: destination.badgeCount > 0,
+            label: Text(
+              destination.badgeCount > 99 ? '99+' : '${destination.badgeCount}',
+            ),
+            child: Icon(
+              destination.selectedIcon,
+              color: destination.isPrimary ? context.colors.accent : null,
+            ),
           ),
           label: Text(destination.label),
         ),

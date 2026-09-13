@@ -10,6 +10,7 @@ import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 
@@ -166,6 +167,27 @@ class SupabaseTeamRepository implements TeamRepository {
     final json = await _dataSource.getPublicTeam(teamId);
     return TeamModel.publicTeamFromJson(json);
   });
+
+  @override
+  Future<void> removeMember({
+    required String teamId,
+    required String userId,
+  }) => _guard(
+    () => _dataSource.removeMember(teamId: teamId, userId: userId),
+  );
+
+  @override
+  Future<void> setMemberRole({
+    required String teamId,
+    required String userId,
+    required TeamRole role,
+  }) => _guard(
+    () => _dataSource.setMemberRole(
+      teamId: teamId,
+      userId: userId,
+      role: role.key,
+    ),
+  );
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

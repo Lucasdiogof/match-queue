@@ -1426,6 +1426,24 @@ abstract class AppLocalizations {
   /// **'Time não encontrado.'**
   String get errorTeamNotFound;
 
+  /// No description provided for @errorAlreadyTeamMember.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você já faz parte deste time.'**
+  String get errorAlreadyTeamMember;
+
+  /// No description provided for @errorDuplicateTeamRequest.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já existe uma solicitação pendente.'**
+  String get errorDuplicateTeamRequest;
+
+  /// No description provided for @errorTeamRequestNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta solicitação não existe mais.'**
+  String get errorTeamRequestNotFound;
+
   /// No description provided for @errorTeamPermissionDenied.
   ///
   /// In pt, this message translates to:

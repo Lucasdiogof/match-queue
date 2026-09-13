@@ -18,6 +18,7 @@ import 'package:fifa_queue/features/notifications/presentation/widgets/notificat
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/locale_sync_listener.dart';
 import 'package:fifa_queue/features/profile/presentation/widgets/profile_session_listener.dart';
+import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -69,6 +70,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<NotificationUnreadCubit>(
         create: (_) => getIt<NotificationUnreadCubit>(),
       ),
+      BlocProvider<RequestsCubit>(create: (_) => getIt<RequestsCubit>()),
     ],
     child: AppConfigScope(
       config: config,

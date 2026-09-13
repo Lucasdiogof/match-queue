@@ -785,6 +785,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorTeamNotFound => 'Team not found.';
 
   @override
+  String get errorAlreadyTeamMember => 'You\'re already a member of this team.';
+
+  @override
+  String get errorDuplicateTeamRequest => 'A pending request already exists.';
+
+  @override
+  String get errorTeamRequestNotFound => 'This request no longer exists.';
+
+  @override
   String get errorTeamPermissionDenied =>
       'You do not have permission to manage this team.';
 

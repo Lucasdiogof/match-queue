@@ -49,6 +49,11 @@ class AppRoutes {
     '/app/team/settings',
   );
   static const AppRoute history = AppRoute('history', '/app/history');
+  static const AppRoute requests = AppRoute('requests', '/app/requests');
+  static const AppRoute fcAccountHistory = AppRoute(
+    'fc-account-history',
+    '/app/fc-accounts/:fcAccountId/history',
+  );
   static const AppRoute profile = AppRoute('profile', '/app/profile');
   static const AppRoute profileAppearance = AppRoute(
     'profile-appearance',
@@ -173,7 +178,7 @@ class AppRoutes {
     central,
     team,
     control,
-    history,
+    requests,
     profile,
   ];
 
@@ -198,6 +203,9 @@ class AppRoutes {
 
   static String fcAccountDetailLocation(String fcAccountId) =>
       '/app/fc-accounts/$fcAccountId';
+
+  static String fcAccountHistoryLocation(String fcAccountId) =>
+      '/app/fc-accounts/$fcAccountId/history';
 
   static String squadBuilderLocation(String squadId) => '/app/squads/$squadId';
 

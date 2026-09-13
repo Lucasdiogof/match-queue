@@ -288,6 +288,25 @@ class LocalTeamRepository implements TeamRepository {
   @override
   Future<PublicTeam> getPublicTeam(String teamId) async =>
       const PublicTeam(found: false);
+
+  // Modo local e mono-usuario: o unico membro possivel e o proprio OWNER,
+  // entao nenhum alvo de remocao/troca de cargo jamais existe de verdade.
+  @override
+  Future<void> removeMember({
+    required String teamId,
+    required String userId,
+  }) async {
+    throw const TeamFailure(reason: TeamFailureReason.notFound);
+  }
+
+  @override
+  Future<void> setMemberRole({
+    required String teamId,
+    required String userId,
+    required TeamRole role,
+  }) async {
+    throw const TeamFailure(reason: TeamFailureReason.notFound);
+  }
 }
 
 class _LocalTeamRecord {

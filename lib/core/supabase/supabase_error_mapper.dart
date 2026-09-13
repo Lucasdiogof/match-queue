@@ -50,6 +50,10 @@ class SupabaseErrorMapper {
     'FQ006' => TeamFailureReason.profileMissing,
     'FQ007' => TeamFailureReason.invalidSearchDuration,
     'FQ044' => TeamFailureReason.soleOwnerBlocksAccountDeletion,
+    'FQ053' || 'FQ057' => TeamFailureReason.notFound,
+    'FQ054' => TeamFailureReason.alreadyMember,
+    'FQ055' => TeamFailureReason.duplicateRequest,
+    'FQ056' => TeamFailureReason.requestNotFound,
     _ => null,
   };
 

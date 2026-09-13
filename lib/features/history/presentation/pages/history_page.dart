@@ -12,7 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryPage extends StatelessWidget {
-  const HistoryPage({super.key});
+  const HistoryPage({this.fcAccountId, super.key});
+
+  /// Quando vem da tela da Conta (Etapa de Solicitacoes), filtra a
+  /// atividade so daquele Elenco dentro do time selecionado. Null = aba
+  /// raiz, historico do time inteiro.
+  final String? fcAccountId;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +27,12 @@ class HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: const AppAppBar(),
+          appBar: AppAppBar(title: fcAccountId == null ? null : l10n.navHistory),
           body: AppBackground(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                FeatureHeader(title: l10n.navHistory),
+                if (fcAccountId == null) FeatureHeader(title: l10n.navHistory),
                 Expanded(
                   child: selected == null
                       ? AppEmptyState(
@@ -36,8 +41,9 @@ class HistoryPage extends StatelessWidget {
                           message: l10n.historyNoTeamMessage,
                         )
                       : _HistoryScope(
-                          key: ValueKey(selected.id),
+                          key: ValueKey('${selected.id}:$fcAccountId'),
                           teamId: selected.id,
+                          fcAccountId: fcAccountId,
                         ),
                 ),
               ],
@@ -50,17 +56,20 @@ class HistoryPage extends StatelessWidget {
 }
 
 class _HistoryScope extends StatelessWidget {
-  const _HistoryScope({required this.teamId, super.key});
+  const _HistoryScope({required this.teamId, this.fcAccountId, super.key});
 
   final String teamId;
+  final String? fcAccountId;
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: <BlocProvider<dynamic>>[
       BlocProvider<ActivityHistoryCubit>(
-        create: (_) =>
-            ActivityHistoryCubit(getIt<HistoryRepository>(), teamId: teamId)
-              ..load(),
+        create: (_) => ActivityHistoryCubit(
+          getIt<HistoryRepository>(),
+          teamId: teamId,
+          fcAccountId: fcAccountId,
+        )..load(),
       ),
       BlocProvider<StatsCubit>(
         create: (_) =>

@@ -52,6 +52,7 @@ class LocalHistoryRepository implements HistoryRepository {
     GameResult? gameResult,
     MatchSearchStatus? searchStatus,
     String? userId,
+    String? fcAccountId,
     DateTime? from,
     DateTime? to,
   }) async => ActivityHistoryPage(

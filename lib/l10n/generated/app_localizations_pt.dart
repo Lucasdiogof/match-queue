@@ -785,6 +785,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get errorTeamNotFound => 'Time não encontrado.';
 
   @override
+  String get errorAlreadyTeamMember => 'Você já faz parte deste time.';
+
+  @override
+  String get errorDuplicateTeamRequest => 'Já existe uma solicitação pendente.';
+
+  @override
+  String get errorTeamRequestNotFound => 'Esta solicitação não existe mais.';
+
+  @override
   String get errorTeamPermissionDenied =>
       'Você não tem permissão para gerenciar este time.';
 

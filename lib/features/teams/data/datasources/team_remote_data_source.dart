@@ -51,6 +51,14 @@ abstract interface class TeamRemoteDataSource {
   Future<Object?> listPublicTeams({int limit});
 
   Future<Map<String, dynamic>> getPublicTeam(String teamId);
+
+  Future<void> removeMember({required String teamId, required String userId});
+
+  Future<void> setMemberRole({
+    required String teamId,
+    required String userId,
+    required String role,
+  });
 }
 
 class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
@@ -222,4 +230,27 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
     );
     return Map<String, dynamic>.from(response as Map);
   }
+
+  @override
+  Future<void> removeMember({
+    required String teamId,
+    required String userId,
+  }) => _client.rpc<dynamic>(
+    'remove_team_member',
+    params: <String, dynamic>{'p_team_id': teamId, 'p_target_user_id': userId},
+  );
+
+  @override
+  Future<void> setMemberRole({
+    required String teamId,
+    required String userId,
+    required String role,
+  }) => _client.rpc<dynamic>(
+    'set_team_member_role',
+    params: <String, dynamic>{
+      'p_team_id': teamId,
+      'p_target_user_id': userId,
+      'p_role': role,
+    },
+  );
 }

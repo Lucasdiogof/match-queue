@@ -16,6 +16,7 @@ import 'package:fifa_queue/features/fc_squads/presentation/pages/clubs_catalog_p
 import 'package:fifa_queue/features/fc_squads/presentation/pages/squad_builder_page.dart';
 import 'package:fifa_queue/features/game/presentation/pages/match_details_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
+import 'package:fifa_queue/features/requests/presentation/pages/requests_page.dart';
 import 'package:fifa_queue/features/central/presentation/pages/central_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
 import 'package:fifa_queue/features/legal/presentation/pages/privacy_policy_page.dart';
@@ -206,6 +207,13 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        path: AppRoutes.fcAccountHistory.path,
+        name: AppRoutes.fcAccountHistory.name,
+        builder: (context, state) => HistoryPage(
+          fcAccountId: state.pathParameters[AppRoutes.fcAccountIdParam],
+        ),
+      ),
+      GoRoute(
         path: AppRoutes.squadBuilder.path,
         name: AppRoutes.squadBuilder.name,
         builder: (context, state) => SquadBuilderPage(
@@ -312,9 +320,9 @@ class AppRouter {
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
-                path: AppRoutes.history.path,
-                name: AppRoutes.history.name,
-                builder: (context, state) => const HistoryPage(),
+                path: AppRoutes.requests.path,
+                name: AppRoutes.requests.name,
+                builder: (context, state) => const RequestsPage(),
               ),
             ],
           ),

@@ -12,6 +12,7 @@ import 'package:fifa_queue/features/notifications/domain/repositories/notificati
 import 'package:fifa_queue/features/notifications/domain/services/push_messaging_service.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/notification_router.dart';
+import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/enable_notifications_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
@@ -73,6 +74,7 @@ class _NotificationLifecycleListenerState
     if (context.read<AuthCubit>().state.isAuthenticated) {
       unawaited(_coordinator.onSignedIn());
       unawaited(context.read<NotificationUnreadCubit>().refresh());
+      unawaited(context.read<RequestsCubit>().refresh());
     }
 
     _taps = _messaging.notificationTaps().listen(
@@ -100,6 +102,7 @@ class _NotificationLifecycleListenerState
     // badge silenciosamente -- item 45, nada de snackbar + inbox + modal.
     _logger.debug('Push em foreground suprimido (Realtime cobre a tela).');
     unawaited(context.read<NotificationUnreadCubit>().refresh());
+    unawaited(context.read<RequestsCubit>().refresh());
   }
 
   Future<void> _maybePromptForPermission() async {
@@ -152,11 +155,13 @@ class _NotificationLifecycleListenerState
           if (state.isAuthenticated) {
             unawaited(_coordinator.onSignedIn());
             unawaited(context.read<NotificationUnreadCubit>().refresh());
+            unawaited(context.read<RequestsCubit>().refresh());
           } else {
             _promptedThisRun = false;
             unawaited(_coordinator.onSignedOut());
             // Item 94/95: badge nunca pode sobreviver a troca de sessão.
             context.read<NotificationUnreadCubit>().clear();
+            context.read<RequestsCubit>().clear();
           }
         },
       ),

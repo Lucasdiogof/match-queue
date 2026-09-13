@@ -789,6 +789,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorTeamNotFound => 'Equipo no encontrado.';
 
   @override
+  String get errorAlreadyTeamMember => 'Ya formas parte de este equipo.';
+
+  @override
+  String get errorDuplicateTeamRequest => 'Ya existe una solicitud pendiente.';
+
+  @override
+  String get errorTeamRequestNotFound => 'Esta solicitud ya no existe.';
+
+  @override
   String get errorTeamPermissionDenied =>
       'No tienes permiso para gestionar este equipo.';
 

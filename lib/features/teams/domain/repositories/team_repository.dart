@@ -1,6 +1,7 @@
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 
@@ -66,4 +67,18 @@ abstract interface class TeamRepository {
   /// Página pública de um time. `found = false` cobre "não existe" e "é
   /// privado" com a mesma resposta.
   Future<PublicTeam> getPublicTeam(String teamId);
+
+  /// OWNER remove PLAYER ou ADMIN (gerente); ADMIN remove só PLAYER. Nunca
+  /// remove o OWNER -- o servidor recusa antes de chegar aqui.
+  Future<void> removeMember({
+    required String teamId,
+    required String userId,
+  });
+
+  /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER.
+  Future<void> setMemberRole({
+    required String teamId,
+    required String userId,
+    required TeamRole role,
+  });
 }
