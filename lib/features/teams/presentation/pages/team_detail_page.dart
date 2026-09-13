@@ -44,8 +44,7 @@ class TeamDetailPage extends StatelessWidget {
                 icon: Icons.edit_outlined,
                 tooltip: context.l10n.actionEdit,
                 variant: AppIconButtonVariant.surface,
-                onPressed: () =>
-                    showEditTeamSheet(context, userTeam.team),
+                onPressed: () => showEditTeamSheet(context, userTeam.team),
               ),
           ],
         ),
@@ -113,34 +112,36 @@ class _TeamStatusBody extends StatelessWidget {
             if (sports.dashboard != null) ...<Widget>[
               const SizedBox(height: AppSpacing.lg),
               TeamSportsSummarySection(summary: sports.dashboard!.summary),
-              if (sports.dashboard!.summary.hasMatches) ...<Widget>[
-                const SizedBox(height: AppSpacing.lg),
-                TeamSportsRankingSection(
-                  ranking: sports.dashboard!.ranking,
-                  minRankedMatches: sports.dashboard!.minRankedMatches,
-                  onMemberTap: (member) => context.push(
-                    AppRoutes.playerProfileLocation(team.id, member.userId),
-                  ),
+              const SizedBox(height: AppSpacing.lg),
+              TeamSportsRankingSection(
+                ranking: sports.dashboard!.ranking,
+                minRankedMatches: sports.dashboard!.minRankedMatches,
+                onMemberTap: (member) => context.push(
+                  AppRoutes.playerProfileLocation(team.id, member.userId),
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                TeamPlayerLeaderboardSection(
-                  entries: sports.dashboard!.topScorers,
-                  byAssists: false,
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                TeamPlayerLeaderboardSection(
-                  entries: sports.dashboard!.topAssists,
-                  byAssists: true,
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                TeamWeekendLeagueSection(
-                  entries: sports.dashboard!.weekendLeague,
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                TeamRivalsSection(entries: sports.dashboard!.rivals),
-                const SizedBox(height: AppSpacing.lg),
-                TeamSportsActivitySection(activity: sports.dashboard!.activity),
-              ],
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              TeamPlayerLeaderboardSection(
+                entries: sports.dashboard!.topScorers,
+                byAssists: false,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              TeamPlayerLeaderboardSection(
+                entries: sports.dashboard!.topAssists,
+                byAssists: true,
+              ),
+              // Weekend League e Rivals se escondem sozinhos quando nao ha
+              // nenhum registro (manual ou computado) -- nao dependem de
+              // partida real registrada no Time (que o contador manual
+              // tornou opcional).
+              const SizedBox(height: AppSpacing.lg),
+              TeamWeekendLeagueSection(
+                entries: sports.dashboard!.weekendLeague,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              TeamRivalsSection(entries: sports.dashboard!.rivals),
+              const SizedBox(height: AppSpacing.lg),
+              TeamSportsActivitySection(activity: sports.dashboard!.activity),
             ],
           ],
         ),

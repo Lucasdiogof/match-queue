@@ -1342,48 +1342,6 @@ abstract class AppLocalizations {
   /// **'Só o dono ou um admin pode alterar.'**
   String get teamSearchDurationReadOnlyHelper;
 
-  /// No description provided for @teamStatusInMatch.
-  ///
-  /// In pt, this message translates to:
-  /// **'Em jogo'**
-  String get teamStatusInMatch;
-
-  /// No description provided for @teamStatusSearching.
-  ///
-  /// In pt, this message translates to:
-  /// **'Buscando'**
-  String get teamStatusSearching;
-
-  /// No description provided for @teamStatusQueued.
-  ///
-  /// In pt, this message translates to:
-  /// **'Na fila'**
-  String get teamStatusQueued;
-
-  /// No description provided for @teamStatusQueuedWithPosition.
-  ///
-  /// In pt, this message translates to:
-  /// **'Na fila · #{position}'**
-  String teamStatusQueuedWithPosition(int position);
-
-  /// No description provided for @teamStatusOffline.
-  ///
-  /// In pt, this message translates to:
-  /// **'Offline'**
-  String get teamStatusOffline;
-
-  /// No description provided for @teamStatusActiveNow.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ativo agora'**
-  String get teamStatusActiveNow;
-
-  /// No description provided for @teamStatusActiveMinutesAgo.
-  ///
-  /// In pt, this message translates to:
-  /// **'Há {minutes} min'**
-  String teamStatusActiveMinutesAgo(int minutes);
-
   /// No description provided for @teamDurationSeconds.
   ///
   /// In pt, this message translates to:

@@ -728,31 +728,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Solo el dueño o un admin puede cambiar esto.';
 
   @override
-  String get teamStatusInMatch => 'En partida';
-
-  @override
-  String get teamStatusSearching => 'Buscando';
-
-  @override
-  String get teamStatusQueued => 'En la cola';
-
-  @override
-  String teamStatusQueuedWithPosition(int position) {
-    return 'En la cola · #$position';
-  }
-
-  @override
-  String get teamStatusOffline => 'Offline';
-
-  @override
-  String get teamStatusActiveNow => 'Activo ahora';
-
-  @override
-  String teamStatusActiveMinutesAgo(int minutes) {
-    return 'Hace $minutes min';
-  }
-
-  @override
   String teamDurationSeconds(int seconds) {
     return '$seconds s';
   }

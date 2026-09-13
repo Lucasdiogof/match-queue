@@ -370,29 +370,6 @@
   "teamSearchDurationLabel": "Default search duration",
   "teamSearchDurationHelper": "How long each player stays at the front of the queue.",
   "teamSearchDurationReadOnlyHelper": "Only the owner or an admin can change this.",
-  "teamStatusInMatch": "In a match",
-  "teamStatusSearching": "Searching",
-  "teamStatusQueued": "In queue",
-  "teamStatusQueuedWithPosition": "In queue · #{position}",
-  "@teamStatusQueuedWithPosition": {
-    "placeholders": {
-      "position": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "teamStatusOffline": "Offline",
-  "teamStatusActiveNow": "Active now",
-  "teamStatusActiveMinutesAgo": "{minutes} min ago",
-  "@teamStatusActiveMinutesAgo": {
-    "placeholders": {
-      "minutes": {
-        "type": "int",
-        "example": "18"
-      }
-    }
-  },
   "teamDurationSeconds": "{seconds} s",
   "@teamDurationSeconds": {
     "placeholders": {

@@ -370,29 +370,6 @@
   "teamSearchDurationLabel": "Duração padrão da busca",
   "teamSearchDurationHelper": "Tempo que cada jogador fica na frente da fila.",
   "teamSearchDurationReadOnlyHelper": "Só o dono ou um admin pode alterar.",
-  "teamStatusInMatch": "Em jogo",
-  "teamStatusSearching": "Buscando",
-  "teamStatusQueued": "Na fila",
-  "teamStatusQueuedWithPosition": "Na fila · #{position}",
-  "@teamStatusQueuedWithPosition": {
-    "placeholders": {
-      "position": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "teamStatusOffline": "Offline",
-  "teamStatusActiveNow": "Ativo agora",
-  "teamStatusActiveMinutesAgo": "Há {minutes} min",
-  "@teamStatusActiveMinutesAgo": {
-    "placeholders": {
-      "minutes": {
-        "type": "int",
-        "example": "18"
-      }
-    }
-  },
   "teamDurationSeconds": "{seconds} s",
   "@teamDurationSeconds": {
     "placeholders": {

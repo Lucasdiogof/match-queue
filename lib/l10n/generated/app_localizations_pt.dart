@@ -724,31 +724,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Só o dono ou um admin pode alterar.';
 
   @override
-  String get teamStatusInMatch => 'Em jogo';
-
-  @override
-  String get teamStatusSearching => 'Buscando';
-
-  @override
-  String get teamStatusQueued => 'Na fila';
-
-  @override
-  String teamStatusQueuedWithPosition(int position) {
-    return 'Na fila · #$position';
-  }
-
-  @override
-  String get teamStatusOffline => 'Offline';
-
-  @override
-  String get teamStatusActiveNow => 'Ativo agora';
-
-  @override
-  String teamStatusActiveMinutesAgo(int minutes) {
-    return 'Há $minutes min';
-  }
-
-  @override
   String teamDurationSeconds(int seconds) {
     return '$seconds s';
   }

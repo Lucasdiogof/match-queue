@@ -370,29 +370,6 @@
   "teamSearchDurationLabel": "Duración de búsqueda predeterminada",
   "teamSearchDurationHelper": "Tiempo que cada jugador permanece al frente de la cola.",
   "teamSearchDurationReadOnlyHelper": "Solo el dueño o un admin puede cambiar esto.",
-  "teamStatusInMatch": "En partida",
-  "teamStatusSearching": "Buscando",
-  "teamStatusQueued": "En la cola",
-  "teamStatusQueuedWithPosition": "En la cola · #{position}",
-  "@teamStatusQueuedWithPosition": {
-    "placeholders": {
-      "position": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "teamStatusOffline": "Offline",
-  "teamStatusActiveNow": "Activo ahora",
-  "teamStatusActiveMinutesAgo": "Hace {minutes} min",
-  "@teamStatusActiveMinutesAgo": {
-    "placeholders": {
-      "minutes": {
-        "type": "int",
-        "example": "18"
-      }
-    }
-  },
   "teamDurationSeconds": "{seconds} s",
   "@teamDurationSeconds": {
     "placeholders": {
