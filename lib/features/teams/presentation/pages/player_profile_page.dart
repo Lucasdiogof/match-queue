@@ -396,7 +396,9 @@ class _WeekendLeagueCard extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        '#${entry.number} · ${entry.season}',
+                        entry.season == null
+                            ? '#${entry.number}'
+                            : '#${entry.number} · ${entry.season}',
                         style: context.textStyles.bodyMedium,
                       ),
                     ),

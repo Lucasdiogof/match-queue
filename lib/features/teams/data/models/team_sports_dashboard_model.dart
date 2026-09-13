@@ -122,6 +122,7 @@ class TeamSportsDashboardModel {
         wins: _toInt(json['wins']),
         losses: _toInt(json['losses']),
         winRate: _toDouble(json['win_rate']),
+        isManual: json['is_manual'] as bool? ?? false,
       );
 
   static TeamSportsActivity _activityFromJson(Map<String, dynamic> json) {

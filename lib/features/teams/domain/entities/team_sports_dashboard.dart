@@ -214,6 +214,7 @@ class TeamRivalsEntry extends Equatable {
     required this.losses,
     this.division,
     this.winRate,
+    this.isManual = false,
   });
 
   final String userId;
@@ -225,6 +226,9 @@ class TeamRivalsEntry extends Equatable {
   final int wins;
   final int losses;
   final double? winRate;
+  final bool isManual;
+
+  bool get hasRecord => wins > 0 || losses > 0;
 
   @override
   List<Object?> get props => <Object?>[
@@ -235,6 +239,7 @@ class TeamRivalsEntry extends Equatable {
     wins,
     losses,
     winRate,
+    isManual,
   ];
 }
 

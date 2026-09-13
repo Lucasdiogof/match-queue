@@ -62,15 +62,15 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
   const PlayerProfileWeekendLeagueEntry({
     required this.eventId,
     required this.number,
-    required this.season,
     required this.startsAt,
     required this.wins,
     required this.losses,
+    this.season,
   });
 
   final String eventId;
   final int number;
-  final int season;
+  final String? season;
   final DateTime startsAt;
   final int wins;
   final int losses;

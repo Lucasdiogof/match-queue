@@ -49,7 +49,7 @@ class PlayerProfileModel {
             (row) => PlayerProfileWeekendLeagueEntry(
               eventId: '${row['event_id']}',
               number: row['number'] as int? ?? 0,
-              season: row['season'] as int? ?? 0,
+              season: row['season'] as String?,
               startsAt: DateTime.parse('${row['starts_at']}'),
               wins: row['wins'] as int? ?? 0,
               losses: row['losses'] as int? ?? 0,

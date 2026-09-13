@@ -540,7 +540,7 @@ class TeamRivalsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final relevant = entries
-        .where((e) => e.matches > 0 || e.division != null)
+        .where((e) => e.hasRecord || e.division != null)
         .toList();
     if (relevant.isEmpty) {
       return const SizedBox.shrink();
@@ -580,23 +580,15 @@ class TeamRivalsSection extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (entry.matches > 0) ...<Widget>[
+                  if (entry.isManual) ...<Widget>[
+                    AppBadge(label: l10n.teamSportsManualRecord),
+                    const SizedBox(width: AppSpacing.sm),
+                  ],
+                  if (entry.hasRecord)
                     Text(
-                      l10n.teamSportsRecordLine(
-                        entry.matches,
-                        entry.wins,
-                        entry.losses,
-                      ),
-                      style: context.textStyles.bodySmall?.copyWith(
-                        color: context.colors.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Text(
-                      formatWinRate(context, entry.winRate),
+                      '${entry.wins}–${entry.losses}',
                       style: context.textStyles.titleMedium,
                     ),
-                  ],
                 ],
               ),
             ),
