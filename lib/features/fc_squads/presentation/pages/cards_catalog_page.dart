@@ -9,6 +9,7 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_detail_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
+import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// Catalogo de cartas para consulta -- explicitamente NAO e o picker do
@@ -49,22 +50,27 @@ class CardsCatalogView extends StatefulWidget {
   State<CardsCatalogView> createState() => _CardsCatalogViewState();
 }
 
-class _CardsCatalogViewState extends State<CardsCatalogView> {
-  static const List<String> _positions = <String>[
-    'GK',
-    'CB',
-    'LB',
-    'RB',
-    'CDM',
-    'CM',
-    'CAM',
-    'LM',
-    'RM',
-    'LW',
-    'RW',
-    'ST',
-  ];
+/// Grupo de posição pro filtro do catálogo -- nunca o código cru (GK, CB,
+/// LB...): o usuário pensa em "defensor", não em "CB/LB/RB" separados.
+enum _PositionGroup {
+  goalkeeper(<String>['GK']),
+  defender(<String>['CB', 'LB', 'RB']),
+  midfielder(<String>['CDM', 'CM', 'CAM', 'LM', 'RM']),
+  forward(<String>['LW', 'RW', 'ST']);
 
+  const _PositionGroup(this.codes);
+
+  final List<String> codes;
+
+  String label(AppLocalizations l10n) => switch (this) {
+    _PositionGroup.goalkeeper => l10n.catalogPositionGroupGoalkeeper,
+    _PositionGroup.defender => l10n.catalogPositionGroupDefender,
+    _PositionGroup.midfielder => l10n.catalogPositionGroupMidfielder,
+    _PositionGroup.forward => l10n.catalogPositionGroupForward,
+  };
+}
+
+class _CardsCatalogViewState extends State<CardsCatalogView> {
   final ScrollController _scroll = ScrollController();
   final TextEditingController _search = TextEditingController();
 
@@ -75,8 +81,7 @@ class _CardsCatalogViewState extends State<CardsCatalogView> {
   bool _hasMore = false;
   AppFailure? _failure;
 
-  String? _position;
-  int? _minRating;
+  _PositionGroup? _positionGroup;
   String? _gender;
 
   @override
@@ -107,8 +112,7 @@ class _CardsCatalogViewState extends State<CardsCatalogView> {
 
   PlayerCardQuery _query({int offset = 0}) => PlayerCardQuery(
     query: _search.text.trim().isEmpty ? null : _search.text.trim(),
-    position: _position,
-    minRating: _minRating,
+    positions: _positionGroup?.codes,
     gender: _gender,
     clubId: widget.clubId,
     playstyle: widget.playstyle,
@@ -189,19 +193,13 @@ class _CardsCatalogViewState extends State<CardsCatalogView> {
         ),
         const SizedBox(height: AppSpacing.sm),
         _Filters(
-          position: _position,
-          minRating: _minRating,
+          positionGroup: _positionGroup,
           gender: _gender,
           // Dentro de um clube o genero ja esta determinado pela liga
           // dele -- oferecer o filtro ali so criaria combinacao vazia.
           showGender: widget.clubId == null,
-          positions: _positions,
-          onPosition: (value) {
-            setState(() => _position = value);
-            unawaited(_load());
-          },
-          onMinRating: (value) {
-            setState(() => _minRating = value);
+          onPositionGroup: (value) {
+            setState(() => _positionGroup = value);
             unawaited(_load());
           },
           onGender: (value) {
@@ -263,23 +261,17 @@ class _CardsCatalogViewState extends State<CardsCatalogView> {
 
 class _Filters extends StatelessWidget {
   const _Filters({
-    required this.position,
-    required this.minRating,
+    required this.positionGroup,
     required this.gender,
     required this.showGender,
-    required this.positions,
-    required this.onPosition,
-    required this.onMinRating,
+    required this.onPositionGroup,
     required this.onGender,
   });
 
-  final String? position;
-  final int? minRating;
+  final _PositionGroup? positionGroup;
   final String? gender;
   final bool showGender;
-  final List<String> positions;
-  final ValueChanged<String?> onPosition;
-  final ValueChanged<int?> onMinRating;
+  final ValueChanged<_PositionGroup?> onPositionGroup;
   final ValueChanged<String?> onGender;
 
   @override
@@ -293,23 +285,13 @@ class _Filters extends StatelessWidget {
         children: <Widget>[
           AppChip(
             label: l10n.filterAll,
-            isSelected: position == null && minRating == null && gender == null,
+            isSelected: positionGroup == null && gender == null,
             onPressed: () {
-              onPosition(null);
-              onMinRating(null);
+              onPositionGroup(null);
               onGender(null);
             },
           ),
           const SizedBox(width: AppSpacing.xs),
-          for (final value in <int>[85, 80, 75])
-            Padding(
-              padding: const EdgeInsets.only(right: AppSpacing.xs),
-              child: AppChip(
-                label: '$value+',
-                isSelected: minRating == value,
-                onPressed: () => onMinRating(minRating == value ? null : value),
-              ),
-            ),
           if (showGender) ...<Widget>[
             AppChip(
               label: l10n.catalogGenderWomen,
@@ -324,13 +306,14 @@ class _Filters extends StatelessWidget {
             ),
             const SizedBox(width: AppSpacing.xs),
           ],
-          for (final code in positions)
+          for (final group in _PositionGroup.values)
             Padding(
               padding: const EdgeInsets.only(right: AppSpacing.xs),
               child: AppChip(
-                label: code,
-                isSelected: position == code,
-                onPressed: () => onPosition(position == code ? null : code),
+                label: group.label(l10n),
+                isSelected: positionGroup == group,
+                onPressed: () =>
+                    onPositionGroup(positionGroup == group ? null : group),
               ),
             ),
         ],

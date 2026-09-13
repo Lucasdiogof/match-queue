@@ -5,7 +5,6 @@ import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart'
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/create_fc_account_sheet.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -107,34 +106,14 @@ class _FcAccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final colors = context.colors;
-    final record = account.weekendLeagueRecord;
 
     return AppCard(
       onTap: () => context.push(AppRoutes.fcAccountDetailLocation(account.id)),
       child: Row(
         children: <Widget>[
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(account.name, style: context.textStyles.titleMedium),
-                const SizedBox(height: AppSpacing.xxs),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.xxs,
-                  children: <Widget>[
-                    if (account.rivalsDivision != null)
-                      AppBadge(label: account.rivalsDivision!.label(l10n)),
-                    AppBadge(
-                      label: '${record.$1}–${record.$2}',
-                      tone: AppBadgeTone.neutral,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: Text(account.name, style: context.textStyles.titleMedium),
           ),
           Icon(Icons.chevron_right, color: colors.textTertiary),
         ],

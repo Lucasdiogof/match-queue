@@ -4274,6 +4274,30 @@ abstract class AppLocalizations {
   /// **'Feminino'**
   String get catalogGenderWomen;
 
+  /// No description provided for @catalogPositionGroupGoalkeeper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiro'**
+  String get catalogPositionGroupGoalkeeper;
+
+  /// No description provided for @catalogPositionGroupDefender.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defensor'**
+  String get catalogPositionGroupDefender;
+
+  /// No description provided for @catalogPositionGroupMidfielder.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meio-campista'**
+  String get catalogPositionGroupMidfielder;
+
+  /// No description provided for @catalogPositionGroupForward.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacante'**
+  String get catalogPositionGroupForward;
+
   /// No description provided for @filterAll.
   ///
   /// In pt, this message translates to:

@@ -2492,6 +2492,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get catalogGenderWomen => 'Femenino';
 
   @override
+  String get catalogPositionGroupGoalkeeper => 'Portero';
+
+  @override
+  String get catalogPositionGroupDefender => 'Defensor';
+
+  @override
+  String get catalogPositionGroupMidfielder => 'Centrocampista';
+
+  @override
+  String get catalogPositionGroupForward => 'Delantero';
+
+  @override
   String get filterAll => 'Todas';
 
   @override

@@ -36,14 +36,23 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
   /// debounced, quando o context deste State pode ja estar desativado (ver
   /// doc de DebouncedWinLossCounter).
   late final FcAccountsCubit _cubit;
-  late final AppLocalizations _l10n;
+
+  /// `context.l10n` usa `Localizations.of`, que registra uma dependencia de
+  /// InheritedWidget -- nunca seguro em initState() (so em build()/
+  /// didChangeDependencies()). Capturado ali, nao aqui.
+  late AppLocalizations _l10n;
 
   @override
   void initState() {
     super.initState();
     _cubit = context.read<FcAccountsCubit>();
-    _l10n = context.l10n;
     _load();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = context.l10n;
   }
 
   void _load() {

@@ -44,7 +44,11 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
   /// debounced, quando o context deste State pode ja estar desativado (ver
   /// doc de DebouncedWinLossCounter).
   late final FcAccountsCubit _cubit;
-  late final AppLocalizations _l10n;
+
+  /// `context.l10n` usa `Localizations.of`, que registra uma dependencia de
+  /// InheritedWidget -- nunca seguro em initState() (so em build()/
+  /// didChangeDependencies()). Capturado ali, nao aqui.
+  late AppLocalizations _l10n;
 
   /// Carregada uma vez e reusada: trocar de semana refaz so as estatisticas,
   /// nunca a lista de semanas.
@@ -54,10 +58,15 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
   void initState() {
     super.initState();
     _cubit = context.read<FcAccountsCubit>();
-    _l10n = context.l10n;
     _event = widget.event;
     _eventsFuture = getIt<FcAccountRepository>().fetchWeekendLeagueEvents();
     _load();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = context.l10n;
   }
 
   void _load() {

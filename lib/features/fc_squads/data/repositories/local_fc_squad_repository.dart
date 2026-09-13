@@ -568,10 +568,12 @@ class LocalPlayerCardCatalogRepository implements PlayerCardCatalogRepository {
   @override
   Future<PlayerCardPage> searchCards(PlayerCardQuery query) async {
     final position = query.position;
+    final positions = query.positions;
     final text = query.query?.toLowerCase();
     final filtered =
         cards
             .where((c) => position == null || c.canPlayIn(position))
+            .where((c) => positions == null || positions.any(c.canPlayIn))
             .where(
               (c) => text == null || c.displayName.toLowerCase().contains(text),
             )

@@ -1290,6 +1290,10 @@
   "catalogClubCardsCount": "{count, plural, =1{1 carta} other{{count} cartas}}",
   "catalogGenderMen": "Masculino",
   "catalogGenderWomen": "Feminino",
+  "catalogPositionGroupGoalkeeper": "Goleiro",
+  "catalogPositionGroupDefender": "Defensor",
+  "catalogPositionGroupMidfielder": "Meio-campista",
+  "catalogPositionGroupForward": "Atacante",
   "filterAll": "Todas",
   "@catalogClubCardsCount": {
     "placeholders": {

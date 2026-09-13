@@ -1289,6 +1289,10 @@
   "catalogClubAverageLabel": "Media",
   "catalogClubCardsCount": "{count, plural, =1{1 carta} other{{count} cartas}}",
   "catalogGenderMen": "Masculino",
+  "catalogPositionGroupGoalkeeper": "Portero",
+  "catalogPositionGroupDefender": "Defensor",
+  "catalogPositionGroupMidfielder": "Centrocampista",
+  "catalogPositionGroupForward": "Delantero",
   "catalogGenderWomen": "Femenino",
   "filterAll": "Todas",
   "@catalogClubCardsCount": {

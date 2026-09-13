@@ -1289,6 +1289,10 @@
   "catalogClubAverageLabel": "Average",
   "catalogClubCardsCount": "{count, plural, =1{1 card} other{{count} cards}}",
   "catalogGenderMen": "Men",
+  "catalogPositionGroupGoalkeeper": "Goalkeeper",
+  "catalogPositionGroupDefender": "Defender",
+  "catalogPositionGroupMidfielder": "Midfielder",
+  "catalogPositionGroupForward": "Forward",
   "catalogGenderWomen": "Women",
   "filterAll": "All",
   "@catalogClubCardsCount": {

@@ -23,6 +23,7 @@ class SupabasePlayerCardCatalogRepository
       params: <String, dynamic>{
         'p_query': query.query,
         'p_position': query.position,
+        'p_positions': query.positions,
         'p_limit': query.limit,
         'p_offset': query.offset,
         'p_min_rating': query.minRating,

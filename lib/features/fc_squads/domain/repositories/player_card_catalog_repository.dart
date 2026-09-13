@@ -12,6 +12,7 @@ class PlayerCardQuery extends Equatable {
   const PlayerCardQuery({
     this.query,
     this.position,
+    this.positions,
     this.limit = 30,
     this.offset = 0,
     this.minRating,
@@ -29,6 +30,12 @@ class PlayerCardQuery extends Equatable {
 
   final String? query;
   final String? position;
+
+  /// Filtro por GRUPO de posições (Defensor = CB/LB/RB, etc.) -- casa se a
+  /// carta jogar em qualquer uma delas, primária ou alternativa. Distinto de
+  /// [position] (singular), que é a elegibilidade de UM slot específico do
+  /// Squad Builder e continua igual.
+  final List<String>? positions;
   final int limit;
   final int offset;
   final int? minRating;
@@ -78,6 +85,7 @@ class PlayerCardQuery extends Equatable {
   List<Object?> get props => <Object?>[
     query,
     position,
+    positions,
     limit,
     offset,
     minRating,
