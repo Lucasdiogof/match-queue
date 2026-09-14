@@ -941,6 +941,13 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get matchmakingExpiredTitle => 'Se acabó el tiempo';
+
+  @override
+  String get matchmakingExpiredMessage =>
+      'El tiempo de búsqueda se agotó y te sacaron de la cola. Podés buscar de nuevo cuando quieras.';
+
+  @override
   String get matchmakingRequestPriorityAction => 'Solicitar prioridad';
 
   @override

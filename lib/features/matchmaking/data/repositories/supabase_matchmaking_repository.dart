@@ -20,8 +20,9 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
   Future<MyMatchmakingSnapshot> getMyStatus({
     required String fcAccountId,
     required String teamId,
+    required GameMode mode,
   }) => _guard(() async {
-    final json = await _dataSource.getMyStatus(fcAccountId, teamId);
+    final json = await _dataSource.getMyStatus(fcAccountId, teamId, mode.key);
     return MyMatchmakingSnapshotModel.fromJson(json);
   });
 
@@ -52,8 +53,9 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
   Future<MyMatchmakingSnapshot> leaveQueue({
     required String fcAccountId,
     required String teamId,
+    required GameMode mode,
   }) => _guard(() async {
-    final json = await _dataSource.leaveQueue(fcAccountId, teamId);
+    final json = await _dataSource.leaveQueue(fcAccountId, teamId, mode.key);
     return MyMatchmakingSnapshotModel.fromJson(json);
   });
 
@@ -68,7 +70,9 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
   Future<void> requestPriority({
     required String fcAccountId,
     required String teamId,
-  }) => _guard(() => _dataSource.requestPriority(fcAccountId, teamId));
+    required GameMode mode,
+  }) =>
+      _guard(() => _dataSource.requestPriority(fcAccountId, teamId, mode.key));
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

@@ -508,6 +508,8 @@
       }
     }
   },
+  "matchmakingExpiredTitle": "Tempo esgotado",
+  "matchmakingExpiredMessage": "O tempo de busca acabou e você foi removido da fila. Pode buscar de novo quando quiser.",
   "matchmakingRequestPriorityAction": "Solicitar prioridade",
   "matchmakingPriorityRequestedConfirmation": "Prioridade solicitada",
   "matchmakingSearchingElsewhereMessage": "Você está buscando partida pelo Time {teamName}.",

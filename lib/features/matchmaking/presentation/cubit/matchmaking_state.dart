@@ -19,6 +19,7 @@ class MatchmakingState extends Equatable {
     this.isRefreshing = false,
     this.connection = MatchmakingConnection.connecting,
     this.promotionNonce = 0,
+    this.expiredNonce = 0,
     this.priorityRequestSent = false,
     this.serverOffset = Duration.zero,
     this.cooldownEndsAt,
@@ -41,6 +42,14 @@ class MatchmakingState extends Equatable {
   /// para dar o feedback de "sua vez" uma unica vez por promocao, sem
   /// precisar comparar snapshots na camada de widget.
   final int promotionNonce;
+
+  /// Incrementa quando uma releitura PASSIVA (nunca uma acao direta deste
+  /// cliente) descobre que a busca que era minha acabou sozinha -- ou seja,
+  /// expirou (o servidor ja marcou EXPIRED em algum momento antes desta
+  /// tela recarregar). Cancelar/reportar partida encontrada nunca disparam
+  /// isto: aqueles ja tem feedback proprio, sempre pela acao que o usuario
+  /// mesmo tocou.
+  final int expiredNonce;
 
   /// Confirmacao local de "prioridade solicitada" (item 14): fica true ate
   /// a proxima vez que a tela carregar/trocar de busca -- so uma
@@ -70,6 +79,7 @@ class MatchmakingState extends Equatable {
     bool? isRefreshing,
     MatchmakingConnection? connection,
     int? promotionNonce,
+    int? expiredNonce,
     bool? priorityRequestSent,
     Duration? serverOffset,
     DateTime? cooldownEndsAt,
@@ -82,9 +92,12 @@ class MatchmakingState extends Equatable {
     isRefreshing: isRefreshing ?? this.isRefreshing,
     connection: connection ?? this.connection,
     promotionNonce: promotionNonce ?? this.promotionNonce,
+    expiredNonce: expiredNonce ?? this.expiredNonce,
     priorityRequestSent: priorityRequestSent ?? this.priorityRequestSent,
     serverOffset: serverOffset ?? this.serverOffset,
-    cooldownEndsAt: clearCooldown ? null : (cooldownEndsAt ?? this.cooldownEndsAt),
+    cooldownEndsAt: clearCooldown
+        ? null
+        : (cooldownEndsAt ?? this.cooldownEndsAt),
   );
 
   @override
@@ -96,6 +109,7 @@ class MatchmakingState extends Equatable {
     isRefreshing,
     connection,
     promotionNonce,
+    expiredNonce,
     priorityRequestSent,
     serverOffset,
     cooldownEndsAt,

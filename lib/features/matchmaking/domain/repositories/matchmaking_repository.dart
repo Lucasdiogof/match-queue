@@ -3,11 +3,13 @@ import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_real
 import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
 
 abstract interface class MatchmakingRepository {
-  /// Read model de Conta + TIME: fila real por time, a mesma conta pode
-  /// estar numa posicao diferente em cada time vinculado.
+  /// Read model de Conta + TIME + MODO: fila independente por (time, modo)
+  /// -- a mesma conta pode estar numa posicao diferente em Champions e em
+  /// Rivals do MESMO time ao mesmo tempo.
   Future<MyMatchmakingSnapshot> getMyStatus({
     required String fcAccountId,
     required String teamId,
+    required GameMode mode,
   });
 
   /// Sinais de invalidacao de UM time. Cancelar a subscription do stream
@@ -25,11 +27,12 @@ abstract interface class MatchmakingRepository {
   /// (lock global). Nao serve pra sair de uma fila: ver [leaveQueue].
   Future<MyMatchmakingSnapshot> cancelSearch(String fcAccountId);
 
-  /// Sai da fila de UM time especifico. A conta pode continuar em filas de
-  /// outros times.
+  /// Sai da fila de UM (time, modo) especifico. A conta pode continuar em
+  /// filas de outros times/modos.
   Future<MyMatchmakingSnapshot> leaveQueue({
     required String fcAccountId,
     required String teamId,
+    required GameMode mode,
   });
 
   Future<MyMatchmakingSnapshot> reportMatchFound(String fcAccountId);
@@ -38,5 +41,6 @@ abstract interface class MatchmakingRepository {
   Future<void> requestPriority({
     required String fcAccountId,
     required String teamId,
+    required GameMode mode,
   });
 }

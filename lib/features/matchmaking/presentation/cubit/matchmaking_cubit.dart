@@ -9,18 +9,20 @@ import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Estado de matchmaking de uma CONTA num TIME especifico -- fila real por
-/// time (evolucao da Etapa 11): cada Time tem sua propria fila e seu proprio
-/// estado, entao o cubit e recriado quando a conta OU o time selecionado
-/// mudam. So existe UM canal Realtime (o do time desta tela), nunca mais um
-/// por time vinculado -- a fila de outro time so importa se um dia a UI
-/// mostrar as duas ao mesmo tempo.
+/// Estado de matchmaking de uma CONTA num TIME e MODO especificos --
+/// Champions e Rivals sao filas independentes do mesmo Time (pedido
+/// explicito: as duas nao devem "conversar"), entao o cubit e recriado
+/// quando a conta, o time OU o modo selecionado mudam. So existe UM canal
+/// Realtime (o do time desta tela, compartilhado pelos dois modos -- o
+/// payload de cada evento ja diz a que (time, modo) ele se refere quando
+/// isso importa).
 class MatchmakingCubit extends Cubit<MatchmakingState> {
   MatchmakingCubit(
     this._repository,
     this._logger, {
     required this.fcAccountId,
     required this.teamId,
+    required this.mode,
   }) : super(const MatchmakingState());
 
   static const Duration invalidationDebounce = Duration(milliseconds: 200);
@@ -29,6 +31,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   final AppLogger _logger;
   final String fcAccountId;
   final String teamId;
+  final GameMode mode;
 
   StreamSubscription<MatchmakingRealtimeEvent>? _subscription;
   Timer? _debounce;
@@ -46,6 +49,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       final snapshot = await _repository.getMyStatus(
         fcAccountId: fcAccountId,
         teamId: teamId,
+        mode: mode,
       );
       if (_isStale(generation)) {
         return;
@@ -63,20 +67,36 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   /// foreground e fim do timer.
   Future<void> refreshSilently() async {
     final generation = ++_loadGeneration;
+    final wasSearchingByMe = state.snapshot?.isSearchingByMe ?? false;
     emit(state.copyWith(isRefreshing: true));
     try {
       final snapshot = await _repository.getMyStatus(
         fcAccountId: fcAccountId,
         teamId: teamId,
+        mode: mode,
       );
       if (_isStale(generation)) {
         return;
       }
+      // Eu estava buscando e uma releitura PASSIVA (nunca uma acao minha --
+      // essa passa por _runAction, nunca por aqui) descobre que nao estou
+      // mais nem buscando nem na fila: a unica forma disso acontecer sem eu
+      // ter feito nada e o servidor ter expirado minha busca sozinho.
+      final expiredSilently =
+          wasSearchingByMe &&
+          !snapshot.isSearchingByMe &&
+          !snapshot.isQueuedByMe;
       _emitSnapshot(
         snapshot,
         status: MatchmakingStatus.ready,
         isRefreshing: false,
+        expired: expiredSilently,
       );
+      if (expiredSilently) {
+        emit(
+          state.copyWith(cooldownEndsAt: DateTime.now().add(_cooldownDuration)),
+        );
+      }
     } on AppFailure {
       if (_isStale(generation)) {
         return;
@@ -85,7 +105,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     }
   }
 
-  Future<bool> startSearch(GameMode mode, {String? fcSquadId}) async {
+  Future<bool> startSearch({String? fcSquadId}) async {
     final ok = await _runAction(
       () => _repository.requestSearch(
         fcAccountId: fcAccountId,
@@ -105,24 +125,29 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   Future<bool> cancel() async {
     final ok = await _runAction(() => _repository.cancelSearch(fcAccountId));
     if (ok && !isClosed) {
-      emit(state.copyWith(
-        cooldownEndsAt: DateTime.now().add(_cooldownDuration),
-      ));
+      emit(
+        state.copyWith(cooldownEndsAt: DateTime.now().add(_cooldownDuration)),
+      );
     }
     return ok;
   }
 
   Future<bool> leaveQueue() => _runAction(
-    () => _repository.leaveQueue(fcAccountId: fcAccountId, teamId: teamId),
+    () => _repository.leaveQueue(
+      fcAccountId: fcAccountId,
+      teamId: teamId,
+      mode: mode,
+    ),
   );
 
   Future<bool> matchFound() async {
-    final ok =
-        await _runAction(() => _repository.reportMatchFound(fcAccountId));
+    final ok = await _runAction(
+      () => _repository.reportMatchFound(fcAccountId),
+    );
     if (ok && !isClosed) {
-      emit(state.copyWith(
-        cooldownEndsAt: DateTime.now().add(_cooldownDuration),
-      ));
+      emit(
+        state.copyWith(cooldownEndsAt: DateTime.now().add(_cooldownDuration)),
+      );
     }
     return ok;
   }
@@ -136,6 +161,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       await _repository.requestPriority(
         fcAccountId: fcAccountId,
         teamId: teamId,
+        mode: mode,
       );
       if (!isClosed) {
         emit(state.copyWith(isActionPending: false, priorityRequestSent: true));
@@ -225,15 +251,18 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       return true;
     } on AppFailure catch (failure) {
       if (!isClosed) {
-        final isCooldown = failure is GameFailure &&
+        final isCooldown =
+            failure is GameFailure &&
             failure.reason == GameFailureReason.cooldown;
-        emit(state.copyWith(
-          isActionPending: false,
-          failure: failure,
-          cooldownEndsAt: isCooldown
-              ? DateTime.now().add(_cooldownDuration)
-              : state.cooldownEndsAt,
-        ));
+        emit(
+          state.copyWith(
+            isActionPending: false,
+            failure: failure,
+            cooldownEndsAt: isCooldown
+                ? DateTime.now().add(_cooldownDuration)
+                : state.cooldownEndsAt,
+          ),
+        );
       }
       return false;
     }
@@ -246,6 +275,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     required MatchmakingStatus status,
     bool? isActionPending,
     bool? isRefreshing,
+    bool expired = false,
   }) {
     if (isClosed) {
       return;
@@ -266,6 +296,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         promotionNonce: promoted
             ? state.promotionNonce + 1
             : state.promotionNonce,
+        expiredNonce: expired ? state.expiredNonce + 1 : state.expiredNonce,
         // A confirmacao de "prioridade solicitada" so vale enquanto a MESMA
         // busca continua ativa -- uma busca nova (mesmo que a mesma conta)
         // pode receber outro pedido de prioridade.

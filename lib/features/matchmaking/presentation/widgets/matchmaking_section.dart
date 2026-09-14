@@ -8,6 +8,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
@@ -44,16 +45,21 @@ class MatchmakingSection extends StatelessWidget {
   final VoidCallback? onMatchFound;
 
   @override
-  Widget build(BuildContext context) => BlocProvider<MatchmakingCubit>(
-    key: ValueKey('$fcAccountId:$teamId'),
-    create: (_) => MatchmakingCubit(
-      getIt<MatchmakingRepository>(),
-      getIt<AppLogger>(),
-      fcAccountId: fcAccountId,
-      teamId: teamId,
-    )..start(),
-    child: _MatchmakingSectionBody(
-      onMatchFound: onMatchFound,
+  Widget build(BuildContext context) => BlocBuilder<GameModeCubit, GameMode>(
+    builder: (context, mode) => BlocProvider<MatchmakingCubit>(
+      // Champions e Rivals sao filas independentes do mesmo Time --
+      // trocar de modo precisa recriar o cubit (novo load, nova
+      // assinatura de estado), nao so re-renderizar por cima do
+      // anterior.
+      key: ValueKey('$fcAccountId:$teamId:${mode.key}'),
+      create: (_) => MatchmakingCubit(
+        getIt<MatchmakingRepository>(),
+        getIt<AppLogger>(),
+        fcAccountId: fcAccountId,
+        teamId: teamId,
+        mode: mode,
+      )..start(),
+      child: _MatchmakingSectionBody(onMatchFound: onMatchFound),
     ),
   );
 }
@@ -105,6 +111,29 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
       );
   }
 
+  Future<void> _announceExpired(BuildContext context) async {
+    final l10n = context.l10n;
+    unawaited(HapticFeedback.mediumImpact());
+    await showAppBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => AppBottomSheet(
+        title: l10n.matchmakingExpiredTitle,
+        actions: <Widget>[
+          AppButton(
+            label: l10n.actionClose,
+            onPressed: () => Navigator.of(sheetContext).pop(),
+          ),
+        ],
+        child: Text(
+          l10n.matchmakingExpiredMessage,
+          style: sheetContext.textStyles.bodyMedium?.copyWith(
+            color: sheetContext.colors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+
   void _announceActionFailure(BuildContext context, AppFailure failure) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -123,6 +152,11 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
           listenWhen: (previous, current) =>
               previous.promotionNonce != current.promotionNonce,
           listener: (context, state) => _announceYourTurn(context),
+        ),
+        BlocListener<MatchmakingCubit, MatchmakingState>(
+          listenWhen: (previous, current) =>
+              previous.expiredNonce != current.expiredNonce,
+          listener: (context, state) => unawaited(_announceExpired(context)),
         ),
         // Falha de acao (buscar, cancelar, reportar) so ficava guardada no
         // estado: a UI de erro depende de status == failure, que uma acao
@@ -158,10 +192,7 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
 }
 
 class _MatchmakingReadyBody extends StatelessWidget {
-  const _MatchmakingReadyBody({
-    required this.state,
-    this.onMatchFound,
-  });
+  const _MatchmakingReadyBody({required this.state, this.onMatchFound});
 
   final MatchmakingState state;
   final VoidCallback? onMatchFound;
@@ -252,10 +283,7 @@ class _NotLinkedCard extends StatelessWidget {
 }
 
 class _IdleCard extends StatefulWidget {
-  const _IdleCard({
-    required this.state,
-    required this.snapshot,
-  });
+  const _IdleCard({required this.state, required this.snapshot});
 
   final MatchmakingState state;
   final MyMatchmakingSnapshot snapshot;
@@ -285,16 +313,13 @@ class _IdleCardState extends State<_IdleCard> {
     _cooldownTick?.cancel();
     _cooldownTick = null;
     if (widget.state.isInCooldown) {
-      _cooldownTick = Timer.periodic(
-        const Duration(seconds: 1),
-        (_) {
-          if (!widget.state.isInCooldown) {
-            _cooldownTick?.cancel();
-            _cooldownTick = null;
-          }
-          if (mounted) setState(() {});
-        },
-      );
+      _cooldownTick = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (!widget.state.isInCooldown) {
+          _cooldownTick?.cancel();
+          _cooldownTick = null;
+        }
+        if (mounted) setState(() {});
+      });
     }
   }
 
@@ -307,7 +332,6 @@ class _IdleCardState extends State<_IdleCard> {
   void _onStartPressed() {
     unawaited(
       context.read<MatchmakingCubit>().startSearch(
-        context.read<GameModeCubit>().state,
         fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
       ),
     );
@@ -374,13 +398,13 @@ class _IdleCardState extends State<_IdleCard> {
             label: inCooldown
                 ? l10n.matchmakingCooldownLabel(cooldownSeconds)
                 : blocking == null
-                    ? l10n.matchmakingSearchAction
-                    : l10n.matchmakingJoinQueueAction,
+                ? l10n.matchmakingSearchAction
+                : l10n.matchmakingJoinQueueAction,
             icon: inCooldown
                 ? Icons.hourglass_empty
                 : blocking == null
-                    ? Icons.search
-                    : Icons.playlist_add,
+                ? Icons.search
+                : Icons.playlist_add,
             isLoading: widget.state.isActionPending,
             onPressed: busy ? null : _onStartPressed,
           ),
@@ -398,8 +422,7 @@ class _IdleCardState extends State<_IdleCard> {
                 isLoading: widget.state.isActionPending,
                 onPressed: busy
                     ? null
-                    : () =>
-                        context.read<MatchmakingCubit>().requestPriority(),
+                    : () => context.read<MatchmakingCubit>().requestPriority(),
               ),
           ],
         ],
@@ -571,4 +594,3 @@ class _QueuedCard extends StatelessWidget {
     );
   }
 }
-

@@ -1684,6 +1684,18 @@ abstract class AppLocalizations {
   /// **'Aguarde {seconds}s'**
   String matchmakingCooldownLabel(int seconds);
 
+  /// No description provided for @matchmakingExpiredTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tempo esgotado'**
+  String get matchmakingExpiredTitle;
+
+  /// No description provided for @matchmakingExpiredMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'O tempo de busca acabou e você foi removido da fila. Pode buscar de novo quando quiser.'**
+  String get matchmakingExpiredMessage;
+
   /// No description provided for @matchmakingRequestPriorityAction.
   ///
   /// In pt, this message translates to:

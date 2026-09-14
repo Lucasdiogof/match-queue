@@ -936,6 +936,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get matchmakingExpiredTitle => 'Time\'s up';
+
+  @override
+  String get matchmakingExpiredMessage =>
+      'Your search timed out and you were removed from the queue. You can search again whenever you want.';
+
+  @override
   String get matchmakingRequestPriorityAction => 'Request priority';
 
   @override

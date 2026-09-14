@@ -934,6 +934,13 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get matchmakingExpiredTitle => 'Tempo esgotado';
+
+  @override
+  String get matchmakingExpiredMessage =>
+      'O tempo de busca acabou e você foi removido da fila. Pode buscar de novo quando quiser.';
+
+  @override
   String get matchmakingRequestPriorityAction => 'Solicitar prioridade';
 
   @override

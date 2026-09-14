@@ -4,7 +4,11 @@ import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_real
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class MatchmakingRemoteDataSource {
-  Future<Map<String, dynamic>> getMyStatus(String fcAccountId, String teamId);
+  Future<Map<String, dynamic>> getMyStatus(
+    String fcAccountId,
+    String teamId,
+    String gameMode,
+  );
 
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId);
 
@@ -17,11 +21,19 @@ abstract interface class MatchmakingRemoteDataSource {
 
   Future<Map<String, dynamic>> cancelSearch(String fcAccountId);
 
-  Future<Map<String, dynamic>> leaveQueue(String fcAccountId, String teamId);
+  Future<Map<String, dynamic>> leaveQueue(
+    String fcAccountId,
+    String teamId,
+    String gameMode,
+  );
 
   Future<Map<String, dynamic>> reportMatchFound(String fcAccountId);
 
-  Future<void> requestPriority(String fcAccountId, String teamId);
+  Future<void> requestPriority(
+    String fcAccountId,
+    String teamId,
+    String gameMode,
+  );
 }
 
 class SupabaseMatchmakingRemoteDataSource
@@ -37,12 +49,14 @@ class SupabaseMatchmakingRemoteDataSource
   Future<Map<String, dynamic>> getMyStatus(
     String fcAccountId,
     String teamId,
+    String gameMode,
   ) async {
     final response = await _client.rpc<dynamic>(
       'get_my_matchmaking_status',
       params: <String, dynamic>{
         'p_fc_account_id': fcAccountId,
         'p_team_id': teamId,
+        'p_game_mode': gameMode,
       },
     );
     return Map<String, dynamic>.from(response as Map);
@@ -74,11 +88,15 @@ class SupabaseMatchmakingRemoteDataSource
   );
 
   @override
-  Future<Map<String, dynamic>> leaveQueue(String fcAccountId, String teamId) =>
-      _call('leave_match_search_queue', <String, dynamic>{
-        'p_fc_account_id': fcAccountId,
-        'p_team_id': teamId,
-      });
+  Future<Map<String, dynamic>> leaveQueue(
+    String fcAccountId,
+    String teamId,
+    String gameMode,
+  ) => _call('leave_match_search_queue', <String, dynamic>{
+    'p_fc_account_id': fcAccountId,
+    'p_team_id': teamId,
+    'p_game_mode': gameMode,
+  });
 
   @override
   Future<Map<String, dynamic>> reportMatchFound(String fcAccountId) => _call(
@@ -87,12 +105,17 @@ class SupabaseMatchmakingRemoteDataSource
   );
 
   @override
-  Future<void> requestPriority(String fcAccountId, String teamId) async {
+  Future<void> requestPriority(
+    String fcAccountId,
+    String teamId,
+    String gameMode,
+  ) async {
     await _client.rpc<dynamic>(
       'request_match_search_priority',
       params: <String, dynamic>{
         'p_fc_account_id': fcAccountId,
         'p_team_id': teamId,
+        'p_game_mode': gameMode,
       },
     );
   }

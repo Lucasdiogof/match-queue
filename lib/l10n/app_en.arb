@@ -508,6 +508,8 @@
       }
     }
   },
+  "matchmakingExpiredTitle": "Time's up",
+  "matchmakingExpiredMessage": "Your search timed out and you were removed from the queue. You can search again whenever you want.",
   "matchmakingRequestPriorityAction": "Request priority",
   "matchmakingPriorityRequestedConfirmation": "Priority requested",
   "matchmakingSearchingElsewhereMessage": "You are searching for a match for Team {teamName}.",
