@@ -1237,7 +1237,7 @@ abstract class AppLocalizations {
   /// No description provided for @playerProfileSquadLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Escalação principal'**
+  /// **'Escalação'**
   String get playerProfileSquadLabel;
 
   /// No description provided for @playerProfileSquadNoneMessage.
@@ -4373,13 +4373,13 @@ abstract class AppLocalizations {
   /// No description provided for @teamInviteSlugFieldLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Link do perfil (@usuario)'**
+  /// **'Nick ou código do perfil'**
   String get teamInviteSlugFieldLabel;
 
   /// No description provided for @teamInviteSlugFieldHint.
   ///
   /// In pt, this message translates to:
-  /// **'Peça para a pessoa compartilhar o link do perfil público dela'**
+  /// **'Digite o nome ou o código do perfil público do jogador'**
   String get teamInviteSlugFieldHint;
 
   /// No description provided for @teamInviteSendAction.
@@ -4391,7 +4391,7 @@ abstract class AppLocalizations {
   /// No description provided for @teamInviteNotFoundMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhum perfil público encontrado com esse link.'**
+  /// **'Nenhum perfil público encontrado.'**
   String get teamInviteNotFoundMessage;
 
   /// No description provided for @teamInviteSentMessage.

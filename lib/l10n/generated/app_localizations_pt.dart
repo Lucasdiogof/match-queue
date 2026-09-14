@@ -645,7 +645,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Este jogador não tem uma conta vinculada a este time.';
 
   @override
-  String get playerProfileSquadLabel => 'Escalação principal';
+  String get playerProfileSquadLabel => 'Escalação';
 
   @override
   String get playerProfileSquadNoneMessage => 'Ainda sem escalação montada.';
@@ -2536,18 +2536,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamInviteSheetTitle => 'Convidar jogador';
 
   @override
-  String get teamInviteSlugFieldLabel => 'Link do perfil (@usuario)';
+  String get teamInviteSlugFieldLabel => 'Nick ou código do perfil';
 
   @override
   String get teamInviteSlugFieldHint =>
-      'Peça para a pessoa compartilhar o link do perfil público dela';
+      'Digite o nome ou o código do perfil público do jogador';
 
   @override
   String get teamInviteSendAction => 'Enviar convite';
 
   @override
-  String get teamInviteNotFoundMessage =>
-      'Nenhum perfil público encontrado com esse link.';
+  String get teamInviteNotFoundMessage => 'Nenhum perfil público encontrado.';
 
   @override
   String get teamInviteSentMessage => 'Convite enviado.';

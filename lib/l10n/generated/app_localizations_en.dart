@@ -645,7 +645,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This player has no account linked to this team.';
 
   @override
-  String get playerProfileSquadLabel => 'Main squad';
+  String get playerProfileSquadLabel => 'Squad';
 
   @override
   String get playerProfileSquadNoneMessage => 'No squad built yet.';
@@ -2534,18 +2534,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamInviteSheetTitle => 'Invite player';
 
   @override
-  String get teamInviteSlugFieldLabel => 'Profile link (@username)';
+  String get teamInviteSlugFieldLabel => 'Nickname or profile code';
 
   @override
   String get teamInviteSlugFieldHint =>
-      'Ask the player to share their public profile link';
+      'Enter the player\'s name or public profile code';
 
   @override
   String get teamInviteSendAction => 'Send invite';
 
   @override
-  String get teamInviteNotFoundMessage =>
-      'No public profile found with that link.';
+  String get teamInviteNotFoundMessage => 'No public profile found.';
 
   @override
   String get teamInviteSentMessage => 'Invite sent.';
