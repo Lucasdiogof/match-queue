@@ -10,6 +10,7 @@ class WeekendLeagueHistoryEntry extends Equatable {
     required this.startsAt,
     required this.wins,
     required this.losses,
+    this.endsAt,
     this.season,
   });
 
@@ -17,6 +18,7 @@ class WeekendLeagueHistoryEntry extends Equatable {
   final int number;
   final String? season;
   final DateTime startsAt;
+  final DateTime? endsAt;
   final int wins;
   final int losses;
 
@@ -26,6 +28,7 @@ class WeekendLeagueHistoryEntry extends Equatable {
     number,
     season,
     startsAt,
+    endsAt,
     wins,
     losses,
   ];

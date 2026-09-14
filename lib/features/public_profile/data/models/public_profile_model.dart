@@ -73,6 +73,9 @@ List<WeekendLeagueHistoryEntry> _weekendLeagueHistoryFromJson(Object? json) {
           number: (row['number'] as num?)?.toInt() ?? 0,
           season: row['season'] as String?,
           startsAt: DateTime.parse('${row['starts_at']}'),
+          endsAt: row['ends_at'] != null
+              ? DateTime.parse('${row['ends_at']}')
+              : null,
           wins: (row['wins'] as num?)?.toInt() ?? 0,
           losses: (row['losses'] as num?)?.toInt() ?? 0,
         ),

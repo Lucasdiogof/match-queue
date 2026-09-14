@@ -128,6 +128,7 @@ class _ProfileBody extends StatelessWidget {
                   number: entry.number,
                   season: entry.season,
                   startsAt: entry.startsAt,
+                  endsAt: entry.endsAt,
                   wins: entry.wins,
                   losses: entry.losses,
                 ),

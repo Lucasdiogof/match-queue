@@ -6,10 +6,6 @@ import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_c
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
 import 'package:flutter/material.dart';
 
-/// Historico de Champions com selecao de semana -- setas em vez de lista
-/// inteira, pra caber uma semana de cada vez no mesmo card competitivo.
-/// Compartilhado entre o perfil de um companheiro de time e o perfil
-/// publico -- os dois mostram a MESMA coisa, so a fonte do dado muda.
 class WeekendLeagueHistoryCard extends StatefulWidget {
   const WeekendLeagueHistoryCard({required this.history, super.key});
 
@@ -51,6 +47,34 @@ class _WeekendLeagueHistoryCardState extends State<WeekendLeagueHistoryCard> {
         children: <Widget>[
           Row(
             children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (rank != null)
+                      Text(
+                        rank.label.toUpperCase(),
+                        style: const TextStyle(
+                          color: AppColors.darkTextPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Text(
+                '${entry.wins}–${entry.losses}',
+                style: const TextStyle(
+                  color: AppColors.darkTextPrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: <Widget>[
               IconButton(
                 onPressed: index < history.length - 1
                     ? () => setState(() => _index = index + 1)
@@ -58,30 +82,22 @@ class _WeekendLeagueHistoryCardState extends State<WeekendLeagueHistoryCard> {
                 icon: const Icon(Icons.chevron_left),
                 color: AppColors.darkTextPrimary,
                 disabledColor: AppColors.darkTextSecondary,
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      '#${entry.number}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.darkTextPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    if (entry.season != null)
-                      Text(
-                        entry.season!,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppColors.darkTextSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                  ],
+                child: Text(
+                  _dateRange(context, entry),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.darkTextSecondary,
+                    fontSize: 12,
+                  ),
                 ),
               ),
+              const SizedBox(width: AppSpacing.sm),
               IconButton(
                 onPressed: index > 0
                     ? () => setState(() => _index = index - 1)
@@ -89,26 +105,24 @@ class _WeekendLeagueHistoryCardState extends State<WeekendLeagueHistoryCard> {
                 icon: const Icon(Icons.chevron_right),
                 color: AppColors.darkTextPrimary,
                 disabledColor: AppColors.darkTextSecondary,
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
             ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          if (rank != null) ...<Widget>[
-            AppBadge(label: rank.label),
-            const SizedBox(height: AppSpacing.sm),
-          ],
-          Center(
-            child: Text(
-              '${entry.wins}–${entry.losses}',
-              style: const TextStyle(
-                color: AppColors.darkTextPrimary,
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-              ),
-            ),
           ),
         ],
       ),
     );
+  }
+
+  String _dateRange(BuildContext context, WeekendLeagueHistoryEntry entry) {
+    final l10n = context.l10n;
+    final start = l10n.historyEntryDate(entry.startsAt);
+    if (entry.endsAt != null) {
+      final end = l10n.historyEntryDate(entry.endsAt!);
+      return '#${entry.number} · $start – $end';
+    }
+    return '#${entry.number} · $start';
   }
 }

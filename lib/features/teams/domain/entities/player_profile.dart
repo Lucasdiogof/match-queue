@@ -67,6 +67,7 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
     required this.startsAt,
     required this.wins,
     required this.losses,
+    this.endsAt,
     this.season,
   });
 
@@ -74,6 +75,7 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
   final int number;
   final String? season;
   final DateTime startsAt;
+  final DateTime? endsAt;
   final int wins;
   final int losses;
 
@@ -83,6 +85,7 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
     number,
     season,
     startsAt,
+    endsAt,
     wins,
     losses,
   ];

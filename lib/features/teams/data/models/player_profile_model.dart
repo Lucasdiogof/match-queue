@@ -70,6 +70,9 @@ class PlayerProfileModel {
               number: row['number'] as int? ?? 0,
               season: row['season'] as String?,
               startsAt: DateTime.parse('${row['starts_at']}'),
+              endsAt: row['ends_at'] != null
+                  ? DateTime.parse('${row['ends_at']}')
+                  : null,
               wins: row['wins'] as int? ?? 0,
               losses: row['losses'] as int? ?? 0,
             ),
