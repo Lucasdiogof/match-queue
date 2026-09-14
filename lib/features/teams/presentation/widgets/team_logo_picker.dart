@@ -47,12 +47,14 @@ class TeamLogoPicker extends StatelessWidget {
   const TeamLogoPicker({
     required this.teamId,
     required this.isSaving,
+    required this.hasLogo,
     required this.preview,
     super.key,
   });
 
   final String teamId;
   final bool isSaving;
+  final bool hasLogo;
   final Widget preview;
 
   @override
@@ -68,6 +70,12 @@ class TeamLogoPicker extends StatelessWidget {
           icon: Icons.photo_camera_outlined,
           onPressed: isSaving ? null : () => _pickAndUpload(context),
         ),
+        if (hasLogo)
+          AppButton.ghost(
+            label: l10n.teamLogoRemoveAction,
+            icon: Icons.delete_outline,
+            onPressed: isSaving ? null : () => _remove(context),
+          ),
       ],
     );
   }
@@ -83,13 +91,40 @@ class TeamLogoPicker extends StatelessWidget {
       bytes: picked.bytes,
       contentType: picked.contentType,
     );
-    if (!ok && context.mounted) {
-      final failure = cubit.state.actionFailure;
-      if (failure != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(failure.localizedMessage(context.l10n))),
-        );
-      }
+    if (context.mounted) {
+      _showFailureIfAny(context, cubit, ok);
+    }
+  }
+
+  Future<void> _remove(BuildContext context) async {
+    final l10n = context.l10n;
+    final confirmed = await showAppConfirm(
+      context: context,
+      title: l10n.teamLogoRemoveConfirmTitle,
+      message: l10n.teamLogoRemoveConfirmMessage,
+      confirmLabel: l10n.teamLogoRemoveAction,
+      cancelLabel: l10n.actionCancel,
+      isDestructive: true,
+    );
+    if (!confirmed || !context.mounted) {
+      return;
+    }
+    final cubit = context.read<TeamsCubit>();
+    final ok = await cubit.removeTeamLogo(teamId);
+    if (context.mounted) {
+      _showFailureIfAny(context, cubit, ok);
+    }
+  }
+
+  void _showFailureIfAny(BuildContext context, TeamsCubit cubit, bool ok) {
+    if (ok || !context.mounted) {
+      return;
+    }
+    final failure = cubit.state.actionFailure;
+    if (failure != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(failure.localizedMessage(context.l10n))),
+      );
     }
   }
 }

@@ -73,6 +73,24 @@ class SupabaseRequestsRepository implements RequestsRepository {
   @override
   Stream<void> watchChanges() => _dataSource.watchMyRequests();
 
+  @override
+  Future<List<SentTeamInvitation>> fetchSentInvitations(String teamId) =>
+      _guard(() async {
+        final response = await _dataSource.getTeamSentInvitations(teamId);
+        return <SentTeamInvitation>[
+          if (response is List)
+            for (final entry in response)
+              if (entry is Map)
+                SentTeamInvitation(
+                  id: '${entry['id']}',
+                  inviteeUserId: '${entry['invitee_user_id']}',
+                  inviteeDisplayName: '${entry['invitee_display_name']}',
+                  inviteeAvatarUrl: entry['invitee_avatar_url'] as String?,
+                  createdAt: DateTime.parse('${entry['created_at']}'),
+                ),
+        ];
+      });
+
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
       return await action();

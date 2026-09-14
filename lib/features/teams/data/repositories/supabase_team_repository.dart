@@ -53,13 +53,14 @@ class SupabaseTeamRepository implements TeamRepository {
     bool clearTag = false,
     Duration? defaultSearchDuration,
     String? logoUrl,
+    bool clearLogoUrl = false,
   }) => _guard(() async {
     final values = <String, dynamic>{
       TeamModel.columnName: ?name,
       if (clearTag) TeamModel.columnTag: null else TeamModel.columnTag: ?tag,
       if (defaultSearchDuration != null)
         TeamModel.columnSearchDuration: defaultSearchDuration.inSeconds,
-      'logo_url': ?logoUrl,
+      if (clearLogoUrl) 'logo_url': null else 'logo_url': ?logoUrl,
     };
     if (values.isEmpty) {
       throw const TeamFailure(reason: TeamFailureReason.invalidName);
@@ -86,6 +87,10 @@ class SupabaseTeamRepository implements TeamRepository {
       extension: extension,
     );
   });
+
+  @override
+  Future<void> deleteTeamLogoFile(String teamId) =>
+      _guard(() => _dataSource.deleteTeamLogoFile(teamId));
 
   @override
   Future<Team> updateSearchDuration({

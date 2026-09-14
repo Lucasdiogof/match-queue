@@ -33,6 +33,8 @@ abstract interface class RequestsRemoteDataSource {
   });
 
   Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId);
+
+  Future<Object?> getTeamSentInvitations(String teamId);
 }
 
 class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
@@ -180,4 +182,10 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
         .maybeSingle();
     return row;
   }
+
+  @override
+  Future<Object?> getTeamSentInvitations(String teamId) => _client.rpc<dynamic>(
+    'get_team_sent_invitations',
+    params: <String, dynamic>{'p_team_id': teamId},
+  );
 }

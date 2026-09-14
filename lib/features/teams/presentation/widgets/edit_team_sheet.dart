@@ -95,81 +95,92 @@ class _EditTeamFormState extends State<_EditTeamForm> {
     final l10n = context.l10n;
 
     return BlocBuilder<TeamsCubit, TeamsState>(
-      builder: (context, state) => AppBottomSheet(
-        title: l10n.teamEditTitle,
-        actions: <Widget>[
-          AppButton(
-            label: l10n.actionSave,
-            isLoading: state.isSaving,
-            onPressed: state.isSaving ? null : _save,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          AppButton.ghost(
-            label: l10n.actionCancel,
-            expanded: true,
-            onPressed: state.isSaving
-                ? null
-                : () => Navigator.of(context).pop(false),
-          ),
-        ],
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              if (widget.isOwner) ...<Widget>[
-                Center(
-                  child: TeamLogoPicker(
-                    teamId: widget.team.id,
-                    isSaving: state.isSaving,
-                    preview: TeamAvatar(
-                      team: widget.team,
-                      size: AppSizing.avatarXl,
+      builder: (context, state) {
+        // Time ao vivo do cubit, nao o snapshot capturado quando o sheet
+        // abriu -- senao trocar/remover a logo na mesma sessao do sheet
+        // deixaria o botao "Remover logo" com o estado antigo.
+        var team = widget.team;
+        for (final userTeam in state.teams) {
+          if (userTeam.id == widget.team.id) {
+            team = userTeam.team;
+            break;
+          }
+        }
+
+        return AppBottomSheet(
+          title: l10n.teamEditTitle,
+          actions: <Widget>[
+            AppButton(
+              label: l10n.actionSave,
+              isLoading: state.isSaving,
+              onPressed: state.isSaving ? null : _save,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AppButton.ghost(
+              label: l10n.actionCancel,
+              expanded: true,
+              onPressed: state.isSaving
+                  ? null
+                  : () => Navigator.of(context).pop(false),
+            ),
+          ],
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                if (widget.isOwner) ...<Widget>[
+                  Center(
+                    child: TeamLogoPicker(
+                      teamId: team.id,
+                      isSaving: state.isSaving,
+                      hasLogo: team.logoUrl != null,
+                      preview: TeamAvatar(team: team, size: AppSizing.avatarXl),
                     ),
                   ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-              ],
-              if (state.actionFailure != null) ...<Widget>[
-                AppBanner(
-                  tone: AppBannerTone.danger,
-                  message: state.actionFailure!.localizedMessage(l10n),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-              ],
-              AppTextField(
-                label: l10n.teamNameLabel,
-                hintText: l10n.teamNameHint,
-                controller: _nameController,
-                enabled: !state.isSaving,
-                textInputAction: TextInputAction.next,
-                textCapitalization: TextCapitalization.words,
-                maxLength: AppValidators.teamNameMaxLength,
-                validator: (value) =>
-                    AppValidators.teamName(value)?.message(l10n),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              AppTextField(
-                label: l10n.teamTagLabel,
-                hintText: l10n.teamTagHint,
-                helperText: l10n.teamTagHelper,
-                controller: _tagController,
-                enabled: !state.isSaving,
-                textInputAction: TextInputAction.done,
-                textCapitalization: TextCapitalization.characters,
-                maxLength: AppValidators.teamTagMaxLength,
-                inputFormatters: <TextInputFormatter>[
-                  UpperCaseTextFormatter(),
-                  FilteringTextInputFormatter.allow(RegExp('[A-Z0-9]')),
+                  const SizedBox(height: AppSpacing.lg),
                 ],
-                validator: (value) =>
-                    AppValidators.teamTag(value)?.message(l10n),
-              ),
-            ],
+                if (state.actionFailure != null) ...<Widget>[
+                  AppBanner(
+                    tone: AppBannerTone.danger,
+                    message: state.actionFailure!.localizedMessage(l10n),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                ],
+                AppTextField(
+                  label: l10n.teamNameLabel,
+                  hintText: l10n.teamNameHint,
+                  controller: _nameController,
+                  enabled: !state.isSaving,
+                  textInputAction: TextInputAction.next,
+                  textCapitalization: TextCapitalization.words,
+                  maxLength: AppValidators.teamNameMaxLength,
+                  validator: (value) =>
+                      AppValidators.teamName(value)?.message(l10n),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                AppTextField(
+                  label: l10n.teamTagLabel,
+                  hintText: l10n.teamTagHint,
+                  helperText: l10n.teamTagHelper,
+                  controller: _tagController,
+                  enabled: !state.isSaving,
+                  textInputAction: TextInputAction.done,
+                  textCapitalization: TextCapitalization.characters,
+                  maxLength: AppValidators.teamTagMaxLength,
+                  inputFormatters: <TextInputFormatter>[
+                    UpperCaseTextFormatter(),
+                    FilteringTextInputFormatter.allow(RegExp('[A-Z0-9]')),
+                  ],
+                  validator: (value) =>
+                      AppValidators.teamTag(value)?.message(l10n),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

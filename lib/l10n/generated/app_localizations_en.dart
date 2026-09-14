@@ -2547,6 +2547,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamPendingRequestsSectionTitle => 'Pending requests';
 
   @override
+  String get teamSentInvitationsSectionTitle => 'Pending invites';
+
+  @override
+  String get teamInviteRevokeAction => 'Cancel invite';
+
+  @override
   String get teamMemberPromoteAction => 'Make manager';
 
   @override
@@ -2575,6 +2581,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get teamLogoAddAction => 'Add logo';
+
+  @override
+  String get teamLogoRemoveAction => 'Remove logo';
+
+  @override
+  String get teamLogoRemoveConfirmTitle => 'Remove the team logo?';
+
+  @override
+  String get teamLogoRemoveConfirmMessage =>
+      'The team goes back to showing initials instead of a logo.';
 
   @override
   String pendingMatchesCardTitle(int count) {
@@ -2766,6 +2782,310 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mechanicsPlaystylePlusEffectLabel => 'Plus effect';
 
   @override
+  String get playstyleCategoryFinishing => 'Finishing';
+
+  @override
+  String get playstyleCategoryPassing => 'Passing';
+
+  @override
+  String get playstyleCategoryDefending => 'Defending';
+
+  @override
+  String get playstyleCategoryBallControl => 'Ball control';
+
+  @override
+  String get playstyleCategoryPhysical => 'Physical';
+
+  @override
+  String get playstyleCategoryGoalkeeper => 'Goalkeeper';
+
+  @override
+  String get playstyleEffectFinesseShot =>
+      'Improves curve, accuracy and execution speed of finesse shots.';
+
+  @override
+  String get playstylePlusEffectFinesseShot =>
+      'Further boosts curve, accuracy and execution of finesse shots.';
+
+  @override
+  String get playstyleEffectChipShot =>
+      'Faster, more accurate chips over an advanced goalkeeper.';
+
+  @override
+  String get playstylePlusEffectChipShot =>
+      'Even faster and more accurate chips.';
+
+  @override
+  String get playstyleEffectPowerShot =>
+      'Increases power and ball speed on power shots.';
+
+  @override
+  String get playstylePlusEffectPowerShot =>
+      'Stronger power shot, with a lower and more controlled trajectory.';
+
+  @override
+  String get playstyleEffectDeadBall =>
+      'Free kicks and corners with more speed, curve and accuracy, and an extended trajectory preview.';
+
+  @override
+  String get playstylePlusEffectDeadBall =>
+      'Exceptional speed, curve and accuracy on set pieces, trajectory preview at its max.';
+
+  @override
+  String get playstyleEffectPrecisionHeader =>
+      'Improves accuracy and power on controlled headers.';
+
+  @override
+  String get playstylePlusEffectPrecisionHeader =>
+      'Even greater accuracy and power gain on headers.';
+
+  @override
+  String get playstyleEffectAcrobatic =>
+      'Improves volley accuracy and unlocks extra acrobatic animations.';
+
+  @override
+  String get playstylePlusEffectAcrobatic =>
+      'Higher accuracy and access to more effective acrobatic finishes.';
+
+  @override
+  String get playstyleEffectLowDrivenShot =>
+      'Improves accuracy on the low, driven shot.';
+
+  @override
+  String get playstylePlusEffectLowDrivenShot =>
+      'Bigger accuracy bonus on the low, driven shot.';
+
+  @override
+  String get playstyleEffectGamechanger =>
+      'More accurate finesse and outside-of-the-foot shots.';
+
+  @override
+  String get playstylePlusEffectGamechanger =>
+      'Much more accurate finesse and outside-of-the-foot shots.';
+
+  @override
+  String get playstyleEffectIncisivePass =>
+      'Improves through ball accuracy, curved pass bend and driven pass speed.';
+
+  @override
+  String get playstylePlusEffectIncisivePass =>
+      'Further boosts all three, without improving the receiver\'s first touch.';
+
+  @override
+  String get playstyleEffectPingedPass =>
+      'Ground passes travel faster without making the receiver\'s first touch harder.';
+
+  @override
+  String get playstylePlusEffectPingedPass =>
+      'Considerably faster ground passes.';
+
+  @override
+  String get playstyleEffectLongBallPass =>
+      'More accurate, faster long balls that are harder to intercept.';
+
+  @override
+  String get playstylePlusEffectLongBallPass =>
+      'Further boosts accuracy, speed and effectiveness of long balls.';
+
+  @override
+  String get playstyleEffectTikiTaka =>
+      'Improves difficult short and first-time passes, with contextual backheels.';
+
+  @override
+  String get playstylePlusEffectTikiTaka =>
+      'Bigger accuracy bonus on short and first-time passes.';
+
+  @override
+  String get playstyleEffectWhippedPass =>
+      'Crosses with more accuracy, speed and curve.';
+
+  @override
+  String get playstylePlusEffectWhippedPass =>
+      'Even stronger crosses, with an exceptionally powerful driven cross.';
+
+  @override
+  String get playstyleEffectInventive =>
+      'More accurate finesse and outside-of-the-foot passes.';
+
+  @override
+  String get playstylePlusEffectInventive =>
+      'Much more accurate finesse and outside-of-the-foot passes.';
+
+  @override
+  String get playstyleEffectJockey =>
+      'Improves movement while contain-marking and the transition between marking and running.';
+
+  @override
+  String get playstylePlusEffectJockey =>
+      'Bigger marking bonus, though the gap to a strong defender without the style is smaller in FC 27.';
+
+  @override
+  String get playstyleEffectBlock =>
+      'Increases range and effectiveness when blocking shots and passes.';
+
+  @override
+  String get playstylePlusEffectBlock =>
+      'Even greater blocking range and effectiveness.';
+
+  @override
+  String get playstyleEffectIntercept =>
+      'Improves interception range and the chance of keeping the ball afterward.';
+
+  @override
+  String get playstylePlusEffectIntercept =>
+      'Further boosts range and post-interception ball retention.';
+
+  @override
+  String get playstyleEffectAnticipate =>
+      'Improves standing tackle success and the chance of coming away with the ball.';
+
+  @override
+  String get playstylePlusEffectAnticipate =>
+      'Significantly bigger bonus on standing tackles and post-tackle retention.';
+
+  @override
+  String get playstyleEffectSlideTackle =>
+      'Improves ball retention near the player after a successful slide tackle.';
+
+  @override
+  String get playstylePlusEffectSlideTackle =>
+      'Even greater slide tackle coverage and ball retention.';
+
+  @override
+  String get playstyleEffectAerialFortress =>
+      'Allows higher jumps and more physical presence in defensive aerial duels.';
+
+  @override
+  String get playstylePlusEffectAerialFortress =>
+      'Even higher jumps and even more physical presence in aerial duels.';
+
+  @override
+  String get playstyleEffectTechnical =>
+      'Improves controlled sprint speed and control on wider turns.';
+
+  @override
+  String get playstylePlusEffectTechnical =>
+      'Bigger controlled sprint and dribbling control bonus.';
+
+  @override
+  String get playstyleEffectRapid =>
+      'Improves dribbling at top speed and reduces errors on high-speed touches.';
+
+  @override
+  String get playstylePlusEffectRapid => 'Bigger sprint dribbling bonus.';
+
+  @override
+  String get playstyleEffectFirstTouch =>
+      'Reduces first-touch errors and speeds up the transition into dribbling.';
+
+  @override
+  String get playstylePlusEffectFirstTouch =>
+      'Reduces first-touch errors even further, with an even faster transition into dribbling.';
+
+  @override
+  String get playstyleEffectTrickster =>
+      'Unlocks unique juggling/skill flourishes.';
+
+  @override
+  String get playstylePlusEffectTrickster =>
+      'Unlocks extra flourishes and more agility on sideways dribbles.';
+
+  @override
+  String get playstyleEffectPressProven =>
+      'Keeps the ball closer while jogging and improves protection against stronger opponents.';
+
+  @override
+  String get playstylePlusEffectPressProven =>
+      'Exceptional control while jogging and much better ball protection.';
+
+  @override
+  String get playstyleEffectQuickStep =>
+      'Improves acceleration on explosive sprints.';
+
+  @override
+  String get playstylePlusEffectQuickStep =>
+      'Bigger-than-normal acceleration bonus, but dependent on the player\'s Acceleration attribute.';
+
+  @override
+  String get playstyleEffectRelentless =>
+      'Reduces in-match fatigue and improves stamina recovery at half-time.';
+
+  @override
+  String get playstylePlusEffectRelentless =>
+      'Reduces the long-term effect of fatigue on attributes by a lot more.';
+
+  @override
+  String get playstyleEffectLongThrow =>
+      'Increases power and distance on throw-ins.';
+
+  @override
+  String get playstylePlusEffectLongThrow =>
+      'Even more power and maximum distance on throw-ins.';
+
+  @override
+  String get playstyleEffectBruiser =>
+      'More strength in physical tackle duels.';
+
+  @override
+  String get playstylePlusEffectBruiser =>
+      'Even bigger strength advantage in physical duels.';
+
+  @override
+  String get playstyleEffectEnforcer =>
+      'Improves shoulder duels while dribbling and makes ball protection more effective.';
+
+  @override
+  String get playstylePlusEffectEnforcer =>
+      'Improves shoulder duels and ball protection by a lot more.';
+
+  @override
+  String get playstyleEffectFarThrow =>
+      'Goalkeeper throws with more speed and distance.';
+
+  @override
+  String get playstylePlusEffectFarThrow =>
+      'Throws with even more speed and distance.';
+
+  @override
+  String get playstyleEffectFootwork => 'Faster foot saves with more reach.';
+
+  @override
+  String get playstylePlusEffectFootwork =>
+      'Even faster foot saves with more reach.';
+
+  @override
+  String get playstyleEffectCrossClaimer =>
+      'Comes out for crosses with more rhythm, better trajectory reading, and more reach/power when punching.';
+
+  @override
+  String get playstylePlusEffectCrossClaimer =>
+      'Even more rhythm, reading and punching power on crosses.';
+
+  @override
+  String get playstyleEffectRushOut =>
+      'Increases rush-out speed and reaction in one-on-one situations.';
+
+  @override
+  String get playstylePlusEffectRushOut =>
+      'Much greater rush-out speed and faster reactions.';
+
+  @override
+  String get playstyleEffectFarReach =>
+      'Improves diving save reach and unlocks extended-reach save animations.';
+
+  @override
+  String get playstylePlusEffectFarReach =>
+      'Even greater diving reach and stronger extended-reach saves.';
+
+  @override
+  String get playstyleEffectDeflector =>
+      'Improves the ability to parry the ball to safer areas, controlling the rebound.';
+
+  @override
+  String get playstylePlusEffectDeflector =>
+      'More parrying control, able to direct the save to a safe spot or a teammate.';
+
+  @override
   String get mechanicsPlaystyleFilterAny => 'All';
 
   @override
@@ -2782,6 +3102,510 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get controlsDefendingLabel => 'Defending';
+
+  @override
+  String get controlsActionColumnLabel => 'Action';
+
+  @override
+  String get controlsHeadingControls => 'Controls';
+
+  @override
+  String get controlsShootingAction1 => 'Normal shot / volley / header';
+
+  @override
+  String get controlsShootingAction2 => 'Low, driven shot';
+
+  @override
+  String get controlsShootingPs2 => '◯, then ◯ again while charging';
+
+  @override
+  String get controlsShootingXbox2 => 'B, then B again while charging';
+
+  @override
+  String get controlsShootingAction3 => 'Chip shot';
+
+  @override
+  String get controlsShootingAction4 => 'Finesse shot';
+
+  @override
+  String get controlsShootingAction5 => 'Low finesse shot';
+
+  @override
+  String get controlsShootingPs5 => 'R1 + ◯, then ◯ again';
+
+  @override
+  String get controlsShootingXbox5 => 'RB + B, then B again';
+
+  @override
+  String get controlsShootingAction6 => 'Power shot';
+
+  @override
+  String get controlsShootingAction7 => 'Low power shot';
+
+  @override
+  String get controlsShootingPs7 => 'L1 + R1 + ◯, then ◯ again';
+
+  @override
+  String get controlsShootingXbox7 => 'LB + RB + B, then B again';
+
+  @override
+  String get controlsShootingAction8 => 'Trick shot (rabona, bicycle kick...)';
+
+  @override
+  String get controlsShootingAction9 => 'Shot fake';
+
+  @override
+  String get controlsShootingPs9 => '◯ then ✕ + direction';
+
+  @override
+  String get controlsShootingXbox9 => 'B then A + direction';
+
+  @override
+  String get controlsShootingAction10 => 'Cancel shot';
+
+  @override
+  String get controlsShootingPs10 => 'L2 + R2 during the animation';
+
+  @override
+  String get controlsShootingXbox10 => 'LT + RT during the animation';
+
+  @override
+  String get controlsShootingHeadingWhenToUse => 'When to use each one';
+
+  @override
+  String get controlsShootingBullet1 =>
+      'Normal shot: the most versatile option, works well in most situations inside the box.';
+
+  @override
+  String get controlsShootingBullet2 =>
+      'Low shot: good for a cross shot or against an advanced keeper, low into the corners.';
+
+  @override
+  String get controlsShootingBullet3 =>
+      'Finesse shot: prioritizes placement and curve -- great when cutting inside and aiming for the far corner.';
+
+  @override
+  String get controlsShootingBullet4 =>
+      'Power shot: needs more time and free space, better from outside the box than inside it.';
+
+  @override
+  String get controlsShootingBullet5 =>
+      'Chip: when the keeper is off their line and there\'s space over them.';
+
+  @override
+  String get controlsShootingBullet6 =>
+      'Trick shot: more unpredictable, lets the animation decide between a bicycle kick, scorpion kick or another flourish depending on the player\'s position.';
+
+  @override
+  String get controlsShootingBullet7 =>
+      'Shot fake: fools the keeper or defender by changing direction without actually finishing.';
+
+  @override
+  String get controlsShootingHeadingPower => 'Power and aim';
+
+  @override
+  String get controlsShootingPowerParagraph =>
+      'The longer you hold the shot button, the more power the shot gets. Near goal, low or medium power usually works better than a full-power shot -- too much force is harder to control up close.';
+
+  @override
+  String get controlsPassingHeadingShort => 'Short (ground) pass';
+
+  @override
+  String get controlsPassingAction1 => 'Ground pass';
+
+  @override
+  String get controlsPassingAction2 => 'Lofted ground pass';
+
+  @override
+  String get controlsPassingAction3 => 'Driven ground pass';
+
+  @override
+  String get controlsPassingAction4 => 'Finesse pass';
+
+  @override
+  String get controlsPassingAction5 =>
+      'Driven ground pass with precision (curved)';
+
+  @override
+  String get controlsPassingHeadingThrough => 'Through pass';
+
+  @override
+  String get controlsPassingAction6 => 'Through pass';
+
+  @override
+  String get controlsPassingAction7 => 'Lofted through pass';
+
+  @override
+  String get controlsPassingAction8 => 'Driven through pass';
+
+  @override
+  String get controlsPassingAction9 => 'Lobbed through pass';
+
+  @override
+  String get controlsPassingAction10 => 'Power through pass';
+
+  @override
+  String get controlsPassingAction11 => 'Finesse through pass';
+
+  @override
+  String get controlsPassingHeadingCrossing => 'Lofted pass and crossing';
+
+  @override
+  String get controlsPassingAction12 => 'Lofted pass / cross';
+
+  @override
+  String get controlsPassingAction13 => 'Low cross';
+
+  @override
+  String get controlsPassingAction14 => 'Driven lofted pass';
+
+  @override
+  String get controlsPassingAction15 => 'Power lofted pass';
+
+  @override
+  String get controlsPassingAction16 => 'Power low cross';
+
+  @override
+  String get controlsPassingAction17 => 'Very high lofted pass';
+
+  @override
+  String get controlsPassingAction18 => 'Finesse lofted pass';
+
+  @override
+  String get controlsPassingHeadingOthers => 'Others';
+
+  @override
+  String get controlsPassingAction19 => 'Pass and Go';
+
+  @override
+  String get controlsPassingAction20 => 'Pass fake';
+
+  @override
+  String get controlsPassingPs20 => '□ then ✕ + direction';
+
+  @override
+  String get controlsPassingXbox20 => 'X then A + direction';
+
+  @override
+  String get controlsPassingHeadingIdeas => 'Ideas to apply';
+
+  @override
+  String get controlsPassingBullet1 =>
+      'Ground passes keep possession in midfield; through passes are for players making runs behind the defense.';
+
+  @override
+  String get controlsPassingBullet2 =>
+      'A lofted pass switches play quickly to the open side of the pitch.';
+
+  @override
+  String get controlsPassingBullet3 =>
+      'A driven pass comes out faster under pressure, but with less control than the precision one.';
+
+  @override
+  String get controlsPassingBullet4 =>
+      'The longer you hold the button, the more power the pass gets -- pairing the right type with the right power matters just as much as picking the right teammate.';
+
+  @override
+  String get controlsDefendingAction1 => 'Switch player';
+
+  @override
+  String get controlsDefendingAction2 => 'Contain / jockey';
+
+  @override
+  String get controlsDefendingPs2 => 'Hold L2';
+
+  @override
+  String get controlsDefendingXbox2 => 'Hold LT';
+
+  @override
+  String get controlsDefendingAction3 => 'Sprint jockey';
+
+  @override
+  String get controlsDefendingPs3 => 'Hold L2 + R2';
+
+  @override
+  String get controlsDefendingXbox3 => 'Hold LT + RT';
+
+  @override
+  String get controlsDefendingAction4 => 'Standing tackle';
+
+  @override
+  String get controlsDefendingAction5 => 'Hard standing tackle';
+
+  @override
+  String get controlsDefendingAction6 => 'Slide tackle';
+
+  @override
+  String get controlsDefendingAction7 => 'Hard slide tackle';
+
+  @override
+  String get controlsDefendingAction8 => 'Call for teammate pressure';
+
+  @override
+  String get controlsDefendingPs8 => 'Hold R1';
+
+  @override
+  String get controlsDefendingXbox8 => 'Hold RB';
+
+  @override
+  String get controlsDefendingAction9 => 'Partial team press';
+
+  @override
+  String get controlsDefendingPs9 => 'R1, then hold R1';
+
+  @override
+  String get controlsDefendingXbox9 => 'RB, then hold RB';
+
+  @override
+  String get controlsDefendingAction10 => 'Goalkeeper rush off the line';
+
+  @override
+  String get controlsDefendingPs10 => 'Hold △';
+
+  @override
+  String get controlsDefendingXbox10 => 'Hold Y';
+
+  @override
+  String get controlsDefendingHeadingTips => 'Tips';
+
+  @override
+  String get controlsDefendingBullet1 =>
+      'Jockey first, tackle later: keep the defender facing the attacker, close down space, and only try the tackle once the ball is exposed.';
+
+  @override
+  String get controlsDefendingBullet2 =>
+      'A slide tackle is a last resort -- missing it leaves the opponent free or can turn into a foul, card or penalty.';
+
+  @override
+  String get controlsDefendingBullet3 =>
+      'Switch players manually instead of always grabbing whoever\'s closest to the ball: sometimes covering the more dangerous passing lane matters more than pressuring someone already marked.';
+
+  @override
+  String get controlsDefendingBullet4 =>
+      'Don\'t pull the center-back forward unnecessarily -- it opens up space behind the defense for a through ball.';
+
+  @override
+  String get controlsDefendingBullet5 =>
+      'Against a counter-attack, the priority is delaying the advance (dropping back to protect the middle) and only then closing down the play, giving teammates time to get back.';
+
+  @override
+  String get controlsDefendingBullet6 =>
+      'When defending a cross, don\'t just watch the winger -- cover whoever\'s arriving at the back post too.';
+
+  @override
+  String get controlsDribblingIntroParagraph =>
+      'Every player has a Skill Moves rating (1 to 5 stars) that determines which of these moves they can perform. Commands use the right stick and are the same on PlayStation and Xbox/PC.';
+
+  @override
+  String controlsDribblingStarWord(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'stars',
+      one: 'star',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get controlsDribblingSkillName1 => 'Simple sideways elastico';
+
+  @override
+  String get controlsDribblingSkillControl1 => 'Hold L1+R1 + direction';
+
+  @override
+  String get controlsDribblingSkillName2 => 'Flick Up';
+
+  @override
+  String get controlsDribblingSkillControl2 => 'R3';
+
+  @override
+  String get controlsDribblingSkillName3 => 'Forward body feint';
+
+  @override
+  String get controlsDribblingSkillControl3 => 'Hold L1+R1 + left stick down';
+
+  @override
+  String get controlsDribblingSkillName4 => 'Stepover right';
+
+  @override
+  String get controlsDribblingSkillControl4 => 'Spin right stick ↑→';
+
+  @override
+  String get controlsDribblingSkillName5 => 'Stepover left';
+
+  @override
+  String get controlsDribblingSkillControl5 => 'Spin right stick ↑←';
+
+  @override
+  String get controlsDribblingSkillName6 => 'Ball Roll right';
+
+  @override
+  String get controlsDribblingSkillControl6 => 'Hold right stick →';
+
+  @override
+  String get controlsDribblingSkillName7 => 'Ball Roll left';
+
+  @override
+  String get controlsDribblingSkillControl7 => 'Hold right stick ←';
+
+  @override
+  String get controlsDribblingSkillName8 => 'Drag Back';
+
+  @override
+  String get controlsDribblingSkillControl8 => 'L2+R2 + flick left stick ↓';
+
+  @override
+  String get controlsDribblingSkillName9 => 'Ball roll cut right';
+
+  @override
+  String get controlsDribblingSkillControl9 => 'Spin right stick ↓ to ←';
+
+  @override
+  String get controlsDribblingSkillName10 => 'Ball roll cut left';
+
+  @override
+  String get controlsDribblingSkillControl10 => 'Spin right stick ↓ to →';
+
+  @override
+  String get controlsDribblingSkillName11 => 'Feint and go right';
+
+  @override
+  String get controlsDribblingSkillControl11 => 'Spin right stick ←↓→';
+
+  @override
+  String get controlsDribblingSkillName12 => 'Feint and go left';
+
+  @override
+  String get controlsDribblingSkillControl12 => 'Spin right stick →↓←';
+
+  @override
+  String get controlsDribblingSkillName13 =>
+      'Ball roll heel-to-heel while running';
+
+  @override
+  String get controlsDribblingSkillControl13 =>
+      'Hold L2 + ■/○ then X + left stick';
+
+  @override
+  String get controlsDribblingSkillName14 => 'Simple rainbow flick';
+
+  @override
+  String get controlsDribblingSkillControl14 => 'Flick right stick ↓↑↑';
+
+  @override
+  String get controlsDribblingSkillName15 => 'Turn left';
+
+  @override
+  String get controlsDribblingSkillControl15 =>
+      'Hold R2+R1 + spin right stick ↖';
+
+  @override
+  String get controlsDribblingSkillName16 => 'Turn right';
+
+  @override
+  String get controlsDribblingSkillControl16 =>
+      'Hold R2+R1 + spin right stick ↗';
+
+  @override
+  String get controlsDribblingSkillName17 => 'Pass fake';
+
+  @override
+  String get controlsDribblingSkillControl17 => 'Hold R2 + ■/○ then X';
+
+  @override
+  String get controlsDribblingSkillName18 => 'Cut with a ball roll';
+
+  @override
+  String get controlsDribblingSkillControl18 =>
+      'Hold right stick ← + left stick →';
+
+  @override
+  String get controlsDribblingSkillName19 => 'Elastico';
+
+  @override
+  String get controlsDribblingSkillControl19 => 'Right stick → spin ↓←';
+
+  @override
+  String get controlsDribblingSkillName20 => 'Reverse elastico';
+
+  @override
+  String get controlsDribblingSkillControl20 => 'Right stick ← spin ↓→';
+
+  @override
+  String get controlsDribblingSkillName21 => 'Advanced rainbow flick';
+
+  @override
+  String get controlsDribblingSkillControl21 =>
+      'Flick right stick ↓ then hold ↑↑';
+
+  @override
+  String get controlsDribblingSkillName22 => 'Sombrero flick (over the marker)';
+
+  @override
+  String get controlsDribblingSkillControl22 => 'Flick right stick ↑↑↓';
+
+  @override
+  String get controlsDribblingSkillName23 => 'Fake rabona';
+
+  @override
+  String get controlsDribblingSkillControl23 =>
+      'Hold L2 + ■/○ then X + left stick ↓';
+
+  @override
+  String get controlsDribblingHeadingOtherControls =>
+      'Other dribbling controls';
+
+  @override
+  String get controlsDribblingAction1 => 'Controlled sprint';
+
+  @override
+  String get controlsDribblingPs1 => 'Hold R1 + direction';
+
+  @override
+  String get controlsDribblingXbox1 => 'Hold RB + direction';
+
+  @override
+  String get controlsDribblingAction2 => 'Shield the ball';
+
+  @override
+  String get controlsDribblingPs2 => 'Hold L2';
+
+  @override
+  String get controlsDribblingXbox2 => 'Hold LT';
+
+  @override
+  String get controlsDribblingAction3 => 'Heavy touch';
+
+  @override
+  String get controlsDribblingPs3 => 'R1 + flick right stick';
+
+  @override
+  String get controlsDribblingXbox3 => 'RB + flick right stick';
+
+  @override
+  String get controlsDribblingAction4 => 'Shot fake';
+
+  @override
+  String get controlsDribblingPs4 => '◯ then ✕ + direction';
+
+  @override
+  String get controlsDribblingXbox4 => 'B then A + direction';
+
+  @override
+  String get controlsDribblingHeadingIdeas => 'Ideas to apply';
+
+  @override
+  String get controlsDribblingBullet1 =>
+      'Good dribbling reacts to the defender\'s movement -- flourishing for no reason usually makes it easier to lose the ball.';
+
+  @override
+  String get controlsDribblingBullet2 =>
+      'Change pace instead of always sprinting flat out: normal speed close to the defender, controlled sprint to close in, sprint only once space has already opened up.';
+
+  @override
+  String get controlsDribblingBullet3 =>
+      'Create space first, accelerate later: change direction or do a simple dribble, wait for the marker to commit, only then accelerate into the open space.';
 
   @override
   String get managersBlockedTitle => 'No real data yet';

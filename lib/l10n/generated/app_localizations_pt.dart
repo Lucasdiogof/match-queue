@@ -2549,6 +2549,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamPendingRequestsSectionTitle => 'Pedidos pendentes';
 
   @override
+  String get teamSentInvitationsSectionTitle => 'Convites pendentes';
+
+  @override
+  String get teamInviteRevokeAction => 'Cancelar convite';
+
+  @override
   String get teamMemberPromoteAction => 'Tornar gerente';
 
   @override
@@ -2577,6 +2583,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get teamLogoAddAction => 'Adicionar logo';
+
+  @override
+  String get teamLogoRemoveAction => 'Remover logo';
+
+  @override
+  String get teamLogoRemoveConfirmTitle => 'Remover a logo do time?';
+
+  @override
+  String get teamLogoRemoveConfirmMessage =>
+      'O time volta a mostrar as iniciais no lugar da logo.';
 
   @override
   String pendingMatchesCardTitle(int count) {
@@ -2769,6 +2785,311 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mechanicsPlaystylePlusEffectLabel => 'Efeito Plus';
 
   @override
+  String get playstyleCategoryFinishing => 'Finalização';
+
+  @override
+  String get playstyleCategoryPassing => 'Passe';
+
+  @override
+  String get playstyleCategoryDefending => 'Defesa';
+
+  @override
+  String get playstyleCategoryBallControl => 'Controle de bola';
+
+  @override
+  String get playstyleCategoryPhysical => 'Físico';
+
+  @override
+  String get playstyleCategoryGoalkeeper => 'Goleiro';
+
+  @override
+  String get playstyleEffectFinesseShot =>
+      'Melhora curva, precisão e velocidade de execução do chute de efeito.';
+
+  @override
+  String get playstylePlusEffectFinesseShot =>
+      'Reforça ainda mais curva, precisão e execução do chute de efeito.';
+
+  @override
+  String get playstyleEffectChipShot =>
+      'Cavadinhas mais rápidas e precisas sobre o goleiro adiantado.';
+
+  @override
+  String get playstylePlusEffectChipShot =>
+      'Cavadinha ainda mais rápida e precisa.';
+
+  @override
+  String get playstyleEffectPowerShot =>
+      'Aumenta força e velocidade da bola no chute de potência.';
+
+  @override
+  String get playstylePlusEffectPowerShot =>
+      'Chute de potência mais forte, com trajetória mais baixa e controlada.';
+
+  @override
+  String get playstyleEffectDeadBall =>
+      'Cobranças de falta e escanteio com mais velocidade, curva e precisão, e prévia de trajetória estendida.';
+
+  @override
+  String get playstylePlusEffectDeadBall =>
+      'Cobranças com velocidade, curva e precisão excepcionais, prévia de trajetória no máximo.';
+
+  @override
+  String get playstyleEffectPrecisionHeader =>
+      'Melhora precisão e potência de cabeceio controlado.';
+
+  @override
+  String get playstylePlusEffectPrecisionHeader =>
+      'Ganho de precisão e potência ainda maior no cabeceio.';
+
+  @override
+  String get playstyleEffectAcrobatic =>
+      'Melhora precisão de voleios e libera animações acrobáticas extras.';
+
+  @override
+  String get playstylePlusEffectAcrobatic =>
+      'Precisão maior e acesso a finalizações acrobáticas mais eficazes.';
+
+  @override
+  String get playstyleEffectLowDrivenShot =>
+      'Melhora a precisão do chute rasteiro e forte.';
+
+  @override
+  String get playstylePlusEffectLowDrivenShot =>
+      'Bônus de precisão maior no chute rasteiro e forte.';
+
+  @override
+  String get playstyleEffectGamechanger =>
+      'Chutes de efeito e de trivela (parte externa do pé) com mais precisão.';
+
+  @override
+  String get playstylePlusEffectGamechanger =>
+      'Chutes de efeito e trivela com precisão muito maior.';
+
+  @override
+  String get playstyleEffectIncisivePass =>
+      'Melhora precisão do passe em profundidade, curva do passe com efeito e velocidade do passe de precisão.';
+
+  @override
+  String get playstylePlusEffectIncisivePass =>
+      'Reforça ainda mais os três, sem melhorar o primeiro toque de quem recebe.';
+
+  @override
+  String get playstyleEffectPingedPass =>
+      'Passes rasteiros viajam mais rápido sem dificultar o primeiro toque de quem recebe.';
+
+  @override
+  String get playstylePlusEffectPingedPass =>
+      'Passes rasteiros consideravelmente mais rápidos.';
+
+  @override
+  String get playstyleEffectLongBallPass =>
+      'Lançamentos longos mais precisos, rápidos e difíceis de interceptar.';
+
+  @override
+  String get playstylePlusEffectLongBallPass =>
+      'Reforça ainda mais precisão, velocidade e eficácia dos lançamentos longos.';
+
+  @override
+  String get playstyleEffectTikiTaka =>
+      'Melhora passes curtos e de primeira difíceis, com backheels contextuais.';
+
+  @override
+  String get playstylePlusEffectTikiTaka =>
+      'Bônus de precisão maior nos passes curtos e de primeira.';
+
+  @override
+  String get playstyleEffectWhippedPass =>
+      'Cruzamentos com mais precisão, velocidade e curva.';
+
+  @override
+  String get playstylePlusEffectWhippedPass =>
+      'Cruzamentos ainda mais fortes, com cruzamento forte de potência excepcional.';
+
+  @override
+  String get playstyleEffectInventive =>
+      'Passes de efeito e de trivela com mais precisão.';
+
+  @override
+  String get playstylePlusEffectInventive =>
+      'Passes de efeito e trivela com precisão muito maior.';
+
+  @override
+  String get playstyleEffectJockey =>
+      'Melhora o movimento ao marcar de frente (contain) e a transição entre marcar e correr.';
+
+  @override
+  String get playstylePlusEffectJockey =>
+      'Bônus de marcação maior, embora a diferença pra um defensor forte sem o estilo seja menor no FC 27.';
+
+  @override
+  String get playstyleEffectBlock =>
+      'Aumenta alcance e eficácia ao bloquear chutes e passes.';
+
+  @override
+  String get playstylePlusEffectBlock =>
+      'Alcance e eficácia de bloqueio ainda maiores.';
+
+  @override
+  String get playstyleEffectIntercept =>
+      'Melhora alcance de interceptação e a chance de manter a bola depois dela.';
+
+  @override
+  String get playstylePlusEffectIntercept =>
+      'Reforça ainda mais alcance e retenção de bola pós-interceptação.';
+
+  @override
+  String get playstyleEffectAnticipate =>
+      'Melhora o sucesso do carrinho em pé e a chance de sair com a bola.';
+
+  @override
+  String get playstylePlusEffectAnticipate =>
+      'Bônus significativamente maior no carrinho em pé e na retenção pós-desarme.';
+
+  @override
+  String get playstyleEffectSlideTackle =>
+      'Melhora a retenção da bola perto do jogador após um carrinho deslizante bem-sucedido.';
+
+  @override
+  String get playstylePlusEffectSlideTackle =>
+      'Cobertura de carrinho deslizante e retenção de bola ainda maiores.';
+
+  @override
+  String get playstyleEffectAerialFortress =>
+      'Permite saltos mais altos e mais presença física em disputas aéreas defensivas.';
+
+  @override
+  String get playstylePlusEffectAerialFortress =>
+      'Saltos ainda mais altos e presença física ainda maior nas disputas aéreas.';
+
+  @override
+  String get playstyleEffectTechnical =>
+      'Melhora a velocidade da corrida controlada e o controle em curvas mais largas.';
+
+  @override
+  String get playstylePlusEffectTechnical =>
+      'Bônus maior de corrida controlada e controle de drible.';
+
+  @override
+  String get playstyleEffectRapid =>
+      'Melhora o drible em velocidade máxima e reduz erros em toques em alta velocidade.';
+
+  @override
+  String get playstylePlusEffectRapid => 'Bônus maior de drible em sprint.';
+
+  @override
+  String get playstyleEffectFirstTouch =>
+      'Reduz o erro de primeiro toque e acelera a transição pro drible.';
+
+  @override
+  String get playstylePlusEffectFirstTouch =>
+      'Reduz ainda mais o erro de primeiro toque, transição pro drible ainda mais rápida.';
+
+  @override
+  String get playstyleEffectTrickster =>
+      'Libera embaixadinhas/floreios únicos.';
+
+  @override
+  String get playstylePlusEffectTrickster =>
+      'Libera floreios extras e mais agilidade ao driblar de lado.';
+
+  @override
+  String get playstyleEffectPressProven =>
+      'Mantém a bola mais perto ao trotar e melhora a proteção contra oponentes mais fortes.';
+
+  @override
+  String get playstylePlusEffectPressProven =>
+      'Controle excepcional ao trotar e proteção de bola muito melhor.';
+
+  @override
+  String get playstyleEffectQuickStep =>
+      'Melhora a aceleração no sprint explosivo.';
+
+  @override
+  String get playstylePlusEffectQuickStep =>
+      'Bônus de aceleração maior que o normal, mas dependente do atributo de Aceleração do jogador.';
+
+  @override
+  String get playstyleEffectRelentless =>
+      'Reduz o cansaço durante a partida e melhora a recuperação de fôlego no intervalo.';
+
+  @override
+  String get playstylePlusEffectRelentless =>
+      'Reduz muito mais o efeito do cansaço de longo prazo nos atributos.';
+
+  @override
+  String get playstyleEffectLongThrow =>
+      'Aumenta força e distância do arremesso lateral.';
+
+  @override
+  String get playstylePlusEffectLongThrow =>
+      'Arremesso lateral com ainda mais força e distância máxima.';
+
+  @override
+  String get playstyleEffectBruiser =>
+      'Mais força em disputas físicas de carrinho.';
+
+  @override
+  String get playstylePlusEffectBruiser =>
+      'Vantagem de força ainda maior nas disputas físicas.';
+
+  @override
+  String get playstyleEffectEnforcer =>
+      'Melhora disputas de ombro ao driblar e torna a proteção de bola mais eficaz.';
+
+  @override
+  String get playstylePlusEffectEnforcer =>
+      'Melhora muito mais as disputas de ombro e a proteção de bola.';
+
+  @override
+  String get playstyleEffectFarThrow =>
+      'Arremessos do goleiro com mais velocidade e distância.';
+
+  @override
+  String get playstylePlusEffectFarThrow =>
+      'Arremessos com velocidade e distância ainda maiores.';
+
+  @override
+  String get playstyleEffectFootwork =>
+      'Defesas com os pés mais rápidas e com mais alcance.';
+
+  @override
+  String get playstylePlusEffectFootwork =>
+      'Defesas com os pés ainda mais rápidas e com mais alcance.';
+
+  @override
+  String get playstyleEffectCrossClaimer =>
+      'Sai para cruzamentos com mais ritmo, melhor leitura de trajetória, e mais alcance/força no soco.';
+
+  @override
+  String get playstylePlusEffectCrossClaimer =>
+      'Ainda mais ritmo, leitura e força no soco em cruzamentos.';
+
+  @override
+  String get playstyleEffectRushOut =>
+      'Aumenta velocidade de saída e reação em situações de um contra um.';
+
+  @override
+  String get playstylePlusEffectRushOut =>
+      'Velocidade de saída muito maior e reações mais rápidas.';
+
+  @override
+  String get playstyleEffectFarReach =>
+      'Melhora o alcance em defesas de mergulho e libera animações de alcance estendido.';
+
+  @override
+  String get playstylePlusEffectFarReach =>
+      'Alcance de mergulho ainda maior e defesas de alcance estendido mais fortes.';
+
+  @override
+  String get playstyleEffectDeflector =>
+      'Melhora a capacidade de espalmar a bola pra áreas mais seguras, controlando o rebote.';
+
+  @override
+  String get playstylePlusEffectDeflector =>
+      'Mais controle de espalmada, podendo direcionar a defesa pra um lugar seguro ou pra um companheiro.';
+
+  @override
   String get mechanicsPlaystyleFilterAny => 'Todas';
 
   @override
@@ -2785,6 +3106,511 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get controlsDefendingLabel => 'Defesa';
+
+  @override
+  String get controlsActionColumnLabel => 'Ação';
+
+  @override
+  String get controlsHeadingControls => 'Controles';
+
+  @override
+  String get controlsShootingAction1 => 'Chute normal / voleio / cabeceio';
+
+  @override
+  String get controlsShootingAction2 => 'Chute rasteiro e forte';
+
+  @override
+  String get controlsShootingPs2 => '◯, depois ◯ de novo ao carregar';
+
+  @override
+  String get controlsShootingXbox2 => 'B, depois B de novo ao carregar';
+
+  @override
+  String get controlsShootingAction3 => 'Cavadinha';
+
+  @override
+  String get controlsShootingAction4 => 'Chute de efeito';
+
+  @override
+  String get controlsShootingAction5 => 'Chute de efeito rasteiro';
+
+  @override
+  String get controlsShootingPs5 => 'R1 + ◯, depois ◯ de novo';
+
+  @override
+  String get controlsShootingXbox5 => 'RB + B, depois B de novo';
+
+  @override
+  String get controlsShootingAction6 => 'Chute de potência';
+
+  @override
+  String get controlsShootingAction7 => 'Chute de potência rasteiro';
+
+  @override
+  String get controlsShootingPs7 => 'L1 + R1 + ◯, depois ◯ de novo';
+
+  @override
+  String get controlsShootingXbox7 => 'LB + RB + B, depois B de novo';
+
+  @override
+  String get controlsShootingAction8 =>
+      'Chute de estilo (trivela, bicicleta...)';
+
+  @override
+  String get controlsShootingAction9 => 'Fake de chute';
+
+  @override
+  String get controlsShootingPs9 => '◯ depois ✕ + direção';
+
+  @override
+  String get controlsShootingXbox9 => 'B depois A + direção';
+
+  @override
+  String get controlsShootingAction10 => 'Cancelar chute';
+
+  @override
+  String get controlsShootingPs10 => 'L2 + R2 durante a animação';
+
+  @override
+  String get controlsShootingXbox10 => 'LT + RT durante a animação';
+
+  @override
+  String get controlsShootingHeadingWhenToUse => 'Quando usar cada um';
+
+  @override
+  String get controlsShootingBullet1 =>
+      'Chute normal: opção mais versátil, funciona bem na maioria das situações dentro da área.';
+
+  @override
+  String get controlsShootingBullet2 =>
+      'Chute rasteiro: bom pra bater cruzado ou no goleiro adiantado, rasteiro nos cantos.';
+
+  @override
+  String get controlsShootingBullet3 =>
+      'Chute de efeito: prioriza colocação e curva -- ótimo cortando pra dentro pelo lado e mirando o canto mais longe.';
+
+  @override
+  String get controlsShootingBullet4 =>
+      'Chute de potência: exige mais tempo e espaço livre, melhor fora da área do que dentro dela.';
+
+  @override
+  String get controlsShootingBullet5 =>
+      'Cavadinha: quando o goleiro sai da linha e sobra espaço por cima dele.';
+
+  @override
+  String get controlsShootingBullet6 =>
+      'Chute de estilo: mais imprevisível, deixa a animação decidir entre bicicleta, carrinho de fora ou outro floreio conforme a posição do jogador.';
+
+  @override
+  String get controlsShootingBullet7 =>
+      'Fake de chute: engana o goleiro ou o defensor mudando de direção sem finalizar de verdade.';
+
+  @override
+  String get controlsShootingHeadingPower => 'Potência e mira';
+
+  @override
+  String get controlsShootingPowerParagraph =>
+      'Quanto mais tempo segura o botão de chute, mais força o chute recebe. Perto do gol, potência baixa ou média costuma funcionar melhor que o chute no talo -- excesso de força é mais difícil de controlar de perto.';
+
+  @override
+  String get controlsPassingHeadingShort => 'Passe curto (rasteiro)';
+
+  @override
+  String get controlsPassingAction1 => 'Passe rasteiro';
+
+  @override
+  String get controlsPassingAction2 => 'Passe rasteiro elevado';
+
+  @override
+  String get controlsPassingAction3 => 'Passe rasteiro forte';
+
+  @override
+  String get controlsPassingAction4 => 'Passe de efeito';
+
+  @override
+  String get controlsPassingAction5 => 'Passe rasteiro de precisão (com curva)';
+
+  @override
+  String get controlsPassingHeadingThrough =>
+      'Passe em profundidade (through pass)';
+
+  @override
+  String get controlsPassingAction6 => 'Passe em profundidade';
+
+  @override
+  String get controlsPassingAction7 => 'Passe em profundidade elevado';
+
+  @override
+  String get controlsPassingAction8 => 'Passe em profundidade de precisão';
+
+  @override
+  String get controlsPassingAction9 => 'Passe em profundidade lobado';
+
+  @override
+  String get controlsPassingAction10 => 'Passe em profundidade forte';
+
+  @override
+  String get controlsPassingAction11 => 'Passe em profundidade de efeito';
+
+  @override
+  String get controlsPassingHeadingCrossing => 'Lançamento e cruzamento';
+
+  @override
+  String get controlsPassingAction12 => 'Lançamento / cruzamento';
+
+  @override
+  String get controlsPassingAction13 => 'Cruzamento rasteiro';
+
+  @override
+  String get controlsPassingAction14 => 'Lançamento de precisão';
+
+  @override
+  String get controlsPassingAction15 => 'Lançamento forte';
+
+  @override
+  String get controlsPassingAction16 => 'Cruzamento rasteiro forte';
+
+  @override
+  String get controlsPassingAction17 => 'Lançamento bem alto';
+
+  @override
+  String get controlsPassingAction18 => 'Lançamento de efeito';
+
+  @override
+  String get controlsPassingHeadingOthers => 'Outros';
+
+  @override
+  String get controlsPassingAction19 => 'Toque e vai (Pass and Go)';
+
+  @override
+  String get controlsPassingAction20 => 'Fake de passe';
+
+  @override
+  String get controlsPassingPs20 => '□ depois ✕ + direção';
+
+  @override
+  String get controlsPassingXbox20 => 'X depois A + direção';
+
+  @override
+  String get controlsPassingHeadingIdeas => 'Ideias pra aplicar';
+
+  @override
+  String get controlsPassingBullet1 =>
+      'Passe rasteiro mantém a posse no meio-campo; passe em profundidade serve pra jogadores fazendo corrida por trás da defesa.';
+
+  @override
+  String get controlsPassingBullet2 =>
+      'Lançamento troca o jogo rápido pro lado aberto do campo.';
+
+  @override
+  String get controlsPassingBullet3 =>
+      'Passe forte (driven) sai mais rápido sob pressão, mas com menos controle do que o de precisão.';
+
+  @override
+  String get controlsPassingBullet4 =>
+      'Quanto mais tempo segura o botão, mais força o passe recebe -- combinar o tipo certo com a força certa importa tanto quanto escolher o companheiro certo.';
+
+  @override
+  String get controlsDefendingAction1 => 'Trocar de jogador';
+
+  @override
+  String get controlsDefendingAction2 => 'Marcação (contain / jockey)';
+
+  @override
+  String get controlsDefendingPs2 => 'Segurar L2';
+
+  @override
+  String get controlsDefendingXbox2 => 'Segurar LT';
+
+  @override
+  String get controlsDefendingAction3 => 'Marcação em sprint';
+
+  @override
+  String get controlsDefendingPs3 => 'Segurar L2 + R2';
+
+  @override
+  String get controlsDefendingXbox3 => 'Segurar LT + RT';
+
+  @override
+  String get controlsDefendingAction4 => 'Carrinho em pé';
+
+  @override
+  String get controlsDefendingAction5 => 'Carrinho em pé forte';
+
+  @override
+  String get controlsDefendingAction6 => 'Carrinho deslizante';
+
+  @override
+  String get controlsDefendingAction7 => 'Carrinho deslizante forte';
+
+  @override
+  String get controlsDefendingAction8 => 'Pedir pressão de um companheiro';
+
+  @override
+  String get controlsDefendingPs8 => 'Segurar R1';
+
+  @override
+  String get controlsDefendingXbox8 => 'Segurar RB';
+
+  @override
+  String get controlsDefendingAction9 => 'Pressão coletiva parcial';
+
+  @override
+  String get controlsDefendingPs9 => 'R1, depois segurar R1';
+
+  @override
+  String get controlsDefendingXbox9 => 'RB, depois segurar RB';
+
+  @override
+  String get controlsDefendingAction10 => 'Goleiro adiantar a linha';
+
+  @override
+  String get controlsDefendingPs10 => 'Segurar △';
+
+  @override
+  String get controlsDefendingXbox10 => 'Segurar Y';
+
+  @override
+  String get controlsDefendingHeadingTips => 'Dicas';
+
+  @override
+  String get controlsDefendingBullet1 =>
+      'Marcação (jockey) primeiro, carrinho depois: mantenha o defensor de frente pro atacante, reduza o espaço, e só tente o desarme quando a bola ficar exposta.';
+
+  @override
+  String get controlsDefendingBullet2 =>
+      'Carrinho deslizante é opção de último recurso -- errar deixa o adversário livre ou pode virar falta, cartão ou pênalti.';
+
+  @override
+  String get controlsDefendingBullet3 =>
+      'Troque de jogador manualmente em vez de sempre pegar o mais perto da bola: às vezes cobrir a linha de passe mais perigosa importa mais do que pressionar quem já está marcado.';
+
+  @override
+  String get controlsDefendingBullet4 =>
+      'Não puxe o zagueiro pra frente sem necessidade -- isso abre espaço nas costas da defesa pra um passe em profundidade.';
+
+  @override
+  String get controlsDefendingBullet5 =>
+      'Contra um contra-ataque, prioridade é atrasar o avanço (recuar protegendo o meio) e só então fechar o lance, dando tempo pros companheiros se recomporem.';
+
+  @override
+  String get controlsDefendingBullet6 =>
+      'Ao defender cruzamento, não olhe só pro ponta -- cubra também quem chega no segundo pau.';
+
+  @override
+  String get controlsDribblingIntroParagraph =>
+      'Cada jogador tem uma nota de Skill Moves (1 a 5 estrelas) que define quais desses movimentos ele consegue fazer. Comandos usam o analógico direito e são iguais em PlayStation e Xbox/PC.';
+
+  @override
+  String controlsDribblingStarWord(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'estrelas',
+      one: 'estrela',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get controlsDribblingSkillName1 => 'Elástico simples pro lado';
+
+  @override
+  String get controlsDribblingSkillControl1 => 'Segurar L1+R1 + direção';
+
+  @override
+  String get controlsDribblingSkillName2 => 'Chapéu (Flick Up)';
+
+  @override
+  String get controlsDribblingSkillControl2 => 'R3';
+
+  @override
+  String get controlsDribblingSkillName3 => 'Giro de corpo pra frente';
+
+  @override
+  String get controlsDribblingSkillControl3 =>
+      'Segurar L1+R1 + esquerdo p/ baixo';
+
+  @override
+  String get controlsDribblingSkillName4 => 'Pedalada (Stepover) direita';
+
+  @override
+  String get controlsDribblingSkillControl4 => 'Girar direito ↑→';
+
+  @override
+  String get controlsDribblingSkillName5 => 'Pedalada (Stepover) esquerda';
+
+  @override
+  String get controlsDribblingSkillControl5 => 'Girar direito ↑←';
+
+  @override
+  String get controlsDribblingSkillName6 => 'Corta-luz (Ball Roll) direita';
+
+  @override
+  String get controlsDribblingSkillControl6 => 'Segurar direito →';
+
+  @override
+  String get controlsDribblingSkillName7 => 'Corta-luz (Ball Roll) esquerda';
+
+  @override
+  String get controlsDribblingSkillControl7 => 'Segurar direito ←';
+
+  @override
+  String get controlsDribblingSkillName8 => 'Puxada de bola (Drag Back)';
+
+  @override
+  String get controlsDribblingSkillControl8 => 'L2+R2 + flick esquerdo ↓';
+
+  @override
+  String get controlsDribblingSkillName9 => 'Roleta direita';
+
+  @override
+  String get controlsDribblingSkillControl9 => 'Girar direito ↓ até ←';
+
+  @override
+  String get controlsDribblingSkillName10 => 'Roleta esquerda';
+
+  @override
+  String get controlsDribblingSkillControl10 => 'Girar direito ↓ até →';
+
+  @override
+  String get controlsDribblingSkillName11 => 'Finta e vai pra direita';
+
+  @override
+  String get controlsDribblingSkillControl11 => 'Girar direito ←↓→';
+
+  @override
+  String get controlsDribblingSkillName12 => 'Finta e vai pra esquerda';
+
+  @override
+  String get controlsDribblingSkillControl12 => 'Girar direito →↓←';
+
+  @override
+  String get controlsDribblingSkillName13 => 'Corte de calcanhar correndo';
+
+  @override
+  String get controlsDribblingSkillControl13 =>
+      'Segurar L2 + ■/○ então X + esquerdo';
+
+  @override
+  String get controlsDribblingSkillName14 => 'Arco-íris simples';
+
+  @override
+  String get controlsDribblingSkillControl14 => 'Flick direito ↓↑↑';
+
+  @override
+  String get controlsDribblingSkillName15 => 'Giro pra esquerda';
+
+  @override
+  String get controlsDribblingSkillControl15 =>
+      'Segurar R2+R1 + girar direito ↖';
+
+  @override
+  String get controlsDribblingSkillName16 => 'Giro pra direita';
+
+  @override
+  String get controlsDribblingSkillControl16 =>
+      'Segurar R2+R1 + girar direito ↗';
+
+  @override
+  String get controlsDribblingSkillName17 => 'Fake de passe';
+
+  @override
+  String get controlsDribblingSkillControl17 => 'Segurar R2 + ■/○ então X';
+
+  @override
+  String get controlsDribblingSkillName18 => 'Corte com corta-luz';
+
+  @override
+  String get controlsDribblingSkillControl18 =>
+      'Segurar direito ← + esquerdo →';
+
+  @override
+  String get controlsDribblingSkillName19 => 'Elástico';
+
+  @override
+  String get controlsDribblingSkillControl19 => 'Direito → girar ↓←';
+
+  @override
+  String get controlsDribblingSkillName20 => 'Elástico invertido';
+
+  @override
+  String get controlsDribblingSkillControl20 => 'Direito ← girar ↓→';
+
+  @override
+  String get controlsDribblingSkillName21 => 'Arco-íris avançado';
+
+  @override
+  String get controlsDribblingSkillControl21 => 'Flick direito ↓ segurar ↑↑';
+
+  @override
+  String get controlsDribblingSkillName22 =>
+      'Sombrero (chapéu em cima do marcador)';
+
+  @override
+  String get controlsDribblingSkillControl22 => 'Flick direito ↑↑↓';
+
+  @override
+  String get controlsDribblingSkillName23 => 'Rabona fake';
+
+  @override
+  String get controlsDribblingSkillControl23 =>
+      'Segurar L2 + ■/○ então X + esquerdo ↓';
+
+  @override
+  String get controlsDribblingHeadingOtherControls =>
+      'Outros comandos de drible';
+
+  @override
+  String get controlsDribblingAction1 => 'Corrida controlada';
+
+  @override
+  String get controlsDribblingPs1 => 'Segurar R1 + direção';
+
+  @override
+  String get controlsDribblingXbox1 => 'Segurar RB + direção';
+
+  @override
+  String get controlsDribblingAction2 => 'Proteger a bola';
+
+  @override
+  String get controlsDribblingPs2 => 'Segurar L2';
+
+  @override
+  String get controlsDribblingXbox2 => 'Segurar LT';
+
+  @override
+  String get controlsDribblingAction3 => 'Toque de esforço';
+
+  @override
+  String get controlsDribblingPs3 => 'R1 + flick direito';
+
+  @override
+  String get controlsDribblingXbox3 => 'RB + flick direito';
+
+  @override
+  String get controlsDribblingAction4 => 'Fake de chute';
+
+  @override
+  String get controlsDribblingPs4 => '◯ depois ✕ + direção';
+
+  @override
+  String get controlsDribblingXbox4 => 'B depois A + direção';
+
+  @override
+  String get controlsDribblingHeadingIdeas => 'Ideias pra aplicar';
+
+  @override
+  String get controlsDribblingBullet1 =>
+      'Um drible bom reage ao movimento do defensor -- floreio sem motivo costuma facilitar perder a bola.';
+
+  @override
+  String get controlsDribblingBullet2 =>
+      'Mude de velocidade em vez de correr sempre no talo: normal perto do defensor, corrida controlada pra se aproximar, sprint só quando o espaço já está aberto.';
+
+  @override
+  String get controlsDribblingBullet3 =>
+      'Crie espaço primeiro, acelere depois: mude de direção ou faça um drible simples, espere o marcador se comprometer, só então acelere pro espaço livre.';
 
   @override
   String get managersBlockedTitle => 'Ainda sem dado real';

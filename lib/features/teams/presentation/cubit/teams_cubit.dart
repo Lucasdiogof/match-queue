@@ -119,6 +119,7 @@ class TeamsCubit extends Cubit<TeamsState> {
     bool clearTag = false,
     Duration? defaultSearchDuration,
     String? logoUrl,
+    bool clearLogoUrl = false,
   }) async {
     if (state.isSaving) {
       return false;
@@ -132,6 +133,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         clearTag: clearTag,
         defaultSearchDuration: defaultSearchDuration,
         logoUrl: logoUrl,
+        clearLogoUrl: clearLogoUrl,
       );
       final teams = state.teams
           .map(
@@ -174,6 +176,25 @@ class TeamsCubit extends Cubit<TeamsState> {
       );
       emit(state.copyWith(isSaving: false));
       return updateTeam(teamId: teamId, logoUrl: logoUrl);
+    } on AppFailure catch (failure) {
+      if (!isClosed) {
+        emit(state.copyWith(isSaving: false, actionFailure: failure));
+      }
+      return false;
+    }
+  }
+
+  /// Remove a logo do time: apaga o objeto no Storage (best-effort) e limpa
+  /// teams.logo_url na mesma acao.
+  Future<bool> removeTeamLogo(String teamId) async {
+    if (state.isSaving) {
+      return false;
+    }
+    emit(state.copyWith(isSaving: true, clearActionFailure: true));
+    try {
+      await _repository.deleteTeamLogoFile(teamId);
+      emit(state.copyWith(isSaving: false));
+      return updateTeam(teamId: teamId, clearLogoUrl: true);
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(state.copyWith(isSaving: false, actionFailure: failure));

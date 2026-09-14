@@ -23,6 +23,7 @@ abstract interface class TeamRepository {
     bool clearTag = false,
     Duration? defaultSearchDuration,
     String? logoUrl,
+    bool clearLogoUrl = false,
   });
 
   /// Envia a logo para o Storage e devolve a URL publica -- so grava em
@@ -33,6 +34,11 @@ abstract interface class TeamRepository {
     required Uint8List bytes,
     required String contentType,
   });
+
+  /// Apaga o(s) objeto(s) de logo do time no Storage, best-effort (nunca
+  /// falha se o objeto ja nao existir). Nao mexe em teams.logo_url --
+  /// quem chama ainda precisa de [updateTeam] com clearLogoUrl para isso.
+  Future<void> deleteTeamLogoFile(String teamId);
 
   /// Único caminho de escrita da duração de busca -- nunca via [updateTeam],
   /// pra não ter duas formas concorrentes de gravar a mesma config.

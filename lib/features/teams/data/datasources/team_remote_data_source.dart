@@ -68,6 +68,8 @@ abstract interface class TeamRemoteDataSource {
     required String contentType,
     required String extension,
   });
+
+  Future<void> deleteTeamLogoFile(String teamId);
 }
 
 class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
@@ -292,5 +294,18 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
           },
         )
         .toString();
+  }
+
+  @override
+  Future<void> deleteTeamLogoFile(String teamId) async {
+    // Path fixo por time, mas a extensao muda conforme o formato enviado
+    // (upsert nunca troca extensao) -- apaga as 3 possiveis, best-effort.
+    // remove() nao falha por objeto inexistente, entao chamar pras 3 e
+    // simples e seguro.
+    await _client.storage.from(_logoBucket).remove(<String>[
+      '$teamId/logo.jpg',
+      '$teamId/logo.png',
+      '$teamId/logo.webp',
+    ]);
   }
 }

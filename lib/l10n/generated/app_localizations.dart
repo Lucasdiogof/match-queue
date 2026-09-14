@@ -4394,6 +4394,18 @@ abstract class AppLocalizations {
   /// **'Pedidos pendentes'**
   String get teamPendingRequestsSectionTitle;
 
+  /// No description provided for @teamSentInvitationsSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convites pendentes'**
+  String get teamSentInvitationsSectionTitle;
+
+  /// No description provided for @teamInviteRevokeAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar convite'**
+  String get teamInviteRevokeAction;
+
   /// No description provided for @teamMemberPromoteAction.
   ///
   /// In pt, this message translates to:
@@ -4447,6 +4459,24 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Adicionar logo'**
   String get teamLogoAddAction;
+
+  /// No description provided for @teamLogoRemoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover logo'**
+  String get teamLogoRemoveAction;
+
+  /// No description provided for @teamLogoRemoveConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover a logo do time?'**
+  String get teamLogoRemoveConfirmTitle;
+
+  /// No description provided for @teamLogoRemoveConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'O time volta a mostrar as iniciais no lugar da logo.'**
+  String get teamLogoRemoveConfirmMessage;
 
   /// No description provided for @pendingMatchesCardTitle.
   ///
@@ -4760,6 +4790,474 @@ abstract class AppLocalizations {
   /// **'Efeito Plus'**
   String get mechanicsPlaystylePlusEffectLabel;
 
+  /// No description provided for @playstyleCategoryFinishing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização'**
+  String get playstyleCategoryFinishing;
+
+  /// No description provided for @playstyleCategoryPassing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe'**
+  String get playstyleCategoryPassing;
+
+  /// No description provided for @playstyleCategoryDefending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa'**
+  String get playstyleCategoryDefending;
+
+  /// No description provided for @playstyleCategoryBallControl.
+  ///
+  /// In pt, this message translates to:
+  /// **'Controle de bola'**
+  String get playstyleCategoryBallControl;
+
+  /// No description provided for @playstyleCategoryPhysical.
+  ///
+  /// In pt, this message translates to:
+  /// **'Físico'**
+  String get playstyleCategoryPhysical;
+
+  /// No description provided for @playstyleCategoryGoalkeeper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiro'**
+  String get playstyleCategoryGoalkeeper;
+
+  /// No description provided for @playstyleEffectFinesseShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora curva, precisão e velocidade de execução do chute de efeito.'**
+  String get playstyleEffectFinesseShot;
+
+  /// No description provided for @playstylePlusEffectFinesseShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reforça ainda mais curva, precisão e execução do chute de efeito.'**
+  String get playstylePlusEffectFinesseShot;
+
+  /// No description provided for @playstyleEffectChipShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cavadinhas mais rápidas e precisas sobre o goleiro adiantado.'**
+  String get playstyleEffectChipShot;
+
+  /// No description provided for @playstylePlusEffectChipShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cavadinha ainda mais rápida e precisa.'**
+  String get playstylePlusEffectChipShot;
+
+  /// No description provided for @playstyleEffectPowerShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aumenta força e velocidade da bola no chute de potência.'**
+  String get playstyleEffectPowerShot;
+
+  /// No description provided for @playstylePlusEffectPowerShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de potência mais forte, com trajetória mais baixa e controlada.'**
+  String get playstylePlusEffectPowerShot;
+
+  /// No description provided for @playstyleEffectDeadBall.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cobranças de falta e escanteio com mais velocidade, curva e precisão, e prévia de trajetória estendida.'**
+  String get playstyleEffectDeadBall;
+
+  /// No description provided for @playstylePlusEffectDeadBall.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cobranças com velocidade, curva e precisão excepcionais, prévia de trajetória no máximo.'**
+  String get playstylePlusEffectDeadBall;
+
+  /// No description provided for @playstyleEffectPrecisionHeader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora precisão e potência de cabeceio controlado.'**
+  String get playstyleEffectPrecisionHeader;
+
+  /// No description provided for @playstylePlusEffectPrecisionHeader.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ganho de precisão e potência ainda maior no cabeceio.'**
+  String get playstylePlusEffectPrecisionHeader;
+
+  /// No description provided for @playstyleEffectAcrobatic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora precisão de voleios e libera animações acrobáticas extras.'**
+  String get playstyleEffectAcrobatic;
+
+  /// No description provided for @playstylePlusEffectAcrobatic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Precisão maior e acesso a finalizações acrobáticas mais eficazes.'**
+  String get playstylePlusEffectAcrobatic;
+
+  /// No description provided for @playstyleEffectLowDrivenShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora a precisão do chute rasteiro e forte.'**
+  String get playstyleEffectLowDrivenShot;
+
+  /// No description provided for @playstylePlusEffectLowDrivenShot.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus de precisão maior no chute rasteiro e forte.'**
+  String get playstylePlusEffectLowDrivenShot;
+
+  /// No description provided for @playstyleEffectGamechanger.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chutes de efeito e de trivela (parte externa do pé) com mais precisão.'**
+  String get playstyleEffectGamechanger;
+
+  /// No description provided for @playstylePlusEffectGamechanger.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chutes de efeito e trivela com precisão muito maior.'**
+  String get playstylePlusEffectGamechanger;
+
+  /// No description provided for @playstyleEffectIncisivePass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora precisão do passe em profundidade, curva do passe com efeito e velocidade do passe de precisão.'**
+  String get playstyleEffectIncisivePass;
+
+  /// No description provided for @playstylePlusEffectIncisivePass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reforça ainda mais os três, sem melhorar o primeiro toque de quem recebe.'**
+  String get playstylePlusEffectIncisivePass;
+
+  /// No description provided for @playstyleEffectPingedPass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passes rasteiros viajam mais rápido sem dificultar o primeiro toque de quem recebe.'**
+  String get playstyleEffectPingedPass;
+
+  /// No description provided for @playstylePlusEffectPingedPass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passes rasteiros consideravelmente mais rápidos.'**
+  String get playstylePlusEffectPingedPass;
+
+  /// No description provided for @playstyleEffectLongBallPass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamentos longos mais precisos, rápidos e difíceis de interceptar.'**
+  String get playstyleEffectLongBallPass;
+
+  /// No description provided for @playstylePlusEffectLongBallPass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reforça ainda mais precisão, velocidade e eficácia dos lançamentos longos.'**
+  String get playstylePlusEffectLongBallPass;
+
+  /// No description provided for @playstyleEffectTikiTaka.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora passes curtos e de primeira difíceis, com backheels contextuais.'**
+  String get playstyleEffectTikiTaka;
+
+  /// No description provided for @playstylePlusEffectTikiTaka.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus de precisão maior nos passes curtos e de primeira.'**
+  String get playstylePlusEffectTikiTaka;
+
+  /// No description provided for @playstyleEffectWhippedPass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cruzamentos com mais precisão, velocidade e curva.'**
+  String get playstyleEffectWhippedPass;
+
+  /// No description provided for @playstylePlusEffectWhippedPass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cruzamentos ainda mais fortes, com cruzamento forte de potência excepcional.'**
+  String get playstylePlusEffectWhippedPass;
+
+  /// No description provided for @playstyleEffectInventive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passes de efeito e de trivela com mais precisão.'**
+  String get playstyleEffectInventive;
+
+  /// No description provided for @playstylePlusEffectInventive.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passes de efeito e trivela com precisão muito maior.'**
+  String get playstylePlusEffectInventive;
+
+  /// No description provided for @playstyleEffectJockey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora o movimento ao marcar de frente (contain) e a transição entre marcar e correr.'**
+  String get playstyleEffectJockey;
+
+  /// No description provided for @playstylePlusEffectJockey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus de marcação maior, embora a diferença pra um defensor forte sem o estilo seja menor no FC 27.'**
+  String get playstylePlusEffectJockey;
+
+  /// No description provided for @playstyleEffectBlock.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aumenta alcance e eficácia ao bloquear chutes e passes.'**
+  String get playstyleEffectBlock;
+
+  /// No description provided for @playstylePlusEffectBlock.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alcance e eficácia de bloqueio ainda maiores.'**
+  String get playstylePlusEffectBlock;
+
+  /// No description provided for @playstyleEffectIntercept.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora alcance de interceptação e a chance de manter a bola depois dela.'**
+  String get playstyleEffectIntercept;
+
+  /// No description provided for @playstylePlusEffectIntercept.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reforça ainda mais alcance e retenção de bola pós-interceptação.'**
+  String get playstylePlusEffectIntercept;
+
+  /// No description provided for @playstyleEffectAnticipate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora o sucesso do carrinho em pé e a chance de sair com a bola.'**
+  String get playstyleEffectAnticipate;
+
+  /// No description provided for @playstylePlusEffectAnticipate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus significativamente maior no carrinho em pé e na retenção pós-desarme.'**
+  String get playstylePlusEffectAnticipate;
+
+  /// No description provided for @playstyleEffectSlideTackle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora a retenção da bola perto do jogador após um carrinho deslizante bem-sucedido.'**
+  String get playstyleEffectSlideTackle;
+
+  /// No description provided for @playstylePlusEffectSlideTackle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cobertura de carrinho deslizante e retenção de bola ainda maiores.'**
+  String get playstylePlusEffectSlideTackle;
+
+  /// No description provided for @playstyleEffectAerialFortress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Permite saltos mais altos e mais presença física em disputas aéreas defensivas.'**
+  String get playstyleEffectAerialFortress;
+
+  /// No description provided for @playstylePlusEffectAerialFortress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Saltos ainda mais altos e presença física ainda maior nas disputas aéreas.'**
+  String get playstylePlusEffectAerialFortress;
+
+  /// No description provided for @playstyleEffectTechnical.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora a velocidade da corrida controlada e o controle em curvas mais largas.'**
+  String get playstyleEffectTechnical;
+
+  /// No description provided for @playstylePlusEffectTechnical.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus maior de corrida controlada e controle de drible.'**
+  String get playstylePlusEffectTechnical;
+
+  /// No description provided for @playstyleEffectRapid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora o drible em velocidade máxima e reduz erros em toques em alta velocidade.'**
+  String get playstyleEffectRapid;
+
+  /// No description provided for @playstylePlusEffectRapid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus maior de drible em sprint.'**
+  String get playstylePlusEffectRapid;
+
+  /// No description provided for @playstyleEffectFirstTouch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reduz o erro de primeiro toque e acelera a transição pro drible.'**
+  String get playstyleEffectFirstTouch;
+
+  /// No description provided for @playstylePlusEffectFirstTouch.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reduz ainda mais o erro de primeiro toque, transição pro drible ainda mais rápida.'**
+  String get playstylePlusEffectFirstTouch;
+
+  /// No description provided for @playstyleEffectTrickster.
+  ///
+  /// In pt, this message translates to:
+  /// **'Libera embaixadinhas/floreios únicos.'**
+  String get playstyleEffectTrickster;
+
+  /// No description provided for @playstylePlusEffectTrickster.
+  ///
+  /// In pt, this message translates to:
+  /// **'Libera floreios extras e mais agilidade ao driblar de lado.'**
+  String get playstylePlusEffectTrickster;
+
+  /// No description provided for @playstyleEffectPressProven.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mantém a bola mais perto ao trotar e melhora a proteção contra oponentes mais fortes.'**
+  String get playstyleEffectPressProven;
+
+  /// No description provided for @playstylePlusEffectPressProven.
+  ///
+  /// In pt, this message translates to:
+  /// **'Controle excepcional ao trotar e proteção de bola muito melhor.'**
+  String get playstylePlusEffectPressProven;
+
+  /// No description provided for @playstyleEffectQuickStep.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora a aceleração no sprint explosivo.'**
+  String get playstyleEffectQuickStep;
+
+  /// No description provided for @playstylePlusEffectQuickStep.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bônus de aceleração maior que o normal, mas dependente do atributo de Aceleração do jogador.'**
+  String get playstylePlusEffectQuickStep;
+
+  /// No description provided for @playstyleEffectRelentless.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reduz o cansaço durante a partida e melhora a recuperação de fôlego no intervalo.'**
+  String get playstyleEffectRelentless;
+
+  /// No description provided for @playstylePlusEffectRelentless.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reduz muito mais o efeito do cansaço de longo prazo nos atributos.'**
+  String get playstylePlusEffectRelentless;
+
+  /// No description provided for @playstyleEffectLongThrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aumenta força e distância do arremesso lateral.'**
+  String get playstyleEffectLongThrow;
+
+  /// No description provided for @playstylePlusEffectLongThrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arremesso lateral com ainda mais força e distância máxima.'**
+  String get playstylePlusEffectLongThrow;
+
+  /// No description provided for @playstyleEffectBruiser.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais força em disputas físicas de carrinho.'**
+  String get playstyleEffectBruiser;
+
+  /// No description provided for @playstylePlusEffectBruiser.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vantagem de força ainda maior nas disputas físicas.'**
+  String get playstylePlusEffectBruiser;
+
+  /// No description provided for @playstyleEffectEnforcer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora disputas de ombro ao driblar e torna a proteção de bola mais eficaz.'**
+  String get playstyleEffectEnforcer;
+
+  /// No description provided for @playstylePlusEffectEnforcer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora muito mais as disputas de ombro e a proteção de bola.'**
+  String get playstylePlusEffectEnforcer;
+
+  /// No description provided for @playstyleEffectFarThrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arremessos do goleiro com mais velocidade e distância.'**
+  String get playstyleEffectFarThrow;
+
+  /// No description provided for @playstylePlusEffectFarThrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arremessos com velocidade e distância ainda maiores.'**
+  String get playstylePlusEffectFarThrow;
+
+  /// No description provided for @playstyleEffectFootwork.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesas com os pés mais rápidas e com mais alcance.'**
+  String get playstyleEffectFootwork;
+
+  /// No description provided for @playstylePlusEffectFootwork.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesas com os pés ainda mais rápidas e com mais alcance.'**
+  String get playstylePlusEffectFootwork;
+
+  /// No description provided for @playstyleEffectCrossClaimer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sai para cruzamentos com mais ritmo, melhor leitura de trajetória, e mais alcance/força no soco.'**
+  String get playstyleEffectCrossClaimer;
+
+  /// No description provided for @playstylePlusEffectCrossClaimer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda mais ritmo, leitura e força no soco em cruzamentos.'**
+  String get playstylePlusEffectCrossClaimer;
+
+  /// No description provided for @playstyleEffectRushOut.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aumenta velocidade de saída e reação em situações de um contra um.'**
+  String get playstyleEffectRushOut;
+
+  /// No description provided for @playstylePlusEffectRushOut.
+  ///
+  /// In pt, this message translates to:
+  /// **'Velocidade de saída muito maior e reações mais rápidas.'**
+  String get playstylePlusEffectRushOut;
+
+  /// No description provided for @playstyleEffectFarReach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora o alcance em defesas de mergulho e libera animações de alcance estendido.'**
+  String get playstyleEffectFarReach;
+
+  /// No description provided for @playstylePlusEffectFarReach.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alcance de mergulho ainda maior e defesas de alcance estendido mais fortes.'**
+  String get playstylePlusEffectFarReach;
+
+  /// No description provided for @playstyleEffectDeflector.
+  ///
+  /// In pt, this message translates to:
+  /// **'Melhora a capacidade de espalmar a bola pra áreas mais seguras, controlando o rebote.'**
+  String get playstyleEffectDeflector;
+
+  /// No description provided for @playstylePlusEffectDeflector.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais controle de espalmada, podendo direcionar a defesa pra um lugar seguro ou pra um companheiro.'**
+  String get playstylePlusEffectDeflector;
+
   /// No description provided for @mechanicsPlaystyleFilterAny.
   ///
   /// In pt, this message translates to:
@@ -4795,6 +5293,936 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Defesa'**
   String get controlsDefendingLabel;
+
+  /// No description provided for @controlsActionColumnLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ação'**
+  String get controlsActionColumnLabel;
+
+  /// No description provided for @controlsHeadingControls.
+  ///
+  /// In pt, this message translates to:
+  /// **'Controles'**
+  String get controlsHeadingControls;
+
+  /// No description provided for @controlsShootingAction1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute normal / voleio / cabeceio'**
+  String get controlsShootingAction1;
+
+  /// No description provided for @controlsShootingAction2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute rasteiro e forte'**
+  String get controlsShootingAction2;
+
+  /// No description provided for @controlsShootingPs2.
+  ///
+  /// In pt, this message translates to:
+  /// **'◯, depois ◯ de novo ao carregar'**
+  String get controlsShootingPs2;
+
+  /// No description provided for @controlsShootingXbox2.
+  ///
+  /// In pt, this message translates to:
+  /// **'B, depois B de novo ao carregar'**
+  String get controlsShootingXbox2;
+
+  /// No description provided for @controlsShootingAction3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cavadinha'**
+  String get controlsShootingAction3;
+
+  /// No description provided for @controlsShootingAction4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de efeito'**
+  String get controlsShootingAction4;
+
+  /// No description provided for @controlsShootingAction5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de efeito rasteiro'**
+  String get controlsShootingAction5;
+
+  /// No description provided for @controlsShootingPs5.
+  ///
+  /// In pt, this message translates to:
+  /// **'R1 + ◯, depois ◯ de novo'**
+  String get controlsShootingPs5;
+
+  /// No description provided for @controlsShootingXbox5.
+  ///
+  /// In pt, this message translates to:
+  /// **'RB + B, depois B de novo'**
+  String get controlsShootingXbox5;
+
+  /// No description provided for @controlsShootingAction6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de potência'**
+  String get controlsShootingAction6;
+
+  /// No description provided for @controlsShootingAction7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de potência rasteiro'**
+  String get controlsShootingAction7;
+
+  /// No description provided for @controlsShootingPs7.
+  ///
+  /// In pt, this message translates to:
+  /// **'L1 + R1 + ◯, depois ◯ de novo'**
+  String get controlsShootingPs7;
+
+  /// No description provided for @controlsShootingXbox7.
+  ///
+  /// In pt, this message translates to:
+  /// **'LB + RB + B, depois B de novo'**
+  String get controlsShootingXbox7;
+
+  /// No description provided for @controlsShootingAction8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de estilo (trivela, bicicleta...)'**
+  String get controlsShootingAction8;
+
+  /// No description provided for @controlsShootingAction9.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fake de chute'**
+  String get controlsShootingAction9;
+
+  /// No description provided for @controlsShootingPs9.
+  ///
+  /// In pt, this message translates to:
+  /// **'◯ depois ✕ + direção'**
+  String get controlsShootingPs9;
+
+  /// No description provided for @controlsShootingXbox9.
+  ///
+  /// In pt, this message translates to:
+  /// **'B depois A + direção'**
+  String get controlsShootingXbox9;
+
+  /// No description provided for @controlsShootingAction10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar chute'**
+  String get controlsShootingAction10;
+
+  /// No description provided for @controlsShootingPs10.
+  ///
+  /// In pt, this message translates to:
+  /// **'L2 + R2 durante a animação'**
+  String get controlsShootingPs10;
+
+  /// No description provided for @controlsShootingXbox10.
+  ///
+  /// In pt, this message translates to:
+  /// **'LT + RT durante a animação'**
+  String get controlsShootingXbox10;
+
+  /// No description provided for @controlsShootingHeadingWhenToUse.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando usar cada um'**
+  String get controlsShootingHeadingWhenToUse;
+
+  /// No description provided for @controlsShootingBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute normal: opção mais versátil, funciona bem na maioria das situações dentro da área.'**
+  String get controlsShootingBullet1;
+
+  /// No description provided for @controlsShootingBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute rasteiro: bom pra bater cruzado ou no goleiro adiantado, rasteiro nos cantos.'**
+  String get controlsShootingBullet2;
+
+  /// No description provided for @controlsShootingBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de efeito: prioriza colocação e curva -- ótimo cortando pra dentro pelo lado e mirando o canto mais longe.'**
+  String get controlsShootingBullet3;
+
+  /// No description provided for @controlsShootingBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de potência: exige mais tempo e espaço livre, melhor fora da área do que dentro dela.'**
+  String get controlsShootingBullet4;
+
+  /// No description provided for @controlsShootingBullet5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cavadinha: quando o goleiro sai da linha e sobra espaço por cima dele.'**
+  String get controlsShootingBullet5;
+
+  /// No description provided for @controlsShootingBullet6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chute de estilo: mais imprevisível, deixa a animação decidir entre bicicleta, carrinho de fora ou outro floreio conforme a posição do jogador.'**
+  String get controlsShootingBullet6;
+
+  /// No description provided for @controlsShootingBullet7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fake de chute: engana o goleiro ou o defensor mudando de direção sem finalizar de verdade.'**
+  String get controlsShootingBullet7;
+
+  /// No description provided for @controlsShootingHeadingPower.
+  ///
+  /// In pt, this message translates to:
+  /// **'Potência e mira'**
+  String get controlsShootingHeadingPower;
+
+  /// No description provided for @controlsShootingPowerParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quanto mais tempo segura o botão de chute, mais força o chute recebe. Perto do gol, potência baixa ou média costuma funcionar melhor que o chute no talo -- excesso de força é mais difícil de controlar de perto.'**
+  String get controlsShootingPowerParagraph;
+
+  /// No description provided for @controlsPassingHeadingShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe curto (rasteiro)'**
+  String get controlsPassingHeadingShort;
+
+  /// No description provided for @controlsPassingAction1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe rasteiro'**
+  String get controlsPassingAction1;
+
+  /// No description provided for @controlsPassingAction2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe rasteiro elevado'**
+  String get controlsPassingAction2;
+
+  /// No description provided for @controlsPassingAction3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe rasteiro forte'**
+  String get controlsPassingAction3;
+
+  /// No description provided for @controlsPassingAction4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe de efeito'**
+  String get controlsPassingAction4;
+
+  /// No description provided for @controlsPassingAction5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe rasteiro de precisão (com curva)'**
+  String get controlsPassingAction5;
+
+  /// No description provided for @controlsPassingHeadingThrough.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade (through pass)'**
+  String get controlsPassingHeadingThrough;
+
+  /// No description provided for @controlsPassingAction6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade'**
+  String get controlsPassingAction6;
+
+  /// No description provided for @controlsPassingAction7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade elevado'**
+  String get controlsPassingAction7;
+
+  /// No description provided for @controlsPassingAction8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade de precisão'**
+  String get controlsPassingAction8;
+
+  /// No description provided for @controlsPassingAction9.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade lobado'**
+  String get controlsPassingAction9;
+
+  /// No description provided for @controlsPassingAction10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade forte'**
+  String get controlsPassingAction10;
+
+  /// No description provided for @controlsPassingAction11.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe em profundidade de efeito'**
+  String get controlsPassingAction11;
+
+  /// No description provided for @controlsPassingHeadingCrossing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento e cruzamento'**
+  String get controlsPassingHeadingCrossing;
+
+  /// No description provided for @controlsPassingAction12.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento / cruzamento'**
+  String get controlsPassingAction12;
+
+  /// No description provided for @controlsPassingAction13.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cruzamento rasteiro'**
+  String get controlsPassingAction13;
+
+  /// No description provided for @controlsPassingAction14.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento de precisão'**
+  String get controlsPassingAction14;
+
+  /// No description provided for @controlsPassingAction15.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento forte'**
+  String get controlsPassingAction15;
+
+  /// No description provided for @controlsPassingAction16.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cruzamento rasteiro forte'**
+  String get controlsPassingAction16;
+
+  /// No description provided for @controlsPassingAction17.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento bem alto'**
+  String get controlsPassingAction17;
+
+  /// No description provided for @controlsPassingAction18.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento de efeito'**
+  String get controlsPassingAction18;
+
+  /// No description provided for @controlsPassingHeadingOthers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outros'**
+  String get controlsPassingHeadingOthers;
+
+  /// No description provided for @controlsPassingAction19.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque e vai (Pass and Go)'**
+  String get controlsPassingAction19;
+
+  /// No description provided for @controlsPassingAction20.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fake de passe'**
+  String get controlsPassingAction20;
+
+  /// No description provided for @controlsPassingPs20.
+  ///
+  /// In pt, this message translates to:
+  /// **'□ depois ✕ + direção'**
+  String get controlsPassingPs20;
+
+  /// No description provided for @controlsPassingXbox20.
+  ///
+  /// In pt, this message translates to:
+  /// **'X depois A + direção'**
+  String get controlsPassingXbox20;
+
+  /// No description provided for @controlsPassingHeadingIdeas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ideias pra aplicar'**
+  String get controlsPassingHeadingIdeas;
+
+  /// No description provided for @controlsPassingBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe rasteiro mantém a posse no meio-campo; passe em profundidade serve pra jogadores fazendo corrida por trás da defesa.'**
+  String get controlsPassingBullet1;
+
+  /// No description provided for @controlsPassingBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento troca o jogo rápido pro lado aberto do campo.'**
+  String get controlsPassingBullet2;
+
+  /// No description provided for @controlsPassingBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe forte (driven) sai mais rápido sob pressão, mas com menos controle do que o de precisão.'**
+  String get controlsPassingBullet3;
+
+  /// No description provided for @controlsPassingBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quanto mais tempo segura o botão, mais força o passe recebe -- combinar o tipo certo com a força certa importa tanto quanto escolher o companheiro certo.'**
+  String get controlsPassingBullet4;
+
+  /// No description provided for @controlsDefendingAction1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trocar de jogador'**
+  String get controlsDefendingAction1;
+
+  /// No description provided for @controlsDefendingAction2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcação (contain / jockey)'**
+  String get controlsDefendingAction2;
+
+  /// No description provided for @controlsDefendingPs2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L2'**
+  String get controlsDefendingPs2;
+
+  /// No description provided for @controlsDefendingXbox2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar LT'**
+  String get controlsDefendingXbox2;
+
+  /// No description provided for @controlsDefendingAction3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcação em sprint'**
+  String get controlsDefendingAction3;
+
+  /// No description provided for @controlsDefendingPs3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L2 + R2'**
+  String get controlsDefendingPs3;
+
+  /// No description provided for @controlsDefendingXbox3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar LT + RT'**
+  String get controlsDefendingXbox3;
+
+  /// No description provided for @controlsDefendingAction4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carrinho em pé'**
+  String get controlsDefendingAction4;
+
+  /// No description provided for @controlsDefendingAction5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carrinho em pé forte'**
+  String get controlsDefendingAction5;
+
+  /// No description provided for @controlsDefendingAction6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carrinho deslizante'**
+  String get controlsDefendingAction6;
+
+  /// No description provided for @controlsDefendingAction7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carrinho deslizante forte'**
+  String get controlsDefendingAction7;
+
+  /// No description provided for @controlsDefendingAction8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedir pressão de um companheiro'**
+  String get controlsDefendingAction8;
+
+  /// No description provided for @controlsDefendingPs8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar R1'**
+  String get controlsDefendingPs8;
+
+  /// No description provided for @controlsDefendingXbox8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar RB'**
+  String get controlsDefendingXbox8;
+
+  /// No description provided for @controlsDefendingAction9.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão coletiva parcial'**
+  String get controlsDefendingAction9;
+
+  /// No description provided for @controlsDefendingPs9.
+  ///
+  /// In pt, this message translates to:
+  /// **'R1, depois segurar R1'**
+  String get controlsDefendingPs9;
+
+  /// No description provided for @controlsDefendingXbox9.
+  ///
+  /// In pt, this message translates to:
+  /// **'RB, depois segurar RB'**
+  String get controlsDefendingXbox9;
+
+  /// No description provided for @controlsDefendingAction10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiro adiantar a linha'**
+  String get controlsDefendingAction10;
+
+  /// No description provided for @controlsDefendingPs10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar △'**
+  String get controlsDefendingPs10;
+
+  /// No description provided for @controlsDefendingXbox10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar Y'**
+  String get controlsDefendingXbox10;
+
+  /// No description provided for @controlsDefendingHeadingTips.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dicas'**
+  String get controlsDefendingHeadingTips;
+
+  /// No description provided for @controlsDefendingBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcação (jockey) primeiro, carrinho depois: mantenha o defensor de frente pro atacante, reduza o espaço, e só tente o desarme quando a bola ficar exposta.'**
+  String get controlsDefendingBullet1;
+
+  /// No description provided for @controlsDefendingBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carrinho deslizante é opção de último recurso -- errar deixa o adversário livre ou pode virar falta, cartão ou pênalti.'**
+  String get controlsDefendingBullet2;
+
+  /// No description provided for @controlsDefendingBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Troque de jogador manualmente em vez de sempre pegar o mais perto da bola: às vezes cobrir a linha de passe mais perigosa importa mais do que pressionar quem já está marcado.'**
+  String get controlsDefendingBullet3;
+
+  /// No description provided for @controlsDefendingBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não puxe o zagueiro pra frente sem necessidade -- isso abre espaço nas costas da defesa pra um passe em profundidade.'**
+  String get controlsDefendingBullet4;
+
+  /// No description provided for @controlsDefendingBullet5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contra um contra-ataque, prioridade é atrasar o avanço (recuar protegendo o meio) e só então fechar o lance, dando tempo pros companheiros se recomporem.'**
+  String get controlsDefendingBullet5;
+
+  /// No description provided for @controlsDefendingBullet6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao defender cruzamento, não olhe só pro ponta -- cubra também quem chega no segundo pau.'**
+  String get controlsDefendingBullet6;
+
+  /// No description provided for @controlsDribblingIntroParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada jogador tem uma nota de Skill Moves (1 a 5 estrelas) que define quais desses movimentos ele consegue fazer. Comandos usam o analógico direito e são iguais em PlayStation e Xbox/PC.'**
+  String get controlsDribblingIntroParagraph;
+
+  /// No description provided for @controlsDribblingStarWord.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{estrela} other{estrelas}}'**
+  String controlsDribblingStarWord(int count);
+
+  /// No description provided for @controlsDribblingSkillName1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elástico simples pro lado'**
+  String get controlsDribblingSkillName1;
+
+  /// No description provided for @controlsDribblingSkillControl1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L1+R1 + direção'**
+  String get controlsDribblingSkillControl1;
+
+  /// No description provided for @controlsDribblingSkillName2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chapéu (Flick Up)'**
+  String get controlsDribblingSkillName2;
+
+  /// No description provided for @controlsDribblingSkillControl2.
+  ///
+  /// In pt, this message translates to:
+  /// **'R3'**
+  String get controlsDribblingSkillControl2;
+
+  /// No description provided for @controlsDribblingSkillName3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Giro de corpo pra frente'**
+  String get controlsDribblingSkillName3;
+
+  /// No description provided for @controlsDribblingSkillControl3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L1+R1 + esquerdo p/ baixo'**
+  String get controlsDribblingSkillControl3;
+
+  /// No description provided for @controlsDribblingSkillName4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedalada (Stepover) direita'**
+  String get controlsDribblingSkillName4;
+
+  /// No description provided for @controlsDribblingSkillControl4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar direito ↑→'**
+  String get controlsDribblingSkillControl4;
+
+  /// No description provided for @controlsDribblingSkillName5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedalada (Stepover) esquerda'**
+  String get controlsDribblingSkillName5;
+
+  /// No description provided for @controlsDribblingSkillControl5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar direito ↑←'**
+  String get controlsDribblingSkillControl5;
+
+  /// No description provided for @controlsDribblingSkillName6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corta-luz (Ball Roll) direita'**
+  String get controlsDribblingSkillName6;
+
+  /// No description provided for @controlsDribblingSkillControl6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar direito →'**
+  String get controlsDribblingSkillControl6;
+
+  /// No description provided for @controlsDribblingSkillName7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corta-luz (Ball Roll) esquerda'**
+  String get controlsDribblingSkillName7;
+
+  /// No description provided for @controlsDribblingSkillControl7.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar direito ←'**
+  String get controlsDribblingSkillControl7;
+
+  /// No description provided for @controlsDribblingSkillName8.
+  ///
+  /// In pt, this message translates to:
+  /// **'Puxada de bola (Drag Back)'**
+  String get controlsDribblingSkillName8;
+
+  /// No description provided for @controlsDribblingSkillControl8.
+  ///
+  /// In pt, this message translates to:
+  /// **'L2+R2 + flick esquerdo ↓'**
+  String get controlsDribblingSkillControl8;
+
+  /// No description provided for @controlsDribblingSkillName9.
+  ///
+  /// In pt, this message translates to:
+  /// **'Roleta direita'**
+  String get controlsDribblingSkillName9;
+
+  /// No description provided for @controlsDribblingSkillControl9.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar direito ↓ até ←'**
+  String get controlsDribblingSkillControl9;
+
+  /// No description provided for @controlsDribblingSkillName10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Roleta esquerda'**
+  String get controlsDribblingSkillName10;
+
+  /// No description provided for @controlsDribblingSkillControl10.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar direito ↓ até →'**
+  String get controlsDribblingSkillControl10;
+
+  /// No description provided for @controlsDribblingSkillName11.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finta e vai pra direita'**
+  String get controlsDribblingSkillName11;
+
+  /// No description provided for @controlsDribblingSkillControl11.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar direito ←↓→'**
+  String get controlsDribblingSkillControl11;
+
+  /// No description provided for @controlsDribblingSkillName12.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finta e vai pra esquerda'**
+  String get controlsDribblingSkillName12;
+
+  /// No description provided for @controlsDribblingSkillControl12.
+  ///
+  /// In pt, this message translates to:
+  /// **'Girar direito →↓←'**
+  String get controlsDribblingSkillControl12;
+
+  /// No description provided for @controlsDribblingSkillName13.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corte de calcanhar correndo'**
+  String get controlsDribblingSkillName13;
+
+  /// No description provided for @controlsDribblingSkillControl13.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L2 + ■/○ então X + esquerdo'**
+  String get controlsDribblingSkillControl13;
+
+  /// No description provided for @controlsDribblingSkillName14.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arco-íris simples'**
+  String get controlsDribblingSkillName14;
+
+  /// No description provided for @controlsDribblingSkillControl14.
+  ///
+  /// In pt, this message translates to:
+  /// **'Flick direito ↓↑↑'**
+  String get controlsDribblingSkillControl14;
+
+  /// No description provided for @controlsDribblingSkillName15.
+  ///
+  /// In pt, this message translates to:
+  /// **'Giro pra esquerda'**
+  String get controlsDribblingSkillName15;
+
+  /// No description provided for @controlsDribblingSkillControl15.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar R2+R1 + girar direito ↖'**
+  String get controlsDribblingSkillControl15;
+
+  /// No description provided for @controlsDribblingSkillName16.
+  ///
+  /// In pt, this message translates to:
+  /// **'Giro pra direita'**
+  String get controlsDribblingSkillName16;
+
+  /// No description provided for @controlsDribblingSkillControl16.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar R2+R1 + girar direito ↗'**
+  String get controlsDribblingSkillControl16;
+
+  /// No description provided for @controlsDribblingSkillName17.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fake de passe'**
+  String get controlsDribblingSkillName17;
+
+  /// No description provided for @controlsDribblingSkillControl17.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar R2 + ■/○ então X'**
+  String get controlsDribblingSkillControl17;
+
+  /// No description provided for @controlsDribblingSkillName18.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corte com corta-luz'**
+  String get controlsDribblingSkillName18;
+
+  /// No description provided for @controlsDribblingSkillControl18.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar direito ← + esquerdo →'**
+  String get controlsDribblingSkillControl18;
+
+  /// No description provided for @controlsDribblingSkillName19.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elástico'**
+  String get controlsDribblingSkillName19;
+
+  /// No description provided for @controlsDribblingSkillControl19.
+  ///
+  /// In pt, this message translates to:
+  /// **'Direito → girar ↓←'**
+  String get controlsDribblingSkillControl19;
+
+  /// No description provided for @controlsDribblingSkillName20.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elástico invertido'**
+  String get controlsDribblingSkillName20;
+
+  /// No description provided for @controlsDribblingSkillControl20.
+  ///
+  /// In pt, this message translates to:
+  /// **'Direito ← girar ↓→'**
+  String get controlsDribblingSkillControl20;
+
+  /// No description provided for @controlsDribblingSkillName21.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arco-íris avançado'**
+  String get controlsDribblingSkillName21;
+
+  /// No description provided for @controlsDribblingSkillControl21.
+  ///
+  /// In pt, this message translates to:
+  /// **'Flick direito ↓ segurar ↑↑'**
+  String get controlsDribblingSkillControl21;
+
+  /// No description provided for @controlsDribblingSkillName22.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sombrero (chapéu em cima do marcador)'**
+  String get controlsDribblingSkillName22;
+
+  /// No description provided for @controlsDribblingSkillControl22.
+  ///
+  /// In pt, this message translates to:
+  /// **'Flick direito ↑↑↓'**
+  String get controlsDribblingSkillControl22;
+
+  /// No description provided for @controlsDribblingSkillName23.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rabona fake'**
+  String get controlsDribblingSkillName23;
+
+  /// No description provided for @controlsDribblingSkillControl23.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L2 + ■/○ então X + esquerdo ↓'**
+  String get controlsDribblingSkillControl23;
+
+  /// No description provided for @controlsDribblingHeadingOtherControls.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outros comandos de drible'**
+  String get controlsDribblingHeadingOtherControls;
+
+  /// No description provided for @controlsDribblingAction1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corrida controlada'**
+  String get controlsDribblingAction1;
+
+  /// No description provided for @controlsDribblingPs1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar R1 + direção'**
+  String get controlsDribblingPs1;
+
+  /// No description provided for @controlsDribblingXbox1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar RB + direção'**
+  String get controlsDribblingXbox1;
+
+  /// No description provided for @controlsDribblingAction2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Proteger a bola'**
+  String get controlsDribblingAction2;
+
+  /// No description provided for @controlsDribblingPs2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar L2'**
+  String get controlsDribblingPs2;
+
+  /// No description provided for @controlsDribblingXbox2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Segurar LT'**
+  String get controlsDribblingXbox2;
+
+  /// No description provided for @controlsDribblingAction3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Toque de esforço'**
+  String get controlsDribblingAction3;
+
+  /// No description provided for @controlsDribblingPs3.
+  ///
+  /// In pt, this message translates to:
+  /// **'R1 + flick direito'**
+  String get controlsDribblingPs3;
+
+  /// No description provided for @controlsDribblingXbox3.
+  ///
+  /// In pt, this message translates to:
+  /// **'RB + flick direito'**
+  String get controlsDribblingXbox3;
+
+  /// No description provided for @controlsDribblingAction4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fake de chute'**
+  String get controlsDribblingAction4;
+
+  /// No description provided for @controlsDribblingPs4.
+  ///
+  /// In pt, this message translates to:
+  /// **'◯ depois ✕ + direção'**
+  String get controlsDribblingPs4;
+
+  /// No description provided for @controlsDribblingXbox4.
+  ///
+  /// In pt, this message translates to:
+  /// **'B depois A + direção'**
+  String get controlsDribblingXbox4;
+
+  /// No description provided for @controlsDribblingHeadingIdeas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ideias pra aplicar'**
+  String get controlsDribblingHeadingIdeas;
+
+  /// No description provided for @controlsDribblingBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um drible bom reage ao movimento do defensor -- floreio sem motivo costuma facilitar perder a bola.'**
+  String get controlsDribblingBullet1;
+
+  /// No description provided for @controlsDribblingBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mude de velocidade em vez de correr sempre no talo: normal perto do defensor, corrida controlada pra se aproximar, sprint só quando o espaço já está aberto.'**
+  String get controlsDribblingBullet2;
+
+  /// No description provided for @controlsDribblingBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie espaço primeiro, acelere depois: mude de direção ou faça um drible simples, espere o marcador se comprometer, só então acelere pro espaço livre.'**
+  String get controlsDribblingBullet3;
 
   /// No description provided for @managersBlockedTitle.
   ///

@@ -45,4 +45,8 @@ abstract interface class RequestsRepository {
   /// recebido por um time que ele administra, ou convite direto). Nunca
   /// carrega dado -- so avisa pra re-buscar [fetchInbox].
   Stream<void> watchChanges();
+
+  /// Convites PENDING que o proprio time enviou -- pra tela do time poder
+  /// listar e oferecer cancelar. OWNER/ADMIN only.
+  Future<List<SentTeamInvitation>> fetchSentInvitations(String teamId);
 }

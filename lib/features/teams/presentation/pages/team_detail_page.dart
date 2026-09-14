@@ -7,6 +7,7 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
+import 'package:fifa_queue/features/requests/domain/entities/requests_inbox.dart';
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_state.dart';
@@ -126,6 +127,8 @@ class _TeamStatusBody extends StatelessWidget {
               _InviteMemberButton(teamId: team.id),
               const SizedBox(height: AppSpacing.lg),
               _PendingRequestsSection(teamId: team.id),
+              const SizedBox(height: AppSpacing.lg),
+              _SentInvitationsSection(teamId: team.id),
             ],
             const SizedBox(height: AppSpacing.lg),
             // Status operacional continua sendo do Realtime da Etapa
@@ -575,6 +578,115 @@ class _PendingRequestsSection extends StatelessWidget {
                   ],
                 ),
                 if (request != requests.last)
+                  const Divider(height: AppSpacing.lg),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Convites que o proprio time enviou e ainda estao PENDING -- unico lugar
+/// que oferece cancelar (revoke_team_invitation ja existia sem UI nenhuma
+/// que o chamasse).
+class _SentInvitationsSection extends StatefulWidget {
+  const _SentInvitationsSection({required this.teamId});
+
+  final String teamId;
+
+  @override
+  State<_SentInvitationsSection> createState() =>
+      _SentInvitationsSectionState();
+}
+
+class _SentInvitationsSectionState extends State<_SentInvitationsSection> {
+  late Future<List<SentTeamInvitation>> _future;
+  final Set<String> _revokingIds = <String>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  void _load() {
+    _future = getIt<RequestsRepository>().fetchSentInvitations(widget.teamId);
+  }
+
+  Future<void> _revoke(String invitationId) async {
+    setState(() => _revokingIds.add(invitationId));
+    try {
+      await getIt<RequestsRepository>().revokeInvitation(invitationId);
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _revokingIds.remove(invitationId);
+        _load();
+      });
+    } on AppFailure catch (failure) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _revokingIds.remove(invitationId));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(failure.localizedMessage(context.l10n))),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return FutureBuilder<List<SentTeamInvitation>>(
+      future: _future,
+      builder: (context, snapshot) {
+        final invitations = snapshot.data ?? const <SentTeamInvitation>[];
+        if (invitations.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                l10n.teamSentInvitationsSectionTitle.toUpperCase(),
+                style: context.textStyles.labelSmall,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              for (final invitation in invitations) ...<Widget>[
+                Row(
+                  children: <Widget>[
+                    AppAvatar(
+                      label: invitation.inviteeDisplayName,
+                      imageUrl: invitation.inviteeAvatarUrl,
+                      size: AppSizing.avatarMd,
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Text(
+                        invitation.inviteeDisplayName,
+                        style: context.textStyles.bodyMedium,
+                      ),
+                    ),
+                    if (_revokingIds.contains(invitation.id))
+                      const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: AppLoading.inline(),
+                      )
+                    else
+                      AppButton.ghost(
+                        label: l10n.teamInviteRevokeAction,
+                        onPressed: () => _revoke(invitation.id),
+                      ),
+                  ],
+                ),
+                if (invitation != invitations.last)
                   const Divider(height: AppSpacing.lg),
               ],
             ],
