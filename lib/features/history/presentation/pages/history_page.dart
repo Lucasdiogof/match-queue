@@ -11,13 +11,33 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
   const HistoryPage({this.fcAccountId, super.key});
 
   /// Quando vem da tela da Conta (Etapa de Solicitacoes), filtra a
   /// atividade so daquele Elenco dentro do time selecionado. Null = aba
   /// raiz, historico do time inteiro.
   final String? fcAccountId;
+
+  @override
+  State<HistoryPage> createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage>
+    with SingleTickerProviderStateMixin {
+  // Dono unico do controller: sem time selecionado a TabBar nem aparece,
+  // mas o controller precisa sobreviver a troca de time (a chave do
+  // MultiBlocProvider recria os cubits, nao a aba selecionada).
+  late final TabController _tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +47,22 @@ class HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: AppAppBar(title: l10n.navHistory, accentTitle: true),
+          appBar: AppAppBar(
+            title: l10n.navHistory,
+            accentTitle: true,
+            bottom: selected == null
+                ? null
+                : PreferredSize(
+                    preferredSize: const Size.fromHeight(48),
+                    child: TabBar(
+                      controller: _tabController,
+                      tabs: <Widget>[
+                        Tab(text: l10n.historyTabMatches),
+                        Tab(text: l10n.historyTabStats),
+                      ],
+                    ),
+                  ),
+          ),
           body: AppBackground(
             child: selected == null
                 ? AppEmptyState(
@@ -36,9 +71,10 @@ class HistoryPage extends StatelessWidget {
                     message: l10n.historyNoTeamMessage,
                   )
                 : _HistoryScope(
-                    key: ValueKey('${selected.id}:$fcAccountId'),
+                    key: ValueKey('${selected.id}:${widget.fcAccountId}'),
                     teamId: selected.id,
-                    fcAccountId: fcAccountId,
+                    fcAccountId: widget.fcAccountId,
+                    tabController: _tabController,
                   ),
           ),
         );
@@ -48,10 +84,16 @@ class HistoryPage extends StatelessWidget {
 }
 
 class _HistoryScope extends StatelessWidget {
-  const _HistoryScope({required this.teamId, this.fcAccountId, super.key});
+  const _HistoryScope({
+    required this.teamId,
+    required this.tabController,
+    this.fcAccountId,
+    super.key,
+  });
 
   final String teamId;
   final String? fcAccountId;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -68,55 +110,9 @@ class _HistoryScope extends StatelessWidget {
             StatsCubit(getIt<HistoryRepository>(), teamId: teamId)..load(),
       ),
     ],
-    child: const _HistoryTabs(),
+    child: TabBarView(
+      controller: tabController,
+      children: const <Widget>[ActivityTimelineView(), MatchmakingStatsView()],
+    ),
   );
-}
-
-class _HistoryTabs extends StatefulWidget {
-  const _HistoryTabs();
-
-  @override
-  State<_HistoryTabs> createState() => _HistoryTabsState();
-}
-
-class _HistoryTabsState extends State<_HistoryTabs> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        const SizedBox(height: AppSpacing.md),
-        Wrap(
-          spacing: AppSpacing.sm,
-          children: <Widget>[
-            AppChip(
-              label: l10n.historyTabMatches,
-              isSelected: _index == 0,
-              onPressed: () => setState(() => _index = 0),
-            ),
-            AppChip(
-              label: l10n.historyTabStats,
-              isSelected: _index == 1,
-              onPressed: () => setState(() => _index = 1),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        Expanded(
-          child: IndexedStack(
-            index: _index,
-            sizing: StackFit.expand,
-            children: const <Widget>[
-              ActivityTimelineView(),
-              MatchmakingStatsView(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }

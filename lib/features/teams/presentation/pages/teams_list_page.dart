@@ -65,19 +65,21 @@ class _TeamsListPageState extends State<TeamsListPage>
             onPressed: () => showCreateTeamSheet(context),
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: TabBar(
+            controller: _tabController,
+            tabs: <Widget>[
+              Tab(text: l10n.teamsMineTab),
+              Tab(text: l10n.teamsExploreTab),
+            ],
+          ),
+        ),
       ),
       body: AppBackground(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const SizedBox(height: AppSpacing.sm),
-            TabBar(
-              controller: _tabController,
-              tabs: <Widget>[
-                Tab(text: l10n.teamsMineTab),
-                Tab(text: l10n.teamsExploreTab),
-              ],
-            ),
             const SizedBox(height: AppSpacing.md),
             Expanded(
               child: TabBarView(

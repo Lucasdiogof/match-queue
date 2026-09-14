@@ -12,6 +12,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions = const <Widget>[],
     this.showDivider = false,
     this.accentTitle = false,
+    this.bottom,
     super.key,
   });
 
@@ -21,6 +22,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final bool showDivider;
 
+  /// Conteudo extra colado embaixo do titulo, tipo uma TabBar de segmentos
+  /// (Pedidos/Convites) -- soma a propria altura a [preferredSize]. Ignora
+  /// [showDivider] quando presente: a TabBar ja tem sua propria borda de
+  /// selecao, uma linha por cima ficaria redundante.
+  final PreferredSizeWidget? bottom;
+
   /// Titulo com o mesmo acento (barra de 3px em gradiente) que o antigo
   /// FeatureHeader tinha no corpo -- usado pelas raizes do shell (Central,
   /// Times, Jogar, Convites, Perfil, Historico), que agora tem o titulo
@@ -28,18 +35,20 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// mas nao queriam abrir mao da identidade visual que o acento dava.
   final bool accentTitle;
 
-  /// Sem título nenhum (telas raiz do shell, que já têm o próprio título no
-  /// corpo via [FeatureHeader]), a barra existe só pra caber as ações --
-  /// não precisa da altura toda de uma barra com texto.
+  double get _toolbarHeight =>
+      title == null ? 44 : (subtitle == null ? 56 : 72);
+
+  /// Sem título nenhum, a barra existe só pra caber as ações -- não precisa
+  /// da altura toda de uma barra com texto.
   @override
   Size get preferredSize =>
-      Size.fromHeight(title == null ? 44 : (subtitle == null ? 56 : 72));
+      Size.fromHeight(_toolbarHeight + (bottom?.preferredSize.height ?? 0));
 
   @override
   Widget build(BuildContext context) => AppBar(
     leading: leading,
     automaticallyImplyLeading: leading == null,
-    toolbarHeight: preferredSize.height,
+    toolbarHeight: _toolbarHeight,
     titleSpacing: AppSpacing.lg,
     title: title == null
         ? null
@@ -82,11 +91,13 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       ...actions,
       const SizedBox(width: AppSpacing.sm),
     ],
-    bottom: showDivider
-        ? PreferredSize(
-            preferredSize: const Size.fromHeight(1),
-            child: Container(height: 1, color: context.colors.borderSubtle),
-          )
-        : null,
+    bottom:
+        bottom ??
+        (showDivider
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(1),
+                child: Container(height: 1, color: context.colors.borderSubtle),
+              )
+            : null),
   );
 }
