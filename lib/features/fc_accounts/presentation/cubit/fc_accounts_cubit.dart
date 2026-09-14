@@ -127,19 +127,25 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
     );
   }
 
+  /// [eventId] pra qual campanha incrementar -- cada Weekend League e uma
+  /// historia independente (15 jogos cada), entao quem esta vendo o detalhe
+  /// de uma campanha PASSADA precisa poder mexer nela, nao sempre na atual.
+  /// Sem [eventId] explicito, cai na campanha corrente (uso do card
+  /// resumido na tela da Conta, que so mostra a atual).
   Future<bool> incrementWeekendLeagueRecord({
     required String accountId,
+    String? eventId,
     int winDelta = 0,
     int lossDelta = 0,
   }) async {
-    final eventId = state.weekendLeagueEvent?.id;
-    if (eventId == null) {
+    final resolvedEventId = eventId ?? state.weekendLeagueEvent?.id;
+    if (resolvedEventId == null) {
       return false;
     }
     return _mutate(
       () => _repository.incrementWeekendLeagueManualRecord(
         accountId: accountId,
-        eventId: eventId,
+        eventId: resolvedEventId,
         winDelta: winDelta,
         lossDelta: lossDelta,
       ),

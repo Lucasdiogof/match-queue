@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
@@ -5,6 +7,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/lineup_draft.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/fc_squad_repository.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/squad_builder_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/formation_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/lineup_manager_slot.dart';
@@ -54,8 +57,18 @@ class _SquadBuilderView extends StatelessWidget {
     return BlocConsumer<SquadBuilderCubit, SquadBuilderState>(
       listenWhen: (previous, current) =>
           previous.saveFailure != current.saveFailure ||
-          previous.droppedByFormationChange != current.droppedByFormationChange,
+          previous.droppedByFormationChange !=
+              current.droppedByFormationChange ||
+          (previous.isSaving && !current.isSaving),
       listener: (context, state) {
+        // Salvar aqui muda o servidor, mas o resumo "Escalacao Principal" da
+        // tela da Conta (FcSquadsCubit) e um cubit a parte que so recarrega
+        // quando a conta selecionada MUDA -- sem isso, voltar pra tela da
+        // Conta depois de montar o elenco mostrava "0/11" desatualizado ate
+        // trocar de conta e voltar.
+        if (!state.isSaving && state.saveFailure == null) {
+          unawaited(context.read<FcSquadsCubit>().refresh());
+        }
         final dropped = state.droppedByFormationChange;
         if (dropped.isNotEmpty) {
           // Aviso, nao deposito: quem saiu nao foi para banco nenhum.

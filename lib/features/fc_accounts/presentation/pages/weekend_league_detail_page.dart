@@ -79,6 +79,7 @@ class _WeekendLeagueDetailPageState extends State<WeekendLeagueDetailPage> {
   Future<String?> _flushIncrement(int winDelta, int lossDelta) async {
     final ok = await _cubit.incrementWeekendLeagueRecord(
       accountId: widget.account.id,
+      eventId: _event.id,
       winDelta: winDelta,
       lossDelta: lossDelta,
     );
