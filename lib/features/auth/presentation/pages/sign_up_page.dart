@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
           title: l10n.signUpTitle,
           subtitle: l10n.signUpSubtitle,
           darkBackground: true,
-          contentAlignment: const Alignment(0, -0.35),
+          contentAlignment: const Alignment(0, -0.62),
           onBack: () => context.canPop()
               ? context.pop()
               : context.go(AppRoutes.login.path),
