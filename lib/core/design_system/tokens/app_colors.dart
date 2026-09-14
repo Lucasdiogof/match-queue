@@ -13,9 +13,10 @@ import 'package:flutter/widgets.dart';
 /// modo e nao tem versao clara/escura, por isso ficam fora do
 /// [AppSemanticColors] -- eles nao variam com o tema.
 ///
-/// Os neutros escuros levam um leve desvio para o verde (o azul e sempre o
-/// canal mais baixo). Isso e o que tira o app do cinza morto sem pintar
-/// nada: a atmosfera vem das superficies, a cor vem so do acento.
+/// Os neutros escuros sao cinza puro (R=G=B) de proposito -- pedido
+/// explicito de um dark "basico", sem o leve desvio pro verde que a paleta
+/// tinha antes. A atmosfera vem so do acento (verde/roxo/dourado), nunca do
+/// fundo.
 class AppColors {
   const AppColors._();
 
@@ -36,7 +37,6 @@ class AppColors {
   static const Color fcPurpleStrong = Color(0xFF6237E8);
   static const Color fcPurpleSoft = Color(0xFFB7A0FF);
 
-
   // --------------------------------------------------------- competitivo
 
   static const Color gold = Color(0xFFD8B45A);
@@ -55,24 +55,24 @@ class AppColors {
 
   // ---------------------------------------------------------------- dark
 
-  static const Color darkBackground = Color(0xFF080A09);
-  static const Color darkBackgroundRaised = Color(0xFF0C0F0D);
+  static const Color darkBackground = Color(0xFF0D0D0D);
+  static const Color darkBackgroundRaised = Color(0xFF121212);
 
-  static const Color darkSurface = Color(0xFF111411);
-  static const Color darkSurfaceElevated = Color(0xFF171B18);
-  static const Color darkSurfaceHighest = Color(0xFF202521);
+  static const Color darkSurface = Color(0xFF161616);
+  static const Color darkSurfaceElevated = Color(0xFF1C1C1C);
+  static const Color darkSurfaceHighest = Color(0xFF242424);
 
   /// Superficies tingidas: containers de acento, sem virar card colorido.
   static const Color darkSurfaceGreen = Color(0xFF102A1C);
   static const Color darkSurfacePurple = Color(0xFF1B1633);
   static const Color darkSurfaceGold = Color(0xFF2A2213);
 
-  static const Color darkBorderSubtle = Color(0xFF252B27);
-  static const Color darkBorderStrong = Color(0xFF3A433D);
+  static const Color darkBorderSubtle = Color(0xFF2A2A2A);
+  static const Color darkBorderStrong = Color(0xFF3D3D3D);
 
-  static const Color darkTextPrimary = Color(0xFFF7F9F7);
-  static const Color darkTextSecondary = Color(0xFFADB5AF);
-  static const Color darkTextTertiary = Color(0xFF747D76);
+  static const Color darkTextPrimary = Color(0xFFF5F5F5);
+  static const Color darkTextSecondary = Color(0xFFB0B0B0);
+  static const Color darkTextTertiary = Color(0xFF7A7A7A);
 
   static const Color darkOverlay = Color(0xC9000000);
 
