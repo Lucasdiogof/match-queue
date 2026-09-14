@@ -168,16 +168,10 @@ class _JoinRequestsList extends StatelessWidget {
                           style: context.textStyles.bodyLarge,
                         ),
                         Text(
-                          l10n.requestsJoinRequestWantsToJoin(
-                            request.fcAccountName ?? '',
-                          ),
+                          request.teamName,
                           style: context.textStyles.bodySmall?.copyWith(
                             color: context.colors.textSecondary,
                           ),
-                        ),
-                        Text(
-                          request.teamName,
-                          style: context.textStyles.labelSmall,
                         ),
                       ],
                     ),

@@ -555,9 +555,7 @@ class _PendingRequestsSection extends StatelessWidget {
                             style: context.textStyles.bodyMedium,
                           ),
                           Text(
-                            l10n.requestsJoinRequestWantsToJoin(
-                              request.fcAccountName ?? '',
-                            ),
+                            request.teamName,
                             style: context.textStyles.bodySmall?.copyWith(
                               color: context.colors.textSecondary,
                             ),
