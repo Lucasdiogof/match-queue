@@ -108,7 +108,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     enabled: !isSubmitting,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.words,
-                    autofillHints: const <String>[AutofillHints.nickname],
                     prefixIcon: Icons.sports_esports_outlined,
                     maxLength: AppValidators.displayNameMaxLength,
                     errorText: _displayNameTouch.errorFor(

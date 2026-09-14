@@ -62,12 +62,7 @@ class AuthFormScaffold extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   if (showWordmark) ...<Widget>[
-                    const Center(
-                      child: BrandLockup(
-                        markSize: BrandMarkSize.medium,
-                        axis: Axis.vertical,
-                      ),
-                    ),
+                    const Center(child: BrandWordmark(height: 76)),
                     const SizedBox(height: AppSpacing.xl),
                   ],
                   Text(title, style: context.textStyles.headlineMedium),

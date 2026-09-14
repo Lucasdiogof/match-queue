@@ -45,6 +45,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionSignOut => 'Sair';
 
   @override
+  String get profileSignOutConfirmTitle => 'Sair da conta?';
+
+  @override
+  String get profileSignOutConfirmMessage =>
+      'Você pode entrar de novo a qualquer momento com seu e-mail e senha.';
+
+  @override
   String get actionEdit => 'Editar';
 
   @override
@@ -416,7 +423,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get authDisplayNameHint => 'Lucas, ratowrld, Panda...';
 
   @override
-  String get authEmailHint => 'voce@exemplo.com';
+  String get authEmailHint => 'email@exemplo.com';
 
   @override
   String get authConfirmPassword => 'Confirmar senha';

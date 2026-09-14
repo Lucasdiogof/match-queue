@@ -172,6 +172,18 @@ abstract class AppLocalizations {
   /// **'Sair'**
   String get actionSignOut;
 
+  /// No description provided for @profileSignOutConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair da conta?'**
+  String get profileSignOutConfirmTitle;
+
+  /// No description provided for @profileSignOutConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você pode entrar de novo a qualquer momento com seu e-mail e senha.'**
+  String get profileSignOutConfirmMessage;
+
   /// No description provided for @actionEdit.
   ///
   /// In pt, this message translates to:
@@ -841,7 +853,7 @@ abstract class AppLocalizations {
   /// No description provided for @authEmailHint.
   ///
   /// In pt, this message translates to:
-  /// **'voce@exemplo.com'**
+  /// **'email@exemplo.com'**
   String get authEmailHint;
 
   /// No description provided for @authConfirmPassword.

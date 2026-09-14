@@ -344,7 +344,32 @@ class _EnvironmentRow extends StatelessWidget {
 class _SignOutButton extends StatelessWidget {
   const _SignOutButton();
 
-  Future<void> _signOut(BuildContext context) async {
+  Future<void> _confirmAndSignOut(BuildContext context) async {
+    final l10n = context.l10n;
+    final confirmed = await showAppBottomSheet<bool>(
+      context: context,
+      builder: (sheetContext) => AppBottomSheet(
+        title: l10n.profileSignOutConfirmTitle,
+        subtitle: l10n.profileSignOutConfirmMessage,
+        actions: <Widget>[
+          AppButton(
+            label: l10n.actionSignOut,
+            expanded: true,
+            onPressed: () => Navigator.of(sheetContext).pop(true),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.ghost(
+            label: l10n.actionCancel,
+            expanded: true,
+            onPressed: () => Navigator.of(sheetContext).pop(false),
+          ),
+        ],
+        child: const SizedBox.shrink(),
+      ),
+    );
+    if (confirmed != true || !context.mounted) {
+      return;
+    }
     // Ordem importa: a baixa do device depende de auth.uid(), então precisa
     // acontecer com a sessão ainda válida, ANTES do signOut.
     final authCubit = context.read<AuthCubit>();
@@ -358,7 +383,7 @@ class _SignOutButton extends StatelessWidget {
       label: context.l10n.actionSignOut,
       icon: Icons.logout,
       isLoading: state.isSubmitting,
-      onPressed: state.isSubmitting ? null : () => _signOut(context),
+      onPressed: state.isSubmitting ? null : () => _confirmAndSignOut(context),
     ),
   );
 }

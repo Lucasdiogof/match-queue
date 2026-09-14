@@ -12,6 +12,8 @@
   "actionBack": "Back",
   "actionNotNow": "Not now",
   "actionSignOut": "Sign out",
+  "profileSignOutConfirmTitle": "Sign out?",
+  "profileSignOutConfirmMessage": "You can sign back in anytime with your email and password.",
   "actionEdit": "Edit",
   "navCentral": "Central",
   "navControl": "Play",
@@ -191,7 +193,7 @@
   "authDisplayName": "Name or nickname",
   "authDisplayNameHint": "Nickname",
   "authDisplayNameHint": "Lucas, ratowrld, Panda...",
-  "authEmailHint": "you@example.com",
+  "authEmailHint": "email@example.com",
   "authConfirmPassword": "Confirm password",
   "authPasswordHelper": "At least {count} characters",
   "@authPasswordHelper": {

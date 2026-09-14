@@ -12,6 +12,8 @@
   "actionBack": "Voltar",
   "actionNotNow": "Agora não",
   "actionSignOut": "Sair",
+  "profileSignOutConfirmTitle": "Sair da conta?",
+  "profileSignOutConfirmMessage": "Você pode entrar de novo a qualquer momento com seu e-mail e senha.",
   "actionEdit": "Editar",
   "navCentral": "Central",
   "navControl": "Jogar",
@@ -191,7 +193,7 @@
   "authDisplayName": "Nome ou apelido",
   "authDisplayNameHint": "Nickname",
   "authDisplayNameHint": "Lucas, ratowrld, Panda...",
-  "authEmailHint": "voce@exemplo.com",
+  "authEmailHint": "email@exemplo.com",
   "authConfirmPassword": "Confirmar senha",
   "authPasswordHelper": "Mínimo de {count} caracteres",
   "@authPasswordHelper": {
