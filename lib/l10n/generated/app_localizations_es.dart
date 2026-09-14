@@ -3624,6 +3624,327 @@ class AppLocalizationsEs extends AppLocalizations {
       'Crea espacio primero, acelera después: cambia de dirección o haz un regate simple, espera a que el marcador se comprometa, solo entonces acelera hacia el espacio libre.';
 
   @override
+  String get chemistryIntroParagraph =>
+      'Chemistry define cuánto rinde de verdad el Chemistry Style aplicado a una carta. Ya no es un sistema de \"líneas\" entre jugadores adyacentes como en los FIFA antiguos -- se construye sobre toda la alineación titular.';
+
+  @override
+  String get chemistryHeadingHowEarned => 'Cómo gana Chemistry cada jugador';
+
+  @override
+  String get chemistryHowEarnedParagraph =>
+      'Cada titular puede tener de 0 a 3 puntos de Chemistry. Todo el equipo suma hasta 33 puntos de Squad Chemistry.';
+
+  @override
+  String get chemistryHowEarnedBullet1 =>
+      '0 de Chemistry: ningún bono de Chemistry Style, pero el jugador conserva los atributos normales de la carta.';
+
+  @override
+  String get chemistryHowEarnedBullet2 =>
+      '1 de Chemistry: bono pequeño del Chemistry Style aplicado.';
+
+  @override
+  String get chemistryHowEarnedBullet3 => '2 de Chemistry: bono medio.';
+
+  @override
+  String get chemistryHowEarnedBullet4 => '3 de Chemistry: bono máximo.';
+
+  @override
+  String get chemistryHeadingPosition => 'Requisito: posición preferida';
+
+  @override
+  String get chemistryPositionParagraph =>
+      'Un jugador solo gana y aporta Chemistry si está en una de sus posiciones preferidas dentro de la formación. Fuera de eso, se queda en 0 de Chemistry y no cuenta para los totales de club, liga o nación -- aunque esté en la alineación.';
+
+  @override
+  String get chemistryHeadingClubLeagueNation => 'Club, liga y nación/región';
+
+  @override
+  String get chemistryClubLeagueNationParagraph =>
+      'Los titulares aportan juntos a los totales de club, liga y nación/región de todo el equipo -- ya no hace falta estar al lado de otro jugador igual.';
+
+  @override
+  String get chemistryClubLeagueNationBullet1 =>
+      '2 jugadores del mismo club: +1 de Chemistry de club.';
+
+  @override
+  String get chemistryClubLeagueNationBullet2 =>
+      '4 jugadores del mismo club: +2.';
+
+  @override
+  String get chemistryClubLeagueNationBullet3 =>
+      '7 jugadores del mismo club: +3.';
+
+  @override
+  String get chemistryClubLeagueNationBullet4 =>
+      '2 jugadores de la misma nación/región: +1.';
+
+  @override
+  String get chemistryClubLeagueNationBullet5 =>
+      '5 jugadores de la misma nación/región: +2.';
+
+  @override
+  String get chemistryClubLeagueNationBullet6 =>
+      '8 jugadores de la misma nación/región: +3.';
+
+  @override
+  String get chemistryClubLeagueNationBullet7 =>
+      '3 jugadores de la misma liga: +1.';
+
+  @override
+  String get chemistryClubLeagueNationBullet8 =>
+      '5 jugadores de la misma liga: +2.';
+
+  @override
+  String get chemistryClubLeagueNationBullet9 =>
+      '8 jugadores de la misma liga: +3.';
+
+  @override
+  String get chemistryHeadingManager => 'Entrenador';
+
+  @override
+  String get chemistryManagerParagraph =>
+      'El entrenador puede dar +1 de Chemistry extra a un jugador que comparta liga o nación/región con él, hasta el máximo de 3.';
+
+  @override
+  String get chemistryHeadingIconsHeroes => 'Íconos y Héroes';
+
+  @override
+  String get chemistryIconsHeroesParagraph =>
+      'Íconos y Héroes siempre tienen Chemistry máximo (3) cuando juegan en la posición correcta. Los Íconos cuentan para todas las ligas representadas en el equipo, además de su propia nación; los Héroes dan Chemistry extra para su propia liga y nación. Esto facilita mucho armar equipos híbridos.';
+
+  @override
+  String get chemistryHeadingMenWomen => 'Masculino y femenino';
+
+  @override
+  String get chemistryMenWomenParagraph =>
+      'Jugadores y jugadoras aportan Chemistry juntos cuando comparten nación/región, o cuando los clubes masculino y femenino están afiliados -- pero no se conectan por la liga.';
+
+  @override
+  String get chemistryHeadingSubs => 'Suplentes';
+
+  @override
+  String get chemistrySubsParagraph =>
+      'Solo el once titular cuenta para el Squad Chemistry. Los suplentes y quienes entran durante el partido no generan Chemistry ni reciben bonos de Chemistry Style.';
+
+  @override
+  String get chemistryStylesIntroParagraph =>
+      'Chemistry Style es un objeto que refuerza atributos específicos de una carta -- pero solo entrega el bono si la carta tiene Chemistry (0 de Chemistry = ningún boost, sin importar el estilo aplicado). Cada carta solo puede tener un Chemistry Style activo a la vez; aplicar otro reemplaza al anterior.';
+
+  @override
+  String get chemistryStylesHeadingAll => 'Todos los estilos';
+
+  @override
+  String get chemistryStyleBoostsBasic =>
+      'Boost equilibrado en varios atributos';
+
+  @override
+  String get chemistryStyleBestForBasic => 'Uso general';
+
+  @override
+  String get chemistryStyleBoostsSniper => 'Finalización, Regate';
+
+  @override
+  String get chemistryStyleBestForSniper => 'Rematadores clínicos';
+
+  @override
+  String get chemistryStyleBoostsFinisher => 'Finalización, Físico';
+
+  @override
+  String get chemistryStyleBestForFinisher => 'Delanteros de fuerza';
+
+  @override
+  String get chemistryStyleBoostsDeadeye => 'Finalización, Pase';
+
+  @override
+  String get chemistryStyleBestForDeadeye => 'Delanteros creativos';
+
+  @override
+  String get chemistryStyleBoostsMarksman => 'Finalización, Regate, Físico';
+
+  @override
+  String get chemistryStyleBestForMarksman => 'Delanteros fuertes';
+
+  @override
+  String get chemistryStyleBoostsHawk => 'Ritmo, Finalización, Físico';
+
+  @override
+  String get chemistryStyleBestForHawk => 'Delanteros rápidos';
+
+  @override
+  String get chemistryStyleBoostsArtist => 'Pase, Regate';
+
+  @override
+  String get chemistryStyleBestForArtist => 'Armadores';
+
+  @override
+  String get chemistryStyleBoostsArchitect => 'Pase, Físico';
+
+  @override
+  String get chemistryStyleBestForArchitect => 'Mediocentros retrasados';
+
+  @override
+  String get chemistryStyleBoostsPowerhouse => 'Pase, Defensa';
+
+  @override
+  String get chemistryStyleBestForPowerhouse => 'Mediocentros defensivos';
+
+  @override
+  String get chemistryStyleBoostsMaestro => 'Pase, Regate, Finalización';
+
+  @override
+  String get chemistryStyleBestForMaestro => 'Mediapuntas';
+
+  @override
+  String get chemistryStyleBoostsEngine => 'Ritmo, Pase, Regate';
+
+  @override
+  String get chemistryStyleBestForEngine =>
+      'Mediocentros box-to-box y extremos';
+
+  @override
+  String get chemistryStyleBoostsSentinel => 'Defensa, Físico';
+
+  @override
+  String get chemistryStyleBestForSentinel => 'Centrales';
+
+  @override
+  String get chemistryStyleBoostsGuardian => 'Defensa, Regate';
+
+  @override
+  String get chemistryStyleBestForGuardian => 'Laterales';
+
+  @override
+  String get chemistryStyleBoostsGladiator => 'Finalización, Defensa';
+
+  @override
+  String get chemistryStyleBestForGladiator => 'Versátiles';
+
+  @override
+  String get chemistryStyleBoostsBackbone => 'Pase, Defensa, Físico';
+
+  @override
+  String get chemistryStyleBestForBackbone => 'Defensores';
+
+  @override
+  String get chemistryStyleBoostsAnchor => 'Ritmo, Defensa, Físico';
+
+  @override
+  String get chemistryStyleBestForAnchor =>
+      'Centrales y mediocentros defensivos';
+
+  @override
+  String get chemistryStyleBoostsHunter => 'Ritmo, Finalización';
+
+  @override
+  String get chemistryStyleBestForHunter => 'Delanteros';
+
+  @override
+  String get chemistryStyleBoostsCatalyst => 'Ritmo, Pase';
+
+  @override
+  String get chemistryStyleBestForCatalyst => 'Extremos y laterales';
+
+  @override
+  String get chemistryStyleBoostsShadow => 'Ritmo, Defensa';
+
+  @override
+  String get chemistryStyleBestForShadow => 'Defensores';
+
+  @override
+  String get chemistryStyleBoostsWall => 'Defensa (Estirada, Reflejos, Saque)';
+
+  @override
+  String get chemistryStyleBestForWall => 'Porteros';
+
+  @override
+  String get chemistryStyleBoostsShield =>
+      'Defensa (Saque, Reflejos, Velocidad)';
+
+  @override
+  String get chemistryStyleBestForShield => 'Porteros';
+
+  @override
+  String get chemistryStyleBoostsCat =>
+      'Defensa (Reflejos, Velocidad, Posicionamiento)';
+
+  @override
+  String get chemistryStyleBestForCat => 'Porteros';
+
+  @override
+  String get chemistryStyleBoostsGlove =>
+      'Defensa (Elasticidad, Estirada, Posicionamiento)';
+
+  @override
+  String get chemistryStyleBestForGlove => 'Porteros';
+
+  @override
+  String get chemistryStyleBoostsBasicGk => 'Boost equilibrado de portero';
+
+  @override
+  String get chemistryStyleBestForBasicGk => 'Uso general';
+
+  @override
+  String get evolutionsIntroParagraph =>
+      'Evolutions son programas de desarrollo para cartas elegibles del Ultimate Team: en vez de depender solo de nuevas cartas promocionales, puedes evolucionar jugadores que ya tienes completando una serie de desafíos.';
+
+  @override
+  String get evolutionsHeadingWhatChanges => 'Qué puede cambiar una Evolution';
+
+  @override
+  String get evolutionsWhatChangesBullet1 =>
+      'Atributos (ritmo, finalización, pase, regate, defensa, físico o de portero).';
+
+  @override
+  String get evolutionsWhatChangesBullet2 => 'PlayStyles y PlayStyles+.';
+
+  @override
+  String get evolutionsWhatChangesBullet3 =>
+      'Posición, incluyendo posiciones alternativas nuevas.';
+
+  @override
+  String get evolutionsWhatChangesBullet4 =>
+      'Roles y la familiaridad con ellos.';
+
+  @override
+  String get evolutionsWhatChangesBullet5 => 'Skill Moves y pie malo.';
+
+  @override
+  String get evolutionsWhatChangesBullet6 =>
+      'Aspecto de la carta (diseño, fondo, tema).';
+
+  @override
+  String get evolutionsHeadingHowItWorks =>
+      'Cómo funciona, en líneas generales';
+
+  @override
+  String get evolutionsHowItWorksBullet1 =>
+      'Cada Evolution tiene requisitos de entrada (rating máximo, posición, atributos, rareza, liga, nación, PlayStyles ya existentes, etc.) -- no toda carta es elegible.';
+
+  @override
+  String get evolutionsHowItWorksBullet2 =>
+      'El programa se divide en niveles; cada nivel tiene sus propios desafíos (jugar partidos, ganar, marcar, dar asistencia, mantener la portería a cero...).';
+
+  @override
+  String get evolutionsHowItWorksBullet3 =>
+      'Algunos niveles ofrecen más de una recompensa para elegir, en vez de un único camino fijo para todos.';
+
+  @override
+  String get evolutionsHowItWorksBullet4 =>
+      'Se puede quitar la última Evolution aplicada (o todas a la vez), lo que devuelve el estado negociable a una carta que había venido del mercado.';
+
+  @override
+  String get evolutionsHowItWorksBullet5 =>
+      'La misma carta puede encadenar varias Evolutions a lo largo de la temporada, siempre que siga siendo elegible para cada una.';
+
+  @override
+  String get evolutionsHeadingWhyNoList =>
+      'Por qué esta pantalla no lista programas activos';
+
+  @override
+  String get evolutionsWhyNoListParagraph =>
+      'Los programas de Evolution cambian con frecuencia dentro del propio ciclo de Ultimate Team, y hoy no tenemos una fuente que lo siga de forma confiable y actualizada. Preferimos explicar el concepto real antes que mostrar una lista estática haciéndose pasar por información en vivo.';
+
+  @override
   String get managersBlockedTitle => 'Todavía sin dato real';
 
   @override

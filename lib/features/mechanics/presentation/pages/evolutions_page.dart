@@ -13,54 +13,38 @@ class EvolutionsPage extends StatelessWidget {
   const EvolutionsPage({super.key});
 
   @override
-  Widget build(BuildContext context) => AppScaffold(
-    appBar: AppAppBar(title: context.l10n.mechanicsEvolutionsLabel),
-    body: AppBackground(
-      dense: true,
-      child: ListView(
-        children: <Widget>[
-          const GuideParagraph(
-            'Evolutions são programas de desenvolvimento pra cartas '
-            'elegíveis do Ultimate Team: em vez de depender só de novas '
-            'cartas promocionais, dá pra evoluir jogadores que você já '
-            'tem completando uma série de desafios.',
-          ),
-          const GuideHeading('O que uma Evolution pode mudar'),
-          const GuideBulletList(<String>[
-            'Atributos (ritmo, finalização, passe, drible, defesa, '
-                'físico ou de goleiro).',
-            'PlayStyles e PlayStyles+.',
-            'Posição, incluindo posições alternativas novas.',
-            'Roles e a familiaridade com eles.',
-            'Skill Moves e pé fraco.',
-            'Visual da carta (design, fundo, tema).',
-          ]),
-          const GuideHeading('Como funciona, em linhas gerais'),
-          const GuideBulletList(<String>[
-            'Cada Evolution tem requisitos de entrada (rating máximo, '
-                'posição, atributos, raridade, liga, nação, PlayStyles '
-                'já existentes etc.) -- nem toda carta é elegível.',
-            'O programa é dividido em níveis; cada nível tem seus '
-                'próprios desafios (jogar partidas, vencer, marcar, dar '
-                'assistência, manter o gol invicto...).',
-            'Alguns níveis oferecem mais de uma recompensa pra escolher, '
-                'em vez de um único caminho fixo pra todo mundo.',
-            'É possível remover a última Evolution aplicada (ou todas de '
-                'uma vez), o que devolve o status de negociável a uma '
-                'carta que tinha vindo do mercado.',
-            'A mesma carta pode encadear várias Evolutions ao longo da '
-                'temporada, desde que siga sendo elegível pra cada uma.',
-          ]),
-          const GuideHeading('Por que esta tela não lista programas ativos'),
-          const GuideParagraph(
-            'Os programas de Evolution mudam com frequência dentro do '
-            'próprio ciclo de Ultimate Team, e não temos hoje uma fonte '
-            'que acompanhe isso de forma confiável e atualizada. Preferimos '
-            'explicar o conceito de verdade a mostrar uma lista estática '
-            'se passando por informação ao vivo.',
-          ),
-        ],
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AppScaffold(
+      appBar: AppAppBar(title: l10n.mechanicsEvolutionsLabel),
+      body: AppBackground(
+        dense: true,
+        child: ListView(
+          children: <Widget>[
+            GuideParagraph(l10n.evolutionsIntroParagraph),
+            GuideHeading(l10n.evolutionsHeadingWhatChanges),
+            GuideBulletList(<String>[
+              l10n.evolutionsWhatChangesBullet1,
+              l10n.evolutionsWhatChangesBullet2,
+              l10n.evolutionsWhatChangesBullet3,
+              l10n.evolutionsWhatChangesBullet4,
+              l10n.evolutionsWhatChangesBullet5,
+              l10n.evolutionsWhatChangesBullet6,
+            ]),
+            GuideHeading(l10n.evolutionsHeadingHowItWorks),
+            GuideBulletList(<String>[
+              l10n.evolutionsHowItWorksBullet1,
+              l10n.evolutionsHowItWorksBullet2,
+              l10n.evolutionsHowItWorksBullet3,
+              l10n.evolutionsHowItWorksBullet4,
+              l10n.evolutionsHowItWorksBullet5,
+            ]),
+            GuideHeading(l10n.evolutionsHeadingWhyNoList),
+            GuideParagraph(l10n.evolutionsWhyNoListParagraph),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

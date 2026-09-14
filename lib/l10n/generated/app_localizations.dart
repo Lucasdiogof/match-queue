@@ -6224,6 +6224,570 @@ abstract class AppLocalizations {
   /// **'Crie espaço primeiro, acelere depois: mude de direção ou faça um drible simples, espere o marcador se comprometer, só então acelere pro espaço livre.'**
   String get controlsDribblingBullet3;
 
+  /// No description provided for @chemistryIntroParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chemistry define o quanto o Chemistry Style aplicado numa carta realmente entrega. Não é mais um sistema de \"linhas\" entre jogadores adjacentes como em FIFAs antigos -- é construído em cima da escalação titular inteira.'**
+  String get chemistryIntroParagraph;
+
+  /// No description provided for @chemistryHeadingHowEarned.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como cada jogador ganha Chemistry'**
+  String get chemistryHeadingHowEarned;
+
+  /// No description provided for @chemistryHowEarnedParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todo titular pode ter de 0 a 3 pontos de Chemistry. O time inteiro soma até 33 pontos de Squad Chemistry.'**
+  String get chemistryHowEarnedParagraph;
+
+  /// No description provided for @chemistryHowEarnedBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'0 de Chemistry: nenhum bônus de Chemistry Style, mas o jogador continua com os atributos normais da carta.'**
+  String get chemistryHowEarnedBullet1;
+
+  /// No description provided for @chemistryHowEarnedBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'1 de Chemistry: bônus pequeno do Chemistry Style aplicado.'**
+  String get chemistryHowEarnedBullet2;
+
+  /// No description provided for @chemistryHowEarnedBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'2 de Chemistry: bônus médio.'**
+  String get chemistryHowEarnedBullet3;
+
+  /// No description provided for @chemistryHowEarnedBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'3 de Chemistry: bônus máximo.'**
+  String get chemistryHowEarnedBullet4;
+
+  /// No description provided for @chemistryHeadingPosition.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pré-requisito: posição preferida'**
+  String get chemistryHeadingPosition;
+
+  /// No description provided for @chemistryPositionParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um jogador só ganha e contribui Chemistry se estiver numa das posições preferidas dele na formação. Fora disso, fica com 0 de Chemistry e não conta pros totais de clube, liga ou nação -- mesmo estando na escalação.'**
+  String get chemistryPositionParagraph;
+
+  /// No description provided for @chemistryHeadingClubLeagueNation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Clube, liga e nação/região'**
+  String get chemistryHeadingClubLeagueNation;
+
+  /// No description provided for @chemistryClubLeagueNationParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os titulares contribuem juntos pros totais de clube, liga e nação/região do time inteiro -- não precisa mais estar do lado de outro jogador igual antes.'**
+  String get chemistryClubLeagueNationParagraph;
+
+  /// No description provided for @chemistryClubLeagueNationBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'2 jogadores do mesmo clube: +1 de Chemistry de clube.'**
+  String get chemistryClubLeagueNationBullet1;
+
+  /// No description provided for @chemistryClubLeagueNationBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'4 jogadores do mesmo clube: +2.'**
+  String get chemistryClubLeagueNationBullet2;
+
+  /// No description provided for @chemistryClubLeagueNationBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'7 jogadores do mesmo clube: +3.'**
+  String get chemistryClubLeagueNationBullet3;
+
+  /// No description provided for @chemistryClubLeagueNationBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'2 jogadores da mesma nação/região: +1.'**
+  String get chemistryClubLeagueNationBullet4;
+
+  /// No description provided for @chemistryClubLeagueNationBullet5.
+  ///
+  /// In pt, this message translates to:
+  /// **'5 jogadores da mesma nação/região: +2.'**
+  String get chemistryClubLeagueNationBullet5;
+
+  /// No description provided for @chemistryClubLeagueNationBullet6.
+  ///
+  /// In pt, this message translates to:
+  /// **'8 jogadores da mesma nação/região: +3.'**
+  String get chemistryClubLeagueNationBullet6;
+
+  /// No description provided for @chemistryClubLeagueNationBullet7.
+  ///
+  /// In pt, this message translates to:
+  /// **'3 jogadores da mesma liga: +1.'**
+  String get chemistryClubLeagueNationBullet7;
+
+  /// No description provided for @chemistryClubLeagueNationBullet8.
+  ///
+  /// In pt, this message translates to:
+  /// **'5 jogadores da mesma liga: +2.'**
+  String get chemistryClubLeagueNationBullet8;
+
+  /// No description provided for @chemistryClubLeagueNationBullet9.
+  ///
+  /// In pt, this message translates to:
+  /// **'8 jogadores da mesma liga: +3.'**
+  String get chemistryClubLeagueNationBullet9;
+
+  /// No description provided for @chemistryHeadingManager.
+  ///
+  /// In pt, this message translates to:
+  /// **'Técnico'**
+  String get chemistryHeadingManager;
+
+  /// No description provided for @chemistryManagerParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'O técnico pode dar +1 de Chemistry extra a um jogador que compartilhe liga ou nação/região com ele, até o máximo de 3.'**
+  String get chemistryManagerParagraph;
+
+  /// No description provided for @chemistryHeadingIconsHeroes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ícones e Heróis'**
+  String get chemistryHeadingIconsHeroes;
+
+  /// No description provided for @chemistryIconsHeroesParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ícones e Heróis sempre têm Chemistry máximo (3) quando jogam na posição certa. Ícones contam pra todas as ligas representadas no time, além da própria nação; Heróis dão Chemistry extra pra própria liga e nação. Isso facilita muito montar times híbridos.'**
+  String get chemistryIconsHeroesParagraph;
+
+  /// No description provided for @chemistryHeadingMenWomen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Masculino e feminino'**
+  String get chemistryHeadingMenWomen;
+
+  /// No description provided for @chemistryMenWomenParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jogadores e jogadoras contribuem Chemistry juntos quando compartilham nação/região, ou quando os clubes masculino e feminino são afiliados -- mas não se conectam pela liga.'**
+  String get chemistryMenWomenParagraph;
+
+  /// No description provided for @chemistryHeadingSubs.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reservas'**
+  String get chemistryHeadingSubs;
+
+  /// No description provided for @chemistrySubsParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Só o time titular conta pro Squad Chemistry. Reservas e quem entra durante a partida não geram Chemistry nem recebem bônus de Chemistry Style.'**
+  String get chemistrySubsParagraph;
+
+  /// No description provided for @chemistryStylesIntroParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Chemistry Style é um item que reforça atributos específicos de uma carta -- mas só entrega o bônus se a carta tiver Chemistry (0 de Chemistry = nenhum boost, não importa o estilo aplicado). Cada carta só pode ter um Chemistry Style ativo por vez; aplicar outro substitui o anterior.'**
+  String get chemistryStylesIntroParagraph;
+
+  /// No description provided for @chemistryStylesHeadingAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os estilos'**
+  String get chemistryStylesHeadingAll;
+
+  /// No description provided for @chemistryStyleBoostsBasic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Boost equilibrado em vários atributos'**
+  String get chemistryStyleBoostsBasic;
+
+  /// No description provided for @chemistryStyleBestForBasic.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uso geral'**
+  String get chemistryStyleBestForBasic;
+
+  /// No description provided for @chemistryStyleBoostsSniper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização, Drible'**
+  String get chemistryStyleBoostsSniper;
+
+  /// No description provided for @chemistryStyleBestForSniper.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalizadores clínicos'**
+  String get chemistryStyleBestForSniper;
+
+  /// No description provided for @chemistryStyleBoostsFinisher.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização, Físico'**
+  String get chemistryStyleBoostsFinisher;
+
+  /// No description provided for @chemistryStyleBestForFinisher.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacantes de força'**
+  String get chemistryStyleBestForFinisher;
+
+  /// No description provided for @chemistryStyleBoostsDeadeye.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização, Passe'**
+  String get chemistryStyleBoostsDeadeye;
+
+  /// No description provided for @chemistryStyleBestForDeadeye.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacantes criativos'**
+  String get chemistryStyleBestForDeadeye;
+
+  /// No description provided for @chemistryStyleBoostsMarksman.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização, Drible, Físico'**
+  String get chemistryStyleBoostsMarksman;
+
+  /// No description provided for @chemistryStyleBestForMarksman.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacantes fortes'**
+  String get chemistryStyleBestForMarksman;
+
+  /// No description provided for @chemistryStyleBoostsHawk.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ritmo, Finalização, Físico'**
+  String get chemistryStyleBoostsHawk;
+
+  /// No description provided for @chemistryStyleBestForHawk.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacantes rápidos'**
+  String get chemistryStyleBestForHawk;
+
+  /// No description provided for @chemistryStyleBoostsArtist.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe, Drible'**
+  String get chemistryStyleBoostsArtist;
+
+  /// No description provided for @chemistryStyleBestForArtist.
+  ///
+  /// In pt, this message translates to:
+  /// **'Armadores'**
+  String get chemistryStyleBestForArtist;
+
+  /// No description provided for @chemistryStyleBoostsArchitect.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe, Físico'**
+  String get chemistryStyleBoostsArchitect;
+
+  /// No description provided for @chemistryStyleBestForArchitect.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meias recuados'**
+  String get chemistryStyleBestForArchitect;
+
+  /// No description provided for @chemistryStyleBoostsPowerhouse.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe, Defesa'**
+  String get chemistryStyleBoostsPowerhouse;
+
+  /// No description provided for @chemistryStyleBestForPowerhouse.
+  ///
+  /// In pt, this message translates to:
+  /// **'Volantes'**
+  String get chemistryStyleBestForPowerhouse;
+
+  /// No description provided for @chemistryStyleBoostsMaestro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe, Drible, Finalização'**
+  String get chemistryStyleBoostsMaestro;
+
+  /// No description provided for @chemistryStyleBestForMaestro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meias ofensivos'**
+  String get chemistryStyleBestForMaestro;
+
+  /// No description provided for @chemistryStyleBoostsEngine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ritmo, Passe, Drible'**
+  String get chemistryStyleBoostsEngine;
+
+  /// No description provided for @chemistryStyleBestForEngine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meias box-to-box e pontas'**
+  String get chemistryStyleBestForEngine;
+
+  /// No description provided for @chemistryStyleBoostsSentinel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa, Físico'**
+  String get chemistryStyleBoostsSentinel;
+
+  /// No description provided for @chemistryStyleBestForSentinel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Zagueiros'**
+  String get chemistryStyleBestForSentinel;
+
+  /// No description provided for @chemistryStyleBoostsGuardian.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa, Drible'**
+  String get chemistryStyleBoostsGuardian;
+
+  /// No description provided for @chemistryStyleBestForGuardian.
+  ///
+  /// In pt, this message translates to:
+  /// **'Laterais'**
+  String get chemistryStyleBestForGuardian;
+
+  /// No description provided for @chemistryStyleBoostsGladiator.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalização, Defesa'**
+  String get chemistryStyleBoostsGladiator;
+
+  /// No description provided for @chemistryStyleBestForGladiator.
+  ///
+  /// In pt, this message translates to:
+  /// **'Versáteis'**
+  String get chemistryStyleBestForGladiator;
+
+  /// No description provided for @chemistryStyleBoostsBackbone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passe, Defesa, Físico'**
+  String get chemistryStyleBoostsBackbone;
+
+  /// No description provided for @chemistryStyleBestForBackbone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defensores'**
+  String get chemistryStyleBestForBackbone;
+
+  /// No description provided for @chemistryStyleBoostsAnchor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ritmo, Defesa, Físico'**
+  String get chemistryStyleBoostsAnchor;
+
+  /// No description provided for @chemistryStyleBestForAnchor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Zagueiros e volantes'**
+  String get chemistryStyleBestForAnchor;
+
+  /// No description provided for @chemistryStyleBoostsHunter.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ritmo, Finalização'**
+  String get chemistryStyleBoostsHunter;
+
+  /// No description provided for @chemistryStyleBestForHunter.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacantes'**
+  String get chemistryStyleBestForHunter;
+
+  /// No description provided for @chemistryStyleBoostsCatalyst.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ritmo, Passe'**
+  String get chemistryStyleBoostsCatalyst;
+
+  /// No description provided for @chemistryStyleBestForCatalyst.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pontas e laterais'**
+  String get chemistryStyleBestForCatalyst;
+
+  /// No description provided for @chemistryStyleBoostsShadow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ritmo, Defesa'**
+  String get chemistryStyleBoostsShadow;
+
+  /// No description provided for @chemistryStyleBestForShadow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defensores'**
+  String get chemistryStyleBestForShadow;
+
+  /// No description provided for @chemistryStyleBoostsWall.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa (Mergulho, Reflexos, Reposição)'**
+  String get chemistryStyleBoostsWall;
+
+  /// No description provided for @chemistryStyleBestForWall.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiros'**
+  String get chemistryStyleBestForWall;
+
+  /// No description provided for @chemistryStyleBoostsShield.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa (Reposição, Reflexos, Velocidade)'**
+  String get chemistryStyleBoostsShield;
+
+  /// No description provided for @chemistryStyleBestForShield.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiros'**
+  String get chemistryStyleBestForShield;
+
+  /// No description provided for @chemistryStyleBoostsCat.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa (Reflexos, Velocidade, Posicionamento)'**
+  String get chemistryStyleBoostsCat;
+
+  /// No description provided for @chemistryStyleBestForCat.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiros'**
+  String get chemistryStyleBestForCat;
+
+  /// No description provided for @chemistryStyleBoostsGlove.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defesa (Elasticidade, Mergulho, Posicionamento)'**
+  String get chemistryStyleBoostsGlove;
+
+  /// No description provided for @chemistryStyleBestForGlove.
+  ///
+  /// In pt, this message translates to:
+  /// **'Goleiros'**
+  String get chemistryStyleBestForGlove;
+
+  /// No description provided for @chemistryStyleBoostsBasicGk.
+  ///
+  /// In pt, this message translates to:
+  /// **'Boost equilibrado de goleiro'**
+  String get chemistryStyleBoostsBasicGk;
+
+  /// No description provided for @chemistryStyleBestForBasicGk.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uso geral'**
+  String get chemistryStyleBestForBasicGk;
+
+  /// No description provided for @evolutionsIntroParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Evolutions são programas de desenvolvimento pra cartas elegíveis do Ultimate Team: em vez de depender só de novas cartas promocionais, dá pra evoluir jogadores que você já tem completando uma série de desafios.'**
+  String get evolutionsIntroParagraph;
+
+  /// No description provided for @evolutionsHeadingWhatChanges.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que uma Evolution pode mudar'**
+  String get evolutionsHeadingWhatChanges;
+
+  /// No description provided for @evolutionsWhatChangesBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atributos (ritmo, finalização, passe, drible, defesa, físico ou de goleiro).'**
+  String get evolutionsWhatChangesBullet1;
+
+  /// No description provided for @evolutionsWhatChangesBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'PlayStyles e PlayStyles+.'**
+  String get evolutionsWhatChangesBullet2;
+
+  /// No description provided for @evolutionsWhatChangesBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Posição, incluindo posições alternativas novas.'**
+  String get evolutionsWhatChangesBullet3;
+
+  /// No description provided for @evolutionsWhatChangesBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Roles e a familiaridade com eles.'**
+  String get evolutionsWhatChangesBullet4;
+
+  /// No description provided for @evolutionsWhatChangesBullet5.
+  ///
+  /// In pt, this message translates to:
+  /// **'Skill Moves e pé fraco.'**
+  String get evolutionsWhatChangesBullet5;
+
+  /// No description provided for @evolutionsWhatChangesBullet6.
+  ///
+  /// In pt, this message translates to:
+  /// **'Visual da carta (design, fundo, tema).'**
+  String get evolutionsWhatChangesBullet6;
+
+  /// No description provided for @evolutionsHeadingHowItWorks.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como funciona, em linhas gerais'**
+  String get evolutionsHeadingHowItWorks;
+
+  /// No description provided for @evolutionsHowItWorksBullet1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cada Evolution tem requisitos de entrada (rating máximo, posição, atributos, raridade, liga, nação, PlayStyles já existentes etc.) -- nem toda carta é elegível.'**
+  String get evolutionsHowItWorksBullet1;
+
+  /// No description provided for @evolutionsHowItWorksBullet2.
+  ///
+  /// In pt, this message translates to:
+  /// **'O programa é dividido em níveis; cada nível tem seus próprios desafios (jogar partidas, vencer, marcar, dar assistência, manter o gol invicto...).'**
+  String get evolutionsHowItWorksBullet2;
+
+  /// No description provided for @evolutionsHowItWorksBullet3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alguns níveis oferecem mais de uma recompensa pra escolher, em vez de um único caminho fixo pra todo mundo.'**
+  String get evolutionsHowItWorksBullet3;
+
+  /// No description provided for @evolutionsHowItWorksBullet4.
+  ///
+  /// In pt, this message translates to:
+  /// **'É possível remover a última Evolution aplicada (ou todas de uma vez), o que devolve o status de negociável a uma carta que tinha vindo do mercado.'**
+  String get evolutionsHowItWorksBullet4;
+
+  /// No description provided for @evolutionsHowItWorksBullet5.
+  ///
+  /// In pt, this message translates to:
+  /// **'A mesma carta pode encadear várias Evolutions ao longo da temporada, desde que siga sendo elegível pra cada uma.'**
+  String get evolutionsHowItWorksBullet5;
+
+  /// No description provided for @evolutionsHeadingWhyNoList.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por que esta tela não lista programas ativos'**
+  String get evolutionsHeadingWhyNoList;
+
+  /// No description provided for @evolutionsWhyNoListParagraph.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os programas de Evolution mudam com frequência dentro do próprio ciclo de Ultimate Team, e não temos hoje uma fonte que acompanhe isso de forma confiável e atualizada. Preferimos explicar o conceito de verdade a mostrar uma lista estática se passando por informação ao vivo.'**
+  String get evolutionsWhyNoListParagraph;
+
   /// No description provided for @managersBlockedTitle.
   ///
   /// In pt, this message translates to:
