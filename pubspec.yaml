@@ -2,7 +2,7 @@ name: fifa_queue
 description: "FIFA Queue - coordena a fila de busca de partidas de um time em EA SPORTS FC."
 publish_to: 'none'
 
-version: 1.0.0+3
+version: 1.0.1+4
 
 environment:
   sdk: ^3.12.1
@@ -49,13 +49,19 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "design/brand/generated/icon_general_1024.png"
-  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_background: "#080A09"
   adaptive_icon_foreground: "design/brand/generated/icon_adaptive_fg_1024.png"
+  # Default is 16: an extra shrink on top of whatever margin the foreground
+  # PNG itself already has. Disabled so content_fraction in
+  # generate_derivatives.py is the ONLY sizing control for the adaptive
+  # foreground -- two independent shrinks were stacking and reading as
+  # "logo too small / off-center".
+  adaptive_icon_foreground_inset: 0
   web:
     generate: true
     image_path: "design/brand/generated/icon_general_1024.png"
-    background_color: "#FFFFFF"
-    theme_color: "#FFFFFF"
+    background_color: "#080A09"
+    theme_color: "#080A09"
 
 flutter_native_splash:
   color: "#FFFFFF"

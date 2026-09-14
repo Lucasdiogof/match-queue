@@ -20,18 +20,38 @@ BRAND_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(BRAND_DIR, "..", "..", "assets", "brand")
 GENERATED_DIR = os.path.join(BRAND_DIR, "generated")
 WHITE = (255, 255, 255)
+# Mesmo tom de fundo escuro do proprio app (AppColors.darkBackground) --
+# nao um verde generico: e o pixel real que o app pinta atras de tudo no
+# tema escuro, entao a moldura do icone bate com a marca de verdade em vez
+# de so "parecer verde".
+ICON_DARK_BG = (0x08, 0x0A, 0x09)
+
+
+def load_on(name, bg_color):
+    """RGBA source alpha-composited onto bg_color, never a naive
+    .convert("RGB") (which keeps whatever RGB happens to sit under a
+    transparent pixel -- logo.png's transparent corners are black
+    underneath, not white, so that naive convert was silently baking a
+    black border into every derivative that used it).
+
+    Matters even when the canvas around it is later overscaled past the
+    edge (content_fraction > 1, full bleed): once the source is larger
+    than the canvas, the canvas's OWN background color never shows at
+    all -- what shows at the very corners is the SOURCE's own margin,
+    scaled up. Composite it onto the same color the canvas would have
+    used, or that margin shows as a visible ring in whatever color this
+    was composited onto instead (white, if using the white-card
+    variant)."""
+    im = Image.open(os.path.join(BRAND_DIR, name)).convert("RGBA")
+    bg = Image.new("RGB", im.size, bg_color)
+    bg.paste(im, mask=im.split()[-1])
+    return bg
 
 
 def load(name):
-    """RGBA source alpha-composited onto white, never a naive .convert("RGB")
-    (which keeps whatever RGB happens to sit under a transparent pixel --
-    logo.png's transparent corners are black underneath, not white, so that
-    naive convert was silently baking a black border into every derivative
-    that used it: the app icon AND the splash source both had it)."""
-    im = Image.open(os.path.join(BRAND_DIR, name)).convert("RGBA")
-    bg = Image.new("RGB", im.size, WHITE)
-    bg.paste(im, mask=im.split()[-1])
-    return bg
+    """White-backed variant -- for the white-card BrandMark usage, where a
+    white margin is the actual design (see BrandMark's own doc comment)."""
+    return load_on(name, WHITE)
 
 
 def load_rgba(name):
@@ -41,16 +61,20 @@ def load_rgba(name):
     return Image.open(os.path.join(BRAND_DIR, name)).convert("RGBA")
 
 
-def pad_to_square_white(im, canvas_size, content_fraction):
+def pad_to_square(im, canvas_size, content_fraction, bg_color):
     """Resize im (keeping aspect ratio) so its own bounding box width becomes
-    roughly `content_fraction` of canvas_size, then center it on a white
-    canvas_size x canvas_size canvas. Never crops or redraws -- only scales
-    the whole source image and adds matching white margin."""
+    roughly `content_fraction` of canvas_size, then center it on a
+    canvas_size x canvas_size canvas filled with bg_color. Never crops or
+    redraws -- only scales the whole source image and adds matching margin.
+    content_fraction > 1 deliberately overscales past the canvas edge (full
+    bleed) instead of leaving a margin, since it's an icon and the OS masks/
+    crops it anyway -- a plain color margin behind a slightly-inset badge
+    graphic reads as an unwanted border, not as the icon's own design."""
     src_w, src_h = im.size
     scale = (canvas_size * content_fraction) / src_w
     new_w, new_h = round(src_w * scale), round(src_h * scale)
     resized = im.resize((new_w, new_h), Image.LANCZOS)
-    canvas = Image.new("RGB", (canvas_size, canvas_size), WHITE)
+    canvas = Image.new("RGB", (canvas_size, canvas_size), bg_color)
     offset = ((canvas_size - new_w) // 2, (canvas_size - new_h) // 2)
     canvas.paste(resized, offset)
     return canvas
@@ -159,15 +183,16 @@ os.makedirs(GENERATED_DIR, exist_ok=True)
 
 escrito_rgba = Image.open(os.path.join(BRAND_DIR, "escrito.png")).convert("RGBA")
 logo = load("logo.png")
+logo_rgba = load_rgba("logo.png")
 
 # ---- Runtime assets (bundled via pubspec assets:) ----
 
 # Icon mark used inline by BrandMark (nav rail, splash widget, auth forms).
-# logo.png is already a full-bleed 1024x1024 squircle (corners cleared to
-# transparent, which .convert("RGB") above flattens back to the white they
-# were exported with) -- downscaling to 512 is plenty for anything up to
-# ~170dp on a 3x display, avoids decoding a much bigger PNG just to show it
-# at 32-72dp.
+# logo.png is a squircle badge with a few % of transparent margin around
+# it; load() composites that onto white for this white-card usage (see
+# BrandMark's own comment on why it renders as a bordered card, not a raw
+# squircle). Downscaling to 512 is plenty for anything up to ~170dp on a
+# 3x display, avoids decoding a much bigger PNG just to show it at 32-72dp.
 logo.resize((512, 512), Image.LANCZOS).save(os.path.join(ASSETS_DIR, "icon.png"), optimize=True)
 
 # Wordmark: solid black frame cut to transparent, teal glow kept as a halo,
@@ -195,25 +220,35 @@ escrito_resized.save(os.path.join(ASSETS_DIR, "wordmark.png"), optimize=True)
 
 # ---- Build-time-only sources (flutter_launcher_icons / flutter_native_splash) ----
 
-# General app icon source (iOS + Android legacy + Web favicon/PWA). iOS/Web
-# don't apply an aggressive safe-zone circle like Android adaptive icons do,
-# and logo.png already fills its own 1024x1024 frame, so no extra shrink.
-icon_general = pad_to_square_white(logo, 1024, content_fraction=1.0)
+# General app icon source (iOS + Android legacy + Web favicon/PWA). iOS
+# masks/rounds this itself (never round it here) and shows no background
+# color at all outside the mask, so a plain color margin behind the badge
+# would look like an unwanted border around it -- logo.png's own ~6% margin
+# around its rounded-square art gets cropped away by overscaling slightly
+# past the canvas edge (full bleed) instead of kept as visible padding.
+icon_general_source = load_on("logo.png", ICON_DARK_BG)
+icon_general = pad_to_square(
+    icon_general_source, 1024, content_fraction=1.08, bg_color=ICON_DARK_BG
+)
 icon_general.save(os.path.join(GENERATED_DIR, "icon_general_1024.png"), optimize=True)
 
-# Android adaptive icon foreground: must survive circular/squircle/rounded-
-# square launcher masks, which only guarantee the inner ~66% safe circle.
-# Content pinned to ~60% width for comfortable margin under any mask shape.
-icon_adaptive_fg = pad_to_square_white(logo, 1024, content_fraction=0.6)
+# Android adaptive icon foreground: TRANSPARENT outside the art (the dark
+# background comes from adaptive_icon_background in pubspec.yaml, a separate
+# layer Android composites behind this one -- filling it here would just be
+# a second, redundant background). adaptive_icon_foreground_inset is set to
+# 0 in pubspec.yaml, so this content_fraction is the ONLY sizing control:
+# ~66% matches Android's guaranteed-visible safe-zone circle (66dp of the
+# 108dp full asset) without an extra tool-side inset shrinking it further,
+# which is what made the mark read as too small/off-center before.
+icon_adaptive_fg = pad_to_square_transparent(logo_rgba, 1024, content_fraction=0.66)
 icon_adaptive_fg.save(os.path.join(GENERATED_DIR, "icon_adaptive_fg_1024.png"), optimize=True)
 
-# Native splash source: transparent, not white-padded -- flutter_native_splash
+# Native splash source: transparent, not color-padded -- flutter_native_splash
 # already paints its own background color behind it (color/color_dark in
-# pubspec.yaml). A white-filled square here duplicated that background
-# clumsily; a black one (the bug this replaced) showed as a border that was
-# never supposed to exist. Same margin as before so Android 12's own
-# splash-icon safe zone (~66% constraint) doesn't clip the wordmark under it.
-logo_rgba = load_rgba("logo.png")
+# pubspec.yaml). A filled square here duplicated that background clumsily;
+# a black one (the bug this replaced) showed as a border that was never
+# supposed to exist. Same margin as before so Android 12's own splash-icon
+# safe zone (~66% constraint) doesn't clip the wordmark under it.
 splash_source = pad_to_square_transparent(logo_rgba, 1024, content_fraction=0.72)
 splash_source.save(os.path.join(GENERATED_DIR, "splash_source_1024.png"), optimize=True)
 
