@@ -16,8 +16,6 @@ import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dar
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
-import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
-import 'package:fifa_queue/features/teams/presentation/cubit/team_sports_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/team_status_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/team_status_state.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -62,24 +60,13 @@ class TeamDetailPage extends StatelessWidget {
         ),
         body: userTeam == null
             ? const AppLoading()
-            : MultiBlocProvider(
+            : BlocProvider<TeamStatusCubit>(
                 key: ValueKey(teamId),
-                providers: <BlocProvider<dynamic>>[
-                  BlocProvider<TeamStatusCubit>(
-                    create: (_) => TeamStatusCubit(
-                      getIt<TeamRepository>(),
-                      getIt<MatchmakingRepository>(),
-                      teamId: teamId,
-                    )..start(),
-                  ),
-                  // Dashboard esportivo so carrega ao ENTRAR no Time
-                  // (item 50) -- a lista de Times continua leve.
-                  BlocProvider<TeamSportsCubit>(
-                    create: (_) =>
-                        TeamSportsCubit(getIt<TeamRepository>(), teamId: teamId)
-                          ..load(),
-                  ),
-                ],
+                create: (_) => TeamStatusCubit(
+                  getIt<TeamRepository>(),
+                  getIt<MatchmakingRepository>(),
+                  teamId: teamId,
+                )..start(),
                 child: _TeamStatusBody(
                   team: userTeam.team,
                   viewerRole: userTeam.role,
@@ -108,52 +95,40 @@ class _TeamStatusBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<TeamStatusCubit, TeamStatusState>(
-        builder: (context, state) =>
-            BlocBuilder<TeamSportsCubit, TeamSportsState>(
-              builder: (context, sports) => RefreshIndicator(
-                onRefresh: context.read<TeamSportsCubit>().refresh,
-                child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-                  children: <Widget>[
-                    _TeamHeaderCard(
-                      team: team,
-                      state: state,
-                      dashboard: sports.dashboard,
-                    ),
-                    if (viewerRole.canManageTeam) ...<Widget>[
-                      const SizedBox(height: AppSpacing.lg),
-                      _InviteMemberButton(teamId: team.id),
-                      const SizedBox(height: AppSpacing.lg),
-                      _PendingRequestsSection(teamId: team.id),
-                      const SizedBox(height: AppSpacing.lg),
-                      _SentInvitationsSection(teamId: team.id),
-                    ],
-                    const SizedBox(height: AppSpacing.lg),
-                    // Status operacional continua sendo do Realtime da Etapa
-                    // anterior -- stats nunca se misturam com ele (item 46).
-                    _MemberStatusSection(
-                      teamId: team.id,
-                      state: state,
-                      viewerRole: viewerRole,
-                    ),
-                  ],
-                ),
+        builder: (context, state) => RefreshIndicator(
+          onRefresh: context.read<TeamStatusCubit>().refreshSilently,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+            children: <Widget>[
+              _TeamHeaderCard(team: team, state: state),
+              if (viewerRole.canManageTeam) ...<Widget>[
+                const SizedBox(height: AppSpacing.lg),
+                _InviteMemberButton(teamId: team.id),
+                const SizedBox(height: AppSpacing.lg),
+                _PendingRequestsSection(teamId: team.id),
+                const SizedBox(height: AppSpacing.lg),
+                _SentInvitationsSection(teamId: team.id),
+              ],
+              const SizedBox(height: AppSpacing.lg),
+              // Status operacional continua sendo do Realtime da Etapa
+              // anterior -- stats nunca se misturam com ele (item 46).
+              _MemberStatusSection(
+                teamId: team.id,
+                state: state,
+                viewerRole: viewerRole,
               ),
-            ),
+            ],
+          ),
+        ),
       );
 }
 
 class _TeamHeaderCard extends StatelessWidget {
-  const _TeamHeaderCard({
-    required this.team,
-    required this.state,
-    this.dashboard,
-  });
+  const _TeamHeaderCard({required this.team, required this.state});
 
   final Team team;
   final TeamStatusState state;
-  final TeamSportsDashboard? dashboard;
 
   @override
   Widget build(BuildContext context) {
@@ -184,16 +159,6 @@ class _TeamHeaderCard extends StatelessWidget {
                     color: colors.textSecondary,
                   ),
                 ),
-                if (dashboard != null &&
-                    dashboard!.summary.hasMatches) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    l10n.teamSportsMatchesCount(dashboard!.summary.matches),
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textTertiary,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -483,8 +448,8 @@ class _InviteMemberSheetState extends State<_InviteMemberSheet> {
       if (!mounted) {
         return;
       }
-      final message = failure is TeamFailure &&
-              failure.reason == TeamFailureReason.notFound
+      final message =
+          failure is TeamFailure && failure.reason == TeamFailureReason.notFound
           ? context.l10n.teamInviteNotFoundMessage
           : failure.localizedMessage(context.l10n);
       setState(() {
