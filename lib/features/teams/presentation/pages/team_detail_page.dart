@@ -483,9 +483,13 @@ class _InviteMemberSheetState extends State<_InviteMemberSheet> {
       if (!mounted) {
         return;
       }
+      final message = failure is TeamFailure &&
+              failure.reason == TeamFailureReason.notFound
+          ? context.l10n.teamInviteNotFoundMessage
+          : failure.localizedMessage(context.l10n);
       setState(() {
         _isSending = false;
-        _errorMessage = failure.localizedMessage(context.l10n);
+        _errorMessage = message;
       });
     }
   }
