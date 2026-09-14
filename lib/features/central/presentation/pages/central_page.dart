@@ -25,6 +25,7 @@ class CentralPage extends StatelessWidget {
     return AppScaffold(
       appBar: AppAppBar(
         title: l10n.navCentral,
+        accentTitle: true,
         actions: const <Widget>[NotificationBellButton()],
       ),
       body: const AppBackground(child: _CentralBody()),

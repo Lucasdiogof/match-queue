@@ -27,7 +27,7 @@ class HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: AppAppBar(title: l10n.navHistory),
+          appBar: AppAppBar(title: l10n.navHistory, accentTitle: true),
           body: AppBackground(
             child: selected == null
                 ? AppEmptyState(

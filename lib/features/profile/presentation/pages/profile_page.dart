@@ -25,7 +25,7 @@ class ProfilePage extends StatelessWidget {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: AppAppBar(title: l10n.navProfile),
+      appBar: AppAppBar(title: l10n.navProfile, accentTitle: true),
       body: ListView(
         padding: const EdgeInsets.only(
           top: AppSpacing.md,

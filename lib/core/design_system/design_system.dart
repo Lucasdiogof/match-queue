@@ -15,7 +15,6 @@ export 'package:fifa_queue/core/design_system/components/app_empty_state.dart';
 export 'package:fifa_queue/core/design_system/components/app_error_state.dart';
 export 'package:fifa_queue/core/design_system/components/app_icon_button.dart';
 export 'package:fifa_queue/core/design_system/components/app_loading.dart';
-export 'package:fifa_queue/core/design_system/components/feature_header.dart';
 export 'package:fifa_queue/core/design_system/components/app_scaffold.dart';
 export 'package:fifa_queue/core/design_system/components/app_text_field.dart';
 export 'package:fifa_queue/core/design_system/layout/app_responsive.dart';

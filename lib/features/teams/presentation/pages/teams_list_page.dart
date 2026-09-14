@@ -52,6 +52,7 @@ class _TeamsListPageState extends State<TeamsListPage>
     return AppScaffold(
       appBar: AppAppBar(
         title: l10n.navTeam,
+        accentTitle: true,
         actions: <Widget>[
           AppIconButton(
             icon: Icons.qr_code_2_outlined,

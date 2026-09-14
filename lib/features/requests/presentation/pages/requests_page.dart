@@ -30,7 +30,7 @@ class _RequestsPageState extends State<RequestsPage> {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: AppAppBar(title: l10n.requestsPageTitle),
+      appBar: AppAppBar(title: l10n.requestsPageTitle, accentTitle: true),
       body: AppBackground(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

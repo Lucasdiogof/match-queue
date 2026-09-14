@@ -36,6 +36,7 @@ class ControlPage extends StatelessWidget {
         return AppScaffold(
           appBar: AppAppBar(
             title: l10n.navControl,
+            accentTitle: true,
             actions: const <Widget>[NotificationBellButton()],
           ),
           body: AppBackground(
