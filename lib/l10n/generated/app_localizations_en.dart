@@ -1024,10 +1024,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your turn, search expiry alerts.';
 
   @override
-  String get notificationsCategoryTeams => 'Teams';
+  String get notificationsCategoryTeams => 'Team invites';
 
   @override
-  String get notificationsCategoryTeamsHint => 'New members joining the team.';
+  String get notificationsCategoryTeamsHint =>
+      'Join requests and invitations, new members on the team.';
 
   @override
   String get notificationsCategoryWeekendLeague => 'Champions';
@@ -1449,10 +1450,34 @@ class AppLocalizationsEn extends AppLocalizations {
       'This account isn\'t linked to any team yet.';
 
   @override
+  String get fcAccountSharingAction => 'Sharing';
+
+  @override
+  String get fcAccountAvatarChangeAction => 'Change photo';
+
+  @override
+  String get fcAccountAvatarRemoveAction => 'Remove photo';
+
+  @override
+  String get fcAccountAvatarRemoveConfirmTitle => 'Remove the account photo?';
+
+  @override
+  String get fcAccountAvatarRemoveConfirmMessage =>
+      'The account goes back to showing initials instead of the photo.';
+
+  @override
   String get fcAccountLinkTeamAction => 'Link';
 
   @override
-  String get fcAccountUnlinkTeamAction => 'Unlink';
+  String get fcAccountUnlinkTeamAction => 'Leave team';
+
+  @override
+  String get fcAccountLeaveTeamConfirmTitle => 'Leave the team?';
+
+  @override
+  String fcAccountLeaveTeamConfirmMessage(String teamName) {
+    return 'This account will stop representing $teamName. You can link it again whenever you want.';
+  }
 
   @override
   String get fcAccountSettingsTitle => 'Settings';

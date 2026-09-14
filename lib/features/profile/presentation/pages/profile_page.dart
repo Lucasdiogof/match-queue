@@ -233,12 +233,6 @@ class _LegalSection extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           _NavRow(
-            icon: Icons.info_outline,
-            label: l10n.aboutTitle,
-            onTap: () => context.push(AppRoutes.about.path),
-          ),
-          const AppDivider(),
-          _NavRow(
             icon: Icons.privacy_tip_outlined,
             label: l10n.privacyPolicyTitle,
             onTap: () => context.push(AppRoutes.privacyPolicy.path),

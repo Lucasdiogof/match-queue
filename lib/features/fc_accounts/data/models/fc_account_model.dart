@@ -28,6 +28,7 @@ class FcAccountModel {
     return FcAccount(
       id: '${json['id']}',
       name: '${json['name']}',
+      avatarUrl: json['avatar_url'] as String?,
       isActive: json['is_active'] as bool? ?? true,
       teamIds: teamIds is List
           ? teamIds.map((id) => '$id').toList(growable: false)

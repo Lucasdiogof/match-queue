@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
@@ -7,6 +9,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/pages/weekend_leagu
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squads_section.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_avatar_picker.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rename_fc_account_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
@@ -17,6 +20,7 @@ import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_ran
 import 'package:fifa_queue/features/game/presentation/widgets/debounced_win_loss_counter.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,6 +66,8 @@ class _FcAccountDetailBody extends StatelessWidget {
     // Ordem: o que a conta E (elenco), como ela vai (Rivals, Champions),
     // times vinculados e so entao configuracoes da conta.
     children: <Widget>[
+      _AccountAvatarCard(account: account, state: state),
+      const SizedBox(height: AppSpacing.lg),
       SquadsSection(fcAccountId: account.id),
       const SizedBox(height: AppSpacing.lg),
       _RivalsSection(account: account),
@@ -75,6 +81,27 @@ class _FcAccountDetailBody extends StatelessWidget {
       const SizedBox(height: AppSpacing.lg),
       _SettingsSection(account: account),
     ],
+  );
+}
+
+class _AccountAvatarCard extends StatelessWidget {
+  const _AccountAvatarCard({required this.account, required this.state});
+
+  final FcAccount account;
+  final FcAccountsState state;
+
+  @override
+  Widget build(BuildContext context) => AppCard(
+    child: FcAccountAvatarPicker(
+      accountId: account.id,
+      isSaving: state.isSaving,
+      hasAvatar: account.avatarUrl != null,
+      preview: AppAvatar(
+        label: account.name,
+        imageUrl: account.avatarUrl,
+        size: AppSizing.avatarXl,
+      ),
+    ),
   );
 }
 
@@ -250,8 +277,10 @@ class _LinkedTeamsSection extends StatelessWidget {
               ),
             )
           else
-            for (final userTeam in teams)
-              _TeamLinkRow(account: account, userTeam: userTeam),
+            for (var i = 0; i < teams.length; i++) ...<Widget>[
+              if (i > 0) const AppDivider(),
+              _TeamLinkRow(account: account, userTeam: teams[i]),
+            ],
         ],
       ),
     );
@@ -264,22 +293,72 @@ class _TeamLinkRow extends StatelessWidget {
   final FcAccount account;
   final UserTeam userTeam;
 
+  Future<void> _unlink(BuildContext context) async {
+    final l10n = context.l10n;
+    final fcCubit = context.read<FcAccountsCubit>();
+    final confirmed = await showAppBottomSheet<bool>(
+      context: context,
+      builder: (sheetContext) => AppBottomSheet(
+        title: l10n.fcAccountLeaveTeamConfirmTitle,
+        subtitle: l10n.fcAccountLeaveTeamConfirmMessage(userTeam.team.name),
+        actions: <Widget>[
+          AppButton.danger(
+            label: l10n.fcAccountUnlinkTeamAction,
+            expanded: true,
+            onPressed: () => Navigator.of(sheetContext).pop(true),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.ghost(
+            label: l10n.actionCancel,
+            expanded: true,
+            onPressed: () => Navigator.of(sheetContext).pop(false),
+          ),
+        ],
+        child: const SizedBox.shrink(),
+      ),
+    );
+    if (confirmed == true) {
+      unawaited(
+        fcCubit.unlinkFromTeam(accountId: account.id, teamId: userTeam.id),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLinked = account.isLinkedTo(userTeam.id);
     final fcCubit = context.read<FcAccountsCubit>();
     final isSaving = context.watch<FcAccountsCubit>().state.isSaving;
+    final colors = context.colors;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       child: Row(
         children: <Widget>[
+          TeamAvatar(team: userTeam.team, size: AppSizing.avatarMd),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
-            child: Text(
-              userTeam.team.name,
-              style: context.textStyles.bodyLarge,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  userTeam.team.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textStyles.bodyLarge,
+                ),
+                if (userTeam.team.tag != null)
+                  Text(
+                    userTeam.team.tag!,
+                    style: context.textStyles.bodySmall?.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+              ],
             ),
           ),
+          const SizedBox(width: AppSpacing.sm),
           AppButton.ghost(
             label: isLinked
                 ? context.l10n.fcAccountUnlinkTeamAction
@@ -288,10 +367,7 @@ class _TeamLinkRow extends StatelessWidget {
             onPressed: isSaving
                 ? null
                 : () => isLinked
-                      ? fcCubit.unlinkFromTeam(
-                          accountId: account.id,
-                          teamId: userTeam.id,
-                        )
+                      ? _unlink(context)
                       : fcCubit.linkToTeam(
                           accountId: account.id,
                           teamId: userTeam.id,
@@ -339,7 +415,13 @@ class _SettingsSection extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton.secondary(
-            label: l10n.publicProfileSectionTitle,
+            label: l10n.notificationsSectionTitle,
+            icon: Icons.notifications_outlined,
+            onPressed: () => context.push(AppRoutes.profileNotifications.path),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
+            label: l10n.fcAccountSharingAction,
             icon: Icons.lock_outline,
             onPressed: () =>
                 context.push(AppRoutes.profileSharingLocation(account.id)),

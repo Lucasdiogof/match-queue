@@ -1023,10 +1023,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Sua vez, avisos de expiração da busca.';
 
   @override
-  String get notificationsCategoryTeams => 'Times';
+  String get notificationsCategoryTeams => 'Convites para time';
 
   @override
-  String get notificationsCategoryTeamsHint => 'Novos membros no time.';
+  String get notificationsCategoryTeamsHint =>
+      'Pedidos e convites de entrada, novos membros no time.';
 
   @override
   String get notificationsCategoryWeekendLeague => 'Champions';
@@ -1450,10 +1451,34 @@ class AppLocalizationsPt extends AppLocalizations {
       'Esta conta ainda não está vinculada a nenhum time.';
 
   @override
+  String get fcAccountSharingAction => 'Compartilhamento';
+
+  @override
+  String get fcAccountAvatarChangeAction => 'Alterar foto';
+
+  @override
+  String get fcAccountAvatarRemoveAction => 'Remover foto';
+
+  @override
+  String get fcAccountAvatarRemoveConfirmTitle => 'Remover a foto da conta?';
+
+  @override
+  String get fcAccountAvatarRemoveConfirmMessage =>
+      'A conta volta a mostrar as iniciais no lugar da foto.';
+
+  @override
   String get fcAccountLinkTeamAction => 'Vincular';
 
   @override
-  String get fcAccountUnlinkTeamAction => 'Desvincular';
+  String get fcAccountUnlinkTeamAction => 'Sair do time';
+
+  @override
+  String get fcAccountLeaveTeamConfirmTitle => 'Sair do time?';
+
+  @override
+  String fcAccountLeaveTeamConfirmMessage(String teamName) {
+    return 'Essa conta vai deixar de representar o Time $teamName. Você pode vincular de novo quando quiser.';
+  }
 
   @override
   String get fcAccountSettingsTitle => 'Configurações';

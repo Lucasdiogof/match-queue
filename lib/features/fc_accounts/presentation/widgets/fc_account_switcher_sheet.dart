@@ -76,10 +76,10 @@ class _FcAccountRow extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
         children: <Widget>[
-          Icon(
-            Icons.sports_esports_outlined,
-            color: colors.textSecondary,
-            size: AppSizing.iconMd,
+          AppAvatar(
+            label: account.name,
+            imageUrl: account.avatarUrl,
+            size: AppSizing.avatarMd,
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(

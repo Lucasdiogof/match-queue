@@ -191,7 +191,6 @@
   "signUpSubtitle": "Choose how your team will call you.",
   "signUpHaveAccount": "Already have an account?",
   "authDisplayName": "Name or nickname",
-  "authDisplayNameHint": "Nickname",
   "authDisplayNameHint": "Lucas, ratowrld, Panda...",
   "authEmailHint": "email@example.com",
   "authConfirmPassword": "Confirm password",
@@ -541,8 +540,8 @@
   "notificationsChannelAppUpdatesDescription": "New members, ranking, Champions and Rivals.",
   "notificationsCategoryMatchmaking": "Matchmaking",
   "notificationsCategoryMatchmakingHint": "Your turn, search expiry alerts.",
-  "notificationsCategoryTeams": "Teams",
-  "notificationsCategoryTeamsHint": "New members joining the team.",
+  "notificationsCategoryTeams": "Team invites",
+  "notificationsCategoryTeamsHint": "Join requests and invitations, new members on the team.",
   "notificationsCategoryWeekendLeague": "Champions",
   "notificationsCategoryWeekendLeagueHint": "When a Champions ends.",
   "notificationsCategoryRivals": "Rivals",
@@ -815,7 +814,22 @@
   "fcAccountLinkedTeamsTitle": "Teams",
   "fcAccountLinkedTeamsEmpty": "This account isn't linked to any team yet.",
   "fcAccountLinkTeamAction": "Link",
-  "fcAccountUnlinkTeamAction": "Unlink",
+  "fcAccountSharingAction": "Sharing",
+  "fcAccountAvatarChangeAction": "Change photo",
+  "fcAccountAvatarRemoveAction": "Remove photo",
+  "fcAccountAvatarRemoveConfirmTitle": "Remove the account photo?",
+  "fcAccountAvatarRemoveConfirmMessage": "The account goes back to showing initials instead of the photo.",
+  "fcAccountUnlinkTeamAction": "Leave team",
+  "fcAccountLeaveTeamConfirmTitle": "Leave the team?",
+  "fcAccountLeaveTeamConfirmMessage": "This account will stop representing {teamName}. You can link it again whenever you want.",
+  "@fcAccountLeaveTeamConfirmMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String",
+        "example": "Falcons"
+      }
+    }
+  },
   "fcAccountSettingsTitle": "Settings",
   "fcAccountDivisionTitle": "Rivals Division",
   "fcAccountDivisionPickerTitle": "Select division",

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class FcAccountRemoteDataSource {
@@ -6,6 +8,17 @@ abstract interface class FcAccountRemoteDataSource {
   Future<void> createAccount(String name);
 
   Future<void> updateAccount({required String id, required String name});
+
+  Future<String> uploadAvatar({
+    required String accountId,
+    required Uint8List bytes,
+    required String contentType,
+    required String extension,
+  });
+
+  Future<void> updateAvatarUrl({required String id, String? avatarUrl});
+
+  Future<void> deleteAvatarFile(String accountId);
 
   Future<void> archiveAccount(String id);
 
@@ -78,6 +91,53 @@ class SupabaseFcAccountRemoteDataSource implements FcAccountRemoteDataSource {
         'update_fc_account',
         params: <String, dynamic>{'p_id': id, 'p_name': name},
       );
+
+  static const String _avatarBucket = 'fc-account-avatars';
+
+  @override
+  Future<String> uploadAvatar({
+    required String accountId,
+    required Uint8List bytes,
+    required String contentType,
+    required String extension,
+  }) async {
+    final path = '$accountId/avatar.$extension';
+    await _client.storage
+        .from(_avatarBucket)
+        .uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(contentType: contentType, upsert: true),
+        );
+    // Cache-busting: path fixo (upsert), sem parametro que muda a cada
+    // upload o app continuaria servindo a foto antiga com a mesma URL.
+    final publicUrl = _client.storage.from(_avatarBucket).getPublicUrl(path);
+    return Uri.parse(publicUrl)
+        .replace(
+          queryParameters: <String, String>{
+            'v': '${DateTime.now().millisecondsSinceEpoch}',
+          },
+        )
+        .toString();
+  }
+
+  @override
+  Future<void> updateAvatarUrl({required String id, String? avatarUrl}) =>
+      _client.rpc<dynamic>(
+        'update_fc_account_avatar',
+        params: <String, dynamic>{'p_id': id, 'p_avatar_url': avatarUrl},
+      );
+
+  @override
+  Future<void> deleteAvatarFile(String accountId) async {
+    // Path fixo, mas a extensao muda conforme o formato enviado -- apaga as
+    // 3 possiveis, best-effort (remove() nao falha por objeto inexistente).
+    await _client.storage.from(_avatarBucket).remove(<String>[
+      '$accountId/avatar.jpg',
+      '$accountId/avatar.png',
+      '$accountId/avatar.webp',
+    ]);
+  }
 
   @override
   Future<void> archiveAccount(String id) => _client.rpc<dynamic>(

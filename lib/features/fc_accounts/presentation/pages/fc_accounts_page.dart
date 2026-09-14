@@ -112,6 +112,12 @@ class _FcAccountCard extends StatelessWidget {
       onTap: () => context.push(AppRoutes.fcAccountDetailLocation(account.id)),
       child: Row(
         children: <Widget>[
+          AppAvatar(
+            label: account.name,
+            imageUrl: account.avatarUrl,
+            size: AppSizing.avatarMd,
+          ),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(account.name, style: context.textStyles.titleMedium),
           ),

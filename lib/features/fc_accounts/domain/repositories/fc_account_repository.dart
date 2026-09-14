@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
@@ -16,6 +18,14 @@ abstract interface class FcAccountRepository {
   Future<void> createAccount(String name);
 
   Future<void> updateAccount({required String id, required String name});
+
+  Future<String> uploadAndSetAvatar({
+    required String accountId,
+    required Uint8List bytes,
+    required String contentType,
+  });
+
+  Future<void> removeAvatar(String accountId);
 
   Future<void> archiveAccount(String id);
 

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/fc_accounts/data/datasources/fc_account_remote_data_source.dart';
 import 'package:fifa_queue/features/fc_accounts/data/models/fc_account_model.dart';
@@ -26,6 +28,33 @@ class SupabaseFcAccountRepository implements FcAccountRepository {
   @override
   Future<void> updateAccount({required String id, required String name}) =>
       _guard(() => _dataSource.updateAccount(id: id, name: name));
+
+  @override
+  Future<String> uploadAndSetAvatar({
+    required String accountId,
+    required Uint8List bytes,
+    required String contentType,
+  }) => _guard(() async {
+    final extension = switch (contentType) {
+      'image/png' => 'png',
+      'image/webp' => 'webp',
+      _ => 'jpg',
+    };
+    final url = await _dataSource.uploadAvatar(
+      accountId: accountId,
+      bytes: bytes,
+      contentType: contentType,
+      extension: extension,
+    );
+    await _dataSource.updateAvatarUrl(id: accountId, avatarUrl: url);
+    return url;
+  });
+
+  @override
+  Future<void> removeAvatar(String accountId) => _guard(() async {
+    await _dataSource.deleteAvatarFile(accountId);
+    await _dataSource.updateAvatarUrl(id: accountId);
+  });
 
   @override
   Future<void> archiveAccount(String id) =>

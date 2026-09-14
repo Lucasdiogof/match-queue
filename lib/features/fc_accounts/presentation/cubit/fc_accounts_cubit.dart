@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/fc_accounts/data/selected_fc_account_store.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
@@ -68,6 +70,21 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
 
   Future<bool> updateAccount({required String id, required String name}) =>
       _mutate(() => _repository.updateAccount(id: id, name: name));
+
+  Future<bool> uploadAndSetAvatar({
+    required String accountId,
+    required Uint8List bytes,
+    required String contentType,
+  }) => _mutate(
+    () => _repository.uploadAndSetAvatar(
+      accountId: accountId,
+      bytes: bytes,
+      contentType: contentType,
+    ),
+  );
+
+  Future<bool> removeAvatar(String accountId) =>
+      _mutate(() => _repository.removeAvatar(accountId));
 
   Future<bool> archiveAccount(String id) => _mutate(
     () => _repository.archiveAccount(id),

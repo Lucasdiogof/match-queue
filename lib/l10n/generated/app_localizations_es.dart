@@ -1029,10 +1029,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tu turno, avisos de expiración de la búsqueda.';
 
   @override
-  String get notificationsCategoryTeams => 'Equipos';
+  String get notificationsCategoryTeams => 'Invitaciones de equipo';
 
   @override
-  String get notificationsCategoryTeamsHint => 'Nuevos miembros en el equipo.';
+  String get notificationsCategoryTeamsHint =>
+      'Solicitudes e invitaciones de ingreso, nuevos miembros en el equipo.';
 
   @override
   String get notificationsCategoryWeekendLeague => 'Champions';
@@ -1457,10 +1458,35 @@ class AppLocalizationsEs extends AppLocalizations {
       'Esta cuenta todavía no está vinculada a ningún equipo.';
 
   @override
+  String get fcAccountSharingAction => 'Compartir';
+
+  @override
+  String get fcAccountAvatarChangeAction => 'Cambiar foto';
+
+  @override
+  String get fcAccountAvatarRemoveAction => 'Quitar foto';
+
+  @override
+  String get fcAccountAvatarRemoveConfirmTitle =>
+      '¿Quitar la foto de la cuenta?';
+
+  @override
+  String get fcAccountAvatarRemoveConfirmMessage =>
+      'La cuenta vuelve a mostrar las iniciales en lugar de la foto.';
+
+  @override
   String get fcAccountLinkTeamAction => 'Vincular';
 
   @override
-  String get fcAccountUnlinkTeamAction => 'Desvincular';
+  String get fcAccountUnlinkTeamAction => 'Salir del equipo';
+
+  @override
+  String get fcAccountLeaveTeamConfirmTitle => '¿Salir del equipo?';
+
+  @override
+  String fcAccountLeaveTeamConfirmMessage(String teamName) {
+    return 'Esta cuenta va a dejar de representar al equipo $teamName. Podés vincularla de nuevo cuando quieras.';
+  }
 
   @override
   String get fcAccountSettingsTitle => 'Configuración';

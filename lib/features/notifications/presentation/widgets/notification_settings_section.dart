@@ -65,7 +65,15 @@ class _NotificationSettingsBody extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
               ],
               _PermissionArea(state: state, onEnable: () => _enable(context)),
-              for (final category in NotificationCategory.values)
+              // So as categorias que ainda tem alguem do outro lado hoje:
+              // Rankings/Rivals/Champions eram sobre mudanca de
+              // lideranca/divisao/semana, que ninguem tinha como desligar
+              // separado e nao correspondiam a nada que o usuario decide --
+              // tiradas da tela pra nao virar 5 switches sem uso real.
+              for (final category in <NotificationCategory>[
+                NotificationCategory.matchmaking,
+                NotificationCategory.teams,
+              ])
                 _ToggleRow(
                   label: _categoryLabel(l10n, category),
                   hint: _categoryHint(l10n, category),

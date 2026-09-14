@@ -1837,13 +1837,13 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsCategoryTeams.
   ///
   /// In pt, this message translates to:
-  /// **'Times'**
+  /// **'Convites para time'**
   String get notificationsCategoryTeams;
 
   /// No description provided for @notificationsCategoryTeamsHint.
   ///
   /// In pt, this message translates to:
-  /// **'Novos membros no time.'**
+  /// **'Pedidos e convites de entrada, novos membros no time.'**
   String get notificationsCategoryTeamsHint;
 
   /// No description provided for @notificationsCategoryWeekendLeague.
@@ -2534,6 +2534,36 @@ abstract class AppLocalizations {
   /// **'Esta conta ainda não está vinculada a nenhum time.'**
   String get fcAccountLinkedTeamsEmpty;
 
+  /// No description provided for @fcAccountSharingAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhamento'**
+  String get fcAccountSharingAction;
+
+  /// No description provided for @fcAccountAvatarChangeAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar foto'**
+  String get fcAccountAvatarChangeAction;
+
+  /// No description provided for @fcAccountAvatarRemoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover foto'**
+  String get fcAccountAvatarRemoveAction;
+
+  /// No description provided for @fcAccountAvatarRemoveConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover a foto da conta?'**
+  String get fcAccountAvatarRemoveConfirmTitle;
+
+  /// No description provided for @fcAccountAvatarRemoveConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A conta volta a mostrar as iniciais no lugar da foto.'**
+  String get fcAccountAvatarRemoveConfirmMessage;
+
   /// No description provided for @fcAccountLinkTeamAction.
   ///
   /// In pt, this message translates to:
@@ -2543,8 +2573,20 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountUnlinkTeamAction.
   ///
   /// In pt, this message translates to:
-  /// **'Desvincular'**
+  /// **'Sair do time'**
   String get fcAccountUnlinkTeamAction;
+
+  /// No description provided for @fcAccountLeaveTeamConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair do time?'**
+  String get fcAccountLeaveTeamConfirmTitle;
+
+  /// No description provided for @fcAccountLeaveTeamConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa conta vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.'**
+  String fcAccountLeaveTeamConfirmMessage(String teamName);
 
   /// No description provided for @fcAccountSettingsTitle.
   ///

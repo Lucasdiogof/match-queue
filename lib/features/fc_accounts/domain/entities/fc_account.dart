@@ -10,6 +10,7 @@ class FcAccount extends Equatable {
     required this.name,
     required this.isActive,
     required this.teamIds,
+    this.avatarUrl,
     this.rivalsDivision,
     this.weekendLeagueComputedWins = 0,
     this.weekendLeagueComputedLosses = 0,
@@ -23,6 +24,7 @@ class FcAccount extends Equatable {
   final String name;
   final bool isActive;
   final List<String> teamIds;
+  final String? avatarUrl;
   final RivalsDivision? rivalsDivision;
   final int weekendLeagueComputedWins;
   final int weekendLeagueComputedLosses;
@@ -51,6 +53,7 @@ class FcAccount extends Equatable {
     name,
     isActive,
     teamIds,
+    avatarUrl,
     rivalsDivision,
     weekendLeagueComputedWins,
     weekendLeagueComputedLosses,

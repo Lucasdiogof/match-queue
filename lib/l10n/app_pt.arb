@@ -191,7 +191,6 @@
   "signUpSubtitle": "Escolha como o seu time vai te chamar.",
   "signUpHaveAccount": "Já tem uma conta?",
   "authDisplayName": "Nome ou apelido",
-  "authDisplayNameHint": "Nickname",
   "authDisplayNameHint": "Lucas, ratowrld, Panda...",
   "authEmailHint": "email@exemplo.com",
   "authConfirmPassword": "Confirmar senha",
@@ -541,8 +540,8 @@
   "notificationsChannelAppUpdatesDescription": "Novos membros, ranking, Champions e Rivals.",
   "notificationsCategoryMatchmaking": "Matchmaking",
   "notificationsCategoryMatchmakingHint": "Sua vez, avisos de expiração da busca.",
-  "notificationsCategoryTeams": "Times",
-  "notificationsCategoryTeamsHint": "Novos membros no time.",
+  "notificationsCategoryTeams": "Convites para time",
+  "notificationsCategoryTeamsHint": "Pedidos e convites de entrada, novos membros no time.",
   "notificationsCategoryWeekendLeague": "Champions",
   "notificationsCategoryWeekendLeagueHint": "Quando o Champions termina.",
   "notificationsCategoryRivals": "Rivals",
@@ -814,8 +813,23 @@
   "fcAccountSwitchCreateAction": "+ Criar nova conta",
   "fcAccountLinkedTeamsTitle": "Times",
   "fcAccountLinkedTeamsEmpty": "Esta conta ainda não está vinculada a nenhum time.",
+  "fcAccountSharingAction": "Compartilhamento",
+  "fcAccountAvatarChangeAction": "Alterar foto",
+  "fcAccountAvatarRemoveAction": "Remover foto",
+  "fcAccountAvatarRemoveConfirmTitle": "Remover a foto da conta?",
+  "fcAccountAvatarRemoveConfirmMessage": "A conta volta a mostrar as iniciais no lugar da foto.",
   "fcAccountLinkTeamAction": "Vincular",
-  "fcAccountUnlinkTeamAction": "Desvincular",
+  "fcAccountUnlinkTeamAction": "Sair do time",
+  "fcAccountLeaveTeamConfirmTitle": "Sair do time?",
+  "fcAccountLeaveTeamConfirmMessage": "Essa conta vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.",
+  "@fcAccountLeaveTeamConfirmMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String",
+        "example": "Falcons"
+      }
+    }
+  },
   "fcAccountSettingsTitle": "Configurações",
   "fcAccountDivisionTitle": "Divisão de Rivals",
   "fcAccountDivisionPickerTitle": "Selecionar divisão",
