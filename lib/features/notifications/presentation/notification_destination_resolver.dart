@@ -20,8 +20,19 @@ class NotificationDestinationResolver {
 
     // Pedido/convite recebido: a acao mora na tab Solicitacoes, nao no
     // detalhe do time (que nem existe ainda pra quem so recebeu convite).
-    if (notification.deepLinkType == 'requests') {
-      await context.push(AppRoutes.requests.path);
+    // Confere o TYPE tambem, nao so deep_link_type -- notificacoes antigas,
+    // gravadas antes do deep_link_type='requests' existir, caiam no ramo de
+    // team_id abaixo e tentavam abrir o detalhe do time que o admin ja
+    // estava vendo, duplicando a rota (crash de chave repetida no
+    // Navigator).
+    const requestTypes = <String>{
+      'TEAM_JOIN_REQUEST_RECEIVED',
+      'TEAM_JOIN_REQUEST_APPROVED',
+      'TEAM_JOIN_REQUEST_REJECTED',
+    };
+    if (notification.deepLinkType == 'requests' ||
+        requestTypes.contains(notification.type)) {
+      await _pushIfNotCurrent(context, AppRoutes.requests.path);
       return;
     }
 
@@ -30,16 +41,35 @@ class NotificationDestinationResolver {
       if (!context.mounted) {
         return;
       }
-      await context.push(AppRoutes.teamDetailLocation(teamId));
+      await _pushIfNotCurrent(context, AppRoutes.teamDetailLocation(teamId));
       return;
     }
 
     if (fcAccountId != null) {
-      await context.push(AppRoutes.fcAccountDetailLocation(fcAccountId));
+      await _pushIfNotCurrent(
+        context,
+        AppRoutes.fcAccountDetailLocation(fcAccountId),
+      );
       return;
     }
 
-    await context.push(AppRoutes.central.path);
+    await _pushIfNotCurrent(context, AppRoutes.central.path);
+  }
+
+  /// go_router lanca um assert de chave duplicada se a mesma rota que ja
+  /// esta no topo da pilha for empurrada de novo (aconteceu com uma
+  /// notificacao de pedido de time: o admin ja estava no detalhe daquele
+  /// time quando tocou nela). Tocar numa notificacao cujo destino ja e a
+  /// tela aberta agora so fecha a Central em vez de crashar.
+  static Future<void> _pushIfNotCurrent(
+    BuildContext context,
+    String location,
+  ) async {
+    final current = GoRouterState.of(context).uri.toString();
+    if (current == location) {
+      return;
+    }
+    await context.push(location);
   }
 
   static String? _string(Object? value) =>
