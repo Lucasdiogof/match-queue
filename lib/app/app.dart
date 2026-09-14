@@ -95,11 +95,11 @@ class FifaQueueApp extends StatelessWidget {
                     child: PendingMatchSessionListener(
                       child: LocaleSyncListener(
                         child: NotificationLifecycleListener(
-                            child: PendingInviteListener(
-                              child: child ?? const SizedBox.shrink(),
-                            ),
+                          child: PendingInviteListener(
+                            child: child ?? const SizedBox.shrink(),
                           ),
                         ),
+                      ),
                     ),
                   ),
                 ),
