@@ -89,9 +89,10 @@ class BrandWordmark extends StatelessWidget {
   Widget build(BuildContext context) {
     const wordmark = BrandAssets.wordmark;
     if (wordmark != null) {
-      // A arte atual (cromada/teal com glow proprio) ja tem contraste
-      // suficiente em fundo claro ou escuro -- sem inversao de cor por
-      // tema, diferente da versao anterior (tinta solida).
+      // A arte (cromada, contorno/glow claro) foi desenhada para fundo
+      // escuro -- em fundo claro o contorno some. As telas que exibem essa
+      // marca em destaque (splash, onboarding, cadastro) usam tema escuro
+      // por baixo dela em vez de tingir a imagem.
       return Semantics(
         label: BrandAssets.productName,
         image: true,

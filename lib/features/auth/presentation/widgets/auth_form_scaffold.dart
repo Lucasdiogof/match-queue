@@ -11,6 +11,8 @@ class AuthFormScaffold extends StatelessWidget {
     this.backTooltip,
     this.backgroundImage,
     this.showWordmark = true,
+    this.darkBackground = false,
+    this.contentAlignment,
     super.key,
   });
 
@@ -30,6 +32,16 @@ class AuthFormScaffold extends StatelessWidget {
   /// BrandWordmark widget e desnecessario (ficaria duplicado/ilegivel sobre
   /// a foto).
   final bool showWordmark;
+
+  /// Forca o tema escuro no fundo liso (sem [backgroundImage]), pra telas
+  /// como o cadastro em que a wordmark cromada precisa do mesmo pano de
+  /// fundo escuro que ela ja tem na tela de login.
+  final bool darkBackground;
+
+  /// Sobrescreve o alinhamento vertical do conteudo dentro do [Expanded].
+  /// Sem isso, o padrao e centralizado (ou ancorado ao rodape quando ha
+  /// [backgroundImage]).
+  final Alignment? contentAlignment;
 
   Widget _buildForm(BuildContext context) => Column(
     children: <Widget>[
@@ -52,9 +64,11 @@ class AuthFormScaffold extends StatelessWidget {
         ),
       Expanded(
         child: Align(
-          alignment: backgroundImage != null
-              ? const Alignment(0, 0.45)
-              : Alignment.center,
+          alignment:
+              contentAlignment ??
+              (backgroundImage != null
+                  ? const Alignment(0, 0.45)
+                  : Alignment.center),
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
             child: AppContentContainer.form(
@@ -114,6 +128,16 @@ class AuthFormScaffold extends StatelessWidget {
                 ),
               ),
             ],
+          )
+        : darkBackground
+        ? Theme(
+            data: AppTheme.dark,
+            child: Builder(
+              builder: (context) => AppBackground(
+                dense: true,
+                child: SafeArea(child: _buildForm(context)),
+              ),
+            ),
           )
         : AppBackground(
             dense: true,

@@ -87,7 +87,11 @@ class _SignUpPageState extends State<SignUpPage> {
         return AuthFormScaffold(
           title: l10n.signUpTitle,
           subtitle: l10n.signUpSubtitle,
-          onBack: () => context.go(AppRoutes.login.path),
+          darkBackground: true,
+          contentAlignment: const Alignment(0, -0.35),
+          onBack: () => context.canPop()
+              ? context.pop()
+              : context.go(AppRoutes.login.path),
           backTooltip: l10n.actionBack,
           children: <Widget>[
             if (failure != null) ...<Widget>[

@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                   AuthFooterPrompt(
                     question: l10n.loginNoAccount,
                     actionLabel: l10n.authSignUp,
-                    onAction: () => context.go(AppRoutes.signUp.path),
+                    onAction: () => context.push(AppRoutes.signUp.path),
                   ),
                 ],
               ),
