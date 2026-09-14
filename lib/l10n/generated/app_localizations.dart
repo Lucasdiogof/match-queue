@@ -2513,7 +2513,7 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountLinkedTeamsTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Times vinculados'**
+  /// **'Times'**
   String get fcAccountLinkedTeamsTitle;
 
   /// No description provided for @fcAccountLinkedTeamsEmpty.
@@ -4199,7 +4199,7 @@ abstract class AppLocalizations {
   /// No description provided for @navRequests.
   ///
   /// In pt, this message translates to:
-  /// **'Solicitações'**
+  /// **'Convites'**
   String get navRequests;
 
   /// No description provided for @requestsPageTitle.

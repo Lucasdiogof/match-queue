@@ -1436,7 +1436,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get fcAccountSwitchCreateAction => '+ Criar nova conta';
 
   @override
-  String get fcAccountLinkedTeamsTitle => 'Times vinculados';
+  String get fcAccountLinkedTeamsTitle => 'Times';
 
   @override
   String get fcAccountLinkedTeamsEmpty =>
@@ -2434,7 +2434,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get controlGoToTeamsAction => 'Ir para Times';
 
   @override
-  String get navRequests => 'Solicitações';
+  String get navRequests => 'Convites';
 
   @override
   String get requestsPageTitle => 'Solicitações';

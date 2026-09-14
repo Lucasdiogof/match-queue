@@ -23,16 +23,11 @@ class CentralPage extends StatelessWidget {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: const AppAppBar(actions: <Widget>[NotificationBellButton()]),
-      body: AppBackground(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            FeatureHeader(title: l10n.navCentral),
-            const Expanded(child: _CentralBody()),
-          ],
-        ),
+      appBar: AppAppBar(
+        title: l10n.navCentral,
+        actions: const <Widget>[NotificationBellButton()],
       ),
+      body: const AppBackground(child: _CentralBody()),
     );
   }
 }
@@ -80,26 +75,6 @@ class _CentralBody extends StatelessWidget {
                 label: l10n.catalogClubsTitle,
                 description: l10n.startCatalogClubsHint,
                 onTap: () => context.push(AppRoutes.clubsCatalog.path),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: _CompactEntryCard(
-                icon: Icons.groups_2_outlined,
-                label: l10n.catalogManagersEntryLabel,
-                onTap: () => context.push(AppRoutes.managersCatalog.path),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: _CompactEntryCard(
-                icon: Icons.inventory_2_outlined,
-                label: l10n.catalogConsumablesEntryLabel,
-                onTap: () => context.push(AppRoutes.consumablesCatalog.path),
               ),
             ),
           ],

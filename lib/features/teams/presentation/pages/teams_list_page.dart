@@ -51,6 +51,7 @@ class _TeamsListPageState extends State<TeamsListPage>
 
     return AppScaffold(
       appBar: AppAppBar(
+        title: l10n.navTeam,
         actions: <Widget>[
           AppIconButton(
             icon: Icons.qr_code_2_outlined,
@@ -68,7 +69,7 @@ class _TeamsListPageState extends State<TeamsListPage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            FeatureHeader(title: l10n.navTeam),
+            const SizedBox(height: AppSpacing.sm),
             TabBar(
               controller: _tabController,
               tabs: <Widget>[

@@ -30,12 +30,11 @@ class _RequestsPageState extends State<RequestsPage> {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: const AppAppBar(),
+      appBar: AppAppBar(title: l10n.requestsPageTitle),
       body: AppBackground(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            FeatureHeader(title: l10n.requestsPageTitle),
             const SizedBox(height: AppSpacing.md),
             BlocBuilder<RequestsCubit, RequestsState>(
               buildWhen: (previous, current) => previous.inbox != current.inbox,

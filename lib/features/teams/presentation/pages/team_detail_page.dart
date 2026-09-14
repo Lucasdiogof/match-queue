@@ -25,7 +25,6 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/edit_team_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_role_l10n.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/team_sports_sections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -107,56 +106,42 @@ class _TeamStatusBody extends StatelessWidget {
   final TeamRole viewerRole;
 
   @override
-  Widget build(
-    BuildContext context,
-  ) => BlocBuilder<TeamStatusCubit, TeamStatusState>(
-    builder: (context, state) => BlocBuilder<TeamSportsCubit, TeamSportsState>(
-      builder: (context, sports) => RefreshIndicator(
-        onRefresh: context.read<TeamSportsCubit>().refresh,
-        child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-          children: <Widget>[
-            _TeamHeaderCard(
-              team: team,
-              state: state,
-              dashboard: sports.dashboard,
-            ),
-            if (viewerRole.canManageTeam) ...<Widget>[
-              const SizedBox(height: AppSpacing.lg),
-              _InviteMemberButton(teamId: team.id),
-              const SizedBox(height: AppSpacing.lg),
-              _PendingRequestsSection(teamId: team.id),
-              const SizedBox(height: AppSpacing.lg),
-              _SentInvitationsSection(teamId: team.id),
-            ],
-            const SizedBox(height: AppSpacing.lg),
-            // Status operacional continua sendo do Realtime da Etapa
-            // anterior -- stats nunca se misturam com ele (item 46).
-            _MemberStatusSection(
-              teamId: team.id,
-              state: state,
-              viewerRole: viewerRole,
-            ),
-            if (sports.dashboard != null) ...<Widget>[
-              const SizedBox(height: AppSpacing.lg),
-              TeamSportsSummarySection(summary: sports.dashboard!.summary),
-              // Weekend League e Rivals se escondem sozinhos quando nao ha
-              // nenhum registro (manual ou computado) -- nao dependem de
-              // partida real registrada no Time (que o contador manual
-              // tornou opcional).
-              const SizedBox(height: AppSpacing.lg),
-              TeamWeekendLeagueSection(
-                entries: sports.dashboard!.weekendLeague,
+  Widget build(BuildContext context) =>
+      BlocBuilder<TeamStatusCubit, TeamStatusState>(
+        builder: (context, state) =>
+            BlocBuilder<TeamSportsCubit, TeamSportsState>(
+              builder: (context, sports) => RefreshIndicator(
+                onRefresh: context.read<TeamSportsCubit>().refresh,
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+                  children: <Widget>[
+                    _TeamHeaderCard(
+                      team: team,
+                      state: state,
+                      dashboard: sports.dashboard,
+                    ),
+                    if (viewerRole.canManageTeam) ...<Widget>[
+                      const SizedBox(height: AppSpacing.lg),
+                      _InviteMemberButton(teamId: team.id),
+                      const SizedBox(height: AppSpacing.lg),
+                      _PendingRequestsSection(teamId: team.id),
+                      const SizedBox(height: AppSpacing.lg),
+                      _SentInvitationsSection(teamId: team.id),
+                    ],
+                    const SizedBox(height: AppSpacing.lg),
+                    // Status operacional continua sendo do Realtime da Etapa
+                    // anterior -- stats nunca se misturam com ele (item 46).
+                    _MemberStatusSection(
+                      teamId: team.id,
+                      state: state,
+                      viewerRole: viewerRole,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.lg),
-              TeamRivalsSection(entries: sports.dashboard!.rivals),
-            ],
-          ],
-        ),
-      ),
-    ),
-  );
+            ),
+      );
 }
 
 class _TeamHeaderCard extends StatelessWidget {

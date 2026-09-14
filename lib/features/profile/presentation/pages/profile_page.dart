@@ -25,15 +25,13 @@ class ProfilePage extends StatelessWidget {
     final l10n = context.l10n;
 
     return AppScaffold(
-      // Mesmo header das outras quatro raizes: o titulo da AppBar e menor e
-      // nao tem o acento, entao o Perfil ficava visivelmente de fora do
-      // padrao. A lista continua sendo o corpo -- o header so passa a ser o
-      // primeiro item dela.
-      appBar: const AppAppBar(),
+      appBar: AppAppBar(title: l10n.navProfile),
       body: ListView(
-        padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+        padding: const EdgeInsets.only(
+          top: AppSpacing.md,
+          bottom: AppSpacing.xl,
+        ),
         children: <Widget>[
-          FeatureHeader(title: l10n.navProfile),
           _AccountSection(),
           const SizedBox(height: AppSpacing.lg),
           const _FcAccountsSection(),

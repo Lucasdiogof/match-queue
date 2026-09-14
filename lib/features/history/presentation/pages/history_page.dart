@@ -27,29 +27,19 @@ class HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: AppAppBar(
-            title: fcAccountId == null ? null : l10n.navHistory,
-          ),
+          appBar: AppAppBar(title: l10n.navHistory),
           body: AppBackground(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                if (fcAccountId == null) FeatureHeader(title: l10n.navHistory),
-                Expanded(
-                  child: selected == null
-                      ? AppEmptyState(
-                          icon: Icons.timeline_outlined,
-                          title: l10n.historyEmptyTitle,
-                          message: l10n.historyNoTeamMessage,
-                        )
-                      : _HistoryScope(
-                          key: ValueKey('${selected.id}:$fcAccountId'),
-                          teamId: selected.id,
-                          fcAccountId: fcAccountId,
-                        ),
-                ),
-              ],
-            ),
+            child: selected == null
+                ? AppEmptyState(
+                    icon: Icons.timeline_outlined,
+                    title: l10n.historyEmptyTitle,
+                    message: l10n.historyNoTeamMessage,
+                  )
+                : _HistoryScope(
+                    key: ValueKey('${selected.id}:$fcAccountId'),
+                    teamId: selected.id,
+                    fcAccountId: fcAccountId,
+                  ),
           ),
         );
       },

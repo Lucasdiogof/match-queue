@@ -34,22 +34,17 @@ class ControlPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: const AppAppBar(actions: <Widget>[NotificationBellButton()]),
+          appBar: AppAppBar(
+            title: l10n.navControl,
+            actions: const <Widget>[NotificationBellButton()],
+          ),
           body: AppBackground(
             // Unica tela com halo tingido: o verde nasce atras da area
             // de busca, que e o assunto da tela. Nas outras o halo segue
             // neutro -- se todas tivessem cor, nenhuma teria.
             glow: context.colors.accent,
             glowAlignment: const Alignment(0.15, 0.35),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                FeatureHeader(title: l10n.navControl),
-                Expanded(
-                  child: _ControlBody(state: state, selected: selected),
-                ),
-              ],
-            ),
+            child: _ControlBody(state: state, selected: selected),
           ),
         );
       },
