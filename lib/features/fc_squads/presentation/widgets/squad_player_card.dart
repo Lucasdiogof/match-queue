@@ -205,10 +205,13 @@ class _EmptySlot extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      color: colors.surface.withValues(alpha: 0.72),
+      // Mesmo raio e cor de fundo da carta preenchida (PlayerCardFace): o
+      // slot vazio deve ler como "a carta que vai entrar ali", nao como uma
+      // caixa generica -- por isso raio md em vez de sm, igual ao card real.
+      color: colors.surfaceElevated,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: AppRadii.borderSm,
+        borderRadius: AppRadii.borderMd,
         side: BorderSide(color: colors.borderSubtle),
       ),
       child: InkWell(

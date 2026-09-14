@@ -4,6 +4,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/manager_picker_cubit.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/catalog_picker_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,8 +15,14 @@ class ManagerSelection {
   final FcLeague? league;
 }
 
-/// País -> técnico -> liga. A liga é do SQUAD, não do técnico, por isso é
-/// escolhida aqui e não vem colada nele.
+/// País -> técnico -> liga, cada passo na SUA PRÓPRIA folha.
+///
+/// Antes era tudo numa lista só (chips de país, depois chips de técnico logo
+/// abaixo) -- escolher o país não deixava óbvio que era preciso rolar pra
+/// baixo pra ver os técnicos daquele país, que ficavam fora da tela. Agora
+/// escolher o país abre direto a folha de técnicos daquele país (2 folhas em
+/// sequência), e a folha principal só mostra o resumo com 3 linhas
+/// tocáveis -- qualquer uma pode ser reaberta pra trocar a escolha.
 Future<ManagerSelection?> showManagerPickerSheet({
   required BuildContext context,
   FcManager? currentManager,
@@ -35,13 +42,67 @@ Future<ManagerSelection?> showManagerPickerSheet({
 class _ManagerPickerBody extends StatelessWidget {
   const _ManagerPickerBody();
 
+  Future<void> _pickNation(BuildContext context) async {
+    final cubit = context.read<ManagerPickerCubit>();
+    final nations = cubit.state.nations;
+    final pickedName = await showAlphabeticalPickerSheet(
+      context: context,
+      title: context.l10n.squadManagerNationLabel,
+      names: nations.map((n) => n.name).toList(growable: false),
+    );
+    if (pickedName == null || !context.mounted) {
+      return;
+    }
+    final nation = nations.firstWhere((n) => n.name == pickedName);
+    // So abre a folha de tecnicos DEPOIS do load terminar -- sem isso a
+    // lista abriria vazia e pareceria um bug (a lacuna original: pais
+    // selecionado, mas tecnico nenhum a vista).
+    await cubit.selectNation(nation);
+    if (context.mounted) {
+      await _pickManager(context);
+    }
+  }
+
+  Future<void> _pickManager(BuildContext context) async {
+    final cubit = context.read<ManagerPickerCubit>();
+    final managers = cubit.state.managers;
+    final pickedName = await showFlatCatalogPickerSheet(
+      context: context,
+      title: context.l10n.squadManagerTitle,
+      names: managers.map((m) => m.name).toList(growable: false),
+    );
+    if (pickedName == null || !context.mounted) {
+      return;
+    }
+    cubit.selectManager(managers.firstWhere((m) => m.name == pickedName));
+  }
+
+  Future<void> _pickLeague(BuildContext context) async {
+    final cubit = context.read<ManagerPickerCubit>();
+    final leagues = cubit.state.leagues;
+    final pickedName = await showFlatCatalogPickerSheet(
+      context: context,
+      title: context.l10n.squadManagerLeagueLabel,
+      names: leagues.map((l) => l.name).toList(growable: false),
+    );
+    if (pickedName == null || !context.mounted) {
+      return;
+    }
+    cubit.selectLeague(leagues.firstWhere((l) => l.name == pickedName));
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
     return BlocBuilder<ManagerPickerCubit, ManagerPickerState>(
       builder: (context, state) {
-        final cubit = context.read<ManagerPickerCubit>();
+        if (state.status == ManagerPickerStatus.loading) {
+          return AppBottomSheet(
+            title: l10n.squadManagerTitle,
+            child: const SizedBox(height: 160, child: AppLoading()),
+          );
+        }
 
         return AppBottomSheet(
           title: l10n.squadManagerTitle,
@@ -65,69 +126,38 @@ class _ManagerPickerBody extends StatelessWidget {
                   Navigator.of(context).pop(const ManagerSelection()),
             ),
           ],
-          child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.5,
-            child: state.status == ManagerPickerStatus.loading
-                ? const AppLoading()
-                : ListView(
-                    children: <Widget>[
-                      _SectionLabel(text: l10n.squadManagerNationLabel),
-                      Wrap(
-                        spacing: AppSpacing.sm,
-                        runSpacing: AppSpacing.sm,
-                        children: <Widget>[
-                          for (final nation in state.nations)
-                            AppChip(
-                              label: nation.name,
-                              isSelected: state.selectedNation?.id == nation.id,
-                              onPressed: () => cubit.selectNation(nation),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      _SectionLabel(text: l10n.squadManagerTitle),
-                      if (state.selectedNation == null)
-                        Text(
-                          l10n.squadManagerPickNationFirst,
-                          style: context.textStyles.bodySmall,
-                        )
-                      else if (state.isLoadingManagers)
-                        const SizedBox(height: 64, child: AppLoading.inline())
-                      else
-                        Wrap(
-                          spacing: AppSpacing.sm,
-                          runSpacing: AppSpacing.sm,
-                          children: <Widget>[
-                            for (final manager in state.managers)
-                              AppChip(
-                                label: manager.name,
-                                isSelected:
-                                    state.selectedManager?.id == manager.id,
-                                onPressed: () => cubit.selectManager(manager),
-                              ),
-                          ],
-                        ),
-                      // A liga só aparece depois do técnico escolhido: antes
-                      // disso ela não teria a que se aplicar.
-                      if (state.canPickLeague) ...<Widget>[
-                        const SizedBox(height: AppSpacing.xl),
-                        _SectionLabel(text: l10n.squadManagerLeagueLabel),
-                        Wrap(
-                          spacing: AppSpacing.sm,
-                          runSpacing: AppSpacing.sm,
-                          children: <Widget>[
-                            for (final league in state.leagues)
-                              AppChip(
-                                label: league.name,
-                                isSelected:
-                                    state.selectedLeague?.id == league.id,
-                                onPressed: () => cubit.selectLeague(league),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ],
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _PickerRow(
+                label: l10n.squadManagerNationLabel,
+                value: state.selectedNation?.name,
+                placeholder: l10n.squadManagerEmpty,
+                onTap: () => _pickNation(context),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _PickerRow(
+                label: l10n.squadManagerTitle,
+                value: state.selectedManager?.name,
+                placeholder: l10n.squadManagerPickNationFirst,
+                // So habilita depois de ter pais (e, por tabela, tecnicos ja
+                // carregados) -- reabrir aqui reusa a lista ja carregada,
+                // sem novo fetch.
+                onTap: state.selectedNation == null || state.isLoadingManagers
+                    ? null
+                    : () => _pickManager(context),
+                isLoading: state.isLoadingManagers,
+              ),
+              if (state.canPickLeague) ...<Widget>[
+                const SizedBox(height: AppSpacing.sm),
+                _PickerRow(
+                  label: l10n.squadManagerLeagueLabel,
+                  value: state.selectedLeague?.name,
+                  placeholder: l10n.squadManagerLeagueLabel,
+                  onTap: () => _pickLeague(context),
+                ),
+              ],
+            ],
           ),
         );
       },
@@ -135,14 +165,70 @@ class _ManagerPickerBody extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.text});
+/// Linha tocável de um passo do fluxo: rótulo + valor escolhido (ou
+/// placeholder) + chevron. Mesma leitura visual em toda a folha, então fica
+/// óbvio que os três passos funcionam do mesmo jeito.
+class _PickerRow extends StatelessWidget {
+  const _PickerRow({
+    required this.label,
+    required this.value,
+    required this.placeholder,
+    required this.onTap,
+    this.isLoading = false,
+  });
 
-  final String text;
+  final String label;
+  final String? value;
+  final String placeholder;
+  final VoidCallback? onTap;
+  final bool isLoading;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: AppSpacing.md),
-    child: Text(text.toUpperCase(), style: context.textStyles.labelSmall),
-  );
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return AppCard(
+      onTap: onTap,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  label.toUpperCase(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textStyles.labelSmall?.copyWith(
+                    color: colors.textTertiary,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  value ?? placeholder,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textStyles.titleSmall?.copyWith(
+                    color: value == null
+                        ? colors.textSecondary
+                        : colors.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (isLoading)
+            const AppLoading.inline()
+          else
+            Icon(
+              Icons.chevron_right,
+              size: AppSizing.iconMd,
+              color: onTap == null ? colors.textTertiary : colors.textPrimary,
+            ),
+        ],
+      ),
+    );
+  }
 }

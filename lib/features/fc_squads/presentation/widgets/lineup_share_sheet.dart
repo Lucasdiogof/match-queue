@@ -133,7 +133,16 @@ class LineupShareCard extends StatelessWidget {
   bool get _useArtwork => !kIsWeb;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
+  Widget build(BuildContext context) => Theme(
+    data: AppTheme.dark,
+    child: Builder(builder: _buildCard),
+  );
+
+  // PlayerCardFace le context.colors do tema ambiente para o fundo atras da
+  // arte (visivel nas bordas, ja que a arte nao preenche o box inteiro) --
+  // sem o Theme escuro acima, esse fundo saia claro sobre o campo escuro do
+  // cartao de compartilhar.
+  Widget _buildCard(BuildContext context) => DecoratedBox(
     decoration: const BoxDecoration(
       gradient: AppGradients.darkBrandSurface,
       borderRadius: AppRadii.borderLg,

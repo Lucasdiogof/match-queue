@@ -46,11 +46,23 @@ class PlayerCardFace extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadii.md),
-            color: colors.surfaceElevated,
-            border: Border.all(
-              color: isSelected ? colors.textPrimary : colors.borderSubtle,
-              width: isSelected ? 2 : 1,
-            ),
+            // Com arte real a imagem cobre a carta inteira (BoxFit.cover
+            // abaixo) -- uma cor de fundo aqui nunca apareceria, so serviria
+            // pra vazar por baixo se a arte nao cobrisse 100% do box. Sem
+            // arte, a ficha de dados PRECISA de um fundo solido por tras do
+            // texto.
+            color: art == null ? colors.surfaceElevated : null,
+            // Com arte, a borda so aparece pra marcar selecao -- fora disso
+            // e so a carta, sem moldura por cima. Sem arte, a borda sempre
+            // aparece: e o que separa a ficha de dados do fundo do campo.
+            border: art != null && !isSelected
+                ? null
+                : Border.all(
+                    color: isSelected
+                        ? colors.textPrimary
+                        : colors.borderSubtle,
+                    width: isSelected ? 2 : 1,
+                  ),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(AppRadii.md),
@@ -83,7 +95,12 @@ class _ArtCard extends StatelessWidget {
     children: <Widget>[
       Image.network(
         art,
-        fit: BoxFit.contain,
+        // Cover, nao contain: a carta deve preencher o espaco inteiro, sem
+        // sobrar fundo visivel nas bordas (mesmo problema no campo do
+        // Elenco e no cartao de compartilhar). Recorta um pouco a arte em
+        // vez de deixar espaco vazio -- a arte da EA e centralizada o
+        // suficiente pra isso nao cortar nada importante.
+        fit: BoxFit.cover,
         // Na Web o CDN da arte permite hotlink por <img> mas nao devolve
         // Access-Control-Allow-Origin, e o caminho padrao do Flutter busca os
         // bytes por XHR -- que o navegador bloqueia.
