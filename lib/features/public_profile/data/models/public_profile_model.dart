@@ -1,4 +1,5 @@
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_profile.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_sharing_settings.dart';
 
@@ -60,6 +61,25 @@ PublicSquad? _squadFromJson(Object? json) {
   );
 }
 
+List<WeekendLeagueHistoryEntry> _weekendLeagueHistoryFromJson(Object? json) {
+  final list = (json as List<dynamic>? ?? const <dynamic>[])
+      .whereType<Map<dynamic, dynamic>>()
+      .map((raw) => Map<String, dynamic>.from(raw))
+      .toList();
+  return list
+      .map(
+        (row) => WeekendLeagueHistoryEntry(
+          eventId: '${row['event_id']}',
+          number: (row['number'] as num?)?.toInt() ?? 0,
+          season: row['season'] as String?,
+          startsAt: DateTime.parse('${row['starts_at']}'),
+          wins: (row['wins'] as num?)?.toInt() ?? 0,
+          losses: (row['losses'] as num?)?.toInt() ?? 0,
+        ),
+      )
+      .toList(growable: false);
+}
+
 PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
   if (json['found'] != true) {
     return PublicProfile.notFound;
@@ -68,6 +88,7 @@ PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
   final profile =
       json['profile'] as Map<dynamic, dynamic>? ?? const <String, dynamic>{};
   final account = json['account'] as Map<dynamic, dynamic>?;
+  final weekendLeague = json['weekend_league'] as Map<dynamic, dynamic>?;
 
   return PublicProfile(
     found: true,
@@ -76,8 +97,9 @@ PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
     accountName: account?['name'] as String?,
     rivalsDivision: account?['rivals_division'] as String?,
     stats: _aggregateFromJson(json['stats']),
-    weekendLeague: ManualRecord.fromJson(
-      (json['weekend_league'] as Map<dynamic, dynamic>?)?['manual'],
+    weekendLeague: ManualRecord.fromJson(weekendLeague?['manual']),
+    weekendLeagueHistory: _weekendLeagueHistoryFromJson(
+      weekendLeague?['history'],
     ),
     rivals: ManualRecord.fromJson(
       (json['rivals'] as Map<dynamic, dynamic>?)?['manual'],

@@ -2,8 +2,10 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_profile.dart';
 import 'package:flutter/material.dart';
 
-/// Template visual do perfil (avatar, nome, Conta, Rivals, WL, record).
-/// Sempre com fallback decente quando falta imagem -- nunca quebra layout.
+/// Template visual da identidade (avatar, nome, Conta). Rivals e Champions
+/// tem cards proprios na tela ([RivalsCard]/[WeekendLeagueHistoryCard]) --
+/// nao duplicados aqui em texto cru. Sempre com fallback decente quando
+/// falta imagem -- nunca quebra layout.
 class ProfileShareCard extends StatelessWidget {
   const ProfileShareCard({required this.profile, super.key});
 
@@ -55,70 +57,8 @@ class ProfileShareCard extends StatelessWidget {
               ),
             ],
           ),
-          if (profile.rivalsDivision != null ||
-              profile.rivals != null ||
-              profile.weekendLeague != null ||
-              profile.stats != null) ...<Widget>[
-            const AppDivider(spacing: AppSpacing.lg),
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
-              children: <Widget>[
-                if (profile.rivalsDivision != null)
-                  _Stat(label: 'Rivals', value: profile.rivalsDivision!),
-                if (profile.rivals != null)
-                  _Stat(
-                    label: 'Rivals W/L',
-                    value: '${profile.rivals!.wins}-${profile.rivals!.losses}',
-                  ),
-                if (profile.weekendLeague != null)
-                  _Stat(
-                    label: 'WL',
-                    value:
-                        '${profile.weekendLeague!.wins}-${profile.weekendLeague!.losses}',
-                  ),
-                if (profile.stats != null)
-                  _Stat(
-                    label: 'W-L',
-                    value: '${profile.stats!.wins}-${profile.stats!.losses}',
-                  ),
-              ],
-            ),
-          ],
         ],
       ),
     );
   }
-}
-
-class _Stat extends StatelessWidget {
-  const _Stat({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSpacing.sm,
-      vertical: AppSpacing.xs,
-    ),
-    decoration: BoxDecoration(
-      color: context.colors.surfaceHighest,
-      borderRadius: AppRadii.borderXs,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Text(
-          label.toUpperCase(),
-          style: context.textStyles.labelSmall?.copyWith(
-            color: context.colors.textTertiary,
-          ),
-        ),
-        Text(value, style: context.textStyles.titleSmall),
-      ],
-    ),
-  );
 }

@@ -7,10 +7,10 @@ class PublicSharingSettings extends Equatable {
     required this.isEnabled,
     this.slug,
     this.fcAccountId,
-    this.showSquad = false,
-    this.showWeekendLeague = false,
-    this.showRivals = false,
-    this.showStats = false,
+    this.showSquad = true,
+    this.showWeekendLeague = true,
+    this.showRivals = true,
+    this.showStats = true,
   });
 
   static const PublicSharingSettings empty = PublicSharingSettings(

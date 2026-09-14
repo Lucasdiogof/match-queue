@@ -6,9 +6,9 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_field.dart';
-import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
-import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_history_card.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +120,20 @@ class _ProfileBody extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         _RivalsCard(account: profile.account!),
         const SizedBox(height: AppSpacing.lg),
-        _WeekendLeagueCard(history: profile.weekendLeagueHistory),
+        WeekendLeagueHistoryCard(
+          history: profile.weekendLeagueHistory
+              .map(
+                (entry) => WeekendLeagueHistoryEntry(
+                  eventId: entry.eventId,
+                  number: entry.number,
+                  season: entry.season,
+                  startsAt: entry.startsAt,
+                  wins: entry.wins,
+                  losses: entry.losses,
+                ),
+              )
+              .toList(growable: false),
+        ),
       ],
     ],
   );
@@ -275,110 +288,6 @@ class _RivalsCard extends StatelessWidget {
               color: AppColors.darkTextPrimary,
               fontWeight: FontWeight.w700,
               fontSize: 20,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Historico de Champions com selecao de semana -- setas em vez de lista
-/// inteira, pra caber uma semana de cada vez no mesmo card competitivo.
-class _WeekendLeagueCard extends StatefulWidget {
-  const _WeekendLeagueCard({required this.history});
-
-  final List<PlayerProfileWeekendLeagueEntry> history;
-
-  @override
-  State<_WeekendLeagueCard> createState() => _WeekendLeagueCardState();
-}
-
-class _WeekendLeagueCardState extends State<_WeekendLeagueCard> {
-  late int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final history = widget.history;
-
-    if (history.isEmpty) {
-      return CompetitiveModeCard(
-        mode: CompetitiveMode.champions,
-        title: l10n.fcAccountWeekendLeagueTitle,
-        child: Text(
-          l10n.playerProfileWeekendLeagueEmptyMessage,
-          style: const TextStyle(color: AppColors.darkTextSecondary),
-        ),
-      );
-    }
-
-    final index = _index.clamp(0, history.length - 1);
-    final entry = history[index];
-    final rank = WeekendLeagueRank.fromWins(entry.wins);
-
-    return CompetitiveModeCard(
-      mode: CompetitiveMode.champions,
-      title: l10n.fcAccountWeekendLeagueTitle,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              IconButton(
-                onPressed: index < history.length - 1
-                    ? () => setState(() => _index = index + 1)
-                    : null,
-                icon: const Icon(Icons.chevron_left),
-                color: AppColors.darkTextPrimary,
-                disabledColor: AppColors.darkTextSecondary,
-              ),
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      '#${entry.number}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.darkTextPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    if (entry.season != null)
-                      Text(
-                        entry.season!,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppColors.darkTextSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: index > 0
-                    ? () => setState(() => _index = index - 1)
-                    : null,
-                icon: const Icon(Icons.chevron_right),
-                color: AppColors.darkTextPrimary,
-                disabledColor: AppColors.darkTextSecondary,
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          if (rank != null) ...<Widget>[
-            AppBadge(label: rank.label),
-            const SizedBox(height: AppSpacing.sm),
-          ],
-          Center(
-            child: Text(
-              '${entry.wins}–${entry.losses}',
-              style: const TextStyle(
-                color: AppColors.darkTextPrimary,
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-              ),
             ),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 
 /// Agregado publico de partidas (W/L/gols) de um recorte -- mesmo formato
 /// que _fc_account_match_aggregate devolve, so que ja whitelisted pela RPC
@@ -117,6 +118,7 @@ class PublicProfile extends Equatable {
     this.rivalsDivision,
     this.stats,
     this.weekendLeague,
+    this.weekendLeagueHistory = const <WeekendLeagueHistoryEntry>[],
     this.rivals,
     this.squad,
   });
@@ -133,6 +135,10 @@ class PublicProfile extends Equatable {
   /// Contador manual -- unica fonte que Rivals e Champions mostram hoje em
   /// qualquer outra tela do app (ver FcAccount.weekendLeagueRecord).
   final ManualRecord? weekendLeague;
+
+  /// Ultimas edicoes de Champions com placar, mais recente primeiro -- mesma
+  /// forma que o perfil de um companheiro de time ja mostra (item 47).
+  final List<WeekendLeagueHistoryEntry> weekendLeagueHistory;
   final ManualRecord? rivals;
   final PublicSquad? squad;
 
@@ -147,6 +153,7 @@ class PublicProfile extends Equatable {
     rivalsDivision,
     stats,
     weekendLeague,
+    weekendLeagueHistory,
     rivals,
     squad,
   ];

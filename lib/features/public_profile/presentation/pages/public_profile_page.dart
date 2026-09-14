@@ -8,7 +8,9 @@ import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dar
 import 'package:fifa_queue/features/public_profile/domain/repositories/public_profile_repository.dart';
 import 'package:fifa_queue/features/public_profile/presentation/cubit/public_profile_view_cubit.dart';
 import 'package:fifa_queue/features/public_profile/presentation/cubit/public_profile_view_state.dart';
+import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_history_card.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/profile_share_card.dart';
+import 'package:fifa_queue/features/public_profile/presentation/widgets/public_rivals_card.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/share_capture.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/squad_share_card.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +125,25 @@ class _PublicProfileBodyState extends State<_PublicProfileBody> {
                     icon: Icons.image_outlined,
                     onPressed: () => _shareProfileImage(context),
                   ),
-                  if (profile.squad != null) ...<Widget>[
+                  if (profile.rivals != null) ...<Widget>[
+                    const SizedBox(height: AppSpacing.xl),
+                    PublicRivalsCard(
+                      rivalsDivision: profile.rivalsDivision,
+                      wins: profile.rivals!.wins,
+                      losses: profile.rivals!.losses,
+                    ),
+                  ],
+                  if (profile.weekendLeague != null) ...<Widget>[
+                    const SizedBox(height: AppSpacing.xl),
+                    WeekendLeagueHistoryCard(
+                      history: profile.weekendLeagueHistory,
+                    ),
+                  ],
+                  // So mostra o card de time se de fato tiver alguem
+                  // escalado -- antes aparecia vazio (0 CHEM, campo em
+                  // branco) so por existir um Elenco default sem titulares.
+                  if (profile.squad != null &&
+                      profile.squad!.starters.isNotEmpty) ...<Widget>[
                     const SizedBox(height: AppSpacing.xl),
                     RepaintBoundary(
                       key: _squadCardKey,
