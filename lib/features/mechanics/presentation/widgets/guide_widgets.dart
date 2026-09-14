@@ -1,4 +1,5 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:flutter/material.dart';
 
 /// Blocos reutilizáveis pras telas de conteúdo estático de Mecânicas e
@@ -92,9 +93,6 @@ class GuideControlRow extends StatelessWidget {
   );
 }
 
-/// Cabeçalho fixo em português: o conteúdo destes guias (nomes de ações e
-/// comandos reais de controle) ainda não foi traduzido -- ver nota no
-/// handoff desta etapa.
 class GuideControlHeaderRow extends StatelessWidget {
   const GuideControlHeaderRow({super.key});
 
@@ -106,7 +104,7 @@ class GuideControlHeaderRow extends StatelessWidget {
         Expanded(
           flex: 3,
           child: Text(
-            'Ação',
+            context.l10n.controlsActionColumnLabel,
             style: context.textStyles.labelSmall?.copyWith(
               color: context.colors.textTertiary,
             ),

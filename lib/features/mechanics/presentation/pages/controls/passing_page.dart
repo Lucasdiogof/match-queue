@@ -4,136 +4,137 @@ import 'package:fifa_queue/features/mechanics/presentation/widgets/guide_widgets
 import 'package:flutter/material.dart';
 
 /// Guia de passe: comandos reais do FC 27, resumido a partir de pesquisa
-/// (FIFPlay), nunca copiado literalmente.
+/// (FIFPlay), nunca copiado literalmente. Botões em si (✕, △, □, A, Y, X...)
+/// nao precisam de l10n -- so os nomes das acoes e as poucas linhas com
+/// palavra junto do botao.
 class PassingPage extends StatelessWidget {
   const PassingPage({super.key});
 
   @override
-  Widget build(BuildContext context) => AppScaffold(
-    appBar: AppAppBar(title: context.l10n.controlsPassingLabel),
-    body: AppBackground(
-      dense: true,
-      child: ListView(
-        children: <Widget>[
-          const GuideHeading('Passe curto (rasteiro)'),
-          const GuideControlHeaderRow(),
-          const GuideControlRow(
-            action: 'Passe rasteiro',
-            playstation: '✕',
-            xbox: 'A',
-          ),
-          const GuideControlRow(
-            action: 'Passe rasteiro elevado',
-            playstation: '✕ + ✕',
-            xbox: 'A + A',
-          ),
-          const GuideControlRow(
-            action: 'Passe rasteiro forte',
-            playstation: 'R1 + ✕',
-            xbox: 'RB + A',
-          ),
-          const GuideControlRow(
-            action: 'Passe de efeito',
-            playstation: 'L2 + ✕',
-            xbox: 'LT + A',
-          ),
-          const GuideControlRow(
-            action: 'Passe rasteiro de precisão (com curva)',
-            playstation: 'L2 + R1 + ✕',
-            xbox: 'LT + RB + A',
-          ),
-          const GuideHeading('Passe em profundidade (through pass)'),
-          const GuideControlRow(
-            action: 'Passe em profundidade',
-            playstation: '△',
-            xbox: 'Y',
-          ),
-          const GuideControlRow(
-            action: 'Passe em profundidade elevado',
-            playstation: '△ + △',
-            xbox: 'Y + Y',
-          ),
-          const GuideControlRow(
-            action: 'Passe em profundidade de precisão',
-            playstation: 'R1 + △',
-            xbox: 'RB + Y',
-          ),
-          const GuideControlRow(
-            action: 'Passe em profundidade lobado',
-            playstation: 'L1 + △',
-            xbox: 'LB + Y',
-          ),
-          const GuideControlRow(
-            action: 'Passe em profundidade forte',
-            playstation: 'L1 + R1 + △',
-            xbox: 'LB + RB + Y',
-          ),
-          const GuideControlRow(
-            action: 'Passe em profundidade de efeito',
-            playstation: 'L2 + △',
-            xbox: 'LT + Y',
-          ),
-          const GuideHeading('Lançamento e cruzamento'),
-          const GuideControlRow(
-            action: 'Lançamento / cruzamento',
-            playstation: '□',
-            xbox: 'X',
-          ),
-          const GuideControlRow(
-            action: 'Cruzamento rasteiro',
-            playstation: '□ + □',
-            xbox: 'X + X',
-          ),
-          const GuideControlRow(
-            action: 'Lançamento de precisão',
-            playstation: 'R1 + □',
-            xbox: 'RB + X',
-          ),
-          const GuideControlRow(
-            action: 'Lançamento forte',
-            playstation: 'L1 + R1 + □',
-            xbox: 'LB + RB + X',
-          ),
-          const GuideControlRow(
-            action: 'Cruzamento rasteiro forte',
-            playstation: 'L1 + R1 + □ + □',
-            xbox: 'LB + RB + X + X',
-          ),
-          const GuideControlRow(
-            action: 'Lançamento bem alto',
-            playstation: 'L1 + □',
-            xbox: 'LB + X',
-          ),
-          const GuideControlRow(
-            action: 'Lançamento de efeito',
-            playstation: 'L2 + □',
-            xbox: 'LT + X',
-          ),
-          const GuideHeading('Outros'),
-          const GuideControlRow(
-            action: 'Toque e vai (Pass and Go)',
-            playstation: 'L1 + ✕',
-            xbox: 'LB + A',
-          ),
-          const GuideControlRow(
-            action: 'Fake de passe',
-            playstation: '□ depois ✕ + direção',
-            xbox: 'X depois A + direção',
-          ),
-          const GuideHeading('Ideias pra aplicar'),
-          const GuideBulletList(<String>[
-            'Passe rasteiro mantém a posse no meio-campo; passe em '
-                'profundidade serve pra jogadores fazendo corrida por '
-                'trás da defesa.',
-            'Lançamento troca o jogo rápido pro lado aberto do campo.',
-            'Passe forte (driven) sai mais rápido sob pressão, mas com '
-                'menos controle do que o de precisão.',
-            'Quanto mais tempo segura o botão, mais força o passe recebe '
-                '-- combinar o tipo certo com a força certa importa tanto '
-                'quanto escolher o companheiro certo.',
-          ]),
-        ],
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return AppScaffold(
+      appBar: AppAppBar(title: l10n.controlsPassingLabel),
+      body: AppBackground(
+        dense: true,
+        child: ListView(
+          children: <Widget>[
+            GuideHeading(l10n.controlsPassingHeadingShort),
+            const GuideControlHeaderRow(),
+            GuideControlRow(
+              action: l10n.controlsPassingAction1,
+              playstation: '✕',
+              xbox: 'A',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction2,
+              playstation: '✕ + ✕',
+              xbox: 'A + A',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction3,
+              playstation: 'R1 + ✕',
+              xbox: 'RB + A',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction4,
+              playstation: 'L2 + ✕',
+              xbox: 'LT + A',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction5,
+              playstation: 'L2 + R1 + ✕',
+              xbox: 'LT + RB + A',
+            ),
+            GuideHeading(l10n.controlsPassingHeadingThrough),
+            GuideControlRow(
+              action: l10n.controlsPassingAction6,
+              playstation: '△',
+              xbox: 'Y',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction7,
+              playstation: '△ + △',
+              xbox: 'Y + Y',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction8,
+              playstation: 'R1 + △',
+              xbox: 'RB + Y',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction9,
+              playstation: 'L1 + △',
+              xbox: 'LB + Y',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction10,
+              playstation: 'L1 + R1 + △',
+              xbox: 'LB + RB + Y',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction11,
+              playstation: 'L2 + △',
+              xbox: 'LT + Y',
+            ),
+            GuideHeading(l10n.controlsPassingHeadingCrossing),
+            GuideControlRow(
+              action: l10n.controlsPassingAction12,
+              playstation: '□',
+              xbox: 'X',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction13,
+              playstation: '□ + □',
+              xbox: 'X + X',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction14,
+              playstation: 'R1 + □',
+              xbox: 'RB + X',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction15,
+              playstation: 'L1 + R1 + □',
+              xbox: 'LB + RB + X',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction16,
+              playstation: 'L1 + R1 + □ + □',
+              xbox: 'LB + RB + X + X',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction17,
+              playstation: 'L1 + □',
+              xbox: 'LB + X',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction18,
+              playstation: 'L2 + □',
+              xbox: 'LT + X',
+            ),
+            GuideHeading(l10n.controlsPassingHeadingOthers),
+            GuideControlRow(
+              action: l10n.controlsPassingAction19,
+              playstation: 'L1 + ✕',
+              xbox: 'LB + A',
+            ),
+            GuideControlRow(
+              action: l10n.controlsPassingAction20,
+              playstation: l10n.controlsPassingPs20,
+              xbox: l10n.controlsPassingXbox20,
+            ),
+            GuideHeading(l10n.controlsPassingHeadingIdeas),
+            GuideBulletList(<String>[
+              l10n.controlsPassingBullet1,
+              l10n.controlsPassingBullet2,
+              l10n.controlsPassingBullet3,
+              l10n.controlsPassingBullet4,
+            ]),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

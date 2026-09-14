@@ -40,7 +40,10 @@ class _PlaystyleDetailPageState extends State<PlaystyleDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        playstyleCategoryLabel(info.category).toUpperCase(),
+                        playstyleCategoryLabel(
+                          l10n,
+                          info.category,
+                        ).toUpperCase(),
                         style: context.textStyles.labelSmall?.copyWith(
                           color: context.colors.textTertiary,
                           letterSpacing: 1.2,
@@ -52,7 +55,10 @@ class _PlaystyleDetailPageState extends State<PlaystyleDetailPage> {
                         style: context.textStyles.labelSmall,
                       ),
                       const SizedBox(height: AppSpacing.xxs),
-                      Text(info.effect, style: context.textStyles.bodyMedium),
+                      Text(
+                        playstyleEffect(l10n, info.name),
+                        style: context.textStyles.bodyMedium,
+                      ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
                         l10n.mechanicsPlaystylePlusEffectLabel,
@@ -60,7 +66,7 @@ class _PlaystyleDetailPageState extends State<PlaystyleDetailPage> {
                       ),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
-                        info.plusEffect,
+                        playstylePlusEffect(l10n, info.name),
                         style: context.textStyles.bodyMedium,
                       ),
                     ],

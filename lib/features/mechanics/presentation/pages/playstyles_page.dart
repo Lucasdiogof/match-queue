@@ -98,7 +98,7 @@ class _PlaystylesPageState extends State<PlaystylesPage> {
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Text(
-                playstyleCategoryLabel(category).toUpperCase(),
+                playstyleCategoryLabel(l10n, category).toUpperCase(),
                 style: context.textStyles.labelSmall?.copyWith(
                   color: context.colors.textTertiary,
                   letterSpacing: 1.4,
