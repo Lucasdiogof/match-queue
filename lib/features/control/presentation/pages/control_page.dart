@@ -177,7 +177,6 @@ class _ControlBody extends StatelessWidget {
                     MatchmakingSection(
                       fcAccountId: account.id,
                       teamId: team.id,
-                      teamName: team.team.name,
                       onMatchFound: () =>
                           context.read<PendingMatchCubit>().refreshSilently(),
                     ),

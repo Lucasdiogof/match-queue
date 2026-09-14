@@ -33,17 +33,12 @@ class MatchmakingSection extends StatelessWidget {
   const MatchmakingSection({
     required this.fcAccountId,
     required this.teamId,
-    required this.teamName,
     this.onMatchFound,
     super.key,
   });
 
   final String fcAccountId;
   final String teamId;
-
-  /// So pra compor a mensagem do bottom sheet do item 1 ("... pelo Time
-  /// X") -- nunca usado pra decidir nada, o servidor ja sabe o time pelo id.
-  final String teamName;
 
   /// Chamado depois de um "Encontrei" bem-sucedido.
   final VoidCallback? onMatchFound;
@@ -58,16 +53,14 @@ class MatchmakingSection extends StatelessWidget {
       teamId: teamId,
     )..start(),
     child: _MatchmakingSectionBody(
-      teamName: teamName,
       onMatchFound: onMatchFound,
     ),
   );
 }
 
 class _MatchmakingSectionBody extends StatefulWidget {
-  const _MatchmakingSectionBody({required this.teamName, this.onMatchFound});
+  const _MatchmakingSectionBody({this.onMatchFound});
 
-  final String teamName;
   final VoidCallback? onMatchFound;
 
   @override
@@ -156,7 +149,6 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
           ),
           MatchmakingStatus.ready => _MatchmakingReadyBody(
             state: state,
-            teamName: widget.teamName,
             onMatchFound: widget.onMatchFound,
           ),
         },
@@ -168,12 +160,10 @@ class _MatchmakingSectionBodyState extends State<_MatchmakingSectionBody>
 class _MatchmakingReadyBody extends StatelessWidget {
   const _MatchmakingReadyBody({
     required this.state,
-    required this.teamName,
     this.onMatchFound,
   });
 
   final MatchmakingState state;
-  final String teamName;
   final VoidCallback? onMatchFound;
 
   @override
@@ -196,7 +186,7 @@ class _MatchmakingReadyBody extends StatelessWidget {
         state: state,
         snapshot: snapshot,
       ),
-      _ => _IdleCard(state: state, snapshot: snapshot, teamName: teamName),
+      _ => _IdleCard(state: state, snapshot: snapshot),
     };
 
     return Column(
@@ -265,12 +255,10 @@ class _IdleCard extends StatefulWidget {
   const _IdleCard({
     required this.state,
     required this.snapshot,
-    required this.teamName,
   });
 
   final MatchmakingState state;
   final MyMatchmakingSnapshot snapshot;
-  final String teamName;
 
   @override
   State<_IdleCard> createState() => _IdleCardState();
@@ -316,22 +304,12 @@ class _IdleCardState extends State<_IdleCard> {
     super.dispose();
   }
 
-  Future<void> _onStartPressed() async {
-    final blocking = widget.snapshot.blockingSearch;
-    if (blocking == null) {
-      unawaited(
-        context.read<MatchmakingCubit>().startSearch(
-          context.read<GameModeCubit>().state,
-          fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
-        ),
-      );
-      return;
-    }
-    await showMatchmakingQueueSheet(
-      context: context,
-      cubit: context.read<MatchmakingCubit>(),
-      blocking: blocking,
-      teamName: widget.teamName,
+  void _onStartPressed() {
+    unawaited(
+      context.read<MatchmakingCubit>().startSearch(
+        context.read<GameModeCubit>().state,
+        fcSquadId: context.read<FcSquadsCubit>().state.selectedSquadId,
+      ),
     );
   }
 
@@ -406,6 +384,24 @@ class _IdleCardState extends State<_IdleCard> {
             isLoading: widget.state.isActionPending,
             onPressed: busy ? null : _onStartPressed,
           ),
+          if (blocking != null) ...<Widget>[
+            const SizedBox(height: AppSpacing.sm),
+            if (widget.state.priorityRequestSent)
+              AppBanner(
+                tone: AppBannerTone.neutral,
+                message: l10n.matchmakingPriorityRequestedConfirmation,
+              )
+            else
+              AppButton.secondary(
+                label: l10n.matchmakingRequestPriorityAction,
+                icon: Icons.priority_high,
+                isLoading: widget.state.isActionPending,
+                onPressed: busy
+                    ? null
+                    : () =>
+                        context.read<MatchmakingCubit>().requestPriority(),
+              ),
+          ],
         ],
       ),
     );
@@ -576,102 +572,3 @@ class _QueuedCard extends StatelessWidget {
   }
 }
 
-/// Bottom sheet do item 1: aberta ao tocar "Buscar partida" quando ja existe
-/// alguem buscando por este time. Entrar na fila E solicitar prioridade sao
-/// os dois caminhos -- nenhum dos dois muda quem esta buscando agora.
-Future<void> showMatchmakingQueueSheet({
-  required BuildContext context,
-  required MatchmakingCubit cubit,
-  required BlockingSearch blocking,
-  required String teamName,
-}) => showAppBottomSheet<void>(
-  context: context,
-  builder: (sheetContext) => BlocProvider<MatchmakingCubit>.value(
-    value: cubit,
-    child: _MatchmakingQueueSheetBody(blocking: blocking, teamName: teamName),
-  ),
-);
-
-class _MatchmakingQueueSheetBody extends StatelessWidget {
-  const _MatchmakingQueueSheetBody({
-    required this.blocking,
-    required this.teamName,
-  });
-
-  final BlockingSearch blocking;
-  final String teamName;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final colors = context.colors;
-
-    return BlocConsumer<MatchmakingCubit, MatchmakingState>(
-      listenWhen: (previous, current) =>
-          current.failure != null && previous.failure != current.failure,
-      listener: (context, state) => ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(content: Text(state.failure!.localizedMessage(l10n))),
-        ),
-      builder: (context, state) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            l10n.matchmakingBottomSheetTitle,
-            style: context.textStyles.titleMedium,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.matchmakingBottomSheetMessage(teamName),
-            style: context.textStyles.bodyMedium?.copyWith(
-              color: colors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          AppButton(
-            label: l10n.matchmakingJoinQueueAction,
-            icon: Icons.playlist_add,
-            isLoading: state.isActionPending,
-            onPressed: state.isActionPending
-                ? null
-                : () async {
-                    final cubit = context.read<MatchmakingCubit>();
-                    final navigator = Navigator.of(context);
-                    final ok = await cubit.startSearch(
-                      context.read<GameModeCubit>().state,
-                      fcSquadId: context
-                          .read<FcSquadsCubit>()
-                          .state
-                          .selectedSquadId,
-                    );
-                    if (ok && navigator.mounted) {
-                      navigator.pop();
-                    }
-                  },
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          if (state.priorityRequestSent)
-            AppBanner(
-              tone: AppBannerTone.neutral,
-              message: l10n.matchmakingPriorityRequestedConfirmation,
-            )
-          else
-            AppButton.secondary(
-              label: l10n.matchmakingRequestPriorityAction,
-              icon: Icons.priority_high,
-              isLoading: state.isActionPending,
-              onPressed: state.isActionPending
-                  ? null
-                  : () => context.read<MatchmakingCubit>().requestPriority(),
-            ),
-          const SizedBox(height: AppSpacing.sm),
-          AppButton.secondary(
-            label: l10n.actionClose,
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      ),
-    );
-  }
-}
