@@ -7,15 +7,10 @@ class SupabaseInitializer {
 
   final AppLogger _logger;
 
-  Future<SupabaseClient?> initialize(AppConfig config) async {
-    if (!config.hasSupabase) {
-      _logger.warning(
-        'Supabase não configurado (${config.missingRequiredKeys.join(', ')}). '
-        'O app segue em modo local de desenvolvimento.',
-      );
-      return null;
-    }
-
+  /// Só é chamado depois que `AppConfig.isUsable` já garantiu
+  /// `hasSupabase` -- sem config válida o bootstrap nem chega aqui, mostra
+  /// `StartupFailureApp` antes.
+  Future<SupabaseClient> initialize(AppConfig config) async {
     await Supabase.initialize(
       url: config.supabaseUrl,
       publishableKey: config.supabasePublishableKey,

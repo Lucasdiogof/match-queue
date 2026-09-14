@@ -26,6 +26,4 @@ enum AppEnvironment {
   bool get isStaging => this == AppEnvironment.staging;
 
   bool get isProduction => this == AppEnvironment.production;
-
-  bool get requiresCompleteConfiguration => !isDevelopment;
 }

@@ -103,6 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: <Widget>[
                   AppTextField(
                     label: l10n.authDisplayName,
+                    hintText: l10n.authDisplayNameHint,
                     controller: _displayName,
                     enabled: !isSubmitting,
                     textInputAction: TextInputAction.next,
@@ -150,6 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: AppSpacing.lg),
                   AppPasswordField(
                     label: l10n.authPassword,
+                    hintText: '••••••••',
                     helperText: l10n.authPasswordHelper(
                       AppValidators.passwordMinLength,
                     ),

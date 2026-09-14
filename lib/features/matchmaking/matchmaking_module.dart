@@ -1,7 +1,5 @@
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
-import 'package:fifa_queue/features/auth/domain/repositories/auth_repository.dart';
 import 'package:fifa_queue/features/matchmaking/data/datasources/matchmaking_remote_data_source.dart';
-import 'package:fifa_queue/features/matchmaking/data/repositories/local_matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/data/repositories/supabase_matchmaking_repository.dart';
 import 'package:fifa_queue/features/matchmaking/data/selected_game_mode_store.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
@@ -12,7 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void registerMatchmakingModule(
   GetIt sl, {
-  required SupabaseClient? supabaseClient,
+  required SupabaseClient supabaseClient,
 }) {
   sl
     ..registerLazySingleton<SelectedGameModeStore>(
@@ -20,19 +18,7 @@ void registerMatchmakingModule(
     )
     ..registerLazySingleton<GameModeCubit>(
       () => GameModeCubit(sl<SelectedGameModeStore>()),
-    );
-
-  if (supabaseClient == null) {
-    sl.registerLazySingleton<MatchmakingRepository>(
-      () => LocalMatchmakingRepository(
-        sl<AuthRepository>(),
-        sl<SharedPreferences>(),
-      ),
-    );
-    return;
-  }
-
-  sl
+    )
     ..registerLazySingleton<MatchmakingRemoteDataSource>(
       () => SupabaseMatchmakingRemoteDataSource(supabaseClient),
     )

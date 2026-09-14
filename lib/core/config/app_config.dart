@@ -50,8 +50,7 @@ class AppConfig extends Equatable {
     if (supabasePublishableKey.isEmpty) 'SUPABASE_PUBLISHABLE_KEY',
   ];
 
-  bool get isUsable =>
-      hasSupabase || !environment.requiresCompleteConfiguration;
+  bool get isUsable => hasSupabase;
 
   @override
   List<Object?> get props => <Object?>[

@@ -27,7 +27,9 @@ class HistoryPage extends StatelessWidget {
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: AppAppBar(title: fcAccountId == null ? null : l10n.navHistory),
+          appBar: AppAppBar(
+            title: fcAccountId == null ? null : l10n.navHistory,
+          ),
           body: AppBackground(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

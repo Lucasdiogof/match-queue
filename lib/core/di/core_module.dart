@@ -16,7 +16,7 @@ void registerCoreModule(
   required AppConfig config,
   required AppLogger logger,
   required SharedPreferences preferences,
-  required SupabaseClient? supabaseClient,
+  required SupabaseClient supabaseClient,
 }) {
   sl
     ..registerSingleton<AppConfig>(config)
@@ -30,9 +30,6 @@ void registerCoreModule(
     ..registerSingleton<PublicProfileLinkBuilder>(
       PublicProfileLinkBuilder(config),
     )
-    ..registerSingleton<SessionScope>(SessionScope(sl));
-
-  if (supabaseClient != null) {
-    sl.registerSingleton<SupabaseClient>(supabaseClient);
-  }
+    ..registerSingleton<SessionScope>(SessionScope(sl))
+    ..registerSingleton<SupabaseClient>(supabaseClient);
 }

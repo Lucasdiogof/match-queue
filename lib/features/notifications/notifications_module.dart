@@ -4,8 +4,6 @@ import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
 import 'package:fifa_queue/features/notifications/data/datasources/notification_inbox_remote_data_source.dart';
 import 'package:fifa_queue/features/notifications/data/datasources/notification_remote_data_source.dart';
-import 'package:fifa_queue/features/notifications/data/repositories/local_notification_inbox_repository.dart';
-import 'package:fifa_queue/features/notifications/data/repositories/local_notification_repository.dart';
 import 'package:fifa_queue/features/notifications/data/repositories/supabase_notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/data/repositories/supabase_notification_repository.dart';
 import 'package:fifa_queue/features/notifications/data/services/firebase_push_messaging_service.dart';
@@ -22,7 +20,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void registerNotificationsModule(
   GetIt sl, {
-  required SupabaseClient? supabaseClient,
+  required SupabaseClient supabaseClient,
   required FirebaseAvailability firebaseAvailability,
 }) {
   sl
@@ -30,7 +28,10 @@ void registerNotificationsModule(
       _pushMessagingService(firebaseAvailability),
     )
     ..registerLazySingleton<NotificationRepository>(
-      _notificationRepository(sl, supabaseClient),
+      () => SupabaseNotificationRepository(
+        SupabaseNotificationRemoteDataSource(supabaseClient),
+        sl<SupabaseErrorMapper>(),
+      ),
     )
     ..registerLazySingleton<PushTokenCoordinator>(
       () => PushTokenCoordinator(
@@ -40,24 +41,14 @@ void registerNotificationsModule(
       ),
     )
     ..registerLazySingleton<NotificationInboxRepository>(
-      _notificationInboxRepository(sl, supabaseClient),
+      () => SupabaseNotificationInboxRepository(
+        SupabaseNotificationInboxRemoteDataSource(supabaseClient),
+        sl<SupabaseErrorMapper>(),
+      ),
     )
     ..registerLazySingleton<NotificationUnreadCubit>(
       () => NotificationUnreadCubit(sl<NotificationInboxRepository>()),
     );
-}
-
-NotificationInboxRepository Function() _notificationInboxRepository(
-  GetIt sl,
-  SupabaseClient? supabaseClient,
-) {
-  if (supabaseClient == null) {
-    return LocalNotificationInboxRepository.new;
-  }
-  return () => SupabaseNotificationInboxRepository(
-    SupabaseNotificationInboxRemoteDataSource(supabaseClient),
-    sl<SupabaseErrorMapper>(),
-  );
 }
 
 PushMessagingService Function() _pushMessagingService(
@@ -69,19 +60,6 @@ PushMessagingService Function() _pushMessagingService(
     return () => FirebasePushMessagingService(FirebaseMessaging.instance);
   }
   return () => UnavailablePushMessagingService(_currentPlatform());
-}
-
-NotificationRepository Function() _notificationRepository(
-  GetIt sl,
-  SupabaseClient? supabaseClient,
-) {
-  if (supabaseClient == null) {
-    return LocalNotificationRepository.new;
-  }
-  return () => SupabaseNotificationRepository(
-    SupabaseNotificationRemoteDataSource(supabaseClient),
-    sl<SupabaseErrorMapper>(),
-  );
 }
 
 DevicePlatform _currentPlatform() {

@@ -217,7 +217,9 @@ class _NavItem extends StatelessWidget {
             Badge(
               isLabelVisible: destination.badgeCount > 0,
               label: Text(
-                destination.badgeCount > 99 ? '99+' : '${destination.badgeCount}',
+                destination.badgeCount > 99
+                    ? '99+'
+                    : '${destination.badgeCount}',
               ),
               child: Icon(
                 isSelected ? destination.selectedIcon : destination.icon,

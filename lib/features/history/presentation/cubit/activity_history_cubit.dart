@@ -8,8 +8,11 @@ import 'package:fifa_queue/features/history/presentation/cubit/activity_history_
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
-  ActivityHistoryCubit(this._repository, {required this.teamId, this.fcAccountId})
-    : super(const ActivityHistoryState());
+  ActivityHistoryCubit(
+    this._repository, {
+    required this.teamId,
+    this.fcAccountId,
+  }) : super(const ActivityHistoryState());
 
   final HistoryRepository _repository;
   final String teamId;

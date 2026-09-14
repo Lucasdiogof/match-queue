@@ -23,7 +23,7 @@ Future<void> registerDependencies({
   required AppConfig config,
   required AppLogger logger,
   required SharedPreferences preferences,
-  required SupabaseClient? supabaseClient,
+  required SupabaseClient supabaseClient,
   required FirebaseAvailability firebaseAvailability,
 }) async {
   registerCoreModule(

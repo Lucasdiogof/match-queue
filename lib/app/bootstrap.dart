@@ -12,6 +12,7 @@ import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/url_strategy/url_strategy.dart';
 import 'package:fifa_queue/core/observability/crash_reporter.dart';
 import 'package:fifa_queue/core/supabase/supabase_initializer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
@@ -56,7 +57,7 @@ Future<void> bootstrap() async {
       }
 
       final preferences = await SharedPreferences.getInstance();
-      final supabaseClient = await SupabaseInitializer(
+      final SupabaseClient supabaseClient = await SupabaseInitializer(
         logger,
       ).initialize(config);
       // Mesma resolucao de locale efetivo do LocaleSyncListener: preferencia
