@@ -6,13 +6,13 @@ import 'package:fifa_queue/features/public_profile/domain/entities/public_sharin
 PublicSharingSettings publicSharingSettingsFromJson(
   Map<String, dynamic> json,
 ) => PublicSharingSettings(
+  fcAccountId: '${json['fc_account_id']}',
   isEnabled: json['is_enabled'] as bool? ?? false,
   slug: json['slug'] as String?,
-  fcAccountId: json['fc_account_id'] as String?,
-  showSquad: json['show_squad'] as bool? ?? false,
-  showWeekendLeague: json['show_weekend_league'] as bool? ?? false,
-  showRivals: json['show_rivals'] as bool? ?? false,
-  showStats: json['show_stats'] as bool? ?? false,
+  showSquad: json['show_squad'] as bool? ?? true,
+  showWeekendLeague: json['show_weekend_league'] as bool? ?? true,
+  showRivals: json['show_rivals'] as bool? ?? true,
+  showStats: json['show_stats'] as bool? ?? true,
 );
 
 PublicMatchAggregate? _aggregateFromJson(Object? json) {
@@ -97,6 +97,7 @@ PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
     found: true,
     displayName: profile['display_name'] as String?,
     avatarUrl: profile['avatar_url'] as String?,
+    accountId: account?['id'] as String?,
     accountName: account?['name'] as String?,
     rivalsDivision: account?['rivals_division'] as String?,
     stats: _aggregateFromJson(json['stats']),

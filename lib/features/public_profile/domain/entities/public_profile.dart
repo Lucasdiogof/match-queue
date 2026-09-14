@@ -114,6 +114,7 @@ class PublicProfile extends Equatable {
     required this.found,
     this.displayName,
     this.avatarUrl,
+    this.accountId,
     this.accountName,
     this.rivalsDivision,
     this.stats,
@@ -128,6 +129,12 @@ class PublicProfile extends Equatable {
   final bool found;
   final String? displayName;
   final String? avatarUrl;
+
+  /// So pra o proprio dono montar o link de "Editar compartilhamento" ao
+  /// visualizar o proprio perfil publico -- opaco pra qualquer outra pessoa,
+  /// que nao ganha nenhum acesso extra por ve-lo (ownership e sempre
+  /// revalidado nas RPCs de escrita).
+  final String? accountId;
   final String? accountName;
   final String? rivalsDivision;
   final PublicMatchAggregate? stats;
@@ -149,6 +156,7 @@ class PublicProfile extends Equatable {
     found,
     displayName,
     avatarUrl,
+    accountId,
     accountName,
     rivalsDivision,
     stats,

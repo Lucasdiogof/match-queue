@@ -8,9 +8,9 @@ enum SlugAvailability { idle, checking, available, unavailable, invalid }
 
 class SharingSettingsState extends Equatable {
   const SharingSettingsState({
+    required this.saved,
+    required this.draft,
     this.status = SharingSettingsStatus.initial,
-    this.saved = PublicSharingSettings.empty,
-    this.draft = PublicSharingSettings.empty,
     this.isSaving = false,
     this.slugAvailability = SlugAvailability.idle,
     this.failure,

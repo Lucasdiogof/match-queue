@@ -1,4 +1,4 @@
-import 'dart:async' show Timer, unawaited;
+import 'dart:async' show Timer;
 
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
@@ -6,42 +6,26 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/platform/public_profile_link_builder.dart';
 import 'package:fifa_queue/core/platform/share_service.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/public_profile/domain/repositories/public_profile_repository.dart';
 import 'package:fifa_queue/features/public_profile/presentation/cubit/sharing_settings_cubit.dart';
 import 'package:fifa_queue/features/public_profile/presentation/cubit/sharing_settings_state.dart';
-import 'package:fifa_queue/features/public_profile/presentation/widgets/public_account_picker_sheet.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Perfil público de UMA conta FC -- [fcAccountId] fixa qual desde a
+/// criação, sem seletor de conta na tela (cada conta tem o seu próprio).
 class SharingSettingsSection extends StatelessWidget {
-  const SharingSettingsSection({
-    this.preselectFcAccountId,
-    this.preselectShowSquad = false,
-    super.key,
-  });
+  const SharingSettingsSection({required this.fcAccountId, super.key});
 
-  final String? preselectFcAccountId;
-  final bool preselectShowSquad;
+  final String fcAccountId;
 
   @override
   Widget build(BuildContext context) => BlocProvider<SharingSettingsCubit>(
-    create: (_) {
-      final cubit = SharingSettingsCubit(getIt<PublicProfileRepository>());
-      unawaited(
-        cubit.load().then((_) {
-          if (preselectFcAccountId != null || preselectShowSquad) {
-            cubit.applyPreselect(
-              fcAccountId: preselectFcAccountId,
-              showSquad: preselectShowSquad,
-            );
-          }
-        }),
-      );
-      return cubit;
-    },
+    create: (_) => SharingSettingsCubit(
+      getIt<PublicProfileRepository>(),
+      fcAccountId: fcAccountId,
+    )..load(),
     child: const _SharingSettingsBody(),
   );
 }
@@ -203,29 +187,6 @@ class _SharingSettingsBodyState extends State<_SharingSettingsBody> {
                   helperText: _slugHelperText(l10n, state.slugAvailability),
                   onChanged: (value) => _onSlugChanged(context, value),
                 ),
-                const SizedBox(height: AppSpacing.md),
-                BlocBuilder<FcAccountsCubit, FcAccountsState>(
-                  builder: (context, fcState) {
-                    final selected = fcState.accounts
-                        .where((a) => a.id == draft.fcAccountId)
-                        .toList();
-                    final label = selected.isEmpty
-                        ? l10n.publicProfileAccountEmpty
-                        : selected.first.name;
-                    return _NavRow(
-                      icon: Icons.sports_esports_outlined,
-                      label: l10n.publicProfileAccountLabel,
-                      value: label,
-                      onTap: fcState.accounts.isEmpty
-                          ? null
-                          : () => showPublicAccountPickerSheet(
-                              context: context,
-                              accounts: fcState.accounts,
-                              selectedAccountId: draft.fcAccountId,
-                            ),
-                    );
-                  },
-                ),
                 const AppDivider(spacing: AppSpacing.lg),
                 _ToggleRow(
                   label: l10n.publicProfileToggleSquad,
@@ -310,47 +271,6 @@ class _SharingSettingsBodyState extends State<_SharingSettingsBody> {
     SlugAvailability.invalid => l10n.publicProfileSlugInvalid,
     SlugAvailability.idle => null,
   };
-}
-
-class _NavRow extends StatelessWidget {
-  const _NavRow({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-        child: Row(
-          children: <Widget>[
-            Icon(icon, size: AppSizing.iconMd, color: colors.textSecondary),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(child: Text(label, style: context.textStyles.bodyLarge)),
-            Text(
-              value,
-              style: context.textStyles.bodyMedium?.copyWith(
-                color: colors.textSecondary,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Icon(Icons.chevron_right, color: colors.textTertiary),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class _ToggleRow extends StatelessWidget {

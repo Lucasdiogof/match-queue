@@ -227,17 +227,8 @@ class AppRoutes {
 
   static String publicProfileLocation(String identifier) => '/u/$identifier';
 
-  static String profileSharingLocation({
-    String? preselectFcAccountId,
-    bool preselectShowSquad = false,
-  }) {
-    final query = <String, String>{
-      'fcAccountId': ?preselectFcAccountId,
-      if (preselectShowSquad) 'showSquad': '1',
-    };
-    if (query.isEmpty) {
-      return profileSharing.path;
-    }
-    return Uri(path: profileSharing.path, queryParameters: query).toString();
-  }
+  static String profileSharingLocation(String fcAccountId) => Uri(
+    path: profileSharing.path,
+    queryParameters: <String, String>{'fcAccountId': fcAccountId},
+  ).toString();
 }

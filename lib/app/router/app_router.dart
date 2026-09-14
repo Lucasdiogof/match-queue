@@ -161,8 +161,7 @@ class AppRouter {
         path: AppRoutes.profileSharing.path,
         name: AppRoutes.profileSharing.name,
         builder: (context, state) => PublicProfileSettingsPage(
-          preselectFcAccountId: state.uri.queryParameters['fcAccountId'],
-          preselectShowSquad: state.uri.queryParameters['showSquad'] == '1',
+          fcAccountId: state.uri.queryParameters['fcAccountId'] ?? '',
         ),
       ),
       GoRoute(

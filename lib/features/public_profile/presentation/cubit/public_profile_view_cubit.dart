@@ -15,7 +15,7 @@ class PublicProfileViewCubit extends Cubit<PublicProfileViewState> {
     emit(const PublicProfileViewState());
     try {
       final profile = await _repository.fetchPublicProfile(identifier);
-      final isOwner = await _resolveIsOwner(identifier);
+      final isOwner = await _resolveIsOwner(profile.accountId);
       emit(
         PublicProfileViewState(
           status: profile.found
@@ -36,15 +36,16 @@ class PublicProfileViewCubit extends Cubit<PublicProfileViewState> {
   }
 
   /// So chama a propria configuracao quando ha sessao -- visitante anonimo
-  /// nunca dispara essa chamada extra.
-  Future<bool> _resolveIsOwner(String identifier) async {
-    if (_authRepository.currentUser == null) {
+  /// nunca dispara essa chamada extra. get_my_public_profile_settings ja
+  /// levanta FQ025 se a conta nao for do usuario logado, entao a chamada
+  /// so ter sucesso ja PROVA ownership -- nao precisa comparar slug.
+  Future<bool> _resolveIsOwner(String? accountId) async {
+    if (accountId == null || _authRepository.currentUser == null) {
       return false;
     }
     try {
-      final mySettings = await _repository.fetchMySettings();
-      final mySlug = mySettings.slug?.toLowerCase();
-      return mySlug != null && mySlug == identifier.toLowerCase();
+      await _repository.fetchMySettings(accountId);
+      return true;
     } catch (_) {
       return false;
     }

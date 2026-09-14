@@ -341,11 +341,8 @@ class _SettingsSection extends StatelessWidget {
           AppButton.secondary(
             label: l10n.publicProfileSectionTitle,
             icon: Icons.lock_outline,
-            onPressed: () => context.push(
-              AppRoutes.profileSharingLocation(
-                preselectFcAccountId: account.id,
-              ),
-            ),
+            onPressed: () =>
+                context.push(AppRoutes.profileSharingLocation(account.id)),
           ),
         ],
       ),

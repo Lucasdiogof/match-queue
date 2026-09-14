@@ -4,26 +4,16 @@ import 'package:fifa_queue/features/public_profile/presentation/widgets/sharing_
 import 'package:flutter/material.dart';
 
 class PublicProfileSettingsPage extends StatelessWidget {
-  const PublicProfileSettingsPage({
-    this.preselectFcAccountId,
-    this.preselectShowSquad = false,
-    super.key,
-  });
+  const PublicProfileSettingsPage({required this.fcAccountId, super.key});
 
-  final String? preselectFcAccountId;
-  final bool preselectShowSquad;
+  final String fcAccountId;
 
   @override
   Widget build(BuildContext context) => AppScaffold(
     appBar: AppAppBar(title: context.l10n.publicProfileSectionTitle),
     body: ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-      children: <Widget>[
-        SharingSettingsSection(
-          preselectFcAccountId: preselectFcAccountId,
-          preselectShowSquad: preselectShowSquad,
-        ),
-      ],
+      children: <Widget>[SharingSettingsSection(fcAccountId: fcAccountId)],
     ),
   );
 }

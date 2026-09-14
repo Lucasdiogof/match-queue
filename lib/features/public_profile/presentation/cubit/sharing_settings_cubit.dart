@@ -1,20 +1,31 @@
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
+import 'package:fifa_queue/features/public_profile/domain/entities/public_sharing_settings.dart';
 import 'package:fifa_queue/features/public_profile/domain/repositories/public_profile_repository.dart';
 import 'package:fifa_queue/features/public_profile/presentation/cubit/sharing_settings_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Perfil público de UMA conta FC -- escopado por [fcAccountId] desde a
+/// criação, nunca trocável depois (trocar de conta é abrir outro cubit,
+/// não mutar este).
 class SharingSettingsCubit extends Cubit<SharingSettingsState> {
-  SharingSettingsCubit(this._repository) : super(const SharingSettingsState());
+  SharingSettingsCubit(this._repository, {required this.fcAccountId})
+    : super(
+        SharingSettingsState(
+          saved: PublicSharingSettings.empty(fcAccountId),
+          draft: PublicSharingSettings.empty(fcAccountId),
+        ),
+      );
 
   final PublicProfileRepository _repository;
+  final String fcAccountId;
 
   Future<void> load() async {
     emit(
       state.copyWith(status: SharingSettingsStatus.loading, clearFailure: true),
     );
     try {
-      final settings = await _repository.fetchMySettings();
+      final settings = await _repository.fetchMySettings(fcAccountId);
       emit(
         state.copyWith(
           status: SharingSettingsStatus.ready,
@@ -45,14 +56,6 @@ class SharingSettingsCubit extends Cubit<SharingSettingsState> {
     );
   }
 
-  void setFcAccountId(String? id) => emit(
-    state.copyWith(
-      draft: id == null
-          ? state.draft.copyWith(clearFcAccountId: true)
-          : state.draft.copyWith(fcAccountId: id),
-    ),
-  );
-
   void setShowSquad(bool value) =>
       emit(state.copyWith(draft: state.draft.copyWith(showSquad: value)));
 
@@ -78,7 +81,10 @@ class SharingSettingsCubit extends Cubit<SharingSettingsState> {
     }
     emit(state.copyWith(slugAvailability: SlugAvailability.checking));
     try {
-      final available = await _repository.isSlugAvailable(normalized);
+      final available = await _repository.isSlugAvailable(
+        normalized,
+        fcAccountId: fcAccountId,
+      );
       if (state.draft.slug != normalized) {
         return;
       }
@@ -114,17 +120,4 @@ class SharingSettingsCubit extends Cubit<SharingSettingsState> {
   }
 
   void discardDraft() => emit(state.copyWith(draft: state.saved));
-
-  /// Usado pelos CTAs "Compartilhar esta Conta"/"Compartilhar escalação":
-  /// oferece habilitar (nunca ativa sozinho sem o usuario apertar Salvar).
-  void applyPreselect({String? fcAccountId, bool? showSquad}) {
-    var draft = state.draft;
-    if (fcAccountId != null) {
-      draft = draft.copyWith(fcAccountId: fcAccountId, isEnabled: true);
-    }
-    if (showSquad ?? false) {
-      draft = draft.copyWith(showSquad: true);
-    }
-    emit(state.copyWith(draft: draft));
-  }
 }
