@@ -15,10 +15,6 @@ class BrandAssets {
   static const String? logo = 'assets/brand/icon.png';
 
   /// Wordmark "MATCH QUEUE" isolado, sem o controle.
-  /// ATENCAO: o asset assets/brand/wordmark.png (gerado a partir de
-  /// design/brand/escrito.png) ainda contem o texto "FIFA QUEUE" desenhado
-  /// nos pixels -- precisa ser refeito manualmente com a nova arte antes do
-  /// proximo build. Ver relatorio de rebrand / docs/branding.md.
   static const String? wordmark = 'assets/brand/wordmark.png';
 
   /// Mesma arte do [logo]; existe como campo separado para o dia em que o
