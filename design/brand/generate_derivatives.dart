@@ -229,10 +229,17 @@ void main() {
   // fundo escuro vem de adaptive_icon_background no pubspec.yaml, uma camada
   // separada que o Android compoe atras desta -- preencher aqui seria um
   // segundo fundo redundante). adaptive_icon_foreground_inset e 0 no
-  // pubspec.yaml, entao esse contentFraction e o UNICO controle de tamanho:
-  // ~66% bate com a safe-zone garantida do Android (66dp dos 108dp do asset
-  // completo).
-  final iconAdaptiveFg = _padToSquareTransparent(logoRgba, 1024, 0.66);
+  // pubspec.yaml, entao esse contentFraction e o UNICO controle de tamanho.
+  // A "safe zone" garantida do Android e um CIRCULO de 66dp inscrito no
+  // canvas de 108dp (~61% do lado, nao 66% -- um bounding box quadrado de
+  // 66% de lado tem cantos que estouram esse circulo). logo_sem_fundo.png e
+  // um anel que quase toca a propria borda do bounding box nos 4 pontos
+  // cardeais, entao com contentFraction 0.66 esse anel ficava colado bem em
+  // cima da linha de corte do launcher -- lia como um risco/halo feio
+  // grudado na borda do icone em vez de um anel limpo. 0.55 da folga real
+  // entre o anel e a borda em qualquer formato de mascara (circulo,
+  // squircle, teardrop).
+  final iconAdaptiveFg = _padToSquareTransparent(logoRgba, 1024, 0.55);
   _savePng('$_generatedDir/icon_adaptive_fg_1024.png', iconAdaptiveFg);
 
   // Fonte da splash nativa: logo_splash.png e uma arte pronta, ja achatada
