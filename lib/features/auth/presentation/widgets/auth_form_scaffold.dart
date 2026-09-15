@@ -11,6 +11,7 @@ class AuthFormScaffold extends StatelessWidget {
     this.backTooltip,
     this.backgroundImage,
     this.showWordmark = true,
+    this.wordmark,
     this.darkBackground = false,
     this.contentAlignment,
     super.key,
@@ -32,6 +33,11 @@ class AuthFormScaffold extends StatelessWidget {
   /// BrandWordmark widget e desnecessario (ficaria duplicado/ilegivel sobre
   /// a foto).
   final bool showWordmark;
+
+  /// Sobrescreve o widget exibido quando [showWordmark] e true. Sem isso,
+  /// cai no padrao (`BrandWordmark`, o PNG cromado). Uso pontual pra telas
+  /// que querem outra variante da marca (ex.: texto ao vivo no cadastro).
+  final Widget? wordmark;
 
   /// Forca o tema escuro no fundo liso (sem [backgroundImage]), pra telas
   /// como o cadastro em que a wordmark cromada precisa do mesmo pano de
@@ -76,7 +82,7 @@ class AuthFormScaffold extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   if (showWordmark) ...<Widget>[
-                    const Center(child: BrandWordmark(height: 76)),
+                    Center(child: wordmark ?? const BrandWordmark(height: 76)),
                     const SizedBox(height: AppSpacing.xl),
                   ],
                   Text(title, style: context.textStyles.headlineMedium),

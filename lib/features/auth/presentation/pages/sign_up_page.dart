@@ -88,11 +88,17 @@ class _SignUpPageState extends State<SignUpPage> {
           title: l10n.signUpTitle,
           subtitle: l10n.signUpSubtitle,
           darkBackground: true,
-          contentAlignment: const Alignment(0, -0.62),
+          wordmark: const BrandWordmarkStyled(),
+          contentAlignment: const Alignment(0, -0.85),
           onBack: () => context.canPop()
               ? context.pop()
               : context.go(AppRoutes.login.path),
           backTooltip: l10n.actionBack,
+          footer: AppButton(
+            label: l10n.authSignUp,
+            isLoading: isSubmitting,
+            onPressed: _canSubmit && !isSubmitting ? _submit : null,
+          ),
           children: <Widget>[
             if (failure != null) ...<Widget>[
               AppBanner(
@@ -205,12 +211,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       _onChanged(value);
                     },
                     onSubmitted: (_) => _submit(),
-                  ),
-                  const SizedBox(height: AppSpacing.xl),
-                  AppButton(
-                    label: l10n.authSignUp,
-                    isLoading: isSubmitting,
-                    onPressed: _canSubmit && !isSubmitting ? _submit : null,
                   ),
                 ],
               ),
