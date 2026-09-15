@@ -4,7 +4,7 @@
 # `supabase init` gera para o ambiente local foram omitidas.
 #
 # project_id e o ref publico do projeto remoto (nao e secret). Usado pela CLI
-# para versionar migrations contra o projeto do FIFA Queue no Supabase.
+# para versionar migrations contra o projeto do Match Queue no Supabase.
 project_id = "lteujeclnhmurcewurkg"
 
 # Esta function e chamada so pelo pg_net (dentro do proprio Postgres) e se
