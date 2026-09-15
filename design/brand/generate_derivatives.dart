@@ -46,20 +46,16 @@ img.Image _decode(String path) {
   return decoded;
 }
 
-/// RGBA source alpha-composited sobre bgColor, nunca um flatten ingenuo (que
-/// manteria qualquer RGB "por baixo" de um pixel transparente -- as margens
-/// transparentes da arte original nao tem cor de fundo confiavel por baixo).
-img.Image _loadOn(String name, List<int> bgColor) {
-  final src = _decode('$_brandDir/$name');
+/// Compoe `src` (RGBA) sobre um fundo solido `bgColor`, nunca um flatten
+/// ingenuo (que manteria qualquer RGB "por baixo" de um pixel transparente
+/// -- as margens transparentes da arte original nao tem cor de fundo
+/// confiavel por baixo).
+img.Image _compositeOnColor(img.Image src, List<int> bgColor) {
   final bg = img.Image(width: src.width, height: src.height, numChannels: 3);
   img.fill(bg, color: img.ColorRgb8(bgColor[0], bgColor[1], bgColor[2]));
   img.compositeImage(bg, src);
   return bg;
 }
-
-/// Variante com fundo branco -- para o uso "white-card" do BrandMark (ver
-/// doc comment do proprio BrandMark).
-img.Image _load(String name) => _loadOn(name, _white);
 
 /// Mesma fonte, alpha mantido intacto -- para derivados que precisam
 /// continuar transparentes (ex.: foreground do icone adaptativo Android).
@@ -169,16 +165,24 @@ void main() {
   Directory(_generatedDir).createSync(recursive: true);
 
   final escritoRgba = _loadRgba(_escritoName);
-  final logo = _load(_logoName);
-  final logoRgba = _loadRgba(_logoName);
+  // logo_sem_fundo.png tem margem transparente desigual em volta do badge
+  // (a arte original nao chega com padding simetrico) -- centralizar o
+  // canvas bruto, como os passos abaixo faziam antes, centraliza a margem
+  // desigual junto e o badge sai perceptivelmente deslocado (ja aconteceu:
+  // icone da app e mark dentro do app visivelmente fora do centro). Recorta
+  // pro bounding box do conteudo primeiro, com a mesma funcao ja usada pro
+  // wordmark, para que todo derivado abaixo centralize o desenho de
+  // verdade, nao o canvas.
+  final logoRgba = _cropToAlphaBbox(_loadRgba(_logoName));
+  final logo = _compositeOnColor(logoRgba, _white);
 
   // ---- Runtime assets (bundled via pubspec assets:) ----
 
   // Icon mark usado inline pelo BrandMark (nav rail, splash widget, forms de
-  // auth). logo_sem_fundo.png e um badge squircle com uma margem
-  // transparente pequena em volta; _load() compoe isso sobre branco pro uso
-  // "white-card" (ver doc comment do proprio BrandMark). Reduzir pra 512 e
-  // mais que suficiente pra qualquer uso ate ~170dp numa tela 3x.
+  // auth). `logo` acima ja compoe o badge (recortado pro bounding box)
+  // sobre branco pro uso "white-card" (ver doc comment do proprio
+  // BrandMark). Reduzir pra 512 e mais que suficiente pra qualquer uso ate
+  // ~170dp numa tela 3x.
   _savePng(
     '$_assetsDir/icon.png',
     img.copyResize(
@@ -217,7 +221,7 @@ void main() {
   // badge apareceria como uma borda indesejada -- a margem propria de
   // logo_sem_fundo.png e cortada estourando levemente pra fora da borda do
   // canvas (sangria total) em vez de mantida como padding visivel.
-  final iconGeneralSource = _loadOn(_logoName, _iconDarkBg);
+  final iconGeneralSource = _compositeOnColor(logoRgba, _iconDarkBg);
   final iconGeneral = _padToSquare(iconGeneralSource, 1024, 1.08, _iconDarkBg);
   _savePng('$_generatedDir/icon_general_1024.png', iconGeneral);
 
