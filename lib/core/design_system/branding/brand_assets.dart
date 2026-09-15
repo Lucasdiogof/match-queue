@@ -6,15 +6,19 @@
 class BrandAssets {
   const BrandAssets._();
 
-  static const String productName = 'FIFA Queue';
-  static const String monogram = 'FQ';
+  static const String productName = 'Match Queue';
+  static const String monogram = 'MQ';
 
   /// Marca do controle -- usada dentro do app (nav, splash widget, auth
   /// forms) pelo BrandMark. Mesma arte do app icon nativo, so que num
   /// tamanho leve para exibicao em runtime (ver assets/brand/icon.png).
   static const String? logo = 'assets/brand/icon.png';
 
-  /// Wordmark "FIFA QUEUE" isolado, sem o controle.
+  /// Wordmark "MATCH QUEUE" isolado, sem o controle.
+  /// ATENCAO: o asset assets/brand/wordmark.png (gerado a partir de
+  /// design/brand/escrito.png) ainda contem o texto "FIFA QUEUE" desenhado
+  /// nos pixels -- precisa ser refeito manualmente com a nova arte antes do
+  /// proximo build. Ver relatorio de rebrand / docs/branding.md.
   static const String? wordmark = 'assets/brand/wordmark.png';
 
   /// Mesma arte do [logo]; existe como campo separado para o dia em que o

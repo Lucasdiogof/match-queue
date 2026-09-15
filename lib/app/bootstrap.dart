@@ -99,7 +99,7 @@ Future<void> bootstrap() async {
         unawaited(fcAccountsCubit.load(userId: restoredUser.id));
       }
 
-      logger.info('FIFA Queue iniciado em ${config.environment.key}.');
+      logger.info('Match Queue iniciado em ${config.environment.key}.');
 
       runApp(
         FifaQueueApp(

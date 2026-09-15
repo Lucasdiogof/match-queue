@@ -4,11 +4,9 @@ const String kSupportEmail = 'lucasdiogo1234@gmail.com';
 const String kResponsibleParty = 'Lucas Diogo Franca (CNPJ 54.868.173/0001-55)';
 
 const String _nonAffiliationPt =
-    'O FIFA Queue é um aplicativo independente, feito por fã, e não é '
-    'afiliado, endossado ou patrocinado pela EA SPORTS, Electronic Arts, '
-    'FIFA ou qualquer uma de suas afiliadas. Todas as marcas, nomes e '
-    'imagens de terceiros mencionados pertencem aos seus respectivos '
-    'donos e são usados apenas para identificar do que o aplicativo trata.';
+    'O Match Queue é um aplicativo independente e não é afiliado nem '
+    'endossado por nenhuma editora de jogos, organização de futebol ou '
+    'marca de terceiros.';
 
 const LegalDocument kPrivacyPolicyPt = LegalDocument(
   updatedAt: '2026-09-10',
@@ -17,7 +15,7 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
     LegalSection(
       title: '1. Responsável pelo aplicativo',
       body:
-          'O FIFA Queue é operado por $kResponsibleParty. '
+          'O Match Queue é operado por $kResponsibleParty. '
           'Dúvidas sobre esta Política podem ser enviadas para '
           '$kSupportEmail.',
     ),
@@ -31,7 +29,7 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           '• Identificadores internos: um ID único gerado para você e '
           'para cada Time/Conta que você cria ou participa.\n'
           '• Contas: nomes que você dá às suas Contas (os perfis de jogo '
-          'que você registra e gerencia no FIFA Queue), a escalação que '
+          'que você registra e gerencia no Match Queue), a escalação que '
           'você monta para cada uma, divisão de Rivals e registro de '
           'Weekend League que você mesmo informar.\n'
           '• Times: nome, tag e histórico de atividade dos times dos quais '
@@ -120,7 +118,7 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
     LegalSection(
       title: '10. Menores de idade',
       body:
-          'O FIFA Queue não é direcionado a menores de 13 anos e não '
+          'O Match Queue não é direcionado a menores de 13 anos e não '
           'coleta intencionalmente dados de crianças. Se você é '
           'responsável por um menor e acredita que ele nos forneceu dados '
           'pessoais, entre em contato para que possamos removê-los.',
@@ -143,14 +141,14 @@ const LegalDocument kTermsOfUsePt = LegalDocument(
     LegalSection(
       title: '1. Aceitação dos termos',
       body:
-          'Ao criar uma conta ou usar o FIFA Queue, você concorda com estes '
+          'Ao criar uma conta ou usar o Match Queue, você concorda com estes '
           'Termos de Uso e com a nossa Política de Privacidade. Se você não '
           'concordar, não utilize o aplicativo.',
     ),
     LegalSection(
       title: '2. Sobre o app',
       body:
-          'O FIFA Queue ajuda grupos de jogadores de EA SPORTS FC / Clubs a '
+          'O Match Queue ajuda grupos de jogadores de EA SPORTS FC / Clubs a '
           'organizar quem busca partida em cada momento, além de registrar '
           'resultados, elencos e estatísticas do time.',
     ),
@@ -172,7 +170,7 @@ const LegalDocument kTermsOfUsePt = LegalDocument(
       title: '5. Matchmaking e fila',
       body:
           'A fila de busca de partida é organizada automaticamente pelo '
-          'app com base na ordem de chegada. O FIFA Queue não participa, '
+          'app com base na ordem de chegada. O Match Queue não participa, '
           'não interfere e não se responsabiliza pelo resultado das '
           'partidas jogadas fora do aplicativo.',
     ),
@@ -211,10 +209,10 @@ const LegalDocument kTermsOfUsePt = LegalDocument(
     LegalSection(
       title: '10. Propriedade intelectual',
       body:
-          'O código, design e marca "FIFA Queue" pertencem ao '
-          'desenvolvedor do app. Marcas de terceiros (EA SPORTS, FIFA, '
-          'Ultimate Team e afins) pertencem aos seus respectivos donos, '
-          'conforme a seção de marca abaixo.',
+          'O código, design e marca "Match Queue" pertencem ao '
+          'desenvolvedor do app. Eventuais marcas de terceiros mencionadas '
+          'no app pertencem aos seus respectivos donos, conforme a seção '
+          'de marca abaixo.',
     ),
     LegalSection(
       title: '11. Limitação de responsabilidade',

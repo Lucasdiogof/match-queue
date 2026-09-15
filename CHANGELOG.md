@@ -42,7 +42,7 @@ the experience of using the app.
 ## 2026-09-07
 
 - First version of the app: Flutter project for Android, iOS and Web with
-  the FIFA Queue design system and brand.
+  the Match Queue design system and brand.
 - Real authentication (sign up, log in, password reset) via Supabase.
 - **Time**: create a team, invite others via a shareable link/code, switch
   between teams.

@@ -77,7 +77,7 @@ class FifaQueueApp extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) => BlocBuilder<LocaleCubit, Locale?>(
           builder: (context, locale) => MaterialApp.router(
-            title: 'FIFA Queue',
+            title: 'Match Queue',
             debugShowCheckedModeBanner: false,
             routerConfig: router,
             themeMode: themeMode,

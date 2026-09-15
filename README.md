@@ -1,4 +1,4 @@
-# FIFA Queue
+# Match Queue
 
 Coordena quem, dentro de um mesmo time de EA SPORTS FC / Clubs, está
 autorizado a procurar partida naquele momento — para que dois companheiros
@@ -261,8 +261,8 @@ não uma tela de celular esticada.
 
 ## Branding
 
-**A logo definitiva não foi criada.** O app usa um monograma `FQ` e o
-wordmark textual `FIFA Queue`, ambos gerados em código, e tudo passa por
+**A logo definitiva não foi criada.** O app usa um monograma `MQ` e o
+wordmark textual `Match Queue`, ambos gerados em código, e tudo passa por
 `BrandAssets` — trocar logo, wordmark, ícone e splash é editar um arquivo.
 Ver [`docs/branding.md`](docs/branding.md).
 

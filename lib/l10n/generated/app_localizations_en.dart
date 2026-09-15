@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'FIFA Queue';
+  String get appName => 'Match Queue';
 
   @override
   String get appTagline => 'One at a time in the queue.';
@@ -80,7 +80,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comingSoonNextStage => 'Stage 3';
 
   @override
-  String get startEyebrow => 'FIFA QUEUE';
+  String get startEyebrow => 'MATCH QUEUE';
 
   @override
   String get startTitle => 'Overview';
@@ -275,16 +275,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inviteLinkCopied => 'Link copied.';
 
   @override
-  String get inviteShareSubject => 'Team invite on FIFA Queue';
+  String get inviteShareSubject => 'Team invite on Match Queue';
 
   @override
   String inviteShareMessage(String url) {
-    return 'Join my team on FIFA Queue: $url';
+    return 'Join my team on Match Queue: $url';
   }
 
   @override
   String inviteShareMessageCodeOnly(String code) {
-    return 'Join my team on FIFA Queue with the code: $code';
+    return 'Join my team on Match Queue with the code: $code';
   }
 
   @override
@@ -379,7 +379,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorAuthUnknown => 'We could not complete the authentication.';
 
   @override
-  String get startupErrorTitle => 'FIFA Queue could not start';
+  String get startupErrorTitle => 'Match Queue could not start';
 
   @override
   String startupErrorMessage(String keys) {
@@ -470,7 +470,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetPasswordMessage =>
-      'Choose a new password to get back into FIFA Queue.';
+      'Choose a new password to get back into Match Queue.';
 
   @override
   String get resetPasswordNewPassword => 'New password';
@@ -573,7 +573,7 @@ class AppLocalizationsEn extends AppLocalizations {
     final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMM(localeName);
     final String dateString = dateDateFormat.format(date);
 
-    return 'On FIFA Queue since $dateString';
+    return 'On Match Queue since $dateString';
   }
 
   @override
@@ -2334,7 +2334,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'FIFA Queue organizes your EA SPORTS FC team\'s match search queue, accounts, and stats.';
+      'Match Queue organizes your EA SPORTS FC team\'s match search queue, accounts, and stats.';
 
   @override
   String get privacyPolicyTitle => 'Privacy Policy';
@@ -3640,7 +3640,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chemistryIntroParagraph =>
-      'Chemistry determines how much of a card\'s applied Chemistry Style actually kicks in. It\'s no longer a \"links\" system between adjacent players like in older FIFAs -- it\'s built on the entire starting lineup.';
+      'Chemistry determines how much of a card\'s applied Chemistry Style actually kicks in. It\'s no longer a \"links\" system between adjacent players like in older game generations -- it\'s built on the entire starting lineup.';
 
   @override
   String get chemistryHeadingHowEarned => 'How each player earns Chemistry';

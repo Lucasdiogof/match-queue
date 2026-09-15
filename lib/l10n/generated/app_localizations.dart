@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In pt, this message translates to:
-  /// **'FIFA Queue'**
+  /// **'Match Queue'**
   String get appName;
 
   /// No description provided for @appTagline.
@@ -241,7 +241,7 @@ abstract class AppLocalizations {
   /// No description provided for @startEyebrow.
   ///
   /// In pt, this message translates to:
-  /// **'FIFA QUEUE'**
+  /// **'MATCH QUEUE'**
   String get startEyebrow;
 
   /// No description provided for @startTitle.
@@ -607,19 +607,19 @@ abstract class AppLocalizations {
   /// No description provided for @inviteShareSubject.
   ///
   /// In pt, this message translates to:
-  /// **'Convite para o time no FIFA Queue'**
+  /// **'Convite para o time no Match Queue'**
   String get inviteShareSubject;
 
   /// No description provided for @inviteShareMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Entre no meu time pelo FIFA Queue: {url}'**
+  /// **'Entre no meu time pelo Match Queue: {url}'**
   String inviteShareMessage(String url);
 
   /// No description provided for @inviteShareMessageCodeOnly.
   ///
   /// In pt, this message translates to:
-  /// **'Entre no meu time pelo FIFA Queue com o código: {code}'**
+  /// **'Entre no meu time pelo Match Queue com o código: {code}'**
   String inviteShareMessageCodeOnly(String code);
 
   /// No description provided for @inviteManageTitle.
@@ -775,7 +775,7 @@ abstract class AppLocalizations {
   /// No description provided for @startupErrorTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Não foi possível iniciar o FIFA Queue'**
+  /// **'Não foi possível iniciar o Match Queue'**
   String get startupErrorTitle;
 
   /// No description provided for @startupErrorMessage.
@@ -937,7 +937,7 @@ abstract class AppLocalizations {
   /// No description provided for @resetPasswordMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Escolha uma nova senha para voltar a usar o FIFA Queue.'**
+  /// **'Escolha uma nova senha para voltar a usar o Match Queue.'**
   String get resetPasswordMessage;
 
   /// No description provided for @resetPasswordNewPassword.
@@ -1105,7 +1105,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileMemberSince.
   ///
   /// In pt, this message translates to:
-  /// **'No FIFA Queue desde {date}'**
+  /// **'No Match Queue desde {date}'**
   String profileMemberSince(DateTime date);
 
   /// No description provided for @teamNoTeamTitle.
@@ -4037,7 +4037,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutDescription.
   ///
   /// In pt, this message translates to:
-  /// **'FIFA Queue organiza a fila de busca de partida, Contas e estatísticas do seu time de EA SPORTS FC.'**
+  /// **'Match Queue organiza a fila de busca de partida, Contas e estatísticas do seu time de EA SPORTS FC.'**
   String get aboutDescription;
 
   /// No description provided for @privacyPolicyTitle.
@@ -6281,7 +6281,7 @@ abstract class AppLocalizations {
   /// No description provided for @chemistryIntroParagraph.
   ///
   /// In pt, this message translates to:
-  /// **'Chemistry define o quanto o Chemistry Style aplicado numa carta realmente entrega. Não é mais um sistema de \"linhas\" entre jogadores adjacentes como em FIFAs antigos -- é construído em cima da escalação titular inteira.'**
+  /// **'Chemistry define o quanto o Chemistry Style aplicado numa carta realmente entrega. Não é mais um sistema de \"linhas\" entre jogadores adjacentes como em gerações antigas do jogo -- é construído em cima da escalação titular inteira.'**
   String get chemistryIntroParagraph;
 
   /// No description provided for @chemistryHeadingHowEarned.

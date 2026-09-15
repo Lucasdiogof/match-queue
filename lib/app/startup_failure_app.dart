@@ -12,7 +12,7 @@ class StartupFailureApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'FIFA Queue',
+    title: 'Match Queue',
     debugShowCheckedModeBanner: false,
     theme: AppTheme.light,
     darkTheme: AppTheme.dark,

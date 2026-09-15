@@ -3,11 +3,9 @@ import 'package:fifa_queue/features/legal/data/legal_content_pt.dart'
 import 'package:fifa_queue/features/legal/domain/legal_document.dart';
 
 const String _nonAffiliationEn =
-    'FIFA Queue is an independent, fan-made application and is not '
-    'affiliated with, endorsed by, or sponsored by EA SPORTS, Electronic '
-    'Arts, FIFA, or any of their affiliates. All third-party trademarks, '
-    'names, and imagery mentioned belong to their respective owners and '
-    'are used solely to identify what the app is about.';
+    'Match Queue is an independent application and is not affiliated with '
+    'or endorsed by any game publisher, football organization, or '
+    'third-party brand.';
 
 const LegalDocument kPrivacyPolicyEn = LegalDocument(
   updatedAt: '2026-09-10',
@@ -16,7 +14,7 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '1. Who runs this app',
       body:
-          'FIFA Queue is operated by $kResponsibleParty. '
+          'Match Queue is operated by $kResponsibleParty. '
           'Questions about this Policy can be sent to '
           '$kSupportEmail.',
     ),
@@ -30,7 +28,7 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           '• Internal identifiers: a unique ID generated for you and for '
           'each Team/Account you create or join.\n'
           '• Accounts: the names you give your Accounts (the in-game '
-          'profiles you register and manage in FIFA Queue), the squad you '
+          'profiles you register and manage in Match Queue), the squad you '
           'build for each one, Rivals division, and Weekend League '
           'records you enter yourself.\n'
           '• Teams: name, tag, and activity history of the teams you '
@@ -113,7 +111,7 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '10. Children',
       body:
-          'FIFA Queue is not directed at children under 13 and does not '
+          'Match Queue is not directed at children under 13 and does not '
           'knowingly collect data from them. If you are a parent or '
           'guardian and believe a child has provided us personal data, '
           'please contact us so we can remove it.',
@@ -139,14 +137,14 @@ const LegalDocument kTermsOfUseEn = LegalDocument(
     LegalSection(
       title: '1. Acceptance of terms',
       body:
-          'By creating an account or using FIFA Queue, you agree to these '
+          'By creating an account or using Match Queue, you agree to these '
           'Terms of Use and our Privacy Policy. If you do not agree, '
           'please do not use the app.',
     ),
     LegalSection(
       title: '2. About the app',
       body:
-          'FIFA Queue helps groups of EA SPORTS FC / Clubs players '
+          'Match Queue helps groups of EA SPORTS FC / Clubs players '
           'organize who searches for a match at any given time, and lets '
           'them record results, accounts, and team stats.',
     ),
@@ -168,7 +166,7 @@ const LegalDocument kTermsOfUseEn = LegalDocument(
       title: '5. Matchmaking and queue',
       body:
           'The match search queue is organized automatically by the app '
-          'based on arrival order. FIFA Queue does not take part in, '
+          'based on arrival order. Match Queue does not take part in, '
           'interfere with, or take responsibility for the outcome of '
           'matches played outside the app.',
     ),
@@ -207,10 +205,10 @@ const LegalDocument kTermsOfUseEn = LegalDocument(
     LegalSection(
       title: '10. Intellectual property',
       body:
-          'The code, design, and "FIFA Queue" brand belong to the app\'s '
-          'developer. Third-party trademarks (EA SPORTS, FIFA, Ultimate '
-          'Team, and similar) belong to their respective owners, as '
-          'described in the trademark section below.',
+          'The code, design, and "Match Queue" brand belong to the app\'s '
+          'developer. Any third-party trademarks mentioned in the app '
+          'belong to their respective owners, as described in the '
+          'trademark section below.',
     ),
     LegalSection(
       title: '11. Limitation of liability',

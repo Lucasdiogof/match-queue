@@ -196,7 +196,7 @@ class LineupShareCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            'FIFA QUEUE',
+            'MATCH QUEUE',
             textAlign: TextAlign.center,
             style: context.textStyles.labelSmall?.copyWith(
               color: AppColors.darkTextTertiary,

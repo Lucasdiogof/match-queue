@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "FIFA Queue",
+  "appName": "Match Queue",
   "appTagline": "One at a time in the queue.",
   "actionContinue": "Continue",
   "actionCancel": "Cancel",
@@ -23,7 +23,7 @@
   "comingSoonTitle": "Under construction",
   "comingSoonMessage": "This area will be built in the upcoming stages of the project.",
   "comingSoonNextStage": "Stage 3",
-  "startEyebrow": "FIFA QUEUE",
+  "startEyebrow": "MATCH QUEUE",
   "startTitle": "Overview",
   "startSubtitle": "Your team and your week in one place.",
   "startShortcutsTitle": "Shortcuts",
@@ -72,7 +72,7 @@
     "placeholders": {
       "email": {
         "type": "String",
-        "example": "player@fifaqueue.app"
+        "example": "player@matchqueue.app"
       }
     }
   },
@@ -102,17 +102,17 @@
   "inviteSectionTitle": "Invite players",
   "inviteSectionSubtitle": "Share this link with whoever you want to add to the team.",
   "inviteLinkCopied": "Link copied.",
-  "inviteShareSubject": "Team invite on FIFA Queue",
-  "inviteShareMessage": "Join my team on FIFA Queue: {url}",
+  "inviteShareSubject": "Team invite on Match Queue",
+  "inviteShareMessage": "Join my team on Match Queue: {url}",
   "@inviteShareMessage": {
     "placeholders": {
       "url": {
         "type": "String",
-        "example": "https://fifaqueue.app/join/A7K2PQ9XM4V8"
+        "example": "https://matchqueue.app/join/A7K2PQ9XM4V8"
       }
     }
   },
-  "inviteShareMessageCodeOnly": "Join my team on FIFA Queue with the code: {code}",
+  "inviteShareMessageCodeOnly": "Join my team on Match Queue with the code: {code}",
   "@inviteShareMessageCodeOnly": {
     "placeholders": {
       "code": {
@@ -163,7 +163,7 @@
   "errorSessionExpired": "Your session expired. Please sign in again.",
   "errorEmailConfirmationRequired": "We sent a confirmation link to your email. Confirm the address to sign in.",
   "errorAuthUnknown": "We could not complete the authentication.",
-  "startupErrorTitle": "FIFA Queue could not start",
+  "startupErrorTitle": "Match Queue could not start",
   "startupErrorMessage": "Required environment variables are missing: {keys}",
   "@startupErrorMessage": {
     "placeholders": {
@@ -214,7 +214,7 @@
   "forgotPasswordResending": "Resending...",
   "forgotPasswordResendSuccess": "Email resent.",
   "resetPasswordTitle": "Set a new password",
-  "resetPasswordMessage": "Choose a new password to get back into FIFA Queue.",
+  "resetPasswordMessage": "Choose a new password to get back into Match Queue.",
   "resetPasswordNewPassword": "New password",
   "resetPasswordAction": "Save new password",
   "resetPasswordSuccess": "Password updated. Welcome back.",
@@ -286,7 +286,7 @@
   },
   "profileSaved": "Name updated.",
   "profileLoadErrorTitle": "We could not load your profile",
-  "profileMemberSince": "On FIFA Queue since {date}",
+  "profileMemberSince": "On Match Queue since {date}",
   "@profileMemberSince": {
     "placeholders": {
       "date": {
@@ -1239,7 +1239,7 @@
   "errorSoleOwnerBlocksAccountDeletion": "You are the sole owner of a team with other members. Remove the other members or wait for ownership transfer support before deleting your account.",
   "profileLegalTitle": "About and legal",
   "aboutTitle": "About",
-  "aboutDescription": "FIFA Queue organizes your EA SPORTS FC team's match search queue, accounts, and stats.",
+  "aboutDescription": "Match Queue organizes your EA SPORTS FC team's match search queue, accounts, and stats.",
   "privacyPolicyTitle": "Privacy Policy",
   "termsOfUseTitle": "Terms of Use",
   "legalUpdatedAt": "Updated on {date}",
@@ -1690,7 +1690,7 @@
   "controlsDribblingBullet1": "Good dribbling reacts to the defender's movement -- flourishing for no reason usually makes it easier to lose the ball.",
   "controlsDribblingBullet2": "Change pace instead of always sprinting flat out: normal speed close to the defender, controlled sprint to close in, sprint only once space has already opened up.",
   "controlsDribblingBullet3": "Create space first, accelerate later: change direction or do a simple dribble, wait for the marker to commit, only then accelerate into the open space.",
-  "chemistryIntroParagraph": "Chemistry determines how much of a card's applied Chemistry Style actually kicks in. It's no longer a \"links\" system between adjacent players like in older FIFAs -- it's built on the entire starting lineup.",
+  "chemistryIntroParagraph": "Chemistry determines how much of a card's applied Chemistry Style actually kicks in. It's no longer a \"links\" system between adjacent players like in older game generations -- it's built on the entire starting lineup.",
   "chemistryHeadingHowEarned": "How each player earns Chemistry",
   "chemistryHowEarnedParagraph": "Every starter can have between 0 and 3 Chemistry points. The whole team adds up to a maximum of 33 Squad Chemistry points.",
   "chemistryHowEarnedBullet1": "0 Chemistry: no Chemistry Style bonus, but the player still keeps the card's normal attributes.",

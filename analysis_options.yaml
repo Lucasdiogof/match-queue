@@ -11,6 +11,9 @@ analyzer:
     # build/ios/SourcePackages e trazem os testes .dart do proprio
     # plugin -- o analyzer nao deve olhar codigo de terceiro.
     - build/**
+    - android/**
+    - ios/**
+    - web/**
 
 linter:
   rules:

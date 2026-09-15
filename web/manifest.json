@@ -1,11 +1,11 @@
 {
-    "name": "FIFA Queue",
-    "short_name": "FIFA Queue",
+    "name": "Match Queue",
+    "short_name": "Match Queue",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#080A09",
     "theme_color": "#080A09",
-    "description": "FIFA Queue",
+    "description": "Match Queue",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

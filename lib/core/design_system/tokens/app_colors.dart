@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-/// Paleta crua do FIFA Queue.
+/// Paleta crua do Match Queue.
 ///
 /// Regra de leitura, porque a cor aqui carrega SIGNIFICADO e nao decoracao:
 ///
