@@ -1,5 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/card_shape_border.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
 import 'package:flutter/material.dart';
 
@@ -205,15 +206,12 @@ class _EmptySlot extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      // Mesmo raio e cor de fundo da carta preenchida (PlayerCardFace): o
-      // slot vazio deve ler como "a carta que vai entrar ali", nao como uma
-      // caixa generica -- por isso raio md em vez de sm, igual ao card real.
+      // Mesma silhueta e cor de fundo do card sem foto (PlayerCardDataFace):
+      // o slot vazio deve ler como "a carta que vai entrar ali", nao como
+      // uma caixa generica.
       color: colors.surfaceElevated,
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: AppRadii.borderMd,
-        side: BorderSide(color: colors.borderSubtle),
-      ),
+      shape: CardShapeBorder(side: BorderSide(color: colors.borderSubtle)),
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,

@@ -1,5 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/card_shape_border.dart';
 import 'package:flutter/material.dart';
 
 /// A carta de um jogador, no formato de carta mesmo -- rating e posicao no
@@ -38,34 +39,44 @@ class PlayerCardFace extends StatelessWidget {
     final colors = context.colors;
     final art = card.cardImageUrl ?? card.playerImageUrl;
 
+    // Com arte, a borda so aparece pra marcar selecao -- fora disso e so a
+    // carta, sem moldura por cima. Sem arte, a borda sempre aparece: e o que
+    // separa a ficha de dados do fundo do campo.
+    final side = art != null && !isSelected
+        ? BorderSide.none
+        : BorderSide(
+            color: isSelected ? colors.textPrimary : colors.borderSubtle,
+            width: isSelected ? 2 : 1,
+          );
+    // Sem arte, a carta usa a silhueta de escudo (CardShapeBorder) pra ler
+    // como "a mesma carta, so sem foto" em vez de uma caixa generica -- ver
+    // doc comment de CardShapeBorder. Com arte, o retangulo simples
+    // continua: a arte ja traz seu proprio contorno, um segundo recorte por
+    // cima cortaria a imagem de um jeito que nao bate com o dela.
+    final ShapeBorder shape = art == null
+        ? CardShapeBorder(side: side)
+        : RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadii.md),
+            side: side,
+          );
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
       child: AspectRatio(
         aspectRatio: 0.72,
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadii.md),
+          decoration: ShapeDecoration(
+            shape: shape,
             // Com arte real a imagem cobre a carta inteira (BoxFit.cover
             // abaixo) -- uma cor de fundo aqui nunca apareceria, so serviria
             // pra vazar por baixo se a arte nao cobrisse 100% do box. Sem
             // arte, a ficha de dados PRECISA de um fundo solido por tras do
             // texto.
             color: art == null ? colors.surfaceElevated : null,
-            // Com arte, a borda so aparece pra marcar selecao -- fora disso
-            // e so a carta, sem moldura por cima. Sem arte, a borda sempre
-            // aparece: e o que separa a ficha de dados do fundo do campo.
-            border: art != null && !isSelected
-                ? null
-                : Border.all(
-                    color: isSelected
-                        ? colors.textPrimary
-                        : colors.borderSubtle,
-                    width: isSelected ? 2 : 1,
-                  ),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadii.md),
+          child: ClipPath(
+            clipper: ShapeBorderClipper(shape: shape),
             // Com arte real a carta E a imagem: nada de moldura desenhada por
             // cima, porque a arte ja traz overall, posicao, clube e nacao.
             child: art == null
