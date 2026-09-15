@@ -188,7 +188,8 @@ Future<void> main(List<String> args) async {
   final chunkCardBuilders = <_PendingCard>[];
 
   Future<void> flushChunk() async {
-    if (client == null) return;
+    final c = client;
+    if (c == null) return;
     if (chunkPlayerRows.isNotEmpty) {
       // Um POST em array com ON CONFLICT falha se a MESMA chave de conflito
       // aparecer duas vezes no mesmo array (Postgres: "ON CONFLICT DO UPDATE
@@ -202,7 +203,7 @@ Future<void> main(List<String> args) async {
         for (final row in chunkPlayerRows)
           row['provider_player_id'] as String: row,
       };
-      final created = await client.upsertBatch(
+      final created = await c.upsertBatch(
         table: 'fc_players',
         onConflict: 'provider,game_version,provider_player_id',
         rows: dedupedPlayers.values.toList(growable: false),
@@ -223,7 +224,7 @@ Future<void> main(List<String> args) async {
 
     if (chunkCardBuilders.isNotEmpty) {
       final cardRows = [for (final pending in chunkCardBuilders) pending.row];
-      final ok = await client.upsertBatch(
+      final ok = await c.upsertBatch(
         table: 'fc_player_cards',
         onConflict: 'provider,provider_card_id',
         rows: cardRows,
