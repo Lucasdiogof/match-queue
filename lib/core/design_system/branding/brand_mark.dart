@@ -1,5 +1,6 @@
 import 'package:fifa_queue/core/design_system/branding/brand_assets.dart';
 import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dart';
+import 'package:fifa_queue/core/design_system/tokens/app_colors.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_radii.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_spacing.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +110,50 @@ class BrandWordmark extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Wordmark "MATCH QUEUE" escrita ao vivo (gradiente + brilho + sombra),
+/// em vez do PNG cromado de [BrandWordmark]. Uso pontual (hoje so o
+/// cadastro) para telas que querem a marca em texto puro; nao substitui
+/// [BrandWordmark] nos demais lugares.
+class BrandWordmarkStyled extends StatelessWidget {
+  const BrandWordmarkStyled({this.fontSize = 40, super.key});
+
+  final double fontSize;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: BrandAssets.productName,
+    child: ExcludeSemantics(
+      child: ShaderMask(
+        shaderCallback: (bounds) => const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[Colors.white, AppColors.fcGreenSoft, AppColors.fcGreenStrong],
+          stops: <double>[0, 0.55, 1],
+        ).createShader(bounds),
+        child: Text(
+          BrandAssets.productName.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 2,
+            height: 1.05,
+            color: Colors.white,
+            shadows: const <Shadow>[
+              Shadow(color: AppColors.fcGreen, blurRadius: 20),
+              Shadow(
+                color: Colors.black87,
+                offset: Offset(0, 3),
+                blurRadius: 6,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class BrandLockup extends StatelessWidget {
