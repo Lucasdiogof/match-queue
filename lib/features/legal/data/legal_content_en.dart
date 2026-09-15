@@ -8,7 +8,7 @@ const String _nonAffiliationEn =
     'third-party brand.';
 
 const LegalDocument kPrivacyPolicyEn = LegalDocument(
-  updatedAt: '2026-09-10',
+  updatedAt: '2026-09-15',
   nonAffiliationDisclaimer: _nonAffiliationEn,
   sections: <LegalSection>[
     LegalSection(
@@ -29,8 +29,9 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           'each Team/Account you create or join.\n'
           '• Accounts: the names you give your Accounts (the in-game '
           'profiles you register and manage in Match Queue), the squad you '
-          'build for each one, Rivals division, and Weekend League '
-          'records you enter yourself.\n'
+          'build for each one, Rivals division, Weekend League records you '
+          'enter yourself, and, if you choose to upload one, a photo to '
+          'identify the Account.\n'
           '• Teams: name, tag, and activity history of the teams you '
           'belong to.\n'
           '• Match data: match searches, queues, results, and stats '
@@ -101,8 +102,9 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '9. Your rights',
       body:
-          'You can, at any time: access and edit your display name from '
-          'within the app; turn your public profile on or off and choose '
+          'You can, at any time: access and edit your display name and '
+          'each Account\'s photo from within the app; turn your public '
+          'profile on or off and choose '
           'what it shows (the linked Account, squad, Rivals division, '
           'Weekend League record, and stats); and delete your account and '
           'its associated data. For any other request about your data, '

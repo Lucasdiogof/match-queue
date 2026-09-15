@@ -8,7 +8,7 @@ const String _nonAffiliationEs =
     'fútbol ni marca de terceros.';
 
 const LegalDocument kPrivacyPolicyEs = LegalDocument(
-  updatedAt: '2026-09-10',
+  updatedAt: '2026-09-15',
   nonAffiliationDisclaimer: _nonAffiliationEs,
   sections: <LegalSection>[
     LegalSection(
@@ -30,8 +30,9 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
           'para cada Equipo/Cuenta que crees o a la que te unas.\n'
           '• Cuentas: los nombres que le das a tus Cuentas (los perfiles '
           'de juego que registras y gestionas en Match Queue), la '
-          'alineación que armas para cada una, división de Rivals y el '
-          'registro de Weekend League que tú mismo ingreses.\n'
+          'alineación que armas para cada una, división de Rivals, el '
+          'registro de Weekend League que tú mismo ingreses y, si eliges '
+          'subir una, una foto para identificar la Cuenta.\n'
           '• Equipos: nombre, etiqueta e historial de actividad de los '
           'equipos a los que perteneces.\n'
           '• Datos de partidas: búsquedas de partida, colas, resultados '
@@ -108,7 +109,8 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
       title: '9. Tus derechos',
       body:
           'Puedes, en cualquier momento: acceder y editar tu nombre '
-          'visible desde la propia app; activar o desactivar tu perfil '
+          'visible y la foto de cada Cuenta desde la propia app; activar '
+          'o desactivar tu perfil '
           'público y elegir qué muestra (la Cuenta vinculada, la '
           'alineación, la división de Rivals, el registro de Weekend '
           'League y las estadísticas); y eliminar tu cuenta y los datos '

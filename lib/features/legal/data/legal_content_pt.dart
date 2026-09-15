@@ -9,7 +9,7 @@ const String _nonAffiliationPt =
     'marca de terceiros.';
 
 const LegalDocument kPrivacyPolicyPt = LegalDocument(
-  updatedAt: '2026-09-10',
+  updatedAt: '2026-09-15',
   nonAffiliationDisclaimer: _nonAffiliationPt,
   sections: <LegalSection>[
     LegalSection(
@@ -30,8 +30,9 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           'para cada Time/Conta que você cria ou participa.\n'
           '• Contas: nomes que você dá às suas Contas (os perfis de jogo '
           'que você registra e gerencia no Match Queue), a escalação que '
-          'você monta para cada uma, divisão de Rivals e registro de '
-          'Weekend League que você mesmo informar.\n'
+          'você monta para cada uma, divisão de Rivals, registro de '
+          'Weekend League que você mesmo informar e, se você escolher '
+          'enviar uma, uma foto para identificar a Conta.\n'
           '• Times: nome, tag e histórico de atividade dos times dos quais '
           'você participa.\n'
           '• Dados de partidas: buscas de partida, filas, resultados e '
@@ -108,8 +109,9 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
       title: '9. Seus direitos',
       body:
           'Você pode, a qualquer momento: acessar e editar seu nome de '
-          'exibição pelo próprio app; ativar ou desativar seu perfil '
-          'público e escolher quais informações ele exibe (a Conta '
+          'exibição e a foto de cada Conta pelo próprio app; ativar ou '
+          'desativar seu perfil público e escolher quais informações ele '
+          'exibe (a Conta '
           'vinculada, a escalação, a divisão de Rivals, o registro de '
           'Weekend League e as estatísticas); e excluir sua conta e os '
           'dados associados a ela. Para qualquer outra solicitação sobre '
