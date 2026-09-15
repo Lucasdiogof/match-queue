@@ -236,10 +236,13 @@ void main() {
   // um anel que quase toca a propria borda do bounding box nos 4 pontos
   // cardeais, entao com contentFraction 0.66 esse anel ficava colado bem em
   // cima da linha de corte do launcher -- lia como um risco/halo feio
-  // grudado na borda do icone em vez de um anel limpo. 0.55 da folga real
-  // entre o anel e a borda em qualquer formato de mascara (circulo,
-  // squircle, teardrop).
-  final iconAdaptiveFg = _padToSquareTransparent(logoRgba, 1024, 0.55);
+  // grudado na borda do icone em vez de um anel limpo. 0.55 dava folga real
+  // mas o anel ficava pequeno demais pra ler em 48dp (tamanho real na tela
+  // inicial); 0.62 e o meio-termo aceito -- ainda mais legivel que 0.55, com
+  // menos folga do que isso mas sem colar na borda como o 0.66 original.
+  // Resolve o tamanho, nao a legibilidade do traco fino em si -- isso exige
+  // arte nova (ver historico do rebrand).
+  final iconAdaptiveFg = _padToSquareTransparent(logoRgba, 1024, 0.62);
   _savePng('$_generatedDir/icon_adaptive_fg_1024.png', iconAdaptiveFg);
 
   // Fonte da splash nativa: logo_splash.png e uma arte pronta, ja achatada
