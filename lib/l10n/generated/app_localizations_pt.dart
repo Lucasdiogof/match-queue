@@ -1577,7 +1577,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rivalsDivisionElite => 'Elite';
 
   @override
-  String get squadsSectionTitle => 'Elencos';
+  String get squadsSectionTitle => 'Escalações';
 
   @override
   String get squadBuilderSaved => 'Salvo';
@@ -1586,23 +1586,23 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadBuilderSaving => 'Salvando…';
 
   @override
-  String get squadsEmptyTitle => 'Nenhum elenco configurado';
+  String get squadsEmptyTitle => 'Nenhuma escalação configurada';
 
   @override
   String get squadsEmptyMessage =>
-      'Crie um elenco para montar sua escalação. Você pode buscar partida mesmo sem um.';
+      'Crie uma escalação para colocar seus jogadores em campo. Você pode buscar partida mesmo sem uma.';
 
   @override
-  String get squadCreateAction => 'Criar elenco';
+  String get squadCreateAction => 'Criar escalação';
 
   @override
-  String get squadCreateTitle => 'Novo elenco';
+  String get squadCreateTitle => 'Nova escalação';
 
   @override
   String get squadCreateSubtitle => 'Dê um nome e escolha a formação inicial.';
 
   @override
-  String get squadNameLabel => 'Nome do elenco';
+  String get squadNameLabel => 'Nome da escalação';
 
   @override
   String get squadNameHint => 'Ex.: Principal';
@@ -1611,7 +1611,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadFormationLabel => 'Formação';
 
   @override
-  String get squadRenameTitle => 'Renomear elenco';
+  String get squadRenameTitle => 'Renomear escalação';
 
   @override
   String get squadRenameAction => 'Renomear';
@@ -1623,10 +1623,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadDefaultBadge => 'Padrão';
 
   @override
-  String get squadArchiveAction => 'Arquivar elenco';
+  String get squadArchiveAction => 'Arquivar escalação';
 
   @override
-  String get squadArchiveConfirmTitle => 'Arquivar elenco?';
+  String get squadArchiveConfirmTitle => 'Arquivar escalação?';
 
   @override
   String get squadArchiveConfirmMessage =>
@@ -1682,25 +1682,25 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadMoveHint => 'Toque em outro slot para trocar.';
 
   @override
-  String get squadIncompleteLabel => 'Elenco incompleto';
+  String get squadIncompleteLabel => 'Escalação incompleta';
 
   @override
-  String get squadLabel => 'Elenco';
+  String get squadLabel => 'Escalação';
 
   @override
   String get playAccountLabel => 'Conta';
 
   @override
-  String get playSquadEmpty => 'Nenhum elenco montado';
+  String get playSquadEmpty => 'Nenhuma escalação montada';
 
   @override
-  String get playSquadBuildAction => 'Montar elenco';
+  String get playSquadBuildAction => 'Montar escalação';
 
   @override
-  String get playSquadEditAction => 'Editar elenco';
+  String get playSquadEditAction => 'Editar escalação';
 
   @override
-  String get squadNoneSelected => 'Sem elenco';
+  String get squadNoneSelected => 'Sem escalação';
 
   @override
   String get squadFilterLeagueLabel => 'Liga';
@@ -1712,7 +1712,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadFilterClearAction => 'Limpar filtros';
 
   @override
-  String get errorSquadNotFound => 'Elenco não encontrado.';
+  String get errorSquadNotFound => 'Escalação não encontrada.';
 
   @override
   String get errorSquadNameInvalid => 'Escolha um nome de 1 a 40 caracteres.';
@@ -1728,7 +1728,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorSquadInUse =>
-      'Este elenco está sendo usado em uma busca ativa.';
+      'Esta escalação está sendo usada em uma busca ativa.';
 
   @override
   String squadCompletionLabel(int filled, int total) {
@@ -1769,7 +1769,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get squadClearConfirmMessage =>
-      'Isso remove todos os jogadores dos titulares, do banco e das reservas. O elenco em si não é apagado.';
+      'Isso remove todos os jogadores dos titulares, do banco e das reservas. A escalação em si não é apagada.';
 
   @override
   String get squadFormationChangeConfirmTitle => 'Trocar formação?';
@@ -2367,7 +2367,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Todas as suas Contas e a divisão de Rivals registrada';
 
   @override
-  String get deleteAccountConsequenceSquads => 'Suas escalações (Elenco)';
+  String get deleteAccountConsequenceSquads => 'Suas escalações';
 
   @override
   String get deleteAccountConsequenceHistory =>
@@ -2545,7 +2545,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamPublicRequestCancelAction => 'Cancelar solicitação';
 
   @override
-  String get teamPublicChooseAccountTitle => 'Qual Elenco você quer vincular?';
+  String get teamPublicChooseAccountTitle => 'Qual Conta você quer vincular?';
 
   @override
   String get teamPublicRequestSentMessage =>
@@ -2672,7 +2672,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'O Champions tem 15 partidas: vitórias e derrotas somadas não podem passar disso.';
 
   @override
-  String get squadNoneSelectedHint => 'Escolha um elenco para esta busca';
+  String get squadNoneSelectedHint => 'Escolha uma escalação para esta busca';
 
   @override
   String get catalogCardsTitle => 'Jogadores';
@@ -2782,7 +2782,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mechanicsChemistryLabel => 'Chemistry';
 
   @override
-  String get mechanicsChemistryHint => 'Como a química do elenco funciona.';
+  String get mechanicsChemistryHint => 'Como a química da escalação funciona.';
 
   @override
   String get mechanicsChemistryStylesLabel => 'Chemistry Styles';
@@ -3967,7 +3967,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get managersBlockedMessage =>
-      'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Elenco). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.';
+      'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico da escalação). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.';
 
   @override
   String get consumablesBlockedTitle => 'Ainda sem dado real';
@@ -3978,7 +3978,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorSquadEditConflict =>
-      'Este elenco foi alterado em outro dispositivo. Recarregue a versão mais recente antes de continuar.';
+      'Esta escalação foi alterada em outro dispositivo. Recarregue a versão mais recente antes de continuar.';
 
   @override
   String get errorSquadDuplicatedPlayer =>
@@ -3992,14 +3992,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadSaveAction => 'Salvar';
 
   @override
-  String get squadSavedFeedback => 'Elenco salvo';
+  String get squadSavedFeedback => 'Escalação salva';
 
   @override
   String get squadDiscardTitle => 'Descartar alterações?';
 
   @override
   String get squadDiscardMessage =>
-      'Existem alterações no elenco que ainda não foram salvas.';
+      'Existem alterações na escalação que ainda não foram salvas.';
 
   @override
   String get squadDiscardKeep => 'Continuar editando';
@@ -4024,7 +4024,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadManagerEmpty => 'Selecionar técnico';
 
   @override
-  String get squadShareAction => 'Compartilhar elenco';
+  String get squadShareAction => 'Compartilhar escalação';
 
   @override
   String get squadOverallLabel => 'Overall';

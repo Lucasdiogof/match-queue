@@ -1595,24 +1595,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadBuilderSaving => 'Guardando…';
 
   @override
-  String get squadsEmptyTitle => 'Ningun equipo configurado';
+  String get squadsEmptyTitle => 'Ninguna plantilla configurada';
 
   @override
   String get squadsEmptyMessage =>
-      'Crea un equipo para armar tu alineación. Puedes buscar partida incluso sin uno.';
+      'Crea una plantilla para armar tu alineación. Puedes buscar partida incluso sin una.';
 
   @override
-  String get squadCreateAction => 'Crear equipo';
+  String get squadCreateAction => 'Crear plantilla';
 
   @override
-  String get squadCreateTitle => 'Nuevo equipo';
+  String get squadCreateTitle => 'Nueva plantilla';
 
   @override
   String get squadCreateSubtitle =>
       'Ponle un nombre y elige la formación inicial.';
 
   @override
-  String get squadNameLabel => 'Nombre del equipo';
+  String get squadNameLabel => 'Nombre de la plantilla';
 
   @override
   String get squadNameHint => 'Ej.: Principal';
@@ -1621,7 +1621,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadFormationLabel => 'Formación';
 
   @override
-  String get squadRenameTitle => 'Renombrar equipo';
+  String get squadRenameTitle => 'Renombrar plantilla';
 
   @override
   String get squadRenameAction => 'Renombrar';
@@ -1633,10 +1633,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadDefaultBadge => 'Predeterminado';
 
   @override
-  String get squadArchiveAction => 'Archivar equipo';
+  String get squadArchiveAction => 'Archivar plantilla';
 
   @override
-  String get squadArchiveConfirmTitle => '¿Archivar equipo?';
+  String get squadArchiveConfirmTitle => '¿Archivar plantilla?';
 
   @override
   String get squadArchiveConfirmMessage =>
@@ -1692,10 +1692,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadMoveHint => 'Toca otro espacio para intercambiar.';
 
   @override
-  String get squadIncompleteLabel => 'Equipo incompleto';
+  String get squadIncompleteLabel => 'Plantilla incompleta';
 
   @override
-  String get squadLabel => 'Equipo';
+  String get squadLabel => 'Plantilla';
 
   @override
   String get playAccountLabel => 'Cuenta';
@@ -1710,7 +1710,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get playSquadEditAction => 'Editar plantilla';
 
   @override
-  String get squadNoneSelected => 'Sin equipo';
+  String get squadNoneSelected => 'Sin plantilla';
 
   @override
   String get squadFilterLeagueLabel => 'Liga';
@@ -1722,7 +1722,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadFilterClearAction => 'Limpiar filtros';
 
   @override
-  String get errorSquadNotFound => 'Equipo no encontrado.';
+  String get errorSquadNotFound => 'Plantilla no encontrada.';
 
   @override
   String get errorSquadNameInvalid => 'Elige un nombre de 1 a 40 caracteres.';
@@ -1739,7 +1739,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorSquadInUse =>
-      'Este equipo se está usando en una búsqueda activa.';
+      'Esta plantilla se está usando en una búsqueda activa.';
 
   @override
   String squadCompletionLabel(int filled, int total) {
@@ -2379,7 +2379,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Todas tus Cuentas y la división de Rivals registrada';
 
   @override
-  String get deleteAccountConsequenceSquads => 'Tus alineaciones (Plantilla)';
+  String get deleteAccountConsequenceSquads => 'Tus alineaciones';
 
   @override
   String get deleteAccountConsequenceHistory =>
@@ -2793,7 +2793,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get mechanicsChemistryLabel => 'Chemistry';
 
   @override
-  String get mechanicsChemistryHint => 'Cómo funciona la química del equipo.';
+  String get mechanicsChemistryHint =>
+      'Cómo funciona la química de la plantilla.';
 
   @override
   String get mechanicsChemistryStylesLabel => 'Chemistry Styles';

@@ -1256,7 +1256,8 @@
   "deleteAccountWarningTitle": "This action is permanent",
   "deleteAccountWarningMessage": "Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.",
   "deleteAccountConsequenceFcAccounts": "All your Accounts and their recorded Rivals division",
-  "deleteAccountConsequenceSquads": "Your squads (Squad)",
+  "deleteAccountConsequenceSquads": "Your squads",
+
   "deleteAccountConsequenceHistory": "Your membership in the teams you belong to",
   "deleteAccountConsequenceStats": "Your personal match history and stats",
   "deleteAccountConsequencePreferences": "Your notification preferences and registered devices",

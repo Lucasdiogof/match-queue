@@ -2765,7 +2765,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadsSectionTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Elencos'**
+  /// **'Escalações'**
   String get squadsSectionTitle;
 
   /// No description provided for @squadBuilderSaved.
@@ -2783,25 +2783,25 @@ abstract class AppLocalizations {
   /// No description provided for @squadsEmptyTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhum elenco configurado'**
+  /// **'Nenhuma escalação configurada'**
   String get squadsEmptyTitle;
 
   /// No description provided for @squadsEmptyMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Crie um elenco para montar sua escalação. Você pode buscar partida mesmo sem um.'**
+  /// **'Crie uma escalação para colocar seus jogadores em campo. Você pode buscar partida mesmo sem uma.'**
   String get squadsEmptyMessage;
 
   /// No description provided for @squadCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Criar elenco'**
+  /// **'Criar escalação'**
   String get squadCreateAction;
 
   /// No description provided for @squadCreateTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Novo elenco'**
+  /// **'Nova escalação'**
   String get squadCreateTitle;
 
   /// No description provided for @squadCreateSubtitle.
@@ -2813,7 +2813,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadNameLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Nome do elenco'**
+  /// **'Nome da escalação'**
   String get squadNameLabel;
 
   /// No description provided for @squadNameHint.
@@ -2831,7 +2831,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadRenameTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Renomear elenco'**
+  /// **'Renomear escalação'**
   String get squadRenameTitle;
 
   /// No description provided for @squadRenameAction.
@@ -2855,13 +2855,13 @@ abstract class AppLocalizations {
   /// No description provided for @squadArchiveAction.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar elenco'**
+  /// **'Arquivar escalação'**
   String get squadArchiveAction;
 
   /// No description provided for @squadArchiveConfirmTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar elenco?'**
+  /// **'Arquivar escalação?'**
   String get squadArchiveConfirmTitle;
 
   /// No description provided for @squadArchiveConfirmMessage.
@@ -2969,13 +2969,13 @@ abstract class AppLocalizations {
   /// No description provided for @squadIncompleteLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco incompleto'**
+  /// **'Escalação incompleta'**
   String get squadIncompleteLabel;
 
   /// No description provided for @squadLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco'**
+  /// **'Escalação'**
   String get squadLabel;
 
   /// No description provided for @playAccountLabel.
@@ -2987,25 +2987,25 @@ abstract class AppLocalizations {
   /// No description provided for @playSquadEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhum elenco montado'**
+  /// **'Nenhuma escalação montada'**
   String get playSquadEmpty;
 
   /// No description provided for @playSquadBuildAction.
   ///
   /// In pt, this message translates to:
-  /// **'Montar elenco'**
+  /// **'Montar escalação'**
   String get playSquadBuildAction;
 
   /// No description provided for @playSquadEditAction.
   ///
   /// In pt, this message translates to:
-  /// **'Editar elenco'**
+  /// **'Editar escalação'**
   String get playSquadEditAction;
 
   /// No description provided for @squadNoneSelected.
   ///
   /// In pt, this message translates to:
-  /// **'Sem elenco'**
+  /// **'Sem escalação'**
   String get squadNoneSelected;
 
   /// No description provided for @squadFilterLeagueLabel.
@@ -3029,7 +3029,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorSquadNotFound.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco não encontrado.'**
+  /// **'Escalação não encontrada.'**
   String get errorSquadNotFound;
 
   /// No description provided for @errorSquadNameInvalid.
@@ -3059,7 +3059,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorSquadInUse.
   ///
   /// In pt, this message translates to:
-  /// **'Este elenco está sendo usado em uma busca ativa.'**
+  /// **'Esta escalação está sendo usada em uma busca ativa.'**
   String get errorSquadInUse;
 
   /// No description provided for @squadCompletionLabel.
@@ -3119,7 +3119,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadClearConfirmMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Isso remove todos os jogadores dos titulares, do banco e das reservas. O elenco em si não é apagado.'**
+  /// **'Isso remove todos os jogadores dos titulares, do banco e das reservas. A escalação em si não é apagada.'**
   String get squadClearConfirmMessage;
 
   /// No description provided for @squadFormationChangeConfirmTitle.
@@ -4091,7 +4091,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteAccountConsequenceSquads.
   ///
   /// In pt, this message translates to:
-  /// **'Suas escalações (Elenco)'**
+  /// **'Suas escalações'**
   String get deleteAccountConsequenceSquads;
 
   /// No description provided for @deleteAccountConsequenceHistory.
@@ -4385,7 +4385,7 @@ abstract class AppLocalizations {
   /// No description provided for @teamPublicChooseAccountTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Qual Elenco você quer vincular?'**
+  /// **'Qual Conta você quer vincular?'**
   String get teamPublicChooseAccountTitle;
 
   /// No description provided for @teamPublicRequestSentMessage.
@@ -4601,7 +4601,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadNoneSelectedHint.
   ///
   /// In pt, this message translates to:
-  /// **'Escolha um elenco para esta busca'**
+  /// **'Escolha uma escalação para esta busca'**
   String get squadNoneSelectedHint;
 
   /// No description provided for @catalogCardsTitle.
@@ -4799,7 +4799,7 @@ abstract class AppLocalizations {
   /// No description provided for @mechanicsChemistryHint.
   ///
   /// In pt, this message translates to:
-  /// **'Como a química do elenco funciona.'**
+  /// **'Como a química da escalação funciona.'**
   String get mechanicsChemistryHint;
 
   /// No description provided for @mechanicsChemistryStylesLabel.
@@ -6851,7 +6851,7 @@ abstract class AppLocalizations {
   /// No description provided for @managersBlockedMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Elenco). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.'**
+  /// **'Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico da escalação). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.'**
   String get managersBlockedMessage;
 
   /// No description provided for @consumablesBlockedTitle.
@@ -6869,7 +6869,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorSquadEditConflict.
   ///
   /// In pt, this message translates to:
-  /// **'Este elenco foi alterado em outro dispositivo. Recarregue a versão mais recente antes de continuar.'**
+  /// **'Esta escalação foi alterada em outro dispositivo. Recarregue a versão mais recente antes de continuar.'**
   String get errorSquadEditConflict;
 
   /// No description provided for @errorSquadDuplicatedPlayer.
@@ -6893,7 +6893,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadSavedFeedback.
   ///
   /// In pt, this message translates to:
-  /// **'Elenco salvo'**
+  /// **'Escalação salva'**
   String get squadSavedFeedback;
 
   /// No description provided for @squadDiscardTitle.
@@ -6905,7 +6905,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadDiscardMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Existem alterações no elenco que ainda não foram salvas.'**
+  /// **'Existem alterações na escalação que ainda não foram salvas.'**
   String get squadDiscardMessage;
 
   /// No description provided for @squadDiscardKeep.
@@ -6953,7 +6953,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadShareAction.
   ///
   /// In pt, this message translates to:
-  /// **'Compartilhar elenco'**
+  /// **'Compartilhar escalação'**
   String get squadShareAction;
 
   /// No description provided for @squadOverallLabel.

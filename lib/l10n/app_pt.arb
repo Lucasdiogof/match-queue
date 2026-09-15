@@ -899,23 +899,32 @@
   "rivalsDivisionDiv2": "Divisão 2",
   "rivalsDivisionDiv1": "Divisão 1",
   "rivalsDivisionElite": "Elite",
-  "squadsSectionTitle": "Elencos",
+  "squadsSectionTitle": "Escalações",
+
   "squadBuilderSaved": "Salvo",
   "squadBuilderSaving": "Salvando…",
-  "squadsEmptyTitle": "Nenhum elenco configurado",
-  "squadsEmptyMessage": "Crie um elenco para montar sua escalação. Você pode buscar partida mesmo sem um.",
-  "squadCreateAction": "Criar elenco",
-  "squadCreateTitle": "Novo elenco",
+  "squadsEmptyTitle": "Nenhuma escalação configurada",
+
+  "squadsEmptyMessage": "Crie uma escalação para colocar seus jogadores em campo. Você pode buscar partida mesmo sem uma.",
+
+  "squadCreateAction": "Criar escalação",
+
+  "squadCreateTitle": "Nova escalação",
+
   "squadCreateSubtitle": "Dê um nome e escolha a formação inicial.",
-  "squadNameLabel": "Nome do elenco",
+  "squadNameLabel": "Nome da escalação",
+
   "squadNameHint": "Ex.: Principal",
   "squadFormationLabel": "Formação",
-  "squadRenameTitle": "Renomear elenco",
+  "squadRenameTitle": "Renomear escalação",
+
   "squadRenameAction": "Renomear",
   "squadSetDefaultAction": "Definir como padrão",
   "squadDefaultBadge": "Padrão",
-  "squadArchiveAction": "Arquivar elenco",
-  "squadArchiveConfirmTitle": "Arquivar elenco?",
+  "squadArchiveAction": "Arquivar escalação",
+
+  "squadArchiveConfirmTitle": "Arquivar escalação?",
+
   "squadArchiveConfirmMessage": "Ele sai da lista, mas o histórico das partidas jogadas com ele é mantido.",
   "squadBenchTitle": "Banco",
   "squadManagerTitle": "Técnico",
@@ -933,22 +942,30 @@
   "squadSlotMoveAction": "Mover",
   "squadSlotRemoveAction": "Remover",
   "squadMoveHint": "Toque em outro slot para trocar.",
-  "squadIncompleteLabel": "Elenco incompleto",
-  "squadLabel": "Elenco",
+  "squadIncompleteLabel": "Escalação incompleta",
+
+  "squadLabel": "Escalação",
+
   "playAccountLabel": "Conta",
-  "playSquadEmpty": "Nenhum elenco montado",
-  "playSquadBuildAction": "Montar elenco",
-  "playSquadEditAction": "Editar elenco",
-  "squadNoneSelected": "Sem elenco",
+  "playSquadEmpty": "Nenhuma escalação montada",
+
+  "playSquadBuildAction": "Montar escalação",
+
+  "playSquadEditAction": "Editar escalação",
+
+  "squadNoneSelected": "Sem escalação",
+
   "squadFilterLeagueLabel": "Liga",
   "squadFilterNationLabel": "Nação",
   "squadFilterClearAction": "Limpar filtros",
-  "errorSquadNotFound": "Elenco não encontrado.",
+  "errorSquadNotFound": "Escalação não encontrada.",
+
   "errorSquadNameInvalid": "Escolha um nome de 1 a 40 caracteres.",
   "errorSquadFormationInvalid": "Essa formação não está disponível.",
   "errorSquadSlotInvalid": "Essa posição não existe nesta formação.",
   "errorSquadCardPosition": "Esse jogador não atua nessa posição.",
-  "errorSquadInUse": "Este elenco está sendo usado em uma busca ativa.",
+  "errorSquadInUse": "Esta escalação está sendo usada em uma busca ativa.",
+
   "squadCompletionLabel": "{filled}/{total} titulares",
   "@squadCompletionLabel": {
     "placeholders": {
@@ -1002,7 +1019,8 @@
   "squadReserveTitle": "Reservas",
   "squadClearAction": "Limpar escalação",
   "squadClearConfirmTitle": "Limpar escalação?",
-  "squadClearConfirmMessage": "Isso remove todos os jogadores dos titulares, do banco e das reservas. O elenco em si não é apagado.",
+  "squadClearConfirmMessage": "Isso remove todos os jogadores dos titulares, do banco e das reservas. A escalação em si não é apagada.",
+
   "squadFormationChangeConfirmTitle": "Trocar formação?",
   "squadFormationChangeConfirmMessage": "Seus jogadores serão reposicionados automaticamente. Ninguém é removido, mas alguém pode ficar fora de posição.",
   "squadFilterCompatibleLabel": "Compatíveis",
@@ -1256,7 +1274,8 @@
   "deleteAccountWarningTitle": "Esta ação é permanente",
   "deleteAccountWarningMessage": "Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.",
   "deleteAccountConsequenceFcAccounts": "Todas as suas Contas e a divisão de Rivals registrada",
-  "deleteAccountConsequenceSquads": "Suas escalações (Elenco)",
+  "deleteAccountConsequenceSquads": "Suas escalações",
+
   "deleteAccountConsequenceHistory": "Sua participação nos times de que você faz parte",
   "deleteAccountConsequenceStats": "Seu histórico e estatísticas pessoais de partidas",
   "deleteAccountConsequencePreferences": "Suas preferências de notificação e dispositivos registrados",
@@ -1331,7 +1350,8 @@
   "teamPublicRequestToJoinAction": "Pedir para entrar",
   "teamPublicRequestSentAction": "Solicitação enviada",
   "teamPublicRequestCancelAction": "Cancelar solicitação",
-  "teamPublicChooseAccountTitle": "Qual Elenco você quer vincular?",
+  "teamPublicChooseAccountTitle": "Qual Conta você quer vincular?",
+
   "teamPublicRequestSentMessage": "Pedido enviado. O dono do time vai revisar.",
   "teamPublicRequestCancelledMessage": "Solicitação cancelada.",
   "teamDetailInviteAction": "Convidar jogador",
@@ -1393,7 +1413,8 @@
     }
   },
   "errorWeekendLeagueLimit": "O Champions tem 15 partidas: vitórias e derrotas somadas não podem passar disso.",
-  "squadNoneSelectedHint": "Escolha um elenco para esta busca",
+  "squadNoneSelectedHint": "Escolha uma escalação para esta busca",
+
   "catalogCardsTitle": "Jogadores",
   "catalogCardsSearchLabel": "Buscar carta",
   "catalogCardsSearchHint": "Nome do jogador",
@@ -1433,7 +1454,8 @@
   "mechanicsPlaystylesLabel": "PlayStyles",
   "mechanicsPlaystylesHint": "Habilidades especiais de cada carta.",
   "mechanicsChemistryLabel": "Chemistry",
-  "mechanicsChemistryHint": "Como a química do elenco funciona.",
+  "mechanicsChemistryHint": "Como a química da escalação funciona.",
+
   "mechanicsChemistryStylesLabel": "Chemistry Styles",
   "mechanicsChemistryStylesHint": "Estilos que reforçam atributos.",
   "mechanicsEvolutionsLabel": "Evolutions",
@@ -1785,16 +1807,20 @@
   "evolutionsHeadingWhyNoList": "Por que esta tela não lista programas ativos",
   "evolutionsWhyNoListParagraph": "Os programas de Evolution mudam com frequência dentro do próprio ciclo de Ultimate Team, e não temos hoje uma fonte que acompanhe isso de forma confiável e atualizada. Preferimos explicar o conceito de verdade a mostrar uma lista estática se passando por informação ao vivo.",
   "managersBlockedTitle": "Ainda sem dado real",
-  "managersBlockedMessage": "Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico do Elenco). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.",
+  "managersBlockedMessage": "Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico da escalação). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.",
+
   "consumablesBlockedTitle": "Ainda sem dado real",
   "consumablesBlockedMessage": "Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.",
-  "errorSquadEditConflict": "Este elenco foi alterado em outro dispositivo. Recarregue a versão mais recente antes de continuar.",
+  "errorSquadEditConflict": "Esta escalação foi alterada em outro dispositivo. Recarregue a versão mais recente antes de continuar.",
+
   "errorSquadDuplicatedPlayer": "O mesmo jogador não pode ocupar duas posições.",
   "errorSquadInvalidLineup": "Não foi possível salvar esta escalação.",
   "squadSaveAction": "Salvar",
-  "squadSavedFeedback": "Elenco salvo",
+  "squadSavedFeedback": "Escalação salva",
+
   "squadDiscardTitle": "Descartar alterações?",
-  "squadDiscardMessage": "Existem alterações no elenco que ainda não foram salvas.",
+  "squadDiscardMessage": "Existem alterações na escalação que ainda não foram salvas.",
+
   "squadDiscardKeep": "Continuar editando",
   "squadDiscardConfirm": "Descartar",
   "squadReloadAction": "Recarregar",
@@ -1802,7 +1828,8 @@
   "squadChemistryUnavailable": "Não foi possível recalcular a química.",
   "squadManagerLabel": "Técnico",
   "squadManagerEmpty": "Selecionar técnico",
-  "squadShareAction": "Compartilhar elenco",
+  "squadShareAction": "Compartilhar escalação",
+
   "squadOverallLabel": "Overall",
   "squadChemistryLabel": "Química",
   "squadFormationDroppedPlayers": "{count, plural, =1{1 jogador saiu da escalação: não tem posição compatível na nova formação ({names}).} other{{count} jogadores saíram da escalação: não têm posição compatível na nova formação ({names}).}}",

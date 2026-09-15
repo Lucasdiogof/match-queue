@@ -902,20 +902,28 @@
   "squadsSectionTitle": "Plantillas",
   "squadBuilderSaved": "Guardado",
   "squadBuilderSaving": "Guardando…",
-  "squadsEmptyTitle": "Ningun equipo configurado",
-  "squadsEmptyMessage": "Crea un equipo para armar tu alineación. Puedes buscar partida incluso sin uno.",
-  "squadCreateAction": "Crear equipo",
-  "squadCreateTitle": "Nuevo equipo",
+  "squadsEmptyTitle": "Ninguna plantilla configurada",
+
+  "squadsEmptyMessage": "Crea una plantilla para armar tu alineación. Puedes buscar partida incluso sin una.",
+
+  "squadCreateAction": "Crear plantilla",
+
+  "squadCreateTitle": "Nueva plantilla",
+
   "squadCreateSubtitle": "Ponle un nombre y elige la formación inicial.",
-  "squadNameLabel": "Nombre del equipo",
+  "squadNameLabel": "Nombre de la plantilla",
+
   "squadNameHint": "Ej.: Principal",
   "squadFormationLabel": "Formación",
-  "squadRenameTitle": "Renombrar equipo",
+  "squadRenameTitle": "Renombrar plantilla",
+
   "squadRenameAction": "Renombrar",
   "squadSetDefaultAction": "Definir como predeterminado",
   "squadDefaultBadge": "Predeterminado",
-  "squadArchiveAction": "Archivar equipo",
-  "squadArchiveConfirmTitle": "¿Archivar equipo?",
+  "squadArchiveAction": "Archivar plantilla",
+
+  "squadArchiveConfirmTitle": "¿Archivar plantilla?",
+
   "squadArchiveConfirmMessage": "Sale de la lista, pero se mantiene el historial de partidas jugadas con él.",
   "squadBenchTitle": "Banquillo",
   "squadManagerTitle": "Entrenador",
@@ -933,22 +941,27 @@
   "squadSlotMoveAction": "Mover",
   "squadSlotRemoveAction": "Quitar",
   "squadMoveHint": "Toca otro espacio para intercambiar.",
-  "squadIncompleteLabel": "Equipo incompleto",
-  "squadLabel": "Equipo",
+  "squadIncompleteLabel": "Plantilla incompleta",
+
+  "squadLabel": "Plantilla",
+
   "playAccountLabel": "Cuenta",
   "playSquadEmpty": "Ninguna plantilla creada",
   "playSquadBuildAction": "Crear plantilla",
   "playSquadEditAction": "Editar plantilla",
-  "squadNoneSelected": "Sin equipo",
+  "squadNoneSelected": "Sin plantilla",
+
   "squadFilterLeagueLabel": "Liga",
   "squadFilterNationLabel": "Nación",
   "squadFilterClearAction": "Limpiar filtros",
-  "errorSquadNotFound": "Equipo no encontrado.",
+  "errorSquadNotFound": "Plantilla no encontrada.",
+
   "errorSquadNameInvalid": "Elige un nombre de 1 a 40 caracteres.",
   "errorSquadFormationInvalid": "Esa formación no está disponible.",
   "errorSquadSlotInvalid": "Ese espacio no existe en esta formación.",
   "errorSquadCardPosition": "Ese jugador no juega en esa posición.",
-  "errorSquadInUse": "Este equipo se está usando en una búsqueda activa.",
+  "errorSquadInUse": "Esta plantilla se está usando en una búsqueda activa.",
+
   "squadCompletionLabel": "{filled}/{total} titulares",
   "@squadCompletionLabel": {
     "placeholders": {
@@ -1256,7 +1269,8 @@
   "deleteAccountWarningTitle": "Esta acción es permanente",
   "deleteAccountWarningMessage": "Al eliminar tu cuenta, pierdes acceso a todo lo que se indica abajo. No se puede deshacer ni recuperar después.",
   "deleteAccountConsequenceFcAccounts": "Todas tus Cuentas y la división de Rivals registrada",
-  "deleteAccountConsequenceSquads": "Tus alineaciones (Plantilla)",
+  "deleteAccountConsequenceSquads": "Tus alineaciones",
+
   "deleteAccountConsequenceHistory": "Tu membresía en los equipos a los que perteneces",
   "deleteAccountConsequenceStats": "Tu historial y estadísticas personales de partidas",
   "deleteAccountConsequencePreferences": "Tus preferencias de notificación y dispositivos registrados",
@@ -1433,7 +1447,8 @@
   "mechanicsPlaystylesLabel": "PlayStyles",
   "mechanicsPlaystylesHint": "Habilidades especiales de cada carta.",
   "mechanicsChemistryLabel": "Chemistry",
-  "mechanicsChemistryHint": "Cómo funciona la química del equipo.",
+  "mechanicsChemistryHint": "Cómo funciona la química de la plantilla.",
+
   "mechanicsChemistryStylesLabel": "Chemistry Styles",
   "mechanicsChemistryStylesHint": "Estilos que refuerzan atributos.",
   "mechanicsEvolutionsLabel": "Evolutions",

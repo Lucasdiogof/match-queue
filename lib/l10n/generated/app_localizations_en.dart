@@ -2365,7 +2365,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'All your Accounts and their recorded Rivals division';
 
   @override
-  String get deleteAccountConsequenceSquads => 'Your squads (Squad)';
+  String get deleteAccountConsequenceSquads => 'Your squads';
 
   @override
   String get deleteAccountConsequenceHistory =>
