@@ -260,19 +260,22 @@ void main() {
       expect(cubit.state.isSaving, isFalse);
     });
 
-    test('adota o updated_at novo, entao o segundo save nao conflita', () async {
-      await cubit.load();
-      expect(cubit.state.baseline!.updatedAt, DateTime.utc(2026, 10, 12, 10));
+    test(
+      'adota o updated_at novo, entao o segundo save nao conflita',
+      () async {
+        await cubit.load();
+        expect(cubit.state.baseline!.updatedAt, DateTime.utc(2026, 10, 12, 10));
 
-      cubit.assignCard(slotCode: 'CB1', card: _card('a', 'CB'));
-      await cubit.save();
-      expect(cubit.state.baseline!.updatedAt, DateTime.utc(2026, 10, 12, 11));
+        cubit.assignCard(slotCode: 'CB1', card: _card('a', 'CB'));
+        await cubit.save();
+        expect(cubit.state.baseline!.updatedAt, DateTime.utc(2026, 10, 12, 11));
 
-      cubit.assignCard(slotCode: 'CB2', card: _card('b', 'CB'));
-      final ok = await cubit.save();
-      expect(ok, isTrue);
-      expect(cubit.state.hasConflict, isFalse);
-    });
+        cubit.assignCard(slotCode: 'CB2', card: _card('b', 'CB'));
+        final ok = await cubit.save();
+        expect(ok, isTrue);
+        expect(cubit.state.hasConflict, isFalse);
+      },
+    );
 
     test('sem alteracao nao chama o servidor', () async {
       await cubit.load();
@@ -310,24 +313,27 @@ void main() {
       expect(cubit.state.draft!.starters['CB1']?.id, 'a');
     });
 
-    test('recarregar substitui baseline e rascunho e limpa o conflito', () async {
-      await cubit.load();
-      cubit.assignCard(slotCode: 'CB1', card: _card('a', 'CB'));
-      repository.saveFailure = const SquadFailure(
-        reason: SquadFailureReason.editConflict,
-      );
-      await cubit.save();
+    test(
+      'recarregar substitui baseline e rascunho e limpa o conflito',
+      () async {
+        await cubit.load();
+        cubit.assignCard(slotCode: 'CB1', card: _card('a', 'CB'));
+        repository.saveFailure = const SquadFailure(
+          reason: SquadFailureReason.editConflict,
+        );
+        await cubit.save();
 
-      repository
-        ..saveFailure = null
-        ..detail = _detail(updatedAt: DateTime.utc(2026, 10, 12, 12));
-      await cubit.reloadAfterConflict();
+        repository
+          ..saveFailure = null
+          ..detail = _detail(updatedAt: DateTime.utc(2026, 10, 12, 12));
+        await cubit.reloadAfterConflict();
 
-      expect(cubit.state.hasConflict, isFalse);
-      expect(cubit.state.isDirty, isFalse);
-      expect(cubit.state.draft!.starters, isEmpty);
-      expect(cubit.state.baseline!.updatedAt, DateTime.utc(2026, 10, 12, 12));
-    });
+        expect(cubit.state.hasConflict, isFalse);
+        expect(cubit.state.isDirty, isFalse);
+        expect(cubit.state.draft!.starters, isEmpty);
+        expect(cubit.state.baseline!.updatedAt, DateTime.utc(2026, 10, 12, 12));
+      },
+    );
   });
 
   group('preview', () {

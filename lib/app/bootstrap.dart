@@ -17,7 +17,7 @@ import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/settings/data/repositories/local_settings_repository.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
@@ -84,7 +84,7 @@ Future<void> bootstrap() async {
 
       final authCubit = getIt<AuthCubit>()..initialize();
       final pendingInviteCubit = getIt<PendingInviteCubit>()..restore();
-      final profileCubit = getIt<ProfileCubit>();
+      final profileCubit = getIt<AccountCubit>();
       final teamsCubit = getIt<TeamsCubit>();
       final pendingMatchCubit = getIt<PendingMatchCubit>();
       final fcAccountsCubit = getIt<FcAccountsCubit>();

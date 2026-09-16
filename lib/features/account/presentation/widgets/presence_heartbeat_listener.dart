@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
-import 'package:fifa_queue/features/profile/domain/repositories/profile_repository.dart';
+import 'package:fifa_queue/features/account/domain/repositories/account_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,7 +53,7 @@ class _PresenceHeartbeatListenerState extends State<PresenceHeartbeatListener>
       return;
     }
     try {
-      await getIt<ProfileRepository>().touchActivity();
+      await getIt<AccountRepository>().touchActivity();
     } on Object {
       // best-effort de proposito -- ver doc da classe.
     }

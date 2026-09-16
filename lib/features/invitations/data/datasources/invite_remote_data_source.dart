@@ -29,7 +29,10 @@ class SupabaseInviteRemoteDataSource implements InviteRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> joinTeam(String code, String? fcAccountId) async {
+  Future<Map<String, dynamic>> joinTeam(
+    String code,
+    String? fcAccountId,
+  ) async {
     final response = await _client
         .rpc<dynamic>(
           'join_team_by_invite',

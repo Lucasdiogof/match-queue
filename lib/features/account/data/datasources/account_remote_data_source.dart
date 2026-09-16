@@ -1,7 +1,7 @@
-import 'package:fifa_queue/features/profile/data/models/profile_model.dart';
+import 'package:fifa_queue/features/account/data/models/account_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-abstract interface class ProfileRemoteDataSource {
+abstract interface class AccountRemoteDataSource {
   String? get currentUserId;
 
   Future<Map<String, dynamic>?> fetchById(String userId);
@@ -24,19 +24,19 @@ abstract interface class ProfileRemoteDataSource {
   Future<void> touchActivity(String userId);
 }
 
-class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
-  const SupabaseProfileRemoteDataSource(this._client);
+class SupabaseAccountRemoteDataSource implements AccountRemoteDataSource {
+  const SupabaseAccountRemoteDataSource(this._client);
 
   final SupabaseClient _client;
 
-  SupabaseQueryBuilder get _table => _client.from(ProfileModel.table);
+  SupabaseQueryBuilder get _table => _client.from(AccountModel.table);
 
   @override
   String? get currentUserId => _client.auth.currentUser?.id;
 
   @override
   Future<Map<String, dynamic>?> fetchById(String userId) =>
-      _table.select().eq(ProfileModel.columnId, userId).maybeSingle();
+      _table.select().eq(AccountModel.columnId, userId).maybeSingle();
 
   @override
   Future<Map<String, dynamic>> insert({
@@ -44,8 +44,8 @@ class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
     required String displayName,
   }) => _table
       .insert(<String, dynamic>{
-        ProfileModel.columnId: userId,
-        ProfileModel.columnDisplayName: displayName,
+        AccountModel.columnId: userId,
+        AccountModel.columnDisplayName: displayName,
       })
       .select()
       .single();
@@ -55,8 +55,8 @@ class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
     required String userId,
     required String displayName,
   }) => _table
-      .update(<String, dynamic>{ProfileModel.columnDisplayName: displayName})
-      .eq(ProfileModel.columnId, userId)
+      .update(<String, dynamic>{AccountModel.columnDisplayName: displayName})
+      .eq(AccountModel.columnId, userId)
       .select()
       .single();
 
@@ -65,15 +65,15 @@ class SupabaseProfileRemoteDataSource implements ProfileRemoteDataSource {
     required String userId,
     required String localeTag,
   }) => _table
-      .update(<String, dynamic>{ProfileModel.columnLocale: localeTag})
-      .eq(ProfileModel.columnId, userId);
+      .update(<String, dynamic>{AccountModel.columnLocale: localeTag})
+      .eq(AccountModel.columnId, userId);
 
   @override
   Future<void> touchActivity(String userId) => _table
       .update(<String, dynamic>{
-        ProfileModel.columnLastActiveAt: DateTime.now()
+        AccountModel.columnLastActiveAt: DateTime.now()
             .toUtc()
             .toIso8601String(),
       })
-      .eq(ProfileModel.columnId, userId);
+      .eq(AccountModel.columnId, userId);
 }

@@ -32,9 +32,7 @@ class MarketFavoritesCubit extends Cubit<MarketFavoritesState> {
         }
         return;
       }
-      final cards = await Future.wait(
-        ids.map(_catalogRepository.getCard),
-      );
+      final cards = await Future.wait(ids.map(_catalogRepository.getCard));
       if (isClosed) {
         return;
       }
@@ -50,7 +48,10 @@ class MarketFavoritesCubit extends Cubit<MarketFavoritesState> {
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(
-          state.copyWith(status: MarketFavoritesStatus.failure, failure: failure),
+          state.copyWith(
+            status: MarketFavoritesStatus.failure,
+            failure: failure,
+          ),
         );
       }
     }

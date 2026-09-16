@@ -1,7 +1,7 @@
-import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
 
-class ProfileModel {
-  const ProfileModel._();
+class AccountModel {
+  const AccountModel._();
 
   static const String table = 'profiles';
   static const String columnId = 'id';
@@ -12,9 +12,9 @@ class ProfileModel {
   static const String columnCreatedAt = 'created_at';
   static const String columnUpdatedAt = 'updated_at';
 
-  static Profile fromJson(Map<String, dynamic> json) {
+  static Account fromJson(Map<String, dynamic> json) {
     final createdAt = _parseDate(json[columnCreatedAt]);
-    return Profile(
+    return Account(
       id: '${json[columnId]}',
       displayName: '${json[columnDisplayName]}',
       avatarUrl: _parseString(json[columnAvatarUrl]),

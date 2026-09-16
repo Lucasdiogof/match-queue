@@ -5,8 +5,8 @@ import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileLanguagePage extends StatelessWidget {
-  const ProfileLanguagePage({super.key});
+class AccountLanguagePage extends StatelessWidget {
+  const AccountLanguagePage({super.key});
 
   @override
   Widget build(BuildContext context) {

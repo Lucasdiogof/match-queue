@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:fifa_queue/features/profile/data/models/profile_model.dart';
+import 'package:fifa_queue/features/account/data/models/account_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -188,7 +188,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
           '${TeamMemberModel.columnFcAccountId}, '
           '${TeamMemberModel.columnRole}, '
           '${TeamMemberModel.columnJoinedAt}, '
-          '${TeamMemberModel.embeddedProfile}:${ProfileModel.table}(*)',
+          '${TeamMemberModel.embeddedProfile}:${AccountModel.table}(*)',
         )
         .eq(TeamMemberModel.columnTeamId, teamId)
         // A ordem do enum team_role e OWNER, ADMIN, PLAYER; ascendente

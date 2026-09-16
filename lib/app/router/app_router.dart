@@ -34,12 +34,12 @@ import 'package:fifa_queue/features/mechanics/presentation/pages/playstyle_detai
 import 'package:fifa_queue/features/mechanics/presentation/pages/playstyles_page.dart';
 import 'package:fifa_queue/features/notifications/presentation/pages/notifications_inbox_page.dart';
 import 'package:fifa_queue/features/onboarding/presentation/pages/onboarding_page.dart';
-import 'package:fifa_queue/features/profile/presentation/pages/about_page.dart';
-import 'package:fifa_queue/features/profile/presentation/pages/delete_account_page.dart';
-import 'package:fifa_queue/features/profile/presentation/pages/profile_appearance_page.dart';
-import 'package:fifa_queue/features/profile/presentation/pages/profile_language_page.dart';
-import 'package:fifa_queue/features/profile/presentation/pages/profile_notifications_page.dart';
-import 'package:fifa_queue/features/profile/presentation/pages/profile_page.dart';
+import 'package:fifa_queue/features/account/presentation/pages/about_page.dart';
+import 'package:fifa_queue/features/account/presentation/pages/delete_account_page.dart';
+import 'package:fifa_queue/features/account/presentation/pages/account_appearance_page.dart';
+import 'package:fifa_queue/features/account/presentation/pages/account_language_page.dart';
+import 'package:fifa_queue/features/account/presentation/pages/account_notifications_page.dart';
+import 'package:fifa_queue/features/account/presentation/pages/account_page.dart';
 import 'package:fifa_queue/features/public_profile/presentation/pages/public_profile_page.dart';
 import 'package:fifa_queue/features/public_profile/presentation/pages/public_profile_settings_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/player_profile_page.dart';
@@ -123,19 +123,19 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.profileAppearance.path,
-        name: AppRoutes.profileAppearance.name,
-        builder: (context, state) => const ProfileAppearancePage(),
+        path: AppRoutes.accountAppearance.path,
+        name: AppRoutes.accountAppearance.name,
+        builder: (context, state) => const AccountAppearancePage(),
       ),
       GoRoute(
-        path: AppRoutes.profileLanguage.path,
-        name: AppRoutes.profileLanguage.name,
-        builder: (context, state) => const ProfileLanguagePage(),
+        path: AppRoutes.accountLanguage.path,
+        name: AppRoutes.accountLanguage.name,
+        builder: (context, state) => const AccountLanguagePage(),
       ),
       GoRoute(
-        path: AppRoutes.profileNotifications.path,
-        name: AppRoutes.profileNotifications.name,
-        builder: (context, state) => const ProfileNotificationsPage(),
+        path: AppRoutes.accountNotifications.path,
+        name: AppRoutes.accountNotifications.name,
+        builder: (context, state) => const AccountNotificationsPage(),
       ),
       GoRoute(
         path: AppRoutes.deleteAccount.path,
@@ -307,9 +307,7 @@ class AppRouter {
                 // Convites) -- usado pelo resolver de notificacao pra levar
                 // direto na aba Convites em vez de sempre cair na primeira.
                 builder: (context, state) => TeamsListPage(
-                  initialTabIndex: state.extra is int
-                      ? state.extra! as int
-                      : 0,
+                  initialTabIndex: state.extra is int ? state.extra! as int : 0,
                 ),
               ),
             ],
@@ -335,9 +333,9 @@ class AppRouter {
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
-                path: AppRoutes.profile.path,
-                name: AppRoutes.profile.name,
-                builder: (context, state) => const ProfilePage(),
+                path: AppRoutes.account.path,
+                name: AppRoutes.account.name,
+                builder: (context, state) => const AccountPage(),
               ),
             ],
           ),

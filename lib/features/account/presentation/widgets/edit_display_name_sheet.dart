@@ -3,8 +3,8 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/l10n/validation_l10n.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_state.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,10 +12,10 @@ Future<bool> showEditDisplayNameSheet({
   required BuildContext context,
   required String currentDisplayName,
 }) async {
-  final cubit = context.read<ProfileCubit>();
+  final cubit = context.read<AccountCubit>();
   final saved = await showAppBottomSheet<bool>(
     context: context,
-    builder: (sheetContext) => BlocProvider<ProfileCubit>.value(
+    builder: (sheetContext) => BlocProvider<AccountCubit>.value(
       value: cubit,
       child: _EditDisplayNameForm(initialValue: currentDisplayName),
     ),
@@ -53,7 +53,7 @@ class _EditDisplayNameFormState extends State<_EditDisplayNameForm> {
   }
 
   void _onChanged() {
-    context.read<ProfileCubit>().clearFailure();
+    context.read<AccountCubit>().clearFailure();
     setState(() {});
   }
 
@@ -62,7 +62,7 @@ class _EditDisplayNameFormState extends State<_EditDisplayNameForm> {
       return;
     }
     final navigator = Navigator.of(context);
-    final saved = await context.read<ProfileCubit>().updateDisplayName(
+    final saved = await context.read<AccountCubit>().updateDisplayName(
       _controller.text,
     );
     if (saved && mounted) {
@@ -77,7 +77,7 @@ class _EditDisplayNameFormState extends State<_EditDisplayNameForm> {
       _controller.text,
     ).runes.length;
 
-    return BlocBuilder<ProfileCubit, ProfileState>(
+    return BlocBuilder<AccountCubit, AccountState>(
       builder: (context, state) => AppBottomSheet(
         title: l10n.profileEditNameTitle,
         actions: <Widget>[

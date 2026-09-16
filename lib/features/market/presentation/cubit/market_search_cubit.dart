@@ -67,7 +67,9 @@ class MarketSearchCubit extends Cubit<MarketSearchState> {
 
   Future<void> _search(String query) async {
     final generation = ++_generation;
-    emit(state.copyWith(status: MarketSearchStatus.loading, clearFailure: true));
+    emit(
+      state.copyWith(status: MarketSearchStatus.loading, clearFailure: true),
+    );
     try {
       final page = await _catalogRepository.searchCards(
         PlayerCardQuery(query: query, limit: pageLimit),

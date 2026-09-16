@@ -67,7 +67,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navHistory => 'Historial';
 
   @override
-  String get navProfile => 'Perfil';
+  String get navProfile => 'Conta';
 
   @override
   String get comingSoonTitle => 'En construcción';

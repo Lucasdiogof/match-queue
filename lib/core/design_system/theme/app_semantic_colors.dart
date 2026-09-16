@@ -186,7 +186,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       content: mix(content, other.content),
       contentContainer: mix(contentContainer, other.contentContainer),
       competitive: mix(competitive, other.competitive),
-      competitiveContainer: mix(competitiveContainer, other.competitiveContainer),
+      competitiveContainer: mix(
+        competitiveContainer,
+        other.competitiveContainer,
+      ),
       success: mix(success, other.success),
       warning: mix(warning, other.warning),
       danger: mix(danger, other.danger),

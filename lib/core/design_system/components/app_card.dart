@@ -81,7 +81,9 @@ class AppCard extends StatelessWidget {
                     decoration: stripe,
                     child: const SizedBox(width: 3),
                   ),
-                  Expanded(child: Padding(padding: padding, child: child)),
+                  Expanded(
+                    child: Padding(padding: padding, child: child),
+                  ),
                 ],
               ),
             ),

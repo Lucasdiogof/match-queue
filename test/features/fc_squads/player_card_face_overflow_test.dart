@@ -46,7 +46,10 @@ Future<void> _pump(
         data: MediaQueryData(textScaler: TextScaler.linear(textScale)),
         child: Scaffold(
           body: Center(
-            child: SizedBox(width: width, child: PlayerCardFace(card: card)),
+            child: SizedBox(
+              width: width,
+              child: PlayerCardFace(card: card),
+            ),
           ),
         ),
       ),

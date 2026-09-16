@@ -9,7 +9,10 @@ import 'package:flutter_test/flutter_test.dart';
 /// Fake minimo: so o metodo usado pelo teste tem corpo real, o resto cai no
 /// noSuchMethod (mesmo padrao de requests_cubit_test.dart).
 class _FakeCatalogRepository implements PlayerCardCatalogRepository {
-  PlayerCardPage page = const PlayerCardPage(items: <PlayerCard>[], hasMore: false);
+  PlayerCardPage page = const PlayerCardPage(
+    items: <PlayerCard>[],
+    hasMore: false,
+  );
 
   @override
   Future<PlayerCardPage> searchCards(PlayerCardQuery query) async => page;
@@ -18,8 +21,10 @@ class _FakeCatalogRepository implements PlayerCardCatalogRepository {
   Future<PlayerCard?> getCard(String id) async => null;
 
   @override
-  Future<List<FcManager>> searchManagers({String? nationId, String? query}) async =>
-      <FcManager>[];
+  Future<List<FcManager>> searchManagers({
+    String? nationId,
+    String? query,
+  }) async => <FcManager>[];
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

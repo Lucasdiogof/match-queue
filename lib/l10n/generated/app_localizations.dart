@@ -217,7 +217,7 @@ abstract class AppLocalizations {
   /// No description provided for @navProfile.
   ///
   /// In pt, this message translates to:
-  /// **'Perfil'**
+  /// **'Conta'**
   String get navProfile;
 
   /// No description provided for @comingSoonTitle.

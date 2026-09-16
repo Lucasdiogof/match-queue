@@ -16,9 +16,9 @@ import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cub
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_account_listener.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_lifecycle_listener.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:fifa_queue/features/profile/presentation/widgets/locale_sync_listener.dart';
-import 'package:fifa_queue/features/profile/presentation/widgets/profile_session_listener.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/locale_sync_listener.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/account_session_listener.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
@@ -50,7 +50,7 @@ class FifaQueueApp extends StatelessWidget {
   final ThemeCubit themeCubit;
   final LocaleCubit localeCubit;
   final PendingInviteCubit pendingInviteCubit;
-  final ProfileCubit profileCubit;
+  final AccountCubit profileCubit;
   final TeamsCubit teamsCubit;
   final PendingMatchCubit pendingMatchCubit;
   final FcAccountsCubit fcAccountsCubit;
@@ -62,7 +62,7 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<ThemeCubit>.value(value: themeCubit),
       BlocProvider<LocaleCubit>.value(value: localeCubit),
       BlocProvider<PendingInviteCubit>.value(value: pendingInviteCubit),
-      BlocProvider<ProfileCubit>.value(value: profileCubit),
+      BlocProvider<AccountCubit>.value(value: profileCubit),
       BlocProvider<TeamsCubit>.value(value: teamsCubit),
       BlocProvider<PendingMatchCubit>.value(value: pendingMatchCubit),
       BlocProvider<FcAccountsCubit>.value(value: fcAccountsCubit),
@@ -89,7 +89,7 @@ class FifaQueueApp extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             localeResolutionCallback: (deviceLocale, supportedLocales) =>
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
-            builder: (context, child) => ProfileSessionListener(
+            builder: (context, child) => AccountSessionListener(
               child: FcAccountsSessionListener(
                 child: TeamsAccountListener(
                   child: MatchmakingAccountListener(

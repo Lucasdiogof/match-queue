@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class Profile extends Equatable {
-  const Profile({
+class Account extends Equatable {
+  const Account({
     required this.id,
     required this.displayName,
     required this.createdAt,
@@ -17,8 +17,8 @@ class Profile extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Profile copyWith({String? displayName, String? avatarUrl, String? locale}) =>
-      Profile(
+  Account copyWith({String? displayName, String? avatarUrl, String? locale}) =>
+      Account(
         id: id,
         displayName: displayName ?? this.displayName,
         avatarUrl: avatarUrl ?? this.avatarUrl,

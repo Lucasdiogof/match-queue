@@ -45,7 +45,8 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
   /// Troca a plataforma e busca o preco de novo -- FUTNext devolve valores
   /// diferentes para 'ps' e 'pc', nao e so um rotulo do resultado ja carregado.
   Future<void> changePlatform(PlayerCard card, String platform) {
-    if (platform == state.platform && state.status != MarketPriceStatus.failure) {
+    if (platform == state.platform &&
+        state.status != MarketPriceStatus.failure) {
       return Future<void>.value();
     }
     return load(card, platform: platform);

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileSessionListener extends StatelessWidget {
-  const ProfileSessionListener({required this.child, super.key});
+class AccountSessionListener extends StatelessWidget {
+  const AccountSessionListener({required this.child, super.key});
 
   final Widget child;
 
@@ -17,7 +17,7 @@ class ProfileSessionListener extends StatelessWidget {
         previous.isAuthenticated != current.isAuthenticated ||
         previous.user?.id != current.user?.id,
     listener: (context, state) {
-      final profileCubit = context.read<ProfileCubit>();
+      final profileCubit = context.read<AccountCubit>();
       final user = state.user;
       if (state.isAuthenticated && user != null) {
         unawaited(profileCubit.load(fallbackDisplayName: user.shortName));
