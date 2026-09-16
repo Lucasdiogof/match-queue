@@ -42,6 +42,12 @@ class _PlayerCardDetailBody extends StatelessWidget {
         card.leagueName,
         card.nationName,
       ].whereType<String>().join(' · '),
+      // Sem isto, a sheet crescia ate o conteudo inteiro caber -- sempre
+      // coube na tela antes do footer de preco (Mercado) existir, mas uma
+      // carta com muitos atributos/badges + preco pode passar da altura da
+      // tela e estourar a viewport. Com true, a sheet ganha altura maxima e
+      // este SingleChildScrollView rola por dentro dela.
+      isChildScrollable: true,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
