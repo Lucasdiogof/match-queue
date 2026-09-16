@@ -191,7 +191,7 @@
   "signUpSubtitle": "Elige cómo te va a llamar tu equipo.",
   "signUpHaveAccount": "¿Ya tienes una cuenta?",
   "authDisplayName": "Nombre o apodo",
-  "authDisplayNameHint": "Lucas, ratowrld, Panda...",
+  "authDisplayNameHint": "Nick",
   "authEmailHint": "email@ejemplo.com",
   "authConfirmPassword": "Confirmar contraseña",
   "authPasswordHelper": "Mínimo de {count} caracteres",

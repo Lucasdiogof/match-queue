@@ -52,59 +52,62 @@ class AuthFormScaffold extends StatelessWidget {
   /// [backgroundImage]).
   final Alignment? contentAlignment;
 
-  Widget _buildForm(BuildContext context) => Column(
+  Widget _buildForm(BuildContext context) => Stack(
     children: <Widget>[
-      if (onBack != null)
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.sm,
-              AppSpacing.sm,
-              0,
-              0,
-            ),
-            child: AppIconButton(
-              icon: Icons.arrow_back,
-              tooltip: backTooltip ?? '',
-              onPressed: onBack,
-            ),
-          ),
-        ),
-      Expanded(
-        child: Align(
-          alignment:
-              contentAlignment ??
-              (backgroundImage != null
-                  ? const Alignment(0, 0.45)
-                  : Alignment.center),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-            child: AppContentContainer.form(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  if (showWordmark) ...<Widget>[
-                    Center(child: wordmark ?? const BrandWordmark(height: 76)),
-                    const SizedBox(height: AppSpacing.xxxl),
-                  ],
-                  Text(title, style: context.textStyles.headlineMedium),
-                  if (subtitle != null) ...<Widget>[
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(subtitle!, style: context.textStyles.bodyMedium),
-                  ],
-                  const SizedBox(height: AppSpacing.xxl),
-                  ...children,
-                ],
+      Column(
+        children: <Widget>[
+          Expanded(
+            child: Align(
+              alignment:
+                  contentAlignment ??
+                  (backgroundImage != null
+                      ? const Alignment(0, 0.45)
+                      : Alignment.center),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+                child: AppContentContainer.form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      if (showWordmark) ...<Widget>[
+                        Center(
+                          child: wordmark ?? const BrandWordmark(height: 76),
+                        ),
+                        const SizedBox(height: AppSpacing.xxxl),
+                      ],
+                      Text(title, style: context.textStyles.headlineMedium),
+                      if (subtitle != null) ...<Widget>[
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(subtitle!, style: context.textStyles.bodyMedium),
+                      ],
+                      const SizedBox(height: AppSpacing.xxl),
+                      ...children,
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+          if (footer != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+              child: AppContentContainer.form(child: footer!),
+            ),
+        ],
       ),
-      if (footer != null)
-        Padding(
-          padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-          child: AppContentContainer.form(child: footer!),
+      // Posicionado por cima em vez de dentro da Column: um item de altura
+      // fixa ali empurraria a logo pra baixo so na tela que tem back button
+      // (cadastro), tirando a mesma altura de logo que login e cadastro
+      // deveriam compartilhar (mesmo contentAlignment nos dois).
+      if (onBack != null)
+        Positioned(
+          top: AppSpacing.sm,
+          left: AppSpacing.sm,
+          child: AppIconButton(
+            icon: Icons.arrow_back,
+            tooltip: backTooltip ?? '',
+            onPressed: onBack,
+          ),
         ),
     ],
   );

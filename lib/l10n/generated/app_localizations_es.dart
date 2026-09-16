@@ -420,7 +420,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authDisplayName => 'Nombre o apodo';
 
   @override
-  String get authDisplayNameHint => 'Lucas, ratowrld, Panda...';
+  String get authDisplayNameHint => 'Nick';
 
   @override
   String get authEmailHint => 'email@ejemplo.com';

@@ -134,6 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     onSubmitted: (_) => _submit(),
                   ),
+                  const SizedBox(height: AppSpacing.sm),
                   Align(
                     alignment: AlignmentDirectional.centerEnd,
                     child: AppButton.ghost(
