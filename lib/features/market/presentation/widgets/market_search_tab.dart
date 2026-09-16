@@ -80,15 +80,18 @@ class MarketSearchTab extends StatelessWidget {
                         // BlocBuilder (nao um bool fixo) para o icone dentro
                         // da folha refletir a acao na hora, ja que a folha
                         // fica aberta depois do toque em favoritar.
-                        priceSection: BlocBuilder<MarketSearchCubit, MarketSearchState>(
-                          bloc: searchCubit,
-                          builder: (context, state) => MarketPriceSection(
-                            card: card,
-                            isFavorite: state.favoriteCardIds.contains(card.id),
-                            onToggleFavorite: () =>
-                                searchCubit.toggleFavorite(card.id),
-                          ),
-                        ),
+                        priceSection:
+                            BlocBuilder<MarketSearchCubit, MarketSearchState>(
+                              bloc: searchCubit,
+                              builder: (context, state) => MarketPriceSection(
+                                card: card,
+                                isFavorite: state.favoriteCardIds.contains(
+                                  card.id,
+                                ),
+                                onToggleFavorite: () =>
+                                    searchCubit.toggleFavorite(card.id),
+                              ),
+                            ),
                       );
                     },
                   );

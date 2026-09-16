@@ -1,4 +1,4 @@
-import 'package:fifa_queue/features/profile/data/models/profile_model.dart';
+import 'package:fifa_queue/features/account/data/models/account_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
@@ -26,7 +26,7 @@ class TeamMemberModel {
 
   static TeamMember memberFromJson(Map<String, dynamic> json) => TeamMember(
     membership: membershipFromJson(json),
-    profile: ProfileModel.fromJson(
+    profile: AccountModel.fromJson(
       Map<String, dynamic>.from(json[embeddedProfile] as Map),
     ),
   );

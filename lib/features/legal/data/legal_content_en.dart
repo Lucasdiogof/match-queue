@@ -24,7 +24,7 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           'We only collect what the app needs to work:\n\n'
           '• Account data: email and password (stored securely by our '
           'authentication provider, never in plain text).\n'
-          '• Profile: your display name.\n'
+          '• Account: your display name.\n'
           '• Internal identifiers: a unique ID generated for you and for '
           'each Team/Account you create or join.\n'
           '• Accounts: the names you give your Accounts (the in-game '
@@ -83,7 +83,7 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '7. Account deletion',
       body:
-          'You can delete your account at any time under Profile → '
+          'You can delete your account at any time under Account → '
           'Delete my account. Deletion removes your profile, Accounts, '
           'squads, team memberships, registered devices, notification '
           'preferences, and public profile. If you are the sole member of '

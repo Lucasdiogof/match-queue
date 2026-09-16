@@ -21,18 +21,16 @@ class MarketPage extends StatelessWidget {
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: <BlocProvider<dynamic>>[
       BlocProvider<MarketSearchCubit>(
-        create: (_) =>
-            MarketSearchCubit(
-              getIt<PlayerCardCatalogRepository>(),
-              getIt<MarketFavoritesRepository>(),
-            )..loadFavoriteIds(),
+        create: (_) => MarketSearchCubit(
+          getIt<PlayerCardCatalogRepository>(),
+          getIt<MarketFavoritesRepository>(),
+        )..loadFavoriteIds(),
       ),
       BlocProvider<MarketFavoritesCubit>(
-        create: (_) =>
-            MarketFavoritesCubit(
-              getIt<MarketFavoritesRepository>(),
-              getIt<PlayerCardCatalogRepository>(),
-            )..load(),
+        create: (_) => MarketFavoritesCubit(
+          getIt<MarketFavoritesRepository>(),
+          getIt<PlayerCardCatalogRepository>(),
+        )..load(),
       ),
     ],
     child: const _MarketView(),

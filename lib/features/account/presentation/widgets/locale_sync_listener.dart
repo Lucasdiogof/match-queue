@@ -5,7 +5,7 @@ import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
-import 'package:fifa_queue/features/profile/domain/repositories/profile_repository.dart';
+import 'package:fifa_queue/features/account/domain/repositories/account_repository.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +40,7 @@ class _LocaleSyncListenerState extends State<LocaleSyncListener> {
     }
     final tag = _effectiveTag(explicit);
     try {
-      await getIt<ProfileRepository>().updateLocale(tag);
+      await getIt<AccountRepository>().updateLocale(tag);
     } on Object catch (error) {
       getIt<AppLogger>().warning(
         'Falha ao sincronizar locale do profile: $error',

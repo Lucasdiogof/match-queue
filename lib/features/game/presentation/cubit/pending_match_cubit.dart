@@ -7,7 +7,7 @@ import 'package:fifa_queue/features/game/presentation/cubit/pending_match_state.
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Partidas do usuario pendentes de resultado, em qualquer time. App-scoped
-/// como ProfileCubit/TeamsCubit -- carregado no bootstrap quando ha sessao
+/// como AccountCubit/TeamsCubit -- carregado no bootstrap quando ha sessao
 /// restaurada, nunca por time.
 class PendingMatchCubit extends Cubit<PendingMatchState> {
   PendingMatchCubit(this._repository) : super(const PendingMatchState());

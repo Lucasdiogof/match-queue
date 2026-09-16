@@ -67,7 +67,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navHistory => 'Histórico';
 
   @override
-  String get navProfile => 'Perfil';
+  String get navProfile => 'Conta';
 
   @override
   String get comingSoonTitle => 'Em construção';

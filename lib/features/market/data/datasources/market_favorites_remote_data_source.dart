@@ -7,10 +7,7 @@ abstract interface class MarketFavoritesRemoteDataSource {
 
   Future<void> addFavorite({required String userId, required String cardId});
 
-  Future<void> removeFavorite({
-    required String userId,
-    required String cardId,
-  });
+  Future<void> removeFavorite({required String userId, required String cardId});
 }
 
 class SupabaseMarketFavoritesRemoteDataSource
@@ -33,11 +30,8 @@ class SupabaseMarketFavoritesRemoteDataSource
   }
 
   @override
-  Future<void> addFavorite({
-    required String userId,
-    required String cardId,
-  }) => _client
-      .from('market_favorites')
+  Future<void> addFavorite({required String userId, required String cardId}) =>
+      _client.from('market_favorites')
       // ignoreDuplicates vira ON CONFLICT DO NOTHING -- sem isso, o upsert
       // gera ON CONFLICT DO UPDATE, que exige grant de UPDATE na tabela
       // (nao concedido, e nao faz sentido conceder: a linha nao tem coluna

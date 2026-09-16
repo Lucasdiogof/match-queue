@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 
@@ -36,7 +36,7 @@ class TeamMember extends Equatable {
   const TeamMember({required this.membership, required this.profile});
 
   final TeamMembership membership;
-  final Profile profile;
+  final Account profile;
 
   String get userId => membership.userId;
 

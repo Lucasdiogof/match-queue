@@ -1,11 +1,11 @@
-import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
 
-abstract interface class ProfileRepository {
-  Future<Profile?> fetchMyProfile();
+abstract interface class AccountRepository {
+  Future<Account?> fetchMyProfile();
 
-  Future<Profile> ensureMyProfile({required String fallbackDisplayName});
+  Future<Account> ensureMyProfile({required String fallbackDisplayName});
 
-  Future<Profile> updateDisplayName(String displayName);
+  Future<Account> updateDisplayName(String displayName);
 
   /// Escrita pura de `profiles.locale`, usada só para o worker de push saber
   /// em que idioma redigir a notificação. Nunca é lida de volta pelo app: a

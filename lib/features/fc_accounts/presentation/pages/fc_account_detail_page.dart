@@ -431,7 +431,7 @@ class _SettingsSection extends StatelessWidget {
           AppButton.secondary(
             label: l10n.notificationsSectionTitle,
             icon: Icons.notifications_outlined,
-            onPressed: () => context.push(AppRoutes.profileNotifications.path),
+            onPressed: () => context.push(AppRoutes.accountNotifications.path),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton.secondary(

@@ -45,10 +45,7 @@ class InviteResolutionCubit extends Cubit<InviteResolutionState> {
     }
     emit(state.copyWith(status: InviteResolutionStatus.joining));
     try {
-      final result = await _repository.joinTeam(
-        code,
-        fcAccountId: fcAccountId,
-      );
+      final result = await _repository.joinTeam(code, fcAccountId: fcAccountId);
       if (!isClosed) {
         emit(
           state.copyWith(

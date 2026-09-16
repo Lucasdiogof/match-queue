@@ -3,8 +3,8 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_settings_section.dart';
 import 'package:flutter/material.dart';
 
-class ProfileNotificationsPage extends StatelessWidget {
-  const ProfileNotificationsPage({super.key});
+class AccountNotificationsPage extends StatelessWidget {
+  const AccountNotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) => AppScaffold(

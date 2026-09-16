@@ -4,8 +4,8 @@ import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileAppearancePage extends StatelessWidget {
-  const ProfileAppearancePage({super.key});
+class AccountAppearancePage extends StatelessWidget {
+  const AccountAppearancePage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -47,8 +47,9 @@ class MarketPriceSection extends StatelessWidget {
         : 'ps';
 
     return BlocProvider<MarketPriceCubit>(
-      create: (_) => MarketPriceCubit(getIt<MarketPriceRepository>())
-        ..load(card, platform: initialPlatform),
+      create: (_) =>
+          MarketPriceCubit(getIt<MarketPriceRepository>())
+            ..load(card, platform: initialPlatform),
       child: _MarketPriceBody(
         card: card,
         isFavorite: isFavorite,

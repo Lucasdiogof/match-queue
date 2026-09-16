@@ -1,34 +1,34 @@
 import 'package:equatable/equatable.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
-import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
 
-enum ProfileStatus { initial, loading, ready, failure }
+enum AccountStatus { initial, loading, ready, failure }
 
-class ProfileState extends Equatable {
-  const ProfileState({
-    this.status = ProfileStatus.initial,
+class AccountState extends Equatable {
+  const AccountState({
+    this.status = AccountStatus.initial,
     this.profile,
     this.failure,
     this.isSaving = false,
   });
 
-  final ProfileStatus status;
-  final Profile? profile;
+  final AccountStatus status;
+  final Account? profile;
   final AppFailure? failure;
   final bool isSaving;
 
-  bool get isReady => status == ProfileStatus.ready && profile != null;
+  bool get isReady => status == AccountStatus.ready && profile != null;
 
   String get displayName => profile?.displayName ?? '';
 
-  ProfileState copyWith({
-    ProfileStatus? status,
-    Profile? profile,
+  AccountState copyWith({
+    AccountStatus? status,
+    Account? profile,
     bool clearProfile = false,
     AppFailure? failure,
     bool clearFailure = false,
     bool? isSaving,
-  }) => ProfileState(
+  }) => AccountState(
     status: status ?? this.status,
     profile: clearProfile ? null : (profile ?? this.profile),
     failure: clearFailure ? null : (failure ?? this.failure),

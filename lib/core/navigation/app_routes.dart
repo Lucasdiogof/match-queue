@@ -59,18 +59,18 @@ class AppRoutes {
     'fc-account-history',
     '/app/fc-accounts/:fcAccountId/history',
   );
-  static const AppRoute profile = AppRoute('profile', '/app/profile');
-  static const AppRoute profileAppearance = AppRoute(
-    'profile-appearance',
-    '/app/profile/appearance',
+  static const AppRoute account = AppRoute('account', '/app/account');
+  static const AppRoute accountAppearance = AppRoute(
+    'account-appearance',
+    '/app/account/appearance',
   );
-  static const AppRoute profileLanguage = AppRoute(
-    'profile-language',
-    '/app/profile/language',
+  static const AppRoute accountLanguage = AppRoute(
+    'account-language',
+    '/app/account/language',
   );
-  static const AppRoute profileNotifications = AppRoute(
-    'profile-notifications',
-    '/app/profile/notifications',
+  static const AppRoute accountNotifications = AppRoute(
+    'account-notifications',
+    '/app/account/notifications',
   );
   static const AppRoute notifications = AppRoute(
     'notifications',
@@ -157,11 +157,11 @@ class AppRoutes {
   );
   static const AppRoute deleteAccount = AppRoute(
     'delete-account',
-    '/app/profile/delete-account',
+    '/app/account/delete-account',
   );
   static const AppRoute privacyPolicy = AppRoute('privacy', '/privacy');
   static const AppRoute termsOfUse = AppRoute('terms', '/terms');
-  static const AppRoute about = AppRoute('about', '/app/profile/about');
+  static const AppRoute about = AppRoute('about', '/app/account/about');
 
   static const AppRoute squadBuilder = AppRoute(
     'squad-builder',
@@ -185,7 +185,7 @@ class AppRoutes {
     team,
     control,
     market,
-    profile,
+    account,
   ];
 
   static const Set<String> unauthenticatedPaths = <String>{

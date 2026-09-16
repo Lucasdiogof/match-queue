@@ -8,17 +8,17 @@ import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
 import 'package:fifa_queue/features/notifications/application/push_token_coordinator.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:fifa_queue/features/profile/presentation/cubit/profile_state.dart';
-import 'package:fifa_queue/features/profile/presentation/widgets/edit_display_name_sheet.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/edit_display_name_sheet.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class AccountPage extends StatelessWidget {
+  const AccountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +68,9 @@ class _AccountSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<ProfileCubit, ProfileState>(
+    return BlocBuilder<AccountCubit, AccountState>(
       builder: (context, profileState) {
-        if (profileState.status == ProfileStatus.failure) {
+        if (profileState.status == AccountStatus.failure) {
           return AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,7 +86,7 @@ class _AccountSection extends StatelessWidget {
                 AppButton.secondary(
                   label: l10n.actionRetry,
                   icon: Icons.refresh,
-                  onPressed: () => context.read<ProfileCubit>().load(
+                  onPressed: () => context.read<AccountCubit>().load(
                     fallbackDisplayName:
                         context.read<AuthCubit>().state.user?.shortName ?? '',
                   ),
@@ -96,7 +96,7 @@ class _AccountSection extends StatelessWidget {
           );
         }
 
-        if (profileState.status == ProfileStatus.loading ||
+        if (profileState.status == AccountStatus.loading ||
             profileState.profile == null) {
           return const AppCard(
             child: SizedBox(height: 96, child: AppLoading()),
@@ -187,7 +187,7 @@ class _PreferencesSection extends StatelessWidget {
                 ThemeMode.dark => l10n.themeDark,
               }),
             ),
-            onTap: () => context.push(AppRoutes.profileAppearance.path),
+            onTap: () => context.push(AppRoutes.accountAppearance.path),
           ),
           const AppDivider(),
           _NavRow(
@@ -202,13 +202,13 @@ class _PreferencesSection extends StatelessWidget {
                 _ => l10n.languageSystem,
               }),
             ),
-            onTap: () => context.push(AppRoutes.profileLanguage.path),
+            onTap: () => context.push(AppRoutes.accountLanguage.path),
           ),
           const AppDivider(),
           _NavRow(
             icon: Icons.notifications_outlined,
             label: l10n.notificationsSectionTitle,
-            onTap: () => context.push(AppRoutes.profileNotifications.path),
+            onTap: () => context.push(AppRoutes.accountNotifications.path),
           ),
         ],
       ),

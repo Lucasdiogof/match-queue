@@ -1,45 +1,45 @@
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
-import 'package:fifa_queue/features/profile/data/datasources/profile_remote_data_source.dart';
-import 'package:fifa_queue/features/profile/data/models/profile_model.dart';
-import 'package:fifa_queue/features/profile/domain/entities/profile.dart';
-import 'package:fifa_queue/features/profile/domain/repositories/profile_repository.dart';
+import 'package:fifa_queue/features/account/data/datasources/account_remote_data_source.dart';
+import 'package:fifa_queue/features/account/data/models/account_model.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
+import 'package:fifa_queue/features/account/domain/repositories/account_repository.dart';
 
-class SupabaseProfileRepository implements ProfileRepository {
-  const SupabaseProfileRepository(this._dataSource, this._errorMapper);
+class SupabaseAccountRepository implements AccountRepository {
+  const SupabaseAccountRepository(this._dataSource, this._errorMapper);
 
-  final ProfileRemoteDataSource _dataSource;
+  final AccountRemoteDataSource _dataSource;
   final SupabaseErrorMapper _errorMapper;
 
   @override
-  Future<Profile?> fetchMyProfile() => _guard(() async {
+  Future<Account?> fetchMyProfile() => _guard(() async {
     final json = await _dataSource.fetchById(_requireUserId());
-    return json == null ? null : ProfileModel.fromJson(json);
+    return json == null ? null : AccountModel.fromJson(json);
   });
 
   @override
-  Future<Profile> ensureMyProfile({required String fallbackDisplayName}) =>
+  Future<Account> ensureMyProfile({required String fallbackDisplayName}) =>
       _guard(() async {
         final userId = _requireUserId();
         final existing = await _dataSource.fetchById(userId);
         if (existing != null) {
-          return ProfileModel.fromJson(existing);
+          return AccountModel.fromJson(existing);
         }
         final created = await _dataSource.insert(
           userId: userId,
           displayName: _sanitize(fallbackDisplayName),
         );
-        return ProfileModel.fromJson(created);
+        return AccountModel.fromJson(created);
       });
 
   @override
-  Future<Profile> updateDisplayName(String displayName) => _guard(() async {
+  Future<Account> updateDisplayName(String displayName) => _guard(() async {
     final updated = await _dataSource.updateDisplayName(
       userId: _requireUserId(),
       displayName: _sanitize(displayName),
     );
-    return ProfileModel.fromJson(updated);
+    return AccountModel.fromJson(updated);
   });
 
   @override

@@ -42,7 +42,9 @@ class AppChip extends StatelessWidget {
         borderRadius: AppRadii.borderPill,
         side: BorderSide(
           color: isSelected ? accent : colors.borderSubtle,
-          width: isSelected ? AppSizing.borderWidthStrong : AppSizing.borderWidth,
+          width: isSelected
+              ? AppSizing.borderWidthStrong
+              : AppSizing.borderWidth,
         ),
       ),
       child: InkWell(
