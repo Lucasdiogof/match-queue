@@ -29,8 +29,10 @@ class MarketCardTile extends StatelessWidget {
         children: <Widget>[
           // PlayerCardFace ja se dimensiona sozinho (AspectRatio interno) a
           // partir da largura recebida -- so precisa de uma largura, nao de
-          // outro AspectRatio por fora.
-          SizedBox(width: 56, child: PlayerCardFace(card: card)),
+          // outro AspectRatio por fora. 96 e a largura minima coberta pelos
+          // testes de overflow (player_card_face_overflow_test.dart); abaixo
+          // disso o fallback sem arte (nome/atributos) estoura.
+          SizedBox(width: 96, child: PlayerCardFace(card: card)),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
