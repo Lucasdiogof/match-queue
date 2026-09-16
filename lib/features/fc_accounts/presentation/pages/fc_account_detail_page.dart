@@ -10,6 +10,7 @@ import 'package:fifa_queue/features/fc_squads/presentation/widgets/squads_sectio
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_avatar_picker.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_platform_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rename_fc_account_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
@@ -404,6 +405,18 @@ class _SettingsSection extends StatelessWidget {
               context: context,
               accountId: account.id,
               currentName: account.name,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppButton.secondary(
+            label: l10n.fcAccountPlatformSettingsAction(
+              account.platform?.key ?? l10n.fcAccountPlatformNone,
+            ),
+            icon: Icons.videogame_asset_outlined,
+            onPressed: () => showFcAccountPlatformPickerSheet(
+              context: context,
+              accountId: account.id,
+              selected: account.platform,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),

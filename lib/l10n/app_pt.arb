@@ -761,6 +761,7 @@
   "errorFcAccountNotLinkedToTeam": "Esta conta não está vinculada a este time.",
   "errorFcAccountInvalidName": "Informe um nome de 2 a 40 caracteres.",
   "errorFcAccountInvalidDivision": "Divisão inválida.",
+  "errorFcAccountInvalidPlatform": "Plataforma inválida.",
   "errorFcAccountNotLinkedToAnyTeam": "Esta conta não está vinculada a nenhum time.",
   "validationFcAccountNameRequired": "Informe um nome para a conta.",
   "validationFcAccountNameTooShort": "O nome precisa ter pelo menos {min} caracteres.",
@@ -834,6 +835,17 @@
   "fcAccountDivisionTitle": "Divisão de Rivals",
   "fcAccountDivisionPickerTitle": "Selecionar divisão",
   "fcAccountDivisionNone": "Sem divisão definida",
+  "fcAccountPlatformLabel": "Plataforma",
+  "fcAccountPlatformPickerTitle": "Selecionar plataforma",
+  "fcAccountPlatformNone": "Sem plataforma definida",
+  "fcAccountPlatformSettingsAction": "Plataforma: {platform}",
+  "@fcAccountPlatformSettingsAction": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
   "fcAccountWeekendLeagueTitle": "Champions",
   "fcAccountWeekendLeagueComputedLabel": "Registrado por partidas: {wins}–{losses}",
   "@fcAccountWeekendLeagueComputedLabel": {

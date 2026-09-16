@@ -94,6 +94,8 @@ extension AppFailureL10n on AppFailure {
       FcAccountFailureReason.invalidName => l10n.errorFcAccountInvalidName,
       FcAccountFailureReason.invalidDivision =>
         l10n.errorFcAccountInvalidDivision,
+      FcAccountFailureReason.invalidPlatform =>
+        l10n.errorFcAccountInvalidPlatform,
     },
     PublicProfileFailure(:final reason) => switch (reason) {
       PublicProfileFailureReason.invalidSlugFormat =>

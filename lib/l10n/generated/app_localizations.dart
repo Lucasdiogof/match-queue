@@ -2390,6 +2390,12 @@ abstract class AppLocalizations {
   /// **'Divisão inválida.'**
   String get errorFcAccountInvalidDivision;
 
+  /// No description provided for @errorFcAccountInvalidPlatform.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plataforma inválida.'**
+  String get errorFcAccountInvalidPlatform;
+
   /// No description provided for @errorFcAccountNotLinkedToAnyTeam.
   ///
   /// In pt, this message translates to:
@@ -2611,6 +2617,30 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sem divisão definida'**
   String get fcAccountDivisionNone;
+
+  /// No description provided for @fcAccountPlatformLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plataforma'**
+  String get fcAccountPlatformLabel;
+
+  /// No description provided for @fcAccountPlatformPickerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecionar plataforma'**
+  String get fcAccountPlatformPickerTitle;
+
+  /// No description provided for @fcAccountPlatformNone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem plataforma definida'**
+  String get fcAccountPlatformNone;
+
+  /// No description provided for @fcAccountPlatformSettingsAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plataforma: {platform}'**
+  String fcAccountPlatformSettingsAction(String platform);
 
   /// No description provided for @fcAccountWeekendLeagueTitle.
   ///

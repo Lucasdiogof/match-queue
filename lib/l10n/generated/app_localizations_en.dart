@@ -1367,6 +1367,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorFcAccountInvalidDivision => 'Invalid division.';
 
   @override
+  String get errorFcAccountInvalidPlatform => 'Invalid platform.';
+
+  @override
   String get errorFcAccountNotLinkedToAnyTeam =>
       'This account isn\'t linked to any team.';
 
@@ -1490,6 +1493,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fcAccountDivisionNone => 'No division set';
+
+  @override
+  String get fcAccountPlatformLabel => 'Platform';
+
+  @override
+  String get fcAccountPlatformPickerTitle => 'Select platform';
+
+  @override
+  String get fcAccountPlatformNone => 'No platform set';
+
+  @override
+  String fcAccountPlatformSettingsAction(String platform) {
+    return 'Platform: $platform';
+  }
 
   @override
   String get fcAccountWeekendLeagueTitle => 'Champions';

@@ -1,4 +1,5 @@
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
@@ -34,6 +35,7 @@ class FcAccountModel {
           ? teamIds.map((id) => '$id').toList(growable: false)
           : const <String>[],
       rivalsDivision: RivalsDivision.tryFromKey(json['rivals_division']),
+      platform: FcAccountPlatform.tryFromKey(json['platform']),
       weekendLeagueComputedWins:
           json['weekend_league_computed_wins'] as int? ?? 0,
       weekendLeagueComputedLosses:

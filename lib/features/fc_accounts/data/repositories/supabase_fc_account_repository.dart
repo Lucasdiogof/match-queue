@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/fc_accounts/data/datasources/fc_account_remote_data_source.dart';
 import 'package:fifa_queue/features/fc_accounts/data/models/fc_account_model.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
@@ -22,12 +23,20 @@ class SupabaseFcAccountRepository implements FcAccountRepository {
   });
 
   @override
-  Future<void> createAccount(String name) =>
+  Future<String> createAccount(String name) =>
       _guard(() => _dataSource.createAccount(name));
 
   @override
   Future<void> updateAccount({required String id, required String name}) =>
       _guard(() => _dataSource.updateAccount(id: id, name: name));
+
+  @override
+  Future<void> updatePlatform({
+    required String id,
+    FcAccountPlatform? platform,
+  }) => _guard(
+    () => _dataSource.updatePlatform(id: id, platform: platform?.key),
+  );
 
   @override
   Future<String> uploadAndSetAvatar({

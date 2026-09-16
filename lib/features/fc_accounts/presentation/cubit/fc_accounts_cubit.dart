@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/fc_accounts/data/selected_fc_account_store.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/repositories/fc_account_repository.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
@@ -65,11 +66,21 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
     await _persistSelected(accountId);
   }
 
-  Future<bool> createAccount(String name) =>
-      _mutate(() => _repository.createAccount(name), selectNewest: true);
+  Future<bool> createAccount(String name, {FcAccountPlatform? platform}) =>
+      _mutate(() async {
+        final id = await _repository.createAccount(name);
+        if (platform != null) {
+          await _repository.updatePlatform(id: id, platform: platform);
+        }
+      }, selectNewest: true);
 
   Future<bool> updateAccount({required String id, required String name}) =>
       _mutate(() => _repository.updateAccount(id: id, name: name));
+
+  Future<bool> updatePlatform({
+    required String id,
+    FcAccountPlatform? platform,
+  }) => _mutate(() => _repository.updatePlatform(id: id, platform: platform));
 
   Future<bool> uploadAndSetAvatar({
     required String accountId,

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 
 /// Elenco (conta de Ultimate Team) do usuário -- nunca "conta EA" na UI.
@@ -12,6 +13,7 @@ class FcAccount extends Equatable {
     required this.teamIds,
     this.avatarUrl,
     this.rivalsDivision,
+    this.platform,
     this.weekendLeagueComputedWins = 0,
     this.weekendLeagueComputedLosses = 0,
     this.weekendLeagueManualWins,
@@ -26,6 +28,7 @@ class FcAccount extends Equatable {
   final List<String> teamIds;
   final String? avatarUrl;
   final RivalsDivision? rivalsDivision;
+  final FcAccountPlatform? platform;
   final int weekendLeagueComputedWins;
   final int weekendLeagueComputedLosses;
   final int? weekendLeagueManualWins;
@@ -55,6 +58,7 @@ class FcAccount extends Equatable {
     teamIds,
     avatarUrl,
     rivalsDivision,
+    platform,
     weekendLeagueComputedWins,
     weekendLeagueComputedLosses,
     weekendLeagueManualWins,
