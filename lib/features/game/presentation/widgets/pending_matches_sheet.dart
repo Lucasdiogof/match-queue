@@ -72,7 +72,7 @@ class _PendingRow extends StatelessWidget {
     final colors = context.colors;
     final when = match.startedAt.toLocal();
     final context_ = <String>[
-      if (match.fcAccountName != null) match.fcAccountName!,
+      if (match.profileName != null) match.profileName!,
       if (match.teamName != null) match.teamName!,
     ];
 

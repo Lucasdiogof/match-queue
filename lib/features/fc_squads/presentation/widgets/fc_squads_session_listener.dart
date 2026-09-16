@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,11 +15,11 @@ class FcSquadsSessionListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocListener<FcAccountsCubit, FcAccountsState>(
+      BlocListener<ProfilesCubit, ProfilesState>(
         listenWhen: (previous, current) =>
-            previous.selectedAccountId != current.selectedAccountId,
+            previous.selectedProfileId != current.selectedProfileId,
         listener: (context, state) => unawaited(
-          context.read<FcSquadsCubit>().load(state.selectedAccountId),
+          context.read<FcSquadsCubit>().load(state.selectedProfileId),
         ),
         child: child,
       );

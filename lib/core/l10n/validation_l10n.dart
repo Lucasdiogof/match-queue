@@ -50,15 +50,14 @@ extension TeamNameValidationErrorL10n on TeamNameValidationError {
   };
 }
 
-extension FcAccountNameValidationErrorL10n on FcAccountNameValidationError {
+extension ProfileNameValidationErrorL10n on ProfileNameValidationError {
   String message(AppLocalizations l10n) => switch (this) {
-    FcAccountNameValidationError.empty => l10n.validationFcAccountNameRequired,
-    FcAccountNameValidationError.tooShort =>
-      l10n.validationFcAccountNameTooShort(
-        AppValidators.fcAccountNameMinLength,
-      ),
-    FcAccountNameValidationError.tooLong => l10n.validationFcAccountNameTooLong(
-      AppValidators.fcAccountNameMaxLength,
+    ProfileNameValidationError.empty => l10n.validationProfileNameRequired,
+    ProfileNameValidationError.tooShort => l10n.validationProfileNameTooShort(
+      AppValidators.profileNameMinLength,
+    ),
+    ProfileNameValidationError.tooLong => l10n.validationProfileNameTooLong(
+      AppValidators.profileNameMaxLength,
     ),
   };
 }

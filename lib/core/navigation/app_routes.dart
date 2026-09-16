@@ -55,9 +55,9 @@ class AppRoutes {
   /// nela (ex.: notificacao de pedido/convite recebido). Precisa bater com
   /// a ordem das abas em TeamsListPage.
   static const int teamRequestsTabIndex = 2;
-  static const AppRoute fcAccountHistory = AppRoute(
-    'fc-account-history',
-    '/app/fc-accounts/:fcAccountId/history',
+  static const AppRoute profileHistory = AppRoute(
+    'profile-history',
+    '/app/profiles/:profileId/history',
   );
   static const AppRoute account = AppRoute('account', '/app/account');
   static const AppRoute accountAppearance = AppRoute(
@@ -84,10 +84,7 @@ class AppRoutes {
     'public-profile',
     '/u/:identifier',
   );
-  static const AppRoute fcAccounts = AppRoute(
-    'fc-accounts',
-    '/app/fc-accounts',
-  );
+  static const AppRoute profiles = AppRoute('profiles', '/app/profiles');
   static const AppRoute cardsCatalog = AppRoute(
     'cards-catalog',
     '/app/catalog/cards',
@@ -151,9 +148,9 @@ class AppRoutes {
     '/app/controls/defending',
   );
 
-  static const AppRoute fcAccountDetail = AppRoute(
-    'fc-account-detail',
-    '/app/fc-accounts/:fcAccountId',
+  static const AppRoute profileDetail = AppRoute(
+    'profile-detail',
+    '/app/profiles/:profileId',
   );
   static const AppRoute deleteAccount = AppRoute(
     'delete-account',
@@ -173,7 +170,7 @@ class AppRoutes {
     '/app/history/match/:matchId',
   );
 
-  static const String fcAccountIdParam = 'fcAccountId';
+  static const String profileIdParam = 'profileId';
   static const String squadIdParam = 'squadId';
   static const String teamIdParam = 'teamId';
   static const String userIdParam = 'userId';
@@ -207,11 +204,11 @@ class AppRoutes {
 
   static String joinTeamLocation(String inviteCode) => '/join/$inviteCode';
 
-  static String fcAccountDetailLocation(String fcAccountId) =>
-      '/app/fc-accounts/$fcAccountId';
+  static String profileDetailLocation(String profileId) =>
+      '/app/profiles/$profileId';
 
-  static String fcAccountHistoryLocation(String fcAccountId) =>
-      '/app/fc-accounts/$fcAccountId/history';
+  static String profileHistoryLocation(String profileId) =>
+      '/app/profiles/$profileId/history';
 
   static String squadBuilderLocation(String squadId) => '/app/squads/$squadId';
 
@@ -233,8 +230,8 @@ class AppRoutes {
 
   static String publicProfileLocation(String identifier) => '/u/$identifier';
 
-  static String profileSharingLocation(String fcAccountId) => Uri(
+  static String profileSharingLocation(String profileId) => Uri(
     path: profileSharing.path,
-    queryParameters: <String, String>{'fcAccountId': fcAccountId},
+    queryParameters: <String, String>{'profileId': profileId},
   ).toString();
 }

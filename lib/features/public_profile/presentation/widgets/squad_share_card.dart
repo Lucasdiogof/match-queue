@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 /// So titulares nesta V1 -- banco fica fora do card publico (mesma decisao
 /// da RPC), documentado no handoff da Etapa 16.
 class SquadShareCard extends StatelessWidget {
-  const SquadShareCard({required this.squad, this.accountName, super.key});
+  const SquadShareCard({required this.squad, this.profileName, super.key});
 
   final PublicSquad squad;
-  final String? accountName;
+  final String? profileName;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,9 @@ class SquadShareCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(squad.name, style: context.textStyles.titleLarge),
-                    if (accountName != null)
+                    if (profileName != null)
                       Text(
-                        accountName!,
+                        profileName!,
                         style: context.textStyles.bodySmall?.copyWith(
                           color: colors.textSecondary,
                         ),

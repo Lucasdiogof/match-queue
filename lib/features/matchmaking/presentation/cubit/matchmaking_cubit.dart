@@ -22,7 +22,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     this._repository,
     this._logger,
     this._cooldownStore, {
-    required this.fcAccountId,
+    required this.profileId,
     required this.teamId,
     required this.mode,
   }) : super(const MatchmakingState());
@@ -32,7 +32,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   final MatchmakingRepository _repository;
   final AppLogger _logger;
   final SearchCooldownStore _cooldownStore;
-  final String fcAccountId;
+  final String profileId;
   final String teamId;
   final GameMode mode;
 
@@ -50,7 +50,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     emit(state.copyWith(status: MatchmakingStatus.loading, clearFailure: true));
     try {
       var snapshot = await _repository.getMyStatus(
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         teamId: teamId,
         mode: mode,
       );
@@ -73,7 +73,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
           return;
         }
         snapshot = await _repository.getMyStatus(
-          fcAccountId: fcAccountId,
+          profileId: profileId,
           teamId: teamId,
           mode: mode,
         );
@@ -88,7 +88,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       // por qualquer troca de conta/time/modo -- ainda estiver dentro dos
       // 30s, o botao "Buscar partida" precisa nascer ja bloqueado, nao
       // liberado ate a proxima acao.
-      final storedCooldown = _cooldownStore.read(fcAccountId, teamId, mode.key);
+      final storedCooldown = _cooldownStore.read(profileId, teamId, mode.key);
       if (storedCooldown != null && DateTime.now().isBefore(storedCooldown)) {
         emit(state.copyWith(cooldownEndsAt: storedCooldown));
       }
@@ -108,7 +108,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     emit(state.copyWith(isRefreshing: true));
     try {
       final snapshot = await _repository.getMyStatus(
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         teamId: teamId,
         mode: mode,
       );
@@ -143,7 +143,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   Future<bool> startSearch({String? fcSquadId}) async {
     final ok = await _runAction(
       () => _repository.requestSearch(
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         teamId: teamId,
         fcSquadId: fcSquadId,
         mode: mode,
@@ -158,7 +158,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   static const Duration _cooldownDuration = Duration(seconds: 30);
 
   Future<bool> cancel() async {
-    final ok = await _runAction(() => _repository.cancelSearch(fcAccountId));
+    final ok = await _runAction(() => _repository.cancelSearch(profileId));
     if (ok && !isClosed) {
       _setCooldown(DateTime.now().add(_cooldownDuration));
     }
@@ -167,16 +167,14 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
 
   Future<bool> leaveQueue() => _runAction(
     () => _repository.leaveQueue(
-      fcAccountId: fcAccountId,
+      profileId: profileId,
       teamId: teamId,
       mode: mode,
     ),
   );
 
   Future<bool> matchFound() async {
-    final ok = await _runAction(
-      () => _repository.reportMatchFound(fcAccountId),
-    );
+    final ok = await _runAction(() => _repository.reportMatchFound(profileId));
     if (ok && !isClosed) {
       _setCooldown(DateTime.now().add(_cooldownDuration));
     }
@@ -188,7 +186,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   /// nasceria sem saber que esse cooldown ainda esta rolando.
   void _setCooldown(DateTime endsAt) {
     emit(state.copyWith(cooldownEndsAt: endsAt));
-    unawaited(_cooldownStore.write(fcAccountId, teamId, mode.key, endsAt));
+    unawaited(_cooldownStore.write(profileId, teamId, mode.key, endsAt));
   }
 
   Future<bool> requestPriority() async {
@@ -198,7 +196,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     emit(state.copyWith(isActionPending: true, clearFailure: true));
     try {
       await _repository.requestPriority(
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         teamId: teamId,
         mode: mode,
       );
@@ -305,12 +303,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         );
         if (isCooldown) {
           unawaited(
-            _cooldownStore.write(
-              fcAccountId,
-              teamId,
-              mode.key,
-              cooldownEndsAt!,
-            ),
+            _cooldownStore.write(profileId, teamId, mode.key, cooldownEndsAt!),
           );
         }
       }
@@ -326,7 +319,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   /// desta correcao), mas load() nao trava por causa disso.
   Future<void> _cancelStaleElsewhereSearch() async {
     try {
-      await _repository.cancelSearch(fcAccountId);
+      await _repository.cancelSearch(profileId);
     } on AppFailure {
       // Ignorado de proposito -- ver doc comment acima.
     }
@@ -388,14 +381,14 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     // a mesma situacao de hoje (expira sozinha).
     final snapshot = state.snapshot;
     if (snapshot != null && snapshot.isSearchingByMe) {
-      unawaited(_repository.cancelSearch(fcAccountId));
+      unawaited(_repository.cancelSearch(profileId));
       // Mesmo cooldown de um cancel() manual (ver _setCooldown) -- so que
       // sem emit (cubit ja fechando): direto no store, pra sobreviver e
       // ser lido pelo PROXIMO cubit dessa mesma conta+time+modo, seja
       // daqui a 2 segundos ou depois de passar por outras contas.
       unawaited(
         _cooldownStore.write(
-          fcAccountId,
+          profileId,
           teamId,
           mode.key,
           DateTime.now().add(_cooldownDuration),
@@ -404,7 +397,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     } else if (snapshot != null && snapshot.isQueuedByMe) {
       unawaited(
         _repository.leaveQueue(
-          fcAccountId: fcAccountId,
+          profileId: profileId,
           teamId: teamId,
           mode: mode,
         ),

@@ -53,9 +53,9 @@ void main() {
   test('perfil sem conta vinculada nao quebra e fica com listas vazias', () {
     final profile = PlayerProfileModel.fromJson(_profileJson());
 
-    expect(profile.account, isNull);
+    expect(profile.profile, isNull);
     expect(profile.squad, isNull);
-    expect(profile.candidateAccounts, isEmpty);
+    expect(profile.candidateProfiles, isEmpty);
     expect(profile.weekendLeagueHistory, isEmpty);
   });
 }

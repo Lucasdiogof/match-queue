@@ -45,10 +45,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionSignOut => 'Sign out';
 
   @override
-  String get profileSignOutConfirmTitle => 'Sign out?';
+  String get accountSignOutConfirmTitle => 'Sign out?';
 
   @override
-  String get profileSignOutConfirmMessage =>
+  String get accountSignOutConfirmMessage =>
       'You can sign back in anytime with your email and password.';
 
   @override
@@ -110,7 +110,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get controlEmptyMessage =>
-      'Pick an account and a mode to start searching for a match.';
+      'Pick an profile and a mode to start searching for a match.';
 
   @override
   String get teamTitle => 'My team';
@@ -196,7 +196,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get profilePreferencesTitle => 'Preferences';
+  String get accountPreferencesTitle => 'Preferences';
 
   @override
   String get settingsAppearance => 'Appearance';
@@ -543,33 +543,33 @@ class AppLocalizationsEn extends AppLocalizations {
       'First we build teams and members. After that, only one player per team searches at a time.';
 
   @override
-  String get profileAccountSection => 'Account';
+  String get accountAccountSection => 'Account';
 
   @override
-  String get profileDisplayNameLabel => 'Name or nickname';
+  String get accountDisplayNameLabel => 'Name or nickname';
 
   @override
-  String get profileEmailLabel => 'Email';
+  String get accountEmailLabel => 'Email';
 
   @override
-  String get profileEditName => 'Edit name';
+  String get accountEditName => 'Edit name';
 
   @override
-  String get profileEditNameTitle => 'What should we call you?';
+  String get accountEditNameTitle => 'What should we call you?';
 
   @override
-  String profileDisplayNameCounter(int count, int max) {
+  String accountDisplayNameCounter(int count, int max) {
     return '$count/$max';
   }
 
   @override
-  String get profileSaved => 'Name updated.';
+  String get accountSaved => 'Name updated.';
 
   @override
-  String get profileLoadErrorTitle => 'We could not load your profile';
+  String get accountLoadErrorTitle => 'We could not load your profile';
 
   @override
-  String profileMemberSince(DateTime date) {
+  String accountMemberSince(DateTime date) {
     final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMM(localeName);
     final String dateString = dateDateFormat.format(date);
 
@@ -601,8 +601,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can tweak colors, logo and search duration later.';
 
   @override
-  String get teamCreateFcAccountsSectionTitle =>
-      'Which FC accounts are part of this team?';
+  String get teamCreateProfilesSectionTitle =>
+      'Which FC profiles are part of this team?';
 
   @override
   String get teamNameLabel => 'Team name';
@@ -638,11 +638,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playerProfileTitle => 'Player profile';
 
   @override
-  String get playerProfileAccountLabel => 'Account';
+  String get playerProfileAccountLabel => 'Perfil';
 
   @override
   String get playerProfileNoAccountMessage =>
-      'This player has no account linked to this team.';
+      'Este jogador não tem um perfil vinculado a este time.';
 
   @override
   String get playerProfileSquadLabel => 'Squad';
@@ -657,7 +657,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playerProfileSelectAccountTitle =>
-      'This player has more than one account on this team';
+      'Este jogador tem mais de um perfil neste time';
 
   @override
   String get playerProfileWeekendLeagueEmptyMessage =>
@@ -955,10 +955,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get matchmakingNotLinkedMessage =>
-      'Link this FC Account to this team to search for matches.';
+      'Link this Profile to this team to search for matches.';
 
   @override
-  String get matchmakingLinkAccountAction => 'Link account to team';
+  String get matchmakingLinkAccountAction => 'Vincular Perfil ao time';
 
   @override
   String get notificationsSectionTitle => 'Notifications';
@@ -1041,7 +1041,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsCategoryRivalsHint =>
-      'A team account changes division.';
+      'A team profile changes division.';
 
   @override
   String get notificationsCategoryRankings => 'Rankings';
@@ -1231,7 +1231,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activityDetailStatus => 'Status';
 
   @override
-  String get activityDetailFcAccount => 'Account';
+  String get activityDetailProfile => 'Profile';
 
   @override
   String get historyLoadErrorTitle => 'We could not load the history';
@@ -1353,212 +1353,215 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weekendLeagueActiveBadge => 'Live now';
 
   @override
-  String get errorFcAccountNotFound => 'Account not found.';
+  String get errorProfileNotFound => 'Profile not found.';
 
   @override
-  String get errorFcAccountNotLinkedToTeam =>
-      'This account isn\'t linked to this team.';
+  String get errorProfileNotLinkedToTeam =>
+      'This profile isn\'t linked to this team.';
 
   @override
-  String get errorFcAccountInvalidName =>
-      'Enter a name from 2 to 40 characters.';
+  String get errorProfileInvalidName => 'Enter a name from 2 to 40 characters.';
 
   @override
-  String get errorFcAccountInvalidDivision => 'Invalid division.';
+  String get errorProfileInvalidDivision => 'Invalid division.';
 
   @override
-  String get errorFcAccountInvalidPlatform => 'Invalid platform.';
+  String get errorProfileInvalidPlatform => 'Invalid platform.';
 
   @override
-  String get errorFcAccountNotLinkedToAnyTeam =>
-      'This account isn\'t linked to any team.';
+  String get errorProfileNotLinkedToAnyTeam =>
+      'This profile isn\'t linked to any team.';
 
   @override
-  String get validationFcAccountNameRequired => 'Enter a name for the account.';
+  String get validationProfileNameRequired => 'Enter a name for the profile.';
 
   @override
-  String validationFcAccountNameTooShort(int min) {
+  String validationProfileNameTooShort(int min) {
     return 'The name must be at least $min characters.';
   }
 
   @override
-  String validationFcAccountNameTooLong(int max) {
+  String validationProfileNameTooLong(int max) {
     return 'The name can be at most $max characters.';
   }
 
   @override
-  String get fcAccountRequiredToSearch =>
-      'Create or select an account to search for a match.';
+  String get profileRequiredToSearch =>
+      'Create or select an profile to search for a match.';
 
   @override
-  String fcAccountLinkCta(String accountName, String teamName) {
-    return 'Link $accountName to $teamName';
+  String profileLinkCta(
+    String accountName,
+    String teamName,
+    Object profileName,
+  ) {
+    return 'Link $profileName to $teamName';
   }
 
   @override
-  String get fcAccountsPageTitle => 'My Accounts';
+  String get profilesPageTitle => 'My Profiles';
 
   @override
-  String get fcAccountsPageSubtitle => 'Your Ultimate Team accounts';
+  String get profilesPageSubtitle => 'Your Ultimate Team profiles';
 
   @override
-  String get fcAccountsEmptyTitle => 'You don\'t have an account yet';
+  String get profilesEmptyTitle => 'You don\'t have an profile yet';
 
   @override
-  String get fcAccountsEmptyMessage =>
-      'Create an account to link it to teams and start searching for matches.';
+  String get profilesEmptyMessage =>
+      'Create an profile to link it to teams and start searching for matches.';
 
   @override
-  String get fcAccountCreateAction => 'Create account';
+  String get profileCreateAction => 'Create profile';
 
   @override
-  String get fcAccountCreateTitle => 'New account';
+  String get profileCreateTitle => 'New profile';
 
   @override
-  String get fcAccountCreateSubtitle => 'Give this account a name.';
+  String get profileCreateSubtitle => 'Give this profile a name.';
 
   @override
-  String get fcAccountNameLabel => 'Account name';
+  String get profileNameLabel => 'Profile name';
 
   @override
-  String get fcAccountNameHint => 'e.g. Main account';
+  String get profileNameHint => 'e.g. Main profile';
 
   @override
-  String get fcAccountRenameTitle => 'Rename account';
+  String get profileRenameTitle => 'Rename profile';
 
   @override
-  String get fcAccountRenameAction => 'Rename';
+  String get profileRenameAction => 'Rename';
 
   @override
-  String get fcAccountArchiveAction => 'Delete account';
+  String get profileArchiveAction => 'Delete profile';
 
   @override
-  String get fcAccountArchiveConfirmTitle => 'Delete account?';
+  String get profileArchiveConfirmTitle => 'Delete profile?';
 
   @override
-  String fcAccountArchiveConfirmMessage(String name) {
+  String profileArchiveConfirmMessage(String name) {
     return '\"$name\" disappears from the list and stops representing its linked teams (history is kept). If you\'re the sole owner of a team, it will be deleted too; if there are other members, ownership transfers to someone else automatically.';
   }
 
   @override
-  String get fcAccountSwitchTitle => 'Switch account';
+  String get profileSwitchTitle => 'Switch profile';
 
   @override
-  String get fcAccountSwitchCreateAction => '+ Create new account';
+  String get profileSwitchCreateAction => '+ Create new profile';
 
   @override
-  String get fcAccountLinkedTeamsTitle => 'Teams';
+  String get profileLinkedTeamsTitle => 'Teams';
 
   @override
-  String get fcAccountLinkedTeamsEmpty =>
-      'This account isn\'t linked to any team yet.';
+  String get profileLinkedTeamsEmpty =>
+      'This profile isn\'t linked to any team yet.';
 
   @override
-  String get fcAccountSharingAction => 'Sharing';
+  String get profileSharingAction => 'Sharing';
 
   @override
-  String get fcAccountAvatarChangeAction => 'Change photo';
+  String get profileAvatarChangeAction => 'Change photo';
 
   @override
-  String get fcAccountAvatarRemoveAction => 'Remove photo';
+  String get profileAvatarRemoveAction => 'Remove photo';
 
   @override
-  String get fcAccountAvatarRemoveConfirmTitle => 'Remove the account photo?';
+  String get profileAvatarRemoveConfirmTitle => 'Remove the profile photo?';
 
   @override
-  String get fcAccountAvatarRemoveConfirmMessage =>
-      'The account goes back to showing initials instead of the photo.';
+  String get profileAvatarRemoveConfirmMessage =>
+      'The profile goes back to showing initials instead of the photo.';
 
   @override
-  String get fcAccountLinkTeamAction => 'Link';
+  String get profileLinkTeamAction => 'Link';
 
   @override
-  String get fcAccountUnlinkTeamAction => 'Leave team';
+  String get profileUnlinkTeamAction => 'Leave team';
 
   @override
-  String get fcAccountLeaveTeamConfirmTitle => 'Leave the team?';
+  String get profileLeaveTeamConfirmTitle => 'Leave the team?';
 
   @override
-  String fcAccountLeaveTeamConfirmMessage(String teamName) {
-    return 'This account will stop representing $teamName. You can link it again whenever you want.';
+  String profileLeaveTeamConfirmMessage(String teamName) {
+    return 'This profile will stop representing $teamName. You can link it again whenever you want.';
   }
 
   @override
-  String get fcAccountSettingsTitle => 'Settings';
+  String get profileSettingsTitle => 'Settings';
 
   @override
-  String get fcAccountDivisionTitle => 'Rivals Division';
+  String get profileDivisionTitle => 'Rivals Division';
 
   @override
-  String get fcAccountDivisionPickerTitle => 'Select division';
+  String get profileDivisionPickerTitle => 'Select division';
 
   @override
-  String get fcAccountDivisionNone => 'No division set';
+  String get profileDivisionNone => 'No division set';
 
   @override
-  String get fcAccountPlatformLabel => 'Platform';
+  String get profilePlatformLabel => 'Platform';
 
   @override
-  String get fcAccountPlatformPickerTitle => 'Select platform';
+  String get profilePlatformPickerTitle => 'Select platform';
 
   @override
-  String get fcAccountPlatformNone => 'No platform set';
+  String get profilePlatformNone => 'No platform set';
 
   @override
-  String fcAccountPlatformSettingsAction(String platform) {
+  String profilePlatformSettingsAction(String platform) {
     return 'Platform: $platform';
   }
 
   @override
-  String get fcAccountWeekendLeagueTitle => 'Champions';
+  String get profileWeekendLeagueTitle => 'Champions';
 
   @override
-  String fcAccountWeekendLeagueComputedLabel(int wins, int losses) {
+  String profileWeekendLeagueComputedLabel(int wins, int losses) {
     return 'Tracked from matches: $wins–$losses';
   }
 
   @override
-  String fcAccountWeekendLeagueManualLabel(int wins, int losses) {
+  String profileWeekendLeagueManualLabel(int wins, int losses) {
     return 'Reported result: $wins–$losses';
   }
 
   @override
-  String get fcAccountWeekendLeagueEditAction => 'Report result';
+  String get profileWeekendLeagueEditAction => 'Report result';
 
   @override
-  String get fcAccountWeekendLeagueClearAction => 'Use tracked matches';
+  String get profileWeekendLeagueClearAction => 'Use tracked matches';
 
   @override
-  String get fcAccountWeekendLeagueSheetTitle => 'Report result';
+  String get profileWeekendLeagueSheetTitle => 'Report result';
 
   @override
-  String get fcAccountWeekendLeagueWinsLabel => 'Wins';
+  String get profileWeekendLeagueWinsLabel => 'Wins';
 
   @override
-  String get fcAccountWeekendLeagueLossesLabel => 'Losses';
+  String get profileWeekendLeagueLossesLabel => 'Losses';
 
   @override
-  String get fcAccountOnboardingTitle => 'Add your first account';
+  String get profileOnboardingTitle => 'Add your first profile';
 
   @override
-  String get fcAccountOnboardingMessage =>
-      'Register the account you play or manage to join teams, search for matches and follow your progress.';
+  String get profileOnboardingMessage =>
+      'Register the profile you play or manage to join teams, search for matches and follow your progress.';
 
   @override
-  String get fcAccountOnboardingCreateAction => 'Add account';
+  String get profileOnboardingCreateAction => 'Add profile';
 
   @override
   String pendingMatchElencoLabel(String name) {
-    return 'Account: $name';
+    return 'Profile: $name';
   }
 
   @override
   String historyElencoLabel(String name) {
-    return 'Account: $name';
+    return 'Profile: $name';
   }
 
   @override
-  String get profileFcAccountsRow => 'Accounts';
+  String get accountProfilesRow => 'Perfis';
 
   @override
   String get rivalsDivisionDiv10 => 'Division 10';
@@ -1704,7 +1707,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get squadLabel => 'Squad';
 
   @override
-  String get playAccountLabel => 'Account';
+  String get playAccountLabel => 'Perfil';
 
   @override
   String get playSquadEmpty => 'No squad built yet';
@@ -2092,7 +2095,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get squadPrimaryLineupEmpty =>
-      'You have not built a lineup for this account yet.';
+      'You have not built a lineup for this profile yet.';
 
   @override
   String squadOtherLineupsAction(int count) {
@@ -2202,7 +2205,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get profileSharingRow => 'Sharing';
+  String get accountSharingRow => 'Sharing';
 
   @override
   String get publicProfileSectionTitle => 'Privacy';
@@ -2239,10 +2242,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get publicProfileSlugInvalid => 'Invalid address';
 
   @override
-  String get publicProfileAccountLabel => 'Public account';
+  String get publicProfileAccountLabel => 'Perfil pública';
 
   @override
-  String get publicProfileAccountEmpty => 'No account selected';
+  String get publicProfileAccountEmpty => 'Nenhum perfil selecionado';
 
   @override
   String get publicProfileToggleSquad => 'Main lineup';
@@ -2305,7 +2308,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get publicProfileEditSharingCta => 'Edit sharing';
 
   @override
-  String get publicProfileNoAccountsHint => 'Create an Account before sharing.';
+  String get publicProfileNoAccountsHint =>
+      'Crie uma Perfil antes de compartilhar.';
 
   @override
   String get errorPublicProfileInvalidSlug =>
@@ -2345,14 +2349,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'You are the sole owner of a team with other members. Remove the other members or wait for ownership transfer support before deleting your account.';
 
   @override
-  String get profileLegalTitle => 'About and legal';
+  String get accountLegalTitle => 'About and legal';
 
   @override
   String get aboutTitle => 'About';
 
   @override
   String get aboutDescription =>
-      'Match Queue organizes your EA SPORTS FC team\'s match search queue, accounts, and stats.';
+      'Match Queue organizes your EA SPORTS FC team\'s match search queue, profiles, and stats.';
 
   @override
   String get privacyPolicyTitle => 'Privacy Policy';
@@ -2379,8 +2383,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.';
 
   @override
-  String get deleteAccountConsequenceFcAccounts =>
-      'All your Accounts and their recorded Rivals division';
+  String get deleteAccountConsequenceProfiles =>
+      'Todos os seus Perfis e a divisão de Rivals registrada';
 
   @override
   String get deleteAccountConsequenceSquads => 'Your squads';
@@ -2413,16 +2417,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteAccountAction => 'Permanently delete my account';
 
   @override
-  String get homeFcAccountEyebrow => 'ACTIVE FC ACCOUNT';
+  String get homeProfileEyebrow => 'ACTIVE FC ACCOUNT';
 
   @override
-  String get homeFcAccountSwitchAction => 'Switch';
+  String get homeProfileSwitchAction => 'Switch';
 
   @override
-  String get homeFcAccountNoTeams => 'No team yet';
+  String get homeProfileNoTeams => 'No team yet';
 
   @override
-  String homeFcAccountTeamCount(int count) {
+  String homeProfileTeamCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -2476,7 +2480,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get controlAccountNotLinkedMessage =>
-      'Create or link this account to a team to be able to search for matches.';
+      'Crie ou vincule este perfil a algum time para poder buscar partidas.';
 
   @override
   String get controlGoToTeamsAction => 'Go to Teams';
@@ -2560,8 +2564,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamPublicRequestCancelAction => 'Cancel request';
 
   @override
-  String get teamPublicChooseAccountTitle =>
-      'Which account do you want to link?';
+  String get teamPublicChooseAccountTitle => 'Qual Perfil você quer vincular?';
 
   @override
   String get teamPublicRequestSentMessage =>
@@ -2776,7 +2779,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startShortcutPlayHint =>
-      'Pick the account and mode, then join the queue.';
+      'Pick the profile and mode, then join the queue.';
 
   @override
   String get startCatalogTitle => 'Catalogue';

@@ -19,7 +19,7 @@ class PendingGameMatchModel {
       weekendLeagueNumber: m['weekend_league_number'] is int
           ? m['weekend_league_number'] as int
           : null,
-      fcAccountName: m['fc_account_name'] as String?,
+      profileName: m['fc_account_name'] as String?,
       fcSquadName: m['fc_squad_name'] as String?,
       fcFormationCode: m['fc_formation_code'] as String?,
     );
@@ -47,7 +47,7 @@ class PendingGameMatchModel {
       weekendLeagueNumber: m['weekend_league_number'] is int
           ? m['weekend_league_number'] as int
           : null,
-      fcAccountName: m['fc_account_name'] as String?,
+      profileName: m['fc_account_name'] as String?,
       fcSquadName: m['fc_squad_name'] as String?,
       teamName: m['team_name'] as String?,
     );

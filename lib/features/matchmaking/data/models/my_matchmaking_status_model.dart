@@ -11,7 +11,7 @@ class MyMatchmakingSnapshotModel {
     final queueJson = json['queue'] as List<dynamic>? ?? const <dynamic>[];
 
     return MyMatchmakingSnapshot(
-      fcAccountId: '${json['fc_account_id']}',
+      profileId: '${json['fc_account_id']}',
       teamId: '${json['team_id']}',
       accountLinkedToTeam: json['account_linked_to_team'] as bool? ?? true,
       searchDurationSeconds: json['search_duration_seconds'] as int?,
@@ -38,7 +38,7 @@ class MyMatchmakingSnapshotModel {
               displayName: '${blockingJson['display_name']}',
               avatarUrl: blockingJson['avatar_url'] as String?,
               expiresAt: DateTime.parse('${blockingJson['expires_at']}'),
-              fcAccountName: blockingJson['fc_account_name'] as String?,
+              profileName: blockingJson['fc_account_name'] as String?,
               gameMode: GameMode.tryFromKey(blockingJson['game_mode']),
             ),
       searchingElsewhere: elsewhereJson == null
@@ -54,10 +54,10 @@ class MyMatchmakingSnapshotModel {
             QueueEntry(
               position: entry['position'] as int? ?? 0,
               userId: '${entry['user_id']}',
-              fcAccountId: entry['fc_account_id'] as String?,
+              profileId: entry['fc_account_id'] as String?,
               displayName: '${entry['display_name']}',
               avatarUrl: entry['avatar_url'] as String?,
-              fcAccountName: entry['fc_account_name'] as String?,
+              profileName: entry['fc_account_name'] as String?,
               gameMode: GameMode.tryFromKey(entry['game_mode']),
               isMe: entry['is_me'] as bool? ?? false,
             ),

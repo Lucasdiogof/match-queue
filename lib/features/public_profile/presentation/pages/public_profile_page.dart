@@ -106,12 +106,12 @@ class _PublicProfileBodyState extends State<_PublicProfileBody> {
               return ListView(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 children: <Widget>[
-                  if (state.isOwner && profile.accountId != null) ...<Widget>[
+                  if (state.isOwner && profile.profileId != null) ...<Widget>[
                     AppButton.secondary(
                       label: l10n.publicProfileEditSharingCta,
                       icon: Icons.settings_outlined,
                       onPressed: () => context.push(
-                        AppRoutes.profileSharingLocation(profile.accountId!),
+                        AppRoutes.profileSharingLocation(profile.profileId!),
                       ),
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -150,7 +150,7 @@ class _PublicProfileBodyState extends State<_PublicProfileBody> {
                       key: _squadCardKey,
                       child: SquadShareCard(
                         squad: profile.squad!,
-                        accountName: profile.accountName,
+                        profileName: profile.profileName,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),

@@ -17,9 +17,9 @@ import 'package:go_router/go_router.dart';
 /// escalações" a listar, então a tela vai direto de "sem elenco" para
 /// "montar" ou de "tem elenco" para "editar", sem gerenciador de lista.
 class SquadsSection extends StatelessWidget {
-  const SquadsSection({required this.fcAccountId, super.key});
+  const SquadsSection({required this.profileId, super.key});
 
-  final String fcAccountId;
+  final String profileId;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class SquadsSection extends StatelessWidget {
       builder: (context, state) {
         // Só mostra squads do elenco aberto: se o cubit ainda está com outra
         // conta carregada, espera em vez de exibir dado alheio.
-        if (state.accountId != fcAccountId) {
+        if (state.profileId != profileId) {
           return const SizedBox.shrink();
         }
 

@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/notifications/domain/repositories/notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -21,20 +21,20 @@ class NotificationRouter {
     this._logger, {
     NotificationInboxRepository? inboxRepository,
     NotificationUnreadCubit? unreadCubit,
-    FcAccountsCubit? fcAccountsCubit,
+    ProfilesCubit? profilesCubit,
   }) : _inboxRepository = inboxRepository,
        _unreadCubit = unreadCubit,
-       _fcAccountsCubit = fcAccountsCubit;
+       _profilesCubit = profilesCubit;
 
   final TeamsCubit _teamsCubit;
   final AppLogger _logger;
   final NotificationInboxRepository? _inboxRepository;
   final NotificationUnreadCubit? _unreadCubit;
-  final FcAccountsCubit? _fcAccountsCubit;
+  final ProfilesCubit? _profilesCubit;
 
   static const String keyType = 'type';
   static const String keyTeamId = 'team_id';
-  static const String keyFcAccountId = 'fc_account_id';
+  static const String keyProfileId = 'fc_account_id';
   static const String keyNotificationId = 'notification_id';
 
   static const Set<String> _teamScopedTypes = <String>{
@@ -76,11 +76,11 @@ class NotificationRouter {
     }
 
     final type = _string(data[keyType]);
-    final fcAccountId = _string(data[keyFcAccountId]);
+    final profileId = _string(data[keyProfileId]);
 
     if (type != null && _matchmakingTypes.contains(type) && teamId != null) {
-      if (fcAccountId != null) {
-        await _fcAccountsCubit?.selectAccount(fcAccountId);
+      if (profileId != null) {
+        await _profilesCubit?.selectProfile(profileId);
       }
       if (!context.mounted) {
         return;
@@ -93,8 +93,8 @@ class NotificationRouter {
       context.go(AppRoutes.teamDetailLocation(teamId));
       return;
     }
-    if (type == 'RIVALS_DIVISION_CHANGED' && fcAccountId != null) {
-      context.go(AppRoutes.fcAccountDetailLocation(fcAccountId));
+    if (type == 'RIVALS_DIVISION_CHANGED' && profileId != null) {
+      context.go(AppRoutes.profileDetailLocation(profileId));
       return;
     }
 

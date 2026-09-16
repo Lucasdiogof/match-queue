@@ -10,7 +10,7 @@ class FcSquadsState extends Equatable {
     this.status = FcSquadsStatus.initial,
     this.squads = const <FcSquadSummary>[],
     this.formations = const <FormationDefinition>[],
-    this.accountId,
+    this.profileId,
     this.selectedSquadId,
     this.isSaving = false,
     this.failure,
@@ -20,7 +20,7 @@ class FcSquadsState extends Equatable {
   final FcSquadsStatus status;
   final List<FcSquadSummary> squads;
   final List<FormationDefinition> formations;
-  final String? accountId;
+  final String? profileId;
 
   /// Squad escolhido para a PRÓXIMA busca. Começa no default do elenco, mas
   /// trocar aqui não muda o default global (item 70) -- vale só para a
@@ -57,7 +57,7 @@ class FcSquadsState extends Equatable {
     FcSquadsStatus? status,
     List<FcSquadSummary>? squads,
     List<FormationDefinition>? formations,
-    String? accountId,
+    String? profileId,
     String? selectedSquadId,
     bool clearSelectedSquadId = false,
     bool? isSaving,
@@ -69,7 +69,7 @@ class FcSquadsState extends Equatable {
     status: status ?? this.status,
     squads: squads ?? this.squads,
     formations: formations ?? this.formations,
-    accountId: accountId ?? this.accountId,
+    profileId: profileId ?? this.profileId,
     selectedSquadId: clearSelectedSquadId
         ? null
         : (selectedSquadId ?? this.selectedSquadId),
@@ -85,7 +85,7 @@ class FcSquadsState extends Equatable {
     status,
     squads,
     formations,
-    accountId,
+    profileId,
     selectedSquadId,
     isSaving,
     failure,

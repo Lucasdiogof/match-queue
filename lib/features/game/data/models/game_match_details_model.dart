@@ -28,8 +28,8 @@ class GameMatchDetailsModel {
           ? null
           : DateTime.tryParse('${m['ended_at']}')?.toLocal(),
       weekendLeagueEventId: m['weekend_league_event_id'] as String?,
-      fcAccountId: m['fc_account_id'] as String?,
-      fcAccountName: m['fc_account_name'] as String?,
+      profileId: m['fc_account_id'] as String?,
+      profileName: m['fc_account_name'] as String?,
       fcSquadId: m['fc_squad_id'] as String?,
       squadSnapshot: SquadSnapshot.fromJson(m['squad_snapshot']),
       playerStats: statsJson is List

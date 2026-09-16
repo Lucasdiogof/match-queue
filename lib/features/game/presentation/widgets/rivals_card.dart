@@ -1,10 +1,10 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/pages/rivals_detail_page.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/profile.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
+import 'package:fifa_queue/features/profiles/presentation/pages/rivals_detail_page.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,28 +18,28 @@ class RivalsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<FcAccountsCubit, FcAccountsState>(
+      BlocBuilder<ProfilesCubit, ProfilesState>(
         buildWhen: (previous, current) =>
-            previous.selectedAccount != current.selectedAccount,
+            previous.selectedProfile != current.selectedProfile,
         builder: (context, state) {
-          final account = state.selectedAccount;
-          if (account == null) {
+          final profile = state.selectedProfile;
+          if (profile == null) {
             return const SizedBox.shrink();
           }
-          return _RivalsCardBody(account: account);
+          return _RivalsCardBody(profile: profile);
         },
       );
 }
 
 class _RivalsCardBody extends StatelessWidget {
-  const _RivalsCardBody({required this.account});
+  const _RivalsCardBody({required this.profile});
 
-  final FcAccount account;
+  final Profile profile;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final division = account.rivalsDivision;
+    final division = profile.rivalsDivision;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.lg),
@@ -48,7 +48,7 @@ class _RivalsCardBody extends StatelessWidget {
         title: l10n.rivalsSectionTitle,
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (_) => RivalsDetailPage(account: account),
+            builder: (_) => RivalsDetailPage(profile: profile),
           ),
         ),
         child: Column(
@@ -84,12 +84,12 @@ class _RivalsCardBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 CompetitiveStat(
-                  value: '${account.rivalsWins}',
+                  value: '${profile.rivalsWins}',
                   label: l10n.statsWinsLabel,
                 ),
                 const SizedBox(width: AppSpacing.xl),
                 CompetitiveStat(
-                  value: '${account.rivalsLosses}',
+                  value: '${profile.rivalsLosses}',
                   label: l10n.statsLossesLabel,
                 ),
               ],

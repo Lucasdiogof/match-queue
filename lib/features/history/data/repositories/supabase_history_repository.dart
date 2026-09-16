@@ -62,7 +62,7 @@ class SupabaseHistoryRepository implements HistoryRepository {
     GameResult? gameResult,
     MatchSearchStatus? searchStatus,
     String? userId,
-    String? fcAccountId,
+    String? profileId,
     DateTime? from,
     DateTime? to,
   }) => _guard(() async {
@@ -79,7 +79,7 @@ class SupabaseHistoryRepository implements HistoryRepository {
       gameResult: gameResult?.key,
       searchStatus: searchStatus?.key,
       userId: userId,
-      fcAccountId: fcAccountId,
+      profileId: profileId,
       from: from?.toUtc().toIso8601String(),
       to: to?.toUtc().toIso8601String(),
     );

@@ -17,7 +17,7 @@ sealed class TeamActivityEntry extends Equatable {
     required this.gameMode,
     required this.occurredAt,
     this.avatarUrl,
-    this.fcAccountName,
+    this.profileName,
   });
 
   final String id;
@@ -26,7 +26,7 @@ sealed class TeamActivityEntry extends Equatable {
   final String? avatarUrl;
   final GameMode gameMode;
   final DateTime occurredAt;
-  final String? fcAccountName;
+  final String? profileName;
 }
 
 class GameHistoryEntry extends TeamActivityEntry {
@@ -39,7 +39,7 @@ class GameHistoryEntry extends TeamActivityEntry {
     required this.status,
     required this.startedAt,
     super.avatarUrl,
-    super.fcAccountName,
+    super.profileName,
     this.fcSquadName,
     this.fcFormationCode,
     this.result,
@@ -75,7 +75,7 @@ class GameHistoryEntry extends TeamActivityEntry {
     goalsAgainst,
     startedAt,
     weekendLeagueNumber,
-    fcAccountName,
+    profileName,
   ];
 }
 
@@ -90,7 +90,7 @@ class SearchHistoryEntry extends TeamActivityEntry {
     required this.startedAt,
     required this.durationSeconds,
     super.avatarUrl,
-    super.fcAccountName,
+    super.profileName,
   });
 
   final MatchSearchStatus status;
@@ -108,7 +108,7 @@ class SearchHistoryEntry extends TeamActivityEntry {
     status,
     startedAt,
     durationSeconds,
-    fcAccountName,
+    profileName,
   ];
 }
 

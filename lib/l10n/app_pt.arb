@@ -12,8 +12,8 @@
   "actionBack": "Voltar",
   "actionNotNow": "Agora não",
   "actionSignOut": "Sair",
-  "profileSignOutConfirmTitle": "Sair da conta?",
-  "profileSignOutConfirmMessage": "Você pode entrar de novo a qualquer momento com seu e-mail e senha.",
+  "accountSignOutConfirmTitle": "Sair da conta?",
+  "accountSignOutConfirmMessage": "Você pode entrar de novo a qualquer momento com seu e-mail e senha.",
   "actionEdit": "Editar",
   "navCentral": "Central",
   "navControl": "Jogar",
@@ -32,7 +32,7 @@
   "controlDiscoverClubsTitle": "Clubes",
   "controlDiscoverClubsSubtitle": "Explore os clubes do catálogo FC27.",
   "controlEmptyTitle": "Pronto pra entrar em campo?",
-  "controlEmptyMessage": "Escolha uma conta e um modo pra começar a buscar partida.",
+  "controlEmptyMessage": "Escolha um perfil e um modo pra começar a buscar partida.",
   "teamTitle": "Meu time",
   "teamSubtitle": "Jogadores, cargos e convites.",
   "teamsListSubtitle": "Seus times e status operacional.",
@@ -76,7 +76,7 @@
       }
     }
   },
-  "profilePreferencesTitle": "Preferências",
+  "accountPreferencesTitle": "Preferências",
   "settingsAppearance": "Aparência",
   "settingsLanguage": "Idioma",
   "themeSystem": "Sistema",
@@ -266,13 +266,13 @@
   },
   "homeSearchPlaceholderTitle": "A busca coordenada chega na Etapa 3",
   "homeSearchPlaceholderMessage": "Primeiro vamos criar times e membros. Depois disso, só um jogador do time procura partida por vez.",
-  "profileAccountSection": "Conta",
-  "profileDisplayNameLabel": "Nome ou apelido",
-  "profileEmailLabel": "E-mail",
-  "profileEditName": "Editar nome",
-  "profileEditNameTitle": "Como podemos te chamar?",
-  "profileDisplayNameCounter": "{count}/{max}",
-  "@profileDisplayNameCounter": {
+  "accountAccountSection": "Conta",
+  "accountDisplayNameLabel": "Nome ou apelido",
+  "accountEmailLabel": "E-mail",
+  "accountEditName": "Editar nome",
+  "accountEditNameTitle": "Como podemos te chamar?",
+  "accountDisplayNameCounter": "{count}/{max}",
+  "@accountDisplayNameCounter": {
     "placeholders": {
       "count": {
         "type": "int",
@@ -284,10 +284,10 @@
       }
     }
   },
-  "profileSaved": "Nome atualizado.",
-  "profileLoadErrorTitle": "Não foi possível carregar seu perfil",
-  "profileMemberSince": "No Match Queue desde {date}",
-  "@profileMemberSince": {
+  "accountSaved": "Nome atualizado.",
+  "accountLoadErrorTitle": "Não foi possível carregar seu perfil",
+  "accountMemberSince": "No Match Queue desde {date}",
+  "@accountMemberSince": {
     "placeholders": {
       "date": {
         "type": "DateTime",
@@ -302,7 +302,7 @@
   "teamHaveInviteCode": "Tenho um código de convite",
   "teamCreateTitle": "Crie seu time",
   "teamCreateSubtitle": "Dá para ajustar cores, logo e duração da busca depois.",
-  "teamCreateFcAccountsSectionTitle": "Quais Contas FC fazem parte deste time?",
+  "teamCreateProfilesSectionTitle": "Quais Perfis fazem parte deste time?",
   "teamNameLabel": "Nome do time",
   "teamNameHint": "Falcons FC",
   "teamTagLabel": "Tag (opcional)",
@@ -314,8 +314,8 @@
   "teamsListEmptyMessage": "Você ainda não faz parte de um time.",
   "teamDetailPlayersTitle": "Jogadores",
   "playerProfileTitle": "Perfil do jogador",
-  "playerProfileAccountLabel": "Conta",
-  "playerProfileNoAccountMessage": "Este jogador não tem uma conta vinculada a este time.",
+  "playerProfileAccountLabel": "Perfil",
+  "playerProfileNoAccountMessage": "Este jogador não tem um perfil vinculado a este time.",
   "playerProfileSquadLabel": "Escalação",
   "playerProfileSquadNoneMessage": "Ainda sem escalação montada.",
   "playerProfileCompletenessLabel": "{count}/{total} titulares",
@@ -329,7 +329,7 @@
       }
     }
   },
-  "playerProfileSelectAccountTitle": "Este jogador tem mais de uma conta neste time",
+  "playerProfileSelectAccountTitle": "Este jogador tem mais de um perfil neste time",
   "playerProfileWeekendLeagueEmptyMessage": "Nenhum evento de Champions registrado.",
   "playerProfileWeekendLeagueRecordLabel": "{wins}V–{losses}D",
   "@playerProfileWeekendLeagueRecordLabel": {
@@ -520,8 +520,8 @@
       }
     }
   },
-  "matchmakingNotLinkedMessage": "Vincule esta Conta FC a este time para poder buscar partida.",
-  "matchmakingLinkAccountAction": "Vincular Conta ao time",
+  "matchmakingNotLinkedMessage": "Vincule este Perfil a este time para poder buscar partida.",
+  "matchmakingLinkAccountAction": "Vincular Perfil ao time",
   "notificationsSectionTitle": "Notificações",
   "notificationsToggleYourTurn": "Sua vez de buscar",
   "notificationsToggleYourTurnHint": "Quando chegar a sua vez na fila do time.",
@@ -545,7 +545,7 @@
   "notificationsCategoryWeekendLeague": "Champions",
   "notificationsCategoryWeekendLeagueHint": "Quando o Champions termina.",
   "notificationsCategoryRivals": "Rivals",
-  "notificationsCategoryRivalsHint": "Mudança de divisão de uma conta do time.",
+  "notificationsCategoryRivalsHint": "Mudança de divisão de um perfil do time.",
   "notificationsCategoryRankings": "Rankings",
   "notificationsCategoryRankingsHint": "Novo líder, artilheiro ou garçom do time.",
   "notificationsInboxTitle": "Notificações",
@@ -680,7 +680,7 @@
   "activityDetailScore": "Placar",
   "activityDetailResult": "Resultado",
   "activityDetailStatus": "Status",
-  "activityDetailFcAccount": "Conta",
+  "activityDetailProfile": "Perfil",
   "historyLoadErrorTitle": "Não foi possível carregar o histórico",
   "historyLoadMore": "Carregar mais",
   "historyEntryDate": "{date}",
@@ -757,15 +757,15 @@
     }
   },
   "weekendLeagueActiveBadge": "Em andamento",
-  "errorFcAccountNotFound": "Conta não encontrada.",
-  "errorFcAccountNotLinkedToTeam": "Esta conta não está vinculada a este time.",
-  "errorFcAccountInvalidName": "Informe um nome de 2 a 40 caracteres.",
-  "errorFcAccountInvalidDivision": "Divisão inválida.",
-  "errorFcAccountInvalidPlatform": "Plataforma inválida.",
-  "errorFcAccountNotLinkedToAnyTeam": "Esta conta não está vinculada a nenhum time.",
-  "validationFcAccountNameRequired": "Informe um nome para a conta.",
-  "validationFcAccountNameTooShort": "O nome precisa ter pelo menos {min} caracteres.",
-  "@validationFcAccountNameTooShort": {
+  "errorProfileNotFound": "Perfil não encontrado.",
+  "errorProfileNotLinkedToTeam": "Este perfil não está vinculado a este time.",
+  "errorProfileInvalidName": "Informe um nome de 2 a 40 caracteres.",
+  "errorProfileInvalidDivision": "Divisão inválida.",
+  "errorProfileInvalidPlatform": "Plataforma inválida.",
+  "errorProfileNotLinkedToAnyTeam": "Este perfil não está vinculado a nenhum time.",
+  "validationProfileNameRequired": "Informe um nome para o perfil.",
+  "validationProfileNameTooShort": "O nome precisa ter pelo menos {min} caracteres.",
+  "@validationProfileNameTooShort": {
     "placeholders": {
       "min": {
         "type": "int",
@@ -773,8 +773,8 @@
       }
     }
   },
-  "validationFcAccountNameTooLong": "O nome pode ter no máximo {max} caracteres.",
-  "@validationFcAccountNameTooLong": {
+  "validationProfileNameTooLong": "O nome pode ter no máximo {max} caracteres.",
+  "@validationProfileNameTooLong": {
     "placeholders": {
       "max": {
         "type": "int",
@@ -782,9 +782,9 @@
       }
     }
   },
-  "fcAccountRequiredToSearch": "Crie ou selecione uma conta para buscar partida.",
-  "fcAccountLinkCta": "Vincular {accountName} ao {teamName}",
-  "@fcAccountLinkCta": {
+  "profileRequiredToSearch": "Crie ou selecione um perfil para buscar partida.",
+  "profileLinkCta": "Vincular {accountName} ao {teamName}",
+  "@profileLinkCta": {
     "placeholders": {
       "accountName": {
         "type": "String",
@@ -796,41 +796,41 @@
       }
     }
   },
-  "fcAccountsPageTitle": "Minhas Contas",
-  "fcAccountsPageSubtitle": "Suas contas de Ultimate Team",
-  "fcAccountsEmptyTitle": "Você ainda não tem uma conta",
-  "fcAccountsEmptyMessage": "Crie uma conta para vincular a times e começar a buscar partidas.",
-  "fcAccountCreateAction": "Criar conta",
-  "fcAccountCreateTitle": "Nova conta",
-  "fcAccountCreateSubtitle": "Dê um nome para identificar esta conta.",
-  "fcAccountNameLabel": "Nome da conta",
-  "fcAccountNameHint": "Ex.: Conta principal",
-  "fcAccountRenameTitle": "Renomear conta",
-  "fcAccountRenameAction": "Renomear",
-  "fcAccountArchiveAction": "Excluir conta",
-  "fcAccountArchiveConfirmTitle": "Excluir conta?",
-  "fcAccountArchiveConfirmMessage": "\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.",
-  "@fcAccountArchiveConfirmMessage": {
+  "profilesPageTitle": "Meus Perfis",
+  "profilesPageSubtitle": "Seus perfis de Ultimate Team",
+  "profilesEmptyTitle": "Você ainda não tem um perfil",
+  "profilesEmptyMessage": "Crie um perfil para vincular a times e começar a buscar partidas.",
+  "profileCreateAction": "Criar perfil",
+  "profileCreateTitle": "Novo perfil",
+  "profileCreateSubtitle": "Dê um nome para identificar este perfil.",
+  "profileNameLabel": "Nome do perfil",
+  "profileNameHint": "Ex.: Perfil principal",
+  "profileRenameTitle": "Renomear perfil",
+  "profileRenameAction": "Renomear",
+  "profileArchiveAction": "Excluir perfil",
+  "profileArchiveConfirmTitle": "Excluir perfil?",
+  "profileArchiveConfirmMessage": "\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.",
+  "@profileArchiveConfirmMessage": {
     "placeholders": {
       "name": {
         "type": "String"
       }
     }
   },
-  "fcAccountSwitchTitle": "Trocar de conta",
-  "fcAccountSwitchCreateAction": "+ Criar nova conta",
-  "fcAccountLinkedTeamsTitle": "Times",
-  "fcAccountLinkedTeamsEmpty": "Esta conta ainda não está vinculada a nenhum time.",
-  "fcAccountSharingAction": "Compartilhamento",
-  "fcAccountAvatarChangeAction": "Alterar foto",
-  "fcAccountAvatarRemoveAction": "Remover foto",
-  "fcAccountAvatarRemoveConfirmTitle": "Remover a foto da conta?",
-  "fcAccountAvatarRemoveConfirmMessage": "A conta volta a mostrar as iniciais no lugar da foto.",
-  "fcAccountLinkTeamAction": "Vincular",
-  "fcAccountUnlinkTeamAction": "Sair do time",
-  "fcAccountLeaveTeamConfirmTitle": "Sair do time?",
-  "fcAccountLeaveTeamConfirmMessage": "Essa conta vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.",
-  "@fcAccountLeaveTeamConfirmMessage": {
+  "profileSwitchTitle": "Trocar de perfil",
+  "profileSwitchCreateAction": "+ Criar novo perfil",
+  "profileLinkedTeamsTitle": "Times",
+  "profileLinkedTeamsEmpty": "Este perfil ainda não está vinculado a nenhum time.",
+  "profileSharingAction": "Compartilhamento",
+  "profileAvatarChangeAction": "Alterar foto",
+  "profileAvatarRemoveAction": "Remover foto",
+  "profileAvatarRemoveConfirmTitle": "Remover a foto do perfil?",
+  "profileAvatarRemoveConfirmMessage": "O perfil volta a mostrar as iniciais no lugar da foto.",
+  "profileLinkTeamAction": "Vincular",
+  "profileUnlinkTeamAction": "Sair do time",
+  "profileLeaveTeamConfirmTitle": "Sair do time?",
+  "profileLeaveTeamConfirmMessage": "Esse perfil vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.",
+  "@profileLeaveTeamConfirmMessage": {
     "placeholders": {
       "teamName": {
         "type": "String",
@@ -838,24 +838,24 @@
       }
     }
   },
-  "fcAccountSettingsTitle": "Configurações",
-  "fcAccountDivisionTitle": "Divisão de Rivals",
-  "fcAccountDivisionPickerTitle": "Selecionar divisão",
-  "fcAccountDivisionNone": "Sem divisão definida",
-  "fcAccountPlatformLabel": "Plataforma",
-  "fcAccountPlatformPickerTitle": "Selecionar plataforma",
-  "fcAccountPlatformNone": "Sem plataforma definida",
-  "fcAccountPlatformSettingsAction": "Plataforma: {platform}",
-  "@fcAccountPlatformSettingsAction": {
+  "profileSettingsTitle": "Configurações",
+  "profileDivisionTitle": "Divisão de Rivals",
+  "profileDivisionPickerTitle": "Selecionar divisão",
+  "profileDivisionNone": "Sem divisão definida",
+  "profilePlatformLabel": "Plataforma",
+  "profilePlatformPickerTitle": "Selecionar plataforma",
+  "profilePlatformNone": "Sem plataforma definida",
+  "profilePlatformSettingsAction": "Plataforma: {platform}",
+  "@profilePlatformSettingsAction": {
     "placeholders": {
       "platform": {
         "type": "String"
       }
     }
   },
-  "fcAccountWeekendLeagueTitle": "Champions",
-  "fcAccountWeekendLeagueComputedLabel": "Registrado por partidas: {wins}–{losses}",
-  "@fcAccountWeekendLeagueComputedLabel": {
+  "profileWeekendLeagueTitle": "Champions",
+  "profileWeekendLeagueComputedLabel": "Registrado por partidas: {wins}–{losses}",
+  "@profileWeekendLeagueComputedLabel": {
     "placeholders": {
       "wins": {
         "type": "int",
@@ -867,8 +867,8 @@
       }
     }
   },
-  "fcAccountWeekendLeagueManualLabel": "Resultado informado: {wins}–{losses}",
-  "@fcAccountWeekendLeagueManualLabel": {
+  "profileWeekendLeagueManualLabel": "Resultado informado: {wins}–{losses}",
+  "@profileWeekendLeagueManualLabel": {
     "placeholders": {
       "wins": {
         "type": "int",
@@ -880,15 +880,15 @@
       }
     }
   },
-  "fcAccountWeekendLeagueEditAction": "Informar resultado",
-  "fcAccountWeekendLeagueClearAction": "Usar resultado das partidas",
-  "fcAccountWeekendLeagueSheetTitle": "Informar resultado",
-  "fcAccountWeekendLeagueWinsLabel": "Vitórias",
-  "fcAccountWeekendLeagueLossesLabel": "Derrotas",
-  "fcAccountOnboardingTitle": "Adicione sua primeira conta",
-  "fcAccountOnboardingMessage": "Cadastre a conta que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.",
-  "fcAccountOnboardingCreateAction": "Adicionar conta",
-  "pendingMatchElencoLabel": "Conta: {name}",
+  "profileWeekendLeagueEditAction": "Informar resultado",
+  "profileWeekendLeagueClearAction": "Usar resultado das partidas",
+  "profileWeekendLeagueSheetTitle": "Informar resultado",
+  "profileWeekendLeagueWinsLabel": "Vitórias",
+  "profileWeekendLeagueLossesLabel": "Derrotas",
+  "profileOnboardingTitle": "Adicione seu primeiro perfil",
+  "profileOnboardingMessage": "Cadastre a perfil que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.",
+  "profileOnboardingCreateAction": "Adicionar perfil",
+  "pendingMatchElencoLabel": "Perfil: {name}",
   "@pendingMatchElencoLabel": {
     "placeholders": {
       "name": {
@@ -897,7 +897,7 @@
       }
     }
   },
-  "historyElencoLabel": "Conta: {name}",
+  "historyElencoLabel": "Perfil: {name}",
   "@historyElencoLabel": {
     "placeholders": {
       "name": {
@@ -906,7 +906,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "Contas",
+  "accountProfilesRow": "Perfis",
   "rivalsDivisionDiv10": "Divisão 10",
   "rivalsDivisionDiv9": "Divisão 9",
   "rivalsDivisionDiv8": "Divisão 8",
@@ -965,7 +965,7 @@
 
   "squadLabel": "Escalação",
 
-  "playAccountLabel": "Conta",
+  "playAccountLabel": "Perfil",
   "playSquadEmpty": "Nenhuma escalação montada",
 
   "playSquadBuildAction": "Montar escalação",
@@ -1159,7 +1159,7 @@
   "squadPrimaryLineupTitle": "Escalação Principal",
   "squadPrimaryLineupEditAction": "Editar escalação",
   "squadPrimaryLineupCreateAction": "Montar escalação",
-  "squadPrimaryLineupEmpty": "Você ainda não montou uma escalação para esta Conta.",
+  "squadPrimaryLineupEmpty": "Você ainda não montou uma escalação para este Perfil.",
   "squadOtherLineupsAction": "{count, plural, =1{Ver outra escalação} other{Ver outras {count} escalações}}",
   "@squadOtherLineupsAction": {
     "placeholders": {
@@ -1217,7 +1217,7 @@
       }
     }
   },
-  "profileSharingRow": "Compartilhamento",
+  "accountSharingRow": "Compartilhamento",
   "publicProfileSectionTitle": "Privacidade",
   "publicProfileMasterSwitchLabel": "Perfil público",
   "publicProfileMasterSwitchHint": "Deixe seu perfil visível por um link público, sem precisar de conta no app.",
@@ -1229,8 +1229,8 @@
   "publicProfileSlugUnavailable": "Este endereço já está em uso",
   "publicProfileSlugChecking": "Verificando…",
   "publicProfileSlugInvalid": "Endereço inválido",
-  "publicProfileAccountLabel": "Conta pública",
-  "publicProfileAccountEmpty": "Nenhuma conta selecionada",
+  "publicProfileAccountLabel": "Perfil pública",
+  "publicProfileAccountEmpty": "Nenhum perfil selecionado",
   "publicProfileToggleSquad": "Escalação Principal",
   "publicProfileToggleWeekendLeague": "Champions",
   "publicProfileToggleRivals": "Rivals",
@@ -1250,7 +1250,7 @@
   "publicProfileEnableFirstMessage": "Ative o perfil público para compartilhar sua escalação.",
   "publicProfileGoToSettingsAction": "Ir para Compartilhamento",
   "publicProfileEditSharingCta": "Editar compartilhamento",
-  "publicProfileNoAccountsHint": "Crie uma Conta antes de compartilhar.",
+  "publicProfileNoAccountsHint": "Crie uma Perfil antes de compartilhar.",
   "errorPublicProfileInvalidSlug": "Endereço inválido. Use 3-24 letras minúsculas, números ou _.",
   "errorPublicProfileReservedSlug": "Este endereço é reservado, escolha outro.",
   "errorPublicProfileSlugTaken": "Este endereço já está em uso.",
@@ -1274,9 +1274,9 @@
   },
   "validationPublicProfileSlugInvalid": "Use só letras minúsculas, números ou _.",
   "errorSoleOwnerBlocksAccountDeletion": "Você é dono único de um time com outros integrantes. Remova os outros integrantes ou aguarde suporte a transferência de posse antes de excluir sua conta.",
-  "profileLegalTitle": "Sobre e legal",
+  "accountLegalTitle": "Sobre e legal",
   "aboutTitle": "Sobre",
-  "aboutDescription": "Match Queue organiza a fila de busca de partida, Contas e estatísticas do seu time de EA SPORTS FC.",
+  "aboutDescription": "Match Queue organiza a fila de busca de partida, Perfis e estatísticas do seu time de EA SPORTS FC.",
   "privacyPolicyTitle": "Política de Privacidade",
   "termsOfUseTitle": "Termos de Uso",
   "legalUpdatedAt": "Atualizado em {date}",
@@ -1292,7 +1292,7 @@
   "deleteAccountTitle": "Excluir conta",
   "deleteAccountWarningTitle": "Esta ação é permanente",
   "deleteAccountWarningMessage": "Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.",
-  "deleteAccountConsequenceFcAccounts": "Todas as suas Contas e a divisão de Rivals registrada",
+  "deleteAccountConsequenceProfiles": "Todos os seus Perfis e a divisão de Rivals registrada",
   "deleteAccountConsequenceSquads": "Suas escalações",
 
   "deleteAccountConsequenceHistory": "Sua participação nos times de que você faz parte",
@@ -1310,13 +1310,13 @@
   },
   "deleteAccountConfirmWord": "EXCLUIR",
   "deleteAccountAction": "Excluir minha conta permanentemente",
-  "homeFcAccountEyebrow": "CONTA FC ATIVA",
-  "homeFcAccountSwitchAction": "Trocar",
-  "homeFcAccountNoTeams": "Ainda sem time",
-  "homeFcAccountTeamCount": "{count, plural, =1{Em 1 time} other{Em {count} times}}",
+  "homeProfileEyebrow": "CONTA FC ATIVA",
+  "homeProfileSwitchAction": "Trocar",
+  "homeProfileNoTeams": "Ainda sem time",
+  "homeProfileTeamCount": "{count, plural, =1{Em 1 time} other{Em {count} times}}",
   "homeNoTeamTitle": "Entre em um time",
   "homeNoTeamMessage": "Buscar partida exige um time. Rivals e Champions você já pode usar.",
-  "@homeFcAccountTeamCount": {
+  "@homeProfileTeamCount": {
     "placeholders": {
       "count": {
         "type": "int",
@@ -1335,7 +1335,7 @@
   "controlNoTeamTitle": "Você precisa de um time",
   "controlNoTeamMessage": "A fila é do time. Entre em um ou crie o seu para começar a buscar.",
   "controlNoTeamAction": "Ver times",
-  "controlAccountNotLinkedMessage": "Crie ou vincule esta conta a algum time para poder buscar partidas.",
+  "controlAccountNotLinkedMessage": "Crie ou vincule este perfil a algum time para poder buscar partidas.",
   "controlGoToTeamsAction": "Ir para Times",
   "navRequests": "Convites",
   "requestsPageTitle": "Solicitações",
@@ -1369,7 +1369,7 @@
   "teamPublicRequestToJoinAction": "Pedir para entrar",
   "teamPublicRequestSentAction": "Solicitação enviada",
   "teamPublicRequestCancelAction": "Cancelar solicitação",
-  "teamPublicChooseAccountTitle": "Qual Conta você quer vincular?",
+  "teamPublicChooseAccountTitle": "Qual Perfil você quer vincular?",
 
   "teamPublicRequestSentMessage": "Pedido enviado. O dono do time vai revisar.",
   "teamPublicRequestCancelledMessage": "Solicitação cancelada.",
@@ -1478,7 +1478,7 @@
       }
     }
   },
-  "startShortcutPlayHint": "Escolha a conta, o modo e entre na fila.",
+  "startShortcutPlayHint": "Escolha a perfil, o modo e entre na fila.",
   "startCatalogTitle": "Catálogo",
   "startCatalogCardsHint": "Explore as cartas do jogo.",
   "startCatalogClubsHint": "Clubes por overall médio.",

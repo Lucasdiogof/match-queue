@@ -10,7 +10,7 @@ enum TeamNameValidationError { empty, tooShort, tooLong }
 
 enum TeamTagValidationError { tooShort, tooLong, invalidCharacters }
 
-enum FcAccountNameValidationError { empty, tooShort, tooLong }
+enum ProfileNameValidationError { empty, tooShort, tooLong }
 
 enum PublicProfileSlugValidationError {
   empty,
@@ -29,8 +29,8 @@ class AppValidators {
   static const int teamNameMaxLength = 40;
   static const int teamTagMinLength = 2;
   static const int teamTagMaxLength = 6;
-  static const int fcAccountNameMinLength = 2;
-  static const int fcAccountNameMaxLength = 40;
+  static const int profileNameMinLength = 2;
+  static const int profileNameMaxLength = 40;
   static const int publicProfileSlugMinLength = 3;
   static const int publicProfileSlugMaxLength = 24;
 
@@ -119,19 +119,19 @@ class AppValidators {
     return null;
   }
 
-  static String normalizeFcAccountName(String value) =>
+  static String normalizeProfileName(String value) =>
       value.trim().replaceAll(_whitespaceRun, ' ');
 
-  static FcAccountNameValidationError? fcAccountName(String? value) {
-    final normalized = normalizeFcAccountName(value ?? '');
+  static ProfileNameValidationError? profileName(String? value) {
+    final normalized = normalizeProfileName(value ?? '');
     if (normalized.isEmpty) {
-      return FcAccountNameValidationError.empty;
+      return ProfileNameValidationError.empty;
     }
-    if (normalized.runes.length < fcAccountNameMinLength) {
-      return FcAccountNameValidationError.tooShort;
+    if (normalized.runes.length < profileNameMinLength) {
+      return ProfileNameValidationError.tooShort;
     }
-    if (normalized.runes.length > fcAccountNameMaxLength) {
-      return FcAccountNameValidationError.tooLong;
+    if (normalized.runes.length > profileNameMaxLength) {
+      return ProfileNameValidationError.tooLong;
     }
     return null;
   }

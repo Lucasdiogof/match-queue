@@ -3,8 +3,8 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/rivals_division.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_field.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
@@ -49,7 +49,7 @@ class _PlayerProfilePageState extends State<PlayerProfilePage> {
     _future = getIt<TeamRepository>().fetchMemberProfile(
       teamId: widget.teamId,
       userId: widget.userId,
-      fcAccountId: _selectedAccountId,
+      profileId: _selectedAccountId,
     );
   }
 
@@ -82,8 +82,8 @@ class _PlayerProfilePageState extends State<PlayerProfilePage> {
           }
           return _ProfileBody(
             profile: profile,
-            onSelectAccount: (accountId) => setState(() {
-              _selectedAccountId = accountId;
+            onSelectAccount: (profileId) => setState(() {
+              _selectedAccountId = profileId;
               _load();
             }),
           );
@@ -110,12 +110,12 @@ class _ProfileBody extends StatelessWidget {
           profile: profile,
           onSelectAccount: onSelectAccount,
         )
-      else if (profile.account == null)
+      else if (profile.profile == null)
         const _NoAccountCard()
       else ...<Widget>[
         _SquadCard(squad: profile.squad),
         const SizedBox(height: AppSpacing.lg),
-        _RivalsCard(account: profile.account!),
+        _RivalsCard(profile: profile.profile!),
         const SizedBox(height: AppSpacing.lg),
         WeekendLeagueHistoryCard(
           history: profile.weekendLeagueHistory
@@ -187,7 +187,7 @@ class _AccountSelectionCard extends StatelessWidget {
             style: context.textStyles.titleSmall,
           ),
           const SizedBox(height: AppSpacing.md),
-          for (final candidate in profile.candidateAccounts)
+          for (final candidate in profile.candidateProfiles)
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: AppButton.secondary(
@@ -257,14 +257,14 @@ class _SquadCard extends StatelessWidget {
 }
 
 class _RivalsCard extends StatelessWidget {
-  const _RivalsCard({required this.account});
+  const _RivalsCard({required this.profile});
 
-  final PlayerProfileAccount account;
+  final PlayerProfileAccount profile;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final division = RivalsDivision.tryFromKey(account.rivalsDivision);
+    final division = RivalsDivision.tryFromKey(profile.rivalsDivision);
 
     return CompetitiveModeCard(
       mode: CompetitiveMode.rivals,
@@ -273,7 +273,7 @@ class _RivalsCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Text(
-              division?.label(l10n) ?? l10n.fcAccountDivisionNone,
+              division?.label(l10n) ?? l10n.profileDivisionNone,
               style: const TextStyle(
                 color: AppColors.darkTextPrimary,
                 fontWeight: FontWeight.w600,
@@ -281,7 +281,7 @@ class _RivalsCard extends StatelessWidget {
             ),
           ),
           Text(
-            '${account.rivalsWins}–${account.rivalsLosses}',
+            '${profile.rivalsWins}–${profile.rivalsLosses}',
             style: const TextStyle(
               color: AppColors.darkTextPrimary,
               fontWeight: FontWeight.w700,

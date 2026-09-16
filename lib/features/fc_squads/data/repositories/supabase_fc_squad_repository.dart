@@ -18,10 +18,9 @@ class SupabaseFcSquadRepository implements FcSquadRepository {
   });
 
   @override
-  Future<List<FcSquadSummary>> listSquads(String fcAccountId) => _guard(
-    () async => FcSquadModel.summariesFromJson(
-      await _dataSource.listSquads(fcAccountId),
-    ),
+  Future<List<FcSquadSummary>> listSquads(String profileId) => _guard(
+    () async =>
+        FcSquadModel.summariesFromJson(await _dataSource.listSquads(profileId)),
   );
 
   @override
@@ -32,13 +31,13 @@ class SupabaseFcSquadRepository implements FcSquadRepository {
 
   @override
   Future<FcSquadDetail> createSquad({
-    required String fcAccountId,
+    required String profileId,
     required String name,
     required String formationCode,
   }) => _guard(
     () async => FcSquadModel.detailFromJson(
       await _dataSource.createSquad(
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         name: name,
         formationCode: formationCode,
       ),

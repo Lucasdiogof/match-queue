@@ -41,7 +41,7 @@ class PlayerProfileModel {
       userId: '${json['user_id']}',
       displayName: '${json['display_name']}',
       avatarUrl: json['avatar_url'] as String?,
-      candidateAccounts: candidatesJson
+      candidateProfiles: candidatesJson
           .whereType<Map<String, dynamic>>()
           .map(
             (row) => PlayerProfileAccountCandidate(
@@ -51,7 +51,7 @@ class PlayerProfileModel {
           )
           .toList(growable: false),
       needsAccountSelection: json['needs_account_selection'] as bool? ?? false,
-      account: accountJson == null
+      profile: accountJson == null
           ? null
           : PlayerProfileAccount(
               id: '${accountJson['id']}',

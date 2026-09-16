@@ -79,7 +79,7 @@ class _EditDisplayNameFormState extends State<_EditDisplayNameForm> {
 
     return BlocBuilder<AccountCubit, AccountState>(
       builder: (context, state) => AppBottomSheet(
-        title: l10n.profileEditNameTitle,
+        title: l10n.accountEditNameTitle,
         actions: <Widget>[
           AppButton(
             label: l10n.actionSave,
@@ -109,7 +109,7 @@ class _EditDisplayNameFormState extends State<_EditDisplayNameForm> {
                 const SizedBox(height: AppSpacing.lg),
               ],
               AppTextField(
-                label: l10n.profileDisplayNameLabel,
+                label: l10n.accountDisplayNameLabel,
                 hintText: l10n.authDisplayNameHint,
                 controller: _controller,
                 enabled: !state.isSaving,
@@ -125,7 +125,7 @@ class _EditDisplayNameFormState extends State<_EditDisplayNameForm> {
               Align(
                 alignment: AlignmentDirectional.centerEnd,
                 child: Text(
-                  l10n.profileDisplayNameCounter(
+                  l10n.accountDisplayNameCounter(
                     length,
                     AppValidators.displayNameMaxLength,
                   ),

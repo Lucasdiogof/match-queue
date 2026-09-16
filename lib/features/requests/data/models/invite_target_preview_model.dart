@@ -12,7 +12,7 @@ class InviteTargetPreviewModel {
       userId: '${json['user_id']}',
       displayName: json['display_name'] as String?,
       avatarUrl: json['avatar_url'] as String?,
-      fcAccountName: json['fc_account_name'] as String?,
+      profileName: json['fc_account_name'] as String?,
     );
   }
 }

@@ -44,9 +44,9 @@ class ProfileShareCard extends StatelessWidget {
                       style: context.textStyles.titleLarge,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (profile.accountName != null)
+                    if (profile.profileName != null)
                       Text(
-                        profile.accountName!,
+                        profile.profileName!,
                         style: context.textStyles.bodyMedium?.copyWith(
                           color: colors.textSecondary,
                         ),

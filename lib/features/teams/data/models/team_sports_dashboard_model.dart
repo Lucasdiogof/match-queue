@@ -95,8 +95,8 @@ class TeamSportsDashboardModel {
     assists: _toInt(json['assists']),
     userId: '${json['user_id']}',
     displayName: '${json['display_name'] ?? ''}',
-    fcAccountId: '${json['fc_account_id']}',
-    accountName: '${json['account_name'] ?? ''}',
+    profileId: '${json['fc_account_id']}',
+    profileName: '${json['account_name'] ?? ''}',
   );
 
   static TeamWeekendLeagueEntry _weekendLeagueFromJson(
@@ -104,8 +104,8 @@ class TeamSportsDashboardModel {
   ) => TeamWeekendLeagueEntry(
     userId: '${json['user_id']}',
     displayName: '${json['display_name'] ?? ''}',
-    fcAccountId: '${json['fc_account_id']}',
-    accountName: '${json['account_name'] ?? ''}',
+    profileId: '${json['fc_account_id']}',
+    profileName: '${json['account_name'] ?? ''}',
     wins: _toInt(json['wins']),
     losses: _toInt(json['losses']),
     isManual: json['is_manual'] as bool? ?? false,
@@ -115,8 +115,8 @@ class TeamSportsDashboardModel {
       TeamRivalsEntry(
         userId: '${json['user_id']}',
         displayName: '${json['display_name'] ?? ''}',
-        fcAccountId: '${json['fc_account_id']}',
-        accountName: '${json['account_name'] ?? ''}',
+        profileId: '${json['fc_account_id']}',
+        profileName: '${json['account_name'] ?? ''}',
         division: json['division'] as String?,
         matches: _toInt(json['matches']),
         wins: _toInt(json['wins']),
@@ -133,7 +133,7 @@ class TeamSportsDashboardModel {
       userId: '${json['user_id']}',
       displayName: '${json['display_name'] ?? ''}',
       avatarUrl: json['avatar_url'] as String?,
-      accountName: '${json['account_name'] ?? ''}',
+      profileName: '${json['account_name'] ?? ''}',
       gameMode: '${json['game_mode']}',
       result: '${json['result']}',
       goalsFor: json['goals_for'] == null ? null : _toInt(json['goals_for']),

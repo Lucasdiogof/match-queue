@@ -9,7 +9,7 @@ Map<String, dynamic> _row({
   Object? goalsFor,
   Object? goalsAgainst,
   Object? gameMode = 'DIVISION_RIVALS',
-  Object? accountName = 'Lucksrei',
+  Object? profileName = 'Lucksrei',
 }) => <String, dynamic>{
   'session_id': 's1',
   'user_id': 'u1',
@@ -20,7 +20,7 @@ Map<String, dynamic> _row({
   'duration_seconds': 120,
   'configured_duration_seconds': 300,
   'game_mode': gameMode,
-  'fc_account_name': accountName,
+  'fc_account_name': profileName,
   'match_status': matchStatus,
   'result': result,
   'goals_for': goalsFor,
@@ -97,9 +97,9 @@ void main() {
     });
 
     test('conta apagada nao derruba a linha do historico', () {
-      final entry = MatchHistoryModel.entryFromJson(_row(accountName: null));
+      final entry = MatchHistoryModel.entryFromJson(_row(profileName: null));
 
-      expect(entry.fcAccountName, isNull);
+      expect(entry.profileName, isNull);
       expect(entry.sessionId, 's1');
       expect(entry.gameMode, GameMode.divisionRivals);
     });

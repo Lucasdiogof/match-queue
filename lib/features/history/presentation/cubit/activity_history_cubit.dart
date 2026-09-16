@@ -8,18 +8,15 @@ import 'package:fifa_queue/features/history/presentation/cubit/activity_history_
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
-  ActivityHistoryCubit(
-    this._repository, {
-    required this.teamId,
-    this.fcAccountId,
-  }) : super(const ActivityHistoryState());
+  ActivityHistoryCubit(this._repository, {required this.teamId, this.profileId})
+    : super(const ActivityHistoryState());
 
   final HistoryRepository _repository;
   final String teamId;
 
   /// Quando vem da tela da Conta (em vez da aba raiz), filtra so a
   /// atividade daquele Elenco dentro do time. Null = time inteiro.
-  final String? fcAccountId;
+  final String? profileId;
 
   static const int _pageSize = 20;
 
@@ -34,7 +31,7 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
         scope: state.scope,
         gameResult: state.gameResultFilter,
         searchStatus: state.searchStatusFilter,
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         from: state.period.from(DateTime.now().toUtc()),
       );
       if (!isClosed) {
@@ -75,7 +72,7 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
         scope: state.scope,
         gameResult: state.gameResultFilter,
         searchStatus: state.searchStatusFilter,
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         from: state.period.from(DateTime.now().toUtc()),
       );
       if (!isClosed) {

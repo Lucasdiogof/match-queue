@@ -2,7 +2,7 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 
 abstract interface class FcSquadRepository {
-  Future<List<FcSquadSummary>> listSquads(String fcAccountId);
+  Future<List<FcSquadSummary>> listSquads(String profileId);
 
   Future<List<FormationDefinition>> listFormations();
 
@@ -20,7 +20,7 @@ abstract interface class FcSquadRepository {
   });
 
   Future<FcSquadDetail> createSquad({
-    required String fcAccountId,
+    required String profileId,
     required String name,
     required String formationCode,
   });

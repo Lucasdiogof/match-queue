@@ -411,10 +411,10 @@ class _ActivityDetailSheet extends StatelessWidget {
               ),
             // Historico anterior a Etapa 9 nao tem elenco: a linha some em
             // vez de mostrar vazio.
-            if (e.fcAccountName != null)
+            if (e.profileName != null)
               _DetailRow(
-                label: l10n.activityDetailFcAccount,
-                value: e.fcAccountName!,
+                label: l10n.activityDetailProfile,
+                value: e.profileName!,
               ),
             // Vem do snapshot da partida: partidas anteriores à Etapa 10 não
             // têm squad e a linha simplesmente não aparece.
@@ -446,10 +446,10 @@ class _ActivityDetailSheet extends StatelessWidget {
               label: l10n.activityDetailStatus,
               value: e.status.label(l10n),
             ),
-            if (e.fcAccountName != null)
+            if (e.profileName != null)
               _DetailRow(
-                label: l10n.activityDetailFcAccount,
-                value: e.fcAccountName!,
+                label: l10n.activityDetailProfile,
+                value: e.profileName!,
               ),
           ],
         },

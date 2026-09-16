@@ -33,13 +33,13 @@ const Duration _safetyRefreshInterval = Duration(seconds: 90);
 /// daquele time especifico.
 class MatchmakingSection extends StatelessWidget {
   const MatchmakingSection({
-    required this.fcAccountId,
+    required this.profileId,
     required this.teamId,
     this.onMatchFound,
     super.key,
   });
 
-  final String fcAccountId;
+  final String profileId;
   final String teamId;
 
   /// Chamado depois de um "Encontrei" bem-sucedido.
@@ -52,12 +52,12 @@ class MatchmakingSection extends StatelessWidget {
       // trocar de modo precisa recriar o cubit (novo load, nova
       // assinatura de estado), nao so re-renderizar por cima do
       // anterior.
-      key: ValueKey('$fcAccountId:$teamId:${mode.key}'),
+      key: ValueKey('$profileId:$teamId:${mode.key}'),
       create: (_) => MatchmakingCubit(
         getIt<MatchmakingRepository>(),
         getIt<AppLogger>(),
         getIt<SearchCooldownStore>(),
-        fcAccountId: fcAccountId,
+        profileId: profileId,
         teamId: teamId,
         mode: mode,
       )..start(),
@@ -275,7 +275,7 @@ class _NotLinkedCard extends StatelessWidget {
             label: l10n.matchmakingLinkAccountAction,
             icon: Icons.link,
             onPressed: () => context.push(
-              AppRoutes.fcAccountDetailLocation(snapshot.fcAccountId),
+              AppRoutes.profileDetailLocation(snapshot.profileId),
             ),
           ),
         ],

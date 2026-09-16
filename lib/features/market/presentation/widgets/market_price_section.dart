@@ -1,8 +1,8 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/profile_platform.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/market/domain/entities/market_price.dart';
 import 'package:fifa_queue/features/market/domain/repositories/market_price_repository.dart';
@@ -38,13 +38,11 @@ class MarketPriceSection extends StatelessWidget {
     // conta selecionada ou sem plataforma informada, ja que Consoles e o
     // padrao mais comum.
     final accountPlatform = context
-        .read<FcAccountsCubit>()
+        .read<ProfilesCubit>()
         .state
-        .selectedAccount
+        .selectedProfile
         ?.platform;
-    final initialPlatform = accountPlatform == FcAccountPlatform.pc
-        ? 'pc'
-        : 'ps';
+    final initialPlatform = accountPlatform == ProfilePlatform.pc ? 'pc' : 'ps';
 
     return BlocProvider<MarketPriceCubit>(
       create: (_) =>

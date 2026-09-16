@@ -3,12 +3,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract interface class FcSquadRemoteDataSource {
   Future<List<Map<String, dynamic>>> listFormations();
 
-  Future<Object?> listSquads(String fcAccountId);
+  Future<Object?> listSquads(String profileId);
 
   Future<Map<String, dynamic>> getBuilder(String squadId);
 
   Future<Map<String, dynamic>> createSquad({
-    required String fcAccountId,
+    required String profileId,
     required String name,
     required String formationCode,
   });
@@ -112,9 +112,9 @@ class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
   }
 
   @override
-  Future<Object?> listSquads(String fcAccountId) => _client.rpc<dynamic>(
+  Future<Object?> listSquads(String profileId) => _client.rpc<dynamic>(
     'list_fc_squads',
-    params: <String, dynamic>{'p_fc_account_id': fcAccountId},
+    params: <String, dynamic>{'p_fc_account_id': profileId},
   );
 
   @override
@@ -123,11 +123,11 @@ class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
 
   @override
   Future<Map<String, dynamic>> createSquad({
-    required String fcAccountId,
+    required String profileId,
     required String name,
     required String formationCode,
   }) => _map('create_fc_squad', <String, dynamic>{
-    'p_fc_account_id': fcAccountId,
+    'p_fc_account_id': profileId,
     'p_name': name,
     'p_formation_code': formationCode,
   });

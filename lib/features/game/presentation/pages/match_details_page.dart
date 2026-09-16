@@ -130,10 +130,10 @@ class _HeaderCard extends StatelessWidget {
               color: colors.textSecondary,
             ),
           ),
-          if (details.fcAccountName != null) ...<Widget>[
+          if (details.profileName != null) ...<Widget>[
             const SizedBox(height: AppSpacing.xxs),
             Text(
-              details.fcAccountName!,
+              details.profileName!,
               style: context.textStyles.bodySmall?.copyWith(
                 color: colors.textSecondary,
               ),

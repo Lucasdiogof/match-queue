@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 /// [onFlush] retorna `null` no sucesso, ou a mensagem de erro ja traduzida
 /// (nunca um [Object]/[AppFailure] cru) quando falhar -- ela e exibida aqui
 /// mesmo, embaixo do contador, e NUNCA no cubit compartilhado
-/// (`FcAccountsCubit.actionFailure`). Antes disso, uma falha de incremento
+/// (`ProfilesCubit.actionFailure`). Antes disso, uma falha de incremento
 /// (ex.: limite de 15 partidas do Champions) ficava no estado compartilhado
 /// tempo suficiente para vazar pra outro bottomsheet aberto logo em seguida
 /// (ex.: Renomear conta), que tambem observa esse mesmo campo. Por isso quem

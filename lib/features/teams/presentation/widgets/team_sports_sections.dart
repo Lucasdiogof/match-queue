@@ -200,7 +200,7 @@ class TeamWeekendLeagueSection extends StatelessWidget {
                           style: context.textStyles.bodyLarge,
                         ),
                         Text(
-                          entry.accountName,
+                          entry.profileName,
                           overflow: TextOverflow.ellipsis,
                           style: context.textStyles.bodySmall?.copyWith(
                             color: context.colors.textTertiary,
@@ -265,7 +265,7 @@ class TeamRivalsSection extends StatelessWidget {
                           style: context.textStyles.bodyLarge,
                         ),
                         Text(
-                          '${entry.accountName} · '
+                          '${entry.profileName} · '
                           '${entry.division ?? l10n.teamSportsNoDivision}',
                           overflow: TextOverflow.ellipsis,
                           style: context.textStyles.bodySmall?.copyWith(

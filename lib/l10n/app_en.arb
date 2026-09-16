@@ -12,8 +12,8 @@
   "actionBack": "Back",
   "actionNotNow": "Not now",
   "actionSignOut": "Sign out",
-  "profileSignOutConfirmTitle": "Sign out?",
-  "profileSignOutConfirmMessage": "You can sign back in anytime with your email and password.",
+  "accountSignOutConfirmTitle": "Sign out?",
+  "accountSignOutConfirmMessage": "You can sign back in anytime with your email and password.",
   "actionEdit": "Edit",
   "navCentral": "Central",
   "navControl": "Play",
@@ -32,7 +32,7 @@
   "controlDiscoverClubsTitle": "Clubs",
   "controlDiscoverClubsSubtitle": "Explore the clubs in the FC27 catalog.",
   "controlEmptyTitle": "Ready to get on the pitch?",
-  "controlEmptyMessage": "Pick an account and a mode to start searching for a match.",
+  "controlEmptyMessage": "Pick an profile and a mode to start searching for a match.",
   "teamTitle": "My team",
   "teamSubtitle": "Players, roles and invites.",
   "teamsListSubtitle": "Your teams and their operational status.",
@@ -76,7 +76,7 @@
       }
     }
   },
-  "profilePreferencesTitle": "Preferences",
+  "accountPreferencesTitle": "Preferences",
   "settingsAppearance": "Appearance",
   "settingsLanguage": "Language",
   "themeSystem": "System",
@@ -266,13 +266,13 @@
   },
   "homeSearchPlaceholderTitle": "Coordinated search arrives in Stage 3",
   "homeSearchPlaceholderMessage": "First we build teams and members. After that, only one player per team searches at a time.",
-  "profileAccountSection": "Account",
-  "profileDisplayNameLabel": "Name or nickname",
-  "profileEmailLabel": "Email",
-  "profileEditName": "Edit name",
-  "profileEditNameTitle": "What should we call you?",
-  "profileDisplayNameCounter": "{count}/{max}",
-  "@profileDisplayNameCounter": {
+  "accountAccountSection": "Account",
+  "accountDisplayNameLabel": "Name or nickname",
+  "accountEmailLabel": "Email",
+  "accountEditName": "Edit name",
+  "accountEditNameTitle": "What should we call you?",
+  "accountDisplayNameCounter": "{count}/{max}",
+  "@accountDisplayNameCounter": {
     "placeholders": {
       "count": {
         "type": "int",
@@ -284,10 +284,10 @@
       }
     }
   },
-  "profileSaved": "Name updated.",
-  "profileLoadErrorTitle": "We could not load your profile",
-  "profileMemberSince": "On Match Queue since {date}",
-  "@profileMemberSince": {
+  "accountSaved": "Name updated.",
+  "accountLoadErrorTitle": "We could not load your profile",
+  "accountMemberSince": "On Match Queue since {date}",
+  "@accountMemberSince": {
     "placeholders": {
       "date": {
         "type": "DateTime",
@@ -302,7 +302,7 @@
   "teamHaveInviteCode": "I have an invite code",
   "teamCreateTitle": "Create your team",
   "teamCreateSubtitle": "You can tweak colors, logo and search duration later.",
-  "teamCreateFcAccountsSectionTitle": "Which FC accounts are part of this team?",
+  "teamCreateProfilesSectionTitle": "Which FC profiles are part of this team?",
   "teamNameLabel": "Team name",
   "teamNameHint": "Falcons FC",
   "teamTagLabel": "Tag (optional)",
@@ -314,8 +314,8 @@
   "teamsListEmptyMessage": "You are not part of any team yet.",
   "teamDetailPlayersTitle": "Players",
   "playerProfileTitle": "Player profile",
-  "playerProfileAccountLabel": "Account",
-  "playerProfileNoAccountMessage": "This player has no account linked to this team.",
+  "playerProfileProfileLabel": "Profile",
+  "playerProfileNoProfileMessage": "This player has no profile linked to this team.",
   "playerProfileSquadLabel": "Squad",
   "playerProfileSquadNoneMessage": "No squad built yet.",
   "playerProfileCompletenessLabel": "{count}/{total} starters",
@@ -329,7 +329,7 @@
       }
     }
   },
-  "playerProfileSelectAccountTitle": "This player has more than one account on this team",
+  "playerProfileSelectProfileTitle": "This player has more than one profile on this team",
   "playerProfileWeekendLeagueEmptyMessage": "No Champions event recorded.",
   "playerProfileWeekendLeagueRecordLabel": "{wins}W–{losses}L",
   "@playerProfileWeekendLeagueRecordLabel": {
@@ -520,8 +520,8 @@
       }
     }
   },
-  "matchmakingNotLinkedMessage": "Link this FC Account to this team to search for matches.",
-  "matchmakingLinkAccountAction": "Link account to team",
+  "matchmakingNotLinkedMessage": "Link this Profile to this team to search for matches.",
+  "matchmakingLinkProfileAction": "Link profile to team",
   "notificationsSectionTitle": "Notifications",
   "notificationsToggleYourTurn": "Your turn to search",
   "notificationsToggleYourTurnHint": "When it becomes your turn in the team queue.",
@@ -545,7 +545,7 @@
   "notificationsCategoryWeekendLeague": "Champions",
   "notificationsCategoryWeekendLeagueHint": "When a Champions ends.",
   "notificationsCategoryRivals": "Rivals",
-  "notificationsCategoryRivalsHint": "A team account changes division.",
+  "notificationsCategoryRivalsHint": "A team profile changes division.",
   "notificationsCategoryRankings": "Rankings",
   "notificationsCategoryRankingsHint": "New team leader, top scorer or top assist.",
   "notificationsInboxTitle": "Notifications",
@@ -680,7 +680,7 @@
   "activityDetailScore": "Score",
   "activityDetailResult": "Result",
   "activityDetailStatus": "Status",
-  "activityDetailFcAccount": "Account",
+  "activityDetailProfile": "Profile",
   "historyLoadErrorTitle": "We could not load the history",
   "historyLoadMore": "Load more",
   "historyEntryDate": "{date}",
@@ -757,15 +757,15 @@
     }
   },
   "weekendLeagueActiveBadge": "Live now",
-  "errorFcAccountNotFound": "Account not found.",
-  "errorFcAccountNotLinkedToTeam": "This account isn't linked to this team.",
-  "errorFcAccountInvalidName": "Enter a name from 2 to 40 characters.",
-  "errorFcAccountInvalidDivision": "Invalid division.",
-  "errorFcAccountInvalidPlatform": "Invalid platform.",
-  "errorFcAccountNotLinkedToAnyTeam": "This account isn't linked to any team.",
-  "validationFcAccountNameRequired": "Enter a name for the account.",
-  "validationFcAccountNameTooShort": "The name must be at least {min} characters.",
-  "@validationFcAccountNameTooShort": {
+  "errorProfileNotFound": "Profile not found.",
+  "errorProfileNotLinkedToTeam": "This profile isn't linked to this team.",
+  "errorProfileInvalidName": "Enter a name from 2 to 40 characters.",
+  "errorProfileInvalidDivision": "Invalid division.",
+  "errorProfileInvalidPlatform": "Invalid platform.",
+  "errorProfileNotLinkedToAnyTeam": "This profile isn't linked to any team.",
+  "validationProfileNameRequired": "Enter a name for the profile.",
+  "validationProfileNameTooShort": "The name must be at least {min} characters.",
+  "@validationProfileNameTooShort": {
     "placeholders": {
       "min": {
         "type": "int",
@@ -773,8 +773,8 @@
       }
     }
   },
-  "validationFcAccountNameTooLong": "The name can be at most {max} characters.",
-  "@validationFcAccountNameTooLong": {
+  "validationProfileNameTooLong": "The name can be at most {max} characters.",
+  "@validationProfileNameTooLong": {
     "placeholders": {
       "max": {
         "type": "int",
@@ -782,9 +782,9 @@
       }
     }
   },
-  "fcAccountRequiredToSearch": "Create or select an account to search for a match.",
-  "fcAccountLinkCta": "Link {accountName} to {teamName}",
-  "@fcAccountLinkCta": {
+  "profileRequiredToSearch": "Create or select an profile to search for a match.",
+  "profileLinkCta": "Link {profileName} to {teamName}",
+  "@profileLinkCta": {
     "placeholders": {
       "accountName": {
         "type": "String",
@@ -796,41 +796,41 @@
       }
     }
   },
-  "fcAccountsPageTitle": "My Accounts",
-  "fcAccountsPageSubtitle": "Your Ultimate Team accounts",
-  "fcAccountsEmptyTitle": "You don't have an account yet",
-  "fcAccountsEmptyMessage": "Create an account to link it to teams and start searching for matches.",
-  "fcAccountCreateAction": "Create account",
-  "fcAccountCreateTitle": "New account",
-  "fcAccountCreateSubtitle": "Give this account a name.",
-  "fcAccountNameLabel": "Account name",
-  "fcAccountNameHint": "e.g. Main account",
-  "fcAccountRenameTitle": "Rename account",
-  "fcAccountRenameAction": "Rename",
-  "fcAccountArchiveAction": "Delete account",
-  "fcAccountArchiveConfirmTitle": "Delete account?",
-  "fcAccountArchiveConfirmMessage": "\"{name}\" disappears from the list and stops representing its linked teams (history is kept). If you're the sole owner of a team, it will be deleted too; if there are other members, ownership transfers to someone else automatically.",
-  "@fcAccountArchiveConfirmMessage": {
+  "profilesPageTitle": "My Profiles",
+  "profilesPageSubtitle": "Your Ultimate Team profiles",
+  "profilesEmptyTitle": "You don't have an profile yet",
+  "profilesEmptyMessage": "Create an profile to link it to teams and start searching for matches.",
+  "profileCreateAction": "Create profile",
+  "profileCreateTitle": "New profile",
+  "profileCreateSubtitle": "Give this profile a name.",
+  "profileNameLabel": "Profile name",
+  "profileNameHint": "e.g. Main profile",
+  "profileRenameTitle": "Rename profile",
+  "profileRenameAction": "Rename",
+  "profileArchiveAction": "Delete profile",
+  "profileArchiveConfirmTitle": "Delete profile?",
+  "profileArchiveConfirmMessage": "\"{name}\" disappears from the list and stops representing its linked teams (history is kept). If you're the sole owner of a team, it will be deleted too; if there are other members, ownership transfers to someone else automatically.",
+  "@profileArchiveConfirmMessage": {
     "placeholders": {
       "name": {
         "type": "String"
       }
     }
   },
-  "fcAccountSwitchTitle": "Switch account",
-  "fcAccountSwitchCreateAction": "+ Create new account",
-  "fcAccountLinkedTeamsTitle": "Teams",
-  "fcAccountLinkedTeamsEmpty": "This account isn't linked to any team yet.",
-  "fcAccountLinkTeamAction": "Link",
-  "fcAccountSharingAction": "Sharing",
-  "fcAccountAvatarChangeAction": "Change photo",
-  "fcAccountAvatarRemoveAction": "Remove photo",
-  "fcAccountAvatarRemoveConfirmTitle": "Remove the account photo?",
-  "fcAccountAvatarRemoveConfirmMessage": "The account goes back to showing initials instead of the photo.",
-  "fcAccountUnlinkTeamAction": "Leave team",
-  "fcAccountLeaveTeamConfirmTitle": "Leave the team?",
-  "fcAccountLeaveTeamConfirmMessage": "This account will stop representing {teamName}. You can link it again whenever you want.",
-  "@fcAccountLeaveTeamConfirmMessage": {
+  "profileSwitchTitle": "Switch profile",
+  "profileSwitchCreateAction": "+ Create new profile",
+  "profileLinkedTeamsTitle": "Teams",
+  "profileLinkedTeamsEmpty": "This profile isn't linked to any team yet.",
+  "profileLinkTeamAction": "Link",
+  "profileSharingAction": "Sharing",
+  "profileAvatarChangeAction": "Change photo",
+  "profileAvatarRemoveAction": "Remove photo",
+  "profileAvatarRemoveConfirmTitle": "Remove the profile photo?",
+  "profileAvatarRemoveConfirmMessage": "The profile goes back to showing initials instead of the photo.",
+  "profileUnlinkTeamAction": "Leave team",
+  "profileLeaveTeamConfirmTitle": "Leave the team?",
+  "profileLeaveTeamConfirmMessage": "This profile will stop representing {teamName}. You can link it again whenever you want.",
+  "@profileLeaveTeamConfirmMessage": {
     "placeholders": {
       "teamName": {
         "type": "String",
@@ -838,24 +838,24 @@
       }
     }
   },
-  "fcAccountSettingsTitle": "Settings",
-  "fcAccountDivisionTitle": "Rivals Division",
-  "fcAccountDivisionPickerTitle": "Select division",
-  "fcAccountDivisionNone": "No division set",
-  "fcAccountPlatformLabel": "Platform",
-  "fcAccountPlatformPickerTitle": "Select platform",
-  "fcAccountPlatformNone": "No platform set",
-  "fcAccountPlatformSettingsAction": "Platform: {platform}",
-  "@fcAccountPlatformSettingsAction": {
+  "profileSettingsTitle": "Settings",
+  "profileDivisionTitle": "Rivals Division",
+  "profileDivisionPickerTitle": "Select division",
+  "profileDivisionNone": "No division set",
+  "profilePlatformLabel": "Platform",
+  "profilePlatformPickerTitle": "Select platform",
+  "profilePlatformNone": "No platform set",
+  "profilePlatformSettingsAction": "Platform: {platform}",
+  "@profilePlatformSettingsAction": {
     "placeholders": {
       "platform": {
         "type": "String"
       }
     }
   },
-  "fcAccountWeekendLeagueTitle": "Champions",
-  "fcAccountWeekendLeagueComputedLabel": "Tracked from matches: {wins}–{losses}",
-  "@fcAccountWeekendLeagueComputedLabel": {
+  "profileWeekendLeagueTitle": "Champions",
+  "profileWeekendLeagueComputedLabel": "Tracked from matches: {wins}–{losses}",
+  "@profileWeekendLeagueComputedLabel": {
     "placeholders": {
       "wins": {
         "type": "int",
@@ -867,8 +867,8 @@
       }
     }
   },
-  "fcAccountWeekendLeagueManualLabel": "Reported result: {wins}–{losses}",
-  "@fcAccountWeekendLeagueManualLabel": {
+  "profileWeekendLeagueManualLabel": "Reported result: {wins}–{losses}",
+  "@profileWeekendLeagueManualLabel": {
     "placeholders": {
       "wins": {
         "type": "int",
@@ -880,15 +880,15 @@
       }
     }
   },
-  "fcAccountWeekendLeagueEditAction": "Report result",
-  "fcAccountWeekendLeagueClearAction": "Use tracked matches",
-  "fcAccountWeekendLeagueSheetTitle": "Report result",
-  "fcAccountWeekendLeagueWinsLabel": "Wins",
-  "fcAccountWeekendLeagueLossesLabel": "Losses",
-  "fcAccountOnboardingTitle": "Add your first account",
-  "fcAccountOnboardingMessage": "Register the account you play or manage to join teams, search for matches and follow your progress.",
-  "fcAccountOnboardingCreateAction": "Add account",
-  "pendingMatchElencoLabel": "Account: {name}",
+  "profileWeekendLeagueEditAction": "Report result",
+  "profileWeekendLeagueClearAction": "Use tracked matches",
+  "profileWeekendLeagueSheetTitle": "Report result",
+  "profileWeekendLeagueWinsLabel": "Wins",
+  "profileWeekendLeagueLossesLabel": "Losses",
+  "profileOnboardingTitle": "Add your first profile",
+  "profileOnboardingMessage": "Register the profile you play or manage to join teams, search for matches and follow your progress.",
+  "profileOnboardingCreateAction": "Add profile",
+  "pendingMatchElencoLabel": "Profile: {name}",
   "@pendingMatchElencoLabel": {
     "placeholders": {
       "name": {
@@ -897,7 +897,7 @@
       }
     }
   },
-  "historyElencoLabel": "Account: {name}",
+  "historyElencoLabel": "Profile: {name}",
   "@historyElencoLabel": {
     "placeholders": {
       "name": {
@@ -906,7 +906,7 @@
       }
     }
   },
-  "profileFcAccountsRow": "Accounts",
+  "profileProfilesRow": "Profiles",
   "rivalsDivisionDiv10": "Division 10",
   "rivalsDivisionDiv9": "Division 9",
   "rivalsDivisionDiv8": "Division 8",
@@ -954,7 +954,7 @@
   "squadMoveHint": "Tap another slot to swap.",
   "squadIncompleteLabel": "Incomplete squad",
   "squadLabel": "Squad",
-  "playAccountLabel": "Account",
+  "playProfileLabel": "Profile",
   "playSquadEmpty": "No squad built yet",
   "playSquadBuildAction": "Build squad",
   "playSquadEditAction": "Edit squad",
@@ -1141,7 +1141,7 @@
   "squadPrimaryLineupTitle": "Main lineup",
   "squadPrimaryLineupEditAction": "Edit lineup",
   "squadPrimaryLineupCreateAction": "Build lineup",
-  "squadPrimaryLineupEmpty": "You have not built a lineup for this account yet.",
+  "squadPrimaryLineupEmpty": "You have not built a lineup for this profile yet.",
   "squadOtherLineupsAction": "{count, plural, =1{See another lineup} other{See {count} other lineups}}",
   "@squadOtherLineupsAction": {
     "placeholders": {
@@ -1199,7 +1199,7 @@
       }
     }
   },
-  "profileSharingRow": "Sharing",
+  "accountSharingRow": "Sharing",
   "publicProfileSectionTitle": "Privacy",
   "publicProfileMasterSwitchLabel": "Public profile",
   "publicProfileMasterSwitchHint": "Make your profile visible through a public link, no app account needed.",
@@ -1211,8 +1211,8 @@
   "publicProfileSlugUnavailable": "This address is already taken",
   "publicProfileSlugChecking": "Checking…",
   "publicProfileSlugInvalid": "Invalid address",
-  "publicProfileAccountLabel": "Public account",
-  "publicProfileAccountEmpty": "No account selected",
+  "publicProfileProfileLabel": "Public profile",
+  "publicProfileProfileEmpty": "No profile selected",
   "publicProfileToggleSquad": "Main lineup",
   "publicProfileToggleWeekendLeague": "Champions",
   "publicProfileToggleRivals": "Rivals",
@@ -1232,7 +1232,7 @@
   "publicProfileEnableFirstMessage": "Enable your public profile to share your lineup.",
   "publicProfileGoToSettingsAction": "Go to Sharing",
   "publicProfileEditSharingCta": "Edit sharing",
-  "publicProfileNoAccountsHint": "Create an Account before sharing.",
+  "publicProfileNoProfilesHint": "Create an Profile before sharing.",
   "errorPublicProfileInvalidSlug": "Invalid address. Use 3-24 lowercase letters, numbers or _.",
   "errorPublicProfileReservedSlug": "This address is reserved, pick another one.",
   "errorPublicProfileSlugTaken": "This address is already taken.",
@@ -1256,9 +1256,9 @@
   },
   "validationPublicProfileSlugInvalid": "Use only lowercase letters, numbers or _.",
   "errorSoleOwnerBlocksAccountDeletion": "You are the sole owner of a team with other members. Remove the other members or wait for ownership transfer support before deleting your account.",
-  "profileLegalTitle": "About and legal",
+  "accountLegalTitle": "About and legal",
   "aboutTitle": "About",
-  "aboutDescription": "Match Queue organizes your EA SPORTS FC team's match search queue, accounts, and stats.",
+  "aboutDescription": "Match Queue organizes your EA SPORTS FC team's match search queue, profiles, and stats.",
   "privacyPolicyTitle": "Privacy Policy",
   "termsOfUseTitle": "Terms of Use",
   "legalUpdatedAt": "Updated on {date}",
@@ -1274,7 +1274,7 @@
   "deleteAccountTitle": "Delete account",
   "deleteAccountWarningTitle": "This action is permanent",
   "deleteAccountWarningMessage": "Deleting your account removes access to everything listed below. This cannot be undone or recovered afterward.",
-  "deleteAccountConsequenceFcAccounts": "All your Accounts and their recorded Rivals division",
+  "deleteProfileConsequenceProfiles": "All your Profiles and their recorded Rivals division",
   "deleteAccountConsequenceSquads": "Your squads",
 
   "deleteAccountConsequenceHistory": "Your membership in the teams you belong to",
@@ -1292,13 +1292,13 @@
   },
   "deleteAccountConfirmWord": "DELETE",
   "deleteAccountAction": "Permanently delete my account",
-  "homeFcAccountEyebrow": "ACTIVE FC ACCOUNT",
-  "homeFcAccountSwitchAction": "Switch",
-  "homeFcAccountNoTeams": "No team yet",
-  "homeFcAccountTeamCount": "{count, plural, =1{In 1 team} other{In {count} teams}}",
+  "homeProfileEyebrow": "ACTIVE FC ACCOUNT",
+  "homeProfileSwitchAction": "Switch",
+  "homeProfileNoTeams": "No team yet",
+  "homeProfileTeamCount": "{count, plural, =1{In 1 team} other{In {count} teams}}",
   "homeNoTeamTitle": "Join a team",
   "homeNoTeamMessage": "Searching for a match needs a team. Rivals and Champions already work.",
-  "@homeFcAccountTeamCount": {
+  "@homeProfileTeamCount": {
     "placeholders": {
       "count": {
         "type": "int",
@@ -1317,7 +1317,7 @@
   "controlNoTeamTitle": "You need a team",
   "controlNoTeamMessage": "The queue belongs to the team. Join one or create yours to start searching.",
   "controlNoTeamAction": "See teams",
-  "controlAccountNotLinkedMessage": "Create or link this account to a team to be able to search for matches.",
+  "controlProfileNotLinkedMessage": "Create or link this profile to a team to be able to search for matches.",
   "controlGoToTeamsAction": "Go to Teams",
   "navRequests": "Invites",
   "requestsPageTitle": "Requests",
@@ -1351,7 +1351,7 @@
   "teamPublicRequestToJoinAction": "Ask to join",
   "teamPublicRequestSentAction": "Request sent",
   "teamPublicRequestCancelAction": "Cancel request",
-  "teamPublicChooseAccountTitle": "Which account do you want to link?",
+  "teamPublicChooseProfileTitle": "Which profile do you want to link?",
   "teamPublicRequestSentMessage": "Request sent. The team owner will review it.",
   "teamPublicRequestCancelledMessage": "Request cancelled.",
   "teamDetailInviteAction": "Invite player",
@@ -1458,7 +1458,7 @@
       }
     }
   },
-  "startShortcutPlayHint": "Pick the account and mode, then join the queue.",
+  "startShortcutPlayHint": "Pick the profile and mode, then join the queue.",
   "startCatalogTitle": "Catalogue",
   "startCatalogCardsHint": "Browse the game's cards.",
   "startCatalogClubsHint": "Clubs by average overall.",
