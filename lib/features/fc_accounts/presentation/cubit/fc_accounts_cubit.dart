@@ -26,11 +26,12 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
     emit(state.copyWith(status: FcAccountsStatus.loading, clearFailure: true));
     try {
       final snapshot = await _repository.fetchMyAccounts();
-      final selectedId = _resolveSelectedId(snapshot.accounts, userId);
+      final accounts = _sortedByTeamFirst(snapshot.accounts);
+      final selectedId = _resolveSelectedId(accounts, userId);
       emit(
         state.copyWith(
           status: FcAccountsStatus.ready,
-          accounts: snapshot.accounts,
+          accounts: accounts,
           weekendLeagueEvent: snapshot.weekendLeagueEvent,
           clearWeekendLeagueEvent: snapshot.weekendLeagueEvent == null,
           selectedAccountId: selectedId,
@@ -228,15 +229,16 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
       if (selectNewest && snapshot.accounts.isNotEmpty) {
         selectedId = snapshot.accounts.last.id;
       }
+      final accounts = _sortedByTeamFirst(snapshot.accounts);
       final resolvedId = _resolveSelectedId(
-        snapshot.accounts,
+        accounts,
         userId,
         preferred: selectedId,
       );
       emit(
         state.copyWith(
           status: FcAccountsStatus.ready,
-          accounts: snapshot.accounts,
+          accounts: accounts,
           weekendLeagueEvent: snapshot.weekendLeagueEvent,
           clearWeekendLeagueEvent: snapshot.weekendLeagueEvent == null,
           selectedAccountId: resolvedId,
@@ -254,6 +256,15 @@ class FcAccountsCubit extends Cubit<FcAccountsState> {
       return false;
     }
   }
+
+  /// Conta com time vem primeiro -- e o que a pessoa provavelmente quer ver
+  /// e o que vira selecao padrao (ver _resolveSelectedId) quando nao ha
+  /// preferencia salva. Estavel: preserva a ordem relativa dentro de cada
+  /// grupo (nao embaralha por time/sem-time).
+  List<FcAccount> _sortedByTeamFirst(List<FcAccount> accounts) => <FcAccount>[
+    ...accounts.where((account) => account.teamIds.isNotEmpty),
+    ...accounts.where((account) => account.teamIds.isEmpty),
+  ];
 
   String? _resolveSelectedId(
     List<FcAccount> accounts,

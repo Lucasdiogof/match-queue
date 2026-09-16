@@ -20,10 +20,10 @@ import 'package:go_router/go_router.dart';
 ///
 /// Cada linha tem o proprio toque, sem acao de card inteiro: a de cima
 /// (Conta) abre o troca-conta -- o mesmo que o botao discreto ja fazia, so
-/// que o toque nao precisa mais acertar so o icone. A do meio (Elenco) vai
-/// direto pra montar/editar escalacao, que e o que o texto da linha ja
-/// promete. A de baixo (Plataforma) abre o mesmo seletor da tela de
-/// configuracoes da conta.
+/// que o toque nao precisa mais acertar so o icone. A do meio (Plataforma)
+/// abre o mesmo seletor da tela de configuracoes da conta. A de baixo
+/// (Elenco) vai direto pra montar/editar escalacao, que e o que o texto da
+/// linha ja promete.
 class AccountSquadCard extends StatelessWidget {
   const AccountSquadCard({super.key});
 
@@ -90,9 +90,9 @@ class AccountSquadCard extends StatelessWidget {
                   ),
                 ),
                 Divider(height: 1, thickness: 1, color: colors.borderSubtle),
-                const _SquadRow(),
-                Divider(height: 1, thickness: 1, color: colors.borderSubtle),
                 _PlatformRow(account: account),
+                Divider(height: 1, thickness: 1, color: colors.borderSubtle),
+                const _SquadRow(),
               ],
             ),
           );
