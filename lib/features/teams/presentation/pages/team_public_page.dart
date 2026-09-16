@@ -11,7 +11,6 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_c
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
-import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -201,9 +200,11 @@ class _TeamPublicBody extends StatelessWidget {
   }
 }
 
-/// CTA "Pedir para entrar" -- some por completo se o usuario ja e membro do
-/// time (TeamsCubit.state.teams e a lista dos proprios times do usuario, ja
-/// carregada no root do app).
+/// CTA "Pedir para entrar" -- some por completo se a CONTA selecionada ja e
+/// membro do time. Nao usa TeamsCubit.state.teams (lista de times do LOGIN
+/// inteiro, ambigua entre Contas) porque isso escondia o CTA num time em
+/// que a Conta atual nunca pediu vaga so porque outra Conta do mesmo login
+/// ja e dona dele.
 class _JoinTeamSection extends StatefulWidget {
   const _JoinTeamSection({required this.teamId});
 
@@ -226,9 +227,11 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
 
   @override
   Widget build(BuildContext context) {
-    final isMember = context.watch<TeamsCubit>().state.teams.any(
-      (t) => t.id == widget.teamId,
-    );
+    final selectedAccount = context
+        .watch<FcAccountsCubit>()
+        .state
+        .selectedAccount;
+    final isMember = selectedAccount?.teamIds.contains(widget.teamId) ?? false;
     if (isMember) {
       return const SizedBox.shrink();
     }
