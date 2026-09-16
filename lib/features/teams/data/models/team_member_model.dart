@@ -9,6 +9,7 @@ class TeamMemberModel {
   static const String table = 'team_members';
   static const String columnTeamId = 'team_id';
   static const String columnUserId = 'user_id';
+  static const String columnFcAccountId = 'fc_account_id';
   static const String columnRole = 'role';
   static const String columnJoinedAt = 'joined_at';
   static const String embeddedTeam = 'team';
@@ -18,6 +19,7 @@ class TeamMemberModel {
       TeamMembership(
         teamId: '${json[columnTeamId]}',
         userId: '${json[columnUserId]}',
+        fcAccountId: '${json[columnFcAccountId]}',
         role: TeamRole.fromKey(json[columnRole]),
         joinedAt: TeamModel.parseDate(json[columnJoinedAt]),
       );

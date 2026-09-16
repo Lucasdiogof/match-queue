@@ -84,6 +84,7 @@ class _FakeRequestsRepository implements RequestsRepository {
   Future<void> respondInvitation({
     required String invitationId,
     required bool accept,
+    String? fcAccountId,
   }) async {
     await _maybeGate();
     if (accept) {

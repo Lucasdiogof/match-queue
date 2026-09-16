@@ -34,11 +34,13 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<Team> createTeam({
     required String name,
+    required String fcAccountId,
     String? tag,
     Duration? defaultSearchDuration,
   }) => _guard(() async {
     final row = await _dataSource.createTeam(
       name: name,
+      fcAccountId: fcAccountId,
       tag: tag,
       defaultSearchDurationSeconds: defaultSearchDuration?.inSeconds,
     );
@@ -197,18 +199,22 @@ class SupabaseTeamRepository implements TeamRepository {
   });
 
   @override
-  Future<void> removeMember({required String teamId, required String userId}) =>
-      _guard(() => _dataSource.removeMember(teamId: teamId, userId: userId));
+  Future<void> removeMember({
+    required String teamId,
+    required String fcAccountId,
+  }) => _guard(
+    () => _dataSource.removeMember(teamId: teamId, fcAccountId: fcAccountId),
+  );
 
   @override
   Future<void> setMemberRole({
     required String teamId,
-    required String userId,
+    required String fcAccountId,
     required TeamRole role,
   }) => _guard(
     () => _dataSource.setMemberRole(
       teamId: teamId,
-      userId: userId,
+      fcAccountId: fcAccountId,
       role: role.key,
     ),
   );

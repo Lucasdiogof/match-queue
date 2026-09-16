@@ -318,17 +318,20 @@ class _MemberStatusRow extends StatelessWidget {
         case _MemberAction.promote:
           await repository.setMemberRole(
             teamId: teamId,
-            userId: member.userId,
+            fcAccountId: member.fcAccountId,
             role: TeamRole.manager,
           );
         case _MemberAction.demote:
           await repository.setMemberRole(
             teamId: teamId,
-            userId: member.userId,
+            fcAccountId: member.fcAccountId,
             role: TeamRole.player,
           );
         case _MemberAction.remove:
-          await repository.removeMember(teamId: teamId, userId: member.userId);
+          await repository.removeMember(
+            teamId: teamId,
+            fcAccountId: member.fcAccountId,
+          );
       }
       if (!context.mounted) {
         return;

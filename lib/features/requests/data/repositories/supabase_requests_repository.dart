@@ -63,10 +63,12 @@ class SupabaseRequestsRepository implements RequestsRepository {
   Future<void> respondInvitation({
     required String invitationId,
     required bool accept,
+    String? fcAccountId,
   }) => _guard(
     () => _dataSource.respondTeamInvitation(
       invitationId: invitationId,
       accept: accept,
+      fcAccountId: fcAccountId,
     ),
   );
 

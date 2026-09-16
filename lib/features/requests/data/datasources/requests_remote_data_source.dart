@@ -30,6 +30,7 @@ abstract interface class RequestsRemoteDataSource {
   Future<void> respondTeamInvitation({
     required String invitationId,
     required bool accept,
+    String? fcAccountId,
   });
 
   Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId);
@@ -107,11 +108,13 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
   Future<void> respondTeamInvitation({
     required String invitationId,
     required bool accept,
+    String? fcAccountId,
   }) => _client.rpc<dynamic>(
     'respond_team_invitation',
     params: <String, dynamic>{
       'p_invitation_id': invitationId,
       'p_accept': accept,
+      'p_fc_account_id': fcAccountId,
     },
   );
 

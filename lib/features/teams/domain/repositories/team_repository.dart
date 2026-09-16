@@ -12,6 +12,7 @@ abstract interface class TeamRepository {
 
   Future<Team> createTeam({
     required String name,
+    required String fcAccountId,
     String? tag,
     Duration? defaultSearchDuration,
   });
@@ -87,13 +88,18 @@ abstract interface class TeamRepository {
   Future<PublicTeam> getPublicTeam(String teamId);
 
   /// OWNER remove PLAYER ou ADMIN (gerente); ADMIN remove só PLAYER. Nunca
-  /// remove o OWNER -- o servidor recusa antes de chegar aqui.
-  Future<void> removeMember({required String teamId, required String userId});
+  /// remove o OWNER -- o servidor recusa antes de chegar aqui. Alvo é a
+  /// Conta FC (team_members.fc_account_id), não o login.
+  Future<void> removeMember({
+    required String teamId,
+    required String fcAccountId,
+  });
 
-  /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER.
+  /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER. Alvo é a
+  /// Conta FC, não o login.
   Future<void> setMemberRole({
     required String teamId,
-    required String userId,
+    required String fcAccountId,
     required TeamRole role,
   });
 }

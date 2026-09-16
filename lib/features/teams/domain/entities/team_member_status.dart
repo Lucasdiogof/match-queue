@@ -20,6 +20,7 @@ enum PlayerOperationalStatus {
 class TeamMemberStatus extends Equatable {
   const TeamMemberStatus({
     required this.userId,
+    required this.fcAccountId,
     required this.displayName,
     required this.role,
     required this.status,
@@ -29,6 +30,9 @@ class TeamMemberStatus extends Equatable {
   });
 
   final String userId;
+
+  /// Identidade real da linha em team_members -- alvo de remover/promover.
+  final String fcAccountId;
   final String displayName;
   final String? avatarUrl;
   final TeamRole role;
@@ -39,6 +43,7 @@ class TeamMemberStatus extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     userId,
+    fcAccountId,
     displayName,
     avatarUrl,
     role,
