@@ -22,7 +22,7 @@ class MatchmakingTimerRing extends StatefulWidget {
     required this.estimatedServerNow,
     this.onReachedZero,
     this.gameMode,
-    this.size = 168,
+    this.size = 224,
     super.key,
   });
 
@@ -381,7 +381,7 @@ class _ChronosPainter extends CustomPainter {
     // dela -- estoura pra alem do anel intermediario de proposito (o anel
     // intermediario passa a orbitar por cima da propria bola, como no
     // gear-2 da referencia).
-    final glowRadius = middleRadius * 1.32;
+    final glowRadius = middleRadius * 1.38;
 
     // Camada 1: nucleo escuro quase solido. E o que da contraste de
     // verdade pro numero -- um gradiente so dourado-transparente (como na

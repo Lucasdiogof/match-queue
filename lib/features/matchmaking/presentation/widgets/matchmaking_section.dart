@@ -459,32 +459,27 @@ class _SearchingSelfCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
     final searching = snapshot.searching!;
 
     return AppCard(
       variant: AppCardVariant.elevated,
       child: Column(
         children: <Widget>[
-          Text(
-            l10n.matchmakingSearchingSelfTitle,
-            style: context.textStyles.titleMedium,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          MatchmakingTimerRing(
-            startedAt: searching.startedAt,
-            expiresAt: searching.expiresAt,
-            estimatedServerNow: state.estimatedServerNow,
-            gameMode: searching.gameMode,
-            onReachedZero: () =>
-                context.read<MatchmakingCubit>().refreshSilently(),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.matchmakingSearchingSelfMessage,
-            textAlign: TextAlign.center,
-            style: context.textStyles.bodyMedium?.copyWith(
-              color: colors.textSecondary,
+          // Titulo e mensagem de apoio saem da tela pra dar mais espaco pro
+          // anel (pedido explicito) -- o conteudo continua disponivel pra
+          // leitor de tela, so nao ocupa mais espaco visual. O botao
+          // "Encontrei" abaixo ja deixa a acao esperada clara por si so.
+          Semantics(
+            label:
+                '${l10n.matchmakingSearchingSelfTitle}. '
+                '${l10n.matchmakingSearchingSelfMessage}',
+            child: MatchmakingTimerRing(
+              startedAt: searching.startedAt,
+              expiresAt: searching.expiresAt,
+              estimatedServerNow: state.estimatedServerNow,
+              gameMode: searching.gameMode,
+              onReachedZero: () =>
+                  context.read<MatchmakingCubit>().refreshSilently(),
             ),
           ),
           const SizedBox(height: AppSpacing.xl),

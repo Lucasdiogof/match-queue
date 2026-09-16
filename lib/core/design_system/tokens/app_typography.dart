@@ -66,7 +66,7 @@ class AppTypography {
   }
 
   static TextStyle timerDisplay(Color color) => TextStyle(
-    fontSize: 52,
+    fontSize: 38,
     fontWeight: FontWeight.w700,
     letterSpacing: -1.5,
     height: 1,
