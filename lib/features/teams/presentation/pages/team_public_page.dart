@@ -6,7 +6,6 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
@@ -264,15 +263,18 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
   }
 
   Future<void> _requestToJoin() async {
-    final accounts = context.read<FcAccountsCubit>().state.accounts;
-    if (accounts.isEmpty) {
+    // A conta usada pra qualquer acao (entrar, sair, buscar...) e sempre a
+    // selecionada no momento (FcAccountsCubit.state.selectedAccount) --
+    // nunca um picker perguntando de novo. Cair pra accounts.first so no
+    // caso extremo de existirem contas mas nenhuma selecionada.
+    final fcState = context.read<FcAccountsCubit>().state;
+    if (!fcState.hasAccounts) {
       unawaited(context.push(AppRoutes.fcAccounts.path));
       return;
     }
-    final fcAccountId = accounts.length == 1
-        ? accounts.first.id
-        : await _pickAccount(accounts);
-    if (fcAccountId == null || !mounted) {
+    final fcAccountId =
+        fcState.selectedAccount?.id ?? fcState.accounts.first.id;
+    if (!mounted) {
       return;
     }
 
@@ -302,25 +304,4 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
       );
     }
   }
-
-  Future<String?> _pickAccount(List<FcAccount> accounts) =>
-      showAppBottomSheet<String>(
-        context: context,
-        builder: (sheetContext) => AppBottomSheet(
-          title: sheetContext.l10n.teamPublicChooseAccountTitle,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              for (final account in accounts)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                  child: AppButton.secondary(
-                    label: account.name,
-                    onPressed: () => Navigator.of(sheetContext).pop(account.id),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      );
 }
