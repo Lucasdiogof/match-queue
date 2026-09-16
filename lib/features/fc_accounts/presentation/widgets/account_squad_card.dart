@@ -6,6 +6,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_s
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_switcher_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_state.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_name_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,9 +16,11 @@ import 'package:go_router/go_router.dart';
 /// o que sugeria duas entidades independentes e comia a primeira dobra do
 /// Jogar -- justamente onde o matchmaking precisa estar.
 ///
-/// Tocar no card abre a TELA DA CONTA, que passa a ser o centro daquela
-/// conta. Trocar de conta continua possivel pelo botao discreto no topo: e
-/// uma acao lateral, nao o destino principal do toque.
+/// Cada metade tem o proprio toque, sem acao de card inteiro: a de cima
+/// (Conta) abre o troca-conta -- o mesmo que o botao discreto ja fazia, so
+/// que o toque nao precisa mais acertar so o icone. A de baixo (Elenco) vai
+/// direto pra montar/editar escalacao, que e o que o texto da linha ja
+/// promete.
 class AccountSquadCard extends StatelessWidget {
   const AccountSquadCard({super.key});
 
@@ -39,43 +42,48 @@ class AccountSquadCard extends StatelessWidget {
             variant: AppCardVariant.elevated,
             accent: AppCardAccent.left,
             padding: EdgeInsets.zero,
-            onTap: () =>
-                context.push(AppRoutes.fcAccountDetailLocation(account.id)),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.md,
-                    AppSpacing.sm,
-                    AppSpacing.md,
+                InkWell(
+                  onTap: () => showFcAccountSwitcherSheet(
+                    context: context,
+                    accounts: accountsState.accounts,
+                    selectedAccountId: accountsState.selectedAccountId,
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: _Field(
-                          label: l10n.playAccountLabel,
-                          value: account.name,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.lg,
+                      AppSpacing.md,
+                      AppSpacing.sm,
+                      AppSpacing.md,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: _Field(
+                            label: l10n.playAccountLabel,
+                            value: account.name,
+                          ),
                         ),
-                      ),
-                      AppIconButton(
-                        icon: Icons.swap_horiz,
-                        tooltip: l10n.fcAccountSwitchTitle,
-                        variant: AppIconButtonVariant.surface,
-                        onPressed: () => showFcAccountSwitcherSheet(
-                          context: context,
-                          accounts: accountsState.accounts,
-                          selectedAccountId: accountsState.selectedAccountId,
+                        AppIconButton(
+                          icon: Icons.swap_horiz,
+                          tooltip: l10n.fcAccountSwitchTitle,
+                          variant: AppIconButtonVariant.surface,
+                          onPressed: () => showFcAccountSwitcherSheet(
+                            context: context,
+                            accounts: accountsState.accounts,
+                            selectedAccountId: accountsState.selectedAccountId,
+                          ),
                         ),
-                      ),
-                      Icon(
-                        Icons.chevron_right,
-                        size: AppSizing.iconMd,
-                        color: colors.textTertiary,
-                      ),
-                      const SizedBox(width: AppSpacing.xs),
-                    ],
+                        Icon(
+                          Icons.chevron_right,
+                          size: AppSizing.iconMd,
+                          color: colors.textTertiary,
+                        ),
+                        const SizedBox(width: AppSpacing.xs),
+                      ],
+                    ),
                   ),
                 ),
                 Divider(height: 1, thickness: 1, color: colors.borderSubtle),
@@ -116,43 +124,76 @@ class _SquadRow extends StatelessWidget {
                   : l10n.squadOverallValue(squad.overall!),
             ].join(' · ');
 
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          AppSpacing.md,
-          AppSpacing.sm,
-          AppSpacing.md,
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: _Field(
-                label: l10n.squadLabel,
-                value: value,
-                isMuted: !hasCompleteSquad,
+      return InkWell(
+        onTap: state.isSaving
+            ? null
+            : () => squad == null
+                  ? _createSquad(context, state)
+                  : context.pushNamed(
+                      AppRoutes.squadBuilder.name,
+                      pathParameters: <String, String>{
+                        AppRoutes.squadIdParam: squad.id,
+                      },
+                    ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.md,
+            AppSpacing.sm,
+            AppSpacing.md,
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: _Field(
+                  label: l10n.squadLabel,
+                  value: value,
+                  isMuted: !hasCompleteSquad,
+                ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Text(
-              !hasCompleteSquad
-                  ? l10n.playSquadBuildAction
-                  : l10n.playSquadEditAction,
-              style: context.textStyles.labelSmall?.copyWith(
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                !hasCompleteSquad
+                    ? l10n.playSquadBuildAction
+                    : l10n.playSquadEditAction,
+                style: context.textStyles.labelSmall?.copyWith(
+                  color: colors.accent,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                size: AppSizing.iconMd,
                 color: colors.accent,
-                fontWeight: FontWeight.w600,
               ),
-            ),
-            Icon(
-              Icons.chevron_right,
-              size: AppSizing.iconMd,
-              color: colors.accent,
-            ),
-            const SizedBox(width: AppSpacing.xs),
-          ],
+              const SizedBox(width: AppSpacing.xs),
+            ],
+          ),
         ),
       );
     },
   );
+
+  // Mesmo fluxo de squads_section.dart: pede nome+formacao, cria, e deixa o
+  // BlocBuilder re-renderizar com o elenco novo -- o usuario toca de novo
+  // pra entrar no builder, sem navegacao automatica que ele nao pediu.
+  Future<void> _createSquad(BuildContext context, FcSquadsState state) async {
+    final l10n = context.l10n;
+    final cubit = context.read<FcSquadsCubit>();
+    final result = await showSquadNameSheet(
+      context: context,
+      title: l10n.squadCreateTitle,
+      subtitle: l10n.squadCreateSubtitle,
+      formations: state.formations,
+    );
+    if (result == null || result.formationCode == null) {
+      return;
+    }
+    await cubit.createSquad(
+      name: result.name,
+      formationCode: result.formationCode!,
+    );
+  }
 }
 
 class _Field extends StatelessWidget {

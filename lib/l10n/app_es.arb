@@ -1860,13 +1860,5 @@
       }
     }
   },
-  "marketPricePlatformLabel": "Plataforma: {platform}",
-  "@marketPricePlatformLabel": {
-    "placeholders": {
-      "platform": {
-        "type": "String"
-      }
-    }
-  },
   "marketPriceHistoryLabel": "Historial de precio"
 }

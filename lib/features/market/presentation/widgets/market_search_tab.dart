@@ -1,9 +1,9 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_detail_sheet.dart';
 import 'package:fifa_queue/features/market/presentation/cubit/market_search_cubit.dart';
 import 'package:fifa_queue/features/market/presentation/cubit/market_search_state.dart';
+import 'package:fifa_queue/features/market/presentation/widgets/market_card_sheet.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_card_tile.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_price_section.dart';
 import 'package:flutter/material.dart';
@@ -74,13 +74,13 @@ class MarketSearchTab extends StatelessWidget {
                     ),
                     onTap: () {
                       final searchCubit = context.read<MarketSearchCubit>();
-                      showPlayerCardDetailSheet(
+                      showMarketCardSheet(
                         context: context,
                         card: card,
                         // BlocBuilder (nao um bool fixo) para o icone dentro
                         // da folha refletir a acao na hora, ja que a folha
                         // fica aberta depois do toque em favoritar.
-                        footer: BlocBuilder<MarketSearchCubit, MarketSearchState>(
+                        priceSection: BlocBuilder<MarketSearchCubit, MarketSearchState>(
                           bloc: searchCubit,
                           builder: (context, state) => MarketPriceSection(
                             card: card,

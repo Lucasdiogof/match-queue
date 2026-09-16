@@ -54,7 +54,6 @@ class MarketCardTile extends StatelessWidget {
                           '${l10n.squadCardDetailRatingLabel} ${card.rating}',
                     ),
                     AppBadge(label: card.primaryPosition),
-                    if (card.cardType != null) AppBadge(label: card.cardType!),
                   ],
                 ),
               ],

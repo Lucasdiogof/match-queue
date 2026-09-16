@@ -16,20 +16,15 @@ const bool _kShowOtherPlayerVersions = false;
 Future<void> showPlayerCardDetailSheet({
   required BuildContext context,
   required PlayerCard card,
-  // Slot opcional para quem precisa acrescentar algo ao fim do detalhe sem
-  // duplicar os ~300 linhas de renderizacao de carta acima (hoje so a
-  // feature Mercado usa, para a secao de preco + favorito).
-  Widget? footer,
 }) => showAppBottomSheet<void>(
   context: context,
-  builder: (sheetContext) => _PlayerCardDetailBody(card: card, footer: footer),
+  builder: (sheetContext) => _PlayerCardDetailBody(card: card),
 );
 
 class _PlayerCardDetailBody extends StatelessWidget {
-  const _PlayerCardDetailBody({required this.card, this.footer});
+  const _PlayerCardDetailBody({required this.card});
 
   final PlayerCard card;
-  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +37,8 @@ class _PlayerCardDetailBody extends StatelessWidget {
         card.leagueName,
         card.nationName,
       ].whereType<String>().join(' · '),
-      // Sem isto, a sheet crescia ate o conteudo inteiro caber -- sempre
-      // coube na tela antes do footer de preco (Mercado) existir, mas uma
-      // carta com muitos atributos/badges + preco pode passar da altura da
+      // Sem isto, a sheet crescia ate o conteudo inteiro caber -- uma carta
+      // com muitos atributos/badges/playstyles pode passar da altura da
       // tela e estourar a viewport. Com true, a sheet ganha altura maxima e
       // este SingleChildScrollView rola por dentro dela.
       isChildScrollable: true,
@@ -251,12 +245,6 @@ class _PlayerCardDetailBody extends StatelessWidget {
                   style: context.textStyles.bodySmall,
                 ),
               ),
-            ],
-            if (footer != null) ...<Widget>[
-              const SizedBox(height: AppSpacing.lg),
-              const Divider(),
-              const SizedBox(height: AppSpacing.lg),
-              footer!,
             ],
             const SizedBox(height: AppSpacing.lg),
           ],
