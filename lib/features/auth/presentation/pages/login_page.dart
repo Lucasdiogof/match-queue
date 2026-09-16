@@ -74,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
         return AuthFormScaffold(
           title: l10n.loginTitle,
           backgroundImage: 'assets/brand/login_background.png',
-          showWordmark: false,
           children: <Widget>[
             if (failure != null) ...<Widget>[
               AppBanner(

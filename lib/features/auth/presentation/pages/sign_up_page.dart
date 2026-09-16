@@ -87,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
         return AuthFormScaffold(
           title: l10n.signUpTitle,
           subtitle: l10n.signUpSubtitle,
-          darkBackground: true,
+          backgroundImage: 'assets/brand/login_background.png',
           wordmark: const BrandWordmarkStyled(),
           contentAlignment: const Alignment(0, -0.85),
           onBack: () => context.canPop()
