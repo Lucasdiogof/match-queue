@@ -86,7 +86,7 @@ class AuthFormScaffold extends StatelessWidget {
                 children: <Widget>[
                   if (showWordmark) ...<Widget>[
                     Center(child: wordmark ?? const BrandWordmark(height: 76)),
-                    const SizedBox(height: AppSpacing.xl),
+                    const SizedBox(height: AppSpacing.xxxl),
                   ],
                   Text(title, style: context.textStyles.headlineMedium),
                   if (subtitle != null) ...<Widget>[

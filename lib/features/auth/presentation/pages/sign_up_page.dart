@@ -88,7 +88,6 @@ class _SignUpPageState extends State<SignUpPage> {
           title: l10n.signUpTitle,
           subtitle: l10n.signUpSubtitle,
           backgroundImage: 'assets/brand/login_background.png',
-          wordmark: const BrandWordmarkStyled(),
           contentAlignment: const Alignment(0, -0.85),
           onBack: () => context.canPop()
               ? context.pop()
