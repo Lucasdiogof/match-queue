@@ -42,10 +42,7 @@ class _CentralBody extends StatelessWidget {
 
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.lg,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
       children: <Widget>[
         BlocBuilder<FcAccountsCubit, FcAccountsState>(
           buildWhen: (previous, current) =>

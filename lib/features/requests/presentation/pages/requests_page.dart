@@ -139,10 +139,7 @@ class _JoinRequestsList extends StatelessWidget {
 
     return ListView.separated(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.sm,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       itemCount: requests.length,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (context, index) {
@@ -248,10 +245,7 @@ class _InvitationsList extends StatelessWidget {
 
     return ListView.separated(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.sm,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       itemCount: invitations.length,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (context, index) {

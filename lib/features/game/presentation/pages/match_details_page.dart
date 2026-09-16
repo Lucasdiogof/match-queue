@@ -82,10 +82,7 @@ class _MatchDetailsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.xl,
-    ),
+    padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
     children: <Widget>[
       _HeaderCard(details: details),
       const SizedBox(height: AppSpacing.lg),

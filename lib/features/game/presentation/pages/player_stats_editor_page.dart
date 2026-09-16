@@ -81,10 +81,7 @@ class _PlayerStatsEditorPageState extends State<PlayerStatsEditorPage> {
     return AppScaffold(
       appBar: AppAppBar(title: l10n.playerStatsEditorTitle),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.xl,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
         children: <Widget>[
           if (_failure != null) ...<Widget>[
             AppBanner(

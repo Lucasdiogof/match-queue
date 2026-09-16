@@ -167,10 +167,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.xl,
-    ),
+    padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
     children: <Widget>[
       WeekendLeagueWeekSelector(event: event, onTap: onPickWeek),
       const SizedBox(height: AppSpacing.lg),
