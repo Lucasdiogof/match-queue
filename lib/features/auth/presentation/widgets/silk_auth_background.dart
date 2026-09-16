@@ -27,6 +27,7 @@ class _SilkAuthBackgroundState extends State<SilkAuthBackground>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   final Stopwatch _elapsed = Stopwatch();
+  bool _started = false;
 
   @override
   void initState() {
@@ -35,7 +36,19 @@ class _SilkAuthBackgroundState extends State<SilkAuthBackground>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    if (!MediaQuery.disableAnimationsOf(context)) {
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // MediaQuery so pode ser lido depois que a arvore de InheritedWidget
+    // esta montada -- initState() e cedo demais (ver erro do Flutter:
+    // "dependOnInheritedWidgetOfExactType... called before initState()
+    // completed"). didChangeDependencies() roda uma vez logo apos initState
+    // (e de novo se o MediaQuery mudar), entao _started evita reiniciar o
+    // controller a cada mudanca.
+    if (!_started && !MediaQuery.disableAnimationsOf(context)) {
+      _started = true;
       _elapsed.start();
       _controller.repeat();
     }
