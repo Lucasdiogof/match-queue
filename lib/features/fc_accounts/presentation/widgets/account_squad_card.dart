@@ -1,8 +1,10 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_platform_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_switcher_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_state.dart';
@@ -16,11 +18,12 @@ import 'package:go_router/go_router.dart';
 /// o que sugeria duas entidades independentes e comia a primeira dobra do
 /// Jogar -- justamente onde o matchmaking precisa estar.
 ///
-/// Cada metade tem o proprio toque, sem acao de card inteiro: a de cima
+/// Cada linha tem o proprio toque, sem acao de card inteiro: a de cima
 /// (Conta) abre o troca-conta -- o mesmo que o botao discreto ja fazia, so
-/// que o toque nao precisa mais acertar so o icone. A de baixo (Elenco) vai
+/// que o toque nao precisa mais acertar so o icone. A do meio (Elenco) vai
 /// direto pra montar/editar escalacao, que e o que o texto da linha ja
-/// promete.
+/// promete. A de baixo (Plataforma) abre o mesmo seletor da tela de
+/// configuracoes da conta.
 class AccountSquadCard extends StatelessWidget {
   const AccountSquadCard({super.key});
 
@@ -88,11 +91,62 @@ class AccountSquadCard extends StatelessWidget {
                 ),
                 Divider(height: 1, thickness: 1, color: colors.borderSubtle),
                 const _SquadRow(),
+                Divider(height: 1, thickness: 1, color: colors.borderSubtle),
+                _PlatformRow(account: account),
               ],
             ),
           );
         },
       );
+}
+
+class _PlatformRow extends StatelessWidget {
+  const _PlatformRow({required this.account});
+
+  final FcAccount account;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+
+    return InkWell(
+      onTap: () => showFcAccountPlatformPickerSheet(
+        context: context,
+        accountId: account.id,
+        selected: account.platform,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.md,
+          AppSpacing.sm,
+          AppSpacing.md,
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: _Field(
+                label: l10n.fcAccountPlatformLabel,
+                value: account.platform?.displayLabel ?? l10n.fcAccountPlatformNone,
+                isMuted: account.platform == null,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Text(
+              l10n.actionEdit,
+              style: context.textStyles.labelSmall?.copyWith(
+                color: colors.accent,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Icon(Icons.chevron_right, size: AppSizing.iconMd, color: colors.accent),
+            const SizedBox(width: AppSpacing.xs),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _SquadRow extends StatelessWidget {
