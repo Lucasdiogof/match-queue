@@ -30,12 +30,7 @@ class TeamsCubit extends Cubit<TeamsState> {
       return;
     }
 
-    emit(
-      TeamsState(
-        status: TeamsStatus.loading,
-        accountId: fcAccountId,
-      ),
-    );
+    emit(TeamsState(status: TeamsStatus.loading, accountId: fcAccountId));
     try {
       final teams = await _repository.fetchMyTeams(fcAccountId: fcAccountId);
       if (isClosed || state.accountId != fcAccountId) {

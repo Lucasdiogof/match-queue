@@ -34,9 +34,8 @@ class SupabaseFcAccountRepository implements FcAccountRepository {
   Future<void> updatePlatform({
     required String id,
     FcAccountPlatform? platform,
-  }) => _guard(
-    () => _dataSource.updatePlatform(id: id, platform: platform?.key),
-  );
+  }) =>
+      _guard(() => _dataSource.updatePlatform(id: id, platform: platform?.key));
 
   @override
   Future<String> uploadAndSetAvatar({

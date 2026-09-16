@@ -292,4 +292,3 @@ class TeamRivalsSection extends StatelessWidget {
     );
   }
 }
-

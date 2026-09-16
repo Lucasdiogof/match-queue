@@ -118,7 +118,10 @@ class _CreateFcAccountFormState extends State<_CreateFcAccountForm> {
                     AppValidators.fcAccountName(value)?.message(l10n),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text(l10n.fcAccountPlatformLabel, style: context.textStyles.labelMedium),
+              Text(
+                l10n.fcAccountPlatformLabel,
+                style: context.textStyles.labelMedium,
+              ),
               const SizedBox(height: AppSpacing.sm),
               Wrap(
                 spacing: AppSpacing.sm,

@@ -128,7 +128,9 @@ class _PlatformRow extends StatelessWidget {
             Expanded(
               child: _Field(
                 label: l10n.fcAccountPlatformLabel,
-                value: account.platform?.displayLabel ?? l10n.fcAccountPlatformNone,
+                value:
+                    account.platform?.displayLabel ??
+                    l10n.fcAccountPlatformNone,
                 isMuted: account.platform == null,
               ),
             ),
@@ -140,7 +142,11 @@ class _PlatformRow extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Icon(Icons.chevron_right, size: AppSizing.iconMd, color: colors.accent),
+            Icon(
+              Icons.chevron_right,
+              size: AppSizing.iconMd,
+              color: colors.accent,
+            ),
             const SizedBox(width: AppSpacing.xs),
           ],
         ),
