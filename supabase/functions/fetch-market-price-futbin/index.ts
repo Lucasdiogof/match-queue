@@ -3,7 +3,7 @@
 // Futbin, e a chave (PARSEBOT_API_KEY) nunca sai desta function.
 //
 // Cada chamada ao Parse.bot custa credito de verdade, entao TUDO passa
-// primeiro pelo cache em `market_price_cache` (TTL de 30min, decidido pelo
+// primeiro pelo cache em `market_price_cache` (TTL de 1h, decidido pelo
 // dono do produto): a mesma carta consultada por varias pessoas na mesma
 // janela usa a MESMA linha de cache, sem gastar credito de novo.
 //
@@ -23,7 +23,7 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
 
-const CACHE_TTL_MS = 30 * 60 * 1000;
+const CACHE_TTL_MS = 60 * 60 * 1000;
 const DEFAULT_PLATFORM = 'ps';
 const PARSEBOT_SCRAPER_BASE =
   'https://api.parse.bot/scraper/21963078-8a17-40ff-a896-9b0b0ec3e828';
