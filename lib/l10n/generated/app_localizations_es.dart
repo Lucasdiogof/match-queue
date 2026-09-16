@@ -4122,4 +4122,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get marketPriceHistoryLabel => 'Historial de precio';
+
+  @override
+  String get marketPlatformConsoles => 'Consolas';
 }

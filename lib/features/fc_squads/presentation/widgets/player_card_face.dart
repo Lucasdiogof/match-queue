@@ -91,14 +91,19 @@ class _ArtCard extends StatelessWidget {
   Widget build(BuildContext context) => Stack(
     fit: StackFit.expand,
     children: <Widget>[
+      // Fundo neutro atras da arte: com `contain` (ver abaixo) uma carta
+      // cuja proporcao real nao bate exatamente com a caixa (0.72) sobra
+      // uma tira no topo/base em vez de transparencia crua.
+      ColoredBox(color: context.colors.surfaceHighest),
       Image.network(
         art,
-        // Cover, nao contain: a carta deve preencher o espaco inteiro, sem
-        // sobrar fundo visivel nas bordas (mesmo problema no campo do
-        // Elenco e no cartao de compartilhar). Recorta um pouco a arte em
-        // vez de deixar espaco vazio -- a arte da EA e centralizada o
-        // suficiente pra isso nao cortar nada importante.
-        fit: BoxFit.cover,
+        // Contain, nao cover: `cover` recortava a arte pra preencher a
+        // caixa inteira, e pra cartas cuja proporcao real diverge um pouco
+        // de 0.72 isso cortava conteudo de verdade perto da borda (o icone
+        // de PlayStyle+ na lateral esquerda, reportado cortado). Contain
+        // nunca corta -- o preco de uma tira de fundo (acima) e menor que
+        // o de perder um dado da carta.
+        fit: BoxFit.contain,
         // Na Web o CDN da arte permite hotlink por <img> mas nao devolve
         // Access-Control-Allow-Origin, e o caminho padrao do Flutter busca os
         // bytes por XHR -- que o navegador bloqueia.
