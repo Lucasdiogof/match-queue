@@ -5,21 +5,32 @@ import 'package:flutter/material.dart';
 
 /// "Quais Contas FC entram neste time?" -- usado ao entrar por convite
 /// (gameplay flows refresh, item 16). Mesmo padrão de seleção usado dentro
-/// do formulário de criar time: pré-seleciona se só houver uma conta,
-/// exige pelo menos uma marcada pra confirmar.
+/// do formulário de criar time: pré-seleciona se só houver uma conta, exige
+/// pelo menos uma marcada pra confirmar. Com mais de uma conta, a que
+/// estiver ativa no momento (selectedAccountId) também já nasce marcada --
+/// continua multi-selecao (o usuario pode adicionar outras), so nao faz
+/// quem ja estava usando uma conta especifica comecar do zero.
 Future<Set<String>?> showFcAccountLinkPickerSheet({
   required BuildContext context,
   required List<FcAccount> accounts,
+  String? selectedAccountId,
 }) => showAppBottomSheet<Set<String>>(
   context: context,
   isDismissible: false,
-  builder: (sheetContext) => _FcAccountLinkPickerBody(accounts: accounts),
+  builder: (sheetContext) => _FcAccountLinkPickerBody(
+    accounts: accounts,
+    selectedAccountId: selectedAccountId,
+  ),
 );
 
 class _FcAccountLinkPickerBody extends StatefulWidget {
-  const _FcAccountLinkPickerBody({required this.accounts});
+  const _FcAccountLinkPickerBody({
+    required this.accounts,
+    this.selectedAccountId,
+  });
 
   final List<FcAccount> accounts;
+  final String? selectedAccountId;
 
   @override
   State<_FcAccountLinkPickerBody> createState() =>
@@ -32,9 +43,14 @@ class _FcAccountLinkPickerBodyState extends State<_FcAccountLinkPickerBody> {
   @override
   void initState() {
     super.initState();
+    final activeId = widget.selectedAccountId;
     _selected = widget.accounts.length == 1
         ? <String>{widget.accounts.first.id}
-        : <String>{};
+        : <String>{
+            if (activeId != null &&
+                widget.accounts.any((a) => a.id == activeId))
+              activeId,
+          };
   }
 
   @override

@@ -150,6 +150,7 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
     final selected = await showFcAccountLinkPickerSheet(
       context: context,
       accounts: accounts,
+      selectedAccountId: fcAccountsCubit.state.selectedAccountId,
     );
     if (!mounted || selected == null) {
       return;
