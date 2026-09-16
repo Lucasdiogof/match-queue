@@ -104,10 +104,14 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
     if (teamId == null) {
       return;
     }
-    final userId = context.read<AuthCubit>().state.user?.id;
-    if (userId != null) {
+    final fcAccountId = context
+        .read<FcAccountsCubit>()
+        .state
+        .selectedAccount
+        ?.id;
+    if (fcAccountId != null) {
       final teamsCubit = context.read<TeamsCubit>();
-      await teamsCubit.load(userId: userId);
+      await teamsCubit.load(fcAccountId: fcAccountId);
       await teamsCubit.selectTeam(teamId);
     }
     final isNewJoin = joinResult != null && !joinResult.alreadyMember;

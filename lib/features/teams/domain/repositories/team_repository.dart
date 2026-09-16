@@ -8,7 +8,9 @@ import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 
 abstract interface class TeamRepository {
-  Future<List<UserTeam>> fetchMyTeams();
+  /// Times da Conta FC informada, não do login inteiro -- duas Contas do
+  /// mesmo login podem estar em times diferentes.
+  Future<List<UserTeam>> fetchMyTeams({required String fcAccountId});
 
   Future<Team> createTeam({
     required String name,

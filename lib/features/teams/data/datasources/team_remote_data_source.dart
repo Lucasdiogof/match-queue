@@ -6,9 +6,7 @@ import 'package:fifa_queue/features/teams/data/models/team_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class TeamRemoteDataSource {
-  String? get currentUserId;
-
-  Future<List<Map<String, dynamic>>> fetchMyMemberships(String userId);
+  Future<List<Map<String, dynamic>>> fetchMyMemberships(String fcAccountId);
 
   Future<Map<String, dynamic>> createTeam({
     required String name,
@@ -88,17 +86,16 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   SupabaseQueryBuilder get _teams => _client.from(TeamModel.table);
 
   @override
-  String? get currentUserId => _client.auth.currentUser?.id;
-
-  @override
-  Future<List<Map<String, dynamic>>> fetchMyMemberships(String userId) async {
+  Future<List<Map<String, dynamic>>> fetchMyMemberships(
+    String fcAccountId,
+  ) async {
     final rows = await _members
         .select(
           '${TeamMemberModel.columnRole}, '
           '${TeamMemberModel.columnJoinedAt}, '
           '${TeamMemberModel.embeddedTeam}:${TeamModel.table}(*)',
         )
-        .eq(TeamMemberModel.columnUserId, userId)
+        .eq(TeamMemberModel.columnFcAccountId, fcAccountId)
         // ascending: true explicito -- o default do postgrest-dart e
         // DESCENDENTE. Sem isto "meus times" vinha do mais novo pro mais
         // antigo e o fallback de selecao pulava para o time recem-criado.

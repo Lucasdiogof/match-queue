@@ -22,7 +22,7 @@ import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.d
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/teams_session_listener.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/teams_account_listener.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,8 +89,8 @@ class FifaQueueApp extends StatelessWidget {
             localeResolutionCallback: (deviceLocale, supportedLocales) =>
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
             builder: (context, child) => ProfileSessionListener(
-              child: TeamsSessionListener(
-                child: FcAccountsSessionListener(
+              child: FcAccountsSessionListener(
+                child: TeamsAccountListener(
                   child: FcSquadsSessionListener(
                     child: PendingMatchSessionListener(
                       child: LocaleSyncListener(

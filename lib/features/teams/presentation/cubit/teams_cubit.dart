@@ -18,14 +18,30 @@ class TeamsCubit extends Cubit<TeamsState> {
   final CreateTeam _createTeam;
   final SelectedTeamStore _selectedTeamStore;
 
-  String? _userId;
+  String? _fcAccountId;
 
-  Future<void> load({required String userId}) async {
-    _userId = userId;
-    emit(state.copyWith(status: TeamsStatus.loading, clearFailure: true));
+  /// Trocar de Conta descarta a lista de times ANTERIOR antes de buscar a
+  /// nova -- mesmo motivo de FcSquadsCubit.load: sem isso a tela mostraria
+  /// por um instante os times da Conta anterior.
+  Future<void> load({required String? fcAccountId}) async {
+    _fcAccountId = fcAccountId;
+    if (fcAccountId == null) {
+      emit(const TeamsState(status: TeamsStatus.ready));
+      return;
+    }
+
+    emit(
+      TeamsState(
+        status: TeamsStatus.loading,
+        accountId: fcAccountId,
+      ),
+    );
     try {
-      final teams = await _repository.fetchMyTeams();
-      final selectedId = await _resolveSelectedId(teams, userId);
+      final teams = await _repository.fetchMyTeams(fcAccountId: fcAccountId);
+      if (isClosed || state.accountId != fcAccountId) {
+        return;
+      }
+      final selectedId = await _resolveSelectedId(teams, fcAccountId);
       emit(
         state.copyWith(
           status: TeamsStatus.ready,
@@ -47,18 +63,18 @@ class TeamsCubit extends Cubit<TeamsState> {
         );
       }
     } on AppFailure catch (failure) {
-      if (!isClosed) {
+      if (!isClosed && state.accountId == fcAccountId) {
         emit(state.copyWith(status: TeamsStatus.failure, failure: failure));
       }
     }
   }
 
   Future<void> refresh() async {
-    final userId = _userId;
-    if (userId == null) {
+    final fcAccountId = _fcAccountId;
+    if (fcAccountId == null) {
       return;
     }
-    await load(userId: userId);
+    await load(fcAccountId: fcAccountId);
   }
 
   Future<void> selectTeam(String teamId) async {
@@ -280,7 +296,7 @@ class TeamsCubit extends Cubit<TeamsState> {
   }
 
   void clear() {
-    _userId = null;
+    _fcAccountId = null;
     emit(const TeamsState());
   }
 
@@ -322,36 +338,36 @@ class TeamsCubit extends Cubit<TeamsState> {
   /// Etapa 6. Persistir na primeira resolucao torna a selecao estavel.
   Future<String?> _resolveSelectedId(
     List<UserTeam> teams,
-    String userId,
+    String fcAccountId,
   ) async {
     if (teams.isEmpty) {
       // Sem times nao ha o que preservar, e uma preferencia orfa so
-      // atrapalharia se o usuario entrasse noutro time depois.
-      await _selectedTeamStore.write(userId, null);
+      // atrapalharia se a Conta entrasse noutro time depois.
+      await _selectedTeamStore.write(fcAccountId, null);
       return null;
     }
 
-    final persisted = _selectedTeamStore.read(userId);
+    final persisted = _selectedTeamStore.read(fcAccountId);
     if (persisted != null && teams.any((team) => team.id == persisted)) {
       return persisted;
     }
 
-    // Preferencia apontando pra time do qual o usuario nao faz mais parte
-    // (saiu, foi removido, ou e resquicio de outra conta): descarta.
+    // Preferencia apontando pra time do qual a Conta nao faz mais parte
+    // (saiu, foi removida, ou e resquicio de outra Conta): descarta.
     if (persisted != null) {
-      await _selectedTeamStore.write(userId, null);
+      await _selectedTeamStore.write(fcAccountId, null);
     }
 
     final fallback = teams.first.id;
-    await _selectedTeamStore.write(userId, fallback);
+    await _selectedTeamStore.write(fcAccountId, fallback);
     return fallback;
   }
 
   Future<void> _persistSelected(String? teamId) async {
-    final userId = _userId;
-    if (userId == null) {
+    final fcAccountId = _fcAccountId;
+    if (fcAccountId == null) {
       return;
     }
-    await _selectedTeamStore.write(userId, teamId);
+    await _selectedTeamStore.write(fcAccountId, teamId);
   }
 }
