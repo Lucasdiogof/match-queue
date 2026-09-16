@@ -46,13 +46,37 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     final generation = ++_loadGeneration;
     emit(state.copyWith(status: MatchmakingStatus.loading, clearFailure: true));
     try {
-      final snapshot = await _repository.getMyStatus(
+      var snapshot = await _repository.getMyStatus(
         fcAccountId: fcAccountId,
         teamId: teamId,
         mode: mode,
       );
       if (_isStale(generation)) {
         return;
+      }
+      // searchingElsewhere e sempre sobre a PROPRIA conta (a RPC filtra por
+      // fc_account_id). Quando o time da sessao "de outro lugar" e o MESMO
+      // desta tela, so pode ser sobra de um modo que essa mesma conta
+      // acabou de sair -- nunca e legitimamente "outra pessoa" nem "outro
+      // time de verdade" (isso teria teamId diferente). Cleanup best-effort
+      // do close() do cubit anterior e fire-and-forget (nao atrasa o
+      // dispose), entao esta primeira leitura do cubit novo pode facilmente
+      // vencer a corrida e ainda ver a busca antiga como SEARCHING -- em
+      // vez de mostrar o banner de bloqueio pro usuario por causa disso,
+      // termina a limpeza aqui e reconsulta antes de emitir.
+      if (snapshot.searchingElsewhere?.teamId == teamId) {
+        await _cancelStaleElsewhereSearch();
+        if (_isStale(generation)) {
+          return;
+        }
+        snapshot = await _repository.getMyStatus(
+          fcAccountId: fcAccountId,
+          teamId: teamId,
+          mode: mode,
+        );
+        if (_isStale(generation)) {
+          return;
+        }
       }
       _emitSnapshot(snapshot, status: MatchmakingStatus.ready);
     } on AppFailure catch (failure) {
@@ -269,6 +293,18 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   }
 
   bool _isStale(int generation) => isClosed || generation != _loadGeneration;
+
+  /// Direto no repository (nunca _runAction, que da emit -- load() ja esta
+  /// emitindo o proprio ciclo loading/ready) e melhor esforco: se falhar,
+  /// a proxima leitura ainda mostra o banner (pior caso e igual a antes
+  /// desta correcao), mas load() nao trava por causa disso.
+  Future<void> _cancelStaleElsewhereSearch() async {
+    try {
+      await _repository.cancelSearch(fcAccountId);
+    } on AppFailure {
+      // Ignorado de proposito -- ver doc comment acima.
+    }
+  }
 
   void _emitSnapshot(
     MyMatchmakingSnapshot snapshot, {
