@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:flutter/material.dart';
 
 /// Redesenha a cada segundo so pra atualizar o texto/anel na tela -- quem
@@ -20,6 +21,7 @@ class MatchmakingTimerRing extends StatefulWidget {
     required this.expiresAt,
     required this.estimatedServerNow,
     this.onReachedZero,
+    this.gameMode,
     this.size = 168,
     super.key,
   });
@@ -32,6 +34,11 @@ class MatchmakingTimerRing extends StatefulWidget {
   /// tela. Serve so pra pedir uma releitura antes do cron/evento chegar --
   /// quem marca a sessao como expirada continua sendo o servidor.
   final VoidCallback? onReachedZero;
+
+  /// So troca a paleta do efeito visual (Champions = vinho+dourado, Rivals
+  /// = grafite+dourado). Nulo cai no dourado/competitivo generico do tema.
+  /// Nunca influencia o calculo do countdown.
+  final GameMode? gameMode;
 
   final double size;
 
@@ -148,14 +155,16 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
     final remaining = rawRemaining.isNegative ? Duration.zero : rawRemaining;
     _maybeNotifyZero(remaining);
     final seconds = remaining.inSeconds;
+    final (baseColor, brightColor) = _paletteFor(widget.gameMode, colors);
     // Mesmo limiar de urgencia de antes (10s/30s) -- so o tom "normal"
-    // trocou de textPrimary pro dourado competitivo do tema, pra combinar
-    // com o glow/aneis novos em vez de destoar deles.
+    // trocou de textPrimary pro tom "bright" da paleta do modo (dourado em
+    // qualquer um dos dois), pra combinar com o glow/aneis em vez de
+    // destoar deles.
     final numberColor = seconds <= 10
         ? colors.danger
         : seconds <= 30
         ? colors.warning
-        : colors.competitive;
+        : brightColor;
 
     return RepaintBoundary(
       child: SizedBox(
@@ -170,8 +179,8 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
                 elapsed: _elapsed,
                 pulse: _pulseController,
                 particles: _particles,
-                baseColor: colors.competitive,
-                brightColor: AppColors.goldBright,
+                baseColor: baseColor,
+                brightColor: brightColor,
                 repaint: _pulseController,
               ),
             ),
@@ -183,6 +192,22 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
         ),
       ),
     );
+  }
+
+  /// Champions (Weekend League) = vinho + dourado; Rivals = grafite + dourado
+  /// (preto puro do token [AppColors.rivalsBlack] quase desaparece sobre o
+  /// fundo escuro do app -- grafite mantem o anel visivel sem deixar de ler
+  /// como "preto"). Sem modo conhecido, mantem o dourado/competitivo
+  /// generico do tema.
+  (Color, Color) _paletteFor(GameMode? mode, AppSemanticColors colors) {
+    switch (mode) {
+      case GameMode.weekendLeague:
+        return (AppColors.championsWine, AppColors.championsGold);
+      case GameMode.divisionRivals:
+        return (AppColors.rivalsGraphite, AppColors.rivalsGold);
+      case null:
+        return (colors.competitive, AppColors.goldBright);
+    }
   }
 
   String _format(int totalSeconds) {
@@ -312,7 +337,7 @@ class _ChronosPainter extends CustomPainter {
     final middleAngle = _angleFor(elapsedSeconds, _middlePeriodSeconds, false);
     final innerAngle = _angleFor(elapsedSeconds, _innerPeriodSeconds, true);
 
-    _paintCoreGlow(canvas, center, innerRadius);
+    _paintCoreGlow(canvas, center, middleRadius);
     _paintParticles(canvas, center, outerRadius, innerRadius, elapsedSeconds);
     _paintOuterRing(canvas, center, outerRadius, outerAngle);
     _paintMiddleRing(canvas, center, middleRadius, middleAngle);
@@ -325,22 +350,28 @@ class _ChronosPainter extends CustomPainter {
     return cw ? angle : -angle;
   }
 
-  void _paintCoreGlow(Canvas canvas, Offset center, double innerRadius) {
-    final glowRadius = innerRadius * 0.95;
-    // Respiracao bem discreta: 0.28 a 0.42 de intensidade, nunca um circulo
-    // solido -- centro (stop 0) e borda (stop 1) ficam transparentes, so o
-    // meio (stop 0.55) concentra o dourado.
-    final intensity = 0.28 + pulse.value * 0.14;
+  void _paintCoreGlow(Canvas canvas, Offset center, double middleRadius) {
+    // "Bola" grande o bastante pra encaixar o numero folgado dentro dela --
+    // vai um pouco alem do anel intermediario (que passa a orbitar por
+    // cima dela). Ainda um gradiente radial (nunca um disco solido: centro
+    // e borda ficam transparentes, so o platô entre os stops 0.35-0.68
+    // concentra a cor), so que agora com area suficiente pra o texto inteiro
+    // (ex.: "00:45") respirar dentro do brilho em vez de estourar pra fora
+    // dele.
+    final glowRadius = middleRadius * 1.05;
+    // Respiracao discreta: 0.34 a 0.50 de intensidade no platô central.
+    final intensity = 0.34 + pulse.value * 0.16;
     final paint = Paint()
       ..shader = RadialGradient(
         colors: <Color>[
           baseColor.withValues(alpha: 0),
           brightColor.withValues(alpha: intensity),
+          brightColor.withValues(alpha: intensity),
           baseColor.withValues(alpha: 0),
         ],
-        stops: const <double>[0.0, 0.55, 1.0],
+        stops: const <double>[0.0, 0.35, 0.68, 1.0],
       ).createShader(Rect.fromCircle(center: center, radius: glowRadius))
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 14);
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
     canvas.drawCircle(center, glowRadius, paint);
   }
 

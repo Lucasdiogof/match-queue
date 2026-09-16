@@ -475,6 +475,7 @@ class _SearchingSelfCard extends StatelessWidget {
             startedAt: searching.startedAt,
             expiresAt: searching.expiresAt,
             estimatedServerNow: state.estimatedServerNow,
+            gameMode: searching.gameMode,
             onReachedZero: () =>
                 context.read<MatchmakingCubit>().refreshSilently(),
           ),
