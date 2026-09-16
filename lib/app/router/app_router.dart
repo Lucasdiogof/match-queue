@@ -16,7 +16,6 @@ import 'package:fifa_queue/features/fc_squads/presentation/pages/clubs_catalog_p
 import 'package:fifa_queue/features/fc_squads/presentation/pages/squad_builder_page.dart';
 import 'package:fifa_queue/features/game/presentation/pages/match_details_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
-import 'package:fifa_queue/features/requests/presentation/pages/requests_page.dart';
 import 'package:fifa_queue/features/central/presentation/pages/central_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
 import 'package:fifa_queue/features/legal/presentation/pages/privacy_policy_page.dart';
@@ -193,11 +192,6 @@ class AppRouter {
         builder: (context, state) => const ClubsCatalogPage(),
       ),
       GoRoute(
-        path: AppRoutes.market.path,
-        name: AppRoutes.market.name,
-        builder: (context, state) => const MarketPage(),
-      ),
-      GoRoute(
         path: AppRoutes.clubDetail.path,
         name: AppRoutes.clubDetail.name,
         builder: (context, state) => ClubDetailPage(
@@ -309,7 +303,14 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.team.path,
                 name: AppRoutes.team.name,
-                builder: (context, state) => const TeamsListPage(),
+                // `extra` int opcional: qual aba abrir (Meus Times/Explorar/
+                // Convites) -- usado pelo resolver de notificacao pra levar
+                // direto na aba Convites em vez de sempre cair na primeira.
+                builder: (context, state) => TeamsListPage(
+                  initialTabIndex: state.extra is int
+                      ? state.extra! as int
+                      : 0,
+                ),
               ),
             ],
           ),
@@ -325,9 +326,9 @@ class AppRouter {
           StatefulShellBranch(
             routes: <RouteBase>[
               GoRoute(
-                path: AppRoutes.requests.path,
-                name: AppRoutes.requests.name,
-                builder: (context, state) => const RequestsPage(),
+                path: AppRoutes.market.path,
+                name: AppRoutes.market.name,
+                builder: (context, state) => const MarketPage(),
               ),
             ],
           ),
