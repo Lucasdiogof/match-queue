@@ -125,7 +125,7 @@ class _CreateFcAccountFormState extends State<_CreateFcAccountForm> {
                 children: <Widget>[
                   for (final platform in FcAccountPlatform.values)
                     AppChip(
-                      label: platform.key,
+                      label: platform.displayLabel,
                       isSelected: _platform == platform,
                       onPressed: state.isSaving
                           ? null
