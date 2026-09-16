@@ -1857,5 +1857,6 @@
       }
     }
   },
-  "marketPriceHistoryLabel": "Historial de precio"
+  "marketPriceHistoryLabel": "Historial de precio",
+  "marketPlatformConsoles": "Consolas"
 }

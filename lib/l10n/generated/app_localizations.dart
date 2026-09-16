@@ -7093,6 +7093,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Histórico de preço'**
   String get marketPriceHistoryLabel;
+
+  /// No description provided for @marketPlatformConsoles.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consoles'**
+  String get marketPlatformConsoles;
 }
 
 class _AppLocalizationsDelegate

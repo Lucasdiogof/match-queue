@@ -1843,5 +1843,6 @@
       }
     }
   },
-  "marketPriceHistoryLabel": "Price history"
+  "marketPriceHistoryLabel": "Price history",
+  "marketPlatformConsoles": "Consoles"
 }

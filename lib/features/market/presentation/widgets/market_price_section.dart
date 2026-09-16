@@ -80,12 +80,13 @@ class _MarketPriceBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 // So duas opcoes porque e so o que a FUTNext separa: PS e
-                // Xbox tem o mesmo mercado ('ps' na API deles), PC e o unico
-                // que diverge de verdade.
+                // Xbox tem o mesmo mercado ('ps' na API deles, mas exibido
+                // como "Consoles" -- o preco vale pros dois juntos, nao so
+                // PlayStation), PC e o unico que diverge de verdade.
                 Row(
                   children: <Widget>[
                     AppChip(
-                      label: 'PS',
+                      label: l10n.marketPlatformConsoles,
                       isSelected: state.platform == 'ps',
                       onPressed: () => cubit.changePlatform(card, 'ps'),
                     ),
