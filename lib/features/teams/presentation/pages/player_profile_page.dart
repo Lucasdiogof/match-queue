@@ -101,10 +101,7 @@ class _ProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.xl,
-    ),
+    padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
     children: <Widget>[
       _HeaderCard(profile: profile),
       const SizedBox(height: AppSpacing.lg),
