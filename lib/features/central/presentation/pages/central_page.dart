@@ -40,116 +40,136 @@ class _CentralBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-      children: <Widget>[
-        BlocBuilder<FcAccountsCubit, FcAccountsState>(
-          buildWhen: (previous, current) =>
-              previous.hasAccounts != current.hasAccounts,
-          builder: (context, state) => state.hasAccounts
-              ? const SizedBox.shrink()
-              : const Padding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.xl),
-                  child: FcAccountOnboardingCard(),
+    // Unico dado desta tela que pode ficar "preso" (ex.: primeiro fetch do
+    // boot que nao completou) e o de FcAccountsCubit, pro card de
+    // onboarding -- puxar pra atualizar da pro usuario um jeito de tentar
+    // de novo sem precisar trocar de aba.
+    return RefreshIndicator(
+      onRefresh: () => context.read<FcAccountsCubit>().refresh(),
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+        children: <Widget>[
+          BlocBuilder<FcAccountsCubit, FcAccountsState>(
+            buildWhen: (previous, current) =>
+                previous.status != current.status ||
+                previous.hasAccounts != current.hasAccounts,
+            // Enquanto ainda carrega (ex.: primeiro fetch do boot, que corre
+            // em paralelo com a primeira tela), "accounts vazio" nao significa
+            // "usuario sem conta" -- so significa "ainda nao sabemos". Sem
+            // este guard, quem ja tem conta via o card de criar a primeira
+            // ate a resposta chegar, que em uma rede lenta da pra notar (mesmo
+            // guard que ControlPage ja usa nos dois ramos dela).
+            builder: (context, state) {
+              if (state.isLoading && state.accounts.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              if (state.hasAccounts) {
+                return const SizedBox.shrink();
+              }
+              return const Padding(
+                padding: EdgeInsets.only(bottom: AppSpacing.xl),
+                child: FcAccountOnboardingCard(),
+              );
+            },
+          ),
+          _SectionLabel(text: l10n.centralSectionCatalog),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _BigEntryCard(
+                  icon: Icons.style_outlined,
+                  label: l10n.catalogCardsTitle,
+                  description: l10n.startCatalogCardsHint,
+                  onTap: () => context.push(AppRoutes.cardsCatalog.path),
                 ),
-        ),
-        _SectionLabel(text: l10n.centralSectionCatalog),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: _BigEntryCard(
-                icon: Icons.style_outlined,
-                label: l10n.catalogCardsTitle,
-                description: l10n.startCatalogCardsHint,
-                onTap: () => context.push(AppRoutes.cardsCatalog.path),
               ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: _BigEntryCard(
-                icon: Icons.shield_outlined,
-                label: l10n.catalogClubsTitle,
-                description: l10n.startCatalogClubsHint,
-                onTap: () => context.push(AppRoutes.clubsCatalog.path),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _BigEntryCard(
+                  icon: Icons.shield_outlined,
+                  label: l10n.catalogClubsTitle,
+                  description: l10n.startCatalogClubsHint,
+                  onTap: () => context.push(AppRoutes.clubsCatalog.path),
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.xl),
-        _SectionLabel(text: l10n.centralSectionMechanics),
-        const SizedBox(height: AppSpacing.md),
-        _ListEntryRow(
-          icon: Icons.auto_awesome_outlined,
-          label: l10n.mechanicsPlaystylesLabel,
-          description: l10n.mechanicsPlaystylesHint,
-          onTap: () => context.push(AppRoutes.playstyles.path),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        _ListEntryRow(
-          icon: Icons.science_outlined,
-          label: l10n.mechanicsChemistryLabel,
-          description: l10n.mechanicsChemistryHint,
-          onTap: () => context.push(AppRoutes.chemistry.path),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        _ListEntryRow(
-          icon: Icons.bolt_outlined,
-          label: l10n.mechanicsChemistryStylesLabel,
-          description: l10n.mechanicsChemistryStylesHint,
-          onTap: () => context.push(AppRoutes.chemistryStyles.path),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        _ListEntryRow(
-          icon: Icons.trending_up_outlined,
-          label: l10n.mechanicsEvolutionsLabel,
-          description: l10n.mechanicsEvolutionsHint,
-          onTap: () => context.push(AppRoutes.evolutions.path),
-        ),
-        const SizedBox(height: AppSpacing.xl),
-        _SectionLabel(text: l10n.centralSectionControls),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: _CompactEntryCard(
-                icon: Icons.sports_soccer_outlined,
-                label: l10n.controlsDribblingLabel,
-                onTap: () => context.push(AppRoutes.controlsDribbling.path),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          _SectionLabel(text: l10n.centralSectionMechanics),
+          const SizedBox(height: AppSpacing.md),
+          _ListEntryRow(
+            icon: Icons.auto_awesome_outlined,
+            label: l10n.mechanicsPlaystylesLabel,
+            description: l10n.mechanicsPlaystylesHint,
+            onTap: () => context.push(AppRoutes.playstyles.path),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _ListEntryRow(
+            icon: Icons.science_outlined,
+            label: l10n.mechanicsChemistryLabel,
+            description: l10n.mechanicsChemistryHint,
+            onTap: () => context.push(AppRoutes.chemistry.path),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _ListEntryRow(
+            icon: Icons.bolt_outlined,
+            label: l10n.mechanicsChemistryStylesLabel,
+            description: l10n.mechanicsChemistryStylesHint,
+            onTap: () => context.push(AppRoutes.chemistryStyles.path),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _ListEntryRow(
+            icon: Icons.trending_up_outlined,
+            label: l10n.mechanicsEvolutionsLabel,
+            description: l10n.mechanicsEvolutionsHint,
+            onTap: () => context.push(AppRoutes.evolutions.path),
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          _SectionLabel(text: l10n.centralSectionControls),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _CompactEntryCard(
+                  icon: Icons.sports_soccer_outlined,
+                  label: l10n.controlsDribblingLabel,
+                  onTap: () => context.push(AppRoutes.controlsDribbling.path),
+                ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: _CompactEntryCard(
-                icon: Icons.swap_horiz,
-                label: l10n.controlsPassingLabel,
-                onTap: () => context.push(AppRoutes.controlsPassing.path),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _CompactEntryCard(
+                  icon: Icons.swap_horiz,
+                  label: l10n.controlsPassingLabel,
+                  onTap: () => context.push(AppRoutes.controlsPassing.path),
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: _CompactEntryCard(
-                icon: Icons.adjust_outlined,
-                label: l10n.controlsShootingLabel,
-                onTap: () => context.push(AppRoutes.controlsShooting.path),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _CompactEntryCard(
+                  icon: Icons.adjust_outlined,
+                  label: l10n.controlsShootingLabel,
+                  onTap: () => context.push(AppRoutes.controlsShooting.path),
+                ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: _CompactEntryCard(
-                icon: Icons.shield_moon_outlined,
-                label: l10n.controlsDefendingLabel,
-                onTap: () => context.push(AppRoutes.controlsDefending.path),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _CompactEntryCard(
+                  icon: Icons.shield_moon_outlined,
+                  label: l10n.controlsDefendingLabel,
+                  onTap: () => context.push(AppRoutes.controlsDefending.path),
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
