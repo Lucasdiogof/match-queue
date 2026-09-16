@@ -372,7 +372,7 @@ class _SideNavigation extends StatelessWidget {
     leading: Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
       child: extended
-          ? const BrandLockup(markSize: BrandMarkSize.small)
+          ? const BrandWordmark(height: 22)
           : const BrandMark(size: BrandMarkSize.small),
     ),
     destinations: <NavigationRailDestination>[

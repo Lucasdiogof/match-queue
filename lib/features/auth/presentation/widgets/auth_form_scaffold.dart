@@ -1,4 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/features/auth/presentation/widgets/silk_auth_background.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class AuthFormScaffold extends StatelessWidget {
@@ -107,67 +109,89 @@ class AuthFormScaffold extends StatelessWidget {
     ],
   );
 
+  /// Na web, as telas com [backgroundImage] trocam a foto de estadio (arte
+  /// pensada pra mobile) pelo fundo animado "silk" -- so o visual de fundo
+  /// muda; formulario, logo, navegacao e autenticacao continuam exatamente
+  /// os mesmos widgets de sempre (mesmo [_buildForm]). No app nativo
+  /// (Android/iOS) [kIsWeb] e sempre false, entao esse caminho nunca roda
+  /// la -- a foto de estadio continua sendo o fundo.
+  Widget _webBackground(BuildContext context) => Scaffold(
+    body: SilkAuthBackground(
+      child: SafeArea(
+        child: Theme(
+          data: AppTheme.dark,
+          child: Builder(builder: _buildForm),
+        ),
+      ),
+    ),
+  );
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: backgroundImage != null
-        ? Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              // A arte e retrato (pensada pra mobile) e so entra como
-              // ambientacao -- nunca carrega a logo (essa e sempre a
-              // BrandWordmark normal acima do titulo, ver _buildForm). A
-              // logo desenhada na propria arte fica na metade de cima: em
-              // telas cuja proporcao e parecida com a da arte (a maioria
-              // dos celulares) o BoxFit.cover sozinho mal recorta nada, e
-              // ela reaparece duplicada. O scale ancorado embaixo forca um
-              // recorte minimo (~metade de baixo da arte) sempre, em
-              // qualquer proporcao de tela.
-              Transform.scale(
-                scale: 1.9,
-                alignment: Alignment.bottomCenter,
-                child: Image.asset(
-                  backgroundImage!,
-                  fit: BoxFit.cover,
+  Widget build(BuildContext context) {
+    if (backgroundImage != null && kIsWeb) {
+      return _webBackground(context);
+    }
+    return Scaffold(
+      body: backgroundImage != null
+          ? Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                // A arte e retrato (pensada pra mobile) e so entra como
+                // ambientacao -- nunca carrega a logo (essa e sempre a
+                // BrandWordmark normal acima do titulo, ver _buildForm). A
+                // logo desenhada na propria arte fica na metade de cima: em
+                // telas cuja proporcao e parecida com a da arte (a maioria
+                // dos celulares) o BoxFit.cover sozinho mal recorta nada, e
+                // ela reaparece duplicada. O scale ancorado embaixo forca um
+                // recorte minimo (~metade de baixo da arte) sempre, em
+                // qualquer proporcao de tela.
+                Transform.scale(
+                  scale: 1.9,
                   alignment: Alignment.bottomCenter,
-                ),
-              ),
-              const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: <Color>[Colors.transparent, Colors.black87],
-                    stops: <double>[0.45, 1],
+                  child: Image.asset(
+                    backgroundImage!,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
-              ),
-              // Builder gives the themed subtree its own BuildContext, so
-              // context.textStyles below actually resolves against
-              // AppTheme.dark instead of the ambient (light) theme baked in
-              // by the outer build() call.
-              SafeArea(
-                child: Theme(
-                  data: AppTheme.dark,
-                  child: Builder(builder: _buildForm),
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[Colors.transparent, Colors.black87],
+                      stops: <double>[0.45, 1],
+                    ),
+                  ),
+                ),
+                // Builder gives the themed subtree its own BuildContext, so
+                // context.textStyles below actually resolves against
+                // AppTheme.dark instead of the ambient (light) theme baked in
+                // by the outer build() call.
+                SafeArea(
+                  child: Theme(
+                    data: AppTheme.dark,
+                    child: Builder(builder: _buildForm),
+                  ),
+                ),
+              ],
+            )
+          : darkBackground
+          ? Theme(
+              data: AppTheme.dark,
+              child: Builder(
+                builder: (context) => AppBackground(
+                  dense: true,
+                  child: SafeArea(child: _buildForm(context)),
                 ),
               ),
-            ],
-          )
-        : darkBackground
-        ? Theme(
-            data: AppTheme.dark,
-            child: Builder(
-              builder: (context) => AppBackground(
-                dense: true,
-                child: SafeArea(child: _buildForm(context)),
-              ),
+            )
+          : AppBackground(
+              dense: true,
+              child: SafeArea(child: _buildForm(context)),
             ),
-          )
-        : AppBackground(
-            dense: true,
-            child: SafeArea(child: _buildForm(context)),
-          ),
-  );
+    );
+  }
 }
 
 class AuthFooterPrompt extends StatelessWidget {
