@@ -155,16 +155,20 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
     final remaining = rawRemaining.isNegative ? Duration.zero : rawRemaining;
     _maybeNotifyZero(remaining);
     final seconds = remaining.inSeconds;
-    final (baseColor, brightColor) = _paletteFor(widget.gameMode, colors);
-    // Mesmo limiar de urgencia de antes (10s/30s) -- so o tom "normal"
-    // trocou de textPrimary pro tom "bright" da paleta do modo (dourado em
-    // qualquer um dos dois), pra combinar com o glow/aneis em vez de
-    // destoar deles.
+    final (deepColor, baseColor, brightColor) = _paletteFor(
+      widget.gameMode,
+      colors,
+    );
+    // Mesmo limiar de urgencia de antes (10s/30s). O tom "normal" e sempre
+    // o dourado CLARO (goldBright), nunca o dourado escuro/opaco de
+    // Champions ou Rivals -- aquele em cima do glow (que agora tem um
+    // nucleo escuro solido, ver _paintCoreGlow) ficava com contraste ruim,
+    // sobretudo no tema claro.
     final numberColor = seconds <= 10
         ? colors.danger
         : seconds <= 30
         ? colors.warning
-        : brightColor;
+        : AppColors.goldBright;
 
     return RepaintBoundary(
       child: SizedBox(
@@ -179,6 +183,7 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
                 elapsed: _elapsed,
                 pulse: _pulseController,
                 particles: _particles,
+                deepColor: deepColor,
                 baseColor: baseColor,
                 brightColor: brightColor,
                 repaint: _pulseController,
@@ -194,19 +199,38 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
     );
   }
 
-  /// Champions (Weekend League) = vinho + dourado; Rivals = grafite + dourado
-  /// (preto puro do token [AppColors.rivalsBlack] quase desaparece sobre o
-  /// fundo escuro do app -- grafite mantem o anel visivel sem deixar de ler
-  /// como "preto"). Sem modo conhecido, mantem o dourado/competitivo
-  /// generico do tema.
-  (Color, Color) _paletteFor(GameMode? mode, AppSemanticColors colors) {
+  /// (deepColor, baseColor, brightColor). deepColor e o nucleo solido do
+  /// glow central (ver _paintCoreGlow) -- precisa ser bem escuro pra dar
+  /// contraste ao numero em QUALQUER card por baixo (claro ou escuro),
+  /// mesmo principio das faixas Champions/Rivals que ja existem no app
+  /// (sempre escuras, nunca variam com o tema -- ver o comment de
+  /// AppColors). Champions (Weekend League) = vinho escuro + vinho +
+  /// dourado; Rivals = preto + grafite + dourado (grafite no anel porque o
+  /// preto puro de [AppColors.rivalsBlack] quase desaparece sobre o fundo
+  /// escuro do app; o preto puro fica reservado pro nucleo, que tem
+  /// contraste garantido por estar sempre sobre o proprio glow dourado).
+  /// Sem modo conhecido, cai num dourado escuro neutro do proprio design
+  /// system.
+  (Color, Color, Color) _paletteFor(GameMode? mode, AppSemanticColors colors) {
     switch (mode) {
       case GameMode.weekendLeague:
-        return (AppColors.championsWine, AppColors.championsGold);
+        return (
+          AppColors.championsWineDark,
+          AppColors.championsWine,
+          AppColors.championsGold,
+        );
       case GameMode.divisionRivals:
-        return (AppColors.rivalsGraphite, AppColors.rivalsGold);
+        return (
+          AppColors.rivalsBlack,
+          AppColors.rivalsGraphite,
+          AppColors.rivalsGold,
+        );
       case null:
-        return (colors.competitive, AppColors.goldBright);
+        return (
+          AppColors.darkSurfaceGold,
+          colors.competitive,
+          AppColors.goldBright,
+        );
     }
   }
 
@@ -302,6 +326,7 @@ class _ChronosPainter extends CustomPainter {
     required this.elapsed,
     required this.pulse,
     required this.particles,
+    required this.deepColor,
     required this.baseColor,
     required this.brightColor,
     required Listenable repaint,
@@ -310,6 +335,7 @@ class _ChronosPainter extends CustomPainter {
   final Stopwatch elapsed;
   final AnimationController pulse;
   final List<_ChronosParticle> particles;
+  final Color deepColor;
   final Color baseColor;
   final Color brightColor;
 
@@ -351,28 +377,45 @@ class _ChronosPainter extends CustomPainter {
   }
 
   void _paintCoreGlow(Canvas canvas, Offset center, double middleRadius) {
-    // "Bola" grande o bastante pra encaixar o numero folgado dentro dela --
-    // vai um pouco alem do anel intermediario (que passa a orbitar por
-    // cima dela). Ainda um gradiente radial (nunca um disco solido: centro
-    // e borda ficam transparentes, so o platô entre os stops 0.35-0.68
-    // concentra a cor), so que agora com area suficiente pra o texto inteiro
-    // (ex.: "00:45") respirar dentro do brilho em vez de estourar pra fora
-    // dele.
-    final glowRadius = middleRadius * 1.05;
-    // Respiracao discreta: 0.34 a 0.50 de intensidade no platô central.
-    final intensity = 0.34 + pulse.value * 0.16;
-    final paint = Paint()
+    // "Bola" grande o bastante pra encaixar o numero BEM folgado dentro
+    // dela -- estoura pra alem do anel intermediario de proposito (o anel
+    // intermediario passa a orbitar por cima da propria bola, como no
+    // gear-2 da referencia).
+    final glowRadius = middleRadius * 1.32;
+
+    // Camada 1: nucleo escuro quase solido. E o que da contraste de
+    // verdade pro numero -- um gradiente so dourado-transparente (como na
+    // primeira versao) lia bem num fundo ja escuro, mas lavava contra um
+    // card claro (tema light) ou contra o proprio dourado do numero. Igual
+    // as faixas Champions/Rivals que ja existem no app (sempre escuras,
+    // nunca variam com o tema): o numero sempre pousa sobre um "palco"
+    // escuro proprio, nao sobre o que tiver por baixo.
+    final corePaint = Paint()
       ..shader = RadialGradient(
         colors: <Color>[
-          baseColor.withValues(alpha: 0),
-          brightColor.withValues(alpha: intensity),
-          brightColor.withValues(alpha: intensity),
-          baseColor.withValues(alpha: 0),
+          deepColor.withValues(alpha: 0.94),
+          deepColor.withValues(alpha: 0.80),
+          deepColor.withValues(alpha: 0),
         ],
-        stops: const <double>[0.0, 0.35, 0.68, 1.0],
-      ).createShader(Rect.fromCircle(center: center, radius: glowRadius))
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
-    canvas.drawCircle(center, glowRadius, paint);
+        stops: const <double>[0.0, 0.62, 1.0],
+      ).createShader(Rect.fromCircle(center: center, radius: glowRadius));
+    canvas.drawCircle(center, glowRadius, corePaint);
+
+    // Camada 2: brilho dourado por cima do nucleo, mais concentrado perto
+    // do numero e com respiracao discreta (0.55 a 0.75 de intensidade).
+    final intensity = 0.55 + pulse.value * 0.20;
+    final glowInnerRadius = glowRadius * 0.82;
+    final glowPaint = Paint()
+      ..shader = RadialGradient(
+        colors: <Color>[
+          brightColor.withValues(alpha: intensity),
+          brightColor.withValues(alpha: intensity * 0.55),
+          brightColor.withValues(alpha: 0),
+        ],
+        stops: const <double>[0.0, 0.5, 1.0],
+      ).createShader(Rect.fromCircle(center: center, radius: glowInnerRadius))
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16);
+    canvas.drawCircle(center, glowInnerRadius, glowPaint);
   }
 
   void _paintOuterRing(
@@ -537,6 +580,7 @@ class _ChronosPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ChronosPainter oldDelegate) =>
+      oldDelegate.deepColor != deepColor ||
       oldDelegate.baseColor != baseColor ||
       oldDelegate.brightColor != brightColor ||
       !identical(oldDelegate.particles, particles);
