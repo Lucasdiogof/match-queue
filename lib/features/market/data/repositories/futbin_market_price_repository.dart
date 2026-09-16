@@ -14,7 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// Futbin.
 ///
 /// Cada chamada custa credito de verdade (Parse.bot) -- a function cacheia
-/// por 30min em `market_price_cache` antes de bater na API, entao chamar
+/// por 1h em `market_price_cache` antes de bater na API, entao chamar
 /// este metodo de novo pra mesma carta/plataforma dentro da janela nao
 /// gasta credito adicional.
 class FutbinMarketPriceRepository implements MarketPriceRepository {
