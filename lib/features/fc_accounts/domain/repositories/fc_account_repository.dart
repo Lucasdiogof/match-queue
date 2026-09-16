@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
@@ -15,9 +16,15 @@ class FcAccountsSnapshot {
 abstract interface class FcAccountRepository {
   Future<FcAccountsSnapshot> fetchMyAccounts();
 
-  Future<void> createAccount(String name);
+  /// Devolve o id da conta recem-criada.
+  Future<String> createAccount(String name);
 
   Future<void> updateAccount({required String id, required String name});
+
+  Future<void> updatePlatform({
+    required String id,
+    FcAccountPlatform? platform,
+  });
 
   Future<String> uploadAndSetAvatar({
     required String accountId,

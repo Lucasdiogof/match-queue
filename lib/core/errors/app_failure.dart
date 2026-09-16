@@ -61,6 +61,7 @@ enum FcAccountFailureReason {
   accountNotLinkedToAnyTeam,
   invalidName,
   invalidDivision,
+  invalidPlatform,
 }
 
 enum SquadFailureReason {

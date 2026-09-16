@@ -112,6 +112,7 @@ class SupabaseErrorMapper {
     'FQ027' => FcAccountFailureReason.invalidName,
     'FQ028' => FcAccountFailureReason.invalidDivision,
     'FQ035' => FcAccountFailureReason.accountNotLinkedToAnyTeam,
+    'FQ058' => FcAccountFailureReason.invalidPlatform,
     _ => null,
   };
 

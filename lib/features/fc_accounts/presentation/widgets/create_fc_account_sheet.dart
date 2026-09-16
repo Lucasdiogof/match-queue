@@ -3,6 +3,7 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/l10n/validation_l10n.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
+import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_platform.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _CreateFcAccountForm extends StatefulWidget {
 class _CreateFcAccountFormState extends State<_CreateFcAccountForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
+  FcAccountPlatform? _platform;
 
   @override
   void initState() {
@@ -58,6 +60,7 @@ class _CreateFcAccountFormState extends State<_CreateFcAccountForm> {
     final navigator = Navigator.of(context);
     final ok = await context.read<FcAccountsCubit>().createAccount(
       _nameController.text,
+      platform: _platform,
     );
     if (ok && mounted) {
       navigator.pop(true);
@@ -113,6 +116,26 @@ class _CreateFcAccountFormState extends State<_CreateFcAccountForm> {
                 onSubmitted: (_) => _submit(),
                 validator: (value) =>
                     AppValidators.fcAccountName(value)?.message(l10n),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(l10n.fcAccountPlatformLabel, style: context.textStyles.labelMedium),
+              const SizedBox(height: AppSpacing.sm),
+              Wrap(
+                spacing: AppSpacing.sm,
+                children: <Widget>[
+                  for (final platform in FcAccountPlatform.values)
+                    AppChip(
+                      label: platform.key,
+                      isSelected: _platform == platform,
+                      onPressed: state.isSaving
+                          ? null
+                          : () => setState(
+                              () => _platform = _platform == platform
+                                  ? null
+                                  : platform,
+                            ),
+                    ),
+                ],
               ),
             ],
           ),

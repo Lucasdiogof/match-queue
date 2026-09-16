@@ -5,9 +5,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract interface class FcAccountRemoteDataSource {
   Future<Map<String, dynamic>> listMyAccounts();
 
-  Future<void> createAccount(String name);
+  /// Devolve o id da conta recem-criada -- FcAccountsCubit.createAccount
+  /// precisa dele pra aplicar a plataforma escolhida na criacao (RPC
+  /// separada, update_fc_account_platform, mesmo padrao de
+  /// updateRivalsDivision).
+  Future<String> createAccount(String name);
 
   Future<void> updateAccount({required String id, required String name});
+
+  Future<void> updatePlatform({required String id, String? platform});
 
   Future<String> uploadAvatar({
     required String accountId,
@@ -80,16 +86,26 @@ class SupabaseFcAccountRemoteDataSource implements FcAccountRemoteDataSource {
   }
 
   @override
-  Future<void> createAccount(String name) => _client.rpc<dynamic>(
-    'create_fc_account',
-    params: <String, dynamic>{'p_name': name},
-  );
+  Future<String> createAccount(String name) async {
+    final response = await _client.rpc<dynamic>(
+      'create_fc_account',
+      params: <String, dynamic>{'p_name': name},
+    );
+    return '${(response as Map)['id']}';
+  }
 
   @override
   Future<void> updateAccount({required String id, required String name}) =>
       _client.rpc<dynamic>(
         'update_fc_account',
         params: <String, dynamic>{'p_id': id, 'p_name': name},
+      );
+
+  @override
+  Future<void> updatePlatform({required String id, String? platform}) =>
+      _client.rpc<dynamic>(
+        'update_fc_account_platform',
+        params: <String, dynamic>{'p_id': id, 'p_platform': platform},
       );
 
   static const String _avatarBucket = 'fc-account-avatars';
