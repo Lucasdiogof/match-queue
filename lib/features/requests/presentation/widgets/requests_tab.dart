@@ -9,14 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class RequestsPage extends StatefulWidget {
-  const RequestsPage({super.key});
+/// Conteudo de "Convites" (pedidos pra entrar no time + convites recebidos)
+/// -- vive como uma aba de Times agora, nao mais uma tela propria. Sem
+/// Scaffold/AppBar aqui: quem os fornece e TeamsListPage, que ja tem a
+/// aba-mae. Duas sub-abas internas (Pedidos/Convites) porque sao acoes
+/// distintas (aprovar/recusar vs. aceitar/recusar) sobre listas distintas.
+class RequestsTab extends StatefulWidget {
+  const RequestsTab({super.key});
 
   @override
-  State<RequestsPage> createState() => _RequestsPageState();
+  State<RequestsTab> createState() => _RequestsTabState();
 }
 
-class _RequestsPageState extends State<RequestsPage>
+class _RequestsTabState extends State<RequestsTab>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
@@ -37,75 +42,71 @@ class _RequestsPageState extends State<RequestsPage>
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return AppScaffold(
-      appBar: AppAppBar(
-        title: l10n.requestsPageTitle,
-        accentTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          // Contagem no rotulo depende do inbox -- so essa parte precisa
-          // reconstruir quando ele muda, a TabBar em si e estatica.
-          child: BlocBuilder<RequestsCubit, RequestsState>(
-            buildWhen: (previous, current) => previous.inbox != current.inbox,
-            builder: (context, state) => TabBar(
-              controller: _tabController,
-              tabs: <Widget>[
-                Tab(
-                  text: state.inbox.joinRequestsToReview.isEmpty
-                      ? l10n.requestsSegmentRequests
-                      : '${l10n.requestsSegmentRequests} '
-                            '(${state.inbox.joinRequestsToReview.length})',
-                ),
-                Tab(
-                  text: state.inbox.invitationsReceived.isEmpty
-                      ? l10n.requestsSegmentInvites
-                      : '${l10n.requestsSegmentInvites} '
-                            '(${state.inbox.invitationsReceived.length})',
-                ),
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        // Contagem no rotulo depende do inbox -- so essa parte precisa
+        // reconstruir quando ele muda, a TabBar em si e estatica.
+        BlocBuilder<RequestsCubit, RequestsState>(
+          buildWhen: (previous, current) => previous.inbox != current.inbox,
+          builder: (context, state) => TabBar(
+            controller: _tabController,
+            tabs: <Widget>[
+              Tab(
+                text: state.inbox.joinRequestsToReview.isEmpty
+                    ? l10n.requestsSegmentRequests
+                    : '${l10n.requestsSegmentRequests} '
+                          '(${state.inbox.joinRequestsToReview.length})',
+              ),
+              Tab(
+                text: state.inbox.invitationsReceived.isEmpty
+                    ? l10n.requestsSegmentInvites
+                    : '${l10n.requestsSegmentInvites} '
+                          '(${state.inbox.invitationsReceived.length})',
+              ),
+            ],
           ),
         ),
-      ),
-      body: AppBackground(
-        child: BlocBuilder<RequestsCubit, RequestsState>(
-          builder: (context, state) {
-            if (state.isLoading && state.inbox.pendingCount == 0) {
-              return const AppLoading();
-            }
-            if (state.status == RequestsStatus.failure &&
-                state.inbox.pendingCount == 0) {
-              return AppErrorState(
-                title: l10n.requestsLoadErrorTitle,
-                message:
-                    state.failure?.localizedMessage(l10n) ??
-                    l10n.errorUnexpected,
-                retryLabel: l10n.actionRetry,
-                onRetry: () => context.read<RequestsCubit>().refresh(),
+        Expanded(
+          child: BlocBuilder<RequestsCubit, RequestsState>(
+            builder: (context, state) {
+              if (state.isLoading && state.inbox.pendingCount == 0) {
+                return const AppLoading();
+              }
+              if (state.status == RequestsStatus.failure &&
+                  state.inbox.pendingCount == 0) {
+                return AppErrorState(
+                  title: l10n.requestsLoadErrorTitle,
+                  message:
+                      state.failure?.localizedMessage(l10n) ??
+                      l10n.errorUnexpected,
+                  retryLabel: l10n.actionRetry,
+                  onRetry: () => context.read<RequestsCubit>().refresh(),
+                );
+              }
+              return TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  RefreshIndicator(
+                    onRefresh: () => context.read<RequestsCubit>().refresh(),
+                    child: _JoinRequestsList(
+                      requests: state.inbox.joinRequestsToReview,
+                      pendingActionIds: state.pendingActionIds,
+                    ),
+                  ),
+                  RefreshIndicator(
+                    onRefresh: () => context.read<RequestsCubit>().refresh(),
+                    child: _InvitationsList(
+                      invitations: state.inbox.invitationsReceived,
+                      pendingActionIds: state.pendingActionIds,
+                    ),
+                  ),
+                ],
               );
-            }
-            return TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                RefreshIndicator(
-                  onRefresh: () => context.read<RequestsCubit>().refresh(),
-                  child: _JoinRequestsList(
-                    requests: state.inbox.joinRequestsToReview,
-                    pendingActionIds: state.pendingActionIds,
-                  ),
-                ),
-                RefreshIndicator(
-                  onRefresh: () => context.read<RequestsCubit>().refresh(),
-                  child: _InvitationsList(
-                    invitations: state.inbox.invitationsReceived,
-                    pendingActionIds: state.pendingActionIds,
-                  ),
-                ),
-              ],
-            );
-          },
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
 }

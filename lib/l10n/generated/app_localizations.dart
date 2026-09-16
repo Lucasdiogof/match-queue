@@ -6974,24 +6974,6 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 jogador saiu da escalação: não tem posição compatível na nova formação ({names}).} other{{count} jogadores saíram da escalação: não têm posição compatível na nova formação ({names}).}}'**
   String squadFormationDroppedPlayers(int count, String names);
 
-  /// No description provided for @centralSectionMarket.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mercado'**
-  String get centralSectionMarket;
-
-  /// No description provided for @marketEntryLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mercado de cartas'**
-  String get marketEntryLabel;
-
-  /// No description provided for @marketEntryHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Consulte o preço de mercado de uma carta.'**
-  String get marketEntryHint;
-
   /// No description provided for @marketTitle.
   ///
   /// In pt, this message translates to:

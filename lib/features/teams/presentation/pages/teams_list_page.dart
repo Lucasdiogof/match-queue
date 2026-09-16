@@ -4,6 +4,9 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/invitations/presentation/widgets/join_by_code_sheet.dart';
+import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
+import 'package:fifa_queue/features/requests/presentation/cubit/requests_state.dart';
+import 'package:fifa_queue/features/requests/presentation/widgets/requests_tab.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
@@ -16,11 +19,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-/// Times: aba "Meus Times" (Etapa 11, item 5) + aba "Explorar" (so times
-/// publicos, UI/UX refresh). Acoes de criar/entrar em time vivem no header
-/// desta tela agora -- pararam de duplicar o empty state em 3 telas.
+/// Times: aba "Meus Times" + aba "Explorar" (so times publicos) + aba
+/// "Convites" (pedidos/convites -- absorvida da extinta tela/aba
+/// Solicitacoes, que virou o Mercado na barra inferior). Acoes de criar/
+/// entrar em time vivem no header desta tela agora -- pararam de duplicar o
+/// empty state em 3 telas.
 class TeamsListPage extends StatefulWidget {
-  const TeamsListPage({super.key});
+  const TeamsListPage({this.initialTabIndex = 0, super.key});
+
+  /// Qual aba abrir de inicio -- so usado quando se chega aqui de fora
+  /// (ex.: notificacao de pedido/convite, via AppRoutes.teamRequestsTabIndex).
+  final int initialTabIndex;
 
   @override
   State<TeamsListPage> createState() => _TeamsListPageState();
@@ -34,7 +43,11 @@ class _TeamsListPageState extends State<TeamsListPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(
+      length: 3,
+      initialIndex: widget.initialTabIndex,
+      vsync: this,
+    );
     _publicTeamsCubit = PublicTeamsCubit(getIt<TeamRepository>())..load();
   }
 
@@ -67,12 +80,26 @@ class _TeamsListPageState extends State<TeamsListPage>
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
-          child: TabBar(
-            controller: _tabController,
-            tabs: <Widget>[
-              Tab(text: l10n.teamsMineTab),
-              Tab(text: l10n.teamsExploreTab),
-            ],
+          // So o rotulo da aba Convites depende do inbox -- a TabBar em si
+          // e estatica, mesmo padrao de RequestsTab pra a contagem interna.
+          child: BlocBuilder<RequestsCubit, RequestsState>(
+            buildWhen: (previous, current) =>
+                previous.inbox.pendingCount != current.inbox.pendingCount,
+            builder: (context, state) {
+              final pendingCount = state.inbox.pendingCount;
+              return TabBar(
+                controller: _tabController,
+                tabs: <Widget>[
+                  Tab(text: l10n.teamsMineTab),
+                  Tab(text: l10n.teamsExploreTab),
+                  Tab(
+                    text: pendingCount == 0
+                        ? l10n.navRequests
+                        : '${l10n.navRequests} ($pendingCount)',
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -90,6 +117,7 @@ class _TeamsListPageState extends State<TeamsListPage>
                     value: _publicTeamsCubit,
                     child: const _ExploreTeamsTab(),
                   ),
+                  const RequestsTab(),
                 ],
               ),
             ),

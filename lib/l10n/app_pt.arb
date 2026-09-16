@@ -1843,9 +1843,6 @@
       }
     }
   },
-  "centralSectionMarket": "Mercado",
-  "marketEntryLabel": "Mercado de cartas",
-  "marketEntryHint": "Consulte o preço de mercado de uma carta.",
   "marketTitle": "Mercado",
   "marketTabMarket": "Mercado",
   "marketTabFavorites": "Favoritos",

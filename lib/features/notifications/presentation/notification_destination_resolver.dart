@@ -18,13 +18,13 @@ class NotificationDestinationResolver {
     final teamId = _string(params['team_id']);
     final fcAccountId = _string(params['fc_account_id']);
 
-    // Pedido/convite recebido: a acao mora na tab Solicitacoes, nao no
-    // detalhe do time (que nem existe ainda pra quem so recebeu convite).
-    // Confere o TYPE tambem, nao so deep_link_type -- notificacoes antigas,
-    // gravadas antes do deep_link_type='requests' existir, caiam no ramo de
-    // team_id abaixo e tentavam abrir o detalhe do time que o admin ja
-    // estava vendo, duplicando a rota (crash de chave repetida no
-    // Navigator).
+    // Pedido/convite recebido: a acao mora na aba Convites de Times (antiga
+    // tela/aba Solicitacoes), nao no detalhe do time (que nem existe ainda
+    // pra quem so recebeu convite). Confere o TYPE tambem, nao so
+    // deep_link_type -- notificacoes antigas, gravadas antes do
+    // deep_link_type='requests' existir, caiam no ramo de team_id abaixo e
+    // tentavam abrir o detalhe do time que o admin ja estava vendo,
+    // duplicando a rota (crash de chave repetida no Navigator).
     const requestTypes = <String>{
       'TEAM_JOIN_REQUEST_RECEIVED',
       'TEAM_JOIN_REQUEST_APPROVED',
@@ -32,7 +32,11 @@ class NotificationDestinationResolver {
     };
     if (notification.deepLinkType == 'requests' ||
         requestTypes.contains(notification.type)) {
-      await _pushIfNotCurrent(context, AppRoutes.requests.path);
+      await _pushIfNotCurrent(
+        context,
+        AppRoutes.team.path,
+        extra: AppRoutes.teamRequestsTabIndex,
+      );
       return;
     }
 
@@ -63,13 +67,14 @@ class NotificationDestinationResolver {
   /// tela aberta agora so fecha a Central em vez de crashar.
   static Future<void> _pushIfNotCurrent(
     BuildContext context,
-    String location,
-  ) async {
+    String location, {
+    Object? extra,
+  }) async {
     final current = GoRouterState.of(context).uri.toString();
     if (current == location) {
       return;
     }
-    await context.push(location);
+    await context.push(location, extra: extra);
   }
 
   static String? _string(Object? value) =>

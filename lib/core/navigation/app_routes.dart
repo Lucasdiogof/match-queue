@@ -49,7 +49,12 @@ class AppRoutes {
     '/app/team/settings',
   );
   static const AppRoute history = AppRoute('history', '/app/history');
-  static const AppRoute requests = AppRoute('requests', '/app/requests');
+
+  /// "Convites" virou uma aba de Times, nao rota propria -- este indice e
+  /// passado como `extra` ao empurrar AppRoutes.team.path pra abrir direto
+  /// nela (ex.: notificacao de pedido/convite recebido). Precisa bater com
+  /// a ordem das abas em TeamsListPage.
+  static const int teamRequestsTabIndex = 2;
   static const AppRoute fcAccountHistory = AppRoute(
     'fc-account-history',
     '/app/fc-accounts/:fcAccountId/history',
@@ -179,7 +184,7 @@ class AppRoutes {
     central,
     team,
     control,
-    requests,
+    market,
     profile,
   ];
 

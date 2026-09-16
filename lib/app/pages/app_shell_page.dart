@@ -21,7 +21,8 @@ class AppShellDestination {
   /// O Controle -- item central, visualmente dominante na barra.
   final bool isPrimary;
 
-  /// Total pendente (pedidos + convites) na aba Solicitacoes. 0 = sem badge.
+  /// Total pendente (pedidos + convites) na aba Convites de Times. 0 = sem
+  /// badge.
   final int badgeCount;
 }
 
@@ -31,7 +32,9 @@ class AppShellPage extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   /// Ordem == ordem dos branches em app_router.dart: Central, Times,
-  /// Controle, Historico, Perfil -- Controle no meio de proposito.
+  /// Controle, Mercado, Perfil -- Controle no meio de proposito. O badge de
+  /// pendencias (pedido/convite) mora em Times agora, que e onde a aba
+  /// Convites vive -- Mercado nao tem noção de "pendente".
   List<AppShellDestination> _destinations(BuildContext context) {
     final l10n = context.l10n;
     final pendingCount = context
@@ -49,6 +52,7 @@ class AppShellPage extends StatelessWidget {
         icon: Icons.groups_outlined,
         selectedIcon: Icons.groups,
         label: l10n.navTeam,
+        badgeCount: pendingCount,
       ),
       AppShellDestination(
         icon: Icons.sports_esports_outlined,
@@ -57,10 +61,9 @@ class AppShellPage extends StatelessWidget {
         isPrimary: true,
       ),
       AppShellDestination(
-        icon: Icons.mail_outline,
-        selectedIcon: Icons.mail,
-        label: l10n.navRequests,
-        badgeCount: pendingCount,
+        icon: Icons.storefront_outlined,
+        selectedIcon: Icons.storefront,
+        label: l10n.marketTitle,
       ),
       AppShellDestination(
         icon: Icons.person_outline,

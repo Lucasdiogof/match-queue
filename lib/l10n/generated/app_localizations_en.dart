@@ -4041,15 +4041,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get centralSectionMarket => 'Market';
-
-  @override
-  String get marketEntryLabel => 'Card market';
-
-  @override
-  String get marketEntryHint => 'Check a card\'s current market price.';
-
-  @override
   String get marketTitle => 'Market';
 
   @override
