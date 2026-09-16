@@ -90,6 +90,13 @@ class _ControlBody extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
           children: <Widget>[
+            // AccountSquadCard nao depende de time nenhum (Elenco e da
+            // Conta, nao do Time) -- sem ele aqui, quem esta numa Conta sem
+            // time ficava sem NENHUM jeito de trocar pra outra Conta que
+            // tenha, preso nesta tela. So o card de busca/modo (que sim
+            // depende de time) continua escondido abaixo.
+            const AccountSquadCard(),
+            const SizedBox(height: AppSpacing.lg),
             BlocBuilder<FcAccountsCubit, FcAccountsState>(
               buildWhen: (previous, current) =>
                   previous.status != current.status ||
