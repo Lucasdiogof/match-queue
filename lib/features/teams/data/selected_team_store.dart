@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Chaveado por Conta FC, nao por login: cada Conta pode estar em times
+/// diferentes, entao cada uma lembra o proprio ultimo time selecionado.
 class SelectedTeamStore {
   const SelectedTeamStore(this._preferences);
 
@@ -7,15 +9,15 @@ class SelectedTeamStore {
 
   static const String _keyPrefix = 'teams.last_selected.';
 
-  String _keyFor(String userId) => '$_keyPrefix$userId';
+  String _keyFor(String fcAccountId) => '$_keyPrefix$fcAccountId';
 
-  String? read(String userId) {
-    final value = _preferences.getString(_keyFor(userId));
+  String? read(String fcAccountId) {
+    final value = _preferences.getString(_keyFor(fcAccountId));
     return (value == null || value.isEmpty) ? null : value;
   }
 
-  Future<void> write(String userId, String? teamId) async {
-    final key = _keyFor(userId);
+  Future<void> write(String fcAccountId, String? teamId) async {
+    final key = _keyFor(fcAccountId);
     if (teamId == null || teamId.isEmpty) {
       await _preferences.remove(key);
     } else {

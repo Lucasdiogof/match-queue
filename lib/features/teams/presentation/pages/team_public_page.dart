@@ -75,7 +75,6 @@ class _TeamPublicBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
-    final record = team.record;
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
@@ -106,31 +105,6 @@ class _TeamPublicBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.xl),
-        if (record != null) ...<Widget>[
-          AppCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  l10n.teamPublicPageRecordTitle.toUpperCase(),
-                  style: context.textStyles.labelSmall,
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  l10n.teamPublicPageRecordLine(record.wins, record.losses),
-                  style: context.textStyles.titleMedium,
-                ),
-                Text(
-                  '${record.goalsFor}-${record.goalsAgainst}',
-                  style: context.textStyles.bodySmall?.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-        ],
         AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

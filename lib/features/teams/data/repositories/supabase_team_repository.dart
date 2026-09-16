@@ -23,13 +23,14 @@ class SupabaseTeamRepository implements TeamRepository {
   final SupabaseErrorMapper _errorMapper;
 
   @override
-  Future<List<UserTeam>> fetchMyTeams() => _guard(() async {
-    final rows = await _dataSource.fetchMyMemberships(_requireUserId());
-    return rows
-        .where((row) => row[TeamMemberModel.embeddedTeam] != null)
-        .map(TeamMemberModel.userTeamFromJson)
-        .toList(growable: false);
-  });
+  Future<List<UserTeam>> fetchMyTeams({required String fcAccountId}) =>
+      _guard(() async {
+        final rows = await _dataSource.fetchMyMemberships(fcAccountId);
+        return rows
+            .where((row) => row[TeamMemberModel.embeddedTeam] != null)
+            .map(TeamMemberModel.userTeamFromJson)
+            .toList(growable: false);
+      });
 
   @override
   Future<Team> createTeam({
@@ -135,14 +136,6 @@ class SupabaseTeamRepository implements TeamRepository {
     );
     return PlayerProfileModel.fromJson(json);
   });
-
-  String _requireUserId() {
-    final userId = _dataSource.currentUserId;
-    if (userId == null || userId.isEmpty) {
-      throw const AuthFailure(reason: AuthFailureReason.sessionExpired);
-    }
-    return userId;
-  }
 
   @override
   Future<TeamSportsDashboard> fetchSportsDashboard(String teamId) => _guard(
