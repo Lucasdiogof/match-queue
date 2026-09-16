@@ -1431,14 +1431,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get fcAccountRenameAction => 'Renomear';
 
   @override
-  String get fcAccountArchiveAction => 'Arquivar conta';
+  String get fcAccountArchiveAction => 'Excluir conta';
 
   @override
-  String get fcAccountArchiveConfirmTitle => 'Arquivar conta?';
+  String get fcAccountArchiveConfirmTitle => 'Excluir conta?';
 
   @override
-  String get fcAccountArchiveConfirmMessage =>
-      'A conta deixa de aparecer na lista, mas o histórico dela é mantido.';
+  String fcAccountArchiveConfirmMessage(String name) {
+    return '\"$name\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.';
+  }
 
   @override
   String get fcAccountSwitchTitle => 'Trocar de conta';

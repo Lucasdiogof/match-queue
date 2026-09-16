@@ -1438,14 +1438,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fcAccountRenameAction => 'Renombrar';
 
   @override
-  String get fcAccountArchiveAction => 'Archivar cuenta';
+  String get fcAccountArchiveAction => 'Eliminar cuenta';
 
   @override
-  String get fcAccountArchiveConfirmTitle => '¿Archivar cuenta?';
+  String get fcAccountArchiveConfirmTitle => '¿Eliminar cuenta?';
 
   @override
-  String get fcAccountArchiveConfirmMessage =>
-      'La cuenta deja de aparecer en la lista, pero se conserva su historial.';
+  String fcAccountArchiveConfirmMessage(String name) {
+    return '\"$name\" desaparece de la lista y deja de representar a los equipos vinculados (el historial se conserva). Si eres el único dueño de un equipo, también se eliminará; si hay más gente, la propiedad pasa automáticamente a otro miembro.';
+  }
 
   @override
   String get fcAccountSwitchTitle => 'Cambiar de cuenta';

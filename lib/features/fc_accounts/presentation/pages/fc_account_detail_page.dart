@@ -9,6 +9,7 @@ import 'package:fifa_queue/features/fc_accounts/presentation/pages/weekend_leagu
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squads_section.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/archive_fc_account_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_avatar_picker.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_platform_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/rename_fc_account_sheet.dart';
@@ -438,6 +439,25 @@ class _SettingsSection extends StatelessWidget {
             icon: Icons.lock_outline,
             onPressed: () =>
                 context.push(AppRoutes.profileSharingLocation(account.id)),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          AppButton.danger(
+            label: l10n.fcAccountArchiveAction,
+            icon: Icons.delete_outline,
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              final archived = await showArchiveFcAccountSheet(
+                context: context,
+                accountId: account.id,
+                accountName: account.name,
+              );
+              // A conta some de state.accounts assim que arquivada: esta
+              // tela nao tem mais nada pra mostrar, entao volta sozinha em
+              // vez de deixar a pessoa olhando pra uma tela vazia.
+              if (archived && navigator.canPop()) {
+                navigator.pop();
+              }
+            },
           ),
         ],
       ),

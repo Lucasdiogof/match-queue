@@ -2,6 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/fc_accounts/presentation/widgets/archive_fc_account_sheet.dart';
 import 'package:fifa_queue/features/fc_accounts/presentation/widgets/create_fc_account_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +35,20 @@ Future<void> showFcAccountSwitcherSheet({
                     Navigator.of(sheetContext).pop();
                     cubit.selectAccount(account.id);
                   },
+                  onDelete: () async {
+                    final archived = await showArchiveFcAccountSheet(
+                      context: sheetContext,
+                      accountId: account.id,
+                      accountName: account.name,
+                    );
+                    // A lista deste sheet e um snapshot passado por
+                    // parametro (nao um BlocBuilder ao vivo) -- mais simples
+                    // fechar e deixar quem abriu re-renderizar com a lista
+                    // atualizada do que tentar remover a linha aqui.
+                    if (archived && sheetContext.mounted) {
+                      Navigator.of(sheetContext).pop();
+                    }
+                  },
                 ),
               ),
             AppButton.ghost(
@@ -59,11 +74,13 @@ class _FcAccountRow extends StatelessWidget {
     required this.account,
     required this.isSelected,
     required this.onTap,
+    required this.onDelete,
   });
 
   final FcAccount account;
   final bool isSelected;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +106,11 @@ class _FcAccountRow extends StatelessWidget {
             Icon(Icons.check_circle, color: colors.textPrimary)
           else
             Icon(Icons.chevron_right, color: colors.textTertiary),
+          AppIconButton(
+            icon: Icons.delete_outline,
+            tooltip: context.l10n.fcAccountArchiveAction,
+            onPressed: onDelete,
+          ),
         ],
       ),
     );

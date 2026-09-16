@@ -807,9 +807,16 @@
   "fcAccountNameHint": "Ex.: Conta principal",
   "fcAccountRenameTitle": "Renomear conta",
   "fcAccountRenameAction": "Renomear",
-  "fcAccountArchiveAction": "Arquivar conta",
-  "fcAccountArchiveConfirmTitle": "Arquivar conta?",
-  "fcAccountArchiveConfirmMessage": "A conta deixa de aparecer na lista, mas o histórico dela é mantido.",
+  "fcAccountArchiveAction": "Excluir conta",
+  "fcAccountArchiveConfirmTitle": "Excluir conta?",
+  "fcAccountArchiveConfirmMessage": "\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.",
+  "@fcAccountArchiveConfirmMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "fcAccountSwitchTitle": "Trocar de conta",
   "fcAccountSwitchCreateAction": "+ Criar nova conta",
   "fcAccountLinkedTeamsTitle": "Times",

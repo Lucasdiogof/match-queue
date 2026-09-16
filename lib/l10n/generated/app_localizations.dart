@@ -2501,20 +2501,20 @@ abstract class AppLocalizations {
   /// No description provided for @fcAccountArchiveAction.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar conta'**
+  /// **'Excluir conta'**
   String get fcAccountArchiveAction;
 
   /// No description provided for @fcAccountArchiveConfirmTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Arquivar conta?'**
+  /// **'Excluir conta?'**
   String get fcAccountArchiveConfirmTitle;
 
   /// No description provided for @fcAccountArchiveConfirmMessage.
   ///
   /// In pt, this message translates to:
-  /// **'A conta deixa de aparecer na lista, mas o histórico dela é mantido.'**
-  String get fcAccountArchiveConfirmMessage;
+  /// **'\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.'**
+  String fcAccountArchiveConfirmMessage(String name);
 
   /// No description provided for @fcAccountSwitchTitle.
   ///
