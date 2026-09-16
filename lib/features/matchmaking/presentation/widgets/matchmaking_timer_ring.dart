@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:fifa_queue/core/design_system/design_system.dart';
-import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:flutter/material.dart';
 
 /// Redesenha a cada segundo so pra atualizar o texto/anel na tela -- quem
@@ -21,7 +20,6 @@ class MatchmakingTimerRing extends StatefulWidget {
     required this.expiresAt,
     required this.estimatedServerNow,
     this.onReachedZero,
-    this.gameMode,
     this.size = 224,
     super.key,
   });
@@ -34,11 +32,6 @@ class MatchmakingTimerRing extends StatefulWidget {
   /// tela. Serve so pra pedir uma releitura antes do cron/evento chegar --
   /// quem marca a sessao como expirada continua sendo o servidor.
   final VoidCallback? onReachedZero;
-
-  /// So troca a paleta do efeito visual (Champions = vinho+dourado, Rivals
-  /// = grafite+dourado). Nulo cai no dourado/competitivo generico do tema.
-  /// Nunca influencia o calculo do countdown.
-  final GameMode? gameMode;
 
   final double size;
 
@@ -155,15 +148,17 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
     final remaining = rawRemaining.isNegative ? Duration.zero : rawRemaining;
     _maybeNotifyZero(remaining);
     final seconds = remaining.inSeconds;
-    final (deepColor, baseColor, brightColor) = _paletteFor(
-      widget.gameMode,
-      colors,
-    );
+    // Sempre o mesmo dourado/ambar, em qualquer modo -- Champions
+    // (vinho+dourado) e Rivals (preto+dourado) foram tentados e destoavam
+    // do resto da tela; a marca competitiva do modo ja aparece nos outros
+    // cards (ex.: a faixa "CHAMPIONS" abaixo), nao precisa se repetir aqui.
+    const deepColor = AppColors.darkSurfaceGold;
+    final baseColor = colors.competitive;
+    const brightColor = AppColors.goldBright;
     // Mesmo limiar de urgencia de antes (10s/30s). O tom "normal" e sempre
-    // o dourado CLARO (goldBright), nunca o dourado escuro/opaco de
-    // Champions ou Rivals -- aquele em cima do glow (que agora tem um
-    // nucleo escuro solido, ver _paintCoreGlow) ficava com contraste ruim,
-    // sobretudo no tema claro.
+    // o dourado CLARO (goldBright), nunca o dourado escuro/opaco do tema --
+    // aquele em cima do glow (que tem um nucleo escuro solido, ver
+    // _paintCoreGlow) ficava com contraste ruim, sobretudo no tema claro.
     final numberColor = seconds <= 10
         ? colors.danger
         : seconds <= 30
@@ -197,41 +192,6 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
         ),
       ),
     );
-  }
-
-  /// (deepColor, baseColor, brightColor). deepColor e o nucleo solido do
-  /// glow central (ver _paintCoreGlow) -- precisa ser bem escuro pra dar
-  /// contraste ao numero em QUALQUER card por baixo (claro ou escuro),
-  /// mesmo principio das faixas Champions/Rivals que ja existem no app
-  /// (sempre escuras, nunca variam com o tema -- ver o comment de
-  /// AppColors). Champions (Weekend League) = vinho escuro + vinho +
-  /// dourado; Rivals = preto + grafite + dourado (grafite no anel porque o
-  /// preto puro de [AppColors.rivalsBlack] quase desaparece sobre o fundo
-  /// escuro do app; o preto puro fica reservado pro nucleo, que tem
-  /// contraste garantido por estar sempre sobre o proprio glow dourado).
-  /// Sem modo conhecido, cai num dourado escuro neutro do proprio design
-  /// system.
-  (Color, Color, Color) _paletteFor(GameMode? mode, AppSemanticColors colors) {
-    switch (mode) {
-      case GameMode.weekendLeague:
-        return (
-          AppColors.championsWineDark,
-          AppColors.championsWine,
-          AppColors.championsGold,
-        );
-      case GameMode.divisionRivals:
-        return (
-          AppColors.rivalsBlack,
-          AppColors.rivalsGraphite,
-          AppColors.rivalsGold,
-        );
-      case null:
-        return (
-          AppColors.darkSurfaceGold,
-          colors.competitive,
-          AppColors.goldBright,
-        );
-    }
   }
 
   String _format(int totalSeconds) {
