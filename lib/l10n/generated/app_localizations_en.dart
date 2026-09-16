@@ -2626,6 +2626,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamMemberRoleUpdatedMessage => 'Role updated.';
 
   @override
+  String get teamTransferOwnershipAction => 'Transfer ownership';
+
+  @override
+  String teamTransferOwnershipConfirmTitle(String name) {
+    return 'Hand the team to $name?';
+  }
+
+  @override
+  String get teamTransferOwnershipConfirmMessage =>
+      'You stop being the owner and become a regular player. Only the new owner can hand it back to you.';
+
+  @override
+  String teamTransferOwnershipDoneMessage(String name) {
+    return '$name is now the team owner.';
+  }
+
+  @override
   String get teamLogoChangeAction => 'Change logo';
 
   @override

@@ -104,4 +104,12 @@ abstract interface class TeamRepository {
     required String fcAccountId,
     required TeamRole role,
   });
+
+  /// Somente OWNER. O OWNER antigo vira PLAYER e continua no time; o alvo
+  /// precisa já ser membro. O servidor faz os dois passos numa transação --
+  /// o time nunca fica sem dono nem com dois.
+  Future<void> transferOwnership({
+    required String teamId,
+    required String fcAccountId,
+  });
 }

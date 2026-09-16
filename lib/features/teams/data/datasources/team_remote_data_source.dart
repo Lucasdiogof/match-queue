@@ -64,6 +64,11 @@ abstract interface class TeamRemoteDataSource {
     required String role,
   });
 
+  Future<void> transferOwnership({
+    required String teamId,
+    required String fcAccountId,
+  });
+
   Future<String> uploadTeamLogo({
     required String teamId,
     required Uint8List bytes,
@@ -269,6 +274,18 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
       'p_team_id': teamId,
       'p_target_fc_account_id': fcAccountId,
       'p_role': role,
+    },
+  );
+
+  @override
+  Future<void> transferOwnership({
+    required String teamId,
+    required String fcAccountId,
+  }) => _client.rpc<dynamic>(
+    'transfer_team_ownership',
+    params: <String, dynamic>{
+      'p_team_id': teamId,
+      'p_target_fc_account_id': fcAccountId,
     },
   );
 

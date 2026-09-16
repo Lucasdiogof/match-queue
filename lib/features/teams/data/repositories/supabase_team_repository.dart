@@ -212,6 +212,15 @@ class SupabaseTeamRepository implements TeamRepository {
     ),
   );
 
+  @override
+  Future<void> transferOwnership({
+    required String teamId,
+    required String fcAccountId,
+  }) => _guard(
+    () =>
+        _dataSource.transferOwnership(teamId: teamId, fcAccountId: fcAccountId),
+  );
+
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {
       return await action();
