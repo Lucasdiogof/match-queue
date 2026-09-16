@@ -7106,12 +7106,6 @@ abstract class AppLocalizations {
   /// **'Atualizado em {date}'**
   String marketPriceUpdatedAtLabel(String date);
 
-  /// No description provided for @marketPricePlatformLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Plataforma: {platform}'**
-  String marketPricePlatformLabel(String platform);
-
   /// No description provided for @marketPriceHistoryLabel.
   ///
   /// In pt, this message translates to:

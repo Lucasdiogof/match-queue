@@ -13,8 +13,8 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
 
   final MarketPriceRepository _repository;
 
-  Future<void> load(PlayerCard card, {String? platform}) async {
-    emit(state.copyWith(status: MarketPriceStatus.loading));
+  Future<void> load(PlayerCard card, {String platform = 'ps'}) async {
+    emit(state.copyWith(status: MarketPriceStatus.loading, platform: platform));
     try {
       final price = await _repository.getPrice(card, platform: platform);
       if (isClosed) {
@@ -25,15 +25,29 @@ class MarketPriceCubit extends Cubit<MarketPriceState> {
           status: price == null
               ? MarketPriceStatus.unavailable
               : MarketPriceStatus.available,
+          platform: platform,
           price: price,
         ),
       );
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(
-          MarketPriceState(status: MarketPriceStatus.failure, failure: failure),
+          MarketPriceState(
+            status: MarketPriceStatus.failure,
+            platform: platform,
+            failure: failure,
+          ),
         );
       }
     }
+  }
+
+  /// Troca a plataforma e busca o preco de novo -- FUTNext devolve valores
+  /// diferentes para 'ps' e 'pc', nao e so um rotulo do resultado ja carregado.
+  Future<void> changePlatform(PlayerCard card, String platform) {
+    if (platform == state.platform && state.status != MarketPriceStatus.failure) {
+      return Future<void>.value();
+    }
+    return load(card, platform: platform);
   }
 }

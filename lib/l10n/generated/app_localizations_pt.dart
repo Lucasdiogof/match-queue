@@ -4116,10 +4116,5 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String marketPricePlatformLabel(String platform) {
-    return 'Plataforma: $platform';
-  }
-
-  @override
   String get marketPriceHistoryLabel => 'Histórico de preço';
 }

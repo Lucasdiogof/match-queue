@@ -36,10 +36,18 @@ class SupabaseMarketFavoritesRemoteDataSource
   Future<void> addFavorite({
     required String userId,
     required String cardId,
-  }) => _client.from('market_favorites').upsert(<String, dynamic>{
-    'user_id': userId,
-    'card_id': cardId,
-  });
+  }) => _client
+      .from('market_favorites')
+      // ignoreDuplicates vira ON CONFLICT DO NOTHING -- sem isso, o upsert
+      // gera ON CONFLICT DO UPDATE, que exige grant de UPDATE na tabela
+      // (nao concedido, e nao faz sentido conceder: a linha nao tem coluna
+      // mutavel alem de created_at, que nunca deve ser tocada de novo).
+      // Sem o grant, todo addFavorite falhava com 42501 permission denied,
+      // revertido em silencio pelo optimistic update do cubit.
+      .upsert(<String, dynamic>{
+        'user_id': userId,
+        'card_id': cardId,
+      }, ignoreDuplicates: true);
 
   @override
   Future<void> removeFavorite({

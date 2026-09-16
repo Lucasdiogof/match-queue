@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-/// Secao de preco do detalhe da carta (feature Mercado): preco atual,
-/// minimo/maximo, ultima atualizacao, historico e plataforma -- so o que a
+/// Secao de preco do detalhe da carta (feature Mercado): toggle PS/PC,
+/// preco atual, minimo/maximo, ultima atualizacao e historico -- so o que a
 /// fonte realmente devolver, nunca um campo inventado -- mais o toggle de
 /// favorito. Cria seu proprio [MarketPriceCubit] (mesmo padrao de
 /// showPlayerPickerSheet: pegar a dependencia via `getIt` direto na folha,
@@ -33,6 +33,7 @@ class MarketPriceSection extends StatelessWidget {
   Widget build(BuildContext context) => BlocProvider<MarketPriceCubit>(
     create: (_) => MarketPriceCubit(getIt<MarketPriceRepository>())..load(card),
     child: _MarketPriceBody(
+      card: card,
       isFavorite: isFavorite,
       onToggleFavorite: onToggleFavorite,
     ),
@@ -41,10 +42,12 @@ class MarketPriceSection extends StatelessWidget {
 
 class _MarketPriceBody extends StatelessWidget {
   const _MarketPriceBody({
+    required this.card,
     required this.isFavorite,
     required this.onToggleFavorite,
   });
 
+  final PlayerCard card;
   final bool isFavorite;
   final VoidCallback onToggleFavorite;
 
@@ -69,28 +72,55 @@ class _MarketPriceBody extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: AppSpacing.md),
         BlocBuilder<MarketPriceCubit, MarketPriceState>(
-          builder: (context, state) => switch (state.status) {
-            MarketPriceStatus.loading => const Padding(
-              padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
-              child: Center(child: AppLoading.inline()),
-            ),
-            MarketPriceStatus.failure => Text(
-              l10n.marketPriceUnavailableMessage,
-              style: context.textStyles.bodyMedium?.copyWith(
-                color: colors.textSecondary,
-              ),
-            ),
-            MarketPriceStatus.unavailable => Text(
-              l10n.marketPriceUnavailableMessage,
-              style: context.textStyles.bodyMedium?.copyWith(
-                color: colors.textSecondary,
-              ),
-            ),
-            MarketPriceStatus.available => _PriceDetails(
-              price: state.price!,
-            ),
+          builder: (context, state) {
+            final cubit = context.read<MarketPriceCubit>();
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                // So duas opcoes porque e so o que a FUTNext separa: PS e
+                // Xbox tem o mesmo mercado ('ps' na API deles), PC e o unico
+                // que diverge de verdade.
+                Row(
+                  children: <Widget>[
+                    AppChip(
+                      label: 'PS',
+                      isSelected: state.platform == 'ps',
+                      onPressed: () => cubit.changePlatform(card, 'ps'),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    AppChip(
+                      label: 'PC',
+                      isSelected: state.platform == 'pc',
+                      onPressed: () => cubit.changePlatform(card, 'pc'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.md),
+                switch (state.status) {
+                  MarketPriceStatus.loading => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                    child: Center(child: AppLoading.inline()),
+                  ),
+                  MarketPriceStatus.failure => Text(
+                    l10n.marketPriceUnavailableMessage,
+                    style: context.textStyles.bodyMedium?.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+                  MarketPriceStatus.unavailable => Text(
+                    l10n.marketPriceUnavailableMessage,
+                    style: context.textStyles.bodyMedium?.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+                  MarketPriceStatus.available => _PriceDetails(
+                    price: state.price!,
+                  ),
+                },
+              ],
+            );
           },
         ),
       ],
@@ -144,15 +174,6 @@ class _PriceDetails extends StatelessWidget {
             color: colors.textTertiary,
           ),
         ),
-        if (price.platform != null) ...<Widget>[
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            l10n.marketPricePlatformLabel(price.platform!),
-            style: context.textStyles.bodySmall?.copyWith(
-              color: colors.textTertiary,
-            ),
-          ),
-        ],
         if (price.hasHistory) ...<Widget>[
           const SizedBox(height: AppSpacing.md),
           Text(
