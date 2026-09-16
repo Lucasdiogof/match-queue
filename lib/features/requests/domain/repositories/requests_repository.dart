@@ -9,7 +9,7 @@ abstract interface class RequestsRepository {
   /// Usuario pede pra entrar num time com um Elenco proprio.
   Future<void> requestToJoin({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
   });
 
   /// Id do proprio pedido PENDING pra este time, se houver -- pra tela
@@ -36,12 +36,12 @@ abstract interface class RequestsRepository {
   Future<void> revokeInvitation(String invitationId);
 
   /// So o proprio convidado responde. Aceitar cria membership -- exige
-  /// fcAccountId (a Conta que vira membro; o fc_account_id gravado no
+  /// profileId (a Conta que vira membro; o fc_account_id gravado no
   /// convite e so o preview de quando foi enviado, pode ter mudado).
   Future<void> respondInvitation({
     required String invitationId,
     required bool accept,
-    String? fcAccountId,
+    String? profileId,
   });
 
   /// Emite um evento sempre que algo pendente pra este usuario muda (pedido

@@ -106,13 +106,13 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
-  FcAccountFailureReason? _fcAccountReasonFrom(String? code) => switch (code) {
-    'FQ025' => FcAccountFailureReason.accountNotFound,
-    'FQ026' => FcAccountFailureReason.accountNotLinkedToTeam,
-    'FQ027' => FcAccountFailureReason.invalidName,
-    'FQ028' => FcAccountFailureReason.invalidDivision,
-    'FQ035' => FcAccountFailureReason.accountNotLinkedToAnyTeam,
-    'FQ058' => FcAccountFailureReason.invalidPlatform,
+  ProfileFailureReason? _profileReasonFrom(String? code) => switch (code) {
+    'FQ025' => ProfileFailureReason.accountNotFound,
+    'FQ026' => ProfileFailureReason.accountNotLinkedToTeam,
+    'FQ027' => ProfileFailureReason.invalidName,
+    'FQ028' => ProfileFailureReason.invalidDivision,
+    'FQ035' => ProfileFailureReason.accountNotLinkedToAnyTeam,
+    'FQ058' => ProfileFailureReason.invalidPlatform,
     _ => null,
   };
 
@@ -187,12 +187,9 @@ class SupabaseErrorMapper {
     if (gameReason != null) {
       return GameFailure(reason: gameReason, debugMessage: error.message);
     }
-    final fcAccountReason = _fcAccountReasonFrom(error.code);
-    if (fcAccountReason != null) {
-      return FcAccountFailure(
-        reason: fcAccountReason,
-        debugMessage: error.message,
-      );
+    final profileReason = _profileReasonFrom(error.code);
+    if (profileReason != null) {
+      return ProfileFailure(reason: profileReason, debugMessage: error.message);
     }
     final publicProfileReason = _publicProfileReasonFrom(error.code);
     if (publicProfileReason != null) {

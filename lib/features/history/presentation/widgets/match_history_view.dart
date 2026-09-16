@@ -189,7 +189,7 @@ class _HistoryRow extends StatelessWidget {
                     color: colors.textSecondary,
                   ),
                 ),
-                if (entry.hasMatch || entry.fcAccountName != null) ...<Widget>[
+                if (entry.hasMatch || entry.profileName != null) ...<Widget>[
                   const SizedBox(height: AppSpacing.xs),
                   _MatchLine(entry: entry),
                 ],
@@ -217,7 +217,7 @@ class _MatchLine extends StatelessWidget {
     final l10n = context.l10n;
     final colors = context.colors;
     final context_ = <String>[
-      if (entry.fcAccountName != null) entry.fcAccountName!,
+      if (entry.profileName != null) entry.profileName!,
       if (entry.gameMode != null) entry.gameMode!.label(l10n),
     ];
 

@@ -343,24 +343,24 @@ class _MemberStatusRow extends StatelessWidget {
         case _MemberAction.promote:
           await repository.setMemberRole(
             teamId: teamId,
-            fcAccountId: member.fcAccountId,
+            profileId: member.profileId,
             role: TeamRole.manager,
           );
         case _MemberAction.demote:
           await repository.setMemberRole(
             teamId: teamId,
-            fcAccountId: member.fcAccountId,
+            profileId: member.profileId,
             role: TeamRole.player,
           );
         case _MemberAction.remove:
           await repository.removeMember(
             teamId: teamId,
-            fcAccountId: member.fcAccountId,
+            profileId: member.profileId,
           );
         case _MemberAction.transferOwnership:
           await repository.transferOwnership(
             teamId: teamId,
-            fcAccountId: member.fcAccountId,
+            profileId: member.profileId,
           );
       }
       if (!context.mounted) {

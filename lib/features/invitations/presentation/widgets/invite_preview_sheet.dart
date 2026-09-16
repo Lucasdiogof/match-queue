@@ -4,7 +4,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/invitations/domain/entities/invite_preview.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/invite_resolution_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/invite_resolution_state.dart';
@@ -51,10 +51,10 @@ class _InvitePreviewSheetBody extends StatelessWidget {
                     state: state,
                     isAuthenticated: authState.isAuthenticated,
                     onJoin: () => context.read<InviteResolutionCubit>().join(
-                      fcAccountId: context
-                          .read<FcAccountsCubit>()
+                      profileId: context
+                          .read<ProfilesCubit>()
                           .state
-                          .selectedAccount
+                          .selectedProfile
                           ?.id,
                     ),
                     onOpenTeam: () =>

@@ -9,7 +9,7 @@ class PendingGameMatch extends Equatable {
     required this.gameMode,
     required this.startedAt,
     this.weekendLeagueNumber,
-    this.fcAccountName,
+    this.profileName,
     this.fcSquadName,
     this.fcFormationCode,
     this.endedAt,
@@ -21,7 +21,7 @@ class PendingGameMatch extends Equatable {
   final GameMode gameMode;
   final DateTime startedAt;
   final int? weekendLeagueNumber;
-  final String? fcAccountName;
+  final String? profileName;
   final String? fcSquadName;
   final String? fcFormationCode;
 
@@ -38,7 +38,7 @@ class PendingGameMatch extends Equatable {
     gameMode,
     startedAt,
     weekendLeagueNumber,
-    fcAccountName,
+    profileName,
     fcSquadName,
     fcFormationCode,
     endedAt,

@@ -12,10 +12,10 @@ class SupabasePublicProfileRepository implements PublicProfileRepository {
   final SupabaseErrorMapper _errorMapper;
 
   @override
-  Future<PublicSharingSettings> fetchMySettings(String fcAccountId) async {
+  Future<PublicSharingSettings> fetchMySettings(String profileId) async {
     try {
       return publicSharingSettingsFromJson(
-        await _dataSource.getMySettings(fcAccountId),
+        await _dataSource.getMySettings(profileId),
       );
     } catch (error) {
       throw _errorMapper.map(error);
@@ -29,7 +29,7 @@ class SupabasePublicProfileRepository implements PublicProfileRepository {
     try {
       return publicSharingSettingsFromJson(
         await _dataSource.updateMySettings(
-          fcAccountId: settings.fcAccountId,
+          profileId: settings.profileId,
           isEnabled: settings.isEnabled,
           slug: settings.slug,
           showSquad: settings.showSquad,
@@ -44,9 +44,9 @@ class SupabasePublicProfileRepository implements PublicProfileRepository {
   }
 
   @override
-  Future<bool> isSlugAvailable(String slug, {String? fcAccountId}) async {
+  Future<bool> isSlugAvailable(String slug, {String? profileId}) async {
     try {
-      return await _dataSource.isSlugAvailable(slug, fcAccountId: fcAccountId);
+      return await _dataSource.isSlugAvailable(slug, profileId: profileId);
     } catch (error) {
       throw _errorMapper.map(error);
     }

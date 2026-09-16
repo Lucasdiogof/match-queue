@@ -168,8 +168,8 @@ class GameMatchDetails extends Equatable {
     this.goalsAgainst,
     this.endedAt,
     this.weekendLeagueEventId,
-    this.fcAccountId,
-    this.fcAccountName,
+    this.profileId,
+    this.profileName,
     this.fcSquadId,
     this.squadSnapshot,
   });
@@ -184,8 +184,8 @@ class GameMatchDetails extends Equatable {
   final DateTime startedAt;
   final DateTime? endedAt;
   final String? weekendLeagueEventId;
-  final String? fcAccountId;
-  final String? fcAccountName;
+  final String? profileId;
+  final String? profileName;
   final String? fcSquadId;
   final SquadSnapshot? squadSnapshot;
   final List<GameMatchPlayerStat> playerStats;
@@ -211,8 +211,8 @@ class GameMatchDetails extends Equatable {
     startedAt,
     endedAt,
     weekendLeagueEventId,
-    fcAccountId,
-    fcAccountName,
+    profileId,
+    profileName,
     fcSquadId,
     squadSnapshot,
     playerStats,

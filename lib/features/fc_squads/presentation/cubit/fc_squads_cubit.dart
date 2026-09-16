@@ -19,8 +19,8 @@ class FcSquadsCubit extends Cubit<FcSquadsState> {
   /// Trocar de elenco descarta a lista anterior ANTES de buscar a nova: sem
   /// isso a tela mostraria por um instante os squads da conta antiga (item
   /// 127).
-  Future<void> load(String? accountId) async {
-    if (accountId == null) {
+  Future<void> load(String? profileId) async {
+    if (profileId == null) {
       emit(const FcSquadsState(status: FcSquadsStatus.ready));
       return;
     }
@@ -28,7 +28,7 @@ class FcSquadsCubit extends Cubit<FcSquadsState> {
     emit(
       FcSquadsState(
         status: FcSquadsStatus.loading,
-        accountId: accountId,
+        profileId: profileId,
       ).copyWith(formations: state.formations),
     );
 
@@ -36,8 +36,8 @@ class FcSquadsCubit extends Cubit<FcSquadsState> {
       final formations = state.formations.isEmpty
           ? await _repository.listFormations()
           : state.formations;
-      final squads = await _repository.listSquads(accountId);
-      if (isClosed || state.accountId != accountId) {
+      final squads = await _repository.listSquads(profileId);
+      if (isClosed || state.profileId != profileId) {
         return;
       }
       emit(
@@ -51,13 +51,13 @@ class FcSquadsCubit extends Cubit<FcSquadsState> {
         ),
       );
     } on AppFailure catch (failure) {
-      if (!isClosed && state.accountId == accountId) {
+      if (!isClosed && state.profileId == profileId) {
         emit(state.copyWith(status: FcSquadsStatus.failure, failure: failure));
       }
     }
   }
 
-  Future<void> refresh() => load(state.accountId);
+  Future<void> refresh() => load(state.profileId);
 
   /// Escolha válida só para a próxima busca; o default do elenco continua
   /// como está.
@@ -71,14 +71,14 @@ class FcSquadsCubit extends Cubit<FcSquadsState> {
     required String name,
     required String formationCode,
   }) async {
-    final accountId = state.accountId;
-    if (accountId == null || state.isSaving) {
+    final profileId = state.profileId;
+    if (profileId == null || state.isSaving) {
       return null;
     }
     emit(state.copyWith(isSaving: true, clearActionFailure: true));
     try {
       final squad = await _repository.createSquad(
-        fcAccountId: accountId,
+        profileId: profileId,
         name: name,
         formationCode: formationCode,
       );

@@ -2,7 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/requests/domain/entities/requests_inbox.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_state.dart';
@@ -309,10 +309,10 @@ class _InvitationsList extends StatelessWidget {
                           ? null
                           : () => cubit.acceptInvitation(
                               invitation.id,
-                              fcAccountId: context
-                                  .read<FcAccountsCubit>()
+                              profileId: context
+                                  .read<ProfilesCubit>()
                                   .state
-                                  .selectedAccount
+                                  .selectedProfile
                                   ?.id,
                             ),
                     ),

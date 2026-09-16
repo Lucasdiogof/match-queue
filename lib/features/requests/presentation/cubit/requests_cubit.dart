@@ -62,13 +62,13 @@ class RequestsCubit extends Cubit<RequestsState> {
   Future<void> rejectJoinRequest(String requestId) =>
       _runAction(requestId, () => _repository.rejectJoinRequest(requestId));
 
-  Future<void> acceptInvitation(String invitationId, {String? fcAccountId}) =>
+  Future<void> acceptInvitation(String invitationId, {String? profileId}) =>
       _runAction(
         invitationId,
         () => _repository.respondInvitation(
           invitationId: invitationId,
           accept: true,
-          fcAccountId: fcAccountId,
+          profileId: profileId,
         ),
       );
 

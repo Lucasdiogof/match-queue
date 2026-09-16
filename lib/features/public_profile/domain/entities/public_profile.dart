@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/profile_stats.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 
 /// Agregado publico de partidas (W/L/gols) de um recorte -- mesmo formato
@@ -114,8 +114,8 @@ class PublicProfile extends Equatable {
     required this.found,
     this.displayName,
     this.avatarUrl,
-    this.accountId,
-    this.accountName,
+    this.profileId,
+    this.profileName,
     this.rivalsDivision,
     this.stats,
     this.weekendLeague,
@@ -134,13 +134,13 @@ class PublicProfile extends Equatable {
   /// visualizar o proprio perfil publico -- opaco pra qualquer outra pessoa,
   /// que nao ganha nenhum acesso extra por ve-lo (ownership e sempre
   /// revalidado nas RPCs de escrita).
-  final String? accountId;
-  final String? accountName;
+  final String? profileId;
+  final String? profileName;
   final String? rivalsDivision;
   final PublicMatchAggregate? stats;
 
   /// Contador manual -- unica fonte que Rivals e Champions mostram hoje em
-  /// qualquer outra tela do app (ver FcAccount.weekendLeagueRecord).
+  /// qualquer outra tela do app (ver Profile.weekendLeagueRecord).
   final ManualRecord? weekendLeague;
 
   /// Ultimas edicoes de Champions com placar, mais recente primeiro -- mesma
@@ -149,15 +149,15 @@ class PublicProfile extends Equatable {
   final ManualRecord? rivals;
   final PublicSquad? squad;
 
-  bool get hasAccount => accountName != null;
+  bool get hasAccount => profileName != null;
 
   @override
   List<Object?> get props => <Object?>[
     found,
     displayName,
     avatarUrl,
-    accountId,
-    accountName,
+    profileId,
+    profileName,
     rivalsDivision,
     stats,
     weekendLeague,

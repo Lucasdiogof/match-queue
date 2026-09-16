@@ -12,7 +12,7 @@ abstract interface class RequestsRemoteDataSource {
 
   Future<void> requestTeamJoin({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
   });
 
   Future<void> cancelTeamJoinRequest(String requestId);
@@ -30,7 +30,7 @@ abstract interface class RequestsRemoteDataSource {
   Future<void> respondTeamInvitation({
     required String invitationId,
     required bool accept,
-    String? fcAccountId,
+    String? profileId,
   });
 
   Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId);
@@ -52,12 +52,12 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
   @override
   Future<void> requestTeamJoin({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
   }) => _client.rpc<dynamic>(
     'request_team_join',
     params: <String, dynamic>{
       'p_team_id': teamId,
-      'p_fc_account_id': fcAccountId,
+      'p_fc_account_id': profileId,
     },
   );
 
@@ -108,13 +108,13 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
   Future<void> respondTeamInvitation({
     required String invitationId,
     required bool accept,
-    String? fcAccountId,
+    String? profileId,
   }) => _client.rpc<dynamic>(
     'respond_team_invitation',
     params: <String, dynamic>{
       'p_invitation_id': invitationId,
       'p_accept': accept,
-      'p_fc_account_id': fcAccountId,
+      'p_fc_account_id': profileId,
     },
   );
 

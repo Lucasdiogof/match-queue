@@ -55,7 +55,7 @@ enum GameFailureReason {
   weekendLeagueLimit,
 }
 
-enum FcAccountFailureReason {
+enum ProfileFailureReason {
   accountNotFound,
   accountNotLinkedToTeam,
   accountNotLinkedToAnyTeam,
@@ -151,10 +151,10 @@ final class GameFailure extends AppFailure {
   List<Object?> get props => <Object?>[reason, debugMessage];
 }
 
-final class FcAccountFailure extends AppFailure {
-  const FcAccountFailure({required this.reason, super.debugMessage});
+final class ProfileFailure extends AppFailure {
+  const ProfileFailure({required this.reason, super.debugMessage});
 
-  final FcAccountFailureReason reason;
+  final ProfileFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];

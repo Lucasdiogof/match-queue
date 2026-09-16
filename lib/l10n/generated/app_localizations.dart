@@ -172,17 +172,17 @@ abstract class AppLocalizations {
   /// **'Sair'**
   String get actionSignOut;
 
-  /// No description provided for @profileSignOutConfirmTitle.
+  /// No description provided for @accountSignOutConfirmTitle.
   ///
   /// In pt, this message translates to:
   /// **'Sair da conta?'**
-  String get profileSignOutConfirmTitle;
+  String get accountSignOutConfirmTitle;
 
-  /// No description provided for @profileSignOutConfirmMessage.
+  /// No description provided for @accountSignOutConfirmMessage.
   ///
   /// In pt, this message translates to:
   /// **'Você pode entrar de novo a qualquer momento com seu e-mail e senha.'**
-  String get profileSignOutConfirmMessage;
+  String get accountSignOutConfirmMessage;
 
   /// No description provided for @actionEdit.
   ///
@@ -295,7 +295,7 @@ abstract class AppLocalizations {
   /// No description provided for @controlEmptyMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Escolha uma conta e um modo pra começar a buscar partida.'**
+  /// **'Escolha um perfil e um modo pra começar a buscar partida.'**
   String get controlEmptyMessage;
 
   /// No description provided for @teamTitle.
@@ -448,11 +448,11 @@ abstract class AppLocalizations {
   /// **'Conectado como {email}'**
   String authSignedInAs(String email);
 
-  /// No description provided for @profilePreferencesTitle.
+  /// No description provided for @accountPreferencesTitle.
   ///
   /// In pt, this message translates to:
   /// **'Preferências'**
-  String get profilePreferencesTitle;
+  String get accountPreferencesTitle;
 
   /// No description provided for @settingsAppearance.
   ///
@@ -1054,59 +1054,59 @@ abstract class AppLocalizations {
   /// **'Primeiro vamos criar times e membros. Depois disso, só um jogador do time procura partida por vez.'**
   String get homeSearchPlaceholderMessage;
 
-  /// No description provided for @profileAccountSection.
+  /// No description provided for @accountAccountSection.
   ///
   /// In pt, this message translates to:
   /// **'Conta'**
-  String get profileAccountSection;
+  String get accountAccountSection;
 
-  /// No description provided for @profileDisplayNameLabel.
+  /// No description provided for @accountDisplayNameLabel.
   ///
   /// In pt, this message translates to:
   /// **'Nome ou apelido'**
-  String get profileDisplayNameLabel;
+  String get accountDisplayNameLabel;
 
-  /// No description provided for @profileEmailLabel.
+  /// No description provided for @accountEmailLabel.
   ///
   /// In pt, this message translates to:
   /// **'E-mail'**
-  String get profileEmailLabel;
+  String get accountEmailLabel;
 
-  /// No description provided for @profileEditName.
+  /// No description provided for @accountEditName.
   ///
   /// In pt, this message translates to:
   /// **'Editar nome'**
-  String get profileEditName;
+  String get accountEditName;
 
-  /// No description provided for @profileEditNameTitle.
+  /// No description provided for @accountEditNameTitle.
   ///
   /// In pt, this message translates to:
   /// **'Como podemos te chamar?'**
-  String get profileEditNameTitle;
+  String get accountEditNameTitle;
 
-  /// No description provided for @profileDisplayNameCounter.
+  /// No description provided for @accountDisplayNameCounter.
   ///
   /// In pt, this message translates to:
   /// **'{count}/{max}'**
-  String profileDisplayNameCounter(int count, int max);
+  String accountDisplayNameCounter(int count, int max);
 
-  /// No description provided for @profileSaved.
+  /// No description provided for @accountSaved.
   ///
   /// In pt, this message translates to:
   /// **'Nome atualizado.'**
-  String get profileSaved;
+  String get accountSaved;
 
-  /// No description provided for @profileLoadErrorTitle.
+  /// No description provided for @accountLoadErrorTitle.
   ///
   /// In pt, this message translates to:
   /// **'Não foi possível carregar seu perfil'**
-  String get profileLoadErrorTitle;
+  String get accountLoadErrorTitle;
 
-  /// No description provided for @profileMemberSince.
+  /// No description provided for @accountMemberSince.
   ///
   /// In pt, this message translates to:
   /// **'No Match Queue desde {date}'**
-  String profileMemberSince(DateTime date);
+  String accountMemberSince(DateTime date);
 
   /// No description provided for @teamNoTeamTitle.
   ///
@@ -1150,11 +1150,11 @@ abstract class AppLocalizations {
   /// **'Dá para ajustar cores, logo e duração da busca depois.'**
   String get teamCreateSubtitle;
 
-  /// No description provided for @teamCreateFcAccountsSectionTitle.
+  /// No description provided for @teamCreateProfilesSectionTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Quais Contas FC fazem parte deste time?'**
-  String get teamCreateFcAccountsSectionTitle;
+  /// **'Quais Perfis fazem parte deste time?'**
+  String get teamCreateProfilesSectionTitle;
 
   /// No description provided for @teamNameLabel.
   ///
@@ -1225,13 +1225,13 @@ abstract class AppLocalizations {
   /// No description provided for @playerProfileAccountLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Conta'**
+  /// **'Perfil'**
   String get playerProfileAccountLabel;
 
   /// No description provided for @playerProfileNoAccountMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Este jogador não tem uma conta vinculada a este time.'**
+  /// **'Este jogador não tem um perfil vinculado a este time.'**
   String get playerProfileNoAccountMessage;
 
   /// No description provided for @playerProfileSquadLabel.
@@ -1255,7 +1255,7 @@ abstract class AppLocalizations {
   /// No description provided for @playerProfileSelectAccountTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Este jogador tem mais de uma conta neste time'**
+  /// **'Este jogador tem mais de um perfil neste time'**
   String get playerProfileSelectAccountTitle;
 
   /// No description provided for @playerProfileWeekendLeagueEmptyMessage.
@@ -1717,13 +1717,13 @@ abstract class AppLocalizations {
   /// No description provided for @matchmakingNotLinkedMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Vincule esta Conta FC a este time para poder buscar partida.'**
+  /// **'Vincule este Perfil a este time para poder buscar partida.'**
   String get matchmakingNotLinkedMessage;
 
   /// No description provided for @matchmakingLinkAccountAction.
   ///
   /// In pt, this message translates to:
-  /// **'Vincular Conta ao time'**
+  /// **'Vincular Perfil ao time'**
   String get matchmakingLinkAccountAction;
 
   /// No description provided for @notificationsSectionTitle.
@@ -1867,7 +1867,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsCategoryRivalsHint.
   ///
   /// In pt, this message translates to:
-  /// **'Mudança de divisão de uma conta do time.'**
+  /// **'Mudança de divisão de um perfil do time.'**
   String get notificationsCategoryRivalsHint;
 
   /// No description provided for @notificationsCategoryRankings.
@@ -2168,11 +2168,11 @@ abstract class AppLocalizations {
   /// **'Status'**
   String get activityDetailStatus;
 
-  /// No description provided for @activityDetailFcAccount.
+  /// No description provided for @activityDetailProfile.
   ///
   /// In pt, this message translates to:
-  /// **'Conta'**
-  String get activityDetailFcAccount;
+  /// **'Perfil'**
+  String get activityDetailProfile;
 
   /// No description provided for @historyLoadErrorTitle.
   ///
@@ -2366,365 +2366,369 @@ abstract class AppLocalizations {
   /// **'Em andamento'**
   String get weekendLeagueActiveBadge;
 
-  /// No description provided for @errorFcAccountNotFound.
+  /// No description provided for @errorProfileNotFound.
   ///
   /// In pt, this message translates to:
-  /// **'Conta não encontrada.'**
-  String get errorFcAccountNotFound;
+  /// **'Perfil não encontrado.'**
+  String get errorProfileNotFound;
 
-  /// No description provided for @errorFcAccountNotLinkedToTeam.
+  /// No description provided for @errorProfileNotLinkedToTeam.
   ///
   /// In pt, this message translates to:
-  /// **'Esta conta não está vinculada a este time.'**
-  String get errorFcAccountNotLinkedToTeam;
+  /// **'Este perfil não está vinculado a este time.'**
+  String get errorProfileNotLinkedToTeam;
 
-  /// No description provided for @errorFcAccountInvalidName.
+  /// No description provided for @errorProfileInvalidName.
   ///
   /// In pt, this message translates to:
   /// **'Informe um nome de 2 a 40 caracteres.'**
-  String get errorFcAccountInvalidName;
+  String get errorProfileInvalidName;
 
-  /// No description provided for @errorFcAccountInvalidDivision.
+  /// No description provided for @errorProfileInvalidDivision.
   ///
   /// In pt, this message translates to:
   /// **'Divisão inválida.'**
-  String get errorFcAccountInvalidDivision;
+  String get errorProfileInvalidDivision;
 
-  /// No description provided for @errorFcAccountInvalidPlatform.
+  /// No description provided for @errorProfileInvalidPlatform.
   ///
   /// In pt, this message translates to:
   /// **'Plataforma inválida.'**
-  String get errorFcAccountInvalidPlatform;
+  String get errorProfileInvalidPlatform;
 
-  /// No description provided for @errorFcAccountNotLinkedToAnyTeam.
+  /// No description provided for @errorProfileNotLinkedToAnyTeam.
   ///
   /// In pt, this message translates to:
-  /// **'Esta conta não está vinculada a nenhum time.'**
-  String get errorFcAccountNotLinkedToAnyTeam;
+  /// **'Este perfil não está vinculado a nenhum time.'**
+  String get errorProfileNotLinkedToAnyTeam;
 
-  /// No description provided for @validationFcAccountNameRequired.
+  /// No description provided for @validationProfileNameRequired.
   ///
   /// In pt, this message translates to:
-  /// **'Informe um nome para a conta.'**
-  String get validationFcAccountNameRequired;
+  /// **'Informe um nome para o perfil.'**
+  String get validationProfileNameRequired;
 
-  /// No description provided for @validationFcAccountNameTooShort.
+  /// No description provided for @validationProfileNameTooShort.
   ///
   /// In pt, this message translates to:
   /// **'O nome precisa ter pelo menos {min} caracteres.'**
-  String validationFcAccountNameTooShort(int min);
+  String validationProfileNameTooShort(int min);
 
-  /// No description provided for @validationFcAccountNameTooLong.
+  /// No description provided for @validationProfileNameTooLong.
   ///
   /// In pt, this message translates to:
   /// **'O nome pode ter no máximo {max} caracteres.'**
-  String validationFcAccountNameTooLong(int max);
+  String validationProfileNameTooLong(int max);
 
-  /// No description provided for @fcAccountRequiredToSearch.
+  /// No description provided for @profileRequiredToSearch.
   ///
   /// In pt, this message translates to:
-  /// **'Crie ou selecione uma conta para buscar partida.'**
-  String get fcAccountRequiredToSearch;
+  /// **'Crie ou selecione um perfil para buscar partida.'**
+  String get profileRequiredToSearch;
 
-  /// No description provided for @fcAccountLinkCta.
+  /// No description provided for @profileLinkCta.
   ///
   /// In pt, this message translates to:
   /// **'Vincular {accountName} ao {teamName}'**
-  String fcAccountLinkCta(String accountName, String teamName);
+  String profileLinkCta(
+    String accountName,
+    String teamName,
+    Object profileName,
+  );
 
-  /// No description provided for @fcAccountsPageTitle.
+  /// No description provided for @profilesPageTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Minhas Contas'**
-  String get fcAccountsPageTitle;
+  /// **'Meus Perfis'**
+  String get profilesPageTitle;
 
-  /// No description provided for @fcAccountsPageSubtitle.
+  /// No description provided for @profilesPageSubtitle.
   ///
   /// In pt, this message translates to:
-  /// **'Suas contas de Ultimate Team'**
-  String get fcAccountsPageSubtitle;
+  /// **'Seus perfis de Ultimate Team'**
+  String get profilesPageSubtitle;
 
-  /// No description provided for @fcAccountsEmptyTitle.
+  /// No description provided for @profilesEmptyTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Você ainda não tem uma conta'**
-  String get fcAccountsEmptyTitle;
+  /// **'Você ainda não tem um perfil'**
+  String get profilesEmptyTitle;
 
-  /// No description provided for @fcAccountsEmptyMessage.
+  /// No description provided for @profilesEmptyMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Crie uma conta para vincular a times e começar a buscar partidas.'**
-  String get fcAccountsEmptyMessage;
+  /// **'Crie um perfil para vincular a times e começar a buscar partidas.'**
+  String get profilesEmptyMessage;
 
-  /// No description provided for @fcAccountCreateAction.
+  /// No description provided for @profileCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Criar conta'**
-  String get fcAccountCreateAction;
+  /// **'Criar perfil'**
+  String get profileCreateAction;
 
-  /// No description provided for @fcAccountCreateTitle.
+  /// No description provided for @profileCreateTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Nova conta'**
-  String get fcAccountCreateTitle;
+  /// **'Novo perfil'**
+  String get profileCreateTitle;
 
-  /// No description provided for @fcAccountCreateSubtitle.
+  /// No description provided for @profileCreateSubtitle.
   ///
   /// In pt, this message translates to:
-  /// **'Dê um nome para identificar esta conta.'**
-  String get fcAccountCreateSubtitle;
+  /// **'Dê um nome para identificar este perfil.'**
+  String get profileCreateSubtitle;
 
-  /// No description provided for @fcAccountNameLabel.
+  /// No description provided for @profileNameLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Nome da conta'**
-  String get fcAccountNameLabel;
+  /// **'Nome do perfil'**
+  String get profileNameLabel;
 
-  /// No description provided for @fcAccountNameHint.
+  /// No description provided for @profileNameHint.
   ///
   /// In pt, this message translates to:
-  /// **'Ex.: Conta principal'**
-  String get fcAccountNameHint;
+  /// **'Ex.: Perfil principal'**
+  String get profileNameHint;
 
-  /// No description provided for @fcAccountRenameTitle.
+  /// No description provided for @profileRenameTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Renomear conta'**
-  String get fcAccountRenameTitle;
+  /// **'Renomear perfil'**
+  String get profileRenameTitle;
 
-  /// No description provided for @fcAccountRenameAction.
+  /// No description provided for @profileRenameAction.
   ///
   /// In pt, this message translates to:
   /// **'Renomear'**
-  String get fcAccountRenameAction;
+  String get profileRenameAction;
 
-  /// No description provided for @fcAccountArchiveAction.
+  /// No description provided for @profileArchiveAction.
   ///
   /// In pt, this message translates to:
-  /// **'Excluir conta'**
-  String get fcAccountArchiveAction;
+  /// **'Excluir perfil'**
+  String get profileArchiveAction;
 
-  /// No description provided for @fcAccountArchiveConfirmTitle.
+  /// No description provided for @profileArchiveConfirmTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Excluir conta?'**
-  String get fcAccountArchiveConfirmTitle;
+  /// **'Excluir perfil?'**
+  String get profileArchiveConfirmTitle;
 
-  /// No description provided for @fcAccountArchiveConfirmMessage.
+  /// No description provided for @profileArchiveConfirmMessage.
   ///
   /// In pt, this message translates to:
   /// **'\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.'**
-  String fcAccountArchiveConfirmMessage(String name);
+  String profileArchiveConfirmMessage(String name);
 
-  /// No description provided for @fcAccountSwitchTitle.
+  /// No description provided for @profileSwitchTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Trocar de conta'**
-  String get fcAccountSwitchTitle;
+  /// **'Trocar de perfil'**
+  String get profileSwitchTitle;
 
-  /// No description provided for @fcAccountSwitchCreateAction.
+  /// No description provided for @profileSwitchCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'+ Criar nova conta'**
-  String get fcAccountSwitchCreateAction;
+  /// **'+ Criar novo perfil'**
+  String get profileSwitchCreateAction;
 
-  /// No description provided for @fcAccountLinkedTeamsTitle.
+  /// No description provided for @profileLinkedTeamsTitle.
   ///
   /// In pt, this message translates to:
   /// **'Times'**
-  String get fcAccountLinkedTeamsTitle;
+  String get profileLinkedTeamsTitle;
 
-  /// No description provided for @fcAccountLinkedTeamsEmpty.
+  /// No description provided for @profileLinkedTeamsEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Esta conta ainda não está vinculada a nenhum time.'**
-  String get fcAccountLinkedTeamsEmpty;
+  /// **'Este perfil ainda não está vinculado a nenhum time.'**
+  String get profileLinkedTeamsEmpty;
 
-  /// No description provided for @fcAccountSharingAction.
+  /// No description provided for @profileSharingAction.
   ///
   /// In pt, this message translates to:
   /// **'Compartilhamento'**
-  String get fcAccountSharingAction;
+  String get profileSharingAction;
 
-  /// No description provided for @fcAccountAvatarChangeAction.
+  /// No description provided for @profileAvatarChangeAction.
   ///
   /// In pt, this message translates to:
   /// **'Alterar foto'**
-  String get fcAccountAvatarChangeAction;
+  String get profileAvatarChangeAction;
 
-  /// No description provided for @fcAccountAvatarRemoveAction.
+  /// No description provided for @profileAvatarRemoveAction.
   ///
   /// In pt, this message translates to:
   /// **'Remover foto'**
-  String get fcAccountAvatarRemoveAction;
+  String get profileAvatarRemoveAction;
 
-  /// No description provided for @fcAccountAvatarRemoveConfirmTitle.
+  /// No description provided for @profileAvatarRemoveConfirmTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Remover a foto da conta?'**
-  String get fcAccountAvatarRemoveConfirmTitle;
+  /// **'Remover a foto do perfil?'**
+  String get profileAvatarRemoveConfirmTitle;
 
-  /// No description provided for @fcAccountAvatarRemoveConfirmMessage.
+  /// No description provided for @profileAvatarRemoveConfirmMessage.
   ///
   /// In pt, this message translates to:
-  /// **'A conta volta a mostrar as iniciais no lugar da foto.'**
-  String get fcAccountAvatarRemoveConfirmMessage;
+  /// **'O perfil volta a mostrar as iniciais no lugar da foto.'**
+  String get profileAvatarRemoveConfirmMessage;
 
-  /// No description provided for @fcAccountLinkTeamAction.
+  /// No description provided for @profileLinkTeamAction.
   ///
   /// In pt, this message translates to:
   /// **'Vincular'**
-  String get fcAccountLinkTeamAction;
+  String get profileLinkTeamAction;
 
-  /// No description provided for @fcAccountUnlinkTeamAction.
+  /// No description provided for @profileUnlinkTeamAction.
   ///
   /// In pt, this message translates to:
   /// **'Sair do time'**
-  String get fcAccountUnlinkTeamAction;
+  String get profileUnlinkTeamAction;
 
-  /// No description provided for @fcAccountLeaveTeamConfirmTitle.
+  /// No description provided for @profileLeaveTeamConfirmTitle.
   ///
   /// In pt, this message translates to:
   /// **'Sair do time?'**
-  String get fcAccountLeaveTeamConfirmTitle;
+  String get profileLeaveTeamConfirmTitle;
 
-  /// No description provided for @fcAccountLeaveTeamConfirmMessage.
+  /// No description provided for @profileLeaveTeamConfirmMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Essa conta vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.'**
-  String fcAccountLeaveTeamConfirmMessage(String teamName);
+  /// **'Esse perfil vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.'**
+  String profileLeaveTeamConfirmMessage(String teamName);
 
-  /// No description provided for @fcAccountSettingsTitle.
+  /// No description provided for @profileSettingsTitle.
   ///
   /// In pt, this message translates to:
   /// **'Configurações'**
-  String get fcAccountSettingsTitle;
+  String get profileSettingsTitle;
 
-  /// No description provided for @fcAccountDivisionTitle.
+  /// No description provided for @profileDivisionTitle.
   ///
   /// In pt, this message translates to:
   /// **'Divisão de Rivals'**
-  String get fcAccountDivisionTitle;
+  String get profileDivisionTitle;
 
-  /// No description provided for @fcAccountDivisionPickerTitle.
+  /// No description provided for @profileDivisionPickerTitle.
   ///
   /// In pt, this message translates to:
   /// **'Selecionar divisão'**
-  String get fcAccountDivisionPickerTitle;
+  String get profileDivisionPickerTitle;
 
-  /// No description provided for @fcAccountDivisionNone.
+  /// No description provided for @profileDivisionNone.
   ///
   /// In pt, this message translates to:
   /// **'Sem divisão definida'**
-  String get fcAccountDivisionNone;
+  String get profileDivisionNone;
 
-  /// No description provided for @fcAccountPlatformLabel.
+  /// No description provided for @profilePlatformLabel.
   ///
   /// In pt, this message translates to:
   /// **'Plataforma'**
-  String get fcAccountPlatformLabel;
+  String get profilePlatformLabel;
 
-  /// No description provided for @fcAccountPlatformPickerTitle.
+  /// No description provided for @profilePlatformPickerTitle.
   ///
   /// In pt, this message translates to:
   /// **'Selecionar plataforma'**
-  String get fcAccountPlatformPickerTitle;
+  String get profilePlatformPickerTitle;
 
-  /// No description provided for @fcAccountPlatformNone.
+  /// No description provided for @profilePlatformNone.
   ///
   /// In pt, this message translates to:
   /// **'Sem plataforma definida'**
-  String get fcAccountPlatformNone;
+  String get profilePlatformNone;
 
-  /// No description provided for @fcAccountPlatformSettingsAction.
+  /// No description provided for @profilePlatformSettingsAction.
   ///
   /// In pt, this message translates to:
   /// **'Plataforma: {platform}'**
-  String fcAccountPlatformSettingsAction(String platform);
+  String profilePlatformSettingsAction(String platform);
 
-  /// No description provided for @fcAccountWeekendLeagueTitle.
+  /// No description provided for @profileWeekendLeagueTitle.
   ///
   /// In pt, this message translates to:
   /// **'Champions'**
-  String get fcAccountWeekendLeagueTitle;
+  String get profileWeekendLeagueTitle;
 
-  /// No description provided for @fcAccountWeekendLeagueComputedLabel.
+  /// No description provided for @profileWeekendLeagueComputedLabel.
   ///
   /// In pt, this message translates to:
   /// **'Registrado por partidas: {wins}–{losses}'**
-  String fcAccountWeekendLeagueComputedLabel(int wins, int losses);
+  String profileWeekendLeagueComputedLabel(int wins, int losses);
 
-  /// No description provided for @fcAccountWeekendLeagueManualLabel.
+  /// No description provided for @profileWeekendLeagueManualLabel.
   ///
   /// In pt, this message translates to:
   /// **'Resultado informado: {wins}–{losses}'**
-  String fcAccountWeekendLeagueManualLabel(int wins, int losses);
+  String profileWeekendLeagueManualLabel(int wins, int losses);
 
-  /// No description provided for @fcAccountWeekendLeagueEditAction.
+  /// No description provided for @profileWeekendLeagueEditAction.
   ///
   /// In pt, this message translates to:
   /// **'Informar resultado'**
-  String get fcAccountWeekendLeagueEditAction;
+  String get profileWeekendLeagueEditAction;
 
-  /// No description provided for @fcAccountWeekendLeagueClearAction.
+  /// No description provided for @profileWeekendLeagueClearAction.
   ///
   /// In pt, this message translates to:
   /// **'Usar resultado das partidas'**
-  String get fcAccountWeekendLeagueClearAction;
+  String get profileWeekendLeagueClearAction;
 
-  /// No description provided for @fcAccountWeekendLeagueSheetTitle.
+  /// No description provided for @profileWeekendLeagueSheetTitle.
   ///
   /// In pt, this message translates to:
   /// **'Informar resultado'**
-  String get fcAccountWeekendLeagueSheetTitle;
+  String get profileWeekendLeagueSheetTitle;
 
-  /// No description provided for @fcAccountWeekendLeagueWinsLabel.
+  /// No description provided for @profileWeekendLeagueWinsLabel.
   ///
   /// In pt, this message translates to:
   /// **'Vitórias'**
-  String get fcAccountWeekendLeagueWinsLabel;
+  String get profileWeekendLeagueWinsLabel;
 
-  /// No description provided for @fcAccountWeekendLeagueLossesLabel.
+  /// No description provided for @profileWeekendLeagueLossesLabel.
   ///
   /// In pt, this message translates to:
   /// **'Derrotas'**
-  String get fcAccountWeekendLeagueLossesLabel;
+  String get profileWeekendLeagueLossesLabel;
 
-  /// No description provided for @fcAccountOnboardingTitle.
+  /// No description provided for @profileOnboardingTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Adicione sua primeira conta'**
-  String get fcAccountOnboardingTitle;
+  /// **'Adicione seu primeiro perfil'**
+  String get profileOnboardingTitle;
 
-  /// No description provided for @fcAccountOnboardingMessage.
+  /// No description provided for @profileOnboardingMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Cadastre a conta que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.'**
-  String get fcAccountOnboardingMessage;
+  /// **'Cadastre a perfil que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.'**
+  String get profileOnboardingMessage;
 
-  /// No description provided for @fcAccountOnboardingCreateAction.
+  /// No description provided for @profileOnboardingCreateAction.
   ///
   /// In pt, this message translates to:
-  /// **'Adicionar conta'**
-  String get fcAccountOnboardingCreateAction;
+  /// **'Adicionar perfil'**
+  String get profileOnboardingCreateAction;
 
   /// No description provided for @pendingMatchElencoLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Conta: {name}'**
+  /// **'Perfil: {name}'**
   String pendingMatchElencoLabel(String name);
 
   /// No description provided for @historyElencoLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Conta: {name}'**
+  /// **'Perfil: {name}'**
   String historyElencoLabel(String name);
 
-  /// No description provided for @profileFcAccountsRow.
+  /// No description provided for @accountProfilesRow.
   ///
   /// In pt, this message translates to:
-  /// **'Contas'**
-  String get profileFcAccountsRow;
+  /// **'Perfis'**
+  String get accountProfilesRow;
 
   /// No description provided for @rivalsDivisionDiv10.
   ///
@@ -3011,7 +3015,7 @@ abstract class AppLocalizations {
   /// No description provided for @playAccountLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Conta'**
+  /// **'Perfil'**
   String get playAccountLabel;
 
   /// No description provided for @playSquadEmpty.
@@ -3659,7 +3663,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadPrimaryLineupEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Você ainda não montou uma escalação para esta Conta.'**
+  /// **'Você ainda não montou uma escalação para este Perfil.'**
   String get squadPrimaryLineupEmpty;
 
   /// No description provided for @squadOtherLineupsAction.
@@ -3794,11 +3798,11 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 assistência} other{{count} assistências}}'**
   String teamSportsAssistsShort(int count);
 
-  /// No description provided for @profileSharingRow.
+  /// No description provided for @accountSharingRow.
   ///
   /// In pt, this message translates to:
   /// **'Compartilhamento'**
-  String get profileSharingRow;
+  String get accountSharingRow;
 
   /// No description provided for @publicProfileSectionTitle.
   ///
@@ -3869,13 +3873,13 @@ abstract class AppLocalizations {
   /// No description provided for @publicProfileAccountLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Conta pública'**
+  /// **'Perfil pública'**
   String get publicProfileAccountLabel;
 
   /// No description provided for @publicProfileAccountEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhuma conta selecionada'**
+  /// **'Nenhum perfil selecionado'**
   String get publicProfileAccountEmpty;
 
   /// No description provided for @publicProfileToggleSquad.
@@ -3995,7 +3999,7 @@ abstract class AppLocalizations {
   /// No description provided for @publicProfileNoAccountsHint.
   ///
   /// In pt, this message translates to:
-  /// **'Crie uma Conta antes de compartilhar.'**
+  /// **'Crie uma Perfil antes de compartilhar.'**
   String get publicProfileNoAccountsHint;
 
   /// No description provided for @errorPublicProfileInvalidSlug.
@@ -4052,11 +4056,11 @@ abstract class AppLocalizations {
   /// **'Você é dono único de um time com outros integrantes. Remova os outros integrantes ou aguarde suporte a transferência de posse antes de excluir sua conta.'**
   String get errorSoleOwnerBlocksAccountDeletion;
 
-  /// No description provided for @profileLegalTitle.
+  /// No description provided for @accountLegalTitle.
   ///
   /// In pt, this message translates to:
   /// **'Sobre e legal'**
-  String get profileLegalTitle;
+  String get accountLegalTitle;
 
   /// No description provided for @aboutTitle.
   ///
@@ -4067,7 +4071,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutDescription.
   ///
   /// In pt, this message translates to:
-  /// **'Match Queue organiza a fila de busca de partida, Contas e estatísticas do seu time de EA SPORTS FC.'**
+  /// **'Match Queue organiza a fila de busca de partida, Perfis e estatísticas do seu time de EA SPORTS FC.'**
   String get aboutDescription;
 
   /// No description provided for @privacyPolicyTitle.
@@ -4112,11 +4116,11 @@ abstract class AppLocalizations {
   /// **'Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.'**
   String get deleteAccountWarningMessage;
 
-  /// No description provided for @deleteAccountConsequenceFcAccounts.
+  /// No description provided for @deleteAccountConsequenceProfiles.
   ///
   /// In pt, this message translates to:
-  /// **'Todas as suas Contas e a divisão de Rivals registrada'**
-  String get deleteAccountConsequenceFcAccounts;
+  /// **'Todos os seus Perfis e a divisão de Rivals registrada'**
+  String get deleteAccountConsequenceProfiles;
 
   /// No description provided for @deleteAccountConsequenceSquads.
   ///
@@ -4166,29 +4170,29 @@ abstract class AppLocalizations {
   /// **'Excluir minha conta permanentemente'**
   String get deleteAccountAction;
 
-  /// No description provided for @homeFcAccountEyebrow.
+  /// No description provided for @homeProfileEyebrow.
   ///
   /// In pt, this message translates to:
   /// **'CONTA FC ATIVA'**
-  String get homeFcAccountEyebrow;
+  String get homeProfileEyebrow;
 
-  /// No description provided for @homeFcAccountSwitchAction.
+  /// No description provided for @homeProfileSwitchAction.
   ///
   /// In pt, this message translates to:
   /// **'Trocar'**
-  String get homeFcAccountSwitchAction;
+  String get homeProfileSwitchAction;
 
-  /// No description provided for @homeFcAccountNoTeams.
+  /// No description provided for @homeProfileNoTeams.
   ///
   /// In pt, this message translates to:
   /// **'Ainda sem time'**
-  String get homeFcAccountNoTeams;
+  String get homeProfileNoTeams;
 
-  /// No description provided for @homeFcAccountTeamCount.
+  /// No description provided for @homeProfileTeamCount.
   ///
   /// In pt, this message translates to:
   /// **'{count, plural, =1{Em 1 time} other{Em {count} times}}'**
-  String homeFcAccountTeamCount(int count);
+  String homeProfileTeamCount(int count);
 
   /// No description provided for @homeNoTeamTitle.
   ///
@@ -4271,7 +4275,7 @@ abstract class AppLocalizations {
   /// No description provided for @controlAccountNotLinkedMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Crie ou vincule esta conta a algum time para poder buscar partidas.'**
+  /// **'Crie ou vincule este perfil a algum time para poder buscar partidas.'**
   String get controlAccountNotLinkedMessage;
 
   /// No description provided for @controlGoToTeamsAction.
@@ -4415,7 +4419,7 @@ abstract class AppLocalizations {
   /// No description provided for @teamPublicChooseAccountTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Qual Conta você quer vincular?'**
+  /// **'Qual Perfil você quer vincular?'**
   String get teamPublicChooseAccountTitle;
 
   /// No description provided for @teamPublicRequestSentMessage.
@@ -4775,7 +4779,7 @@ abstract class AppLocalizations {
   /// No description provided for @startShortcutPlayHint.
   ///
   /// In pt, this message translates to:
-  /// **'Escolha a conta, o modo e entre na fila.'**
+  /// **'Escolha a perfil, o modo e entre na fila.'**
   String get startShortcutPlayHint;
 
   /// No description provided for @startCatalogTitle.

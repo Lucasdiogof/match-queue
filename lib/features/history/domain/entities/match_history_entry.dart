@@ -17,7 +17,7 @@ class MatchHistoryEntry extends Equatable {
     this.avatarUrl,
     this.finishReason,
     this.gameMode,
-    this.fcAccountName,
+    this.profileName,
     this.matchStatus,
     this.matchStartedAt,
     this.result,
@@ -47,7 +47,7 @@ class MatchHistoryEntry extends Equatable {
 
   /// Conta FC que buscou. Null quando a conta foi apagada ou a sessao e
   /// anterior ao vinculo com contas.
-  final String? fcAccountName;
+  final String? profileName;
 
   final GameMatchStatus? matchStatus;
   final DateTime? matchStartedAt;
@@ -79,7 +79,7 @@ class MatchHistoryEntry extends Equatable {
     durationSeconds,
     configuredDurationSeconds,
     gameMode,
-    fcAccountName,
+    profileName,
     matchStatus,
     matchStartedAt,
     result,

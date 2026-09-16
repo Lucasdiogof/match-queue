@@ -21,9 +21,9 @@ class SupabaseRequestsRepository implements RequestsRepository {
   @override
   Future<void> requestToJoin({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
   }) => _guard(
-    () => _dataSource.requestTeamJoin(teamId: teamId, fcAccountId: fcAccountId),
+    () => _dataSource.requestTeamJoin(teamId: teamId, profileId: profileId),
   );
 
   @override
@@ -63,12 +63,12 @@ class SupabaseRequestsRepository implements RequestsRepository {
   Future<void> respondInvitation({
     required String invitationId,
     required bool accept,
-    String? fcAccountId,
+    String? profileId,
   }) => _guard(
     () => _dataSource.respondTeamInvitation(
       invitationId: invitationId,
       accept: accept,
-      fcAccountId: fcAccountId,
+      profileId: profileId,
     ),
   );
 

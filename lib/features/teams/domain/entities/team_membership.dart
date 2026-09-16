@@ -7,7 +7,7 @@ class TeamMembership extends Equatable {
   const TeamMembership({
     required this.teamId,
     required this.userId,
-    required this.fcAccountId,
+    required this.profileId,
     required this.role,
     required this.joinedAt,
   });
@@ -18,7 +18,7 @@ class TeamMembership extends Equatable {
   /// Identidade real da membership no banco (team_members.fc_account_id) --
   /// alvo de remover/promover. userId continua para "sou eu"/perfil, que
   /// permanecem por login.
-  final String fcAccountId;
+  final String profileId;
   final TeamRole role;
   final DateTime joinedAt;
 
@@ -26,7 +26,7 @@ class TeamMembership extends Equatable {
   List<Object?> get props => <Object?>[
     teamId,
     userId,
-    fcAccountId,
+    profileId,
     role,
     joinedAt,
   ];
@@ -40,7 +40,7 @@ class TeamMember extends Equatable {
 
   String get userId => membership.userId;
 
-  String get fcAccountId => membership.fcAccountId;
+  String get profileId => membership.profileId;
 
   TeamRole get role => membership.role;
 

@@ -8,8 +8,8 @@ import 'package:fifa_queue/features/auth/presentation/pages/login_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:fifa_queue/features/control/presentation/pages/control_page.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_account_detail_page.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/pages/fc_accounts_page.dart';
+import 'package:fifa_queue/features/profiles/presentation/pages/profile_detail_page.dart';
+import 'package:fifa_queue/features/profiles/presentation/pages/profiles_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/cards_catalog_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/club_detail_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/clubs_catalog_page.dart';
@@ -161,7 +161,7 @@ class AppRouter {
         path: AppRoutes.profileSharing.path,
         name: AppRoutes.profileSharing.name,
         builder: (context, state) => PublicProfileSettingsPage(
-          fcAccountId: state.uri.queryParameters['fcAccountId'] ?? '',
+          profileId: state.uri.queryParameters['profileId'] ?? '',
         ),
       ),
       GoRoute(
@@ -177,9 +177,9 @@ class AppRouter {
         builder: (context, state) => const NotificationsInboxPage(),
       ),
       GoRoute(
-        path: AppRoutes.fcAccounts.path,
-        name: AppRoutes.fcAccounts.name,
-        builder: (context, state) => const FcAccountsPage(),
+        path: AppRoutes.profiles.path,
+        name: AppRoutes.profiles.name,
+        builder: (context, state) => const ProfilesPage(),
       ),
       GoRoute(
         path: AppRoutes.cardsCatalog.path,
@@ -199,17 +199,17 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.fcAccountDetail.path,
-        name: AppRoutes.fcAccountDetail.name,
-        builder: (context, state) => FcAccountDetailPage(
-          fcAccountId: state.pathParameters[AppRoutes.fcAccountIdParam] ?? '',
+        path: AppRoutes.profileDetail.path,
+        name: AppRoutes.profileDetail.name,
+        builder: (context, state) => ProfileDetailPage(
+          profileId: state.pathParameters[AppRoutes.profileIdParam] ?? '',
         ),
       ),
       GoRoute(
-        path: AppRoutes.fcAccountHistory.path,
-        name: AppRoutes.fcAccountHistory.name,
+        path: AppRoutes.profileHistory.path,
+        name: AppRoutes.profileHistory.name,
         builder: (context, state) => HistoryPage(
-          fcAccountId: state.pathParameters[AppRoutes.fcAccountIdParam],
+          profileId: state.pathParameters[AppRoutes.profileIdParam],
         ),
       ),
       GoRoute(

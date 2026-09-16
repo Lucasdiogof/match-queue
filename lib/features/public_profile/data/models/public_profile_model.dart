@@ -1,4 +1,4 @@
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account_stats.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/profile_stats.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_profile.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_sharing_settings.dart';
@@ -6,7 +6,7 @@ import 'package:fifa_queue/features/public_profile/domain/entities/public_sharin
 PublicSharingSettings publicSharingSettingsFromJson(
   Map<String, dynamic> json,
 ) => PublicSharingSettings(
-  fcAccountId: '${json['fc_account_id']}',
+  profileId: '${json['fc_account_id']}',
   isEnabled: json['is_enabled'] as bool? ?? false,
   slug: json['slug'] as String?,
   showSquad: json['show_squad'] as bool? ?? true,
@@ -88,18 +88,22 @@ PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
     return PublicProfile.notFound;
   }
 
-  final profile =
+  // Duas coisas diferentes no mesmo payload: 'profile' e a identidade do
+  // LOGIN (nome exibido/avatar) e 'account' e o Perfil operacional (id,
+  // nome, divisao). As chaves sao formato de wire -- o banco continua
+  // chamando o Perfil de fc_account, so o Dart mudou de nome.
+  final user =
       json['profile'] as Map<dynamic, dynamic>? ?? const <String, dynamic>{};
-  final account = json['account'] as Map<dynamic, dynamic>?;
+  final profile = json['account'] as Map<dynamic, dynamic>?;
   final weekendLeague = json['weekend_league'] as Map<dynamic, dynamic>?;
 
   return PublicProfile(
     found: true,
-    displayName: profile['display_name'] as String?,
-    avatarUrl: profile['avatar_url'] as String?,
-    accountId: account?['id'] as String?,
-    accountName: account?['name'] as String?,
-    rivalsDivision: account?['rivals_division'] as String?,
+    displayName: user['display_name'] as String?,
+    avatarUrl: user['avatar_url'] as String?,
+    profileId: profile?['id'] as String?,
+    profileName: profile?['name'] as String?,
+    rivalsDivision: profile?['rivals_division'] as String?,
     stats: _aggregateFromJson(json['stats']),
     weekendLeague: ManualRecord.fromJson(weekendLeague?['manual']),
     weekendLeagueHistory: _weekendLeagueHistoryFromJson(

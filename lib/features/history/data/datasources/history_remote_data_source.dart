@@ -27,7 +27,7 @@ abstract interface class HistoryRemoteDataSource {
     String? gameResult,
     String? searchStatus,
     String? userId,
-    String? fcAccountId,
+    String? profileId,
     String? from,
     String? to,
   });
@@ -92,7 +92,7 @@ class SupabaseHistoryRemoteDataSource implements HistoryRemoteDataSource {
     String? gameResult,
     String? searchStatus,
     String? userId,
-    String? fcAccountId,
+    String? profileId,
     String? from,
     String? to,
   }) async {
@@ -109,7 +109,7 @@ class SupabaseHistoryRemoteDataSource implements HistoryRemoteDataSource {
         'p_user_id': ?userId,
         'p_from': ?from,
         'p_to': ?to,
-        'p_fc_account_id': ?fcAccountId,
+        'p_fc_account_id': ?profileId,
       },
     );
     return Map<String, dynamic>.from(response as Map);

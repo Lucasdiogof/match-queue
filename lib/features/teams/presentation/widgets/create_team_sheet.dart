@@ -3,10 +3,10 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/l10n/validation_l10n.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
-import 'package:fifa_queue/features/fc_accounts/domain/entities/fc_account.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/create_fc_account_sheet.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/profile.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/create_profile_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_logo_picker.dart';
@@ -16,14 +16,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<bool> showCreateTeamSheet(BuildContext context) async {
   final teamsCubit = context.read<TeamsCubit>();
-  final fcAccountsCubit = context.read<FcAccountsCubit>();
+  final profilesCubit = context.read<ProfilesCubit>();
   teamsCubit.clearActionFailure();
   final created = await showAppBottomSheet<bool>(
     context: context,
     builder: (sheetContext) => MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<TeamsCubit>.value(value: teamsCubit),
-        BlocProvider<FcAccountsCubit>.value(value: fcAccountsCubit),
+        BlocProvider<ProfilesCubit>.value(value: profilesCubit),
       ],
       child: const _CreateTeamForm(),
     ),
@@ -39,44 +39,44 @@ class _CreateTeamForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<FcAccountsCubit, FcAccountsState>(
+      BlocBuilder<ProfilesCubit, ProfilesState>(
         buildWhen: (previous, current) =>
-            previous.accounts != current.accounts ||
+            previous.profiles != current.profiles ||
             previous.status != current.status ||
-            previous.selectedAccountId != current.selectedAccountId,
+            previous.selectedProfileId != current.selectedProfileId,
         builder: (context, fcState) {
-          if (fcState.status == FcAccountsStatus.loading &&
-              !fcState.hasAccounts) {
+          if (fcState.status == ProfilesStatus.loading &&
+              !fcState.hasProfiles) {
             return const AppBottomSheet(
               child: SizedBox(height: 96, child: AppLoading.inline()),
             );
           }
-          if (!fcState.hasAccounts) {
-            return const _NeedsFcAccountBody();
+          if (!fcState.hasProfiles) {
+            return const _NeedsProfileBody();
           }
           return _TeamDetailsForm(
-            accounts: fcState.accounts,
-            selectedAccountId: fcState.selectedAccountId,
+            profiles: fcState.profiles,
+            selectedProfileId: fcState.selectedProfileId,
           );
         },
       );
 }
 
-class _NeedsFcAccountBody extends StatelessWidget {
-  const _NeedsFcAccountBody();
+class _NeedsProfileBody extends StatelessWidget {
+  const _NeedsProfileBody();
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
     return AppBottomSheet(
-      title: l10n.fcAccountOnboardingTitle,
-      subtitle: l10n.fcAccountOnboardingMessage,
+      title: l10n.profileOnboardingTitle,
+      subtitle: l10n.profileOnboardingMessage,
       actions: <Widget>[
         AppButton(
-          label: l10n.fcAccountOnboardingCreateAction,
+          label: l10n.profileOnboardingCreateAction,
           icon: Icons.add,
-          onPressed: () => showCreateFcAccountSheet(context),
+          onPressed: () => showCreateProfileSheet(context),
         ),
         const SizedBox(height: AppSpacing.sm),
         AppButton.ghost(
@@ -91,10 +91,10 @@ class _NeedsFcAccountBody extends StatelessWidget {
 }
 
 class _TeamDetailsForm extends StatefulWidget {
-  const _TeamDetailsForm({required this.accounts, this.selectedAccountId});
+  const _TeamDetailsForm({required this.profiles, this.selectedProfileId});
 
-  final List<FcAccount> accounts;
-  final String? selectedAccountId;
+  final List<Profile> profiles;
+  final String? selectedProfileId;
 
   @override
   State<_TeamDetailsForm> createState() => _TeamDetailsFormState();
@@ -113,15 +113,15 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     _nameController.addListener(_onChanged);
     _tagController.addListener(_onChanged);
     // Uma única conta: pré-selecionada (item 15). Várias: a conta ATIVA no
-    // momento (selectedAccountId) já nasce marcada -- continua
+    // momento (selectedProfileId) já nasce marcada -- continua
     // multi-seleção (o usuário pode adicionar outras), só não obriga quem
     // já estava usando uma conta específica a escolher do zero.
-    final activeId = widget.selectedAccountId;
-    _selectedAccountIds = widget.accounts.length == 1
-        ? <String>{widget.accounts.first.id}
+    final activeId = widget.selectedProfileId;
+    _selectedAccountIds = widget.profiles.length == 1
+        ? <String>{widget.profiles.first.id}
         : <String>{
             if (activeId != null &&
-                widget.accounts.any((a) => a.id == activeId))
+                widget.profiles.any((a) => a.id == activeId))
               activeId,
           };
   }
@@ -151,17 +151,17 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     }
     final navigator = Navigator.of(context);
     final teamsCubit = context.read<TeamsCubit>();
-    final fcAccountsCubit = context.read<FcAccountsCubit>();
+    final profilesCubit = context.read<ProfilesCubit>();
     final team = await teamsCubit.createTeam(
       name: _nameController.text,
-      fcAccountId: _selectedAccountIds.first,
+      profileId: _selectedAccountIds.first,
       tag: _tagController.text,
     );
     if (team == null) {
       return;
     }
-    for (final accountId in _selectedAccountIds) {
-      await fcAccountsCubit.linkToTeam(accountId: accountId, teamId: team.id);
+    for (final profileId in _selectedAccountIds) {
+      await profilesCubit.linkToTeam(profileId: profileId, teamId: team.id);
     }
     final logo = _pickedLogo;
     if (logo != null) {
@@ -273,23 +273,23 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
                 ),
                 const SizedBox(height: AppSpacing.xl),
                 Text(
-                  l10n.teamCreateFcAccountsSectionTitle,
+                  l10n.teamCreateProfilesSectionTitle,
                   style: context.textStyles.labelSmall,
                 ),
                 const SizedBox(height: AppSpacing.sm),
-                for (final account in widget.accounts)
+                for (final profile in widget.profiles)
                   CheckboxListTile(
                     contentPadding: EdgeInsets.zero,
                     controlAffinity: ListTileControlAffinity.leading,
-                    title: Text(account.name),
-                    value: _selectedAccountIds.contains(account.id),
+                    title: Text(profile.name),
+                    value: _selectedAccountIds.contains(profile.id),
                     onChanged: state.isSaving
                         ? null
                         : (checked) => setState(() {
                             if (checked ?? false) {
-                              _selectedAccountIds.add(account.id);
+                              _selectedAccountIds.add(profile.id);
                             } else {
-                              _selectedAccountIds.remove(account.id);
+                              _selectedAccountIds.remove(profile.id);
                             }
                           }),
                   ),

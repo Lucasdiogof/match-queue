@@ -14,7 +14,7 @@ import 'package:fifa_queue/core/observability/crash_reporter.dart';
 import 'package:fifa_queue/core/supabase/supabase_initializer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
 import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
@@ -87,7 +87,7 @@ Future<void> bootstrap() async {
       final profileCubit = getIt<AccountCubit>();
       final teamsCubit = getIt<TeamsCubit>();
       final pendingMatchCubit = getIt<PendingMatchCubit>();
-      final fcAccountsCubit = getIt<FcAccountsCubit>();
+      final profilesCubit = getIt<ProfilesCubit>();
 
       final restoredUser = authCubit.state.user;
       if (restoredUser != null) {
@@ -95,11 +95,11 @@ Future<void> bootstrap() async {
           profileCubit.load(fallbackDisplayName: restoredUser.shortName),
         );
         // TeamsCubit nao carrega aqui: segue TeamsAccountListener reagindo a
-        // FcAccountsCubit.selectedAccountId, do mesmo jeito que FcSquadsCubit
+        // ProfilesCubit.selectedProfileId, do mesmo jeito que FcSquadsCubit
         // -- times sao por Conta, e a Conta so fica conhecida depois que
-        // fcAccountsCubit.load resolve.
+        // profilesCubit.load resolve.
         unawaited(pendingMatchCubit.load());
-        unawaited(fcAccountsCubit.load(userId: restoredUser.id));
+        unawaited(profilesCubit.load(userId: restoredUser.id));
       }
 
       logger.info('Match Queue iniciado em ${config.environment.key}.');
@@ -115,7 +115,7 @@ Future<void> bootstrap() async {
           profileCubit: profileCubit,
           teamsCubit: teamsCubit,
           pendingMatchCubit: pendingMatchCubit,
-          fcAccountsCubit: fcAccountsCubit,
+          profilesCubit: profilesCubit,
         ),
       );
     },

@@ -40,7 +40,7 @@ class MatchHistoryModel {
       durationSeconds: parseInt(json['duration_seconds']),
       configuredDurationSeconds: parseInt(json['configured_duration_seconds']),
       gameMode: GameMode.tryFromKey(json['game_mode']),
-      fcAccountName: parseString(json['fc_account_name']),
+      profileName: parseString(json['fc_account_name']),
       matchStatus: GameMatchStatus.fromKey(parseString(json['match_status'])),
       matchStartedAt: json['match_started_at'] == null
           ? null

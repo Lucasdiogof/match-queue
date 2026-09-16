@@ -85,17 +85,15 @@ extension AppFailureL10n on AppFailure {
       GameFailureReason.noSquadSnapshot => l10n.errorGameNoSquadSnapshot,
       GameFailureReason.matchNotFinished => l10n.errorGameMatchNotFinished,
     },
-    FcAccountFailure(:final reason) => switch (reason) {
-      FcAccountFailureReason.accountNotFound => l10n.errorFcAccountNotFound,
-      FcAccountFailureReason.accountNotLinkedToTeam =>
-        l10n.errorFcAccountNotLinkedToTeam,
-      FcAccountFailureReason.accountNotLinkedToAnyTeam =>
-        l10n.errorFcAccountNotLinkedToAnyTeam,
-      FcAccountFailureReason.invalidName => l10n.errorFcAccountInvalidName,
-      FcAccountFailureReason.invalidDivision =>
-        l10n.errorFcAccountInvalidDivision,
-      FcAccountFailureReason.invalidPlatform =>
-        l10n.errorFcAccountInvalidPlatform,
+    ProfileFailure(:final reason) => switch (reason) {
+      ProfileFailureReason.accountNotFound => l10n.errorProfileNotFound,
+      ProfileFailureReason.accountNotLinkedToTeam =>
+        l10n.errorProfileNotLinkedToTeam,
+      ProfileFailureReason.accountNotLinkedToAnyTeam =>
+        l10n.errorProfileNotLinkedToAnyTeam,
+      ProfileFailureReason.invalidName => l10n.errorProfileInvalidName,
+      ProfileFailureReason.invalidDivision => l10n.errorProfileInvalidDivision,
+      ProfileFailureReason.invalidPlatform => l10n.errorProfileInvalidPlatform,
     },
     PublicProfileFailure(:final reason) => switch (reason) {
       PublicProfileFailureReason.invalidSlugFormat =>

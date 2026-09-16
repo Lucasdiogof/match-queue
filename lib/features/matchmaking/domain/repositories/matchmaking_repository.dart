@@ -7,7 +7,7 @@ abstract interface class MatchmakingRepository {
   /// -- a mesma conta pode estar numa posicao diferente em Champions e em
   /// Rivals do MESMO time ao mesmo tempo.
   Future<MyMatchmakingSnapshot> getMyStatus({
-    required String fcAccountId,
+    required String profileId,
     required String teamId,
     required GameMode mode,
   });
@@ -17,7 +17,7 @@ abstract interface class MatchmakingRepository {
   Stream<MatchmakingRealtimeEvent> watchTeam(String teamId);
 
   Future<MyMatchmakingSnapshot> requestSearch({
-    required String fcAccountId,
+    required String profileId,
     required String teamId,
     String? fcSquadId,
     required GameMode mode,
@@ -25,21 +25,21 @@ abstract interface class MatchmakingRepository {
 
   /// Cancela a busca ATIVA da conta -- so pode haver uma, em qualquer time
   /// (lock global). Nao serve pra sair de uma fila: ver [leaveQueue].
-  Future<MyMatchmakingSnapshot> cancelSearch(String fcAccountId);
+  Future<MyMatchmakingSnapshot> cancelSearch(String profileId);
 
   /// Sai da fila de UM (time, modo) especifico. A conta pode continuar em
   /// filas de outros times/modos.
   Future<MyMatchmakingSnapshot> leaveQueue({
-    required String fcAccountId,
+    required String profileId,
     required String teamId,
     required GameMode mode,
   });
 
-  Future<MyMatchmakingSnapshot> reportMatchFound(String fcAccountId);
+  Future<MyMatchmakingSnapshot> reportMatchFound(String profileId);
 
   /// So um pedido humano: nunca altera fila, busca, lock ou titular.
   Future<void> requestPriority({
-    required String fcAccountId,
+    required String profileId,
     required String teamId,
     required GameMode mode,
   });

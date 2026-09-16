@@ -1,10 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class PublicProfileRemoteDataSource {
-  Future<Map<String, dynamic>> getMySettings(String fcAccountId);
+  Future<Map<String, dynamic>> getMySettings(String profileId);
 
   Future<Map<String, dynamic>> updateMySettings({
-    required String fcAccountId,
+    required String profileId,
     required bool isEnabled,
     String? slug,
     required bool showSquad,
@@ -13,7 +13,7 @@ abstract interface class PublicProfileRemoteDataSource {
     required bool showStats,
   });
 
-  Future<bool> isSlugAvailable(String slug, {String? fcAccountId});
+  Future<bool> isSlugAvailable(String slug, {String? profileId});
 
   Future<Map<String, dynamic>> getPublicProfile(String identifier);
 }
@@ -25,17 +25,17 @@ class SupabasePublicProfileRemoteDataSource
   final SupabaseClient _client;
 
   @override
-  Future<Map<String, dynamic>> getMySettings(String fcAccountId) async {
+  Future<Map<String, dynamic>> getMySettings(String profileId) async {
     final response = await _client.rpc<dynamic>(
       'get_my_public_profile_settings',
-      params: <String, dynamic>{'p_fc_account_id': fcAccountId},
+      params: <String, dynamic>{'p_fc_account_id': profileId},
     );
     return Map<String, dynamic>.from(response as Map);
   }
 
   @override
   Future<Map<String, dynamic>> updateMySettings({
-    required String fcAccountId,
+    required String profileId,
     required bool isEnabled,
     String? slug,
     required bool showSquad,
@@ -46,7 +46,7 @@ class SupabasePublicProfileRemoteDataSource
     final response = await _client.rpc<dynamic>(
       'update_my_public_profile_settings',
       params: <String, dynamic>{
-        'p_fc_account_id': fcAccountId,
+        'p_fc_account_id': profileId,
         'p_is_enabled': isEnabled,
         'p_slug': slug,
         'p_show_squad': showSquad,
@@ -59,10 +59,10 @@ class SupabasePublicProfileRemoteDataSource
   }
 
   @override
-  Future<bool> isSlugAvailable(String slug, {String? fcAccountId}) async {
+  Future<bool> isSlugAvailable(String slug, {String? profileId}) async {
     final response = await _client.rpc<dynamic>(
       'check_public_profile_slug_available',
-      params: <String, dynamic>{'p_slug': slug, 'p_fc_account_id': fcAccountId},
+      params: <String, dynamic>{'p_slug': slug, 'p_fc_account_id': profileId},
     );
     return response as bool;
   }

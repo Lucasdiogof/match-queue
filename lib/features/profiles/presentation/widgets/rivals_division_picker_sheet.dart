@@ -1,0 +1,77 @@
+import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
+import 'package:fifa_queue/features/profiles/domain/entities/rivals_division.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/rivals_division_l10n.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+Future<void> showRivalsDivisionPickerSheet({
+  required BuildContext context,
+  required String profileId,
+  required RivalsDivision? selected,
+}) async {
+  final cubit = context.read<ProfilesCubit>();
+  await showAppBottomSheet<void>(
+    context: context,
+    builder: (sheetContext) => AppBottomSheet(
+      title: context.l10n.profileDivisionPickerTitle,
+      // Sao 12 opcoes fixas: cabe numa tela alta e NAO cabe numa baixa, onde
+      // a ultima (Elite) ficava atras da navegacao e inalcancavel, porque uma
+      // Column simples nao rola.
+      isChildScrollable: true,
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          _DivisionOptionRow(
+            label: context.l10n.profileDivisionNone,
+            isSelected: selected == null,
+            onTap: () {
+              Navigator.of(sheetContext).pop();
+              cubit.updateRivalsDivision(id: profileId, division: null);
+            },
+          ),
+          for (final division in RivalsDivision.values)
+            _DivisionOptionRow(
+              label: division.label(context.l10n),
+              isSelected: division == selected,
+              onTap: () {
+                Navigator.of(sheetContext).pop();
+                cubit.updateRivalsDivision(id: profileId, division: division);
+              },
+            ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _DivisionOptionRow extends StatelessWidget {
+  const _DivisionOptionRow({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: Text(label, style: context.textStyles.bodyLarge)),
+            if (isSelected) Icon(Icons.check, color: colors.textPrimary),
+          ],
+        ),
+      ),
+    );
+  }
+}

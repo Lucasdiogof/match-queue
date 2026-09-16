@@ -23,9 +23,9 @@ class SupabaseTeamRepository implements TeamRepository {
   final SupabaseErrorMapper _errorMapper;
 
   @override
-  Future<List<UserTeam>> fetchMyTeams({required String fcAccountId}) =>
+  Future<List<UserTeam>> fetchMyTeams({required String profileId}) =>
       _guard(() async {
-        final rows = await _dataSource.fetchMyMemberships(fcAccountId);
+        final rows = await _dataSource.fetchMyMemberships(profileId);
         return rows
             .where((row) => row[TeamMemberModel.embeddedTeam] != null)
             .map(TeamMemberModel.userTeamFromJson)
@@ -35,13 +35,13 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<Team> createTeam({
     required String name,
-    required String fcAccountId,
+    required String profileId,
     String? tag,
     Duration? defaultSearchDuration,
   }) => _guard(() async {
     final row = await _dataSource.createTeam(
       name: name,
-      fcAccountId: fcAccountId,
+      profileId: profileId,
       tag: tag,
       defaultSearchDurationSeconds: defaultSearchDuration?.inSeconds,
     );
@@ -127,12 +127,12 @@ class SupabaseTeamRepository implements TeamRepository {
   Future<PlayerProfile> fetchMemberProfile({
     required String teamId,
     required String userId,
-    String? fcAccountId,
+    String? profileId,
   }) => _guard(() async {
     final json = await _dataSource.getMemberProfile(
       teamId: teamId,
       userId: userId,
-      fcAccountId: fcAccountId,
+      profileId: profileId,
     );
     return PlayerProfileModel.fromJson(json);
   });
@@ -194,20 +194,20 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<void> removeMember({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
   }) => _guard(
-    () => _dataSource.removeMember(teamId: teamId, fcAccountId: fcAccountId),
+    () => _dataSource.removeMember(teamId: teamId, profileId: profileId),
   );
 
   @override
   Future<void> setMemberRole({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
     required TeamRole role,
   }) => _guard(
     () => _dataSource.setMemberRole(
       teamId: teamId,
-      fcAccountId: fcAccountId,
+      profileId: profileId,
       role: role.key,
     ),
   );
@@ -215,10 +215,9 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<void> transferOwnership({
     required String teamId,
-    required String fcAccountId,
+    required String profileId,
   }) => _guard(
-    () =>
-        _dataSource.transferOwnership(teamId: teamId, fcAccountId: fcAccountId),
+    () => _dataSource.transferOwnership(teamId: teamId, profileId: profileId),
   );
 
   Future<T> _guard<T>(Future<T> Function() action) async {

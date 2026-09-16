@@ -95,20 +95,20 @@ class PlayerProfile extends Equatable {
   const PlayerProfile({
     required this.userId,
     required this.displayName,
-    required this.candidateAccounts,
+    required this.candidateProfiles,
     required this.needsAccountSelection,
     required this.weekendLeagueHistory,
     this.avatarUrl,
-    this.account,
+    this.profile,
     this.squad,
   });
 
   final String userId;
   final String displayName;
   final String? avatarUrl;
-  final List<PlayerProfileAccountCandidate> candidateAccounts;
+  final List<PlayerProfileAccountCandidate> candidateProfiles;
   final bool needsAccountSelection;
-  final PlayerProfileAccount? account;
+  final PlayerProfileAccount? profile;
   final PlayerProfileSquad? squad;
   final List<PlayerProfileWeekendLeagueEntry> weekendLeagueHistory;
 
@@ -117,9 +117,9 @@ class PlayerProfile extends Equatable {
     userId,
     displayName,
     avatarUrl,
-    candidateAccounts,
+    candidateProfiles,
     needsAccountSelection,
-    account,
+    profile,
     squad,
     weekendLeagueHistory,
   ];

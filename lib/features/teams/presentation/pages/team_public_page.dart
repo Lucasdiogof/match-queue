@@ -6,7 +6,7 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
@@ -200,11 +200,11 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedAccount = context
-        .watch<FcAccountsCubit>()
+    final selectedProfile = context
+        .watch<ProfilesCubit>()
         .state
-        .selectedAccount;
-    final isMember = selectedAccount?.teamIds.contains(widget.teamId) ?? false;
+        .selectedProfile;
+    final isMember = selectedProfile?.teamIds.contains(widget.teamId) ?? false;
     if (isMember) {
       return const SizedBox.shrink();
     }
@@ -264,16 +264,15 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
 
   Future<void> _requestToJoin() async {
     // A conta usada pra qualquer acao (entrar, sair, buscar...) e sempre a
-    // selecionada no momento (FcAccountsCubit.state.selectedAccount) --
-    // nunca um picker perguntando de novo. Cair pra accounts.first so no
+    // selecionada no momento (ProfilesCubit.state.selectedProfile) --
+    // nunca um picker perguntando de novo. Cair pra profiles.first so no
     // caso extremo de existirem contas mas nenhuma selecionada.
-    final fcState = context.read<FcAccountsCubit>().state;
-    if (!fcState.hasAccounts) {
-      unawaited(context.push(AppRoutes.fcAccounts.path));
+    final fcState = context.read<ProfilesCubit>().state;
+    if (!fcState.hasProfiles) {
+      unawaited(context.push(AppRoutes.profiles.path));
       return;
     }
-    final fcAccountId =
-        fcState.selectedAccount?.id ?? fcState.accounts.first.id;
+    final profileId = fcState.selectedProfile?.id ?? fcState.profiles.first.id;
     if (!mounted) {
       return;
     }
@@ -282,7 +281,7 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
     try {
       await _repository.requestToJoin(
         teamId: widget.teamId,
-        fcAccountId: fcAccountId,
+        profileId: profileId,
       );
       if (!mounted) {
         return;

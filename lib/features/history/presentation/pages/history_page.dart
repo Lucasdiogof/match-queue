@@ -12,12 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryPage extends StatefulWidget {
-  const HistoryPage({this.fcAccountId, super.key});
+  const HistoryPage({this.profileId, super.key});
 
   /// Quando vem da tela da Conta (Etapa de Solicitacoes), filtra a
   /// atividade so daquele Elenco dentro do time selecionado. Null = aba
   /// raiz, historico do time inteiro.
-  final String? fcAccountId;
+  final String? profileId;
 
   @override
   State<HistoryPage> createState() => _HistoryPageState();
@@ -71,9 +71,9 @@ class _HistoryPageState extends State<HistoryPage>
                     message: l10n.historyNoTeamMessage,
                   )
                 : _HistoryScope(
-                    key: ValueKey('${selected.id}:${widget.fcAccountId}'),
+                    key: ValueKey('${selected.id}:${widget.profileId}'),
                     teamId: selected.id,
-                    fcAccountId: widget.fcAccountId,
+                    profileId: widget.profileId,
                     tabController: _tabController,
                   ),
           ),
@@ -87,12 +87,12 @@ class _HistoryScope extends StatelessWidget {
   const _HistoryScope({
     required this.teamId,
     required this.tabController,
-    this.fcAccountId,
+    this.profileId,
     super.key,
   });
 
   final String teamId;
-  final String? fcAccountId;
+  final String? profileId;
   final TabController tabController;
 
   @override
@@ -102,7 +102,7 @@ class _HistoryScope extends StatelessWidget {
         create: (_) => ActivityHistoryCubit(
           getIt<HistoryRepository>(),
           teamId: teamId,
-          fcAccountId: fcAccountId,
+          profileId: profileId,
         )..load(),
       ),
       BlocProvider<StatsCubit>(

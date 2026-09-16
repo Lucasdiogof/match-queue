@@ -123,8 +123,8 @@ class TeamPlayerLeaderboardEntry extends Equatable {
     required this.assists,
     required this.userId,
     required this.displayName,
-    required this.fcAccountId,
-    required this.accountName,
+    required this.profileId,
+    required this.profileName,
     this.playerCardId,
   });
 
@@ -135,8 +135,8 @@ class TeamPlayerLeaderboardEntry extends Equatable {
   final int assists;
   final String userId;
   final String displayName;
-  final String fcAccountId;
-  final String accountName;
+  final String profileId;
+  final String profileName;
 
   String get initials {
     final parts = playerName.trim().split(RegExp(r'\s+'))
@@ -161,7 +161,7 @@ class TeamPlayerLeaderboardEntry extends Equatable {
     goals,
     assists,
     userId,
-    fcAccountId,
+    profileId,
   ];
 }
 
@@ -172,8 +172,8 @@ class TeamWeekendLeagueEntry extends Equatable {
   const TeamWeekendLeagueEntry({
     required this.userId,
     required this.displayName,
-    required this.fcAccountId,
-    required this.accountName,
+    required this.profileId,
+    required this.profileName,
     required this.wins,
     required this.losses,
     required this.isManual,
@@ -181,8 +181,8 @@ class TeamWeekendLeagueEntry extends Equatable {
 
   final String userId;
   final String displayName;
-  final String fcAccountId;
-  final String accountName;
+  final String profileId;
+  final String profileName;
   final int wins;
   final int losses;
   final bool isManual;
@@ -192,8 +192,8 @@ class TeamWeekendLeagueEntry extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     userId,
-    fcAccountId,
-    accountName,
+    profileId,
+    profileName,
     wins,
     losses,
     isManual,
@@ -207,8 +207,8 @@ class TeamRivalsEntry extends Equatable {
   const TeamRivalsEntry({
     required this.userId,
     required this.displayName,
-    required this.fcAccountId,
-    required this.accountName,
+    required this.profileId,
+    required this.profileName,
     required this.matches,
     required this.wins,
     required this.losses,
@@ -219,8 +219,8 @@ class TeamRivalsEntry extends Equatable {
 
   final String userId;
   final String displayName;
-  final String fcAccountId;
-  final String accountName;
+  final String profileId;
+  final String profileName;
   final String? division;
   final int matches;
   final int wins;
@@ -233,7 +233,7 @@ class TeamRivalsEntry extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     userId,
-    fcAccountId,
+    profileId,
     division,
     matches,
     wins,
@@ -249,7 +249,7 @@ class TeamSportsActivity extends Equatable {
     required this.occurredAt,
     required this.userId,
     required this.displayName,
-    required this.accountName,
+    required this.profileName,
     required this.gameMode,
     required this.result,
     this.avatarUrl,
@@ -263,7 +263,7 @@ class TeamSportsActivity extends Equatable {
   final String userId;
   final String displayName;
   final String? avatarUrl;
-  final String accountName;
+  final String profileName;
   final String gameMode;
   final String result;
   final int? goalsFor;
@@ -279,7 +279,7 @@ class TeamSportsActivity extends Equatable {
   List<Object?> get props => <Object?>[
     occurredAt,
     userId,
-    accountName,
+    profileName,
     gameMode,
     result,
     goalsFor,

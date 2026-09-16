@@ -9,7 +9,7 @@ class InviteTargetPreview extends Equatable {
     this.userId,
     this.displayName,
     this.avatarUrl,
-    this.fcAccountName,
+    this.profileName,
   });
 
   const InviteTargetPreview.notFound() : this(found: false);
@@ -18,7 +18,7 @@ class InviteTargetPreview extends Equatable {
   final String? userId;
   final String? displayName;
   final String? avatarUrl;
-  final String? fcAccountName;
+  final String? profileName;
 
   @override
   List<Object?> get props => <Object?>[
@@ -26,6 +26,6 @@ class InviteTargetPreview extends Equatable {
     userId,
     displayName,
     avatarUrl,
-    fcAccountName,
+    profileName,
   ];
 }

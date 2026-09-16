@@ -10,7 +10,7 @@ class BlockingSearch extends Equatable {
     required this.displayName,
     required this.expiresAt,
     this.avatarUrl,
-    this.fcAccountName,
+    this.profileName,
     this.gameMode,
   });
 
@@ -18,7 +18,7 @@ class BlockingSearch extends Equatable {
   final String displayName;
   final String? avatarUrl;
   final DateTime expiresAt;
-  final String? fcAccountName;
+  final String? profileName;
   final GameMode? gameMode;
 
   @override
@@ -27,7 +27,7 @@ class BlockingSearch extends Equatable {
     displayName,
     avatarUrl,
     expiresAt,
-    fcAccountName,
+    profileName,
     gameMode,
   ];
 }
@@ -87,18 +87,18 @@ class QueueEntry extends Equatable {
     required this.userId,
     required this.displayName,
     required this.isMe,
-    this.fcAccountId,
+    this.profileId,
     this.avatarUrl,
-    this.fcAccountName,
+    this.profileName,
     this.gameMode,
   });
 
   final int position;
   final String userId;
-  final String? fcAccountId;
+  final String? profileId;
   final String displayName;
   final String? avatarUrl;
-  final String? fcAccountName;
+  final String? profileName;
   final GameMode? gameMode;
   final bool isMe;
 
@@ -106,10 +106,10 @@ class QueueEntry extends Equatable {
   List<Object?> get props => <Object?>[
     position,
     userId,
-    fcAccountId,
+    profileId,
     displayName,
     avatarUrl,
-    fcAccountName,
+    profileName,
     gameMode,
     isMe,
   ];
@@ -122,7 +122,7 @@ class QueueEntry extends Equatable {
 /// SEARCHING em UM time por vez (lock global por Conta FC).
 class MyMatchmakingSnapshot extends Equatable {
   const MyMatchmakingSnapshot({
-    required this.fcAccountId,
+    required this.profileId,
     required this.teamId,
     required this.accountLinkedToTeam,
     required this.myStatus,
@@ -135,7 +135,7 @@ class MyMatchmakingSnapshot extends Equatable {
     this.queue = const <QueueEntry>[],
   });
 
-  final String fcAccountId;
+  final String profileId;
   final String teamId;
 
   /// Falso quando a Conta FC selecionada nao esta vinculada a este time --
@@ -162,7 +162,7 @@ class MyMatchmakingSnapshot extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-    fcAccountId,
+    profileId,
     teamId,
     accountLinkedToTeam,
     searchDurationSeconds,

@@ -1,9 +1,9 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_onboarding_card.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/profile_onboarding_card.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,35 +41,35 @@ class _CentralBody extends StatelessWidget {
     final l10n = context.l10n;
 
     // Unico dado desta tela que pode ficar "preso" (ex.: primeiro fetch do
-    // boot que nao completou) e o de FcAccountsCubit, pro card de
+    // boot que nao completou) e o de ProfilesCubit, pro card de
     // onboarding -- puxar pra atualizar da pro usuario um jeito de tentar
     // de novo sem precisar trocar de aba.
     return RefreshIndicator(
-      onRefresh: () => context.read<FcAccountsCubit>().refresh(),
+      onRefresh: () => context.read<ProfilesCubit>().refresh(),
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         children: <Widget>[
-          BlocBuilder<FcAccountsCubit, FcAccountsState>(
+          BlocBuilder<ProfilesCubit, ProfilesState>(
             buildWhen: (previous, current) =>
                 previous.status != current.status ||
-                previous.hasAccounts != current.hasAccounts,
+                previous.hasProfiles != current.hasProfiles,
             // Enquanto ainda carrega (ex.: primeiro fetch do boot, que corre
-            // em paralelo com a primeira tela), "accounts vazio" nao significa
+            // em paralelo com a primeira tela), "profiles vazio" nao significa
             // "usuario sem conta" -- so significa "ainda nao sabemos". Sem
             // este guard, quem ja tem conta via o card de criar a primeira
             // ate a resposta chegar, que em uma rede lenta da pra notar (mesmo
             // guard que ControlPage ja usa nos dois ramos dela).
             builder: (context, state) {
-              if (state.isLoading && state.accounts.isEmpty) {
+              if (state.isLoading && state.profiles.isEmpty) {
                 return const SizedBox.shrink();
               }
-              if (state.hasAccounts) {
+              if (state.hasProfiles) {
                 return const SizedBox.shrink();
               }
               return const Padding(
                 padding: EdgeInsets.only(bottom: AppSpacing.xl),
-                child: FcAccountOnboardingCard(),
+                child: ProfileOnboardingCard(),
               );
             },
           ),

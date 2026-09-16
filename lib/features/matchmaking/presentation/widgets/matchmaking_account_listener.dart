@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// pra busca continuar em background nesse caso -- MatchmakingSection tem
 /// timer de seguranca e reage a voltar de foreground). Cancelar so faz
 /// sentido quando o motivo especifico e troca de Conta, entao isto reage
-/// direto a FcAccountsCubit, nao ao dispose do cubit de matchmaking.
+/// direto a ProfilesCubit, nao ao dispose do cubit de matchmaking.
 ///
 /// Best-effort: a Conta anterior pode nao estar buscando nada (o caso
 /// comum), e cancel_match_search recusa com FQ015 nesse caso -- engolido
@@ -37,11 +37,11 @@ class MatchmakingAccountListener extends StatelessWidget {
     // listener e seguro, nao um valor de outra transicao.
     String? previousAccountId;
 
-    return BlocListener<FcAccountsCubit, FcAccountsState>(
+    return BlocListener<ProfilesCubit, ProfilesState>(
       listenWhen: (previous, current) {
-        previousAccountId = previous.selectedAccountId;
-        return previous.selectedAccountId != current.selectedAccountId &&
-            previous.selectedAccountId != null;
+        previousAccountId = previous.selectedProfileId;
+        return previous.selectedProfileId != current.selectedProfileId &&
+            previous.selectedProfileId != null;
       },
       listener: (context, state) =>
           unawaited(_cancelPreviousSearch(previousAccountId)),

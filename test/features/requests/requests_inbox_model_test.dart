@@ -47,11 +47,11 @@ void main() {
       final invitation = inbox.invitationsReceived.single;
       expect(invitation.teamName, 'Lucksrei FC');
       expect(invitation.memberCount, 7);
-      expect(invitation.fcAccountName, 'Luclown');
+      expect(invitation.profileName, 'Luclown');
 
       final request = inbox.joinRequestsToReview.single;
       expect(request.requesterDisplayName, 'Lucas');
-      expect(request.fcAccountName, 'Pedro FC');
+      expect(request.profileName, 'Pedro FC');
     });
   });
 
@@ -78,7 +78,7 @@ void main() {
       expect(preview.found, isTrue);
       expect(preview.userId, 'user-1');
       expect(preview.displayName, 'Lucas');
-      expect(preview.fcAccountName, 'Luclown');
+      expect(preview.profileName, 'Luclown');
     });
   });
 }

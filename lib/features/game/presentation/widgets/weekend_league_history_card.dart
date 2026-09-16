@@ -27,7 +27,7 @@ class _WeekendLeagueHistoryCardState extends State<WeekendLeagueHistoryCard> {
     if (history.isEmpty) {
       return CompetitiveModeCard(
         mode: CompetitiveMode.champions,
-        title: l10n.fcAccountWeekendLeagueTitle,
+        title: l10n.profileWeekendLeagueTitle,
         child: Text(
           l10n.playerProfileWeekendLeagueEmptyMessage,
           style: const TextStyle(color: AppColors.darkTextSecondary),
@@ -41,7 +41,7 @@ class _WeekendLeagueHistoryCardState extends State<WeekendLeagueHistoryCard> {
 
     return CompetitiveModeCard(
       mode: CompetitiveMode.champions,
-      title: l10n.fcAccountWeekendLeagueTitle,
+      title: l10n.profileWeekendLeagueTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

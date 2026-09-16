@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 /// mesmo dono.
 class PublicSharingSettings extends Equatable {
   const PublicSharingSettings({
-    required this.fcAccountId,
+    required this.profileId,
     required this.isEnabled,
     this.slug,
     this.showSquad = true,
@@ -16,12 +16,12 @@ class PublicSharingSettings extends Equatable {
     this.showStats = true,
   });
 
-  static PublicSharingSettings empty(String fcAccountId) =>
-      PublicSharingSettings(fcAccountId: fcAccountId, isEnabled: false);
+  static PublicSharingSettings empty(String profileId) =>
+      PublicSharingSettings(profileId: profileId, isEnabled: false);
 
   /// Identidade fixa da linha -- nunca muda via [copyWith]. Trocar de conta
   /// é editar OUTRA [PublicSharingSettings], não mutar esta.
-  final String fcAccountId;
+  final String profileId;
   final bool isEnabled;
   final String? slug;
   final bool showSquad;
@@ -38,7 +38,7 @@ class PublicSharingSettings extends Equatable {
     bool? showRivals,
     bool? showStats,
   }) => PublicSharingSettings(
-    fcAccountId: fcAccountId,
+    profileId: profileId,
     isEnabled: isEnabled ?? this.isEnabled,
     slug: clearSlug ? null : (slug ?? this.slug),
     showSquad: showSquad ?? this.showSquad,
@@ -49,7 +49,7 @@ class PublicSharingSettings extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-    fcAccountId,
+    profileId,
     isEnabled,
     slug,
     showSquad,

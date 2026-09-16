@@ -34,7 +34,7 @@ class AccountPage extends StatelessWidget {
         children: <Widget>[
           _AccountSection(),
           const SizedBox(height: AppSpacing.lg),
-          const _FcAccountsSection(),
+          const _ProfilesSection(),
           const SizedBox(height: AppSpacing.lg),
           _PreferencesSection(),
           const SizedBox(height: AppSpacing.lg),
@@ -54,7 +54,7 @@ class AccountPage extends StatelessWidget {
 class _AccountSection extends StatelessWidget {
   Future<void> _editName(BuildContext context, String currentName) async {
     final messenger = ScaffoldMessenger.of(context);
-    final savedMessage = context.l10n.profileSaved;
+    final savedMessage = context.l10n.accountSaved;
     final saved = await showEditDisplayNameSheet(
       context: context,
       currentDisplayName: currentName,
@@ -77,7 +77,7 @@ class _AccountSection extends StatelessWidget {
               children: <Widget>[
                 AppBanner(
                   tone: AppBannerTone.danger,
-                  title: l10n.profileLoadErrorTitle,
+                  title: l10n.accountLoadErrorTitle,
                   message:
                       profileState.failure?.localizedMessage(l10n) ??
                       l10n.errorUnexpected,
@@ -133,7 +133,7 @@ class _AccountSection extends StatelessWidget {
                 ),
                 AppIconButton(
                   icon: Icons.edit_outlined,
-                  tooltip: l10n.profileEditName,
+                  tooltip: l10n.accountEditName,
                   variant: AppIconButtonVariant.outlined,
                   onPressed: () => _editName(context, profile.displayName),
                 ),
@@ -146,8 +146,8 @@ class _AccountSection extends StatelessWidget {
   }
 }
 
-class _FcAccountsSection extends StatelessWidget {
-  const _FcAccountsSection();
+class _ProfilesSection extends StatelessWidget {
+  const _ProfilesSection();
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +156,8 @@ class _FcAccountsSection extends StatelessWidget {
     return AppCard(
       child: _NavRow(
         icon: Icons.sports_esports_outlined,
-        label: l10n.profileFcAccountsRow,
-        onTap: () => context.push(AppRoutes.fcAccounts.path),
+        label: l10n.accountProfilesRow,
+        onTap: () => context.push(AppRoutes.profiles.path),
       ),
     );
   }
@@ -173,7 +173,7 @@ class _PreferencesSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            l10n.profilePreferencesTitle.toUpperCase(),
+            l10n.accountPreferencesTitle.toUpperCase(),
             style: context.textStyles.labelSmall,
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -228,7 +228,7 @@ class _LegalSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            l10n.profileLegalTitle.toUpperCase(),
+            l10n.accountLegalTitle.toUpperCase(),
             style: context.textStyles.labelSmall,
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -335,8 +335,8 @@ class _SignOutButton extends StatelessWidget {
     final confirmed = await showAppBottomSheet<bool>(
       context: context,
       builder: (sheetContext) => AppBottomSheet(
-        title: l10n.profileSignOutConfirmTitle,
-        subtitle: l10n.profileSignOutConfirmMessage,
+        title: l10n.accountSignOutConfirmTitle,
+        subtitle: l10n.accountSignOutConfirmMessage,
         actions: <Widget>[
           AppButton(
             label: l10n.actionSignOut,

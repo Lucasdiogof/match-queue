@@ -2,10 +2,10 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_cubit.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/cubit/fc_accounts_state.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/fc_account_onboarding_card.dart';
-import 'package:fifa_queue/features/fc_accounts/presentation/widgets/account_squad_card.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/profile_onboarding_card.dart';
+import 'package:fifa_queue/features/profiles/presentation/widgets/profile_squad_card.dart';
 import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
@@ -84,29 +84,29 @@ class _ControlBody extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: () => Future.wait(<Future<void>>[
           context.read<TeamsCubit>().refresh(),
-          context.read<FcAccountsCubit>().refresh(),
+          context.read<ProfilesCubit>().refresh(),
         ]),
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
           children: <Widget>[
-            // AccountSquadCard nao depende de time nenhum (Elenco e da
+            // ProfileSquadCard nao depende de time nenhum (Elenco e da
             // Conta, nao do Time) -- sem ele aqui, quem esta numa Conta sem
             // time ficava sem NENHUM jeito de trocar pra outra Conta que
             // tenha, preso nesta tela. So o card de busca/modo (que sim
             // depende de time) continua escondido abaixo.
-            const AccountSquadCard(),
+            const ProfileSquadCard(),
             const SizedBox(height: AppSpacing.lg),
-            BlocBuilder<FcAccountsCubit, FcAccountsState>(
+            BlocBuilder<ProfilesCubit, ProfilesState>(
               buildWhen: (previous, current) =>
                   previous.status != current.status ||
-                  previous.hasAccounts != current.hasAccounts,
+                  previous.hasProfiles != current.hasProfiles,
               builder: (context, fcState) {
-                if (fcState.isLoading && fcState.accounts.isEmpty) {
+                if (fcState.isLoading && fcState.profiles.isEmpty) {
                   return const SizedBox.shrink();
                 }
-                if (!fcState.hasAccounts) {
-                  return const FcAccountOnboardingCard();
+                if (!fcState.hasProfiles) {
+                  return const ProfileOnboardingCard();
                 }
                 return AppEmptyState(
                   icon: Icons.groups_outlined,
@@ -125,31 +125,31 @@ class _ControlBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => Future.wait(<Future<void>>[
         context.read<TeamsCubit>().refresh(),
-        context.read<FcAccountsCubit>().refresh(),
+        context.read<ProfilesCubit>().refresh(),
       ]),
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         children: <Widget>[
-          BlocBuilder<FcAccountsCubit, FcAccountsState>(
+          BlocBuilder<ProfilesCubit, ProfilesState>(
             buildWhen: (previous, current) =>
                 previous.status != current.status ||
-                previous.accounts != current.accounts ||
-                previous.selectedAccountId != current.selectedAccountId,
+                previous.profiles != current.profiles ||
+                previous.selectedProfileId != current.selectedProfileId,
             builder: (context, fcState) {
-              if (fcState.isLoading && fcState.accounts.isEmpty) {
+              if (fcState.isLoading && fcState.profiles.isEmpty) {
                 return const SizedBox.shrink();
               }
-              if (!fcState.hasAccounts) {
-                return const FcAccountOnboardingCard();
+              if (!fcState.hasProfiles) {
+                return const ProfileOnboardingCard();
               }
-              final account = fcState.selectedAccount;
+              final profile = fcState.selectedProfile;
               final team = selected!;
               // Modo e busca so fazem sentido pra quem pode buscar de
               // verdade: Conta FC selecionada E vinculada a ESTE time. Sem
               // isso os dois cards apareciam sempre, um deles so pra avisar
               // que nao dava pra usar o outro.
-              final canSearch = account != null && account.isLinkedTo(team.id);
+              final canSearch = profile != null && profile.isLinkedTo(team.id);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 // Matchmaking primeiro. A ordem antiga abria com progresso
@@ -164,7 +164,7 @@ class _ControlBody extends StatelessWidget {
                 // a dobra em estado normal.
                 children: <Widget>[
                   const PendingMatchCard(),
-                  const AccountSquadCard(),
+                  const ProfileSquadCard(),
                   const SizedBox(height: AppSpacing.lg),
                   if (canSearch) ...<Widget>[
                     AppCard(
@@ -182,12 +182,12 @@ class _ControlBody extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     MatchmakingSection(
-                      fcAccountId: account.id,
+                      profileId: profile.id,
                       teamId: team.id,
                       onMatchFound: () =>
                           context.read<PendingMatchCubit>().refreshSilently(),
                     ),
-                  ] else if (account != null)
+                  ] else if (profile != null)
                     const _AccountNotLinkedCard(),
                   const SizedBox(height: AppSpacing.xl),
                   const WeekendLeagueCard(),
