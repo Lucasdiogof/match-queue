@@ -13,6 +13,7 @@ import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invit
 import 'package:fifa_queue/features/invitations/presentation/widgets/pending_invite_listener.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_account_listener.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_lifecycle_listener.dart';
 import 'package:fifa_queue/features/profile/presentation/cubit/profile_cubit.dart';
@@ -91,12 +92,14 @@ class FifaQueueApp extends StatelessWidget {
             builder: (context, child) => ProfileSessionListener(
               child: FcAccountsSessionListener(
                 child: TeamsAccountListener(
-                  child: FcSquadsSessionListener(
-                    child: PendingMatchSessionListener(
-                      child: LocaleSyncListener(
-                        child: NotificationLifecycleListener(
-                          child: PendingInviteListener(
-                            child: child ?? const SizedBox.shrink(),
+                  child: MatchmakingAccountListener(
+                    child: FcSquadsSessionListener(
+                      child: PendingMatchSessionListener(
+                        child: LocaleSyncListener(
+                          child: NotificationLifecycleListener(
+                            child: PendingInviteListener(
+                              child: child ?? const SizedBox.shrink(),
+                            ),
                           ),
                         ),
                       ),
