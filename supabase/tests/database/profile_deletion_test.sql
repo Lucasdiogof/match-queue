@@ -28,7 +28,13 @@ create extension if not exists pgtap;
 -- projeto; sem isto as funcoes de assercao podem nao resolver.
 set local search_path = public, extensions, pg_temp;
 
-select plan(23);
+-- Cada assercao vai pra uma tabela temporaria em vez de virar um result
+-- set solto: o SQL Editor do Supabase so exibe o retorno da ULTIMA query,
+-- entao sem isto as 22 primeiras ficam invisiveis e um "not ok" passa
+-- despercebido.
+create temp table tap_out (line text);
+
+insert into pg_temp.tap_out select plan(23);
 
 -- ---------------------------------------------------------------------
 -- Helpers de fixture
@@ -108,18 +114,18 @@ select pg_temp.mk_member(
 );
 
 select pg_temp.act_as('11111111-1111-1111-1111-111111111111');
-select lives_ok(
+insert into pg_temp.tap_out select lives_ok(
     $$select public.archive_fc_account('11111111-1111-1111-1111-1111111111a1')$$,
     'unico membro: exclusao do Perfil nao levanta erro'
 );
 
-select is_empty(
+insert into pg_temp.tap_out select is_empty(
     $$select 1 from public.teams
       where id = '11111111-1111-1111-1111-1111111111f1'$$,
     'unico membro: o time e excluido junto'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select is_active from public.user_fc_accounts
       where id = '11111111-1111-1111-1111-1111111111a1'$$,
     $$values (false)$$,
@@ -156,25 +162,25 @@ select pg_temp.mk_member(
 );
 
 select pg_temp.act_as('22222222-2222-2222-2222-222222222223');
-select lives_ok(
+insert into pg_temp.tap_out select lives_ok(
     $$select public.archive_fc_account('22222222-2222-2222-2222-2222222222a2')$$,
     'PLAYER: exclusao do proprio Perfil nao levanta erro'
 );
 
-select isnt_empty(
+insert into pg_temp.tap_out select isnt_empty(
     $$select 1 from public.teams
       where id = '22222222-2222-2222-2222-2222222222f1'$$,
     'PLAYER sai: o time continua existindo'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select fc_account_id from public.team_members
       where team_id = '22222222-2222-2222-2222-2222222222f1' and role = 'OWNER'$$,
     $$values ('22222222-2222-2222-2222-2222222222a1'::uuid)$$,
     'PLAYER sai: o OWNER nao muda'
 );
 
-select is_empty(
+insert into pg_temp.tap_out select is_empty(
     $$select 1 from public.team_members
       where team_id = '22222222-2222-2222-2222-2222222222f1'
         and fc_account_id = '22222222-2222-2222-2222-2222222222a2'$$,
@@ -225,32 +231,32 @@ select pg_temp.mk_member(
 );
 
 select pg_temp.act_as('33333333-3333-3333-3333-333333333331');
-select lives_ok(
+insert into pg_temp.tap_out select lives_ok(
     $$select public.archive_fc_account('33333333-3333-3333-3333-3333333333a1')$$,
     'OWNER com outros: exclusao nao levanta erro'
 );
 
-select isnt_empty(
+insert into pg_temp.tap_out select isnt_empty(
     $$select 1 from public.teams
       where id = '33333333-3333-3333-3333-3333333333f1'$$,
     'OWNER com outros: o time NAO e excluido'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select fc_account_id from public.team_members
       where team_id = '33333333-3333-3333-3333-3333333333f1' and role = 'OWNER'$$,
     $$values ('33333333-3333-3333-3333-3333333333a2'::uuid)$$,
     'OWNER com outros: o membro mais antigo restante vira OWNER'
 );
 
-select is_empty(
+insert into pg_temp.tap_out select is_empty(
     $$select 1 from public.team_members
       where team_id = '33333333-3333-3333-3333-3333333333f1'
         and fc_account_id = '33333333-3333-3333-3333-3333333333a1'$$,
     'OWNER com outros: o dono antigo sai do time'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select role::text from public.team_members
       where team_id = '33333333-3333-3333-3333-3333333333f1'
         and fc_account_id = '33333333-3333-3333-3333-3333333333a3'$$,
@@ -301,12 +307,12 @@ select pg_temp.mk_member(
 );
 
 select pg_temp.act_as('44444444-4444-4444-4444-444444444441');
-select lives_ok(
+insert into pg_temp.tap_out select lives_ok(
     $$select public.archive_fc_account('44444444-4444-4444-4444-4444444444a0')$$,
     'empate: exclusao nao levanta erro'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select fc_account_id from public.team_members
       where team_id = '44444444-4444-4444-4444-4444444444f1' and role = 'OWNER'$$,
     $$values ('44444444-4444-4444-4444-4444444444a1'::uuid)$$,
@@ -324,7 +330,7 @@ select pg_temp.mk_profile(
 );
 
 select pg_temp.act_as('55555555-5555-5555-5555-555555555555');
-select lives_ok(
+insert into pg_temp.tap_out select lives_ok(
     $$select public.archive_fc_account('55555555-5555-5555-5555-5555555555a1')$$,
     'sem time: o Perfil e excluido normalmente'
 );
@@ -341,14 +347,14 @@ select pg_temp.mk_profile(
 );
 
 select pg_temp.act_as('66666666-6666-6666-6666-666666666662');
-select throws_ok(
+insert into pg_temp.tap_out select throws_ok(
     $$select public.archive_fc_account('66666666-6666-6666-6666-6666666666a1')$$,
     'FQ025'::text,
     null::text,
     'seguranca: excluir Perfil de outra Conta e recusado'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select is_active from public.user_fc_accounts
       where id = '66666666-6666-6666-6666-6666666666a1'$$,
     $$values (true)$$,
@@ -387,7 +393,7 @@ select pg_temp.mk_member(
 -- Quem nao e dono nao transfere -- checado ANTES da transferencia real,
 -- senao o alvo ja seria dono e o teste passaria pelo motivo errado.
 select pg_temp.act_as('77777777-7777-7777-7777-777777777772');
-select throws_ok(
+insert into pg_temp.tap_out select throws_ok(
     $$select public.transfer_team_ownership(
         '77777777-7777-7777-7777-7777777777f1',
         '77777777-7777-7777-7777-7777777777a2'
@@ -398,7 +404,7 @@ select throws_ok(
 );
 
 select pg_temp.act_as('77777777-7777-7777-7777-777777777771');
-select lives_ok(
+insert into pg_temp.tap_out select lives_ok(
     $$select public.transfer_team_ownership(
         '77777777-7777-7777-7777-7777777777f1',
         '77777777-7777-7777-7777-7777777777a2'
@@ -406,14 +412,14 @@ select lives_ok(
     'transferencia: o OWNER consegue passar a posse'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select fc_account_id from public.team_members
       where team_id = '77777777-7777-7777-7777-7777777777f1' and role = 'OWNER'$$,
     $$values ('77777777-7777-7777-7777-7777777777a2'::uuid)$$,
     'transferencia: o alvo vira OWNER'
 );
 
-select results_eq(
+insert into pg_temp.tap_out select results_eq(
     $$select role::text from public.team_members
       where team_id = '77777777-7777-7777-7777-7777777777f1'
         and fc_account_id = '77777777-7777-7777-7777-7777777777a1'$$,
@@ -454,7 +460,7 @@ select pg_temp.mk_member(
     '2026-01-05'
 );
 
-select throws_ok(
+insert into pg_temp.tap_out select throws_ok(
     $$update public.team_members set role = 'PLAYER'
       where team_id = '88888888-8888-8888-8888-8888888888f1'
         and fc_account_id = '88888888-8888-8888-8888-8888888888a1'$$,
@@ -463,7 +469,7 @@ select throws_ok(
     'trigger: rebaixar o OWNER por escrita direta continua bloqueado'
 );
 
-select throws_ok(
+insert into pg_temp.tap_out select throws_ok(
     $$delete from public.team_members
       where team_id = '88888888-8888-8888-8888-8888888888f1'
         and fc_account_id = '88888888-8888-8888-8888-8888888888a1'$$,
@@ -472,6 +478,8 @@ select throws_ok(
     'trigger: remover o OWNER por escrita direta continua bloqueado'
 );
 
-select * from finish();
+insert into pg_temp.tap_out select * from finish();
+
+select line from pg_temp.tap_out;
 
 rollback;
