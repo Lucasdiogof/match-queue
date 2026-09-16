@@ -86,10 +86,10 @@ extension AppFailureL10n on AppFailure {
       GameFailureReason.matchNotFinished => l10n.errorGameMatchNotFinished,
     },
     ProfileFailure(:final reason) => switch (reason) {
-      ProfileFailureReason.accountNotFound => l10n.errorProfileNotFound,
-      ProfileFailureReason.accountNotLinkedToTeam =>
+      ProfileFailureReason.profileNotFound => l10n.errorProfileNotFound,
+      ProfileFailureReason.profileNotLinkedToTeam =>
         l10n.errorProfileNotLinkedToTeam,
-      ProfileFailureReason.accountNotLinkedToAnyTeam =>
+      ProfileFailureReason.profileNotLinkedToAnyTeam =>
         l10n.errorProfileNotLinkedToAnyTeam,
       ProfileFailureReason.invalidName => l10n.errorProfileInvalidName,
       ProfileFailureReason.invalidDivision => l10n.errorProfileInvalidDivision,

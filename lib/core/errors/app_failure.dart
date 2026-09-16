@@ -56,9 +56,9 @@ enum GameFailureReason {
 }
 
 enum ProfileFailureReason {
-  accountNotFound,
-  accountNotLinkedToTeam,
-  accountNotLinkedToAnyTeam,
+  profileNotFound,
+  profileNotLinkedToTeam,
+  profileNotLinkedToAnyTeam,
   invalidName,
   invalidDivision,
   invalidPlatform,

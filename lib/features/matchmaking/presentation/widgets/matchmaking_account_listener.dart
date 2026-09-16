@@ -25,8 +25,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// aqui, so log. Qualquer outra falha tambem so loga: isto roda em
 /// background, sem UI pra mostrar erro, e nunca deve travar a troca de
 /// conta em si.
-class MatchmakingAccountListener extends StatelessWidget {
-  const MatchmakingAccountListener({required this.child, super.key});
+class MatchmakingProfileListener extends StatelessWidget {
+  const MatchmakingProfileListener({required this.child, super.key});
 
   final Widget child;
 
@@ -35,42 +35,42 @@ class MatchmakingAccountListener extends StatelessWidget {
     // listenWhen roda sempre antes de listener pra cada transicao de
     // estado, na mesma chamada -- guardar o "previous" aqui e ler no
     // listener e seguro, nao um valor de outra transicao.
-    String? previousAccountId;
+    String? previousProfileId;
 
     return BlocListener<ProfilesCubit, ProfilesState>(
       listenWhen: (previous, current) {
-        previousAccountId = previous.selectedProfileId;
+        previousProfileId = previous.selectedProfileId;
         return previous.selectedProfileId != current.selectedProfileId &&
             previous.selectedProfileId != null;
       },
       listener: (context, state) =>
-          unawaited(_cancelPreviousSearch(previousAccountId)),
+          unawaited(_cancelPreviousSearch(previousProfileId)),
       child: child,
     );
   }
 
-  Future<void> _cancelPreviousSearch(String? previousAccountId) async {
-    if (previousAccountId == null) {
+  Future<void> _cancelPreviousSearch(String? previousProfileId) async {
+    if (previousProfileId == null) {
       return;
     }
     final logger = getIt<AppLogger>();
     try {
-      await getIt<MatchmakingRepository>().cancelSearch(previousAccountId);
+      await getIt<MatchmakingRepository>().cancelSearch(previousProfileId);
       logger.info(
-        'busca cancelada por troca de conta (fc_account $previousAccountId)',
+        'busca cancelada por troca de conta (fc_account $previousProfileId)',
       );
     } on MatchmakingFailure catch (failure) {
       if (failure.reason != MatchmakingFailureReason.noActiveSearch) {
         logger.warning(
           'falha ao cancelar busca por troca de conta '
-          '(fc_account $previousAccountId)',
+          '(fc_account $previousProfileId)',
           error: failure,
         );
       }
     } on AppFailure catch (failure) {
       logger.warning(
         'falha ao cancelar busca por troca de conta '
-        '(fc_account $previousAccountId)',
+        '(fc_account $previousProfileId)',
         error: failure,
       );
     }

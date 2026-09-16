@@ -31,9 +31,9 @@ Future<bool> showCreateTeamSheet(BuildContext context) async {
   return created ?? false;
 }
 
-/// Time exige pelo menos uma Conta FC do dono (gameplay flows refresh,
-/// item 1): sem nenhuma, o sheet mostra o convite pra criar a primeira em
-/// vez do formulário -- nunca deixa criar um time "órfão" de Conta FC.
+/// Time exige pelo menos um Perfil do dono: sem nenhum, o sheet mostra o
+/// convite pra criar o primeiro em vez do formulário -- nunca deixa criar
+/// um time "órfão" de Perfil.
 class _CreateTeamForm extends StatelessWidget {
   const _CreateTeamForm();
 
@@ -104,7 +104,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _tagController = TextEditingController();
-  late Set<String> _selectedAccountIds;
+  late Set<String> _selectedProfileIds;
   PickedTeamLogo? _pickedLogo;
 
   @override
@@ -112,12 +112,12 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     super.initState();
     _nameController.addListener(_onChanged);
     _tagController.addListener(_onChanged);
-    // Uma única conta: pré-selecionada (item 15). Várias: a conta ATIVA no
-    // momento (selectedProfileId) já nasce marcada -- continua
-    // multi-seleção (o usuário pode adicionar outras), só não obriga quem
-    // já estava usando uma conta específica a escolher do zero.
+    // Um Perfil só: pré-selecionado (e a lista nem aparece, ver build).
+    // Vários: o Perfil ATIVO no momento já nasce marcado -- continua
+    // multi-seleção (dá pra adicionar outros), só não obriga quem já
+    // estava usando um Perfil específico a escolher do zero.
     final activeId = widget.selectedProfileId;
-    _selectedAccountIds = widget.profiles.length == 1
+    _selectedProfileIds = widget.profiles.length == 1
         ? <String>{widget.profiles.first.id}
         : <String>{
             if (activeId != null &&
@@ -146,7 +146,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
-    if (_selectedAccountIds.isEmpty) {
+    if (_selectedProfileIds.isEmpty) {
       return;
     }
     final navigator = Navigator.of(context);
@@ -154,13 +154,13 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     final profilesCubit = context.read<ProfilesCubit>();
     final team = await teamsCubit.createTeam(
       name: _nameController.text,
-      profileId: _selectedAccountIds.first,
+      profileId: _selectedProfileIds.first,
       tag: _tagController.text,
     );
     if (team == null) {
       return;
     }
-    for (final profileId in _selectedAccountIds) {
+    for (final profileId in _selectedProfileIds) {
       await profilesCubit.linkToTeam(profileId: profileId, teamId: team.id);
     }
     final logo = _pickedLogo;
@@ -200,7 +200,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
             label: l10n.teamCreateAction,
             icon: Icons.add,
             isLoading: state.isSaving,
-            onPressed: state.isSaving || _selectedAccountIds.isEmpty
+            onPressed: state.isSaving || _selectedProfileIds.isEmpty
                 ? null
                 : _submit,
           ),
@@ -271,28 +271,34 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
                   validator: (value) =>
                       AppValidators.teamTag(value)?.message(l10n),
                 ),
-                const SizedBox(height: AppSpacing.xl),
-                Text(
-                  l10n.teamCreateProfilesSectionTitle,
-                  style: context.textStyles.labelSmall,
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                for (final profile in widget.profiles)
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    title: Text(profile.name),
-                    value: _selectedAccountIds.contains(profile.id),
-                    onChanged: state.isSaving
-                        ? null
-                        : (checked) => setState(() {
-                            if (checked ?? false) {
-                              _selectedAccountIds.add(profile.id);
-                            } else {
-                              _selectedAccountIds.remove(profile.id);
-                            }
-                          }),
+                // Com um Perfil so nao ha escolha a fazer: a lista viraria
+                // um checkbox unico ja marcado, cuja unica utilidade seria
+                // desmarcar e travar o botao de criar. Ele entra no time
+                // direto (ver initState).
+                if (widget.profiles.length > 1) ...<Widget>[
+                  const SizedBox(height: AppSpacing.xl),
+                  Text(
+                    l10n.teamCreateProfilesSectionTitle,
+                    style: context.textStyles.labelSmall,
                   ),
+                  const SizedBox(height: AppSpacing.sm),
+                  for (final profile in widget.profiles)
+                    CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      title: Text(profile.name),
+                      value: _selectedProfileIds.contains(profile.id),
+                      onChanged: state.isSaving
+                          ? null
+                          : (checked) => setState(() {
+                              if (checked ?? false) {
+                                _selectedProfileIds.add(profile.id);
+                              } else {
+                                _selectedProfileIds.remove(profile.id);
+                              }
+                            }),
+                    ),
+                ],
               ],
             ),
           ),

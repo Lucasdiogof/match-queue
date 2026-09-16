@@ -124,7 +124,7 @@ class MyMatchmakingSnapshot extends Equatable {
   const MyMatchmakingSnapshot({
     required this.profileId,
     required this.teamId,
-    required this.accountLinkedToTeam,
+    required this.profileLinkedToTeam,
     required this.myStatus,
     required this.serverNow,
     this.searchDurationSeconds,
@@ -141,7 +141,7 @@ class MyMatchmakingSnapshot extends Equatable {
   /// Falso quando a Conta FC selecionada nao esta vinculada a este time --
   /// buscar exige o vinculo (fc_account_teams), a UI precisa direcionar pra
   /// tela de vincular em vez de mostrar um erro generico.
-  final bool accountLinkedToTeam;
+  final bool profileLinkedToTeam;
 
   final int? searchDurationSeconds;
   final MySearching? searching;
@@ -164,7 +164,7 @@ class MyMatchmakingSnapshot extends Equatable {
   List<Object?> get props => <Object?>[
     profileId,
     teamId,
-    accountLinkedToTeam,
+    profileLinkedToTeam,
     searchDurationSeconds,
     searching,
     myStatus,

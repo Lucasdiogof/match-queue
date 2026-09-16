@@ -105,7 +105,7 @@ class _ProfileBody extends StatelessWidget {
     children: <Widget>[
       _HeaderCard(profile: profile),
       const SizedBox(height: AppSpacing.lg),
-      if (profile.needsAccountSelection)
+      if (profile.needsProfileSelection)
         _AccountSelectionCard(
           profile: profile,
           onSelectAccount: onSelectAccount,

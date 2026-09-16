@@ -32,7 +32,7 @@
   "controlDiscoverClubsTitle": "Clubs",
   "controlDiscoverClubsSubtitle": "Explore the clubs in the FC27 catalog.",
   "controlEmptyTitle": "Ready to get on the pitch?",
-  "controlEmptyMessage": "Pick an profile and a mode to start searching for a match.",
+  "controlEmptyMessage": "Pick a profile and a mode to start searching for a match.",
   "teamTitle": "My team",
   "teamSubtitle": "Players, roles and invites.",
   "teamsListSubtitle": "Your teams and their operational status.",
@@ -782,7 +782,7 @@
       }
     }
   },
-  "profileRequiredToSearch": "Create or select an profile to search for a match.",
+  "profileRequiredToSearch": "Create or select a profile to search for a match.",
   "profileLinkCta": "Link {profileName} to {teamName}",
   "@profileLinkCta": {
     "placeholders": {
@@ -798,8 +798,8 @@
   },
   "profilesPageTitle": "My Profiles",
   "profilesPageSubtitle": "Your Ultimate Team profiles",
-  "profilesEmptyTitle": "You don't have an profile yet",
-  "profilesEmptyMessage": "Create an profile to link it to teams and start searching for matches.",
+  "profilesEmptyTitle": "You don't have a profile yet",
+  "profilesEmptyMessage": "Create a profile to link it to teams and start searching for matches.",
   "profileCreateAction": "Create profile",
   "profileCreateTitle": "New profile",
   "profileCreateSubtitle": "Give this profile a name.",

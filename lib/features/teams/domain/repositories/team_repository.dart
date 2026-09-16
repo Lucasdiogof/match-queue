@@ -56,7 +56,7 @@ abstract interface class TeamRepository {
 
   /// Perfil publico de um membro do MESMO time (Etapa 11). [profileId]
   /// desambigua quando o alvo tem mais de uma Conta vinculada aquele time --
-  /// veja [PlayerProfile.needsAccountSelection].
+  /// veja [PlayerProfile.needsProfileSelection].
   Future<PlayerProfile> fetchMemberProfile({
     required String teamId,
     required String userId,

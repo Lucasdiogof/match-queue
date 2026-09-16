@@ -91,8 +91,8 @@ class FifaQueueApp extends StatelessWidget {
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
             builder: (context, child) => AccountSessionListener(
               child: ProfilesSessionListener(
-                child: TeamsAccountListener(
-                  child: MatchmakingAccountListener(
+                child: TeamsProfileListener(
+                  child: MatchmakingProfileListener(
                     child: FcSquadsSessionListener(
                       child: PendingMatchSessionListener(
                         child: LocaleSyncListener(

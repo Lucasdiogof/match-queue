@@ -207,7 +207,7 @@ class _MatchmakingReadyBody extends StatelessWidget {
     }
 
     final card = switch (snapshot) {
-      _ when !snapshot.accountLinkedToTeam => _NotLinkedCard(
+      _ when !snapshot.profileLinkedToTeam => _NotLinkedCard(
         snapshot: snapshot,
       ),
       _ when snapshot.isSearchingByMe => _SearchingSelfCard(
