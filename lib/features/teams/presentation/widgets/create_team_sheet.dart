@@ -42,7 +42,8 @@ class _CreateTeamForm extends StatelessWidget {
       BlocBuilder<FcAccountsCubit, FcAccountsState>(
         buildWhen: (previous, current) =>
             previous.accounts != current.accounts ||
-            previous.status != current.status,
+            previous.status != current.status ||
+            previous.selectedAccountId != current.selectedAccountId,
         builder: (context, fcState) {
           if (fcState.status == FcAccountsStatus.loading &&
               !fcState.hasAccounts) {
@@ -53,7 +54,10 @@ class _CreateTeamForm extends StatelessWidget {
           if (!fcState.hasAccounts) {
             return const _NeedsFcAccountBody();
           }
-          return _TeamDetailsForm(accounts: fcState.accounts);
+          return _TeamDetailsForm(
+            accounts: fcState.accounts,
+            selectedAccountId: fcState.selectedAccountId,
+          );
         },
       );
 }
@@ -87,9 +91,10 @@ class _NeedsFcAccountBody extends StatelessWidget {
 }
 
 class _TeamDetailsForm extends StatefulWidget {
-  const _TeamDetailsForm({required this.accounts});
+  const _TeamDetailsForm({required this.accounts, this.selectedAccountId});
 
   final List<FcAccount> accounts;
+  final String? selectedAccountId;
 
   @override
   State<_TeamDetailsForm> createState() => _TeamDetailsFormState();
@@ -107,11 +112,18 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     super.initState();
     _nameController.addListener(_onChanged);
     _tagController.addListener(_onChanged);
-    // Uma única conta: pré-selecionada (item 15). Várias: começa vazio,
-    // usuário escolhe explicitamente quais entram no time.
+    // Uma única conta: pré-selecionada (item 15). Várias: a conta ATIVA no
+    // momento (selectedAccountId) já nasce marcada -- continua
+    // multi-seleção (o usuário pode adicionar outras), só não obriga quem
+    // já estava usando uma conta específica a escolher do zero.
+    final activeId = widget.selectedAccountId;
     _selectedAccountIds = widget.accounts.length == 1
         ? <String>{widget.accounts.first.id}
-        : <String>{};
+        : <String>{
+            if (activeId != null &&
+                widget.accounts.any((a) => a.id == activeId))
+              activeId,
+          };
   }
 
   @override
