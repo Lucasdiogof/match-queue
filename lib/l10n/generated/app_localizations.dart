@@ -847,7 +847,7 @@ abstract class AppLocalizations {
   /// No description provided for @authDisplayNameHint.
   ///
   /// In pt, this message translates to:
-  /// **'Lucas, ratowrld, Panda...'**
+  /// **'Nick'**
   String get authDisplayNameHint;
 
   /// No description provided for @authEmailHint.
