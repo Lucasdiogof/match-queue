@@ -4,6 +4,28 @@ import 'dart:math' as math;
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
+/// Paleta "Champions" pedida especificamente pra este componente -- valores
+/// proprios (pedido explicito com hex exatos), nao os tokens champions* do
+/// design system (mais escuros/dessaturados, pensados pra preencher um card
+/// inteiro, nao pra um anel/glow fino sobre fundo variavel).
+class _ChampionsPalette {
+  const _ChampionsPalette._();
+
+  static const Color redDeep = Color(0xFF5B0013);
+  static const Color redWine = Color(0xFF7A0018);
+  static const Color redStrong = Color(0xFF98001F);
+  static const Color redHot = Color(0xFFB10F2E);
+
+  static const Color goldBright = Color(0xFFF6D36B);
+  static const Color goldMedium = Color(0xFFE6BE52);
+  static const Color goldDeep = Color(0xFFD4A63A);
+  static const Color goldDark = Color(0xFFB8860B);
+
+  static const Color neutralDeep = Color(0xFF2A0A0F);
+  static const Color neutralMid = Color(0xFF3A1016);
+  static const Color neutralLight = Color(0xFF4A1A1F);
+}
+
 /// Redesenha a cada segundo so pra atualizar o texto/anel na tela -- quem
 /// decide quando o tempo realmente acabou e sempre o servidor (lazy
 /// expiration + cron), nunca este widget. O restante e calculado a cada
@@ -148,22 +170,20 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
     final remaining = rawRemaining.isNegative ? Duration.zero : rawRemaining;
     _maybeNotifyZero(remaining);
     final seconds = remaining.inSeconds;
-    // Sempre o mesmo dourado/ambar, em qualquer modo -- Champions
-    // (vinho+dourado) e Rivals (preto+dourado) foram tentados e destoavam
-    // do resto da tela; a marca competitiva do modo ja aparece nos outros
-    // cards (ex.: a faixa "CHAMPIONS" abaixo), nao precisa se repetir aqui.
-    const deepColor = AppColors.darkSurfaceGold;
-    final baseColor = colors.competitive;
-    const brightColor = AppColors.goldBright;
-    // Mesmo limiar de urgencia de antes (10s/30s). O tom "normal" e sempre
-    // o dourado CLARO (goldBright), nunca o dourado escuro/opaco do tema --
-    // aquele em cima do glow (que tem um nucleo escuro solido, ver
-    // _paintCoreGlow) ficava com contraste ruim, sobretudo no tema claro.
+    // Identidade "Champions" fixa pro componente inteiro: vermelho profundo
+    // como base estrutural (aneis, nucleo escuro), dourado como cor de
+    // destaque (aneis internos, particulas, numero).
+    const deepColor = _ChampionsPalette.neutralDeep;
+    const baseColor = _ChampionsPalette.redWine;
+    const brightColor = _ChampionsPalette.goldMedium;
+    // Mesmo limiar de urgencia de antes (10s/30s) -- perto de acabar ainda
+    // vira vermelho/amarelo de alerta do proprio tema, sinal de urgencia
+    // nao deve depender da paleta decorativa. Fora disso, dourado forte.
     final numberColor = seconds <= 10
         ? colors.danger
         : seconds <= 30
         ? colors.warning
-        : AppColors.goldBright;
+        : _ChampionsPalette.goldBright;
 
     return RepaintBoundary(
       child: SizedBox(
@@ -186,7 +206,17 @@ class _MatchmakingTimerRingState extends State<MatchmakingTimerRing>
             ),
             Text(
               _format(seconds),
-              style: AppTypography.timerDisplay(numberColor),
+              // Glow dourado suave direto no texto (Shadow com blur), por
+              // cima do glow do canvas atras dele -- reforca o numero sem
+              // precisar desenhar nada extra.
+              style: AppTypography.timerDisplay(numberColor).copyWith(
+                shadows: <Shadow>[
+                  Shadow(
+                    color: _ChampionsPalette.goldBright.withValues(alpha: 0.55),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -343,18 +373,18 @@ class _ChronosPainter extends CustomPainter {
     // gear-2 da referencia).
     final glowRadius = middleRadius * 1.38;
 
-    // Camada 1: nucleo escuro quase solido. E o que da contraste de
-    // verdade pro numero -- um gradiente so dourado-transparente (como na
-    // primeira versao) lia bem num fundo ja escuro, mas lavava contra um
-    // card claro (tema light) ou contra o proprio dourado do numero. Igual
-    // as faixas Champions/Rivals que ja existem no app (sempre escuras,
-    // nunca variam com o tema): o numero sempre pousa sobre um "palco"
-    // escuro proprio, nao sobre o que tiver por baixo.
+    // Camada 1: nucleo vinho-escuro quase solido. E o que da contraste de
+    // verdade pro numero -- um gradiente so dourado-transparente lia bem
+    // num fundo ja escuro, mas lavava contra um card claro (tema light) ou
+    // contra o proprio dourado do numero. Igual as faixas Champions/Rivals
+    // que ja existem no app (sempre escuras, nunca variam com o tema): o
+    // numero sempre pousa sobre um "palco" escuro proprio, nao sobre o que
+    // tiver por baixo.
     final corePaint = Paint()
       ..shader = RadialGradient(
         colors: <Color>[
           deepColor.withValues(alpha: 0.94),
-          deepColor.withValues(alpha: 0.80),
+          _ChampionsPalette.neutralMid.withValues(alpha: 0.82),
           deepColor.withValues(alpha: 0),
         ],
         stops: const <double>[0.0, 0.62, 1.0],
@@ -362,7 +392,11 @@ class _ChronosPainter extends CustomPainter {
     canvas.drawCircle(center, glowRadius, corePaint);
 
     // Camada 2: brilho dourado por cima do nucleo, mais concentrado perto
-    // do numero e com respiracao discreta (0.55 a 0.75 de intensidade).
+    // do numero, com respiracao discreta (0.55 a 0.75 de intensidade) e um
+    // halo levemente avermelhado na borda em vez de sumir direto pro
+    // transparente -- dourado puro desbotando pro nada lia "solar"; passar
+    // por um vermelho quente antes de sumir da a sensacao mais "emblema
+    // premium" pedida.
     final intensity = 0.55 + pulse.value * 0.20;
     final glowInnerRadius = glowRadius * 0.82;
     final glowPaint = Paint()
@@ -370,9 +404,10 @@ class _ChronosPainter extends CustomPainter {
         colors: <Color>[
           brightColor.withValues(alpha: intensity),
           brightColor.withValues(alpha: intensity * 0.55),
-          brightColor.withValues(alpha: 0),
+          _ChampionsPalette.redHot.withValues(alpha: intensity * 0.22),
+          _ChampionsPalette.redHot.withValues(alpha: 0),
         ],
-        stops: const <double>[0.0, 0.5, 1.0],
+        stops: const <double>[0.0, 0.45, 0.78, 1.0],
       ).createShader(Rect.fromCircle(center: center, radius: glowInnerRadius))
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16);
     canvas.drawCircle(center, glowInnerRadius, glowPaint);
@@ -387,27 +422,31 @@ class _ChronosPainter extends CustomPainter {
     final rect = Rect.fromCircle(center: center, radius: radius);
 
     // Unico glow borrado entre os 3 aneis (custo de GPU) -- "MUITO
-    // discreto", so no anel externo, que e o mais proeminente.
+    // discreto", so no anel externo, que e o mais proeminente. Tom neutro
+    // claro (nao vermelho puro) da a sensacao de profundidade/sombra de
+    // emblema pedida, em vez de so mais um halo vermelho.
     final glowPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6
-      ..color = baseColor.withValues(alpha: 0.08)
+      ..color = _ChampionsPalette.neutralLight.withValues(alpha: 0.14)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6);
     canvas.drawCircle(center, radius, glowPaint);
 
     // SweepGradient em vez de cor solida: um circulo uniforme girando seria
     // visualmente identico a um parado. O "ponto brilhante" viajando pela
-    // circunferencia e o que torna a rotacao perceptivel.
+    // circunferencia e o que torna a rotacao perceptivel. redDeep (mais
+    // escuro que o baseColor do anel intermediario) da ao externo sua
+    // propria identidade "borda/detalhe dourado sobre vermelho profundo".
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.9
       ..shader = SweepGradient(
         colors: <Color>[
-          baseColor.withValues(alpha: 0.10),
-          baseColor.withValues(alpha: 0.60),
+          _ChampionsPalette.redDeep.withValues(alpha: 0.10),
+          _ChampionsPalette.redDeep.withValues(alpha: 0.60),
           brightColor.withValues(alpha: 0.85),
-          baseColor.withValues(alpha: 0.60),
-          baseColor.withValues(alpha: 0.10),
+          _ChampionsPalette.redDeep.withValues(alpha: 0.60),
+          _ChampionsPalette.redDeep.withValues(alpha: 0.10),
         ],
         stops: const <double>[0.0, 0.18, 0.5, 0.82, 1.0],
         transform: GradientRotation(angle),
@@ -422,15 +461,19 @@ class _ChronosPainter extends CustomPainter {
     double angle,
   ) {
     final rect = Rect.fromCircle(center: center, radius: radius);
+    // Mais vermelho-dominante que o anel externo (destaque dourado mais
+    // discreto, goldDeep em vez de goldMedium) -- diferencia as duas
+    // camadas em vez de repetir o mesmo brilho, "bordo translucido"
+    // energetico por conta propria.
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.4
       ..shader = SweepGradient(
         colors: <Color>[
           baseColor.withValues(alpha: 0.06),
-          baseColor.withValues(alpha: 0.42),
-          brightColor.withValues(alpha: 0.55),
-          baseColor.withValues(alpha: 0.42),
+          _ChampionsPalette.redStrong.withValues(alpha: 0.45),
+          _ChampionsPalette.goldDeep.withValues(alpha: 0.50),
+          _ChampionsPalette.redStrong.withValues(alpha: 0.45),
           baseColor.withValues(alpha: 0.06),
         ],
         stops: const <double>[0.0, 0.2, 0.5, 0.8, 1.0],
@@ -445,11 +488,14 @@ class _ChronosPainter extends CustomPainter {
     double radius,
     double angle,
   ) {
+    // Sempre dourado forte (nunca a base vermelha) -- e o anel que precisa
+    // continuar bem visivel por cima do nucleo/glow, os outros dois ja
+    // carregam o vermelho estrutural.
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.7
       ..strokeCap = StrokeCap.round
-      ..color = baseColor.withValues(alpha: 0.65);
+      ..color = _ChampionsPalette.goldMedium.withValues(alpha: 0.80);
     _drawDashedCircle(
       canvas,
       center,
@@ -491,6 +537,15 @@ class _ChronosPainter extends CustomPainter {
     double innerRadius,
     double elapsedSeconds,
   ) {
+    // Maioria das particulas e dourada (brightColor); só as poucas
+    // marcadas `glow` (5 de 28, ver _ChronosParticle.generate) usam esse
+    // tom avermelhado/alaranjado -- mistura de vermelho quente com dourado
+    // escuro, discreto, nunca parecendo fogos/confete.
+    final accentColor = Color.lerp(
+      _ChampionsPalette.redHot,
+      _ChampionsPalette.goldDark,
+      0.35,
+    )!;
     final dot = Paint()..style = PaintingStyle.fill;
     final glowDot = Paint()
       ..style = PaintingStyle.fill
@@ -528,10 +583,10 @@ class _ChronosPainter extends CustomPainter {
       final radius = particle.baseSize * scale;
 
       if (particle.glow) {
-        glowDot.color = brightColor.withValues(alpha: alpha * 0.7);
+        glowDot.color = accentColor.withValues(alpha: alpha * 0.7);
         canvas.drawCircle(position, radius * 2.2, glowDot);
       }
-      dot.color = (particle.glow ? brightColor : baseColor).withValues(
+      dot.color = (particle.glow ? accentColor : brightColor).withValues(
         alpha: alpha,
       );
       canvas.drawCircle(position, radius, dot);
