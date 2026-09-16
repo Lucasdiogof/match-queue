@@ -807,9 +807,16 @@
   "fcAccountNameHint": "Ej.: Cuenta principal",
   "fcAccountRenameTitle": "Renombrar cuenta",
   "fcAccountRenameAction": "Renombrar",
-  "fcAccountArchiveAction": "Archivar cuenta",
-  "fcAccountArchiveConfirmTitle": "¿Archivar cuenta?",
-  "fcAccountArchiveConfirmMessage": "La cuenta deja de aparecer en la lista, pero se conserva su historial.",
+  "fcAccountArchiveAction": "Eliminar cuenta",
+  "fcAccountArchiveConfirmTitle": "¿Eliminar cuenta?",
+  "fcAccountArchiveConfirmMessage": "\"{name}\" desaparece de la lista y deja de representar a los equipos vinculados (el historial se conserva). Si eres el único dueño de un equipo, también se eliminará; si hay más gente, la propiedad pasa automáticamente a otro miembro.",
+  "@fcAccountArchiveConfirmMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "fcAccountSwitchTitle": "Cambiar de cuenta",
   "fcAccountSwitchCreateAction": "+ Crear nueva cuenta",
   "fcAccountLinkedTeamsTitle": "Equipos",

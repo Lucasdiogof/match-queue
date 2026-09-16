@@ -807,9 +807,16 @@
   "fcAccountNameHint": "e.g. Main account",
   "fcAccountRenameTitle": "Rename account",
   "fcAccountRenameAction": "Rename",
-  "fcAccountArchiveAction": "Archive account",
-  "fcAccountArchiveConfirmTitle": "Archive account?",
-  "fcAccountArchiveConfirmMessage": "The account stops showing in the list, but its history is kept.",
+  "fcAccountArchiveAction": "Delete account",
+  "fcAccountArchiveConfirmTitle": "Delete account?",
+  "fcAccountArchiveConfirmMessage": "\"{name}\" disappears from the list and stops representing its linked teams (history is kept). If you're the sole owner of a team, it will be deleted too; if there are other members, ownership transfers to someone else automatically.",
+  "@fcAccountArchiveConfirmMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "fcAccountSwitchTitle": "Switch account",
   "fcAccountSwitchCreateAction": "+ Create new account",
   "fcAccountLinkedTeamsTitle": "Teams",

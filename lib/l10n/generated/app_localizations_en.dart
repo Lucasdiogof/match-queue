@@ -1430,14 +1430,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fcAccountRenameAction => 'Rename';
 
   @override
-  String get fcAccountArchiveAction => 'Archive account';
+  String get fcAccountArchiveAction => 'Delete account';
 
   @override
-  String get fcAccountArchiveConfirmTitle => 'Archive account?';
+  String get fcAccountArchiveConfirmTitle => 'Delete account?';
 
   @override
-  String get fcAccountArchiveConfirmMessage =>
-      'The account stops showing in the list, but its history is kept.';
+  String fcAccountArchiveConfirmMessage(String name) {
+    return '\"$name\" disappears from the list and stops representing its linked teams (history is kept). If you\'re the sole owner of a team, it will be deleted too; if there are other members, ownership transfers to someone else automatically.';
+  }
 
   @override
   String get fcAccountSwitchTitle => 'Switch account';
