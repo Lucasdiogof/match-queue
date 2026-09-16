@@ -5,8 +5,8 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 /// Perfil publico de um membro do time (Etapa 11, Parte B). So o que
 /// qualquer companheiro de time pode ver -- nunca historico de busca, nunca
 /// outras contas do usuario.
-class PlayerProfileAccountCandidate extends Equatable {
-  const PlayerProfileAccountCandidate({required this.id, required this.name});
+class PlayerProfileCandidate extends Equatable {
+  const PlayerProfileCandidate({required this.id, required this.name});
 
   final String id;
   final String name;
@@ -96,7 +96,7 @@ class PlayerProfile extends Equatable {
     required this.userId,
     required this.displayName,
     required this.candidateProfiles,
-    required this.needsAccountSelection,
+    required this.needsProfileSelection,
     required this.weekendLeagueHistory,
     this.avatarUrl,
     this.profile,
@@ -106,8 +106,8 @@ class PlayerProfile extends Equatable {
   final String userId;
   final String displayName;
   final String? avatarUrl;
-  final List<PlayerProfileAccountCandidate> candidateProfiles;
-  final bool needsAccountSelection;
+  final List<PlayerProfileCandidate> candidateProfiles;
+  final bool needsProfileSelection;
   final PlayerProfileAccount? profile;
   final PlayerProfileSquad? squad;
   final List<PlayerProfileWeekendLeagueEntry> weekendLeagueHistory;
@@ -118,7 +118,7 @@ class PlayerProfile extends Equatable {
     displayName,
     avatarUrl,
     candidateProfiles,
-    needsAccountSelection,
+    needsProfileSelection,
     profile,
     squad,
     weekendLeagueHistory,

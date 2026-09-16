@@ -58,7 +58,7 @@ class TeamsState extends Equatable {
   TeamsState copyWith({
     TeamsStatus? status,
     String? profileId,
-    bool clearAccountId = false,
+    bool clearProfileId = false,
     List<UserTeam>? teams,
     String? selectedTeamId,
     bool clearSelectedTeamId = false,
@@ -73,7 +73,7 @@ class TeamsState extends Equatable {
     bool? isSaving,
   }) => TeamsState(
     status: status ?? this.status,
-    profileId: clearAccountId ? null : (profileId ?? this.profileId),
+    profileId: clearProfileId ? null : (profileId ?? this.profileId),
     teams: teams ?? this.teams,
     selectedTeamId: clearSelectedTeamId
         ? null

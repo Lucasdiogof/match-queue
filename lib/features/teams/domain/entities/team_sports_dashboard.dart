@@ -9,7 +9,7 @@ import 'package:equatable/equatable.dart';
 class TeamSportsSummary extends Equatable {
   const TeamSportsSummary({
     required this.membersCount,
-    required this.accountsCount,
+    required this.profilesCount,
     required this.matches,
     required this.wins,
     required this.losses,
@@ -22,7 +22,7 @@ class TeamSportsSummary extends Equatable {
   });
 
   final int membersCount;
-  final int accountsCount;
+  final int profilesCount;
   final int matches;
   final int wins;
   final int losses;
@@ -42,7 +42,7 @@ class TeamSportsSummary extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     membersCount,
-    accountsCount,
+    profilesCount,
     matches,
     wins,
     losses,
@@ -61,7 +61,7 @@ class TeamMemberSportsStats extends Equatable {
   const TeamMemberSportsStats({
     required this.userId,
     required this.displayName,
-    required this.accountsCount,
+    required this.profilesCount,
     required this.matches,
     required this.wins,
     required this.losses,
@@ -77,7 +77,7 @@ class TeamMemberSportsStats extends Equatable {
   final String userId;
   final String displayName;
   final String? avatarUrl;
-  final int accountsCount;
+  final int profilesCount;
   final int matches;
   final int wins;
   final int losses;
@@ -93,14 +93,14 @@ class TeamMemberSportsStats extends Equatable {
 
   bool get hasMatches => matches > 0;
 
-  bool get hasMultipleAccounts => accountsCount > 1;
+  bool get hasMultipleProfiles => profilesCount > 1;
 
   @override
   List<Object?> get props => <Object?>[
     userId,
     displayName,
     avatarUrl,
-    accountsCount,
+    profilesCount,
     matches,
     wins,
     losses,

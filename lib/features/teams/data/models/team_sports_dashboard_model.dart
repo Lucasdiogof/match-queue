@@ -56,7 +56,7 @@ class TeamSportsDashboardModel {
   static TeamSportsSummary _summaryFromJson(Map<String, dynamic> json) =>
       TeamSportsSummary(
         membersCount: _toInt(json['members_count']),
-        accountsCount: _toInt(json['accounts_count']),
+        profilesCount: _toInt(json['accounts_count']),
         matches: _toInt(json['matches']),
         wins: _toInt(json['wins']),
         losses: _toInt(json['losses']),
@@ -73,7 +73,7 @@ class TeamSportsDashboardModel {
         userId: '${json['user_id']}',
         displayName: '${json['display_name'] ?? ''}',
         avatarUrl: json['avatar_url'] as String?,
-        accountsCount: _toInt(json['accounts_count']),
+        profilesCount: _toInt(json['accounts_count']),
         matches: _toInt(json['matches']),
         wins: _toInt(json['wins']),
         losses: _toInt(json['losses']),

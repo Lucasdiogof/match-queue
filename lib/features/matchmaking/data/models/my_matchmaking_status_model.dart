@@ -13,7 +13,7 @@ class MyMatchmakingSnapshotModel {
     return MyMatchmakingSnapshot(
       profileId: '${json['fc_account_id']}',
       teamId: '${json['team_id']}',
-      accountLinkedToTeam: json['account_linked_to_team'] as bool? ?? true,
+      profileLinkedToTeam: json['account_linked_to_team'] as bool? ?? true,
       searchDurationSeconds: json['search_duration_seconds'] as int?,
       searching: searchingJson == null
           ? null

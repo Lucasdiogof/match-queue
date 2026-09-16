@@ -44,13 +44,13 @@ class PlayerProfileModel {
       candidateProfiles: candidatesJson
           .whereType<Map<String, dynamic>>()
           .map(
-            (row) => PlayerProfileAccountCandidate(
+            (row) => PlayerProfileCandidate(
               id: '${row['id']}',
               name: '${row['name']}',
             ),
           )
           .toList(growable: false),
-      needsAccountSelection: json['needs_account_selection'] as bool? ?? false,
+      needsProfileSelection: json['needs_account_selection'] as bool? ?? false,
       profile: accountJson == null
           ? null
           : PlayerProfileAccount(

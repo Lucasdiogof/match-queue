@@ -107,11 +107,11 @@ class SupabaseErrorMapper {
   };
 
   ProfileFailureReason? _profileReasonFrom(String? code) => switch (code) {
-    'FQ025' => ProfileFailureReason.accountNotFound,
-    'FQ026' => ProfileFailureReason.accountNotLinkedToTeam,
+    'FQ025' => ProfileFailureReason.profileNotFound,
+    'FQ026' => ProfileFailureReason.profileNotLinkedToTeam,
     'FQ027' => ProfileFailureReason.invalidName,
     'FQ028' => ProfileFailureReason.invalidDivision,
-    'FQ035' => ProfileFailureReason.accountNotLinkedToAnyTeam,
+    'FQ035' => ProfileFailureReason.profileNotLinkedToAnyTeam,
     'FQ058' => ProfileFailureReason.invalidPlatform,
     _ => null,
   };

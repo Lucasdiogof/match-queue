@@ -94,7 +94,7 @@ Future<void> bootstrap() async {
         unawaited(
           profileCubit.load(fallbackDisplayName: restoredUser.shortName),
         );
-        // TeamsCubit nao carrega aqui: segue TeamsAccountListener reagindo a
+        // TeamsCubit nao carrega aqui: segue TeamsProfileListener reagindo a
         // ProfilesCubit.selectedProfileId, do mesmo jeito que FcSquadsCubit
         // -- times sao por Conta, e a Conta so fica conhecida depois que
         // profilesCubit.load resolve.

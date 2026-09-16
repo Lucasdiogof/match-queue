@@ -110,7 +110,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get controlEmptyMessage =>
-      'Pick an profile and a mode to start searching for a match.';
+      'Pick a profile and a mode to start searching for a match.';
 
   @override
   String get teamTitle => 'My team';
@@ -1387,7 +1387,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileRequiredToSearch =>
-      'Create or select an profile to search for a match.';
+      'Create or select a profile to search for a match.';
 
   @override
   String profileLinkCta(
@@ -1405,11 +1405,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profilesPageSubtitle => 'Your Ultimate Team profiles';
 
   @override
-  String get profilesEmptyTitle => 'You don\'t have an profile yet';
+  String get profilesEmptyTitle => 'You don\'t have a profile yet';
 
   @override
   String get profilesEmptyMessage =>
-      'Create an profile to link it to teams and start searching for matches.';
+      'Create a profile to link it to teams and start searching for matches.';
 
   @override
   String get profileCreateAction => 'Create profile';

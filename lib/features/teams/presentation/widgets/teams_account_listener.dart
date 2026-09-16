@@ -11,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// FcSquadsSessionListener). Login/logout tambem passam por aqui de graca:
 /// ProfilesCubit zera selectedProfileId no logout, o que ja aciona
 /// load(null) e limpa o estado.
-class TeamsAccountListener extends StatelessWidget {
-  const TeamsAccountListener({required this.child, super.key});
+class TeamsProfileListener extends StatelessWidget {
+  const TeamsProfileListener({required this.child, super.key});
 
   final Widget child;
 
