@@ -410,7 +410,7 @@ class _SettingsSection extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           AppButton.secondary(
             label: l10n.fcAccountPlatformSettingsAction(
-              account.platform?.key ?? l10n.fcAccountPlatformNone,
+              account.platform?.displayLabel ?? l10n.fcAccountPlatformNone,
             ),
             icon: Icons.videogame_asset_outlined,
             onPressed: () => showFcAccountPlatformPickerSheet(

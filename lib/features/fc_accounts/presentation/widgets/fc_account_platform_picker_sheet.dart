@@ -30,7 +30,7 @@ Future<void> showFcAccountPlatformPickerSheet({
           ),
           for (final platform in FcAccountPlatform.values)
             _PlatformOptionRow(
-              label: platform.key,
+              label: platform.displayLabel,
               isSelected: platform == selected,
               onTap: () {
                 Navigator.of(sheetContext).pop();
