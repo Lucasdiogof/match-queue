@@ -311,6 +311,31 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     _debounce?.cancel();
     _debounce = null;
     await _subscription?.cancel();
+    // Este cubit e recriado (dispose do antigo + create do novo) sempre que
+    // modo, time ou conta mudam -- ver o comment da `key` em
+    // MatchmakingSection. Sem isso, uma busca/fila ativa ficava "orfa": o
+    // servidor continuava considerando a conta buscando/na fila do modo
+    // antigo, sem nenhum widget escutando mais aquilo, ate expirar sozinha
+    // -- e enquanto isso o usuario podia cair numa fila do modo novo so
+    // porque o lock global da conta (uma busca ativa por vez) ainda via a
+    // busca antiga como em andamento.
+    //
+    // Direto no repository (nunca _runAction, que da emit -- proibido apos
+    // close()) e best-effort (fire-and-forget, mesmo padrao de outros
+    // pontos do app): nao vale atrasar o dispose, e se falhar o pior caso e
+    // a mesma situacao de hoje (expira sozinha).
+    final snapshot = state.snapshot;
+    if (snapshot != null && snapshot.isSearchingByMe) {
+      unawaited(_repository.cancelSearch(fcAccountId));
+    } else if (snapshot != null && snapshot.isQueuedByMe) {
+      unawaited(
+        _repository.leaveQueue(
+          fcAccountId: fcAccountId,
+          teamId: teamId,
+          mode: mode,
+        ),
+      );
+    }
     return super.close();
   }
 }
