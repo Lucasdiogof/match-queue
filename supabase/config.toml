@@ -15,3 +15,11 @@ project_id = "lteujeclnhmurcewurkg"
 # do net.http_post (entrega e best-effort de proposito).
 [functions.process-notification-outbox]
 verify_jwt = false
+
+# Probe temporario para investigar acesso a FUT.GG/FUTBIN/FUTWIZ a partir do
+# egress real da Supabase (feature Mercado, ainda em investigacao). Sem
+# verify_jwt para facilitar a invocacao manual durante o diagnostico; nao
+# le/escreve nenhum dado. Remover esta secao junto com a function quando o
+# probe terminar.
+[functions.probe-market-providers]
+verify_jwt = false
