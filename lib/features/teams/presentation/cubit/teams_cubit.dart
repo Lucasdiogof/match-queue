@@ -75,6 +75,7 @@ class TeamsCubit extends Cubit<TeamsState> {
 
   Future<Team?> createTeam({
     required String name,
+    required String fcAccountId,
     String? tag,
     Duration? defaultSearchDuration,
   }) async {
@@ -85,6 +86,7 @@ class TeamsCubit extends Cubit<TeamsState> {
     try {
       final team = await _createTeam(
         name: name,
+        fcAccountId: fcAccountId,
         tag: tag,
         defaultSearchDuration: defaultSearchDuration,
       );

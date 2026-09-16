@@ -142,6 +142,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     final fcAccountsCubit = context.read<FcAccountsCubit>();
     final team = await teamsCubit.createTeam(
       name: _nameController.text,
+      fcAccountId: _selectedAccountIds.first,
       tag: _tagController.text,
     );
     if (team == null) {

@@ -10,6 +10,7 @@ class CreateTeam {
 
   Future<Team> call({
     required String name,
+    required String fcAccountId,
     String? tag,
     Duration? defaultSearchDuration,
   }) {
@@ -25,6 +26,7 @@ class CreateTeam {
 
     return _repository.createTeam(
       name: normalizedName,
+      fcAccountId: fcAccountId,
       tag: normalizedTag,
       defaultSearchDuration: defaultSearchDuration,
     );

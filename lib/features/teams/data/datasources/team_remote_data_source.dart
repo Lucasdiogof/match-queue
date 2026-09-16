@@ -12,6 +12,7 @@ abstract interface class TeamRemoteDataSource {
 
   Future<Map<String, dynamic>> createTeam({
     required String name,
+    required String fcAccountId,
     String? tag,
     int? defaultSearchDurationSeconds,
   });
@@ -54,11 +55,14 @@ abstract interface class TeamRemoteDataSource {
 
   Future<Map<String, dynamic>> getPublicTeam(String teamId);
 
-  Future<void> removeMember({required String teamId, required String userId});
+  Future<void> removeMember({
+    required String teamId,
+    required String fcAccountId,
+  });
 
   Future<void> setMemberRole({
     required String teamId,
-    required String userId,
+    required String fcAccountId,
     required String role,
   });
 
@@ -106,6 +110,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   @override
   Future<Map<String, dynamic>> createTeam({
     required String name,
+    required String fcAccountId,
     String? tag,
     int? defaultSearchDurationSeconds,
   }) async {
@@ -115,6 +120,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
         'p_name': name,
         'p_tag': tag,
         'p_default_search_duration_seconds': ?defaultSearchDurationSeconds,
+        'p_fc_account_id': fcAccountId,
       },
     );
     return Map<String, dynamic>.from(response as Map);
@@ -177,6 +183,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
         .select(
           '${TeamMemberModel.columnTeamId}, '
           '${TeamMemberModel.columnUserId}, '
+          '${TeamMemberModel.columnFcAccountId}, '
           '${TeamMemberModel.columnRole}, '
           '${TeamMemberModel.columnJoinedAt}, '
           '${TeamMemberModel.embeddedProfile}:${ProfileModel.table}(*)',
@@ -243,25 +250,27 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   }
 
   @override
-  Future<void> removeMember({required String teamId, required String userId}) =>
-      _client.rpc<dynamic>(
-        'remove_team_member',
-        params: <String, dynamic>{
-          'p_team_id': teamId,
-          'p_target_user_id': userId,
-        },
-      );
+  Future<void> removeMember({
+    required String teamId,
+    required String fcAccountId,
+  }) => _client.rpc<dynamic>(
+    'remove_team_member',
+    params: <String, dynamic>{
+      'p_team_id': teamId,
+      'p_target_fc_account_id': fcAccountId,
+    },
+  );
 
   @override
   Future<void> setMemberRole({
     required String teamId,
-    required String userId,
+    required String fcAccountId,
     required String role,
   }) => _client.rpc<dynamic>(
     'set_team_member_role',
     params: <String, dynamic>{
       'p_team_id': teamId,
-      'p_target_user_id': userId,
+      'p_target_fc_account_id': fcAccountId,
       'p_role': role,
     },
   );

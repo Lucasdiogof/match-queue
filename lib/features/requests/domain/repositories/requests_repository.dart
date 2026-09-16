@@ -35,10 +35,13 @@ abstract interface class RequestsRepository {
   /// OWNER/ADMIN revoga um convite PENDING enviado pelo proprio time.
   Future<void> revokeInvitation(String invitationId);
 
-  /// So o proprio convidado responde. Aceitar cria membership.
+  /// So o proprio convidado responde. Aceitar cria membership -- exige
+  /// fcAccountId (a Conta que vira membro; o fc_account_id gravado no
+  /// convite e so o preview de quando foi enviado, pode ter mudado).
   Future<void> respondInvitation({
     required String invitationId,
     required bool accept,
+    String? fcAccountId,
   });
 
   /// Emite um evento sempre que algo pendente pra este usuario muda (pedido
