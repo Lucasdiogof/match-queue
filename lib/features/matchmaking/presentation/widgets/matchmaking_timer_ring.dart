@@ -91,7 +91,7 @@ class _RingTheme {
     coreHaloAccent: Color(0xFFB10F2E),
     coreHaloAccentIntensity: 0.22,
     outerShadow: Color(0xFF4A1A1F),
-    outerShadowAlpha: 0.14,
+    outerShadowAlpha: 0.20,
     outerLow: Color(0xFF5B0013),
     outerBright: Color(0xFFE6BE52),
     middleLow: Color(0xFF7A0018),
@@ -103,8 +103,8 @@ class _RingTheme {
     particleAccent: Color(
       0xFFC1722B,
     ), // lerp(redHot #B10F2E, goldDark #B8860B, .35)
-    particleAlphaScale: 0.85,
-    particleSizeScale: 1.0,
+    particleAlphaScale: 0.95,
+    particleSizeScale: 1.15,
   );
 
   // ------------------------------------------------------------------ Rivals
@@ -123,7 +123,7 @@ class _RingTheme {
     coreHaloAccent: Color(0xFF24132E),
     coreHaloAccentIntensity: 0.10,
     outerShadow: Color(0xFF3A3A44),
-    outerShadowAlpha: 0.10,
+    outerShadowAlpha: 0.15,
     outerLow: Color(0xFF121214),
     outerBright: Color(0xFFDDBB57),
     middleLow: Color(0xFF232329),
@@ -135,8 +135,8 @@ class _RingTheme {
     particleAccent: Color(
       0xFF9A9199,
     ), // lerp(graphiteLightest #3A3A44, goldDark #A97A14, .4)
-    particleAlphaScale: 0.55,
-    particleSizeScale: 0.78,
+    particleAlphaScale: 0.70,
+    particleSizeScale: 0.92,
   );
 
   static _RingTheme resolve(GameMode? mode) => switch (mode) {

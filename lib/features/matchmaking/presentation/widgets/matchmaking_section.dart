@@ -8,6 +8,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
+import 'package:fifa_queue/features/matchmaking/data/search_cooldown_store.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
 import 'package:fifa_queue/features/matchmaking/domain/repositories/matchmaking_repository.dart';
@@ -55,6 +56,7 @@ class MatchmakingSection extends StatelessWidget {
       create: (_) => MatchmakingCubit(
         getIt<MatchmakingRepository>(),
         getIt<AppLogger>(),
+        getIt<SearchCooldownStore>(),
         fcAccountId: fcAccountId,
         teamId: teamId,
         mode: mode,
@@ -465,14 +467,17 @@ class _SearchingSelfCard extends StatelessWidget {
       variant: AppCardVariant.elevated,
       child: Column(
         children: <Widget>[
-          // Titulo e mensagem de apoio saem da tela pra dar mais espaco pro
-          // anel (pedido explicito) -- o conteudo continua disponivel pra
-          // leitor de tela, so nao ocupa mais espaco visual. O botao
-          // "Encontrei" abaixo ja deixa a acao esperada clara por si so.
+          // Titulo de volta acima do anel (pedido explicito); a mensagem de
+          // apoio ("quando entrar, marque que encontrou") continua fora da
+          // tela -- o botao "Encontrei" ja deixa a acao clara por si so --
+          // mas segue disponivel pra leitor de tela via o Semantics abaixo.
+          Text(
+            l10n.matchmakingSearchingSelfTitle,
+            style: context.textStyles.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.md),
           Semantics(
-            label:
-                '${l10n.matchmakingSearchingSelfTitle}. '
-                '${l10n.matchmakingSearchingSelfMessage}',
+            label: l10n.matchmakingSearchingSelfMessage,
             child: MatchmakingTimerRing(
               startedAt: searching.startedAt,
               expiresAt: searching.expiresAt,
