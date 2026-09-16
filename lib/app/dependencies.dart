@@ -9,6 +9,7 @@ import 'package:fifa_queue/features/fc_squads/fc_squads_module.dart';
 import 'package:fifa_queue/features/game/game_module.dart';
 import 'package:fifa_queue/features/history/history_module.dart';
 import 'package:fifa_queue/features/invitations/invitations_module.dart';
+import 'package:fifa_queue/features/market/market_module.dart';
 import 'package:fifa_queue/features/matchmaking/matchmaking_module.dart';
 import 'package:fifa_queue/features/notifications/notifications_module.dart';
 import 'package:fifa_queue/features/profile/profile_module.dart';
@@ -39,6 +40,7 @@ Future<void> registerDependencies({
   registerTeamsModule(getIt, supabaseClient: supabaseClient);
   registerFcAccountsModule(getIt, supabaseClient: supabaseClient);
   registerFcSquadsModule(getIt, supabaseClient: supabaseClient);
+  registerMarketModule(getIt, supabaseClient: supabaseClient);
   registerPublicProfileModule(getIt, supabaseClient: supabaseClient);
   registerInvitationsModule(getIt, supabaseClient: supabaseClient);
   registerRequestsModule(getIt, supabaseClient: supabaseClient);

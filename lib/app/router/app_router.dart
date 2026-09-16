@@ -28,6 +28,7 @@ import 'package:fifa_queue/features/mechanics/presentation/pages/controls/defend
 import 'package:fifa_queue/features/mechanics/presentation/pages/controls/dribbling_page.dart';
 import 'package:fifa_queue/features/mechanics/presentation/pages/controls/passing_page.dart';
 import 'package:fifa_queue/features/mechanics/presentation/pages/controls/shooting_page.dart';
+import 'package:fifa_queue/features/market/presentation/pages/market_page.dart';
 import 'package:fifa_queue/features/mechanics/presentation/pages/evolutions_page.dart';
 import 'package:fifa_queue/features/mechanics/presentation/pages/managers_catalog_page.dart';
 import 'package:fifa_queue/features/mechanics/presentation/pages/playstyle_detail_page.dart';
@@ -190,6 +191,11 @@ class AppRouter {
         path: AppRoutes.clubsCatalog.path,
         name: AppRoutes.clubsCatalog.name,
         builder: (context, state) => const ClubsCatalogPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.market.path,
+        name: AppRoutes.market.name,
+        builder: (context, state) => const MarketPage(),
       ),
       GoRoute(
         path: AppRoutes.clubDetail.path,

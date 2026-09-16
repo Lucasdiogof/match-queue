@@ -1816,5 +1816,43 @@
         "type": "String"
       }
     }
-  }
+  },
+  "centralSectionMarket": "Market",
+  "marketEntryLabel": "Card market",
+  "marketEntryHint": "Check a card's current market price.",
+  "marketTitle": "Market",
+  "marketTabMarket": "Market",
+  "marketTabFavorites": "Favorites",
+  "marketSearchFieldLabel": "Search card",
+  "marketSearchHint": "Search player or card...",
+  "marketSearchInitialTitle": "Search for a card",
+  "marketSearchInitialMessage": "Type a player's name to check the card's market price.",
+  "marketSearchNoResultsTitle": "No cards found",
+  "marketSearchNoResultsMessage": "Try searching for another name.",
+  "marketFavoriteAddAction": "Add to favorites",
+  "marketFavoriteRemoveAction": "Remove from favorites",
+  "marketFavoritesEmptyTitle": "Your favorites list is empty",
+  "marketFavoritesEmptyMessage": "Favorite a card in the Market to track its price here.",
+  "marketPriceSectionTitle": "Market price",
+  "marketPriceUnavailableMessage": "Price unavailable right now.",
+  "marketPriceCurrentLabel": "Current price",
+  "marketPriceMinLabel": "Lowest price",
+  "marketPriceMaxLabel": "Highest price",
+  "marketPriceUpdatedAtLabel": "Updated {date}",
+  "@marketPriceUpdatedAtLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "marketPricePlatformLabel": "Platform: {platform}",
+  "@marketPricePlatformLabel": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "marketPriceHistoryLabel": "Price history"
 }

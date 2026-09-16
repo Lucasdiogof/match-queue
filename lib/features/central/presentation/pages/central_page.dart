@@ -111,6 +111,15 @@ class _CentralBody extends StatelessWidget {
           onTap: () => context.push(AppRoutes.evolutions.path),
         ),
         const SizedBox(height: AppSpacing.xl),
+        _SectionLabel(text: l10n.centralSectionMarket),
+        const SizedBox(height: AppSpacing.md),
+        _ListEntryRow(
+          icon: Icons.storefront_outlined,
+          label: l10n.marketEntryLabel,
+          description: l10n.marketEntryHint,
+          onTap: () => context.push(AppRoutes.market.path),
+        ),
+        const SizedBox(height: AppSpacing.xl),
         _SectionLabel(text: l10n.centralSectionControls),
         const SizedBox(height: AppSpacing.md),
         Row(

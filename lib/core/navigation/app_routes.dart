@@ -101,6 +101,7 @@ class AppRoutes {
     'managers-catalog',
     '/app/catalog/managers',
   );
+  static const AppRoute market = AppRoute('market', '/app/market');
   static const AppRoute consumablesCatalog = AppRoute(
     'consumables-catalog',
     '/app/catalog/consumables',

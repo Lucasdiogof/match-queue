@@ -6973,6 +6973,150 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{count, plural, =1{1 jogador saiu da escalação: não tem posição compatível na nova formação ({names}).} other{{count} jogadores saíram da escalação: não têm posição compatível na nova formação ({names}).}}'**
   String squadFormationDroppedPlayers(int count, String names);
+
+  /// No description provided for @centralSectionMarket.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mercado'**
+  String get centralSectionMarket;
+
+  /// No description provided for @marketEntryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mercado de cartas'**
+  String get marketEntryLabel;
+
+  /// No description provided for @marketEntryHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consulte o preço de mercado de uma carta.'**
+  String get marketEntryHint;
+
+  /// No description provided for @marketTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mercado'**
+  String get marketTitle;
+
+  /// No description provided for @marketTabMarket.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mercado'**
+  String get marketTabMarket;
+
+  /// No description provided for @marketTabFavorites.
+  ///
+  /// In pt, this message translates to:
+  /// **'Favoritos'**
+  String get marketTabFavorites;
+
+  /// No description provided for @marketSearchFieldLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar carta'**
+  String get marketSearchFieldLabel;
+
+  /// No description provided for @marketSearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar jogador ou carta...'**
+  String get marketSearchHint;
+
+  /// No description provided for @marketSearchInitialTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pesquise uma carta'**
+  String get marketSearchInitialTitle;
+
+  /// No description provided for @marketSearchInitialMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite o nome de um jogador para consultar o preço de mercado da carta.'**
+  String get marketSearchInitialMessage;
+
+  /// No description provided for @marketSearchNoResultsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma carta encontrada'**
+  String get marketSearchNoResultsTitle;
+
+  /// No description provided for @marketSearchNoResultsMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tente buscar por outro nome.'**
+  String get marketSearchNoResultsMessage;
+
+  /// No description provided for @marketFavoriteAddAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar aos favoritos'**
+  String get marketFavoriteAddAction;
+
+  /// No description provided for @marketFavoriteRemoveAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover dos favoritos'**
+  String get marketFavoriteRemoveAction;
+
+  /// No description provided for @marketFavoritesEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua lista de favoritos está vazia'**
+  String get marketFavoritesEmptyTitle;
+
+  /// No description provided for @marketFavoritesEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Favorite uma carta no Mercado para acompanhar o preço dela aqui.'**
+  String get marketFavoritesEmptyMessage;
+
+  /// No description provided for @marketPriceSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço de mercado'**
+  String get marketPriceSectionTitle;
+
+  /// No description provided for @marketPriceUnavailableMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço indisponível no momento.'**
+  String get marketPriceUnavailableMessage;
+
+  /// No description provided for @marketPriceCurrentLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço atual'**
+  String get marketPriceCurrentLabel;
+
+  /// No description provided for @marketPriceMinLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Menor preço'**
+  String get marketPriceMinLabel;
+
+  /// No description provided for @marketPriceMaxLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Maior preço'**
+  String get marketPriceMaxLabel;
+
+  /// No description provided for @marketPriceUpdatedAtLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atualizado em {date}'**
+  String marketPriceUpdatedAtLabel(String date);
+
+  /// No description provided for @marketPricePlatformLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plataforma: {platform}'**
+  String marketPricePlatformLabel(String platform);
+
+  /// No description provided for @marketPriceHistoryLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico de preço'**
+  String get marketPriceHistoryLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -4039,4 +4039,82 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get centralSectionMarket => 'Market';
+
+  @override
+  String get marketEntryLabel => 'Card market';
+
+  @override
+  String get marketEntryHint => 'Check a card\'s current market price.';
+
+  @override
+  String get marketTitle => 'Market';
+
+  @override
+  String get marketTabMarket => 'Market';
+
+  @override
+  String get marketTabFavorites => 'Favorites';
+
+  @override
+  String get marketSearchFieldLabel => 'Search card';
+
+  @override
+  String get marketSearchHint => 'Search player or card...';
+
+  @override
+  String get marketSearchInitialTitle => 'Search for a card';
+
+  @override
+  String get marketSearchInitialMessage =>
+      'Type a player\'s name to check the card\'s market price.';
+
+  @override
+  String get marketSearchNoResultsTitle => 'No cards found';
+
+  @override
+  String get marketSearchNoResultsMessage => 'Try searching for another name.';
+
+  @override
+  String get marketFavoriteAddAction => 'Add to favorites';
+
+  @override
+  String get marketFavoriteRemoveAction => 'Remove from favorites';
+
+  @override
+  String get marketFavoritesEmptyTitle => 'Your favorites list is empty';
+
+  @override
+  String get marketFavoritesEmptyMessage =>
+      'Favorite a card in the Market to track its price here.';
+
+  @override
+  String get marketPriceSectionTitle => 'Market price';
+
+  @override
+  String get marketPriceUnavailableMessage => 'Price unavailable right now.';
+
+  @override
+  String get marketPriceCurrentLabel => 'Current price';
+
+  @override
+  String get marketPriceMinLabel => 'Lowest price';
+
+  @override
+  String get marketPriceMaxLabel => 'Highest price';
+
+  @override
+  String marketPriceUpdatedAtLabel(String date) {
+    return 'Updated $date';
+  }
+
+  @override
+  String marketPricePlatformLabel(String platform) {
+    return 'Platform: $platform';
+  }
+
+  @override
+  String get marketPriceHistoryLabel => 'Price history';
 }

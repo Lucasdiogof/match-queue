@@ -1842,5 +1842,43 @@
         "type": "String"
       }
     }
-  }
+  },
+  "centralSectionMarket": "Mercado",
+  "marketEntryLabel": "Mercado de cartas",
+  "marketEntryHint": "Consulte o preço de mercado de uma carta.",
+  "marketTitle": "Mercado",
+  "marketTabMarket": "Mercado",
+  "marketTabFavorites": "Favoritos",
+  "marketSearchFieldLabel": "Buscar carta",
+  "marketSearchHint": "Buscar jogador ou carta...",
+  "marketSearchInitialTitle": "Pesquise uma carta",
+  "marketSearchInitialMessage": "Digite o nome de um jogador para consultar o preço de mercado da carta.",
+  "marketSearchNoResultsTitle": "Nenhuma carta encontrada",
+  "marketSearchNoResultsMessage": "Tente buscar por outro nome.",
+  "marketFavoriteAddAction": "Adicionar aos favoritos",
+  "marketFavoriteRemoveAction": "Remover dos favoritos",
+  "marketFavoritesEmptyTitle": "Sua lista de favoritos está vazia",
+  "marketFavoritesEmptyMessage": "Favorite uma carta no Mercado para acompanhar o preço dela aqui.",
+  "marketPriceSectionTitle": "Preço de mercado",
+  "marketPriceUnavailableMessage": "Preço indisponível no momento.",
+  "marketPriceCurrentLabel": "Preço atual",
+  "marketPriceMinLabel": "Menor preço",
+  "marketPriceMaxLabel": "Maior preço",
+  "marketPriceUpdatedAtLabel": "Atualizado em {date}",
+  "@marketPriceUpdatedAtLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "marketPricePlatformLabel": "Plataforma: {platform}",
+  "@marketPricePlatformLabel": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "marketPriceHistoryLabel": "Histórico de preço"
 }

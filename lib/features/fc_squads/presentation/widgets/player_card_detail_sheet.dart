@@ -16,15 +16,20 @@ const bool _kShowOtherPlayerVersions = false;
 Future<void> showPlayerCardDetailSheet({
   required BuildContext context,
   required PlayerCard card,
+  // Slot opcional para quem precisa acrescentar algo ao fim do detalhe sem
+  // duplicar os ~300 linhas de renderizacao de carta acima (hoje so a
+  // feature Mercado usa, para a secao de preco + favorito).
+  Widget? footer,
 }) => showAppBottomSheet<void>(
   context: context,
-  builder: (sheetContext) => _PlayerCardDetailBody(card: card),
+  builder: (sheetContext) => _PlayerCardDetailBody(card: card, footer: footer),
 );
 
 class _PlayerCardDetailBody extends StatelessWidget {
-  const _PlayerCardDetailBody({required this.card});
+  const _PlayerCardDetailBody({required this.card, this.footer});
 
   final PlayerCard card;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +245,12 @@ class _PlayerCardDetailBody extends StatelessWidget {
                   style: context.textStyles.bodySmall,
                 ),
               ),
+            ],
+            if (footer != null) ...<Widget>[
+              const SizedBox(height: AppSpacing.lg),
+              const Divider(),
+              const SizedBox(height: AppSpacing.lg),
+              footer!,
             ],
             const SizedBox(height: AppSpacing.lg),
           ],

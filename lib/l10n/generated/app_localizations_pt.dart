@@ -4044,4 +4044,82 @@ class AppLocalizationsPt extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get centralSectionMarket => 'Mercado';
+
+  @override
+  String get marketEntryLabel => 'Mercado de cartas';
+
+  @override
+  String get marketEntryHint => 'Consulte o preço de mercado de uma carta.';
+
+  @override
+  String get marketTitle => 'Mercado';
+
+  @override
+  String get marketTabMarket => 'Mercado';
+
+  @override
+  String get marketTabFavorites => 'Favoritos';
+
+  @override
+  String get marketSearchFieldLabel => 'Buscar carta';
+
+  @override
+  String get marketSearchHint => 'Buscar jogador ou carta...';
+
+  @override
+  String get marketSearchInitialTitle => 'Pesquise uma carta';
+
+  @override
+  String get marketSearchInitialMessage =>
+      'Digite o nome de um jogador para consultar o preço de mercado da carta.';
+
+  @override
+  String get marketSearchNoResultsTitle => 'Nenhuma carta encontrada';
+
+  @override
+  String get marketSearchNoResultsMessage => 'Tente buscar por outro nome.';
+
+  @override
+  String get marketFavoriteAddAction => 'Adicionar aos favoritos';
+
+  @override
+  String get marketFavoriteRemoveAction => 'Remover dos favoritos';
+
+  @override
+  String get marketFavoritesEmptyTitle => 'Sua lista de favoritos está vazia';
+
+  @override
+  String get marketFavoritesEmptyMessage =>
+      'Favorite uma carta no Mercado para acompanhar o preço dela aqui.';
+
+  @override
+  String get marketPriceSectionTitle => 'Preço de mercado';
+
+  @override
+  String get marketPriceUnavailableMessage => 'Preço indisponível no momento.';
+
+  @override
+  String get marketPriceCurrentLabel => 'Preço atual';
+
+  @override
+  String get marketPriceMinLabel => 'Menor preço';
+
+  @override
+  String get marketPriceMaxLabel => 'Maior preço';
+
+  @override
+  String marketPriceUpdatedAtLabel(String date) {
+    return 'Atualizado em $date';
+  }
+
+  @override
+  String marketPricePlatformLabel(String platform) {
+    return 'Plataforma: $platform';
+  }
+
+  @override
+  String get marketPriceHistoryLabel => 'Histórico de preço';
 }
