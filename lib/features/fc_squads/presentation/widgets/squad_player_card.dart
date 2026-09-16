@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
-import 'package:fifa_queue/features/fc_squads/presentation/widgets/card_shape_border.dart';
+import 'package:fifa_queue/features/fc_squads/presentation/widgets/card_placeholder_asset.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
 import 'package:flutter/material.dart';
 
@@ -206,38 +206,47 @@ class _EmptySlot extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Material(
-      // Mesma silhueta e cor de fundo do card sem foto (PlayerCardDataFace):
-      // o slot vazio deve ler como "a carta que vai entrar ali", nao como
-      // uma caixa generica.
-      color: colors.surfaceElevated,
-      clipBehavior: Clip.antiAlias,
-      shape: CardShapeBorder(side: BorderSide(color: colors.borderSubtle)),
-      child: InkWell(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.add, size: width * 0.34, color: colors.textTertiary),
-                SizedBox(height: width * 0.06),
-                Text(
-                  positionCode,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: width * 0.20,
-                    height: 1,
-                    letterSpacing: 0.4,
-                    fontWeight: FontWeight.w600,
-                    color: colors.textTertiary,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+      // Mesma silhueta do card sem foto (PlayerCardDataFace): o slot vazio
+      // deve ler como "a carta que vai entrar ali", nao como uma caixa
+      // generica. A silhueta vem da propria imagem (ja recortada e com
+      // opacidade reduzida) -- nao ha cor/borda desenhada por cima dela.
+      type: MaterialType.transparency,
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Image.asset(cardPlaceholderAsset, fit: BoxFit.contain),
+          InkWell(
+            onTap: onTap,
+            onLongPress: onLongPress,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.add,
+                      size: width * 0.34,
+                      color: colors.textTertiary,
+                    ),
+                    SizedBox(height: width * 0.06),
+                    Text(
+                      positionCode,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: width * 0.20,
+                        height: 1,
+                        letterSpacing: 0.4,
+                        fontWeight: FontWeight.w600,
+                        color: colors.textTertiary,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
