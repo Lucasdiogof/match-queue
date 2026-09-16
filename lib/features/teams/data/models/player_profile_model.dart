@@ -14,8 +14,7 @@ class PlayerProfileModel {
     if (formationJson is! Map) {
       return null;
     }
-    final startersJson =
-        map['starters'] as List<dynamic>? ?? const <dynamic>[];
+    final startersJson = map['starters'] as List<dynamic>? ?? const <dynamic>[];
     return PlayerProfileSquad(
       name: '${map['name']}',
       formation: FcSquadModel.formationFromJson(
