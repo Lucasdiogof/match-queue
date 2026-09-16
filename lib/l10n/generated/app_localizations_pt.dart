@@ -2628,6 +2628,23 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamMemberRoleUpdatedMessage => 'Cargo atualizado.';
 
   @override
+  String get teamTransferOwnershipAction => 'Transferir propriedade';
+
+  @override
+  String teamTransferOwnershipConfirmTitle(String name) {
+    return 'Passar o time para $name?';
+  }
+
+  @override
+  String get teamTransferOwnershipConfirmMessage =>
+      'Você deixa de ser o dono e vira jogador comum. Só o novo dono poderá devolver a propriedade para você.';
+
+  @override
+  String teamTransferOwnershipDoneMessage(String name) {
+    return '$name agora é o dono do time.';
+  }
+
+  @override
   String get teamLogoChangeAction => 'Alterar logo';
 
   @override

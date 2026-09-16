@@ -1376,6 +1376,24 @@
   "teamMemberRemoveConfirmMessage": "This person stops being part of the team. Their history is preserved.",
   "teamMemberRemovedMessage": "Player removed from the team.",
   "teamMemberRoleUpdatedMessage": "Role updated.",
+  "teamTransferOwnershipAction": "Transfer ownership",
+  "teamTransferOwnershipConfirmTitle": "Hand the team to {name}?",
+  "@teamTransferOwnershipConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "teamTransferOwnershipConfirmMessage": "You stop being the owner and become a regular player. Only the new owner can hand it back to you.",
+  "teamTransferOwnershipDoneMessage": "{name} is now the team owner.",
+  "@teamTransferOwnershipDoneMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "teamLogoChangeAction": "Change logo",
   "teamLogoAddAction": "Add logo",
   "teamLogoRemoveAction": "Remove logo",

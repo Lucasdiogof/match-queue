@@ -4532,6 +4532,30 @@ abstract class AppLocalizations {
   /// **'Cargo atualizado.'**
   String get teamMemberRoleUpdatedMessage;
 
+  /// No description provided for @teamTransferOwnershipAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Transferir propriedade'**
+  String get teamTransferOwnershipAction;
+
+  /// No description provided for @teamTransferOwnershipConfirmTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passar o time para {name}?'**
+  String teamTransferOwnershipConfirmTitle(String name);
+
+  /// No description provided for @teamTransferOwnershipConfirmMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você deixa de ser o dono e vira jogador comum. Só o novo dono poderá devolver a propriedade para você.'**
+  String get teamTransferOwnershipConfirmMessage;
+
+  /// No description provided for @teamTransferOwnershipDoneMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'{name} agora é o dono do time.'**
+  String teamTransferOwnershipDoneMessage(String name);
+
   /// No description provided for @teamLogoChangeAction.
   ///
   /// In pt, this message translates to:

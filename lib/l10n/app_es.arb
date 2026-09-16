@@ -1389,6 +1389,24 @@
   "teamMemberRemoveConfirmMessage": "Esta persona deja de formar parte del equipo. Su historial se conserva.",
   "teamMemberRemovedMessage": "Jugador quitado del equipo.",
   "teamMemberRoleUpdatedMessage": "Cargo actualizado.",
+  "teamTransferOwnershipAction": "Transferir propiedad",
+  "teamTransferOwnershipConfirmTitle": "¿Pasar el equipo a {name}?",
+  "@teamTransferOwnershipConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "teamTransferOwnershipConfirmMessage": "Dejas de ser el dueño y pasas a ser jugador común. Solo el nuevo dueño podrá devolverte la propiedad.",
+  "teamTransferOwnershipDoneMessage": "{name} ahora es el dueño del equipo.",
+  "@teamTransferOwnershipDoneMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "teamLogoChangeAction": "Cambiar logo",
   "teamLogoAddAction": "Añadir logo",
   "teamLogoRemoveAction": "Quitar logo",

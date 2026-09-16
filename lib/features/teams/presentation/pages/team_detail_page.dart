@@ -14,6 +14,7 @@ import 'package:fifa_queue/features/requests/presentation/cubit/requests_state.d
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team_member_permissions.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/team_status_cubit.dart';
@@ -224,19 +225,10 @@ class _MemberStatusRow extends StatelessWidget {
   final TeamMemberStatus member;
   final TeamRole viewerRole;
 
-  /// So OWNER mexe em cargo; OWNER e ADMIN removem, mas ADMIN so remove
-  /// PLAYER -- a mesma matriz que o servidor ja valida em
-  /// remove_team_member/set_team_member_role, aqui so pra decidir o que
-  /// MOSTRAR (o servidor recusa de qualquer jeito se a UI errar).
-  bool get _canShowMenu {
-    if (member.role == TeamRole.owner) {
-      return false;
-    }
-    if (viewerRole == TeamRole.owner) {
-      return true;
-    }
-    return viewerRole == TeamRole.manager && member.role == TeamRole.player;
-  }
+  bool get _canShowMenu => TeamMemberPermissions.hasAnyAction(
+    viewer: viewerRole,
+    target: member.role,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -271,22 +263,38 @@ class _MemberStatusRow extends StatelessWidget {
                 icon: const Icon(Icons.more_vert),
                 onSelected: (action) => _handle(context, action),
                 itemBuilder: (context) => <PopupMenuEntry<_MemberAction>>[
-                  if (viewerRole == TeamRole.owner &&
-                      member.role == TeamRole.player)
+                  if (TeamMemberPermissions.canPromoteToManager(
+                    viewer: viewerRole,
+                    target: member.role,
+                  ))
                     PopupMenuItem<_MemberAction>(
                       value: _MemberAction.promote,
                       child: Text(l10n.teamMemberPromoteAction),
                     ),
-                  if (viewerRole == TeamRole.owner &&
-                      member.role == TeamRole.manager)
+                  if (TeamMemberPermissions.canDemoteToPlayer(
+                    viewer: viewerRole,
+                    target: member.role,
+                  ))
                     PopupMenuItem<_MemberAction>(
                       value: _MemberAction.demote,
                       child: Text(l10n.teamMemberDemoteAction),
                     ),
-                  PopupMenuItem<_MemberAction>(
-                    value: _MemberAction.remove,
-                    child: Text(l10n.teamMemberRemoveAction),
-                  ),
+                  if (TeamMemberPermissions.canTransferOwnership(
+                    viewer: viewerRole,
+                    target: member.role,
+                  ))
+                    PopupMenuItem<_MemberAction>(
+                      value: _MemberAction.transferOwnership,
+                      child: Text(l10n.teamTransferOwnershipAction),
+                    ),
+                  if (TeamMemberPermissions.canRemove(
+                    viewer: viewerRole,
+                    target: member.role,
+                  ))
+                    PopupMenuItem<_MemberAction>(
+                      value: _MemberAction.remove,
+                      child: Text(l10n.teamMemberRemoveAction),
+                    ),
                 ],
               ),
           ],
@@ -305,6 +313,23 @@ class _MemberStatusRow extends StatelessWidget {
         title: l10n.teamMemberRemoveConfirmTitle(member.displayName),
         message: l10n.teamMemberRemoveConfirmMessage,
         confirmLabel: l10n.teamMemberRemoveAction,
+        cancelLabel: l10n.actionCancel,
+        isDestructive: true,
+      );
+      if (!confirmed || !context.mounted) {
+        return;
+      }
+    }
+
+    // Quem transfere perde a propria permissao de desfazer: so o novo dono
+    // pode devolver. Por isso confirma igual a uma acao destrutiva, mesmo
+    // nao apagando nada.
+    if (action == _MemberAction.transferOwnership) {
+      final confirmed = await showAppConfirm(
+        context: context,
+        title: l10n.teamTransferOwnershipConfirmTitle(member.displayName),
+        message: l10n.teamTransferOwnershipConfirmMessage,
+        confirmLabel: l10n.teamTransferOwnershipAction,
         cancelLabel: l10n.actionCancel,
         isDestructive: true,
       );
@@ -332,13 +357,21 @@ class _MemberStatusRow extends StatelessWidget {
             teamId: teamId,
             fcAccountId: member.fcAccountId,
           );
+        case _MemberAction.transferOwnership:
+          await repository.transferOwnership(
+            teamId: teamId,
+            fcAccountId: member.fcAccountId,
+          );
       }
       if (!context.mounted) {
         return;
       }
-      final message = action == _MemberAction.remove
-          ? l10n.teamMemberRemovedMessage
-          : l10n.teamMemberRoleUpdatedMessage;
+      final message = switch (action) {
+        _MemberAction.remove => l10n.teamMemberRemovedMessage,
+        _MemberAction.transferOwnership =>
+          l10n.teamTransferOwnershipDoneMessage(member.displayName),
+        _ => l10n.teamMemberRoleUpdatedMessage,
+      };
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(message)));
@@ -354,7 +387,7 @@ class _MemberStatusRow extends StatelessWidget {
   }
 }
 
-enum _MemberAction { promote, demote, remove }
+enum _MemberAction { promote, demote, remove, transferOwnership }
 
 class _InviteMemberButton extends StatelessWidget {
   const _InviteMemberButton({required this.teamId});
