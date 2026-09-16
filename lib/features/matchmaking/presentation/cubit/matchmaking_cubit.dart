@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
+import 'package:fifa_queue/features/matchmaking/data/search_cooldown_store.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/matchmaking_realtime_event.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/my_matchmaking_status.dart';
@@ -19,7 +20,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MatchmakingCubit extends Cubit<MatchmakingState> {
   MatchmakingCubit(
     this._repository,
-    this._logger, {
+    this._logger,
+    this._cooldownStore, {
     required this.fcAccountId,
     required this.teamId,
     required this.mode,
@@ -29,6 +31,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
 
   final MatchmakingRepository _repository;
   final AppLogger _logger;
+  final SearchCooldownStore _cooldownStore;
   final String fcAccountId;
   final String teamId;
   final GameMode mode;
@@ -79,6 +82,16 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         }
       }
       _emitSnapshot(snapshot, status: MatchmakingStatus.ready);
+      // Cooldown local (ver SearchCooldownStore): o cubit acabou de nascer
+      // (cooldownEndsAt sempre null no estado inicial), entao se um
+      // cancelamento anterior -- desta sessao ou de uma ja descartada,
+      // por qualquer troca de conta/time/modo -- ainda estiver dentro dos
+      // 30s, o botao "Buscar partida" precisa nascer ja bloqueado, nao
+      // liberado ate a proxima acao.
+      final storedCooldown = _cooldownStore.read(fcAccountId, teamId, mode.key);
+      if (storedCooldown != null && DateTime.now().isBefore(storedCooldown)) {
+        emit(state.copyWith(cooldownEndsAt: storedCooldown));
+      }
     } on AppFailure catch (failure) {
       if (_isStale(generation)) {
         return;
@@ -117,9 +130,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         expired: expiredSilently,
       );
       if (expiredSilently) {
-        emit(
-          state.copyWith(cooldownEndsAt: DateTime.now().add(_cooldownDuration)),
-        );
+        _setCooldown(DateTime.now().add(_cooldownDuration));
       }
     } on AppFailure {
       if (_isStale(generation)) {
@@ -149,9 +160,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   Future<bool> cancel() async {
     final ok = await _runAction(() => _repository.cancelSearch(fcAccountId));
     if (ok && !isClosed) {
-      emit(
-        state.copyWith(cooldownEndsAt: DateTime.now().add(_cooldownDuration)),
-      );
+      _setCooldown(DateTime.now().add(_cooldownDuration));
     }
     return ok;
   }
@@ -169,11 +178,17 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       () => _repository.reportMatchFound(fcAccountId),
     );
     if (ok && !isClosed) {
-      emit(
-        state.copyWith(cooldownEndsAt: DateTime.now().add(_cooldownDuration)),
-      );
+      _setCooldown(DateTime.now().add(_cooldownDuration));
     }
     return ok;
+  }
+
+  /// Emite o cooldown no estado E o persiste no [SearchCooldownStore] --
+  /// sem o segundo passo, um cubit novo (proxima troca de conta/time/modo)
+  /// nasceria sem saber que esse cooldown ainda esta rolando.
+  void _setCooldown(DateTime endsAt) {
+    emit(state.copyWith(cooldownEndsAt: endsAt));
+    unawaited(_cooldownStore.write(fcAccountId, teamId, mode.key, endsAt));
   }
 
   Future<bool> requestPriority() async {
@@ -278,15 +293,26 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         final isCooldown =
             failure is GameFailure &&
             failure.reason == GameFailureReason.cooldown;
+        final cooldownEndsAt = isCooldown
+            ? DateTime.now().add(_cooldownDuration)
+            : state.cooldownEndsAt;
         emit(
           state.copyWith(
             isActionPending: false,
             failure: failure,
-            cooldownEndsAt: isCooldown
-                ? DateTime.now().add(_cooldownDuration)
-                : state.cooldownEndsAt,
+            cooldownEndsAt: cooldownEndsAt,
           ),
         );
+        if (isCooldown) {
+          unawaited(
+            _cooldownStore.write(
+              fcAccountId,
+              teamId,
+              mode.key,
+              cooldownEndsAt!,
+            ),
+          );
+        }
       }
       return false;
     }
@@ -363,6 +389,18 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     final snapshot = state.snapshot;
     if (snapshot != null && snapshot.isSearchingByMe) {
       unawaited(_repository.cancelSearch(fcAccountId));
+      // Mesmo cooldown de um cancel() manual (ver _setCooldown) -- so que
+      // sem emit (cubit ja fechando): direto no store, pra sobreviver e
+      // ser lido pelo PROXIMO cubit dessa mesma conta+time+modo, seja
+      // daqui a 2 segundos ou depois de passar por outras contas.
+      unawaited(
+        _cooldownStore.write(
+          fcAccountId,
+          teamId,
+          mode.key,
+          DateTime.now().add(_cooldownDuration),
+        ),
+      );
     } else if (snapshot != null && snapshot.isQueuedByMe) {
       unawaited(
         _repository.leaveQueue(
