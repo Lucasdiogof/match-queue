@@ -7,10 +7,7 @@ abstract interface class FcSquadRemoteDataSource {
 
   Future<Map<String, dynamic>> getBuilder(String squadId);
 
-  Future<Map<String, dynamic>> createSquad({
-    required String name,
-    required String formationCode,
-  });
+  Future<Map<String, dynamic>> createSquad();
 
   Future<Map<String, dynamic>> renameSquad({
     required String squadId,
@@ -118,13 +115,8 @@ class SupabaseFcSquadRemoteDataSource implements FcSquadRemoteDataSource {
       _map('get_fc_squad_builder', <String, dynamic>{'p_squad_id': squadId});
 
   @override
-  Future<Map<String, dynamic>> createSquad({
-    required String name,
-    required String formationCode,
-  }) => _map('create_fc_squad', <String, dynamic>{
-    'p_name': name,
-    'p_formation_code': formationCode,
-  });
+  Future<Map<String, dynamic>> createSquad() =>
+      _map('create_fc_squad', const <String, dynamic>{});
 
   @override
   Future<Map<String, dynamic>> renameSquad({

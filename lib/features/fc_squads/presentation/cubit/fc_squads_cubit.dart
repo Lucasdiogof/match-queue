@@ -61,19 +61,13 @@ class FcSquadsCubit extends Cubit<FcSquadsState> {
     }
   }
 
-  Future<FcSquadDetail?> createSquad({
-    required String name,
-    required String formationCode,
-  }) async {
+  Future<FcSquadDetail?> createSquad() async {
     if (state.isSaving) {
       return null;
     }
     emit(state.copyWith(isSaving: true, clearActionFailure: true));
     try {
-      final squad = await _repository.createSquad(
-        name: name,
-        formationCode: formationCode,
-      );
+      final squad = await _repository.createSquad();
       if (!isClosed) {
         emit(state.copyWith(isSaving: false));
         await refresh();

@@ -7,7 +7,6 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:fifa_queue/features/account/presentation/widgets/platform_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_state.dart';
-import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_name_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,32 +22,30 @@ class AccountSquadCard extends StatelessWidget {
   const AccountSquadCard({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AccountCubit, AccountState>(
-        buildWhen: (previous, current) =>
-            previous.account != current.account,
-        builder: (context, accountState) {
-          final account = accountState.account;
-          if (account == null) {
-            return const SizedBox.shrink();
-          }
-          final colors = context.colors;
+  Widget build(BuildContext context) => BlocBuilder<AccountCubit, AccountState>(
+    buildWhen: (previous, current) => previous.account != current.account,
+    builder: (context, accountState) {
+      final account = accountState.account;
+      if (account == null) {
+        return const SizedBox.shrink();
+      }
+      final colors = context.colors;
 
-          return AppCard(
-            variant: AppCardVariant.elevated,
-            accent: AppCardAccent.left,
-            padding: EdgeInsets.zero,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _PlatformRow(account: account),
-                Divider(height: 1, thickness: 1, color: colors.borderSubtle),
-                const _SquadRow(),
-              ],
-            ),
-          );
-        },
+      return AppCard(
+        variant: AppCardVariant.elevated,
+        accent: AppCardAccent.left,
+        padding: EdgeInsets.zero,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _PlatformRow(account: account),
+            Divider(height: 1, thickness: 1, color: colors.borderSubtle),
+            const _SquadRow(),
+          ],
+        ),
       );
+    },
+  );
 }
 
 class _PlatformRow extends StatelessWidget {
@@ -140,7 +137,7 @@ class _SquadRow extends StatelessWidget {
         onTap: state.isSaving
             ? null
             : () => squad == null
-                  ? _createSquad(context, state)
+                  ? _createSquad(context)
                   : context.pushNamed(
                       AppRoutes.squadBuilder.name,
                       pathParameters: <String, String>{
@@ -186,24 +183,17 @@ class _SquadRow extends StatelessWidget {
     },
   );
 
-  // Mesmo fluxo de squads_section.dart: pede nome+formacao, cria, e deixa o
-  // BlocBuilder re-renderizar com o elenco novo -- o usuario toca de novo
-  // pra entrar no builder, sem navegacao automatica que ele nao pediu.
-  Future<void> _createSquad(BuildContext context, FcSquadsState state) async {
-    final l10n = context.l10n;
+  // Sem nome nem formação a pedir: cria direto com o default (4-4-2) e já
+  // entra no builder, que é onde a formação se escolhe (ao vivo).
+  Future<void> _createSquad(BuildContext context) async {
     final cubit = context.read<FcSquadsCubit>();
-    final result = await showSquadNameSheet(
-      context: context,
-      title: l10n.squadCreateTitle,
-      subtitle: l10n.squadCreateSubtitle,
-      formations: state.formations,
-    );
-    if (result == null || result.formationCode == null) {
+    final squad = await cubit.createSquad();
+    if (squad == null || !context.mounted) {
       return;
     }
-    await cubit.createSquad(
-      name: result.name,
-      formationCode: result.formationCode!,
+    await context.pushNamed(
+      AppRoutes.squadBuilder.name,
+      pathParameters: <String, String>{AppRoutes.squadIdParam: squad.id},
     );
   }
 }

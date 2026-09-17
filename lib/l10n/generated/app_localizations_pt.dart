@@ -600,20 +600,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get teamNameHint => 'Falcons FC';
 
   @override
-  String teamDefaultName(String displayName) {
-    return 'Time de $displayName';
-  }
-
-  @override
-  String get teamTagLabel => 'Tag (opcional)';
-
-  @override
-  String get teamTagHint => 'FLC';
-
-  @override
-  String get teamTagHelper => '2 a 6 letras ou números';
-
-  @override
   String get teamCreateAction => 'Criar time';
 
   @override
@@ -1323,69 +1309,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rivalsDivisionElite => 'Elite';
 
   @override
-  String get squadsSectionTitle => 'Escalações';
-
-  @override
-  String get squadBuilderSaved => 'Salvo';
-
-  @override
-  String get squadBuilderSaving => 'Salvando…';
-
-  @override
-  String get squadsEmptyTitle => 'Nenhuma escalação configurada';
-
-  @override
-  String get squadsEmptyMessage =>
-      'Crie uma escalação para colocar seus jogadores em campo. Você pode buscar partida mesmo sem uma.';
-
-  @override
-  String get squadCreateAction => 'Criar escalação';
-
-  @override
-  String get squadCreateTitle => 'Nova escalação';
-
-  @override
-  String get squadCreateSubtitle => 'Dê um nome e escolha a formação inicial.';
-
-  @override
-  String get squadNameLabel => 'Nome da escalação';
-
-  @override
-  String get squadNameHint => 'Ex.: Principal';
-
-  @override
   String get squadFormationLabel => 'Formação';
-
-  @override
-  String get squadRenameTitle => 'Renomear escalação';
-
-  @override
-  String get squadRenameAction => 'Renomear';
-
-  @override
-  String get squadSetDefaultAction => 'Definir como padrão';
-
-  @override
-  String get squadDefaultBadge => 'Padrão';
-
-  @override
-  String get squadArchiveAction => 'Arquivar escalação';
-
-  @override
-  String get squadArchiveConfirmTitle => 'Arquivar escalação?';
-
-  @override
-  String get squadArchiveConfirmMessage =>
-      'Ele sai da lista, mas o histórico das partidas jogadas com ele é mantido.';
 
   @override
   String get squadBenchTitle => 'Banco';
 
   @override
   String get squadManagerTitle => 'Técnico';
-
-  @override
-  String get squadManagerAddAction => 'Adicionar técnico';
 
   @override
   String get squadManagerRemoveAction => 'Remover técnico';
@@ -1399,9 +1329,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get squadManagerPickNationFirst =>
       'Escolha um país para ver os técnicos.';
-
-  @override
-  String get squadManagerNoneTitle => 'Sem técnico';
 
   @override
   String get squadFormationPickerTitle => 'Escolher formação';
@@ -1441,9 +1368,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get playSquadEditAction => 'Editar escalação';
-
-  @override
-  String get squadNoneSelected => 'Sem escalação';
 
   @override
   String get squadFilterLeagueLabel => 'Liga';

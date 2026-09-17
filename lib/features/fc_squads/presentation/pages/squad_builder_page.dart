@@ -112,17 +112,17 @@ class _SquadBuilderView extends StatelessWidget {
               title: l10n.squadLabel,
               actions: <Widget>[
                 if (draft != null)
-                  AppIconButton(
-                    icon: Icons.ios_share,
-                    tooltip: l10n.squadShareAction,
-                    onPressed: () => _share(context, state),
+                  Padding(
+                    padding: const EdgeInsets.only(right: AppSpacing.xs),
+                    child: AppIconButton(
+                      icon: Icons.ios_share,
+                      tooltip: l10n.squadShareAction,
+                      onPressed: () => _share(context, state),
+                    ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.xs),
-                  child: _SaveButton(state: state),
-                ),
               ],
             ),
+            bottomNavigationBar: draft == null ? null : _SaveBar(state: state),
             body: switch (state.status) {
               SquadBuilderStatus.loading => const AppLoading(),
               SquadBuilderStatus.failure => AppErrorState(
@@ -152,8 +152,8 @@ class _SquadBuilderView extends StatelessWidget {
   }
 }
 
-class _SaveButton extends StatelessWidget {
-  const _SaveButton({required this.state});
+class _SaveBar extends StatelessWidget {
+  const _SaveBar({required this.state});
 
   final SquadBuilderState state;
 
@@ -162,23 +162,21 @@ class _SaveButton extends StatelessWidget {
     final l10n = context.l10n;
     final cubit = context.read<SquadBuilderCubit>();
 
-    if (state.isSaving) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
-        child: Center(child: AppLoading.inline()),
-      );
-    }
-    return TextButton(
-      // Desabilitado sem alteracao e durante conflito: salvar por cima de
-      // uma versao que mudou em outro aparelho nao e uma opcao oferecida.
-      onPressed: state.canSave ? cubit.save : null,
-      child: Text(
-        l10n.squadSaveAction,
-        style: context.textStyles.labelLarge?.copyWith(
-          color: state.canSave
-              ? context.colors.accent
-              : context.colors.textTertiary,
-          fontWeight: FontWeight.w700,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.sm,
+          AppSpacing.lg,
+          AppSpacing.sm,
+        ),
+        child: AppButton(
+          label: l10n.squadSaveAction,
+          isLoading: state.isSaving,
+          // Desabilitado sem alteracao e durante conflito: salvar por cima
+          // de uma versao que mudou em outro aparelho nao e uma opcao
+          // oferecida.
+          onPressed: state.canSave ? cubit.save : null,
         ),
       ),
     );
@@ -195,27 +193,33 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SquadBuilderCubit>();
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+    // Coluna, nao ListView: o campo fica num Expanded e cresce pra
+    // preencher o que sobrar da tela (depois do resumo/estatisticas), em
+    // vez de ter uma altura fixa e deixar espaço morto embaixo ate o
+    // Salvar (que ja mora fora daqui, no bottomNavigationBar do Scaffold).
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         if (state.hasConflict)
           _ConflictBanner(onReload: cubit.reloadAfterConflict),
         _SummaryRow(state: state, draft: draft),
-        const SizedBox(height: AppSpacing.lg),
-        SquadField(
-          formation: draft.formation,
-          starters: draft.starters,
-          onSlotTap: (slot) => _pickPlayer(context, slot),
-          onSlotLongPress: (slot) => cubit.clearSlot(slot.slotCode),
-          onSlotDrop: (slot, payload) {
-            final card = draft.starters[payload.slotCode];
-            if (card != null) {
-              cubit.assignCard(slotCode: slot.slotCode, card: card);
-            }
-          },
+        const SizedBox(height: AppSpacing.md),
+        Expanded(
+          child: SquadField(
+            formation: draft.formation,
+            starters: draft.starters,
+            onSlotTap: (slot) => _pickPlayer(context, slot),
+            onSlotLongPress: (slot) => cubit.clearSlot(slot.slotCode),
+            onSlotDrop: (slot, payload) {
+              final card = draft.starters[payload.slotCode];
+              if (card != null) {
+                cubit.assignCard(slotCode: slot.slotCode, card: card);
+              }
+            },
+            corner: (size) => LineupManagerCorner(draft: draft, size: size),
+          ),
         ),
-        const SizedBox(height: AppSpacing.lg),
-        LineupManagerSlot(draft: draft),
+        const SizedBox(height: AppSpacing.sm),
       ],
     );
   }

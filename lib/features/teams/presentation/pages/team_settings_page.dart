@@ -103,10 +103,6 @@ class _InfoSection extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(team.name, style: context.textStyles.titleMedium),
-          if (team.tag != null) ...<Widget>[
-            const SizedBox(height: AppSpacing.xs),
-            AppBadge(label: team.tag!),
-          ],
         ],
       ),
     );

@@ -43,6 +43,19 @@ class _SignUpPageState extends State<SignUpPage> {
           null;
 
   @override
+  void initState() {
+    super.initState();
+    // Limpa qualquer falha deixada por outra tela de auth (ex.: erro de
+    // login que sobrevive na navegação pro cadastro, porque o cubit e
+    // compartilhado e so limpa a falha quando o usuario digita).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AuthCubit>().clearFailure();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _displayName.dispose();
     _email.dispose();
@@ -87,8 +100,16 @@ class _SignUpPageState extends State<SignUpPage> {
         return AuthFormScaffold(
           title: l10n.signUpTitle,
           subtitle: l10n.signUpSubtitle,
-          backgroundImage: 'assets/brand/login_background.png',
-          contentAlignment: const Alignment(0, -0.85),
+          heroBackground: true,
+          // Desce 5px (mesmo ajuste do login) e ganha 10px extras de folga
+          // antes do titulo "Crie sua conta".
+          wordmark: Transform.translate(
+            offset: const Offset(0, 7),
+            child: const Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: MatchQueueWordmark(),
+            ),
+          ),
           onBack: () => context.canPop()
               ? context.pop()
               : context.go(AppRoutes.login.path),

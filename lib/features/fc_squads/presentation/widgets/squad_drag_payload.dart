@@ -95,7 +95,6 @@ class DraggableSquadSlot extends StatelessWidget {
           chemistry: chemistry,
           onTap: onTap,
           onLongPress: onLongPress,
-          onRemove: onRemove,
         );
 
         if (incoming == null) {
@@ -145,7 +144,7 @@ class DraggableSquadSlot extends StatelessWidget {
     );
     final childWhenDragging = Opacity(opacity: 0.3, child: target);
 
-    return useLongPress
+    final draggable = useLongPress
         ? LongPressDraggable<SquadDragPayload>(
             data: payload,
             feedback: feedback,
@@ -158,5 +157,19 @@ class DraggableSquadSlot extends StatelessWidget {
             childWhenDragging: childWhenDragging,
             child: target,
           );
+
+    if (onRemove == null || isSaving) {
+      return draggable;
+    }
+
+    // Botão IRMÃO do Draggable, nunca descendente dele -- ver o comentário
+    // em [SquadCardRemoveButton] pro porquê.
+    return Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        draggable,
+        SquadCardRemoveButton.overlay(width: width, onPressed: onRemove!),
+      ],
+    );
   }
 }

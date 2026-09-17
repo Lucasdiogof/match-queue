@@ -7,7 +7,7 @@ import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.da
 class AccountModel {
   const AccountModel._();
 
-  static const String table = 'profiles';
+  static const String table = 'users';
   static const String columnId = 'id';
   static const String columnDisplayName = 'display_name';
   static const String columnAvatarUrl = 'avatar_url';
@@ -33,7 +33,7 @@ class AccountModel {
   }
 
   /// Mescla o bundle de `get_my_account` (times, record manual, evento
-  /// vigente) em cima de um [Account] ja carregado da tabela `profiles`.
+  /// vigente) em cima de um [Account] ja carregado da tabela `users`.
   static Account mergeExtras(Account base, Map<String, dynamic> json) {
     final manual = json['weekend_league_manual'];
     final rivalsManual = json['rivals_manual'];

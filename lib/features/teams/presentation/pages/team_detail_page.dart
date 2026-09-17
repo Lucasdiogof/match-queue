@@ -44,7 +44,6 @@ class TeamDetailPage extends StatelessWidget {
       return AppScaffold(
         appBar: AppAppBar(
           title: userTeam?.team.name ?? context.l10n.teamTitle,
-          subtitle: userTeam?.team.tag,
           actions: <Widget>[
             if (userTeam != null && userTeam.canManageTeam)
               AppIconButton(
@@ -148,10 +147,6 @@ class _TeamHeaderCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(team.name, style: context.textStyles.headlineSmall),
-                if (team.tag != null) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xs),
-                  AppBadge(label: team.tag!),
-                ],
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   '${l10n.teamMembersCount(state.members.length)} · '
@@ -353,10 +348,7 @@ class _MemberStatusRow extends StatelessWidget {
             role: TeamRole.player,
           );
         case _MemberAction.remove:
-          await repository.removeMember(
-            teamId: teamId,
-            userId: member.userId,
-          );
+          await repository.removeMember(teamId: teamId, userId: member.userId);
         case _MemberAction.transferOwnership:
           await repository.transferOwnership(
             teamId: teamId,

@@ -24,7 +24,7 @@ abstract interface class AccountRemoteDataSource {
   Future<void> touchActivity(String userId);
 
   /// Bundle de `get_my_account`: times, record manual de WL/Rivals, evento
-  /// vigente -- tudo que nao vive direto na linha de `profiles`.
+  /// vigente -- tudo que nao vive direto na linha de `users`.
   Future<Map<String, dynamic>> fetchAccountExtras();
 
   Future<List<String>> updatePlatforms(List<String> platforms);
@@ -199,9 +199,7 @@ class SupabaseAccountRemoteDataSource implements AccountRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchWeekendLeagueStats(
-    String eventId,
-  ) async {
+  Future<Map<String, dynamic>> fetchWeekendLeagueStats(String eventId) async {
     final response = await _client.rpc<dynamic>(
       'get_weekend_league_account_stats',
       params: <String, dynamic>{'p_weekend_league_event_id': eventId},

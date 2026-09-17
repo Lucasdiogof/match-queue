@@ -209,15 +209,6 @@ class _TeamListRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: context.textStyles.titleMedium,
                 ),
-                if (team.tag != null) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    team.tag!,
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textSecondary,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -319,15 +310,6 @@ class _PublicTeamRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: context.textStyles.titleMedium,
                 ),
-                if (summary.tag != null) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    summary.tag!,
-                    style: context.textStyles.bodySmall?.copyWith(
-                      color: colors.textSecondary,
-                    ),
-                  ),
-                ],
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   context.l10n.teamMembersCount(summary.memberCount),

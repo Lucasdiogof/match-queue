@@ -20,7 +20,6 @@ class SquadPlayerCard extends StatelessWidget {
     this.chemistry,
     this.onTap,
     this.onLongPress,
-    this.onRemove,
     super.key,
   });
 
@@ -38,11 +37,6 @@ class SquadPlayerCard extends StatelessWidget {
   final int? chemistry;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
-
-  /// Some do slot com um toque -- alternativa mais descobrível ao toque
-  /// longo, que continua funcionando igual. `null` quando o slot está vazio
-  /// (nada para remover).
-  final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +110,6 @@ class SquadPlayerCard extends StatelessWidget {
                 left: 4,
                 child: _ChemistryPips(value: chemistry!, width: width),
               ),
-            if (card != null && onRemove != null && !isSaving)
-              Positioned(
-                top: -8,
-                right: -8,
-                child: _RemoveButton(width: width, onPressed: onRemove!),
-              ),
           ],
         ),
       ),
@@ -129,29 +117,84 @@ class SquadPlayerCard extends StatelessWidget {
   }
 }
 
-class _RemoveButton extends StatelessWidget {
-  const _RemoveButton({required this.width, required this.onPressed});
+/// Botão "remover" do slot, desenhado por FORA de [SquadPlayerCard].
+///
+/// Precisa viver fora do card porque no campo o card real é filho de um
+/// [Draggable] (arraste sem toque longo -- ver [DraggableSquadSlot]): um
+/// [Draggable] registra seu próprio reconhecedor de gesto em toda a área do
+/// filho, então qualquer toque dentro dela, mesmo em cima de um botão
+/// aninhado, entra na MESMA arena de gestos do arraste. Na prática isso
+/// fazia o botão só responder com um toque perfeitamente parado -- qualquer
+/// leve movimento (normal no toque humano) e o Draggable vencia a arena em
+/// vez do toque no X. Desenhando o botão como IRMÃO do Draggable (por cima,
+/// fora da sua subárvore), o toque nessa região nunca chega ao
+/// reconhecedor do Draggable.
+class SquadCardRemoveButton extends StatelessWidget {
+  const SquadCardRemoveButton({
+    required this.width,
+    required this.onPressed,
+    super.key,
+  });
 
   final double width;
   final VoidCallback onPressed;
 
+  /// Tamanho do círculo visível -- não muda, só a área de toque cresce.
+  static double visualSize(double width) => (width * 0.26).clamp(20.0, 28.0);
+
+  /// Alvo de toque real. O círculo visível (20-28px) é menor que o mínimo
+  /// recomendado (~44px) e em formações densas ficava ainda mais difícil de
+  /// acertar -- a área de toque cresce sem que o ícone pareça maior.
+  static double hitSize(double width) {
+    final visual = visualSize(width);
+    return visual < 40.0 ? 40.0 : visual;
+  }
+
+  /// Posicionado no canto superior direito do card, compensando o offset
+  /// pra manter o círculo visível no mesmo lugar mesmo com a área de toque
+  /// (maior que ele) estendendo além do card.
+  static Widget overlay({
+    required double width,
+    required VoidCallback onPressed,
+  }) {
+    final offset = -8 + (visualSize(width) - hitSize(width)) / 2;
+    return Positioned(
+      top: offset,
+      right: offset,
+      child: SquadCardRemoveButton(width: width, onPressed: onPressed),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = (width * 0.26).clamp(20.0, 28.0);
-    return Material(
-      color: context.colors.surfaceElevated,
-      shape: const CircleBorder(side: BorderSide(color: Colors.black26)),
-      elevation: 2,
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: onPressed,
-        child: SizedBox(
-          width: size,
-          height: size,
-          child: Icon(
-            Icons.close,
-            size: size * 0.65,
-            color: context.colors.textPrimary,
+    final visual = visualSize(width);
+    final hit = hitSize(width);
+    return SizedBox(
+      width: hit,
+      height: hit,
+      child: Material(
+        type: MaterialType.transparency,
+        shape: const CircleBorder(),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: onPressed,
+          child: Center(
+            child: Material(
+              color: context.colors.surfaceElevated,
+              shape: const CircleBorder(
+                side: BorderSide(color: Colors.black26),
+              ),
+              elevation: 2,
+              child: SizedBox(
+                width: visual,
+                height: visual,
+                child: Icon(
+                  Icons.close,
+                  size: visual * 0.65,
+                  color: context.colors.textPrimary,
+                ),
+              ),
+            ),
           ),
         ),
       ),

@@ -32,6 +32,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     super.initState();
     _password.addListener(_onInputChanged);
     _confirmation.addListener(_onInputChanged);
+    // Limpa qualquer falha deixada por outra tela de auth (o cubit e
+    // compartilhado e so limpa a falha quando o usuario digita).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AuthCubit>().clearFailure();
+      }
+    });
   }
 
   @override
