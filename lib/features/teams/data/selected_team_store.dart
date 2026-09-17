@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Chaveado por Conta FC, nao por login: cada Conta pode estar em times
-/// diferentes, entao cada uma lembra o proprio ultimo time selecionado.
+/// Chaveado por usuário: se o dispositivo trocar de conta (logout/login),
+/// cada uma lembra o próprio último time selecionado.
 class SelectedTeamStore {
   const SelectedTeamStore(this._preferences);
 

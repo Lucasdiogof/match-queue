@@ -147,8 +147,6 @@ class _HeaderCard extends StatelessWidget {
   );
 }
 
-
-
 /// Campinho de verdade, so leitura -- mesmo SquadField do Squad Builder,
 /// sem nenhum dos callbacks fazer nada (nada de editar escalacao alheia).
 class _SquadCard extends StatelessWidget {
@@ -209,7 +207,7 @@ class _RivalsCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Text(
-              division?.label(l10n) ?? l10n.profileDivisionNone,
+              division?.label(l10n) ?? l10n.rivalsDivisionNone,
               style: const TextStyle(
                 color: AppColors.darkTextPrimary,
                 fontWeight: FontWeight.w600,

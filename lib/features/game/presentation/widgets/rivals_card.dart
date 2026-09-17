@@ -11,24 +11,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Resumo de Division Rivals na Home (gameplay flows refresh, item 6) --
 /// mesma estrutura de [WeekendLeagueCard]: card só de leitura que abre
-/// [RivalsDetailPage], nunca um formulário embutido. Contextual à Conta FC
-/// selecionada, igual ao card de Weekend League.
+/// [RivalsDetailPage], nunca um formulário embutido. Sempre a conta logada,
+/// igual ao card de Weekend League.
 class RivalsCard extends StatelessWidget {
   const RivalsCard({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AccountCubit, AccountState>(
-        buildWhen: (previous, current) =>
-            previous.account != current.account,
-        builder: (context, state) {
-          final account = state.account;
-          if (account == null) {
-            return const SizedBox.shrink();
-          }
-          return _RivalsCardBody(account: account);
-        },
-      );
+  Widget build(BuildContext context) => BlocBuilder<AccountCubit, AccountState>(
+    buildWhen: (previous, current) => previous.account != current.account,
+    builder: (context, state) {
+      final account = state.account;
+      if (account == null) {
+        return const SizedBox.shrink();
+      }
+      return _RivalsCardBody(account: account);
+    },
+  );
 }
 
 class _RivalsCardBody extends StatelessWidget {

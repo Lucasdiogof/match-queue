@@ -68,7 +68,7 @@ class AppShellPage extends StatelessWidget {
       AppShellDestination(
         icon: Icons.person_outline,
         selectedIcon: Icons.person,
-        label: l10n.navProfile,
+        label: l10n.navAccount,
       ),
     ];
   }

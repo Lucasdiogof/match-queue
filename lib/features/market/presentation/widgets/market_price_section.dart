@@ -37,13 +37,13 @@ class MarketPriceSection extends StatelessWidget {
     // Consoles (PS/XB, mesmo mercado) pra todo o resto -- inclusive sem
     // conta selecionada ou sem plataforma informada, ja que Consoles e o
     // padrao mais comum.
-    final profilePlatform = context
+    final accountPlatform = context
         .read<AccountCubit>()
         .state
         .account
         ?.platforms
         .firstOrNull;
-    final initialPlatform = profilePlatform == Platform.pc ? 'pc' : 'ps';
+    final initialPlatform = accountPlatform == Platform.pc ? 'pc' : 'ps';
 
     return BlocProvider<MarketPriceCubit>(
       create: (_) =>

@@ -8,7 +8,7 @@ const String _nonAffiliationEn =
     'third-party brand.';
 
 const LegalDocument kPrivacyPolicyEn = LegalDocument(
-  updatedAt: '2026-09-15',
+  updatedAt: '2026-09-17',
   nonAffiliationDisclaimer: _nonAffiliationEn,
   sections: <LegalSection>[
     LegalSection(
@@ -24,25 +24,26 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           'We only collect what the app needs to work:\n\n'
           '• Account data: email and password (stored securely by our '
           'authentication provider, never in plain text).\n'
-          '• Account: your display name.\n'
-          '• Internal identifiers: a unique ID generated for you and for '
-          'each Team/Account you create or join.\n'
-          '• Accounts: the names you give your Accounts (the in-game '
-          'profiles you register and manage in Match Queue), the squad you '
-          'build for each one, Rivals division, Weekend League records you '
-          'enter yourself, and, if you choose to upload one, a photo to '
-          'identify the Account.\n'
+          '• Account profile: your display name, avatar photo (if you '
+          'upload one), the platform(s) you play on, and your Rivals '
+          'division.\n'
+          '• Internal identifiers: a unique ID generated for you, and one '
+          'for each Team you create or join.\n'
+          '• Squad: the lineup you build (players, manager, and '
+          'formation).\n'
           '• Teams: name, tag, and activity history of the teams you '
           'belong to.\n'
-          '• Match data: match searches, queues, results, and stats '
-          '(goals, assists) that you or your team record.\n'
+          '• Match search data: match searches, queues, and search '
+          'history (whether you found a match or cancelled, and when) for '
+          'you and your team.\n'
+          '• Weekend League and Rivals records: win/loss counts you enter '
+          'yourself.\n'
           '• Push notification token (Firebase Cloud Messaging), if you '
           'allow notifications.\n'
           '• Public profile: if you turn this on in settings, you choose '
-          'a public address and one Account to link to it; the link shows '
-          'your name and that Account, and you individually decide '
-          'whether it also shows the squad, Rivals division, Weekend '
-          'League record, and stats for that Account.',
+          'a public address; the link shows your name, and you '
+          'individually decide whether it also shows your squad, Rivals '
+          'division, Weekend League record, and stats.',
     ),
     LegalSection(
       title: '3. Providers we use',
@@ -56,8 +57,8 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '4. Why we use your data',
       body:
-          'We use the data we collect exclusively to: authenticate your '
-          'profile; run your team\'s match search queue; show your '
+          'We use the data we collect exclusively to: authenticate you; '
+          'run your team\'s match search queue; show your '
           'history and stats; send notifications about your turn in the '
           'queue or team events (if you allow it); and, if you enable a '
           'public profile, display on it whatever you choose to show. We '
@@ -75,18 +76,18 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '6. Retention',
       body:
-          'We keep your data for as long as your profile exists. Your '
+          'We keep your data for as long as your account exists. Your '
           'team\'s match history is kept even after you delete your '
-          'profile, but anonymized (with your name removed) so we don\'t '
+          'account, but anonymized (with your name removed) so we don\'t '
           'erase the shared history of the other team members.',
     ),
     LegalSection(
       title: '7. Account deletion',
       body:
-          'You can delete your profile at any time under Account → '
-          'Delete my profile. Deletion removes your profile, Accounts, '
-          'squads, team memberships, registered devices, notification '
-          'preferences, and public profile. If you are the sole member of '
+          'You can delete your account at any time under Account → '
+          'Delete my account. Deletion removes your account, squad, team '
+          'memberships, registered devices, notification preferences, and '
+          'public profile. If you are the sole member of '
           'a team you created, the whole team is removed; if there are '
           'other members, deletion is only allowed once you are no longer '
           'the sole owner. This action is permanent and cannot be undone.',
@@ -103,10 +104,9 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
       title: '9. Your rights',
       body:
           'You can, at any time: access and edit your display name and '
-          'each Account\'s photo from within the app; turn your public '
-          'profile on or off and choose '
-          'what it shows (the linked Account, squad, Rivals division, '
-          'Weekend League record, and stats); and delete your profile and '
+          'avatar photo from within the app; turn your public profile on '
+          'or off and choose what it shows (squad, Rivals division, '
+          'Weekend League record, and stats); and delete your account and '
           'its associated data. For any other request about your data, '
           'contact us at $kSupportEmail.',
     ),
@@ -133,13 +133,13 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
 );
 
 const LegalDocument kTermsOfUseEn = LegalDocument(
-  updatedAt: '2026-09-08',
+  updatedAt: '2026-09-17',
   nonAffiliationDisclaimer: _nonAffiliationEn,
   sections: <LegalSection>[
     LegalSection(
       title: '1. Acceptance of terms',
       body:
-          'By creating an profile or using Match Queue, you agree to these '
+          'By creating an account or using Match Queue, you agree to these '
           'Terms of Use and our Privacy Policy. If you do not agree, '
           'please do not use the app.',
     ),
@@ -148,20 +148,21 @@ const LegalDocument kTermsOfUseEn = LegalDocument(
       body:
           'Match Queue helps groups of EA SPORTS FC / Clubs players '
           'organize who searches for a match at any given time, and lets '
-          'them record results, profiles, and team stats.',
+          'them track squads, team activity, and their own competitive '
+          'records.',
     ),
     LegalSection(
-      title: '3. Your profile',
+      title: '3. Your account',
       body:
           'You are responsible for keeping your password confidential and '
-          'for all activity under your profile. You must provide accurate '
+          'for all activity under your account. You must provide accurate '
           'information when signing up.',
     ),
     LegalSection(
       title: '4. User conduct',
       body:
           'You agree not to use the app to harass other users, post '
-          'offensive content, attempt to access other people\'s profiles, '
+          'offensive content, attempt to access other people\'s accounts, '
           'or interfere with the normal operation of the service.',
     ),
     LegalSection(
@@ -175,8 +176,8 @@ const LegalDocument kTermsOfUseEn = LegalDocument(
     LegalSection(
       title: '6. Content you submit',
       body:
-          'You are responsible for the profile names, results, and other '
-          'information you enter into the app. We reserve the right to '
+          'You are responsible for the squad names and other information '
+          'you enter into the app. We reserve the right to '
           'remove content that is clearly offensive or that violates '
           'these Terms.',
     ),
@@ -199,9 +200,9 @@ const LegalDocument kTermsOfUseEn = LegalDocument(
     LegalSection(
       title: '9. Suspension and termination',
       body:
-          'We may suspend or terminate access for an profile that '
-          'violates these Terms. You can close your profile at any time '
-          'via the profile deletion feature described in the Privacy '
+          'We may suspend or terminate access for an account that '
+          'violates these Terms. You can close your account at any time '
+          'via the account deletion feature described in the Privacy '
           'Policy.',
     ),
     LegalSection(

@@ -7,8 +7,7 @@ import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 
 abstract interface class TeamRepository {
-  /// Times da Conta FC informada, não do login inteiro -- duas Contas do
-  /// mesmo login podem estar em times diferentes.
+  /// Times do usuário informado.
   Future<List<UserTeam>> fetchMyTeams({required String userId});
 
   Future<Team> createTeam({
@@ -52,9 +51,7 @@ abstract interface class TeamRepository {
 
   Future<List<TeamMemberStatus>> fetchPlayerStatuses(String teamId);
 
-  /// Perfil publico de um membro do MESMO time (Etapa 11). [userId]
-  /// desambigua quando o alvo tem mais de uma Conta vinculada aquele time --
-  /// veja [PlayerProfile.needsProfileSelection].
+  /// Perfil publico de um membro do MESMO time (Etapa 11).
   Future<PlayerProfile> fetchMemberProfile({
     required String teamId,
     required String userId,
@@ -75,14 +72,10 @@ abstract interface class TeamRepository {
   Future<PublicTeam> getPublicTeam(String teamId);
 
   /// OWNER remove PLAYER ou ADMIN (gerente); ADMIN remove só PLAYER. Nunca
-  /// remove o OWNER -- o servidor recusa antes de chegar aqui. Alvo é a
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  });
+  /// remove o OWNER -- o servidor recusa antes de chegar aqui.
+  Future<void> removeMember({required String teamId, required String userId});
 
-  /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER. Alvo é a
-  /// Conta FC, não o login.
+  /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER.
   Future<void> setMemberRole({
     required String teamId,
     required String userId,

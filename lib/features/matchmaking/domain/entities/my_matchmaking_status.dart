@@ -57,8 +57,8 @@ class MySearching extends Equatable {
   ];
 }
 
-/// Uma outra busca ATIVA da mesma Conta FC, num time diferente do que esta
-/// tela mostra agora -- o lock global impede a mesma conta de buscar em
+/// Uma outra busca ATIVA do mesmo usuário, num time diferente do que esta
+/// tela mostra agora -- o lock global impede o mesmo usuário de buscar em
 /// dois times, e a UI precisa explicar isso em vez de so esconder o botao
 /// (item 9 do pedido).
 class SearchingElsewhere extends Equatable {
