@@ -16,7 +16,7 @@ class NotificationDestinationResolver {
   ) async {
     final params = notification.params;
     final teamId = _string(params['team_id']);
-    final profileId = _string(params['fc_account_id']);
+
 
     // Pedido/convite recebido: a acao mora na aba Convites de Times (antiga
     // tela/aba Solicitacoes), nao no detalhe do time (que nem existe ainda
@@ -49,11 +49,8 @@ class NotificationDestinationResolver {
       return;
     }
 
-    if (profileId != null) {
-      await _pushIfNotCurrent(
-        context,
-        AppRoutes.profileDetailLocation(profileId),
-      );
+    if (notification.type == 'RIVALS_DIVISION_CHANGED') {
+      await _pushIfNotCurrent(context, AppRoutes.account.path);
       return;
     }
 

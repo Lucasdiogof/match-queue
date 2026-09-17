@@ -4,17 +4,15 @@ import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
-import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 
 abstract interface class TeamRepository {
   /// Times da Conta FC informada, não do login inteiro -- duas Contas do
   /// mesmo login podem estar em times diferentes.
-  Future<List<UserTeam>> fetchMyTeams({required String profileId});
+  Future<List<UserTeam>> fetchMyTeams({required String userId});
 
   Future<Team> createTeam({
     required String name,
-    required String profileId,
     String? tag,
     Duration? defaultSearchDuration,
   });
@@ -54,25 +52,12 @@ abstract interface class TeamRepository {
 
   Future<List<TeamMemberStatus>> fetchPlayerStatuses(String teamId);
 
-  /// Perfil publico de um membro do MESMO time (Etapa 11). [profileId]
+  /// Perfil publico de um membro do MESMO time (Etapa 11). [userId]
   /// desambigua quando o alvo tem mais de uma Conta vinculada aquele time --
   /// veja [PlayerProfile.needsProfileSelection].
   Future<PlayerProfile> fetchMemberProfile({
     required String teamId,
     required String userId,
-    String? profileId,
-  });
-
-  /// Dashboard esportivo do Time numa chamada só (Etapa 14): resumo,
-  /// ranking, artilharia, assistências, WL, Rivals e atividade.
-  Future<TeamSportsDashboard> fetchSportsDashboard(String teamId);
-
-  /// Lista completa de artilharia ou assistências, para o "ver tudo".
-  Future<List<TeamPlayerLeaderboardEntry>> fetchPlayerLeaderboard({
-    required String teamId,
-    required bool byAssists,
-    int limit,
-    int offset,
   });
 
   /// Liga/desliga a visibilidade pública do time (aba Explorar + página
@@ -91,17 +76,16 @@ abstract interface class TeamRepository {
 
   /// OWNER remove PLAYER ou ADMIN (gerente); ADMIN remove só PLAYER. Nunca
   /// remove o OWNER -- o servidor recusa antes de chegar aqui. Alvo é a
-  /// Conta FC (team_members.fc_account_id), não o login.
   Future<void> removeMember({
     required String teamId,
-    required String profileId,
+    required String userId,
   });
 
   /// Somente OWNER promove PLAYER->ADMIN ou rebaixa ADMIN->PLAYER. Alvo é a
   /// Conta FC, não o login.
   Future<void> setMemberRole({
     required String teamId,
-    required String profileId,
+    required String userId,
     required TeamRole role,
   });
 
@@ -110,6 +94,6 @@ abstract interface class TeamRepository {
   /// o time nunca fica sem dono nem com dois.
   Future<void> transferOwnership({
     required String teamId,
-    required String profileId,
+    required String userId,
   });
 }

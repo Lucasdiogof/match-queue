@@ -38,14 +38,14 @@ class InviteResolutionCubit extends Cubit<InviteResolutionState> {
     }
   }
 
-  Future<void> join({String? profileId}) async {
+  Future<void> join() async {
     final code = _code;
     if (code == null || state.status != InviteResolutionStatus.resolved) {
       return;
     }
     emit(state.copyWith(status: InviteResolutionStatus.joining));
     try {
-      final result = await _repository.joinTeam(code, profileId: profileId);
+      final result = await _repository.joinTeam(code);
       if (!isClosed) {
         emit(
           state.copyWith(

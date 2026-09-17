@@ -3,8 +3,8 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/profiles/domain/entities/rivals_division.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_field.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
@@ -37,7 +37,6 @@ class PlayerProfilePage extends StatefulWidget {
 
 class _PlayerProfilePageState extends State<PlayerProfilePage> {
   late Future<PlayerProfile> _future;
-  String? _selectedAccountId;
 
   @override
   void initState() {
@@ -49,7 +48,6 @@ class _PlayerProfilePageState extends State<PlayerProfilePage> {
     _future = getIt<TeamRepository>().fetchMemberProfile(
       teamId: widget.teamId,
       userId: widget.userId,
-      profileId: _selectedAccountId,
     );
   }
 
@@ -80,13 +78,7 @@ class _PlayerProfilePageState extends State<PlayerProfilePage> {
           if (profile == null) {
             return const SizedBox.shrink();
           }
-          return _ProfileBody(
-            profile: profile,
-            onSelectAccount: (profileId) => setState(() {
-              _selectedAccountId = profileId;
-              _load();
-            }),
-          );
+          return _ProfileBody(profile: profile);
         },
       ),
     );
@@ -94,10 +86,9 @@ class _PlayerProfilePageState extends State<PlayerProfilePage> {
 }
 
 class _ProfileBody extends StatelessWidget {
-  const _ProfileBody({required this.profile, required this.onSelectAccount});
+  const _ProfileBody({required this.profile});
 
   final PlayerProfile profile;
-  final ValueChanged<String> onSelectAccount;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -105,34 +96,25 @@ class _ProfileBody extends StatelessWidget {
     children: <Widget>[
       _HeaderCard(profile: profile),
       const SizedBox(height: AppSpacing.lg),
-      if (profile.needsProfileSelection)
-        _AccountSelectionCard(
-          profile: profile,
-          onSelectAccount: onSelectAccount,
-        )
-      else if (profile.profile == null)
-        const _NoAccountCard()
-      else ...<Widget>[
-        _SquadCard(squad: profile.squad),
-        const SizedBox(height: AppSpacing.lg),
-        _RivalsCard(profile: profile.profile!),
-        const SizedBox(height: AppSpacing.lg),
-        WeekendLeagueHistoryCard(
-          history: profile.weekendLeagueHistory
-              .map(
-                (entry) => WeekendLeagueHistoryEntry(
-                  eventId: entry.eventId,
-                  number: entry.number,
-                  season: entry.season,
-                  startsAt: entry.startsAt,
-                  endsAt: entry.endsAt,
-                  wins: entry.wins,
-                  losses: entry.losses,
-                ),
-              )
-              .toList(growable: false),
-        ),
-      ],
+      _SquadCard(squad: profile.squad),
+      const SizedBox(height: AppSpacing.lg),
+      _RivalsCard(profile: profile),
+      const SizedBox(height: AppSpacing.lg),
+      WeekendLeagueHistoryCard(
+        history: profile.weekendLeagueHistory
+            .map(
+              (entry) => WeekendLeagueHistoryEntry(
+                eventId: entry.eventId,
+                number: entry.number,
+                season: entry.season,
+                startsAt: entry.startsAt,
+                endsAt: entry.endsAt,
+                wins: entry.wins,
+                losses: entry.losses,
+              ),
+            )
+            .toList(growable: false),
+      ),
     ],
   );
 }
@@ -165,53 +147,7 @@ class _HeaderCard extends StatelessWidget {
   );
 }
 
-class _AccountSelectionCard extends StatelessWidget {
-  const _AccountSelectionCard({
-    required this.profile,
-    required this.onSelectAccount,
-  });
 
-  final PlayerProfile profile;
-  final ValueChanged<String> onSelectAccount;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            l10n.playerProfileSelectAccountTitle,
-            style: context.textStyles.titleSmall,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          for (final candidate in profile.candidateProfiles)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: AppButton.secondary(
-                label: candidate.name,
-                onPressed: () => onSelectAccount(candidate.id),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NoAccountCard extends StatelessWidget {
-  const _NoAccountCard();
-
-  @override
-  Widget build(BuildContext context) => AppCard(
-    child: AppBanner(
-      tone: AppBannerTone.neutral,
-      message: context.l10n.playerProfileNoAccountMessage,
-    ),
-  );
-}
 
 /// Campinho de verdade, so leitura -- mesmo SquadField do Squad Builder,
 /// sem nenhum dos callbacks fazer nada (nada de editar escalacao alheia).
@@ -259,7 +195,7 @@ class _SquadCard extends StatelessWidget {
 class _RivalsCard extends StatelessWidget {
   const _RivalsCard({required this.profile});
 
-  final PlayerProfileAccount profile;
+  final PlayerProfile profile;
 
   @override
   Widget build(BuildContext context) {

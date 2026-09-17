@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/notifications/domain/repositories/notification_inbox_repository.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
@@ -21,20 +20,16 @@ class NotificationRouter {
     this._logger, {
     NotificationInboxRepository? inboxRepository,
     NotificationUnreadCubit? unreadCubit,
-    ProfilesCubit? profilesCubit,
   }) : _inboxRepository = inboxRepository,
-       _unreadCubit = unreadCubit,
-       _profilesCubit = profilesCubit;
+       _unreadCubit = unreadCubit;
 
   final TeamsCubit _teamsCubit;
   final AppLogger _logger;
   final NotificationInboxRepository? _inboxRepository;
   final NotificationUnreadCubit? _unreadCubit;
-  final ProfilesCubit? _profilesCubit;
 
   static const String keyType = 'type';
   static const String keyTeamId = 'team_id';
-  static const String keyProfileId = 'fc_account_id';
   static const String keyNotificationId = 'notification_id';
 
   static const Set<String> _teamScopedTypes = <String>{
@@ -76,12 +71,8 @@ class NotificationRouter {
     }
 
     final type = _string(data[keyType]);
-    final profileId = _string(data[keyProfileId]);
 
     if (type != null && _matchmakingTypes.contains(type) && teamId != null) {
-      if (profileId != null) {
-        await _profilesCubit?.selectProfile(profileId);
-      }
       if (!context.mounted) {
         return;
       }
@@ -93,8 +84,8 @@ class NotificationRouter {
       context.go(AppRoutes.teamDetailLocation(teamId));
       return;
     }
-    if (type == 'RIVALS_DIVISION_CHANGED' && profileId != null) {
-      context.go(AppRoutes.profileDetailLocation(profileId));
+    if (type == 'RIVALS_DIVISION_CHANGED') {
+      context.go(AppRoutes.account.path);
       return;
     }
 

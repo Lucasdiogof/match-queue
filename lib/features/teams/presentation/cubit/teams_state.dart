@@ -9,7 +9,7 @@ enum TeamMembersStatus { initial, loading, ready, failure }
 class TeamsState extends Equatable {
   const TeamsState({
     this.status = TeamsStatus.initial,
-    this.profileId,
+    this.userId,
     this.teams = const <UserTeam>[],
     this.selectedTeamId,
     this.membersStatus = TeamMembersStatus.initial,
@@ -24,7 +24,7 @@ class TeamsState extends Equatable {
 
   /// Conta FC cujos times estao (ou estavam sendo) carregados -- usado so
   /// pra descartar uma resposta que chegou depois de trocar de conta.
-  final String? profileId;
+  final String? userId;
   final List<UserTeam> teams;
   final String? selectedTeamId;
   final TeamMembersStatus membersStatus;
@@ -57,7 +57,7 @@ class TeamsState extends Equatable {
 
   TeamsState copyWith({
     TeamsStatus? status,
-    String? profileId,
+    String? userId,
     bool clearProfileId = false,
     List<UserTeam>? teams,
     String? selectedTeamId,
@@ -73,7 +73,7 @@ class TeamsState extends Equatable {
     bool? isSaving,
   }) => TeamsState(
     status: status ?? this.status,
-    profileId: clearProfileId ? null : (profileId ?? this.profileId),
+    userId: clearProfileId ? null : (userId ?? this.userId),
     teams: teams ?? this.teams,
     selectedTeamId: clearSelectedTeamId
         ? null
@@ -93,7 +93,7 @@ class TeamsState extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     status,
-    profileId,
+    userId,
     teams,
     selectedTeamId,
     membersStatus,

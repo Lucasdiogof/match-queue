@@ -6,11 +6,10 @@ import 'package:fifa_queue/features/teams/data/models/team_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class TeamRemoteDataSource {
-  Future<List<Map<String, dynamic>>> fetchMyMemberships(String profileId);
+  Future<List<Map<String, dynamic>>> fetchMyMemberships(String userId);
 
   Future<Map<String, dynamic>> createTeam({
     required String name,
-    required String profileId,
     String? tag,
     int? defaultSearchDurationSeconds,
   });
@@ -32,16 +31,6 @@ abstract interface class TeamRemoteDataSource {
   Future<Map<String, dynamic>> getMemberProfile({
     required String teamId,
     required String userId,
-    String? profileId,
-  });
-
-  Future<Map<String, dynamic>> getSportsDashboard(String teamId);
-
-  Future<Object?> getPlayerLeaderboard({
-    required String teamId,
-    required bool byAssists,
-    int limit,
-    int offset,
   });
 
   Future<Map<String, dynamic>> setTeamVisibility({
@@ -55,18 +44,18 @@ abstract interface class TeamRemoteDataSource {
 
   Future<void> removeMember({
     required String teamId,
-    required String profileId,
+    required String userId,
   });
 
   Future<void> setMemberRole({
     required String teamId,
-    required String profileId,
+    required String userId,
     required String role,
   });
 
   Future<void> transferOwnership({
     required String teamId,
-    required String profileId,
+    required String userId,
   });
 
   Future<String> uploadTeamLogo({
@@ -92,7 +81,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
 
   @override
   Future<List<Map<String, dynamic>>> fetchMyMemberships(
-    String profileId,
+    String userId,
   ) async {
     final rows = await _members
         .select(
@@ -100,7 +89,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
           '${TeamMemberModel.columnJoinedAt}, '
           '${TeamMemberModel.embeddedTeam}:${TeamModel.table}(*)',
         )
-        .eq(TeamMemberModel.columnProfileId, profileId)
+        .eq(TeamMemberModel.columnUserId, userId)
         // ascending: true explicito -- o default do postgrest-dart e
         // DESCENDENTE. Sem isto "meus times" vinha do mais novo pro mais
         // antigo e o fallback de selecao pulava para o time recem-criado.
@@ -112,7 +101,6 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   @override
   Future<Map<String, dynamic>> createTeam({
     required String name,
-    required String profileId,
     String? tag,
     int? defaultSearchDurationSeconds,
   }) async {
@@ -122,7 +110,6 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
         'p_name': name,
         'p_tag': tag,
         'p_default_search_duration_seconds': ?defaultSearchDurationSeconds,
-        'p_fc_account_id': profileId,
       },
     );
     return Map<String, dynamic>.from(response as Map);
@@ -166,15 +153,10 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   Future<Map<String, dynamic>> getMemberProfile({
     required String teamId,
     required String userId,
-    String? profileId,
   }) async {
     final response = await _client.rpc<dynamic>(
       'get_team_member_profile',
-      params: <String, dynamic>{
-        'p_team_id': teamId,
-        'p_user_id': userId,
-        'p_fc_account_id': profileId,
-      },
+      params: <String, dynamic>{'p_team_id': teamId, 'p_user_id': userId},
     );
     return Map<String, dynamic>.from(response as Map);
   }
@@ -185,10 +167,9 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
         .select(
           '${TeamMemberModel.columnTeamId}, '
           '${TeamMemberModel.columnUserId}, '
-          '${TeamMemberModel.columnProfileId}, '
           '${TeamMemberModel.columnRole}, '
           '${TeamMemberModel.columnJoinedAt}, '
-          '${TeamMemberModel.embeddedProfile}:${AccountModel.table}(*)',
+          '${TeamMemberModel.embeddedAccount}:${AccountModel.table}(*)',
         )
         .eq(TeamMemberModel.columnTeamId, teamId)
         // A ordem do enum team_role e OWNER, ADMIN, PLAYER; ascendente
@@ -198,31 +179,6 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
         .order(TeamMemberModel.columnJoinedAt, ascending: true);
     return List<Map<String, dynamic>>.from(rows);
   }
-
-  @override
-  Future<Map<String, dynamic>> getSportsDashboard(String teamId) async {
-    final response = await _client.rpc<dynamic>(
-      'get_team_sports_dashboard',
-      params: <String, dynamic>{'p_team_id': teamId},
-    );
-    return Map<String, dynamic>.from(response as Map);
-  }
-
-  @override
-  Future<Object?> getPlayerLeaderboard({
-    required String teamId,
-    required bool byAssists,
-    int limit = 50,
-    int offset = 0,
-  }) => _client.rpc<dynamic>(
-    'get_team_player_leaderboard',
-    params: <String, dynamic>{
-      'p_team_id': teamId,
-      'p_by_assists': byAssists,
-      'p_limit': limit,
-      'p_offset': offset,
-    },
-  );
 
   @override
   Future<Map<String, dynamic>> setTeamVisibility({
@@ -254,25 +210,25 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   @override
   Future<void> removeMember({
     required String teamId,
-    required String profileId,
+    required String userId,
   }) => _client.rpc<dynamic>(
     'remove_team_member',
     params: <String, dynamic>{
       'p_team_id': teamId,
-      'p_target_fc_account_id': profileId,
+      'p_target_user_id': userId,
     },
   );
 
   @override
   Future<void> setMemberRole({
     required String teamId,
-    required String profileId,
+    required String userId,
     required String role,
   }) => _client.rpc<dynamic>(
     'set_team_member_role',
     params: <String, dynamic>{
       'p_team_id': teamId,
-      'p_target_fc_account_id': profileId,
+      'p_target_user_id': userId,
       'p_role': role,
     },
   );
@@ -280,12 +236,12 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   @override
   Future<void> transferOwnership({
     required String teamId,
-    required String profileId,
+    required String userId,
   }) => _client.rpc<dynamic>(
     'transfer_team_ownership',
     params: <String, dynamic>{
       'p_team_id': teamId,
-      'p_target_fc_account_id': profileId,
+      'p_target_user_id': userId,
     },
   );
 

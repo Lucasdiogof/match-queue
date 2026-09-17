@@ -1,13 +1,15 @@
 import 'dart:async';
 
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Squads seguem o Elenco selecionado: trocar de conta recarrega a lista, e
-/// nunca sobra squad da conta anterior na tela (item 127).
+/// O squad e da conta autenticada, entao ele so precisa (re)carregar quando
+/// a propria sessao muda: entrou (conta virou nao-nula) ou saiu (virou
+/// nula, e a lista da conta anterior tem que sumir da tela em vez de
+/// continuar visivel pro proximo login).
 class FcSquadsSessionListener extends StatelessWidget {
   const FcSquadsSessionListener({required this.child, super.key});
 
@@ -15,12 +17,11 @@ class FcSquadsSessionListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocListener<ProfilesCubit, ProfilesState>(
+      BlocListener<AccountCubit, AccountState>(
         listenWhen: (previous, current) =>
-            previous.selectedProfileId != current.selectedProfileId,
-        listener: (context, state) => unawaited(
-          context.read<FcSquadsCubit>().load(state.selectedProfileId),
-        ),
+            previous.account?.id != current.account?.id,
+        listener: (context, state) =>
+            unawaited(context.read<FcSquadsCubit>().load()),
         child: child,
       );
 }

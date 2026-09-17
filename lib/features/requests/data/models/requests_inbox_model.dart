@@ -20,7 +20,6 @@ class RequestsInboxModel {
               teamTag: row['team_tag'] as String?,
               teamLogoUrl: row['team_logo_url'] as String?,
               memberCount: row['member_count'] as int? ?? 0,
-              profileName: row['fc_account_name'] as String?,
               createdAt: DateTime.parse('${row['created_at']}'),
             ),
           )
@@ -35,7 +34,6 @@ class RequestsInboxModel {
               requesterUserId: '${row['requester_user_id']}',
               requesterDisplayName: '${row['requester_display_name']}',
               requesterAvatarUrl: row['requester_avatar_url'] as String?,
-              profileName: row['fc_account_name'] as String?,
               createdAt: DateTime.parse('${row['created_at']}'),
             ),
           )

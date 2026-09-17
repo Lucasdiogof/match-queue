@@ -37,7 +37,7 @@ Future<void> showLineupShareSheet({
       child: _LineupShareBody(
         draft: draft,
         chemistry: state.chemistry,
-        profileName: state.baseline?.name ?? '',
+        ownerName: state.baseline?.name ?? '',
       ),
     ),
   );
@@ -47,12 +47,12 @@ class _LineupShareBody extends StatefulWidget {
   const _LineupShareBody({
     required this.draft,
     required this.chemistry,
-    required this.profileName,
+    required this.ownerName,
   });
 
   final LineupDraft draft;
   final int? chemistry;
-  final String profileName;
+  final String ownerName;
 
   @override
   State<_LineupShareBody> createState() => _LineupShareBodyState();
@@ -72,7 +72,7 @@ class _LineupShareBodyState extends State<_LineupShareBody> {
       await getIt<ShareService>().shareImage(
         bytes,
         fileName: 'elenco.png',
-        text: widget.profileName,
+        text: widget.ownerName,
       );
     } finally {
       if (mounted) {
@@ -93,7 +93,7 @@ class _LineupShareBodyState extends State<_LineupShareBody> {
           child: LineupShareCard(
             draft: widget.draft,
             chemistry: widget.chemistry,
-            profileName: widget.profileName,
+            ownerName: widget.ownerName,
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
@@ -117,13 +117,13 @@ class LineupShareCard extends StatelessWidget {
   const LineupShareCard({
     required this.draft,
     required this.chemistry,
-    required this.profileName,
+    required this.ownerName,
     super.key,
   });
 
   final LineupDraft draft;
   final int? chemistry;
-  final String profileName;
+  final String ownerName;
 
   /// No Web, carregar a arte remota por `<img>` sem CORS CONTAMINA o canvas,
   /// e `toImage()` passa a falhar -- a captura sairia vazia. Em vez de um
@@ -157,7 +157,7 @@ class LineupShareCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Text(
-                  profileName,
+                  ownerName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.textStyles.titleMedium?.copyWith(

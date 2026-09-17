@@ -15,7 +15,6 @@ class TeamMemberStatusModel {
   static TeamMemberStatus _fromJson(Map<String, dynamic> json) =>
       TeamMemberStatus(
         userId: '${json['user_id']}',
-        profileId: '${json['fc_account_id']}',
         displayName: '${json['display_name']}',
         avatarUrl: json['avatar_url'] as String?,
         role: TeamRole.fromKey(json['role']),

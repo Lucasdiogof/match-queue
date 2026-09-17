@@ -22,7 +22,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     this._repository,
     this._logger,
     this._cooldownStore, {
-    required this.profileId,
+    required this.userId,
     required this.teamId,
     required this.mode,
   }) : super(const MatchmakingState());
@@ -32,7 +32,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   final MatchmakingRepository _repository;
   final AppLogger _logger;
   final SearchCooldownStore _cooldownStore;
-  final String profileId;
+  final String userId;
   final String teamId;
   final GameMode mode;
 
@@ -50,7 +50,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     emit(state.copyWith(status: MatchmakingStatus.loading, clearFailure: true));
     try {
       var snapshot = await _repository.getMyStatus(
-        profileId: profileId,
         teamId: teamId,
         mode: mode,
       );
@@ -58,7 +57,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         return;
       }
       // searchingElsewhere e sempre sobre a PROPRIA conta (a RPC filtra por
-      // fc_account_id). Quando o time da sessao "de outro lugar" e o MESMO
+      // user_id). Quando o time da sessao "de outro lugar" e o MESMO
       // desta tela, so pode ser sobra de um modo que essa mesma conta
       // acabou de sair -- nunca e legitimamente "outra pessoa" nem "outro
       // time de verdade" (isso teria teamId diferente). Cleanup best-effort
@@ -73,7 +72,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
           return;
         }
         snapshot = await _repository.getMyStatus(
-          profileId: profileId,
           teamId: teamId,
           mode: mode,
         );
@@ -88,7 +86,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
       // por qualquer troca de conta/time/modo -- ainda estiver dentro dos
       // 30s, o botao "Buscar partida" precisa nascer ja bloqueado, nao
       // liberado ate a proxima acao.
-      final storedCooldown = _cooldownStore.read(profileId, teamId, mode.key);
+      final storedCooldown = _cooldownStore.read(userId, teamId, mode.key);
       if (storedCooldown != null && DateTime.now().isBefore(storedCooldown)) {
         emit(state.copyWith(cooldownEndsAt: storedCooldown));
       }
@@ -108,7 +106,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     emit(state.copyWith(isRefreshing: true));
     try {
       final snapshot = await _repository.getMyStatus(
-        profileId: profileId,
         teamId: teamId,
         mode: mode,
       );
@@ -143,7 +140,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   Future<bool> startSearch({String? fcSquadId}) async {
     final ok = await _runAction(
       () => _repository.requestSearch(
-        profileId: profileId,
         teamId: teamId,
         fcSquadId: fcSquadId,
         mode: mode,
@@ -158,7 +154,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   static const Duration _cooldownDuration = Duration(seconds: 30);
 
   Future<bool> cancel() async {
-    final ok = await _runAction(() => _repository.cancelSearch(profileId));
+    final ok = await _runAction(() => _repository.cancelSearch());
     if (ok && !isClosed) {
       _setCooldown(DateTime.now().add(_cooldownDuration));
     }
@@ -167,14 +163,13 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
 
   Future<bool> leaveQueue() => _runAction(
     () => _repository.leaveQueue(
-      profileId: profileId,
       teamId: teamId,
       mode: mode,
     ),
   );
 
   Future<bool> matchFound() async {
-    final ok = await _runAction(() => _repository.reportMatchFound(profileId));
+    final ok = await _runAction(() => _repository.reportMatchFound());
     if (ok && !isClosed) {
       _setCooldown(DateTime.now().add(_cooldownDuration));
     }
@@ -186,7 +181,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   /// nasceria sem saber que esse cooldown ainda esta rolando.
   void _setCooldown(DateTime endsAt) {
     emit(state.copyWith(cooldownEndsAt: endsAt));
-    unawaited(_cooldownStore.write(profileId, teamId, mode.key, endsAt));
+    unawaited(_cooldownStore.write(userId, teamId, mode.key, endsAt));
   }
 
   Future<bool> requestPriority() async {
@@ -196,7 +191,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     emit(state.copyWith(isActionPending: true, clearFailure: true));
     try {
       await _repository.requestPriority(
-        profileId: profileId,
         teamId: teamId,
         mode: mode,
       );
@@ -303,7 +297,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         );
         if (isCooldown) {
           unawaited(
-            _cooldownStore.write(profileId, teamId, mode.key, cooldownEndsAt!),
+            _cooldownStore.write(userId, teamId, mode.key, cooldownEndsAt!),
           );
         }
       }
@@ -319,7 +313,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   /// desta correcao), mas load() nao trava por causa disso.
   Future<void> _cancelStaleElsewhereSearch() async {
     try {
-      await _repository.cancelSearch(profileId);
+      await _repository.cancelSearch();
     } on AppFailure {
       // Ignorado de proposito -- ver doc comment acima.
     }
@@ -381,14 +375,14 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     // a mesma situacao de hoje (expira sozinha).
     final snapshot = state.snapshot;
     if (snapshot != null && snapshot.isSearchingByMe) {
-      unawaited(_repository.cancelSearch(profileId));
+      unawaited(_repository.cancelSearch());
       // Mesmo cooldown de um cancel() manual (ver _setCooldown) -- so que
       // sem emit (cubit ja fechando): direto no store, pra sobreviver e
       // ser lido pelo PROXIMO cubit dessa mesma conta+time+modo, seja
       // daqui a 2 segundos ou depois de passar por outras contas.
       unawaited(
         _cooldownStore.write(
-          profileId,
+          userId,
           teamId,
           mode.key,
           DateTime.now().add(_cooldownDuration),
@@ -397,7 +391,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     } else if (snapshot != null && snapshot.isQueuedByMe) {
       unawaited(
         _repository.leaveQueue(
-          profileId: profileId,
           teamId: teamId,
           mode: mode,
         ),

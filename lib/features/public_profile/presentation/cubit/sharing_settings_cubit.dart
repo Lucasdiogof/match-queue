@@ -5,27 +5,25 @@ import 'package:fifa_queue/features/public_profile/domain/repositories/public_pr
 import 'package:fifa_queue/features/public_profile/presentation/cubit/sharing_settings_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Perfil público de UMA conta FC -- escopado por [profileId] desde a
-/// criação, nunca trocável depois (trocar de conta é abrir outro cubit,
-/// não mutar este).
+/// Configuração do perfil público do usuário logado -- uma linha por
+/// usuário, resolvida pela sessão (nunca por um id vindo da UI).
 class SharingSettingsCubit extends Cubit<SharingSettingsState> {
-  SharingSettingsCubit(this._repository, {required this.profileId})
+  SharingSettingsCubit(this._repository)
     : super(
-        SharingSettingsState(
-          saved: PublicSharingSettings.empty(profileId),
-          draft: PublicSharingSettings.empty(profileId),
+        const SharingSettingsState(
+          saved: PublicSharingSettings.empty,
+          draft: PublicSharingSettings.empty,
         ),
       );
 
   final PublicProfileRepository _repository;
-  final String profileId;
 
   Future<void> load() async {
     emit(
       state.copyWith(status: SharingSettingsStatus.loading, clearFailure: true),
     );
     try {
-      final settings = await _repository.fetchMySettings(profileId);
+      final settings = await _repository.fetchMySettings();
       emit(
         state.copyWith(
           status: SharingSettingsStatus.ready,
@@ -81,10 +79,7 @@ class SharingSettingsCubit extends Cubit<SharingSettingsState> {
     }
     emit(state.copyWith(slugAvailability: SlugAvailability.checking));
     try {
-      final available = await _repository.isSlugAvailable(
-        normalized,
-        profileId: profileId,
-      );
+      final available = await _repository.isSlugAvailable(normalized);
       if (state.draft.slug != normalized) {
         return;
       }

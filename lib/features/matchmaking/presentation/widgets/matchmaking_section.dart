@@ -6,7 +6,6 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
-import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/data/search_cooldown_store.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
@@ -19,7 +18,6 @@ import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 /// Com o Realtime no ar, isto deixou de ser o mecanismo de atualizacao e
 /// virou so uma rede de seguranca: cobre o intervalo em que o canal caiu
@@ -33,13 +31,13 @@ const Duration _safetyRefreshInterval = Duration(seconds: 90);
 /// daquele time especifico.
 class MatchmakingSection extends StatelessWidget {
   const MatchmakingSection({
-    required this.profileId,
+    required this.userId,
     required this.teamId,
     this.onMatchFound,
     super.key,
   });
 
-  final String profileId;
+  final String userId;
   final String teamId;
 
   /// Chamado depois de um "Encontrei" bem-sucedido.
@@ -52,12 +50,12 @@ class MatchmakingSection extends StatelessWidget {
       // trocar de modo precisa recriar o cubit (novo load, nova
       // assinatura de estado), nao so re-renderizar por cima do
       // anterior.
-      key: ValueKey('$profileId:$teamId:${mode.key}'),
+      key: ValueKey('$userId:$teamId:${mode.key}'),
       create: (_) => MatchmakingCubit(
         getIt<MatchmakingRepository>(),
         getIt<AppLogger>(),
         getIt<SearchCooldownStore>(),
-        profileId: profileId,
+        userId: userId,
         teamId: teamId,
         mode: mode,
       )..start(),
@@ -207,9 +205,6 @@ class _MatchmakingReadyBody extends StatelessWidget {
     }
 
     final card = switch (snapshot) {
-      _ when !snapshot.profileLinkedToTeam => _NotLinkedCard(
-        snapshot: snapshot,
-      ),
       _ when snapshot.isSearchingByMe => _SearchingSelfCard(
         state: state,
         snapshot: snapshot,
@@ -250,38 +245,6 @@ class _SearchingElsewhereBanner extends StatelessWidget {
       elsewhere.teamName,
     ),
   );
-}
-
-class _NotLinkedCard extends StatelessWidget {
-  const _NotLinkedCard({required this.snapshot});
-
-  final MyMatchmakingSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return AppCard(
-      variant: AppCardVariant.elevated,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          AppBanner(
-            tone: AppBannerTone.warning,
-            message: l10n.matchmakingNotLinkedMessage,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          AppButton.secondary(
-            label: l10n.matchmakingLinkAccountAction,
-            icon: Icons.link,
-            onPressed: () => context.push(
-              AppRoutes.profileDetailLocation(snapshot.profileId),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _IdleCard extends StatefulWidget {

@@ -10,7 +10,6 @@ enum TeamNameValidationError { empty, tooShort, tooLong }
 
 enum TeamTagValidationError { tooShort, tooLong, invalidCharacters }
 
-enum ProfileNameValidationError { empty, tooShort, tooLong }
 
 enum PublicProfileSlugValidationError {
   empty,
@@ -29,8 +28,6 @@ class AppValidators {
   static const int teamNameMaxLength = 40;
   static const int teamTagMinLength = 2;
   static const int teamTagMaxLength = 6;
-  static const int profileNameMinLength = 2;
-  static const int profileNameMaxLength = 40;
   static const int publicProfileSlugMinLength = 3;
   static const int publicProfileSlugMaxLength = 24;
 
@@ -115,23 +112,6 @@ class AppValidators {
     }
     if (!_teamTag.hasMatch(normalized)) {
       return TeamTagValidationError.invalidCharacters;
-    }
-    return null;
-  }
-
-  static String normalizeProfileName(String value) =>
-      value.trim().replaceAll(_whitespaceRun, ' ');
-
-  static ProfileNameValidationError? profileName(String? value) {
-    final normalized = normalizeProfileName(value ?? '');
-    if (normalized.isEmpty) {
-      return ProfileNameValidationError.empty;
-    }
-    if (normalized.runes.length < profileNameMinLength) {
-      return ProfileNameValidationError.tooShort;
-    }
-    if (normalized.runes.length > profileNameMaxLength) {
-      return ProfileNameValidationError.tooLong;
     }
     return null;
   }

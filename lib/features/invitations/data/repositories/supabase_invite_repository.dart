@@ -21,9 +21,9 @@ class SupabaseInviteRepository implements InviteRepository {
   });
 
   @override
-  Future<JoinTeamResult> joinTeam(String code, {String? profileId}) =>
+  Future<JoinTeamResult> joinTeam(String code) =>
       _guard(() async {
-        final json = await _dataSource.joinTeam(code, profileId);
+        final json = await _dataSource.joinTeam(code);
         return JoinTeamResultModel.fromJson(json);
       });
 

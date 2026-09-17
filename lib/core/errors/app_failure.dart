@@ -17,7 +17,7 @@ enum TeamFailureReason {
   invalidSearchDuration,
   notFound,
   permissionDenied,
-  profileMissing,
+  accountMissing,
   soleOwnerBlocksAccountDeletion,
   alreadyMember,
   duplicateRequest,
@@ -55,14 +55,7 @@ enum GameFailureReason {
   weekendLeagueLimit,
 }
 
-enum ProfileFailureReason {
-  profileNotFound,
-  profileNotLinkedToTeam,
-  profileNotLinkedToAnyTeam,
-  invalidName,
-  invalidDivision,
-  invalidPlatform,
-}
+enum AccountFailureReason { platformRequired }
 
 enum SquadFailureReason {
   notFound,
@@ -151,10 +144,10 @@ final class GameFailure extends AppFailure {
   List<Object?> get props => <Object?>[reason, debugMessage];
 }
 
-final class ProfileFailure extends AppFailure {
-  const ProfileFailure({required this.reason, super.debugMessage});
+final class AccountFailure extends AppFailure {
+  const AccountFailure({required this.reason, super.debugMessage});
 
-  final ProfileFailureReason reason;
+  final AccountFailureReason reason;
 
   @override
   List<Object?> get props => <Object?>[reason, debugMessage];

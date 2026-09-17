@@ -8,13 +8,10 @@ import 'package:fifa_queue/features/auth/presentation/pages/login_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:fifa_queue/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:fifa_queue/features/control/presentation/pages/control_page.dart';
-import 'package:fifa_queue/features/profiles/presentation/pages/profile_detail_page.dart';
-import 'package:fifa_queue/features/profiles/presentation/pages/profiles_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/cards_catalog_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/club_detail_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/clubs_catalog_page.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/squad_builder_page.dart';
-import 'package:fifa_queue/features/game/presentation/pages/match_details_page.dart';
 import 'package:fifa_queue/features/history/presentation/pages/history_page.dart';
 import 'package:fifa_queue/features/central/presentation/pages/central_page.dart';
 import 'package:fifa_queue/features/invitations/presentation/pages/join_team_page.dart';
@@ -158,11 +155,9 @@ class AppRouter {
         builder: (context, state) => const TermsOfUsePage(),
       ),
       GoRoute(
-        path: AppRoutes.profileSharing.path,
-        name: AppRoutes.profileSharing.name,
-        builder: (context, state) => PublicProfileSettingsPage(
-          profileId: state.uri.queryParameters['profileId'] ?? '',
-        ),
+        path: AppRoutes.accountSharing.path,
+        name: AppRoutes.accountSharing.name,
+        builder: (context, state) => const PublicProfileSettingsPage(),
       ),
       GoRoute(
         path: AppRoutes.publicProfile.path,
@@ -175,11 +170,6 @@ class AppRouter {
         path: AppRoutes.notifications.path,
         name: AppRoutes.notifications.name,
         builder: (context, state) => const NotificationsInboxPage(),
-      ),
-      GoRoute(
-        path: AppRoutes.profiles.path,
-        name: AppRoutes.profiles.name,
-        builder: (context, state) => const ProfilesPage(),
       ),
       GoRoute(
         path: AppRoutes.cardsCatalog.path,
@@ -199,31 +189,15 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.profileDetail.path,
-        name: AppRoutes.profileDetail.name,
-        builder: (context, state) => ProfileDetailPage(
-          profileId: state.pathParameters[AppRoutes.profileIdParam] ?? '',
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.profileHistory.path,
-        name: AppRoutes.profileHistory.name,
-        builder: (context, state) => HistoryPage(
-          profileId: state.pathParameters[AppRoutes.profileIdParam],
-        ),
+        path: AppRoutes.accountHistory.path,
+        name: AppRoutes.accountHistory.name,
+        builder: (context, state) => const HistoryPage(),
       ),
       GoRoute(
         path: AppRoutes.squadBuilder.path,
         name: AppRoutes.squadBuilder.name,
         builder: (context, state) => SquadBuilderPage(
           squadId: state.pathParameters[AppRoutes.squadIdParam] ?? '',
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.matchDetail.path,
-        name: AppRoutes.matchDetail.name,
-        builder: (context, state) => MatchDetailsPage(
-          matchId: state.pathParameters[AppRoutes.matchIdParam] ?? '',
         ),
       ),
       GoRoute(

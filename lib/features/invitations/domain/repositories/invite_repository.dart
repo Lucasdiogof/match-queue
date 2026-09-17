@@ -5,7 +5,7 @@ import 'package:fifa_queue/features/invitations/domain/entities/team_invite.dart
 abstract interface class InviteRepository {
   Future<InvitePreview> resolveInvite(String code);
 
-  Future<JoinTeamResult> joinTeam(String code, {String? profileId});
+  Future<JoinTeamResult> joinTeam(String code);
 
   Future<TeamInvite> getOrCreateActiveInvite(String teamId);
 

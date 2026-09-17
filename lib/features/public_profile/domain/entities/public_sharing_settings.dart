@@ -1,13 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-/// Configuração de exposição do perfil público de UMA CONTA FC -- nunca os
-/// dados de outra pessoa nem de outra conta. Espelha `user_public_profiles`,
-/// que agora tem `fc_account_id` como chave: cada conta tem seu próprio
-/// link/slug/toggles, totalmente independentes de qualquer outra conta do
-/// mesmo dono.
+/// Configuração de exposição do perfil público do próprio usuário -- nunca
+/// os dados de outra pessoa. Espelha `user_public_profiles`, que tem
+/// `user_id` como chave: uma linha por usuário autenticado.
 class PublicSharingSettings extends Equatable {
   const PublicSharingSettings({
-    required this.profileId,
     required this.isEnabled,
     this.slug,
     this.showSquad = true,
@@ -16,12 +13,10 @@ class PublicSharingSettings extends Equatable {
     this.showStats = true,
   });
 
-  static PublicSharingSettings empty(String profileId) =>
-      PublicSharingSettings(profileId: profileId, isEnabled: false);
+  static const PublicSharingSettings empty = PublicSharingSettings(
+    isEnabled: false,
+  );
 
-  /// Identidade fixa da linha -- nunca muda via [copyWith]. Trocar de conta
-  /// é editar OUTRA [PublicSharingSettings], não mutar esta.
-  final String profileId;
   final bool isEnabled;
   final String? slug;
   final bool showSquad;
@@ -38,7 +33,6 @@ class PublicSharingSettings extends Equatable {
     bool? showRivals,
     bool? showStats,
   }) => PublicSharingSettings(
-    profileId: profileId,
     isEnabled: isEnabled ?? this.isEnabled,
     slug: clearSlug ? null : (slug ?? this.slug),
     showSquad: showSquad ?? this.showSquad,
@@ -49,7 +43,6 @@ class PublicSharingSettings extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-    profileId,
     isEnabled,
     slug,
     showSquad,

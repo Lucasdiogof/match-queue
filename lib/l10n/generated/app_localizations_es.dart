@@ -67,7 +67,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navHistory => 'Historial';
 
   @override
-  String get navProfile => 'Conta';
+  String get navProfile => 'Cuenta';
 
   @override
   String get comingSoonTitle => 'En construcción';
@@ -104,13 +104,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get controlDiscoverClubsSubtitle =>
       'Explora los clubes del catálogo FC27.';
-
-  @override
-  String get controlEmptyTitle => '¿Listo para entrar a la cancha?';
-
-  @override
-  String get controlEmptyMessage =>
-      'Elige un perfil y un modo para empezar a buscar partido.';
 
   @override
   String get teamTitle => 'Mi equipo';
@@ -568,7 +561,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountSaved => 'Nombre actualizado.';
 
   @override
-  String get accountLoadErrorTitle => 'No fue posible cargar tu perfil';
+  String get accountLoadErrorTitle => 'No fue posible cargar tu cuenta';
 
   @override
   String accountMemberSince(DateTime date) {
@@ -603,14 +596,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Podrás ajustar colores, logo y duración de la búsqueda después.';
 
   @override
-  String get teamCreateProfilesSectionTitle =>
-      '¿Qué Perfiles forman parte de este equipo?';
-
-  @override
-  String get teamNameLabel => 'Nombre del equipo';
+  String get teamNameLabel => 'Nombre del equipo (opcional)';
 
   @override
   String get teamNameHint => 'Falcons FC';
+
+  @override
+  String teamDefaultName(String displayName) {
+    return 'Equipo de $displayName';
+  }
 
   @override
   String get teamTagLabel => 'Tag (opcional)';
@@ -641,13 +635,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get playerProfileTitle => 'Perfil del jugador';
 
   @override
-  String get playerProfileAccountLabel => 'Perfil';
-
-  @override
-  String get playerProfileNoAccountMessage =>
-      'Este jugador no tiene un perfil vinculado a este equipo.';
-
-  @override
   String get playerProfileSquadLabel => 'Escuadra';
 
   @override
@@ -658,10 +645,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String playerProfileCompletenessLabel(int count, int total) {
     return '$count/$total titulares';
   }
-
-  @override
-  String get playerProfileSelectAccountTitle =>
-      'Este jugador tiene más de un perfil en este equipo';
 
   @override
   String get playerProfileWeekendLeagueEmptyMessage =>
@@ -809,8 +792,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'No tienes permiso para gestionar este equipo.';
 
   @override
-  String get errorTeamProfileMissing =>
-      'Completa tu perfil antes de crear un equipo.';
+  String get errorTeamAccountMissing =>
+      'Tu cuenta aún no está creada. Intenta iniciar sesión de nuevo.';
 
   @override
   String get errorInviteNotFound => 'Invitación no encontrada.';
@@ -959,13 +942,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get matchmakingNotLinkedMessage =>
-      'Vincula este Perfil a este equipo para poder buscar partida.';
-
-  @override
-  String get matchmakingLinkAccountAction => 'Vincular perfil al equipo';
-
-  @override
   String get notificationsSectionTitle => 'Notificaciones';
 
   @override
@@ -1047,7 +1023,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notificationsCategoryRivalsHint =>
-      'Un perfil del equipo cambia de división.';
+      'Un jugador del equipo cambia de división.';
 
   @override
   String get notificationsCategoryRankings => 'Rankings';
@@ -1164,12 +1140,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get historyTabMatches => 'Partidos';
-
-  @override
-  String get historyTabStats => 'Estadísticas';
-
-  @override
   String get historyPeriodAll => 'Siempre';
 
   @override
@@ -1210,36 +1180,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Las búsquedas de partido del equipo aparecen aquí cuando terminan.';
 
   @override
-  String get activityScopeAll => 'Todo';
-
-  @override
-  String get activityScopeGames => 'Juegos';
-
-  @override
-  String get activityScopeSearches => 'Búsquedas';
-
-  @override
-  String get activityNoResult => 'Resultado no informado';
-
-  @override
-  String get activityDetailMode => 'Modo';
-
-  @override
-  String get activityDetailDuration => 'Duración';
-
-  @override
-  String get activityDetailScore => 'Marcador';
-
-  @override
-  String get activityDetailResult => 'Resultado';
-
-  @override
-  String get activityDetailStatus => 'Estado';
-
-  @override
-  String get activityDetailProfile => 'Perfil';
-
-  @override
   String get historyLoadErrorTitle => 'No fue posible cargar el historial';
 
   @override
@@ -1262,48 +1202,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get statsTotalSearches => 'Búsquedas';
-
-  @override
-  String get statsMatchFound => 'Encontradas';
-
-  @override
-  String get statsCancelled => 'Canceladas';
-
-  @override
-  String get statsExpired => 'Expiradas';
-
-  @override
-  String get statsSuccessRate => 'Tasa de éxito';
-
-  @override
-  String get statsAvgDuration => 'Duración media';
-
-  @override
-  String get statsPlayersTitle => 'Por jugador';
-
-  @override
-  String get statsEmptyTitle => 'Sin datos en el período';
-
-  @override
-  String get statsEmptyMessage =>
-      'Cuando el equipo busque partidos, las estadísticas aparecen aquí.';
-
-  @override
-  String get statsLoadErrorTitle => 'No fue posible cargar las estadísticas';
-
-  @override
-  String statsPlayerSearches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count búsquedas',
-      one: '1 búsqueda',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get gameModeSectionTitle => 'Modo';
 
   @override
@@ -1311,18 +1209,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gameModeDivisionRivals => 'Rivals';
-
-  @override
-  String get pendingMatchTitle => 'Tienes una partida sin resultado';
-
-  @override
-  String get pendingMatchWinAction => 'Victoria';
-
-  @override
-  String get pendingMatchLossAction => 'Derrota';
-
-  @override
-  String get pendingMatchAddScoreAction => 'Añadir marcador';
 
   @override
   String get finishMatchSheetTitle => 'Resultado de la partida';
@@ -1360,143 +1246,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get weekendLeagueActiveBadge => 'En curso';
 
   @override
-  String get errorProfileNotFound => 'Perfil no encontrado.';
-
-  @override
-  String get errorProfileNotLinkedToTeam =>
-      'Este perfil no está vinculado a este equipo.';
-
-  @override
-  String get errorProfileInvalidName =>
-      'Indica un nombre de 2 a 40 caracteres.';
-
-  @override
-  String get errorProfileInvalidDivision => 'División inválida.';
-
-  @override
-  String get errorProfileInvalidPlatform => 'Plataforma inválida.';
-
-  @override
-  String get errorProfileNotLinkedToAnyTeam =>
-      'Este perfil no está vinculado a ningún equipo.';
-
-  @override
-  String get validationProfileNameRequired =>
-      'Indica un nombre para el perfil.';
-
-  @override
-  String validationProfileNameTooShort(int min) {
-    return 'El nombre debe tener al menos $min caracteres.';
-  }
-
-  @override
-  String validationProfileNameTooLong(int max) {
-    return 'El nombre puede tener como máximo $max caracteres.';
-  }
-
-  @override
-  String get profileRequiredToSearch =>
-      'Crea o selecciona un perfil para buscar partida.';
-
-  @override
-  String profileLinkCta(
-    String accountName,
-    String teamName,
-    Object profileName,
-  ) {
-    return 'Vincular $accountName a $teamName';
-  }
-
-  @override
-  String get profilesPageTitle => 'Mis Perfiles';
-
-  @override
-  String get profilesPageSubtitle => 'Tus perfiles de Ultimate Team';
-
-  @override
-  String get profilesEmptyTitle => 'Todavía no tienes un perfil';
-
-  @override
-  String get profilesEmptyMessage =>
-      'Crea un perfil para vincularlo a equipos y empezar a buscar partidas.';
-
-  @override
-  String get profileCreateAction => 'Crear perfil';
-
-  @override
-  String get profileCreateTitle => 'Nuevo perfil';
-
-  @override
-  String get profileCreateSubtitle => 'Dale un nombre a este perfil.';
-
-  @override
-  String get profileNameLabel => 'Nombre del perfil';
-
-  @override
-  String get profileNameHint => 'Ej.: Perfil principal';
-
-  @override
-  String get profileRenameTitle => 'Renombrar perfil';
-
-  @override
-  String get profileRenameAction => 'Renombrar';
-
-  @override
-  String get profileArchiveAction => 'Eliminar perfil';
-
-  @override
-  String get profileArchiveConfirmTitle => '¿Eliminar perfil?';
-
-  @override
-  String profileArchiveConfirmMessage(String name) {
-    return '\"$name\" desaparece de la lista y deja de representar a los equipos vinculados (el historial se conserva). Si eres el único dueño de un equipo, también se eliminará; si hay más gente, la propiedad pasa automáticamente a otro miembro.';
-  }
-
-  @override
-  String get profileSwitchTitle => 'Cambiar de perfil';
-
-  @override
-  String get profileSwitchCreateAction => '+ Crear nuevo perfil';
-
-  @override
-  String get profileLinkedTeamsTitle => 'Equipos';
-
-  @override
-  String get profileLinkedTeamsEmpty =>
-      'Este perfil todavía no está vinculado a ningún equipo.';
-
-  @override
-  String get profileSharingAction => 'Compartir';
-
-  @override
-  String get profileAvatarChangeAction => 'Cambiar foto';
-
-  @override
-  String get profileAvatarRemoveAction => 'Quitar foto';
-
-  @override
-  String get profileAvatarRemoveConfirmTitle => '¿Quitar la foto del perfil?';
-
-  @override
-  String get profileAvatarRemoveConfirmMessage =>
-      'El perfil vuelve a mostrar las iniciales en lugar de la foto.';
-
-  @override
-  String get profileLinkTeamAction => 'Vincular';
-
-  @override
-  String get profileUnlinkTeamAction => 'Salir del equipo';
-
-  @override
-  String get profileLeaveTeamConfirmTitle => '¿Salir del equipo?';
-
-  @override
-  String profileLeaveTeamConfirmMessage(String teamName) {
-    return 'Este perfil va a dejar de representar al equipo $teamName. Podés vincularlo de nuevo cuando quieras.';
-  }
-
-  @override
-  String get profileSettingsTitle => 'Configuración';
+  String get errorAccountPlatformRequired => 'Elige al menos una plataforma.';
 
   @override
   String get profileDivisionTitle => 'División de Rivals';
@@ -1508,34 +1258,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileDivisionNone => 'Sin división definida';
 
   @override
-  String get profilePlatformLabel => 'Plataforma';
+  String get accountPlatformLabel => 'Plataformas';
 
   @override
-  String get profilePlatformPickerTitle => 'Seleccionar plataforma';
+  String get accountPlatformPickerTitle => '¿Dónde juegas?';
 
   @override
-  String get profilePlatformNone => 'Sin plataforma definida';
+  String get accountPlatformPickerSubtitle =>
+      'Elige una o más. La cola de partidas es por plataforma.';
 
   @override
-  String profilePlatformSettingsAction(String platform) {
-    return 'Plataforma: $platform';
-  }
+  String get accountPlatformNone => 'Sin plataforma definida';
+
+  @override
+  String get accountPlatformOnboardingTitle => 'Elige tu plataforma';
+
+  @override
+  String get accountPlatformOnboardingMessage =>
+      'La cola de partidas es por plataforma. Elige al menos una para empezar a jugar.';
+
+  @override
+  String get accountPlatformOnboardingAction => 'Seleccionar plataformas';
 
   @override
   String get profileWeekendLeagueTitle => 'Champions';
-
-  @override
-  String profileWeekendLeagueComputedLabel(int wins, int losses) {
-    return 'Registrado por partidas: $wins–$losses';
-  }
-
-  @override
-  String profileWeekendLeagueManualLabel(int wins, int losses) {
-    return 'Resultado informado: $wins–$losses';
-  }
-
-  @override
-  String get profileWeekendLeagueEditAction => 'Informar resultado';
 
   @override
   String get profileWeekendLeagueClearAction =>
@@ -1549,29 +1295,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get profileWeekendLeagueLossesLabel => 'Derrotas';
-
-  @override
-  String get profileOnboardingTitle => 'Añade tu primer perfil';
-
-  @override
-  String get profileOnboardingMessage =>
-      'Registra el perfil que juegas o gestionas para participar en equipos, buscar partidos y seguir tu progreso.';
-
-  @override
-  String get profileOnboardingCreateAction => 'Añadir perfil';
-
-  @override
-  String pendingMatchElencoLabel(String name) {
-    return 'Perfil: $name';
-  }
-
-  @override
-  String historyElencoLabel(String name) {
-    return 'Perfil: $name';
-  }
-
-  @override
-  String get accountProfilesRow => 'Perfiles';
 
   @override
   String get rivalsDivisionDiv10 => 'División 10';
@@ -1717,9 +1440,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get squadLabel => 'Plantilla';
-
-  @override
-  String get playAccountLabel => 'Perfil';
 
   @override
   String get playSquadEmpty => 'Ninguna plantilla creada';
@@ -1900,78 +1620,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Termina el partido antes de editar el resultado.';
 
   @override
-  String get pendingMatchDetailsPromptTitle => '¿Agregar detalles del partido?';
-
-  @override
-  String get pendingMatchDetailsPromptMessage =>
-      'Puedes registrar goles y asistencias por jugador ahora o después, desde el Historial.';
-
-  @override
-  String get pendingMatchDetailsPromptAddAction => 'Agregar ahora';
-
-  @override
-  String get pendingMatchDetailsPromptSkipAction => 'Ahora no';
-
-  @override
-  String get matchDetailsTitle => 'Detalle del partido';
-
-  @override
-  String get matchDetailsResultLabel => 'Resultado';
-
-  @override
-  String get matchDetailsScoreLabel => 'Marcador';
-
-  @override
-  String get matchDetailsNoResultMessage => 'Sin resultado registrado.';
-
-  @override
-  String get matchDetailsEditResultAction => 'Editar resultado';
-
-  @override
-  String get matchDetailsAddDetailsAction => 'Agregar goles y asistencias';
-
-  @override
-  String get matchDetailsEditDetailsAction => 'Editar goles y asistencias';
-
-  @override
-  String get matchDetailsSquadSectionTitle => 'Alineación';
-
-  @override
-  String get matchDetailsPlayerStatsTitle => 'Goles y asistencias';
-
-  @override
-  String get matchDetailsPlayerStatsEmptyMessage =>
-      'No hay goles ni asistencias registrados en este partido.';
-
-  @override
-  String get editMatchResultSheetTitle => 'Editar resultado';
-
-  @override
-  String get editMatchResultSheetMessage =>
-      'Puedes corregir el marcador en cualquier momento, incluso después de terminado el partido.';
-
-  @override
-  String get editMatchResultSubmitAction => 'Guardar resultado';
-
-  @override
-  String get playerStatsEditorTitle => 'Goles y asistencias';
-
-  @override
-  String get playerStatsEditorStartingLabel => 'Titulares';
-
-  @override
-  String get playerStatsEditorBenchLabel => 'Suplentes';
-
-  @override
-  String get playerStatsEditorSaveAction => 'Guardar detalles';
-
-  @override
-  String get statsGoalsLabel => 'Goles';
-
-  @override
-  String get statsAssistsLabel => 'Asistencias';
-
-  @override
   String get statsWinsLabel => 'Victorias';
 
   @override
@@ -1988,10 +1636,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recordRemoveLossTooltip => 'Quitar derrota';
-
-  @override
-  String get statsEmptyLeaderboardMessage =>
-      'Todavía no hay goles ni asistencias registrados.';
 
   @override
   String get rivalsSectionTitle => 'Rivals';
@@ -2107,8 +1751,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadPrimaryLineupCreateAction => 'Armar alineación';
 
   @override
-  String get squadPrimaryLineupEmpty =>
-      'Aún no has armado una alineación para este Perfil.';
+  String get squadPrimaryLineupEmpty => 'Aún no has armado tu alineación.';
 
   @override
   String squadOtherLineupsAction(int count) {
@@ -2255,12 +1898,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get publicProfileSlugInvalid => 'Dirección inválida';
 
   @override
-  String get publicProfileAccountLabel => 'Perfil pública';
-
-  @override
-  String get publicProfileAccountEmpty => 'Ningun perfil seleccionado';
-
-  @override
   String get publicProfileToggleSquad => 'Alineación Principal';
 
   @override
@@ -2321,10 +1958,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get publicProfileEditSharingCta => 'Editar compartir';
 
   @override
-  String get publicProfileNoAccountsHint =>
-      'Crea una Perfil antes de compartir.';
-
-  @override
   String get errorPublicProfileInvalidSlug =>
       'Dirección inválida. Usa 3-24 letras minúsculas, números o _.';
 
@@ -2369,7 +2002,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'Match Queue organiza la cola de búsqueda de partida, las perfiles y las estadísticas de tu equipo de EA SPORTS FC.';
+      'Match Queue organiza la cola de búsqueda de partida, las alineaciones y las estadísticas de tu equipo de EA SPORTS FC.';
 
   @override
   String get privacyPolicyTitle => 'Política de Privacidad';
@@ -2396,8 +2029,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'Al eliminar tu cuenta, pierdes acceso a todo lo que se indica abajo. No se puede deshacer ni recuperar después.';
 
   @override
-  String get deleteAccountConsequenceProfiles =>
-      'Todas tus Perfiles y la división de Rivals registrada';
+  String get deleteAccountConsequenceAccountData =>
+      'Tu división de Rivals y tus plataformas';
 
   @override
   String get deleteAccountConsequenceSquads => 'Tus alineaciones';
@@ -2430,41 +2063,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deleteAccountAction => 'Eliminar mi cuenta permanentemente';
 
   @override
-  String get homeProfileEyebrow => 'CUENTA FC ACTIVA';
-
-  @override
-  String get homeProfileSwitchAction => 'Cambiar';
-
-  @override
-  String get homeProfileNoTeams => 'Todavía sin equipo';
-
-  @override
-  String homeProfileTeamCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'En $count equipos',
-      one: 'En 1 equipo',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get homeNoTeamTitle => 'Entra en un equipo';
 
   @override
   String get homeNoTeamMessage =>
       'Buscar partido requiere un equipo. Rivals y Champions ya puedes usarlos.';
-
-  @override
-  String get pendingMatchSkipAction => 'No informar este partido';
-
-  @override
-  String get pendingMatchSkipConfirmTitle => '¿No informar el resultado?';
-
-  @override
-  String get pendingMatchSkipConfirmMessage =>
-      'El partido sale de aquí sin contar como victoria ni derrota. Puedes buscar otro con normalidad.';
 
   @override
   String get historyResultNotInformed => 'Resultado no informado';
@@ -2492,17 +2095,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get controlNoTeamAction => 'Ver equipos';
 
   @override
-  String get controlAccountNotLinkedMessage =>
-      'Crea o vincula este perfil a algún equipo para poder buscar partidas.';
-
-  @override
-  String get controlGoToTeamsAction => 'Ir a Equipos';
-
-  @override
   String get navRequests => 'Invitaciones';
-
-  @override
-  String get requestsPageTitle => 'Solicitudes';
 
   @override
   String get requestsSegmentRequests => 'Pedidos';
@@ -2511,18 +2104,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get requestsSegmentInvites => 'Invitaciones';
 
   @override
-  String get requestsEmptyRequestsTitle => 'Ningún pedido pendiente';
+  String get requestsEmptyAllTitle => 'Nada pendiente';
 
   @override
-  String get requestsEmptyRequestsMessage =>
-      'Los pedidos de ingreso a los equipos que administras aparecen aquí.';
-
-  @override
-  String get requestsEmptyInvitesTitle => 'Ninguna invitación pendiente';
-
-  @override
-  String get requestsEmptyInvitesMessage =>
-      'Las invitaciones que recibas de otros equipos aparecen aquí.';
+  String get requestsEmptyAllMessage =>
+      'Las invitaciones de otros equipos y las solicitudes para entrar en los equipos que administras aparecen aquí.';
 
   @override
   String requestsMemberCountLabel(int count) {
@@ -2577,9 +2163,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get teamPublicRequestCancelAction => 'Cancelar solicitud';
 
   @override
-  String get teamPublicChooseAccountTitle => '¿Qué perfil quieres vincular?';
-
-  @override
   String get teamPublicRequestSentMessage =>
       'Solicitud enviada. El dueño del equipo la va a revisar.';
 
@@ -2593,11 +2176,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get teamInviteSheetTitle => 'Invitar jugador';
 
   @override
-  String get teamInviteSlugFieldLabel => 'Nick o código del perfil';
+  String get teamInviteSlugFieldLabel => 'Nick o código del perfil público';
 
   @override
   String get teamInviteSlugFieldHint =>
-      'Escribe el nombre o el código del perfil público del jugador';
+      'Escribe el nick o el código del perfil público del jugador';
 
   @override
   String get teamInviteSendAction => 'Enviar invitación';
@@ -2675,48 +2258,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'El equipo vuelve a mostrar las iniciales en vez de la logo.';
 
   @override
-  String pendingMatchesCardTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count partidos sin resultado',
-      one: '1 partido sin resultado',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String pendingMatchesCardLatest(String mode, String date, String time) {
-    return 'Más reciente: $mode · $date a las $time';
-  }
-
-  @override
-  String get pendingMatchesOpenListAction => 'Ver partidos';
-
-  @override
-  String get pendingMatchesDismissAllAction => 'No informar';
-
-  @override
-  String get pendingMatchesDismissAllTitle => '¿No informar ninguno?';
-
-  @override
-  String get pendingMatchesDismissAllMessage =>
-      'Todos salen de la lista sin contar como victoria ni derrota.';
-
-  @override
-  String get pendingMatchesSheetTitle => 'Partidos sin resultado';
-
-  @override
-  String get pendingMatchesSheetMessage =>
-      'Informa los que quieras. Dejarlos en blanco no bloquea nada.';
-
-  @override
-  String get pendingMatchesSkipOneAction => 'No informar';
-
-  @override
-  String get pendingMatchesAllClear => 'Ningún partido pendiente.';
-
-  @override
   String get errorWeekendLeagueLimit =>
       'Champions tiene 15 partidos: victorias y derrotas juntas no pueden superarlo.';
 
@@ -2789,10 +2330,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get filterAll => 'Todas';
-
-  @override
-  String get startShortcutPlayHint =>
-      'Elige el perfil y el modo, y entra en la fila.';
 
   @override
   String get startCatalogTitle => 'Catálogo';

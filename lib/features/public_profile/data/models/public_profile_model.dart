@@ -1,4 +1,4 @@
-import 'package:fifa_queue/features/profiles/domain/entities/profile_stats.dart';
+import 'package:fifa_queue/features/account/domain/entities/account_stats.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_profile.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_sharing_settings.dart';
@@ -6,7 +6,6 @@ import 'package:fifa_queue/features/public_profile/domain/entities/public_sharin
 PublicSharingSettings publicSharingSettingsFromJson(
   Map<String, dynamic> json,
 ) => PublicSharingSettings(
-  profileId: '${json['fc_account_id']}',
   isEnabled: json['is_enabled'] as bool? ?? false,
   slug: json['slug'] as String?,
   showSquad: json['show_squad'] as bool? ?? true,
@@ -15,20 +14,6 @@ PublicSharingSettings publicSharingSettingsFromJson(
   showStats: json['show_stats'] as bool? ?? true,
 );
 
-PublicMatchAggregate? _aggregateFromJson(Object? json) {
-  if (json is! Map) {
-    return null;
-  }
-  final map = Map<String, dynamic>.from(json);
-  return PublicMatchAggregate(
-    matchesCount: (map['matches_count'] as num?)?.toInt() ?? 0,
-    wins: (map['wins'] as num?)?.toInt() ?? 0,
-    losses: (map['losses'] as num?)?.toInt() ?? 0,
-    goalsFor: (map['goals_for'] as num?)?.toInt() ?? 0,
-    goalsAgainst: (map['goals_against'] as num?)?.toInt() ?? 0,
-    goalDiff: (map['goal_diff'] as num?)?.toInt() ?? 0,
-  );
-}
 
 PublicSquadStarter _starterFromJson(Map<String, dynamic> json) =>
     PublicSquadStarter(
@@ -88,23 +73,17 @@ PublicProfile publicProfileFromJson(Map<String, dynamic> json) {
     return PublicProfile.notFound;
   }
 
-  // Duas coisas diferentes no mesmo payload: 'profile' e a identidade do
-  // LOGIN (nome exibido/avatar) e 'account' e o Perfil operacional (id,
-  // nome, divisao). As chaves sao formato de wire -- o banco continua
-  // chamando o Perfil de fc_account, so o Dart mudou de nome.
+  // 'profile' aqui e o bloco publico do usuario no payload da RPC (nome
+  // exibido, avatar, divisao) -- nome de wire, nao o conceito removido.
   final user =
       json['profile'] as Map<dynamic, dynamic>? ?? const <String, dynamic>{};
-  final profile = json['account'] as Map<dynamic, dynamic>?;
   final weekendLeague = json['weekend_league'] as Map<dynamic, dynamic>?;
 
   return PublicProfile(
     found: true,
     displayName: user['display_name'] as String?,
     avatarUrl: user['avatar_url'] as String?,
-    profileId: profile?['id'] as String?,
-    profileName: profile?['name'] as String?,
-    rivalsDivision: profile?['rivals_division'] as String?,
-    stats: _aggregateFromJson(json['stats']),
+    rivalsDivision: user['rivals_division'] as String?,
     weekendLeague: ManualRecord.fromJson(weekendLeague?['manual']),
     weekendLeagueHistory: _weekendLeagueHistoryFromJson(
       weekendLeague?['history'],

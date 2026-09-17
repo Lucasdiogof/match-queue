@@ -60,9 +60,6 @@ class TeamModel {
       return const PublicTeam(found: false);
     }
     final team = Map<String, dynamic>.from(json['team'] as Map);
-    final record = json['record'] is Map
-        ? Map<String, dynamic>.from(json['record'] as Map)
-        : null;
     final membersRaw = json['members'];
     return PublicTeam(
       found: true,
@@ -86,18 +83,6 @@ class TeamModel {
                 publicProfileSlug: parseString(entry['slug']),
               ),
       ],
-      record: record == null
-          ? null
-          : PublicTeamRecord(
-              wins: record['wins'] is int ? record['wins'] as int : 0,
-              losses: record['losses'] is int ? record['losses'] as int : 0,
-              goalsFor: record['goals_for'] is int
-                  ? record['goals_for'] as int
-                  : 0,
-              goalsAgainst: record['goals_against'] is int
-                  ? record['goals_against'] as int
-                  : 0,
-            ),
     );
   }
 

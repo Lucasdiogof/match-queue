@@ -2,7 +2,6 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
 import 'package:fifa_queue/features/requests/domain/entities/requests_inbox.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_state.dart';
@@ -10,11 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-/// Conteudo de "Convites" (pedidos pra entrar no time + convites recebidos)
-/// -- vive como uma aba de Times agora, nao mais uma tela propria. Sem
-/// Scaffold/AppBar aqui: quem os fornece e TeamsListPage, que ja tem a
-/// aba-mae. Duas sub-abas internas (Pedidos/Convites) porque sao acoes
-/// distintas (aprovar/recusar vs. aceitar/recusar) sobre listas distintas.
+/// Conteudo de "Convites": convites que o usuario recebeu de times +
+/// pedidos pra entrar nos times que ele administra. Vive como uma aba de
+/// Times, sem Scaffold/AppBar proprio (quem fornece e TeamsListPage).
+///
+/// Uma lista so, com as duas listas empilhadas em secoes. Antes eram duas
+/// sub-abas, mas a de dentro se chamava "Convites" igual a aba-mae -- e
+/// duas abas pra, no uso normal, duas listas curtas (quase sempre uma
+/// vazia) cobravam um toque a mais pra descobrir que nao havia nada do
+/// outro lado. Secao vazia simplesmente nao aparece; quando as duas estao
+/// vazias, um unico estado vazio explica as duas coisas.
 class RequestsTab extends StatefulWidget {
   const RequestsTab({super.key});
 
@@ -22,194 +26,75 @@ class RequestsTab extends StatefulWidget {
   State<RequestsTab> createState() => _RequestsTabState();
 }
 
-class _RequestsTabState extends State<RequestsTab>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-
+class _RequestsTabState extends State<RequestsTab> {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     context.read<RequestsCubit>().load();
   }
 
   @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        // Contagem no rotulo depende do inbox -- so essa parte precisa
-        // reconstruir quando ele muda, a TabBar em si e estatica.
-        BlocBuilder<RequestsCubit, RequestsState>(
-          buildWhen: (previous, current) => previous.inbox != current.inbox,
-          builder: (context, state) => TabBar(
-            controller: _tabController,
-            tabs: <Widget>[
-              Tab(
-                text: state.inbox.joinRequestsToReview.isEmpty
-                    ? l10n.requestsSegmentRequests
-                    : '${l10n.requestsSegmentRequests} '
-                          '(${state.inbox.joinRequestsToReview.length})',
-              ),
-              Tab(
-                text: state.inbox.invitationsReceived.isEmpty
-                    ? l10n.requestsSegmentInvites
-                    : '${l10n.requestsSegmentInvites} '
-                          '(${state.inbox.invitationsReceived.length})',
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: BlocBuilder<RequestsCubit, RequestsState>(
-            builder: (context, state) {
-              if (state.isLoading && state.inbox.pendingCount == 0) {
-                return const AppLoading();
-              }
-              if (state.status == RequestsStatus.failure &&
-                  state.inbox.pendingCount == 0) {
-                return AppErrorState(
-                  title: l10n.requestsLoadErrorTitle,
-                  message:
-                      state.failure?.localizedMessage(l10n) ??
-                      l10n.errorUnexpected,
-                  retryLabel: l10n.actionRetry,
-                  onRetry: () => context.read<RequestsCubit>().refresh(),
-                );
-              }
-              return TabBarView(
-                controller: _tabController,
-                children: <Widget>[
-                  RefreshIndicator(
-                    onRefresh: () => context.read<RequestsCubit>().refresh(),
-                    child: _JoinRequestsList(
-                      requests: state.inbox.joinRequestsToReview,
-                      pendingActionIds: state.pendingActionIds,
-                    ),
-                  ),
-                  RefreshIndicator(
-                    onRefresh: () => context.read<RequestsCubit>().refresh(),
-                    child: _InvitationsList(
-                      invitations: state.inbox.invitationsReceived,
-                      pendingActionIds: state.pendingActionIds,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
+    return BlocBuilder<RequestsCubit, RequestsState>(
+      builder: (context, state) {
+        if (state.isLoading && state.inbox.pendingCount == 0) {
+          return const AppLoading();
+        }
+        if (state.status == RequestsStatus.failure &&
+            state.inbox.pendingCount == 0) {
+          return AppErrorState(
+            title: l10n.requestsLoadErrorTitle,
+            message:
+                state.failure?.localizedMessage(l10n) ?? l10n.errorUnexpected,
+            retryLabel: l10n.actionRetry,
+            onRetry: () => context.read<RequestsCubit>().refresh(),
+          );
+        }
 
-class _JoinRequestsList extends StatelessWidget {
-  const _JoinRequestsList({
-    required this.requests,
-    required this.pendingActionIds,
-  });
+        final invitations = state.inbox.invitationsReceived;
+        final requests = state.inbox.joinRequestsToReview;
 
-  final List<TeamJoinRequestSummary> requests;
-  final Set<String> pendingActionIds;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    if (requests.isEmpty) {
-      return ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: <Widget>[
-          const SizedBox(height: AppSpacing.huge),
-          AppEmptyState(
-            icon: Icons.inbox_outlined,
-            title: l10n.requestsEmptyRequestsTitle,
-            message: l10n.requestsEmptyRequestsMessage,
-          ),
-        ],
-      );
-    }
-
-    return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-      itemCount: requests.length,
-      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
-      itemBuilder: (context, index) {
-        final request = requests[index];
-        final isBusy = pendingActionIds.contains(request.id);
-        final cubit = context.read<RequestsCubit>();
-
-        return AppCard(
-          onTap: () => context.push(
-            AppRoutes.playerProfileLocation(
-              request.teamId,
-              request.requesterUserId,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        return RefreshIndicator(
+          onRefresh: () => context.read<RequestsCubit>().refresh(),
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  AppAvatar(
-                    label: request.requesterDisplayName,
-                    imageUrl: request.requesterAvatarUrl,
-                    size: AppSizing.avatarMd,
+              if (invitations.isEmpty && requests.isEmpty) ...<Widget>[
+                const SizedBox(height: AppSpacing.huge),
+                AppEmptyState(
+                  icon: Icons.inbox_outlined,
+                  title: l10n.requestsEmptyAllTitle,
+                  message: l10n.requestsEmptyAllMessage,
+                ),
+              ],
+              // Convites primeiro: sao sobre o proprio usuario ("me
+              // chamaram"), enquanto pedidos sao trabalho administrativo
+              // sobre terceiros.
+              if (invitations.isNotEmpty) ...<Widget>[
+                _SectionTitle(label: l10n.requestsSegmentInvites),
+                for (final invitation in invitations) ...<Widget>[
+                  _InvitationCard(
+                    invitation: invitation,
+                    isBusy: state.pendingActionIds.contains(invitation.id),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          request.requesterDisplayName,
-                          style: context.textStyles.bodyLarge,
-                        ),
-                        Text(
-                          request.teamName,
-                          style: context.textStyles.bodySmall?.copyWith(
-                            color: context.colors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  const SizedBox(height: AppSpacing.sm),
                 ],
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: AppButton.secondary(
-                      label: l10n.requestsRejectAction,
-                      isLoading: isBusy,
-                      onPressed: isBusy
-                          ? null
-                          : () => cubit.rejectJoinRequest(request.id),
-                    ),
+              ],
+              if (requests.isNotEmpty) ...<Widget>[
+                if (invitations.isNotEmpty)
+                  const SizedBox(height: AppSpacing.lg),
+                _SectionTitle(label: l10n.requestsSegmentRequests),
+                for (final request in requests) ...<Widget>[
+                  _JoinRequestCard(
+                    request: request,
+                    isBusy: state.pendingActionIds.contains(request.id),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: AppButton(
-                      label: l10n.requestsApproveAction,
-                      isLoading: isBusy,
-                      onPressed: isBusy
-                          ? null
-                          : () => cubit.approveJoinRequest(request.id),
-                    ),
-                  ),
+                  const SizedBox(height: AppSpacing.sm),
                 ],
-              ),
+              ],
             ],
           ),
         );
@@ -218,111 +103,166 @@ class _JoinRequestsList extends StatelessWidget {
   }
 }
 
-class _InvitationsList extends StatelessWidget {
-  const _InvitationsList({
-    required this.invitations,
-    required this.pendingActionIds,
-  });
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.label});
 
-  final List<TeamInvitationSummary> invitations;
-  final Set<String> pendingActionIds;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+    child: Text(label.toUpperCase(), style: context.textStyles.labelSmall),
+  );
+}
+
+class _JoinRequestCard extends StatelessWidget {
+  const _JoinRequestCard({required this.request, required this.isBusy});
+
+  final TeamJoinRequestSummary request;
+  final bool isBusy;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final cubit = context.read<RequestsCubit>();
 
-    if (invitations.isEmpty) {
-      return ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
+    return AppCard(
+      onTap: () => context.push(
+        AppRoutes.playerProfileLocation(
+          request.teamId,
+          request.requesterUserId,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: AppSpacing.huge),
-          AppEmptyState(
-            icon: Icons.mail_outline,
-            title: l10n.requestsEmptyInvitesTitle,
-            message: l10n.requestsEmptyInvitesMessage,
-          ),
-        ],
-      );
-    }
-
-    return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-      itemCount: invitations.length,
-      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
-      itemBuilder: (context, index) {
-        final invitation = invitations[index];
-        final isBusy = pendingActionIds.contains(invitation.id);
-        final cubit = context.read<RequestsCubit>();
-
-        return AppCard(
-          onTap: () =>
-              context.push(AppRoutes.publicTeamLocation(invitation.teamId)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  AppAvatar(
-                    label: invitation.teamName,
-                    imageUrl: invitation.teamLogoUrl,
-                    size: AppSizing.avatarMd,
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          invitation.teamName,
-                          style: context.textStyles.bodyLarge,
-                        ),
-                        Text(
-                          l10n.requestsMemberCountLabel(invitation.memberCount),
-                          style: context.textStyles.bodySmall?.copyWith(
-                            color: context.colors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              AppAvatar(
+                label: request.requesterDisplayName,
+                imageUrl: request.requesterAvatarUrl,
+                size: AppSizing.avatarMd,
               ),
-              const SizedBox(height: AppSpacing.md),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: AppButton.secondary(
-                      label: l10n.requestsDeclineAction,
-                      isLoading: isBusy,
-                      onPressed: isBusy
-                          ? null
-                          : () => cubit.declineInvitation(invitation.id),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      request.requesterDisplayName,
+                      style: context.textStyles.bodyLarge,
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: AppButton(
-                      label: l10n.requestsAcceptAction,
-                      isLoading: isBusy,
-                      onPressed: isBusy
-                          ? null
-                          : () => cubit.acceptInvitation(
-                              invitation.id,
-                              profileId: context
-                                  .read<ProfilesCubit>()
-                                  .state
-                                  .selectedProfile
-                                  ?.id,
-                            ),
+                    Text(
+                      request.teamName,
+                      style: context.textStyles.bodySmall?.copyWith(
+                        color: context.colors.textSecondary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
-        );
-      },
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: AppButton.secondary(
+                  label: l10n.requestsRejectAction,
+                  isLoading: isBusy,
+                  onPressed: isBusy
+                      ? null
+                      : () => cubit.rejectJoinRequest(request.id),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: AppButton(
+                  label: l10n.requestsApproveAction,
+                  isLoading: isBusy,
+                  onPressed: isBusy
+                      ? null
+                      : () => cubit.approveJoinRequest(request.id),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InvitationCard extends StatelessWidget {
+  const _InvitationCard({required this.invitation, required this.isBusy});
+
+  final TeamInvitationSummary invitation;
+  final bool isBusy;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final cubit = context.read<RequestsCubit>();
+
+    return AppCard(
+      onTap: () =>
+          context.push(AppRoutes.publicTeamLocation(invitation.teamId)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              AppAvatar(
+                label: invitation.teamName,
+                imageUrl: invitation.teamLogoUrl,
+                size: AppSizing.avatarMd,
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      invitation.teamName,
+                      style: context.textStyles.bodyLarge,
+                    ),
+                    Text(
+                      l10n.requestsMemberCountLabel(invitation.memberCount),
+                      style: context.textStyles.bodySmall?.copyWith(
+                        color: context.colors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: AppButton.secondary(
+                  label: l10n.requestsDeclineAction,
+                  isLoading: isBusy,
+                  onPressed: isBusy
+                      ? null
+                      : () => cubit.declineInvitation(invitation.id),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: AppButton(
+                  label: l10n.requestsAcceptAction,
+                  isLoading: isBusy,
+                  onPressed: isBusy
+                      ? null
+                      : () => cubit.acceptInvitation(invitation.id),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

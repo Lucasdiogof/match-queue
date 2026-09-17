@@ -10,7 +10,6 @@ class BlockingSearch extends Equatable {
     required this.displayName,
     required this.expiresAt,
     this.avatarUrl,
-    this.profileName,
     this.gameMode,
   });
 
@@ -18,7 +17,6 @@ class BlockingSearch extends Equatable {
   final String displayName;
   final String? avatarUrl;
   final DateTime expiresAt;
-  final String? profileName;
   final GameMode? gameMode;
 
   @override
@@ -27,7 +25,6 @@ class BlockingSearch extends Equatable {
     displayName,
     avatarUrl,
     expiresAt,
-    profileName,
     gameMode,
   ];
 }
@@ -87,18 +84,14 @@ class QueueEntry extends Equatable {
     required this.userId,
     required this.displayName,
     required this.isMe,
-    this.profileId,
     this.avatarUrl,
-    this.profileName,
     this.gameMode,
   });
 
   final int position;
   final String userId;
-  final String? profileId;
   final String displayName;
   final String? avatarUrl;
-  final String? profileName;
   final GameMode? gameMode;
   final bool isMe;
 
@@ -106,25 +99,22 @@ class QueueEntry extends Equatable {
   List<Object?> get props => <Object?>[
     position,
     userId,
-    profileId,
     displayName,
     avatarUrl,
-    profileName,
     gameMode,
     isMe,
   ];
 }
 
-/// Read model de Conta + TIME (fila real por time): reflete
-/// get_my_matchmaking_status(fc_account_id, team_id). Cada Time tem sua
-/// propria fila e seu proprio estado -- a mesma Conta pode estar em 1o
+/// Read model de usuario + TIME (fila real por time): reflete
+/// get_my_matchmaking_status(team_id, game_mode). Cada Time tem sua
+/// propria fila e seu proprio estado -- o mesmo usuario pode estar em 1o
 /// lugar no Time A e 3o no Time B ao mesmo tempo, mas so pode estar
-/// SEARCHING em UM time por vez (lock global por Conta FC).
+/// SEARCHING em UM time por vez (lock global por usuario).
 class MyMatchmakingSnapshot extends Equatable {
   const MyMatchmakingSnapshot({
-    required this.profileId,
+    required this.userId,
     required this.teamId,
-    required this.profileLinkedToTeam,
     required this.myStatus,
     required this.serverNow,
     this.searchDurationSeconds,
@@ -135,13 +125,8 @@ class MyMatchmakingSnapshot extends Equatable {
     this.queue = const <QueueEntry>[],
   });
 
-  final String profileId;
+  final String userId;
   final String teamId;
-
-  /// Falso quando a Conta FC selecionada nao esta vinculada a este time --
-  /// buscar exige o vinculo (fc_account_teams), a UI precisa direcionar pra
-  /// tela de vincular em vez de mostrar um erro generico.
-  final bool profileLinkedToTeam;
 
   final int? searchDurationSeconds;
   final MySearching? searching;
@@ -162,9 +147,8 @@ class MyMatchmakingSnapshot extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-    profileId,
+    userId,
     teamId,
-    profileLinkedToTeam,
     searchDurationSeconds,
     searching,
     myStatus,

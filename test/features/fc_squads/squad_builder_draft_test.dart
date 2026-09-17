@@ -54,7 +54,7 @@ FcSquadDetail _detail({
   int chemistry = 10,
 }) => FcSquadDetail(
   id: 'squad-1',
-  profileId: 'profile-1',
+  userId: 'user-1',
   name: 'Elenco',
   formation: formation ?? _f442,
   slots: slots,

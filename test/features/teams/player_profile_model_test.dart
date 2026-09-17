@@ -19,9 +19,9 @@ Map<String, dynamic> _profileJson({
   'user_id': 'u1',
   'display_name': 'Lucas',
   'avatar_url': null,
-  'candidate_accounts': <dynamic>[],
-  'needs_account_selection': false,
-  'account': null,
+  'rivals_division': null,
+  'rivals_wins': 0,
+  'rivals_losses': 0,
   'squad': null,
   'weekend_league_history': weekendLeagueHistory,
 };
@@ -50,12 +50,13 @@ void main() {
     });
   });
 
-  test('perfil sem conta vinculada nao quebra e fica com listas vazias', () {
+  test('jogador sem elenco nem historico nao quebra o parsing', () {
     final profile = PlayerProfileModel.fromJson(_profileJson());
 
-    expect(profile.profile, isNull);
+    expect(profile.userId, 'u1');
+    expect(profile.displayName, 'Lucas');
     expect(profile.squad, isNull);
-    expect(profile.candidateProfiles, isEmpty);
+    expect(profile.rivalsDivision, isNull);
     expect(profile.weekendLeagueHistory, isEmpty);
   });
 }

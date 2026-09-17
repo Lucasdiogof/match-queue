@@ -2,44 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 
-/// Perfil publico de um membro do time (Etapa 11, Parte B). So o que
-/// qualquer companheiro de time pode ver -- nunca historico de busca, nunca
-/// outras contas do usuario.
-class PlayerProfileCandidate extends Equatable {
-  const PlayerProfileCandidate({required this.id, required this.name});
-
-  final String id;
-  final String name;
-
-  @override
-  List<Object?> get props => <Object?>[id, name];
-}
-
-class PlayerProfileAccount extends Equatable {
-  const PlayerProfileAccount({
-    required this.id,
-    required this.name,
-    required this.rivalsWins,
-    required this.rivalsLosses,
-    this.rivalsDivision,
-  });
-
-  final String id;
-  final String name;
-  final String? rivalsDivision;
-  final int rivalsWins;
-  final int rivalsLosses;
-
-  @override
-  List<Object?> get props => <Object?>[
-    id,
-    name,
-    rivalsDivision,
-    rivalsWins,
-    rivalsLosses,
-  ];
-}
-
 /// Escalação principal completa -- mesma forma de formação/titulares que o
 /// próprio Squad Builder usa, pro perfil desenhar o mesmo campinho (só
 /// leitura, sem callback nenhum).
@@ -91,24 +53,26 @@ class PlayerProfileWeekendLeagueEntry extends Equatable {
   ];
 }
 
+/// Perfil publico de um membro do time. So o que qualquer companheiro de
+/// time pode ver -- nunca historico de busca, nunca preferencia privada.
 class PlayerProfile extends Equatable {
   const PlayerProfile({
     required this.userId,
     required this.displayName,
-    required this.candidateProfiles,
-    required this.needsProfileSelection,
+    required this.rivalsWins,
+    required this.rivalsLosses,
     required this.weekendLeagueHistory,
     this.avatarUrl,
-    this.profile,
+    this.rivalsDivision,
     this.squad,
   });
 
   final String userId;
   final String displayName;
   final String? avatarUrl;
-  final List<PlayerProfileCandidate> candidateProfiles;
-  final bool needsProfileSelection;
-  final PlayerProfileAccount? profile;
+  final String? rivalsDivision;
+  final int rivalsWins;
+  final int rivalsLosses;
   final PlayerProfileSquad? squad;
   final List<PlayerProfileWeekendLeagueEntry> weekendLeagueHistory;
 
@@ -117,9 +81,9 @@ class PlayerProfile extends Equatable {
     userId,
     displayName,
     avatarUrl,
-    candidateProfiles,
-    needsProfileSelection,
-    profile,
+    rivalsDivision,
+    rivalsWins,
+    rivalsLosses,
     squad,
     weekendLeagueHistory,
   ];

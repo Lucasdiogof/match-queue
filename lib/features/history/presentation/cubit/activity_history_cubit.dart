@@ -1,5 +1,4 @@
 import 'package:fifa_queue/core/errors/app_failure.dart';
-import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
 import 'package:fifa_queue/features/history/domain/entities/team_activity_entry.dart';
@@ -8,7 +7,7 @@ import 'package:fifa_queue/features/history/presentation/cubit/activity_history_
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
-  ActivityHistoryCubit(this._repository, {required this.teamId, this.profileId})
+  ActivityHistoryCubit(this._repository, {required this.teamId, this.userId})
     : super(const ActivityHistoryState());
 
   final HistoryRepository _repository;
@@ -16,7 +15,7 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
 
   /// Quando vem da tela da Conta (em vez da aba raiz), filtra so a
   /// atividade daquele Elenco dentro do time. Null = time inteiro.
-  final String? profileId;
+  final String? userId;
 
   static const int _pageSize = 20;
 
@@ -28,10 +27,8 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
       final page = await _repository.fetchActivityHistory(
         teamId: teamId,
         limit: _pageSize,
-        scope: state.scope,
-        gameResult: state.gameResultFilter,
         searchStatus: state.searchStatusFilter,
-        profileId: profileId,
+        userId: userId,
         from: state.period.from(DateTime.now().toUtc()),
       );
       if (!isClosed) {
@@ -69,10 +66,8 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
         teamId: teamId,
         limit: _pageSize,
         cursor: state.cursor,
-        scope: state.scope,
-        gameResult: state.gameResultFilter,
         searchStatus: state.searchStatusFilter,
-        profileId: profileId,
+        userId: userId,
         from: state.period.from(DateTime.now().toUtc()),
       );
       if (!isClosed) {
@@ -91,33 +86,6 @@ class ActivityHistoryCubit extends Cubit<ActivityHistoryState> {
         emit(state.copyWith(isLoadingMore: false));
       }
     }
-  }
-
-  Future<void> setScope(ActivityScope scope) async {
-    if (state.scope == scope) {
-      return;
-    }
-    emit(
-      state.copyWith(
-        scope: scope,
-        clearGameResultFilter: true,
-        clearSearchStatusFilter: true,
-      ),
-    );
-    await load();
-  }
-
-  Future<void> setGameResultFilter(GameResult? result) async {
-    if (state.gameResultFilter == result) {
-      return;
-    }
-    emit(
-      state.copyWith(
-        gameResultFilter: result,
-        clearGameResultFilter: result == null,
-      ),
-    );
-    await load();
   }
 
   Future<void> setSearchStatusFilter(MatchSearchStatus? status) async {

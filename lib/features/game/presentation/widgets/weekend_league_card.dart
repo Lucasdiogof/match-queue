@@ -1,9 +1,9 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/features/profiles/domain/entities/profile.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
-import 'package:fifa_queue/features/profiles/presentation/pages/weekend_league_detail_page.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
+import 'package:fifa_queue/features/account/presentation/pages/weekend_league_detail_page.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:flutter/material.dart';
@@ -16,31 +16,31 @@ class WeekendLeagueCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<ProfilesCubit, ProfilesState>(
+      BlocBuilder<AccountCubit, AccountState>(
         buildWhen: (previous, current) =>
-            previous.weekendLeagueEvent != current.weekendLeagueEvent ||
-            previous.selectedProfile != current.selectedProfile,
+            
+            previous.account != current.account,
         builder: (context, state) {
-          final event = state.weekendLeagueEvent;
-          final profile = state.selectedProfile;
-          if (event == null || profile == null) {
+          final event = state.account?.weekendLeagueEvent;
+          final account = state.account;
+          if (event == null || account == null) {
             return const SizedBox.shrink();
           }
-          return _WeekendLeagueCardBody(event: event, profile: profile);
+          return _WeekendLeagueCardBody(event: event, account: account);
         },
       );
 }
 
 class _WeekendLeagueCardBody extends StatelessWidget {
-  const _WeekendLeagueCardBody({required this.event, required this.profile});
+  const _WeekendLeagueCardBody({required this.event, required this.account});
 
   final WeekendLeagueEvent event;
-  final Profile profile;
+  final Account account;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final record = profile.weekendLeagueRecord;
+    final record = account.weekendLeagueRecord;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.lg),
@@ -60,7 +60,7 @@ class _WeekendLeagueCardBody extends StatelessWidget {
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) =>
-                WeekendLeagueDetailPage(profile: profile, event: event),
+                WeekendLeagueDetailPage(account: account, event: event),
           ),
         ),
         child: Column(
@@ -88,7 +88,7 @@ class _WeekendLeagueCardBody extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              profile.hasWeekendLeagueManualOverride
+              account.hasWeekendLeagueManualOverride
                   ? l10n.weekendLeagueBadge(event.number)
                   : '${l10n.weekendLeagueBadge(event.number)} · '
                         '${l10n.weekendLeagueWindow(l10n.historyEntryDate(event.startsAt), l10n.historyEntryDate(event.endsAt))}',

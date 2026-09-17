@@ -1,5 +1,5 @@
-import 'package:fifa_queue/features/profiles/domain/entities/rivals_division.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/rivals_division_l10n.dart';
+import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/app_notification.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/notification_category.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';

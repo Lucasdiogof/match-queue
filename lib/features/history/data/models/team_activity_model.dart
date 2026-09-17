@@ -1,4 +1,3 @@
-import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/data/models/parse.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/team_activity_entry.dart';
@@ -23,33 +22,8 @@ class TeamActivityModel {
   }
 
   static TeamActivityEntry _entryFromJson(Map<String, dynamic> json) {
-    if (json['type'] == 'GAME') {
-      final startedAt = parseDate(json['started_at']);
-      return GameHistoryEntry(
-        id: '${json['id']}',
-        userId: '${json['user_id']}',
-        displayName: parseString(json['display_name']) ?? '',
-        avatarUrl: parseString(json['avatar_url']),
-        gameMode: GameMode.fromKey(json['game_mode']),
-        occurredAt: parseDate(json['ended_at'], fallback: startedAt),
-        status: parseString(json['status']) ?? 'FINISHED',
-        result: switch (json['result']) {
-          'WIN' => GameResult.win,
-          'LOSS' => GameResult.loss,
-          _ => null,
-        },
-        goalsFor: parseNullableInt(json['goals_for']),
-        goalsAgainst: parseNullableInt(json['goals_against']),
-        startedAt: startedAt,
-        weekendLeagueNumber: parseNullableInt(json['weekend_league_number']),
-        profileName: parseString(json['fc_account_name']),
-        fcSquadName: parseString(json['fc_squad_name']),
-        fcFormationCode: parseString(json['fc_formation_code']),
-      );
-    }
-
     final startedAt = parseDate(json['started_at']);
-    return SearchHistoryEntry(
+    return TeamActivityEntry(
       id: '${json['id']}',
       userId: '${json['user_id']}',
       displayName: parseString(json['display_name']) ?? '',
@@ -61,7 +35,6 @@ class TeamActivityModel {
           MatchSearchStatus.cancelled,
       startedAt: startedAt,
       durationSeconds: parseInt(json['duration_seconds']),
-      profileName: parseString(json['fc_account_name']),
     );
   }
 

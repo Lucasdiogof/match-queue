@@ -9,25 +9,25 @@ class TeamMemberModel {
   static const String table = 'team_members';
   static const String columnTeamId = 'team_id';
   static const String columnUserId = 'user_id';
-  static const String columnProfileId = 'fc_account_id';
   static const String columnRole = 'role';
   static const String columnJoinedAt = 'joined_at';
   static const String embeddedTeam = 'team';
-  static const String embeddedProfile = 'profile';
+  /// Alias do embed PostgREST sobre a tabela `profiles` (a tabela do
+  /// usuario no banco) -- nome de wire, nao o conceito removido.
+  static const String embeddedAccount = 'profile';
 
   static TeamMembership membershipFromJson(Map<String, dynamic> json) =>
       TeamMembership(
         teamId: '${json[columnTeamId]}',
         userId: '${json[columnUserId]}',
-        profileId: '${json[columnProfileId]}',
         role: TeamRole.fromKey(json[columnRole]),
         joinedAt: TeamModel.parseDate(json[columnJoinedAt]),
       );
 
   static TeamMember memberFromJson(Map<String, dynamic> json) => TeamMember(
     membership: membershipFromJson(json),
-    profile: AccountModel.fromJson(
-      Map<String, dynamic>.from(json[embeddedProfile] as Map),
+    account: AccountModel.fromJson(
+      Map<String, dynamic>.from(json[embeddedAccount] as Map),
     ),
   );
 

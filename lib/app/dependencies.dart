@@ -4,9 +4,7 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/firebase/firebase_bootstrap.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/auth/auth_module.dart';
-import 'package:fifa_queue/features/profiles/profiles_module.dart';
 import 'package:fifa_queue/features/fc_squads/fc_squads_module.dart';
-import 'package:fifa_queue/features/game/game_module.dart';
 import 'package:fifa_queue/features/history/history_module.dart';
 import 'package:fifa_queue/features/invitations/invitations_module.dart';
 import 'package:fifa_queue/features/market/market_module.dart';
@@ -38,14 +36,12 @@ Future<void> registerDependencies({
   registerAuthModule(getIt, supabaseClient: supabaseClient);
   registerAccountModule(getIt, supabaseClient: supabaseClient);
   registerTeamsModule(getIt, supabaseClient: supabaseClient);
-  registerProfilesModule(getIt, supabaseClient: supabaseClient);
   registerFcSquadsModule(getIt, supabaseClient: supabaseClient);
   registerMarketModule(getIt, supabaseClient: supabaseClient);
   registerPublicProfileModule(getIt, supabaseClient: supabaseClient);
   registerInvitationsModule(getIt, supabaseClient: supabaseClient);
   registerRequestsModule(getIt, supabaseClient: supabaseClient);
   registerMatchmakingModule(getIt, supabaseClient: supabaseClient);
-  registerGameModule(getIt, supabaseClient: supabaseClient);
   registerHistoryModule(getIt, supabaseClient: supabaseClient);
   registerNotificationsModule(
     getIt,
