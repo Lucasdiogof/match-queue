@@ -10,6 +10,7 @@ import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart
 import 'package:fifa_queue/features/account/domain/repositories/account_repository.dart';
 import 'package:fifa_queue/features/game/data/models/weekend_league_event_model.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseAccountRepository implements AccountRepository {
   const SupabaseAccountRepository(this._dataSource, this._errorMapper);
@@ -34,13 +35,38 @@ class SupabaseAccountRepository implements AccountRepository {
         final base = existing != null
             ? AccountModel.fromJson(existing)
             : AccountModel.fromJson(
-                await _dataSource.insert(
-                  userId: userId,
-                  displayName: _sanitize(fallbackDisplayName),
-                ),
+                await _insertOrFetchExisting(userId, fallbackDisplayName),
               );
         return _withExtras(base);
       });
+
+  /// O trigger `handle_new_user` já cria a linha em `public.users` logo após
+  /// o cadastro -- às vezes antes desta leitura conseguir vê-la (mesma conta,
+  /// duas escritas correndo: a do trigger e esta). Sem isso, o insert cai
+  /// num unique_violation e a tela de Conta mostrava "algo deu errado no
+  /// servidor" na primeira tentativa logo após criar a conta, mesmo a linha
+  /// já existindo -- só funcionava ao tentar de novo, quando a leitura já
+  /// enxergava o que o trigger tinha gravado.
+  Future<Map<String, dynamic>> _insertOrFetchExisting(
+    String userId,
+    String fallbackDisplayName,
+  ) async {
+    try {
+      return await _dataSource.insert(
+        userId: userId,
+        displayName: _sanitize(fallbackDisplayName),
+      );
+    } on PostgrestException catch (error) {
+      if (error.code != '23505') {
+        rethrow;
+      }
+      final existing = await _dataSource.fetchById(userId);
+      if (existing == null) {
+        rethrow;
+      }
+      return existing;
+    }
+  }
 
   @override
   Future<Account> updateDisplayName(String displayName) => _guard(() async {
@@ -80,15 +106,13 @@ class SupabaseAccountRepository implements AccountRepository {
       _guard(() => _dataSource.updateRivalsDivision(division?.key));
 
   @override
-  Future<void> incrementRivalsRecord({
-    int winDelta = 0,
-    int lossDelta = 0,
-  }) => _guard(
-    () => _dataSource.incrementRivalsRecord(
-      winDelta: winDelta,
-      lossDelta: lossDelta,
-    ),
-  );
+  Future<void> incrementRivalsRecord({int winDelta = 0, int lossDelta = 0}) =>
+      _guard(
+        () => _dataSource.incrementRivalsRecord(
+          winDelta: winDelta,
+          lossDelta: lossDelta,
+        ),
+      );
 
   @override
   Future<void> incrementWeekendLeagueRecord({
@@ -130,12 +154,11 @@ class SupabaseAccountRepository implements AccountRepository {
       });
 
   @override
-  Future<WeekendLeagueAccountStats> fetchWeekendLeagueStats(
-    String eventId,
-  ) => _guard(() async {
-    final json = await _dataSource.fetchWeekendLeagueStats(eventId);
-    return WeekendLeagueAccountStats.fromJson(json);
-  });
+  Future<WeekendLeagueAccountStats> fetchWeekendLeagueStats(String eventId) =>
+      _guard(() async {
+        final json = await _dataSource.fetchWeekendLeagueStats(eventId);
+        return WeekendLeagueAccountStats.fromJson(json);
+      });
 
   @override
   Future<RivalsAccountStats> fetchRivalsStats() => _guard(() async {
