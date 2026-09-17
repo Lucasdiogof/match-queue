@@ -9,7 +9,7 @@ const String _nonAffiliationPt =
     'marca de terceiros.';
 
 const LegalDocument kPrivacyPolicyPt = LegalDocument(
-  updatedAt: '2026-09-15',
+  updatedAt: '2026-09-17',
   nonAffiliationDisclaimer: _nonAffiliationPt,
   sections: <LegalSection>[
     LegalSection(
@@ -25,26 +25,26 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
           'Coletamos apenas o necessário para o app funcionar:\n\n'
           '• Dados de conta: e-mail e senha (armazenada de forma segura '
           'pelo provedor de autenticação, nunca em texto simples).\n'
-          '• Perfil: nome de exibição.\n'
-          '• Identificadores internos: um ID único gerado para você e '
-          'para cada Time/Conta que você cria ou participa.\n'
-          '• Contas: nomes que você dá às suas Contas (os perfis de jogo '
-          'que você registra e gerencia no Match Queue), a escalação que '
-          'você monta para cada uma, divisão de Rivals, registro de '
-          'Weekend League que você mesmo informar e, se você escolher '
-          'enviar uma, uma foto para identificar a Conta.\n'
+          '• Perfil da conta: seu nome de exibição, foto de avatar (se '
+          'você enviar uma), a(s) plataforma(s) em que você joga e sua '
+          'divisão de Rivals.\n'
+          '• Identificadores internos: um ID único gerado para você, e um '
+          'para cada Time que você cria ou participa.\n'
+          '• Escalação: o elenco que você monta (jogadores, técnico e '
+          'formação).\n'
           '• Times: nome, tag e histórico de atividade dos times dos quais '
           'você participa.\n'
-          '• Dados de partidas: buscas de partida, filas, resultados e '
-          'estatísticas (gols, assistências) que você ou seu time '
-          'registrarem.\n'
+          '• Dados de busca de partida: buscas de partida, filas e '
+          'histórico de busca (se você encontrou partida ou cancelou, e '
+          'quando) seus e do seu time.\n'
+          '• Registros de Weekend League e Rivals: contagem de '
+          'vitórias/derrotas que você mesmo informa.\n'
           '• Token de notificação push (Firebase Cloud Messaging), se você '
           'permitir notificações.\n'
           '• Perfil público: se você ativar essa opção nas configurações, '
-          'escolhe um endereço público e uma Conta para vincular a ele; o '
-          'link exibe seu nome e essa Conta, e você decide individualmente '
-          'se ele também mostra a escalação, a divisão de Rivals, o '
-          'registro de Weekend League e as estatísticas dessa Conta.',
+          'escolhe um endereço público; o link exibe seu nome, e você '
+          'decide individualmente se ele também mostra sua escalação, '
+          'divisão de Rivals, registro de Weekend League e estatísticas.',
     ),
     LegalSection(
       title: '3. Provedores que usamos',
@@ -87,10 +87,10 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
     LegalSection(
       title: '7. Exclusão de conta',
       body:
-          'Você pode excluir sua conta a qualquer momento em Perfil → '
-          'Excluir minha conta. A exclusão remove seu perfil, suas Contas, '
-          'escalações, participação em times, dispositivos registrados, '
-          'preferências de notificação e perfil público. Se você for o '
+          'Você pode excluir sua conta a qualquer momento em Conta → '
+          'Excluir minha conta. A exclusão remove sua conta, escalação, '
+          'participação em times, dispositivos registrados, preferências '
+          'de notificação e perfil público. Se você for o '
           'único integrante de um time que criou, o time inteiro é '
           'removido; se houver outros integrantes, a exclusão só é '
           'permitida depois que você deixar de ser o único dono (ex.: '
@@ -109,10 +109,9 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
       title: '9. Seus direitos',
       body:
           'Você pode, a qualquer momento: acessar e editar seu nome de '
-          'exibição e a foto de cada Conta pelo próprio app; ativar ou '
+          'exibição e sua foto de avatar pelo próprio app; ativar ou '
           'desativar seu perfil público e escolher quais informações ele '
-          'exibe (a Conta '
-          'vinculada, a escalação, a divisão de Rivals, o registro de '
+          'exibe (a escalação, a divisão de Rivals, o registro de '
           'Weekend League e as estatísticas); e excluir sua conta e os '
           'dados associados a ela. Para qualquer outra solicitação sobre '
           'seus dados, entre em contato pelo $kSupportEmail.',
@@ -137,7 +136,7 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
 );
 
 const LegalDocument kTermsOfUsePt = LegalDocument(
-  updatedAt: '2026-09-08',
+  updatedAt: '2026-09-17',
   nonAffiliationDisclaimer: _nonAffiliationPt,
   sections: <LegalSection>[
     LegalSection(
@@ -151,8 +150,9 @@ const LegalDocument kTermsOfUsePt = LegalDocument(
       title: '2. Sobre o app',
       body:
           'O Match Queue ajuda grupos de jogadores de EA SPORTS FC / Clubs a '
-          'organizar quem busca partida em cada momento, além de registrar '
-          'resultados, elencos e estatísticas do time.',
+          'organizar quem busca partida em cada momento, além de deixar '
+          'acompanhar escalações, atividade do time e os próprios '
+          'registros competitivos.',
     ),
     LegalSection(
       title: '3. Sua conta',
@@ -179,8 +179,8 @@ const LegalDocument kTermsOfUsePt = LegalDocument(
     LegalSection(
       title: '6. Conteúdo que você insere',
       body:
-          'Você é responsável pelos nomes de elenco, resultados e demais '
-          'informações que inserir no app. Reservamo-nos o direito de '
+          'Você é responsável pelos nomes de elenco e demais informações '
+          'que inserir no app. Reservamo-nos o direito de '
           'remover conteúdo claramente ofensivo ou que viole estes Termos.',
     ),
     LegalSection(

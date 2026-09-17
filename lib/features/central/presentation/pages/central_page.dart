@@ -13,8 +13,8 @@ import 'package:go_router/go_router.dart';
 ///
 /// Substitui a antiga Home -- nunca mostra estado de partida/fila (isso é
 /// o Jogar) nem atalhos operacionais. O único conteúdo condicional é o
-/// onboarding de Conta FC, porque sem Home não sobrou nenhuma tela que
-/// convidasse quem acabou de entrar a criar a primeira conta.
+/// card de onboarding de plataforma, porque sem Home não sobrou nenhuma
+/// tela que convidasse quem acabou de entrar a escolher a plataforma.
 class CentralPage extends StatelessWidget {
   const CentralPage({super.key});
 

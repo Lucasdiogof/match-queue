@@ -97,10 +97,7 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
           if (stats == null) {
             return const SizedBox.shrink();
           }
-          return _Body(
-            stats: stats,
-            onFlush: _flushIncrement,
-          );
+          return _Body(stats: stats, onFlush: _flushIncrement);
         },
       ),
     );
@@ -108,10 +105,7 @@ class _RivalsDetailPageState extends State<RivalsDetailPage> {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({
-    required this.stats,
-    required this.onFlush,
-  });
+  const _Body({required this.stats, required this.onFlush});
 
   final RivalsAccountStats stats;
   final Future<String?> Function(int winDelta, int lossDelta) onFlush;
@@ -160,55 +154,53 @@ class _Body extends StatelessWidget {
 /// A divisao e o dado principal de Rivals, entao vive aqui e nao so na tela
 /// da Conta: o card da Home diz "divisao nao informada" e traz o usuario pra
 /// ca -- chegar sem poder informar era um beco sem saida. Reusa o mesmo
-/// picker da Conta FC, nunca uma segunda forma de escrever o campo.
+/// picker da tela de Conta, nunca uma segunda forma de escrever o campo.
 class _DivisionSection extends StatelessWidget {
   const _DivisionSection();
 
-
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AccountCubit, AccountState>(
-        builder: (context, state) {
-          final l10n = context.l10n;
-          final division = state.account?.rivalsDivision;
+  Widget build(BuildContext context) => BlocBuilder<AccountCubit, AccountState>(
+    builder: (context, state) {
+      final l10n = context.l10n;
+      final division = state.account?.rivalsDivision;
 
-          return AppCard(
-            variant: AppCardVariant.elevated,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      return AppCard(
+        variant: AppCardVariant.elevated,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              l10n.rivalsDivisionTitle.toUpperCase(),
+              style: context.textStyles.labelSmall,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Row(
               children: <Widget>[
-                Text(
-                  l10n.profileDivisionTitle.toUpperCase(),
-                  style: context.textStyles.labelSmall,
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        division?.label(l10n) ?? l10n.profileDivisionNone,
-                        style: context.textStyles.titleMedium?.copyWith(
-                          color: division == null
-                              ? context.colors.textSecondary
-                              : context.colors.textPrimary,
-                        ),
-                      ),
+                Expanded(
+                  child: Text(
+                    division?.label(l10n) ?? l10n.rivalsDivisionNone,
+                    style: context.textStyles.titleMedium?.copyWith(
+                      color: division == null
+                          ? context.colors.textSecondary
+                          : context.colors.textPrimary,
                     ),
-                    if (state.account != null)
-                      AppButton.ghost(
-                        label: division == null
-                            ? l10n.rivalsSetDivisionAction
-                            : l10n.actionEdit,
-                        onPressed: () => showRivalsDivisionPickerSheet(
-                          context: context,
-                          selected: division,
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
+                if (state.account != null)
+                  AppButton.ghost(
+                    label: division == null
+                        ? l10n.rivalsSetDivisionAction
+                        : l10n.actionEdit,
+                    onPressed: () => showRivalsDivisionPickerSheet(
+                      context: context,
+                      selected: division,
+                    ),
+                  ),
               ],
             ),
-          );
-        },
+          ],
+        ),
       );
+    },
+  );
 }

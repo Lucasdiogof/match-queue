@@ -25,7 +25,7 @@ class AccountPage extends StatelessWidget {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: AppAppBar(title: l10n.navProfile, accentTitle: true),
+      appBar: AppAppBar(title: l10n.navAccount, accentTitle: true),
       body: ListView(
         padding: const EdgeInsets.only(
           top: AppSpacing.md,

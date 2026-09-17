@@ -14,7 +14,7 @@ Future<void> showRivalsDivisionPickerSheet({
   await showAppBottomSheet<void>(
     context: context,
     builder: (sheetContext) => AppBottomSheet(
-      title: context.l10n.profileDivisionPickerTitle,
+      title: context.l10n.rivalsDivisionPickerTitle,
       // Sao 12 opcoes fixas: cabe numa tela alta e NAO cabe numa baixa, onde
       // a ultima (Elite) ficava atras da navegacao e inalcancavel, porque uma
       // Column simples nao rola.
@@ -23,7 +23,7 @@ Future<void> showRivalsDivisionPickerSheet({
         shrinkWrap: true,
         children: <Widget>[
           _DivisionOptionRow(
-            label: context.l10n.profileDivisionNone,
+            label: context.l10n.rivalsDivisionNone,
             isSelected: selected == null,
             onTap: () {
               Navigator.of(sheetContext).pop();

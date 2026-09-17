@@ -94,7 +94,7 @@ class _ManualRecordFormState extends State<_ManualRecordForm> {
 
     return BlocBuilder<AccountCubit, AccountState>(
       builder: (context, state) => AppBottomSheet(
-        title: l10n.profileWeekendLeagueSheetTitle,
+        title: l10n.weekendLeagueManualSheetTitle,
         actions: <Widget>[
           AppButton(
             label: l10n.actionSave,
@@ -104,7 +104,7 @@ class _ManualRecordFormState extends State<_ManualRecordForm> {
           const SizedBox(height: AppSpacing.sm),
           if (widget.account.hasWeekendLeagueManualOverride)
             AppButton.secondary(
-              label: l10n.profileWeekendLeagueClearAction,
+              label: l10n.weekendLeagueManualClearAction,
               isLoading: state.isSaving,
               onPressed: state.isSaving ? null : _clear,
             ),
@@ -137,7 +137,7 @@ class _ManualRecordFormState extends State<_ManualRecordForm> {
                 children: <Widget>[
                   Expanded(
                     child: AppTextField(
-                      label: l10n.profileWeekendLeagueWinsLabel,
+                      label: l10n.weekendLeagueManualWinsLabel,
                       controller: _winsController,
                       enabled: !state.isSaving,
                       autofocus: true,
@@ -154,7 +154,7 @@ class _ManualRecordFormState extends State<_ManualRecordForm> {
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: AppTextField(
-                      label: l10n.profileWeekendLeagueLossesLabel,
+                      label: l10n.weekendLeagueManualLossesLabel,
                       controller: _lossesController,
                       enabled: !state.isSaving,
                       keyboardType: TextInputType.number,

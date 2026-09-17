@@ -214,11 +214,11 @@ abstract class AppLocalizations {
   /// **'Histórico'**
   String get navHistory;
 
-  /// No description provided for @navProfile.
+  /// No description provided for @navAccount.
   ///
   /// In pt, this message translates to:
   /// **'Conta'**
-  String get navProfile;
+  String get navAccount;
 
   /// No description provided for @comingSoonTitle.
   ///
@@ -2144,23 +2144,23 @@ abstract class AppLocalizations {
   /// **'Escolha pelo menos uma plataforma.'**
   String get errorAccountPlatformRequired;
 
-  /// No description provided for @profileDivisionTitle.
+  /// No description provided for @rivalsDivisionTitle.
   ///
   /// In pt, this message translates to:
   /// **'Divisão de Rivals'**
-  String get profileDivisionTitle;
+  String get rivalsDivisionTitle;
 
-  /// No description provided for @profileDivisionPickerTitle.
+  /// No description provided for @rivalsDivisionPickerTitle.
   ///
   /// In pt, this message translates to:
   /// **'Selecionar divisão'**
-  String get profileDivisionPickerTitle;
+  String get rivalsDivisionPickerTitle;
 
-  /// No description provided for @profileDivisionNone.
+  /// No description provided for @rivalsDivisionNone.
   ///
   /// In pt, this message translates to:
   /// **'Sem divisão definida'**
-  String get profileDivisionNone;
+  String get rivalsDivisionNone;
 
   /// No description provided for @accountPlatformLabel.
   ///
@@ -2204,35 +2204,35 @@ abstract class AppLocalizations {
   /// **'Selecionar plataformas'**
   String get accountPlatformOnboardingAction;
 
-  /// No description provided for @profileWeekendLeagueTitle.
+  /// No description provided for @weekendLeagueManualTitle.
   ///
   /// In pt, this message translates to:
   /// **'Champions'**
-  String get profileWeekendLeagueTitle;
+  String get weekendLeagueManualTitle;
 
-  /// No description provided for @profileWeekendLeagueClearAction.
+  /// No description provided for @weekendLeagueManualClearAction.
   ///
   /// In pt, this message translates to:
   /// **'Usar resultado das partidas'**
-  String get profileWeekendLeagueClearAction;
+  String get weekendLeagueManualClearAction;
 
-  /// No description provided for @profileWeekendLeagueSheetTitle.
+  /// No description provided for @weekendLeagueManualSheetTitle.
   ///
   /// In pt, this message translates to:
   /// **'Informar resultado'**
-  String get profileWeekendLeagueSheetTitle;
+  String get weekendLeagueManualSheetTitle;
 
-  /// No description provided for @profileWeekendLeagueWinsLabel.
+  /// No description provided for @weekendLeagueManualWinsLabel.
   ///
   /// In pt, this message translates to:
   /// **'Vitórias'**
-  String get profileWeekendLeagueWinsLabel;
+  String get weekendLeagueManualWinsLabel;
 
-  /// No description provided for @profileWeekendLeagueLossesLabel.
+  /// No description provided for @weekendLeagueManualLossesLabel.
   ///
   /// In pt, this message translates to:
   /// **'Derrotas'**
-  String get profileWeekendLeagueLossesLabel;
+  String get weekendLeagueManualLossesLabel;
 
   /// No description provided for @rivalsDivisionDiv10.
   ///

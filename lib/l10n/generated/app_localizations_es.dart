@@ -67,7 +67,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navHistory => 'Historial';
 
   @override
-  String get navProfile => 'Cuenta';
+  String get navAccount => 'Cuenta';
 
   @override
   String get comingSoonTitle => 'En construcción';
@@ -1235,13 +1235,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorAccountPlatformRequired => 'Elige al menos una plataforma.';
 
   @override
-  String get profileDivisionTitle => 'División de Rivals';
+  String get rivalsDivisionTitle => 'División de Rivals';
 
   @override
-  String get profileDivisionPickerTitle => 'Seleccionar división';
+  String get rivalsDivisionPickerTitle => 'Seleccionar división';
 
   @override
-  String get profileDivisionNone => 'Sin división definida';
+  String get rivalsDivisionNone => 'Sin división definida';
 
   @override
   String get accountPlatformLabel => 'Plataformas';
@@ -1267,20 +1267,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountPlatformOnboardingAction => 'Seleccionar plataformas';
 
   @override
-  String get profileWeekendLeagueTitle => 'Champions';
+  String get weekendLeagueManualTitle => 'Champions';
 
   @override
-  String get profileWeekendLeagueClearAction =>
-      'Usar resultado de las partidas';
+  String get weekendLeagueManualClearAction => 'Usar resultado de las partidas';
 
   @override
-  String get profileWeekendLeagueSheetTitle => 'Informar resultado';
+  String get weekendLeagueManualSheetTitle => 'Informar resultado';
 
   @override
-  String get profileWeekendLeagueWinsLabel => 'Victorias';
+  String get weekendLeagueManualWinsLabel => 'Victorias';
 
   @override
-  String get profileWeekendLeagueLossesLabel => 'Derrotas';
+  String get weekendLeagueManualLossesLabel => 'Derrotas';
 
   @override
   String get rivalsDivisionDiv10 => 'División 10';

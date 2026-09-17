@@ -22,7 +22,7 @@ class TeamsState extends Equatable {
 
   final TeamsStatus status;
 
-  /// Conta FC cujos times estao (ou estavam sendo) carregados -- usado so
+  /// Usuário cujos times estao (ou estavam sendo) carregados -- usado so
   /// pra descartar uma resposta que chegou depois de trocar de conta.
   final String? userId;
   final List<UserTeam> teams;
@@ -58,7 +58,7 @@ class TeamsState extends Equatable {
   TeamsState copyWith({
     TeamsStatus? status,
     String? userId,
-    bool clearProfileId = false,
+    bool clearUserId = false,
     List<UserTeam>? teams,
     String? selectedTeamId,
     bool clearSelectedTeamId = false,
@@ -73,7 +73,7 @@ class TeamsState extends Equatable {
     bool? isSaving,
   }) => TeamsState(
     status: status ?? this.status,
-    userId: clearProfileId ? null : (userId ?? this.userId),
+    userId: clearUserId ? null : (userId ?? this.userId),
     teams: teams ?? this.teams,
     selectedTeamId: clearSelectedTeamId
         ? null

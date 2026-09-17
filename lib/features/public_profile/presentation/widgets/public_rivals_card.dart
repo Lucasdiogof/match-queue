@@ -32,7 +32,7 @@ class PublicRivalsCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Text(
-              division?.label(l10n) ?? l10n.profileDivisionNone,
+              division?.label(l10n) ?? l10n.rivalsDivisionNone,
               style: const TextStyle(
                 color: AppColors.darkTextPrimary,
                 fontWeight: FontWeight.w600,

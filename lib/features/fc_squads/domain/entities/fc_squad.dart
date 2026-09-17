@@ -134,8 +134,7 @@ class FcSquadSummary extends Equatable {
   /// 0-33, só titulares. Nunca inclui banco/reserva.
   final int chemistry;
 
-  /// Qualquer formação de futebol tem exatamente 11 titulares -- mesma
-  /// constante que PlayerProfileSquadSummary assume como padrão.
+  /// Qualquer formação de futebol tem exatamente 11 titulares.
   bool get isComplete => startingCount == 11;
 
   @override

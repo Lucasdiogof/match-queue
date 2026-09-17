@@ -74,10 +74,9 @@ class _ControlBody extends StatelessWidget {
       );
     }
 
-    // Sem time o bloqueio real depende de onde o usuario esta na ordem
-    // Conta FC -> Time. Uma mensagem so para os dois casos mandava criar
-    // conta quem ja tinha, e pedia para "escolher um modo" quem nem time
-    // tem -- instrucao que nao resolve nada.
+    // Sem time o bloqueio real depende de onde o usuario esta: quem ainda
+    // nao tem time entra num fluxo, quem ja tem mas so nao selecionou
+    // um modo cairia numa instrucao diferente que nao resolve nada.
     if (selected == null) {
       return RefreshIndicator(
         onRefresh: () => Future.wait(<Future<void>>[
@@ -183,4 +182,3 @@ class _ControlBody extends StatelessWidget {
     );
   }
 }
-
