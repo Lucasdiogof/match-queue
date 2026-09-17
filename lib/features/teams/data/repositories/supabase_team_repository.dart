@@ -7,13 +7,11 @@ import 'package:fifa_queue/features/teams/data/models/player_profile_model.dart'
 import 'package:fifa_queue/features/teams/data/models/team_member_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_member_status_model.dart';
 import 'package:fifa_queue/features/teams/data/models/team_model.dart';
-import 'package:fifa_queue/features/teams/data/models/team_sports_dashboard_model.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_member_status.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
-import 'package:fifa_queue/features/teams/domain/entities/team_sports_dashboard.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
 
 class SupabaseTeamRepository implements TeamRepository {
@@ -23,9 +21,9 @@ class SupabaseTeamRepository implements TeamRepository {
   final SupabaseErrorMapper _errorMapper;
 
   @override
-  Future<List<UserTeam>> fetchMyTeams({required String profileId}) =>
+  Future<List<UserTeam>> fetchMyTeams({required String userId}) =>
       _guard(() async {
-        final rows = await _dataSource.fetchMyMemberships(profileId);
+        final rows = await _dataSource.fetchMyMemberships(userId);
         return rows
             .where((row) => row[TeamMemberModel.embeddedTeam] != null)
             .map(TeamMemberModel.userTeamFromJson)
@@ -35,13 +33,11 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<Team> createTeam({
     required String name,
-    required String profileId,
     String? tag,
     Duration? defaultSearchDuration,
   }) => _guard(() async {
     final row = await _dataSource.createTeam(
       name: name,
-      profileId: profileId,
       tag: tag,
       defaultSearchDurationSeconds: defaultSearchDuration?.inSeconds,
     );
@@ -111,7 +107,7 @@ class SupabaseTeamRepository implements TeamRepository {
   Future<List<TeamMember>> fetchMembers(String teamId) => _guard(() async {
     final rows = await _dataSource.fetchMembers(teamId);
     return rows
-        .where((row) => row[TeamMemberModel.embeddedProfile] != null)
+        .where((row) => row[TeamMemberModel.embeddedAccount] != null)
         .map(TeamMemberModel.memberFromJson)
         .toList(growable: false);
   });
@@ -127,39 +123,13 @@ class SupabaseTeamRepository implements TeamRepository {
   Future<PlayerProfile> fetchMemberProfile({
     required String teamId,
     required String userId,
-    String? profileId,
   }) => _guard(() async {
     final json = await _dataSource.getMemberProfile(
       teamId: teamId,
       userId: userId,
-      profileId: profileId,
     );
     return PlayerProfileModel.fromJson(json);
   });
-
-  @override
-  Future<TeamSportsDashboard> fetchSportsDashboard(String teamId) => _guard(
-    () async => TeamSportsDashboardModel.fromJson(
-      await _dataSource.getSportsDashboard(teamId),
-    ),
-  );
-
-  @override
-  Future<List<TeamPlayerLeaderboardEntry>> fetchPlayerLeaderboard({
-    required String teamId,
-    required bool byAssists,
-    int limit = 50,
-    int offset = 0,
-  }) => _guard(
-    () async => TeamSportsDashboardModel.leaderboardFromResponse(
-      await _dataSource.getPlayerLeaderboard(
-        teamId: teamId,
-        byAssists: byAssists,
-        limit: limit,
-        offset: offset,
-      ),
-    ),
-  );
 
   @override
   Future<Team> setTeamVisibility({
@@ -194,20 +164,20 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<void> removeMember({
     required String teamId,
-    required String profileId,
+    required String userId,
   }) => _guard(
-    () => _dataSource.removeMember(teamId: teamId, profileId: profileId),
+    () => _dataSource.removeMember(teamId: teamId, userId: userId),
   );
 
   @override
   Future<void> setMemberRole({
     required String teamId,
-    required String profileId,
+    required String userId,
     required TeamRole role,
   }) => _guard(
     () => _dataSource.setMemberRole(
       teamId: teamId,
-      profileId: profileId,
+      userId: userId,
       role: role.key,
     ),
   );
@@ -215,9 +185,9 @@ class SupabaseTeamRepository implements TeamRepository {
   @override
   Future<void> transferOwnership({
     required String teamId,
-    required String profileId,
+    required String userId,
   }) => _guard(
-    () => _dataSource.transferOwnership(teamId: teamId, profileId: profileId),
+    () => _dataSource.transferOwnership(teamId: teamId, userId: userId),
   );
 
   Future<T> _guard<T>(Future<T> Function() action) async {

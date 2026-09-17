@@ -31,9 +31,6 @@ class PlayerProfileModel {
   }
 
   static PlayerProfile fromJson(Map<String, dynamic> json) {
-    final candidatesJson =
-        json['candidate_accounts'] as List<dynamic>? ?? const <dynamic>[];
-    final accountJson = json['account'] as Map<String, dynamic>?;
     final wlJson =
         json['weekend_league_history'] as List<dynamic>? ?? const <dynamic>[];
 
@@ -41,25 +38,9 @@ class PlayerProfileModel {
       userId: '${json['user_id']}',
       displayName: '${json['display_name']}',
       avatarUrl: json['avatar_url'] as String?,
-      candidateProfiles: candidatesJson
-          .whereType<Map<String, dynamic>>()
-          .map(
-            (row) => PlayerProfileCandidate(
-              id: '${row['id']}',
-              name: '${row['name']}',
-            ),
-          )
-          .toList(growable: false),
-      needsProfileSelection: json['needs_account_selection'] as bool? ?? false,
-      profile: accountJson == null
-          ? null
-          : PlayerProfileAccount(
-              id: '${accountJson['id']}',
-              name: '${accountJson['name']}',
-              rivalsDivision: accountJson['rivals_division'] as String?,
-              rivalsWins: accountJson['rivals_wins'] as int? ?? 0,
-              rivalsLosses: accountJson['rivals_losses'] as int? ?? 0,
-            ),
+      rivalsDivision: json['rivals_division'] as String?,
+      rivalsWins: json['rivals_wins'] as int? ?? 0,
+      rivalsLosses: json['rivals_losses'] as int? ?? 0,
       squad: _squadFromJson(json['squad']),
       weekendLeagueHistory: wlJson
           .whereType<Map<String, dynamic>>()

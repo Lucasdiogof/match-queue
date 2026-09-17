@@ -4,16 +4,14 @@ import 'package:fifa_queue/features/public_profile/presentation/widgets/sharing_
 import 'package:flutter/material.dart';
 
 class PublicProfileSettingsPage extends StatelessWidget {
-  const PublicProfileSettingsPage({required this.profileId, super.key});
-
-  final String profileId;
+  const PublicProfileSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) => AppScaffold(
     appBar: AppAppBar(title: context.l10n.publicProfileSectionTitle),
     body: ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-      children: <Widget>[SharingSettingsSection(profileId: profileId)],
+      children: <Widget>[const SharingSettingsSection()],
     ),
   );
 }

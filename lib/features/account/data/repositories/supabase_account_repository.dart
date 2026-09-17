@@ -4,7 +4,12 @@ import 'package:fifa_queue/core/validation/app_validators.dart';
 import 'package:fifa_queue/features/account/data/datasources/account_remote_data_source.dart';
 import 'package:fifa_queue/features/account/data/models/account_model.dart';
 import 'package:fifa_queue/features/account/domain/entities/account.dart';
+import 'package:fifa_queue/features/account/domain/entities/account_stats.dart';
+import 'package:fifa_queue/features/account/domain/entities/platform.dart';
+import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/account/domain/repositories/account_repository.dart';
+import 'package:fifa_queue/features/game/data/models/weekend_league_event_model.dart';
+import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 
 class SupabaseAccountRepository implements AccountRepository {
   const SupabaseAccountRepository(this._dataSource, this._errorMapper);
@@ -13,24 +18,28 @@ class SupabaseAccountRepository implements AccountRepository {
   final SupabaseErrorMapper _errorMapper;
 
   @override
-  Future<Account?> fetchMyProfile() => _guard(() async {
+  Future<Account?> fetchMyAccount() => _guard(() async {
     final json = await _dataSource.fetchById(_requireUserId());
-    return json == null ? null : AccountModel.fromJson(json);
+    if (json == null) {
+      return null;
+    }
+    return _withExtras(AccountModel.fromJson(json));
   });
 
   @override
-  Future<Account> ensureMyProfile({required String fallbackDisplayName}) =>
+  Future<Account> ensureMyAccount({required String fallbackDisplayName}) =>
       _guard(() async {
         final userId = _requireUserId();
         final existing = await _dataSource.fetchById(userId);
-        if (existing != null) {
-          return AccountModel.fromJson(existing);
-        }
-        final created = await _dataSource.insert(
-          userId: userId,
-          displayName: _sanitize(fallbackDisplayName),
-        );
-        return AccountModel.fromJson(created);
+        final base = existing != null
+            ? AccountModel.fromJson(existing)
+            : AccountModel.fromJson(
+                await _dataSource.insert(
+                  userId: userId,
+                  displayName: _sanitize(fallbackDisplayName),
+                ),
+              );
+        return _withExtras(base);
       });
 
   @override
@@ -39,7 +48,7 @@ class SupabaseAccountRepository implements AccountRepository {
       userId: _requireUserId(),
       displayName: _sanitize(displayName),
     );
-    return AccountModel.fromJson(updated);
+    return _withExtras(AccountModel.fromJson(updated));
   });
 
   @override
@@ -53,6 +62,91 @@ class SupabaseAccountRepository implements AccountRepository {
   @override
   Future<void> touchActivity() =>
       _guard(() => _dataSource.touchActivity(_requireUserId()));
+
+  @override
+  Future<List<Platform>> updatePlatforms(List<Platform> platforms) =>
+      _guard(() async {
+        final saved = await _dataSource.updatePlatforms(
+          platforms.map((p) => p.key).toList(growable: false),
+        );
+        return <Platform>[
+          for (final key in saved)
+            if (Platform.tryFromKey(key) != null) Platform.tryFromKey(key)!,
+        ];
+      });
+
+  @override
+  Future<void> updateRivalsDivision(RivalsDivision? division) =>
+      _guard(() => _dataSource.updateRivalsDivision(division?.key));
+
+  @override
+  Future<void> incrementRivalsRecord({
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _guard(
+    () => _dataSource.incrementRivalsRecord(
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    ),
+  );
+
+  @override
+  Future<void> incrementWeekendLeagueRecord({
+    required String eventId,
+    int winDelta = 0,
+    int lossDelta = 0,
+  }) => _guard(
+    () => _dataSource.incrementWeekendLeagueRecord(
+      eventId: eventId,
+      winDelta: winDelta,
+      lossDelta: lossDelta,
+    ),
+  );
+
+  @override
+  Future<void> setWeekendLeagueManualRecord({
+    required String eventId,
+    required int wins,
+    required int losses,
+  }) => _guard(
+    () => _dataSource.setWeekendLeagueManualRecord(
+      eventId: eventId,
+      wins: wins,
+      losses: losses,
+    ),
+  );
+
+  @override
+  Future<void> clearWeekendLeagueManualRecord(String eventId) =>
+      _guard(() => _dataSource.clearWeekendLeagueManualRecord(eventId));
+
+  @override
+  Future<List<WeekendLeagueEvent>> fetchWeekendLeagueEvents() =>
+      _guard(() async {
+        final rows = await _dataSource.fetchWeekendLeagueEvents();
+        return <WeekendLeagueEvent>[
+          for (final row in rows) ?WeekendLeagueEventModel.fromResponse(row),
+        ];
+      });
+
+  @override
+  Future<WeekendLeagueAccountStats> fetchWeekendLeagueStats(
+    String eventId,
+  ) => _guard(() async {
+    final json = await _dataSource.fetchWeekendLeagueStats(eventId);
+    return WeekendLeagueAccountStats.fromJson(json);
+  });
+
+  @override
+  Future<RivalsAccountStats> fetchRivalsStats() => _guard(() async {
+    final json = await _dataSource.fetchRivalsStats();
+    return RivalsAccountStats.fromJson(json);
+  });
+
+  Future<Account> _withExtras(Account base) async {
+    final extras = await _dataSource.fetchAccountExtras();
+    return AccountModel.mergeExtras(base, extras);
+  }
 
   String _requireUserId() {
     final userId = _dataSource.currentUserId;

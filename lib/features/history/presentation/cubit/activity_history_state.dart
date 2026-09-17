@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
-import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
 import 'package:fifa_queue/features/history/domain/entities/team_activity_entry.dart';
@@ -14,10 +13,8 @@ class ActivityHistoryState extends Equatable {
     this.hasMore = false,
     this.cursor,
     this.isLoadingMore = false,
-    this.scope = ActivityScope.all,
-    this.gameResultFilter,
     this.searchStatusFilter,
-    this.period = StatsPeriod.all,
+    this.period = StatsPeriod.last7Days,
     this.failure,
   });
 
@@ -26,8 +23,6 @@ class ActivityHistoryState extends Equatable {
   final bool hasMore;
   final ActivityHistoryCursor? cursor;
   final bool isLoadingMore;
-  final ActivityScope scope;
-  final GameResult? gameResultFilter;
   final MatchSearchStatus? searchStatusFilter;
   final StatsPeriod period;
   final AppFailure? failure;
@@ -41,9 +36,6 @@ class ActivityHistoryState extends Equatable {
     ActivityHistoryCursor? cursor,
     bool clearCursor = false,
     bool? isLoadingMore,
-    ActivityScope? scope,
-    GameResult? gameResultFilter,
-    bool clearGameResultFilter = false,
     MatchSearchStatus? searchStatusFilter,
     bool clearSearchStatusFilter = false,
     StatsPeriod? period,
@@ -55,10 +47,6 @@ class ActivityHistoryState extends Equatable {
     hasMore: hasMore ?? this.hasMore,
     cursor: clearCursor ? null : (cursor ?? this.cursor),
     isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-    scope: scope ?? this.scope,
-    gameResultFilter: clearGameResultFilter
-        ? null
-        : (gameResultFilter ?? this.gameResultFilter),
     searchStatusFilter: clearSearchStatusFilter
         ? null
         : (searchStatusFilter ?? this.searchStatusFilter),
@@ -73,8 +61,6 @@ class ActivityHistoryState extends Equatable {
     hasMore,
     cursor,
     isLoadingMore,
-    scope,
-    gameResultFilter,
     searchStatusFilter,
     period,
     failure,

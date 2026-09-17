@@ -34,7 +34,6 @@ class AccountPage extends StatelessWidget {
         children: <Widget>[
           _AccountSection(),
           const SizedBox(height: AppSpacing.lg),
-          const _ProfilesSection(),
           const SizedBox(height: AppSpacing.lg),
           _PreferencesSection(),
           const SizedBox(height: AppSpacing.lg),
@@ -69,8 +68,8 @@ class _AccountSection extends StatelessWidget {
     final l10n = context.l10n;
 
     return BlocBuilder<AccountCubit, AccountState>(
-      builder: (context, profileState) {
-        if (profileState.status == AccountStatus.failure) {
+      builder: (context, accountState) {
+        if (accountState.status == AccountStatus.failure) {
           return AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -79,7 +78,7 @@ class _AccountSection extends StatelessWidget {
                   tone: AppBannerTone.danger,
                   title: l10n.accountLoadErrorTitle,
                   message:
-                      profileState.failure?.localizedMessage(l10n) ??
+                      accountState.failure?.localizedMessage(l10n) ??
                       l10n.errorUnexpected,
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -96,22 +95,22 @@ class _AccountSection extends StatelessWidget {
           );
         }
 
-        if (profileState.status == AccountStatus.loading ||
-            profileState.profile == null) {
+        if (accountState.status == AccountStatus.loading ||
+            accountState.account == null) {
           return const AppCard(
             child: SizedBox(height: 96, child: AppLoading()),
           );
         }
 
-        final profile = profileState.profile!;
+        final account = accountState.account!;
 
         return BlocBuilder<AuthCubit, AuthState>(
           builder: (context, authState) => AppCard(
             child: Row(
               children: <Widget>[
                 AppAvatar(
-                  label: profile.displayName,
-                  imageUrl: profile.avatarUrl,
+                  label: account.displayName,
+                  imageUrl: account.avatarUrl,
                   size: AppSizing.avatarLg,
                 ),
                 const SizedBox(width: AppSpacing.lg),
@@ -120,7 +119,7 @@ class _AccountSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        profile.displayName,
+                        account.displayName,
                         style: context.textStyles.titleLarge,
                       ),
                       const SizedBox(height: AppSpacing.xxs),
@@ -135,30 +134,13 @@ class _AccountSection extends StatelessWidget {
                   icon: Icons.edit_outlined,
                   tooltip: l10n.accountEditName,
                   variant: AppIconButtonVariant.outlined,
-                  onPressed: () => _editName(context, profile.displayName),
+                  onPressed: () => _editName(context, account.displayName),
                 ),
               ],
             ),
           ),
         );
       },
-    );
-  }
-}
-
-class _ProfilesSection extends StatelessWidget {
-  const _ProfilesSection();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return AppCard(
-      child: _NavRow(
-        icon: Icons.sports_esports_outlined,
-        label: l10n.accountProfilesRow,
-        onTap: () => context.push(AppRoutes.profiles.path),
-      ),
     );
   }
 }

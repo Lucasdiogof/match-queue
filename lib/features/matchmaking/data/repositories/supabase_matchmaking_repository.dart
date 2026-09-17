@@ -18,60 +18,49 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
 
   @override
   Future<MyMatchmakingSnapshot> getMyStatus({
-    required String profileId,
     required String teamId,
     required GameMode mode,
   }) => _guard(() async {
-    final json = await _dataSource.getMyStatus(profileId, teamId, mode.key);
+    final json = await _dataSource.getMyStatus(teamId, mode.key);
     return MyMatchmakingSnapshotModel.fromJson(json);
   });
 
   @override
   Future<MyMatchmakingSnapshot> requestSearch({
-    required String profileId,
     required String teamId,
     String? fcSquadId,
     required GameMode mode,
   }) => _guard(() async {
-    final json = await _dataSource.requestSearch(
-      profileId,
-      teamId,
-      fcSquadId,
-      mode.key,
-    );
+    final json = await _dataSource.requestSearch(teamId, fcSquadId, mode.key);
     return MyMatchmakingSnapshotModel.fromJson(json);
   });
 
   @override
-  Future<MyMatchmakingSnapshot> cancelSearch(String profileId) =>
-      _guard(() async {
-        final json = await _dataSource.cancelSearch(profileId);
+  Future<MyMatchmakingSnapshot> cancelSearch() => _guard(() async {
+        final json = await _dataSource.cancelSearch();
         return MyMatchmakingSnapshotModel.fromJson(json);
       });
 
   @override
   Future<MyMatchmakingSnapshot> leaveQueue({
-    required String profileId,
     required String teamId,
     required GameMode mode,
   }) => _guard(() async {
-    final json = await _dataSource.leaveQueue(profileId, teamId, mode.key);
+    final json = await _dataSource.leaveQueue(teamId, mode.key);
     return MyMatchmakingSnapshotModel.fromJson(json);
   });
 
   @override
-  Future<MyMatchmakingSnapshot> reportMatchFound(String profileId) =>
-      _guard(() async {
-        final json = await _dataSource.reportMatchFound(profileId);
+  Future<MyMatchmakingSnapshot> reportMatchFound() => _guard(() async {
+        final json = await _dataSource.reportMatchFound();
         return MyMatchmakingSnapshotModel.fromJson(json);
       });
 
   @override
   Future<void> requestPriority({
-    required String profileId,
     required String teamId,
     required GameMode mode,
-  }) => _guard(() => _dataSource.requestPriority(profileId, teamId, mode.key));
+  }) => _guard(() => _dataSource.requestPriority(teamId, mode.key));
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

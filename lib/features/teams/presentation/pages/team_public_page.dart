@@ -6,7 +6,7 @@ import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
@@ -189,25 +189,22 @@ class _JoinTeamSection extends StatefulWidget {
 
 class _JoinTeamSectionState extends State<_JoinTeamSection> {
   final RequestsRepository _repository = getIt<RequestsRepository>();
-  late Future<String?> _pendingRequestFuture;
+  Future<String?>? _pendingRequestFuture;
   bool _isSubmitting = false;
 
   @override
-  void initState() {
-    super.initState();
-    _pendingRequestFuture = _repository.myPendingRequestId(widget.teamId);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final selectedProfile = context
-        .watch<ProfilesCubit>()
-        .state
-        .selectedProfile;
-    final isMember = selectedProfile?.teamIds.contains(widget.teamId) ?? false;
+    final accountState = context.watch<AccountCubit>().state;
+    final account = accountState.account;
+    final isMember = account?.teamIds.contains(widget.teamId) ?? false;
     if (isMember) {
       return const SizedBox.shrink();
     }
+
+    // Uma consulta so por montagem: o pedido pendente e do usuario logado,
+    // e nao muda enquanto esta tela estiver aberta a nao ser pelas acoes
+    // daqui mesmo -- que ja reescrevem _pendingRequestFuture.
+    _pendingRequestFuture ??= _repository.myPendingRequestId(widget.teamId);
 
     final l10n = context.l10n;
 
@@ -263,26 +260,9 @@ class _JoinTeamSectionState extends State<_JoinTeamSection> {
   }
 
   Future<void> _requestToJoin() async {
-    // A conta usada pra qualquer acao (entrar, sair, buscar...) e sempre a
-    // selecionada no momento (ProfilesCubit.state.selectedProfile) --
-    // nunca um picker perguntando de novo. Cair pra profiles.first so no
-    // caso extremo de existirem contas mas nenhuma selecionada.
-    final fcState = context.read<ProfilesCubit>().state;
-    if (!fcState.hasProfiles) {
-      unawaited(context.push(AppRoutes.profiles.path));
-      return;
-    }
-    final profileId = fcState.selectedProfile?.id ?? fcState.profiles.first.id;
-    if (!mounted) {
-      return;
-    }
-
     setState(() => _isSubmitting = true);
     try {
-      await _repository.requestToJoin(
-        teamId: widget.teamId,
-        profileId: profileId,
-      );
+      await _repository.requestToJoin(widget.teamId);
       if (!mounted) {
         return;
       }

@@ -10,7 +10,6 @@ class TeamInvitationSummary extends Equatable {
     required this.createdAt,
     this.teamTag,
     this.teamLogoUrl,
-    this.profileName,
   });
 
   final String id;
@@ -19,7 +18,6 @@ class TeamInvitationSummary extends Equatable {
   final String? teamTag;
   final String? teamLogoUrl;
   final int memberCount;
-  final String? profileName;
   final DateTime createdAt;
 
   @override
@@ -30,7 +28,6 @@ class TeamInvitationSummary extends Equatable {
     teamTag,
     teamLogoUrl,
     memberCount,
-    profileName,
     createdAt,
   ];
 }
@@ -46,7 +43,6 @@ class TeamJoinRequestSummary extends Equatable {
     required this.requesterDisplayName,
     required this.createdAt,
     this.requesterAvatarUrl,
-    this.profileName,
   });
 
   final String id;
@@ -55,7 +51,6 @@ class TeamJoinRequestSummary extends Equatable {
   final String requesterUserId;
   final String requesterDisplayName;
   final String? requesterAvatarUrl;
-  final String? profileName;
   final DateTime createdAt;
 
   @override
@@ -66,7 +61,6 @@ class TeamJoinRequestSummary extends Equatable {
     requesterUserId,
     requesterDisplayName,
     requesterAvatarUrl,
-    profileName,
     createdAt,
   ];
 }

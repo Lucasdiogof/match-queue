@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract interface class InviteRemoteDataSource {
   Future<Map<String, dynamic>> resolveInvite(String code);
 
-  Future<Map<String, dynamic>> joinTeam(String code, String? profileId);
+  Future<Map<String, dynamic>> joinTeam(String code);
 
   Future<Map<String, dynamic>> getOrCreateActiveInvite(String teamId);
 
@@ -29,13 +29,12 @@ class SupabaseInviteRemoteDataSource implements InviteRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> joinTeam(String code, String? profileId) async {
+  Future<Map<String, dynamic>> joinTeam(String code) async {
     final response = await _client
         .rpc<dynamic>(
           'join_team_by_invite',
           params: <String, dynamic>{
             'p_code': code,
-            'p_fc_account_id': profileId,
           },
         )
         .single();

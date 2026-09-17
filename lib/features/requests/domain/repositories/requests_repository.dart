@@ -6,11 +6,8 @@ abstract interface class RequestsRepository {
   /// administra, numa chamada so.
   Future<RequestsInbox> fetchInbox();
 
-  /// Usuario pede pra entrar num time com um Elenco proprio.
-  Future<void> requestToJoin({
-    required String teamId,
-    required String profileId,
-  });
+  /// Usuario pede pra entrar num time.
+  Future<void> requestToJoin(String teamId);
 
   /// Id do proprio pedido PENDING pra este time, se houver -- pra tela
   /// publica do time saber se deve mostrar "Pedir para entrar" ou
@@ -20,7 +17,7 @@ abstract interface class RequestsRepository {
   /// So o proprio solicitante cancela, e so enquanto PENDING.
   Future<void> cancelJoinRequest(String requestId);
 
-  /// OWNER/ADMIN aprova: cria membership + vincula o Elenco.
+  /// OWNER/ADMIN aprova: cria a membership.
   Future<void> approveJoinRequest(String requestId);
 
   /// OWNER/ADMIN recusa. Nao cria membership.
@@ -29,19 +26,17 @@ abstract interface class RequestsRepository {
   /// Preview do alvo do convite antes de enviar.
   Future<InviteTargetPreview> resolveInviteTarget(String slug);
 
-  /// OWNER/ADMIN convida um jogador pelo slug do perfil publico dele.
+  /// OWNER/ADMIN convida um jogador pelo slug do perfil publico dele
+  /// (perfil publico = pagina compartilhavel, nao o conceito removido).
   Future<void> inviteMember({required String teamId, required String slug});
 
   /// OWNER/ADMIN revoga um convite PENDING enviado pelo proprio time.
   Future<void> revokeInvitation(String invitationId);
 
-  /// So o proprio convidado responde. Aceitar cria membership -- exige
-  /// profileId (a Conta que vira membro; o fc_account_id gravado no
-  /// convite e so o preview de quando foi enviado, pode ter mudado).
+  /// So o proprio convidado responde. Aceitar cria a membership.
   Future<void> respondInvitation({
     required String invitationId,
     required bool accept,
-    String? profileId,
   });
 
   /// Emite um evento sempre que algo pendente pra este usuario muda (pedido

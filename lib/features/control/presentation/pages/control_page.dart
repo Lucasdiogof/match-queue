@@ -2,12 +2,10 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/profile_onboarding_card.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/profile_squad_card.dart';
-import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
-import 'package:fifa_queue/features/game/presentation/widgets/pending_match_card.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/platform_onboarding_card.dart';
+import 'package:fifa_queue/features/account/presentation/widgets/account_squad_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
@@ -84,29 +82,28 @@ class _ControlBody extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: () => Future.wait(<Future<void>>[
           context.read<TeamsCubit>().refresh(),
-          context.read<ProfilesCubit>().refresh(),
+          context.read<AccountCubit>().refresh(),
         ]),
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
           children: <Widget>[
-            // ProfileSquadCard nao depende de time nenhum (Elenco e da
-            // Conta, nao do Time) -- sem ele aqui, quem esta numa Conta sem
-            // time ficava sem NENHUM jeito de trocar pra outra Conta que
-            // tenha, preso nesta tela. So o card de busca/modo (que sim
-            // depende de time) continua escondido abaixo.
-            const ProfileSquadCard(),
+            // Plataformas e Elenco nao dependem de time nenhum, entao o
+            // card continua aqui mesmo sem time: e daqui que quem ainda nao
+            // entrou em nenhum time configura o que ja da pra configurar.
+            // So o card de busca/modo (que depende de time) fica de fora.
+            const AccountSquadCard(),
             const SizedBox(height: AppSpacing.lg),
-            BlocBuilder<ProfilesCubit, ProfilesState>(
+            BlocBuilder<AccountCubit, AccountState>(
               buildWhen: (previous, current) =>
                   previous.status != current.status ||
-                  previous.hasProfiles != current.hasProfiles,
+                  previous.account != current.account,
               builder: (context, fcState) {
-                if (fcState.isLoading && fcState.profiles.isEmpty) {
+                if (fcState.isLoading && fcState.account == null) {
                   return const SizedBox.shrink();
                 }
-                if (!fcState.hasProfiles) {
-                  return const ProfileOnboardingCard();
+                if (fcState.needsOnboarding) {
+                  return const PlatformOnboardingCard();
                 }
                 return AppEmptyState(
                   icon: Icons.groups_outlined,
@@ -125,70 +122,55 @@ class _ControlBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => Future.wait(<Future<void>>[
         context.read<TeamsCubit>().refresh(),
-        context.read<ProfilesCubit>().refresh(),
+        context.read<AccountCubit>().refresh(),
       ]),
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         children: <Widget>[
-          BlocBuilder<ProfilesCubit, ProfilesState>(
+          BlocBuilder<AccountCubit, AccountState>(
             buildWhen: (previous, current) =>
                 previous.status != current.status ||
-                previous.profiles != current.profiles ||
-                previous.selectedProfileId != current.selectedProfileId,
+                previous.account != current.account ||
+                previous.status != current.status,
             builder: (context, fcState) {
-              if (fcState.isLoading && fcState.profiles.isEmpty) {
+              if (fcState.isLoading && fcState.account == null) {
                 return const SizedBox.shrink();
               }
-              if (!fcState.hasProfiles) {
-                return const ProfileOnboardingCard();
+              if (fcState.needsOnboarding) {
+                return const PlatformOnboardingCard();
               }
-              final profile = fcState.selectedProfile;
+              final account = fcState.account;
+              if (account == null) {
+                return const SizedBox.shrink();
+              }
               final team = selected!;
-              // Modo e busca so fazem sentido pra quem pode buscar de
-              // verdade: Conta FC selecionada E vinculada a ESTE time. Sem
-              // isso os dois cards apareciam sempre, um deles so pra avisar
-              // que nao dava pra usar o outro.
-              final canSearch = profile != null && profile.isLinkedTo(team.id);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 // Matchmaking primeiro. A ordem antiga abria com progresso
                 // competitivo, entao a primeira dobra falava do fim de
                 // semana passado em vez de "voce pode buscar agora". Agora a
-                // dobra responde: que conta, que elenco, que modo, quem esta
-                // na fila, e o botao. Champions e Rivals sao consequencia --
-                // vem depois.
-                //
-                // A pendencia de resultado fica no topo por ser transitoria e
-                // acionavel: ela some assim que respondida, entao nao disputa
-                // a dobra em estado normal.
+                // dobra responde: que plataforma, que elenco, que modo,
+                // quem esta na fila, e o botao. Champions e Rivals sao
+                // consequencia -- vem depois.
                 children: <Widget>[
-                  const PendingMatchCard(),
-                  const ProfileSquadCard(),
+                  const AccountSquadCard(),
                   const SizedBox(height: AppSpacing.lg),
-                  if (canSearch) ...<Widget>[
-                    AppCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            l10n.gameModeSectionTitle,
-                            style: context.textStyles.labelSmall,
-                          ),
-                          const SizedBox(height: AppSpacing.md),
-                          const GameModeSelector(),
-                        ],
-                      ),
+                  AppCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          l10n.gameModeSectionTitle,
+                          style: context.textStyles.labelSmall,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        const GameModeSelector(),
+                      ],
                     ),
-                    const SizedBox(height: AppSpacing.lg),
-                    MatchmakingSection(
-                      profileId: profile.id,
-                      teamId: team.id,
-                      onMatchFound: () =>
-                          context.read<PendingMatchCubit>().refreshSilently(),
-                    ),
-                  ] else if (profile != null)
-                    const _AccountNotLinkedCard(),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  MatchmakingSection(userId: account.id, teamId: team.id),
                   const SizedBox(height: AppSpacing.xl),
                   const WeekendLeagueCard(),
                   const RivalsCard(),
@@ -202,34 +184,3 @@ class _ControlBody extends StatelessWidget {
   }
 }
 
-/// Conta selecionada mas nao vinculada a ESTE time -- modo e busca ficam
-/// escondidos (nenhum dos dois funciona sem o vinculo) e este card e o
-/// unico CTA da dobra, com uma acao real em vez de reaproveitar o titulo
-/// da secao "Times vinculados" como rotulo de botao.
-class _AccountNotLinkedCard extends StatelessWidget {
-  const _AccountNotLinkedCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return AppCard(
-      variant: AppCardVariant.elevated,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          AppBanner(
-            tone: AppBannerTone.warning,
-            message: l10n.controlAccountNotLinkedMessage,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          AppButton.secondary(
-            label: l10n.controlGoToTeamsAction,
-            icon: Icons.groups_outlined,
-            onPressed: () => context.go(AppRoutes.team.path),
-          ),
-        ],
-      ),
-    );
-  }
-}

@@ -16,11 +16,11 @@ class SearchCooldownStore {
 
   final SharedPreferences _preferences;
 
-  String _key(String profileId, String teamId, String modeKey) =>
-      'matchmaking.cooldown.$profileId.$teamId.$modeKey';
+  String _key(String userId, String teamId, String modeKey) =>
+      'matchmaking.cooldown.$userId.$teamId.$modeKey';
 
-  DateTime? read(String profileId, String teamId, String modeKey) {
-    final raw = _preferences.getString(_key(profileId, teamId, modeKey));
+  DateTime? read(String userId, String teamId, String modeKey) {
+    final raw = _preferences.getString(_key(userId, teamId, modeKey));
     if (raw == null) {
       return null;
     }
@@ -28,12 +28,12 @@ class SearchCooldownStore {
   }
 
   Future<void> write(
-    String profileId,
+    String userId,
     String teamId,
     String modeKey,
     DateTime endsAt,
   ) => _preferences.setString(
-    _key(profileId, teamId, modeKey),
+    _key(userId, teamId, modeKey),
     endsAt.toIso8601String(),
   );
 }

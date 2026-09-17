@@ -299,7 +299,7 @@ class _MembersSection extends StatelessWidget {
                   children: <Widget>[
                     AppAvatar(
                       label: member.displayName,
-                      imageUrl: member.profile.avatarUrl,
+                      imageUrl: member.account.avatarUrl,
                       size: AppSizing.avatarMd,
                     ),
                     const SizedBox(width: AppSpacing.md),

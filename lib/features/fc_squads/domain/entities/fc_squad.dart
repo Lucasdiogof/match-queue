@@ -108,7 +108,7 @@ class SquadSlot extends Equatable {
 class FcSquadSummary extends Equatable {
   const FcSquadSummary({
     required this.id,
-    required this.profileId,
+    required this.userId,
     required this.name,
     required this.formationCode,
     required this.isDefault,
@@ -120,7 +120,7 @@ class FcSquadSummary extends Equatable {
   });
 
   final String id;
-  final String profileId;
+  final String userId;
   final String name;
   final String formationCode;
   final bool isDefault;
@@ -141,7 +141,7 @@ class FcSquadSummary extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     id,
-    profileId,
+    userId,
     name,
     formationCode,
     isDefault,
@@ -159,7 +159,7 @@ class FcSquadSummary extends Equatable {
 class FcSquadDetail extends Equatable {
   const FcSquadDetail({
     required this.id,
-    required this.profileId,
+    required this.userId,
     required this.name,
     required this.formation,
     required this.slots,
@@ -177,7 +177,7 @@ class FcSquadDetail extends Equatable {
   });
 
   final String id;
-  final String profileId;
+  final String userId;
   final String name;
   final FormationDefinition formation;
   final List<SquadSlot> slots;
@@ -247,7 +247,7 @@ class FcSquadDetail extends Equatable {
   @override
   List<Object?> get props => <Object?>[
     id,
-    profileId,
+    userId,
     name,
     formation,
     slots,

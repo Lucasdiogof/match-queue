@@ -47,7 +47,7 @@ class SupabaseErrorMapper {
     'FQ002' => TeamFailureReason.invalidTag,
     'FQ003' => TeamFailureReason.permissionDenied,
     'FQ004' || 'FQ005' => TeamFailureReason.permissionDenied,
-    'FQ006' => TeamFailureReason.profileMissing,
+    'FQ006' => TeamFailureReason.accountMissing,
     'FQ007' => TeamFailureReason.invalidSearchDuration,
     'FQ044' => TeamFailureReason.soleOwnerBlocksAccountDeletion,
     'FQ053' || 'FQ057' => TeamFailureReason.notFound,
@@ -106,13 +106,8 @@ class SupabaseErrorMapper {
     _ => null,
   };
 
-  ProfileFailureReason? _profileReasonFrom(String? code) => switch (code) {
-    'FQ025' => ProfileFailureReason.profileNotFound,
-    'FQ026' => ProfileFailureReason.profileNotLinkedToTeam,
-    'FQ027' => ProfileFailureReason.invalidName,
-    'FQ028' => ProfileFailureReason.invalidDivision,
-    'FQ035' => ProfileFailureReason.profileNotLinkedToAnyTeam,
-    'FQ058' => ProfileFailureReason.invalidPlatform,
+  AccountFailureReason? _accountReasonFrom(String? code) => switch (code) {
+    'FQ058' => AccountFailureReason.platformRequired,
     _ => null,
   };
 
@@ -187,9 +182,9 @@ class SupabaseErrorMapper {
     if (gameReason != null) {
       return GameFailure(reason: gameReason, debugMessage: error.message);
     }
-    final profileReason = _profileReasonFrom(error.code);
-    if (profileReason != null) {
-      return ProfileFailure(reason: profileReason, debugMessage: error.message);
+    final accountReason = _accountReasonFrom(error.code);
+    if (accountReason != null) {
+      return AccountFailure(reason: accountReason, debugMessage: error.message);
     }
     final publicProfileReason = _publicProfileReasonFrom(error.code);
     if (publicProfileReason != null) {

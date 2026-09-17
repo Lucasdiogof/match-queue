@@ -86,7 +86,9 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _ConsequenceRow(text: l10n.deleteAccountConsequenceProfiles),
+                  _ConsequenceRow(
+                    text: l10n.deleteAccountConsequenceAccountData,
+                  ),
                   _ConsequenceRow(text: l10n.deleteAccountConsequenceSquads),
                   _ConsequenceRow(text: l10n.deleteAccountConsequenceHistory),
                   _ConsequenceRow(text: l10n.deleteAccountConsequenceStats),

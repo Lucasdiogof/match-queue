@@ -32,7 +32,7 @@ extension AppFailureL10n on AppFailure {
         l10n.errorTeamSearchDurationInvalid,
       TeamFailureReason.notFound => l10n.errorTeamNotFound,
       TeamFailureReason.permissionDenied => l10n.errorTeamPermissionDenied,
-      TeamFailureReason.profileMissing => l10n.errorTeamProfileMissing,
+      TeamFailureReason.accountMissing => l10n.errorTeamAccountMissing,
       TeamFailureReason.soleOwnerBlocksAccountDeletion =>
         l10n.errorSoleOwnerBlocksAccountDeletion,
       TeamFailureReason.alreadyMember => l10n.errorAlreadyTeamMember,
@@ -85,15 +85,9 @@ extension AppFailureL10n on AppFailure {
       GameFailureReason.noSquadSnapshot => l10n.errorGameNoSquadSnapshot,
       GameFailureReason.matchNotFinished => l10n.errorGameMatchNotFinished,
     },
-    ProfileFailure(:final reason) => switch (reason) {
-      ProfileFailureReason.profileNotFound => l10n.errorProfileNotFound,
-      ProfileFailureReason.profileNotLinkedToTeam =>
-        l10n.errorProfileNotLinkedToTeam,
-      ProfileFailureReason.profileNotLinkedToAnyTeam =>
-        l10n.errorProfileNotLinkedToAnyTeam,
-      ProfileFailureReason.invalidName => l10n.errorProfileInvalidName,
-      ProfileFailureReason.invalidDivision => l10n.errorProfileInvalidDivision,
-      ProfileFailureReason.invalidPlatform => l10n.errorProfileInvalidPlatform,
+    AccountFailure(:final reason) => switch (reason) {
+      AccountFailureReason.platformRequired =>
+        l10n.errorAccountPlatformRequired,
     },
     PublicProfileFailure(:final reason) => switch (reason) {
       PublicProfileFailureReason.invalidSlugFormat =>

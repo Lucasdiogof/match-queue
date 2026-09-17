@@ -55,9 +55,9 @@ class AppRoutes {
   /// nela (ex.: notificacao de pedido/convite recebido). Precisa bater com
   /// a ordem das abas em TeamsListPage.
   static const int teamRequestsTabIndex = 2;
-  static const AppRoute profileHistory = AppRoute(
-    'profile-history',
-    '/app/profiles/:profileId/history',
+  static const AppRoute accountHistory = AppRoute(
+    'account-history',
+    '/app/account/history',
   );
   static const AppRoute account = AppRoute('account', '/app/account');
   static const AppRoute accountAppearance = AppRoute(
@@ -76,15 +76,14 @@ class AppRoutes {
     'notifications',
     '/app/notifications',
   );
-  static const AppRoute profileSharing = AppRoute(
-    'profile-sharing',
-    '/app/profile/sharing',
+  static const AppRoute accountSharing = AppRoute(
+    'account-sharing',
+    '/app/account/sharing',
   );
   static const AppRoute publicProfile = AppRoute(
     'public-profile',
     '/u/:identifier',
   );
-  static const AppRoute profiles = AppRoute('profiles', '/app/profiles');
   static const AppRoute cardsCatalog = AppRoute(
     'cards-catalog',
     '/app/catalog/cards',
@@ -148,10 +147,6 @@ class AppRoutes {
     '/app/controls/defending',
   );
 
-  static const AppRoute profileDetail = AppRoute(
-    'profile-detail',
-    '/app/profiles/:profileId',
-  );
   static const AppRoute deleteAccount = AppRoute(
     'delete-account',
     '/app/account/delete-account',
@@ -165,16 +160,9 @@ class AppRoutes {
     '/app/squads/:squadId',
   );
 
-  static const AppRoute matchDetail = AppRoute(
-    'match-detail',
-    '/app/history/match/:matchId',
-  );
-
-  static const String profileIdParam = 'profileId';
   static const String squadIdParam = 'squadId';
   static const String teamIdParam = 'teamId';
   static const String userIdParam = 'userId';
-  static const String matchIdParam = 'matchId';
   static const String identifierParam = 'identifier';
 
   static const List<AppRoute> shellRoutes = <AppRoute>[
@@ -204,16 +192,7 @@ class AppRoutes {
 
   static String joinTeamLocation(String inviteCode) => '/join/$inviteCode';
 
-  static String profileDetailLocation(String profileId) =>
-      '/app/profiles/$profileId';
-
-  static String profileHistoryLocation(String profileId) =>
-      '/app/profiles/$profileId/history';
-
   static String squadBuilderLocation(String squadId) => '/app/squads/$squadId';
-
-  static String matchDetailLocation(String matchId) =>
-      '/app/history/match/$matchId';
 
   static String teamDetailLocation(String teamId) => '/app/team/$teamId';
 
@@ -230,8 +209,4 @@ class AppRoutes {
 
   static String publicProfileLocation(String identifier) => '/u/$identifier';
 
-  static String profileSharingLocation(String profileId) => Uri(
-    path: profileSharing.path,
-    queryParameters: <String, String>{'profileId': profileId},
-  ).toString();
 }

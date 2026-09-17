@@ -5,8 +5,7 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/core/observability/analytics_service.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/profile_link_picker_sheet.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/invitations/domain/repositories/invite_repository.dart';
 import 'package:fifa_queue/features/invitations/domain/usecases/resolve_team_invite.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/invite_resolution_cubit.dart';
@@ -104,18 +103,14 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
     if (teamId == null) {
       return;
     }
-    final profileId = context.read<ProfilesCubit>().state.selectedProfile?.id;
-    if (profileId != null) {
+    final userId = context.read<AccountCubit>().state.account?.id;
+    if (userId != null) {
       final teamsCubit = context.read<TeamsCubit>();
-      await teamsCubit.load(profileId: profileId);
+      await teamsCubit.load(userId: userId);
       await teamsCubit.selectTeam(teamId);
     }
-    final isNewJoin = joinResult != null && !joinResult.alreadyMember;
-    if (isNewJoin) {
+    if (joinResult != null && !joinResult.alreadyMember) {
       await getIt<AnalyticsService>().logEvent('invite_accepted');
-      if (mounted) {
-        await _linkProfiles(teamId);
-      }
     }
     if (!mounted) {
       return;
@@ -123,36 +118,6 @@ class _JoinTeamViewState extends State<_JoinTeamView> {
     await context.read<PendingInviteCubit>().consume();
     if (mounted) {
       context.go(AppRoutes.central.path);
-    }
-  }
-
-  /// Entrada nova de verdade (não reabertura de quem já era membro) exige
-  /// pelo menos uma Conta FC vinculada (gameplay flows refresh, item 16).
-  /// Sem nenhuma, leva pra criação e volta pro mesmo fluxo -- nunca
-  /// conclui o vínculo sem Conta FC, mas também nunca desfaz a entrada no
-  /// time (já é sócio; só falta dizer com qual Conta FC).
-  Future<void> _linkProfiles(String teamId) async {
-    final profilesCubit = context.read<ProfilesCubit>();
-    if (!profilesCubit.state.hasProfiles) {
-      await context.push(AppRoutes.profiles.path);
-      if (!mounted) {
-        return;
-      }
-    }
-    final profiles = profilesCubit.state.profiles;
-    if (profiles.isEmpty) {
-      return;
-    }
-    final selected = await showProfileLinkPickerSheet(
-      context: context,
-      profiles: profiles,
-      selectedProfileId: profilesCubit.state.selectedProfileId,
-    );
-    if (!mounted || selected == null) {
-      return;
-    }
-    for (final profileId in selected) {
-      await profilesCubit.linkToTeam(profileId: profileId, teamId: teamId);
     }
   }
 

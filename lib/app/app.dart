@@ -3,27 +3,22 @@ import 'package:fifa_queue/core/config/app_config_scope.dart';
 import 'package:fifa_queue/core/design_system/theme/app_theme.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/profiles_session_listener.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/fc_squads_session_listener.dart';
-import 'package:fifa_queue/features/game/presentation/cubit/pending_match_cubit.dart';
-import 'package:fifa_queue/features/game/presentation/widgets/pending_match_session_listener.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/pending_invite_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/widgets/pending_invite_listener.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
-import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_account_listener.dart';
 import 'package:fifa_queue/features/notifications/presentation/cubit/notification_unread_cubit.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_lifecycle_listener.dart';
-import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/account/presentation/widgets/locale_sync_listener.dart';
 import 'package:fifa_queue/features/account/presentation/widgets/account_session_listener.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/teams_account_listener.dart';
+import 'package:fifa_queue/features/teams/presentation/widgets/teams_session_listener.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,10 +32,8 @@ class FifaQueueApp extends StatelessWidget {
     required this.themeCubit,
     required this.localeCubit,
     required this.pendingInviteCubit,
-    required this.profileCubit,
     required this.teamsCubit,
-    required this.pendingMatchCubit,
-    required this.profilesCubit,
+    required this.accountCubit,
     super.key,
   });
 
@@ -50,10 +43,8 @@ class FifaQueueApp extends StatelessWidget {
   final ThemeCubit themeCubit;
   final LocaleCubit localeCubit;
   final PendingInviteCubit pendingInviteCubit;
-  final AccountCubit profileCubit;
   final TeamsCubit teamsCubit;
-  final PendingMatchCubit pendingMatchCubit;
-  final ProfilesCubit profilesCubit;
+  final AccountCubit accountCubit;
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -62,10 +53,8 @@ class FifaQueueApp extends StatelessWidget {
       BlocProvider<ThemeCubit>.value(value: themeCubit),
       BlocProvider<LocaleCubit>.value(value: localeCubit),
       BlocProvider<PendingInviteCubit>.value(value: pendingInviteCubit),
-      BlocProvider<AccountCubit>.value(value: profileCubit),
       BlocProvider<TeamsCubit>.value(value: teamsCubit),
-      BlocProvider<PendingMatchCubit>.value(value: pendingMatchCubit),
-      BlocProvider<ProfilesCubit>.value(value: profilesCubit),
+      BlocProvider<AccountCubit>.value(value: accountCubit),
       BlocProvider<FcSquadsCubit>(create: (_) => getIt<FcSquadsCubit>()),
       BlocProvider<GameModeCubit>(create: (_) => getIt<GameModeCubit>()),
       BlocProvider<NotificationUnreadCubit>(
@@ -90,18 +79,12 @@ class FifaQueueApp extends StatelessWidget {
             localeResolutionCallback: (deviceLocale, supportedLocales) =>
                 AppLocales.resolve(locale ?? deviceLocale, supportedLocales),
             builder: (context, child) => AccountSessionListener(
-              child: ProfilesSessionListener(
-                child: TeamsProfileListener(
-                  child: MatchmakingProfileListener(
-                    child: FcSquadsSessionListener(
-                      child: PendingMatchSessionListener(
-                        child: LocaleSyncListener(
-                          child: NotificationLifecycleListener(
-                            child: PendingInviteListener(
-                              child: child ?? const SizedBox.shrink(),
-                            ),
-                          ),
-                        ),
+              child: TeamsSessionListener(
+                child: FcSquadsSessionListener(
+                  child: LocaleSyncListener(
+                    child: NotificationLifecycleListener(
+                      child: PendingInviteListener(
+                        child: child ?? const SizedBox.shrink(),
                       ),
                     ),
                   ),

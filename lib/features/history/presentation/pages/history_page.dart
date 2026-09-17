@@ -3,41 +3,19 @@ import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/history/domain/repositories/history_repository.dart';
 import 'package:fifa_queue/features/history/presentation/cubit/activity_history_cubit.dart';
-import 'package:fifa_queue/features/history/presentation/cubit/stats_cubit.dart';
 import 'package:fifa_queue/features/history/presentation/widgets/activity_timeline_view.dart';
-import 'package:fifa_queue/features/history/presentation/widgets/matchmaking_stats_view.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HistoryPage extends StatefulWidget {
-  const HistoryPage({this.profileId, super.key});
+class HistoryPage extends StatelessWidget {
+  const HistoryPage({this.userId, super.key});
 
   /// Quando vem da tela da Conta (Etapa de Solicitacoes), filtra a
   /// atividade so daquele Elenco dentro do time selecionado. Null = aba
   /// raiz, historico do time inteiro.
-  final String? profileId;
-
-  @override
-  State<HistoryPage> createState() => _HistoryPageState();
-}
-
-class _HistoryPageState extends State<HistoryPage>
-    with SingleTickerProviderStateMixin {
-  // Dono unico do controller: sem time selecionado a TabBar nem aparece,
-  // mas o controller precisa sobreviver a troca de time (a chave do
-  // MultiBlocProvider recria os cubits, nao a aba selecionada).
-  late final TabController _tabController = TabController(
-    length: 2,
-    vsync: this,
-  );
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  final String? userId;
 
   @override
   Widget build(BuildContext context) {
@@ -47,22 +25,7 @@ class _HistoryPageState extends State<HistoryPage>
       builder: (context, state) {
         final selected = state.selectedTeam;
         return AppScaffold(
-          appBar: AppAppBar(
-            title: l10n.navHistory,
-            accentTitle: true,
-            bottom: selected == null
-                ? null
-                : PreferredSize(
-                    preferredSize: const Size.fromHeight(48),
-                    child: TabBar(
-                      controller: _tabController,
-                      tabs: <Widget>[
-                        Tab(text: l10n.historyTabMatches),
-                        Tab(text: l10n.historyTabStats),
-                      ],
-                    ),
-                  ),
-          ),
+          appBar: AppAppBar(title: l10n.navHistory, accentTitle: true),
           body: AppBackground(
             child: selected == null
                 ? AppEmptyState(
@@ -70,49 +33,18 @@ class _HistoryPageState extends State<HistoryPage>
                     title: l10n.historyEmptyTitle,
                     message: l10n.historyNoTeamMessage,
                   )
-                : _HistoryScope(
-                    key: ValueKey('${selected.id}:${widget.profileId}'),
-                    teamId: selected.id,
-                    profileId: widget.profileId,
-                    tabController: _tabController,
+                : BlocProvider<ActivityHistoryCubit>(
+                    key: ValueKey('${selected.id}:$userId'),
+                    create: (_) => ActivityHistoryCubit(
+                      getIt<HistoryRepository>(),
+                      teamId: selected.id,
+                      userId: userId,
+                    )..load(),
+                    child: const ActivityTimelineView(),
                   ),
           ),
         );
       },
     );
   }
-}
-
-class _HistoryScope extends StatelessWidget {
-  const _HistoryScope({
-    required this.teamId,
-    required this.tabController,
-    this.profileId,
-    super.key,
-  });
-
-  final String teamId;
-  final String? profileId;
-  final TabController tabController;
-
-  @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-    providers: <BlocProvider<dynamic>>[
-      BlocProvider<ActivityHistoryCubit>(
-        create: (_) => ActivityHistoryCubit(
-          getIt<HistoryRepository>(),
-          teamId: teamId,
-          profileId: profileId,
-        )..load(),
-      ),
-      BlocProvider<StatsCubit>(
-        create: (_) =>
-            StatsCubit(getIt<HistoryRepository>(), teamId: teamId)..load(),
-      ),
-    ],
-    child: TabBarView(
-      controller: tabController,
-      children: const <Widget>[ActivityTimelineView(), MatchmakingStatsView()],
-    ),
-  );
 }

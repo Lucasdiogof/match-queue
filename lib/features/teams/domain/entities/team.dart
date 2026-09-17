@@ -143,23 +143,6 @@ class PublicTeamMember extends Equatable {
   ];
 }
 
-class PublicTeamRecord extends Equatable {
-  const PublicTeamRecord({
-    required this.wins,
-    required this.losses,
-    required this.goalsFor,
-    required this.goalsAgainst,
-  });
-
-  final int wins;
-  final int losses;
-  final int goalsFor;
-  final int goalsAgainst;
-
-  @override
-  List<Object?> get props => <Object?>[wins, losses, goalsFor, goalsAgainst];
-}
-
 /// Payload completo da pagina publica de um time. `found = false` cobre
 /// tanto "nao existe" quanto "existe mas e privado" -- mesma postura honesta
 /// de PublicProfile (nunca revela que um id privado existe).
@@ -174,7 +157,6 @@ class PublicTeam extends Equatable {
     this.secondaryColor,
     this.memberCount = 0,
     this.members = const <PublicTeamMember>[],
-    this.record,
   });
 
   final bool found;
@@ -186,7 +168,6 @@ class PublicTeam extends Equatable {
   final String? secondaryColor;
   final int memberCount;
   final List<PublicTeamMember> members;
-  final PublicTeamRecord? record;
 
   @override
   List<Object?> get props => <Object?>[
@@ -199,6 +180,5 @@ class PublicTeam extends Equatable {
     secondaryColor,
     memberCount,
     members,
-    record,
   ];
 }

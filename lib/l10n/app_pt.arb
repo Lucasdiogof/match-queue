@@ -31,8 +31,6 @@
   "controlDiscoverCardsSubtitle": "Jogadores em destaque no catálogo completo.",
   "controlDiscoverClubsTitle": "Clubes",
   "controlDiscoverClubsSubtitle": "Explore os clubes do catálogo FC27.",
-  "controlEmptyTitle": "Pronto pra entrar em campo?",
-  "controlEmptyMessage": "Escolha um perfil e um modo pra começar a buscar partida.",
   "teamTitle": "Meu time",
   "teamSubtitle": "Jogadores, cargos e convites.",
   "teamsListSubtitle": "Seus times e status operacional.",
@@ -285,7 +283,7 @@
     }
   },
   "accountSaved": "Nome atualizado.",
-  "accountLoadErrorTitle": "Não foi possível carregar seu perfil",
+  "accountLoadErrorTitle": "Não foi possível carregar sua conta",
   "accountMemberSince": "No Match Queue desde {date}",
   "@accountMemberSince": {
     "placeholders": {
@@ -302,9 +300,16 @@
   "teamHaveInviteCode": "Tenho um código de convite",
   "teamCreateTitle": "Crie seu time",
   "teamCreateSubtitle": "Dá para ajustar cores, logo e duração da busca depois.",
-  "teamCreateProfilesSectionTitle": "Quais Perfis fazem parte deste time?",
-  "teamNameLabel": "Nome do time",
+  "teamNameLabel": "Nome do time (opcional)",
   "teamNameHint": "Falcons FC",
+  "teamDefaultName": "Time de {displayName}",
+  "@teamDefaultName": {
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
   "teamTagLabel": "Tag (opcional)",
   "teamTagHint": "FLC",
   "teamTagHelper": "2 a 6 letras ou números",
@@ -314,8 +319,6 @@
   "teamsListEmptyMessage": "Você ainda não faz parte de um time.",
   "teamDetailPlayersTitle": "Jogadores",
   "playerProfileTitle": "Perfil do jogador",
-  "playerProfileAccountLabel": "Perfil",
-  "playerProfileNoAccountMessage": "Este jogador não tem um perfil vinculado a este time.",
   "playerProfileSquadLabel": "Escalação",
   "playerProfileSquadNoneMessage": "Ainda sem escalação montada.",
   "playerProfileCompletenessLabel": "{count}/{total} titulares",
@@ -329,7 +332,6 @@
       }
     }
   },
-  "playerProfileSelectAccountTitle": "Este jogador tem mais de um perfil neste time",
   "playerProfileWeekendLeagueEmptyMessage": "Nenhum evento de Champions registrado.",
   "playerProfileWeekendLeagueRecordLabel": "{wins}V–{losses}D",
   "@playerProfileWeekendLeagueRecordLabel": {
@@ -438,7 +440,7 @@
   "errorDuplicateTeamRequest": "Já existe uma solicitação pendente.",
   "errorTeamRequestNotFound": "Esta solicitação não existe mais.",
   "errorTeamPermissionDenied": "Você não tem permissão para gerenciar este time.",
-  "errorTeamProfileMissing": "Finalize seu perfil antes de criar um time.",
+  "errorTeamAccountMissing": "Sua conta ainda não foi criada. Tente entrar novamente.",
   "errorInviteNotFound": "Convite não encontrado.",
   "errorInviteNotActive": "Este convite não é mais válido.",
   "errorInviteExpired": "Este convite expirou.",
@@ -520,8 +522,6 @@
       }
     }
   },
-  "matchmakingNotLinkedMessage": "Vincule este Perfil a este time para poder buscar partida.",
-  "matchmakingLinkAccountAction": "Vincular Perfil ao time",
   "notificationsSectionTitle": "Notificações",
   "notificationsToggleYourTurn": "Sua vez de buscar",
   "notificationsToggleYourTurnHint": "Quando chegar a sua vez na fila do time.",
@@ -545,7 +545,7 @@
   "notificationsCategoryWeekendLeague": "Champions",
   "notificationsCategoryWeekendLeagueHint": "Quando o Champions termina.",
   "notificationsCategoryRivals": "Rivals",
-  "notificationsCategoryRivalsHint": "Mudança de divisão de um perfil do time.",
+  "notificationsCategoryRivalsHint": "Mudança de divisão de um jogador do time.",
   "notificationsCategoryRankings": "Rankings",
   "notificationsCategoryRankingsHint": "Novo líder, artilheiro ou garçom do time.",
   "notificationsInboxTitle": "Notificações",
@@ -626,38 +626,50 @@
   "notificationRivalsDivisionChanged": "{displayName} chegou à {division} no Rivals.",
   "@notificationTeamJoinRequestReceived": {
     "placeholders": {
-      "requesterDisplayName": {"type": "String"},
-      "teamName": {"type": "String"}
+      "requesterDisplayName": {
+        "type": "String"
+      },
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamJoinRequestReceived": "{requesterDisplayName} pediu para entrar no {teamName}.",
   "@notificationTeamJoinRequestApproved": {
     "placeholders": {
-      "teamName": {"type": "String"}
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamJoinRequestApproved": "Seu pedido para entrar no {teamName} foi aprovado.",
   "@notificationTeamJoinRequestRejected": {
     "placeholders": {
-      "teamName": {"type": "String"}
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamJoinRequestRejected": "Seu pedido para entrar no {teamName} foi recusado.",
   "@notificationTeamInvitationReceived": {
     "placeholders": {
-      "teamName": {"type": "String"}
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamInvitationReceived": "Você recebeu um convite para o {teamName}.",
   "@notificationTeamInvitationAccepted": {
     "placeholders": {
-      "displayName": {"type": "String"},
-      "teamName": {"type": "String"}
+      "displayName": {
+        "type": "String"
+      },
+      "teamName": {
+        "type": "String"
+      }
     }
   },
   "notificationTeamInvitationAccepted": "{displayName} aceitou seu convite para o {teamName}.",
-  "historyTabMatches": "Partidas",
-  "historyTabStats": "Estatísticas",
   "historyPeriodAll": "Sempre",
   "historyPeriod7": "7 dias",
   "historyPeriod30": "30 dias",
@@ -671,16 +683,6 @@
   "historyStatusExpiredLabel": "Expirada",
   "historyEmptyTitle": "Nenhuma busca ainda",
   "historyEmptyMessage": "As buscas de partida do time aparecem aqui quando terminam.",
-  "activityScopeAll": "Tudo",
-  "activityScopeGames": "Jogos",
-  "activityScopeSearches": "Buscas",
-  "activityNoResult": "Resultado não informado",
-  "activityDetailMode": "Modo",
-  "activityDetailDuration": "Duração",
-  "activityDetailScore": "Placar",
-  "activityDetailResult": "Resultado",
-  "activityDetailStatus": "Status",
-  "activityDetailProfile": "Perfil",
   "historyLoadErrorTitle": "Não foi possível carregar o histórico",
   "historyLoadMore": "Carregar mais",
   "historyEntryDate": "{date}",
@@ -701,32 +703,9 @@
       }
     }
   },
-  "statsTotalSearches": "Buscas",
-  "statsMatchFound": "Encontradas",
-  "statsCancelled": "Canceladas",
-  "statsExpired": "Expiradas",
-  "statsSuccessRate": "Taxa de sucesso",
-  "statsAvgDuration": "Duração média",
-  "statsPlayersTitle": "Por jogador",
-  "statsEmptyTitle": "Sem dados no período",
-  "statsEmptyMessage": "Quando o time buscar partidas, as estatísticas aparecem aqui.",
-  "statsLoadErrorTitle": "Não foi possível carregar as estatísticas",
-  "statsPlayerSearches": "{count, plural, =1{1 busca} other{{count} buscas}}",
-  "@statsPlayerSearches": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
   "gameModeSectionTitle": "Modo",
   "gameModeWeekendLeague": "Champions",
   "gameModeDivisionRivals": "Rivals",
-  "pendingMatchTitle": "Você tem uma partida sem resultado",
-  "pendingMatchWinAction": "Vitória",
-  "pendingMatchLossAction": "Derrota",
-  "pendingMatchAddScoreAction": "Adicionar placar",
   "finishMatchSheetTitle": "Resultado da partida",
   "finishMatchSheetMessage": "Informe o placar da sua partida.",
   "finishMatchGoalsForLabel": "Seus gols",
@@ -757,95 +736,17 @@
     }
   },
   "weekendLeagueActiveBadge": "Em andamento",
-  "errorProfileNotFound": "Perfil não encontrado.",
-  "errorProfileNotLinkedToTeam": "Este perfil não está vinculado a este time.",
-  "errorProfileInvalidName": "Informe um nome de 2 a 40 caracteres.",
-  "errorProfileInvalidDivision": "Divisão inválida.",
-  "errorProfileInvalidPlatform": "Plataforma inválida.",
-  "errorProfileNotLinkedToAnyTeam": "Este perfil não está vinculado a nenhum time.",
-  "validationProfileNameRequired": "Informe um nome para o perfil.",
-  "validationProfileNameTooShort": "O nome precisa ter pelo menos {min} caracteres.",
-  "@validationProfileNameTooShort": {
-    "placeholders": {
-      "min": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "validationProfileNameTooLong": "O nome pode ter no máximo {max} caracteres.",
-  "@validationProfileNameTooLong": {
-    "placeholders": {
-      "max": {
-        "type": "int",
-        "example": "40"
-      }
-    }
-  },
-  "profileRequiredToSearch": "Crie ou selecione um perfil para buscar partida.",
-  "profileLinkCta": "Vincular {accountName} ao {teamName}",
-  "@profileLinkCta": {
-    "placeholders": {
-      "accountName": {
-        "type": "String",
-        "example": "Lucksrei"
-      },
-      "teamName": {
-        "type": "String",
-        "example": "Goiás"
-      }
-    }
-  },
-  "profilesPageTitle": "Meus Perfis",
-  "profilesPageSubtitle": "Seus perfis de Ultimate Team",
-  "profilesEmptyTitle": "Você ainda não tem um perfil",
-  "profilesEmptyMessage": "Crie um perfil para vincular a times e começar a buscar partidas.",
-  "profileCreateAction": "Criar perfil",
-  "profileCreateTitle": "Novo perfil",
-  "profileCreateSubtitle": "Dê um nome para identificar este perfil.",
-  "profileNameLabel": "Nome do perfil",
-  "profileNameHint": "Ex.: Perfil principal",
-  "profileRenameTitle": "Renomear perfil",
-  "profileRenameAction": "Renomear",
-  "profileArchiveAction": "Excluir perfil",
-  "profileArchiveConfirmTitle": "Excluir perfil?",
-  "profileArchiveConfirmMessage": "\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.",
-  "@profileArchiveConfirmMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "profileSwitchTitle": "Trocar de perfil",
-  "profileSwitchCreateAction": "+ Criar novo perfil",
-  "profileLinkedTeamsTitle": "Times",
-  "profileLinkedTeamsEmpty": "Este perfil ainda não está vinculado a nenhum time.",
-  "profileSharingAction": "Compartilhamento",
-  "profileAvatarChangeAction": "Alterar foto",
-  "profileAvatarRemoveAction": "Remover foto",
-  "profileAvatarRemoveConfirmTitle": "Remover a foto do perfil?",
-  "profileAvatarRemoveConfirmMessage": "O perfil volta a mostrar as iniciais no lugar da foto.",
-  "profileLinkTeamAction": "Vincular",
-  "profileUnlinkTeamAction": "Sair do time",
-  "profileLeaveTeamConfirmTitle": "Sair do time?",
-  "profileLeaveTeamConfirmMessage": "Esse perfil vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.",
-  "@profileLeaveTeamConfirmMessage": {
-    "placeholders": {
-      "teamName": {
-        "type": "String",
-        "example": "Falcons"
-      }
-    }
-  },
-  "profileSettingsTitle": "Configurações",
+  "errorAccountPlatformRequired": "Escolha pelo menos uma plataforma.",
   "profileDivisionTitle": "Divisão de Rivals",
   "profileDivisionPickerTitle": "Selecionar divisão",
   "profileDivisionNone": "Sem divisão definida",
-  "profilePlatformLabel": "Plataforma",
-  "profilePlatformPickerTitle": "Selecionar plataforma",
-  "profilePlatformNone": "Sem plataforma definida",
-  "profilePlatformSettingsAction": "Plataforma: {platform}",
+  "accountPlatformLabel": "Plataformas",
+  "accountPlatformPickerTitle": "Onde você joga?",
+  "accountPlatformPickerSubtitle": "Escolha uma ou mais. A fila de partidas é por plataforma.",
+  "accountPlatformNone": "Nenhuma plataforma definida",
+  "accountPlatformOnboardingTitle": "Escolha sua plataforma",
+  "accountPlatformOnboardingMessage": "A fila de partidas é por plataforma. Selecione pelo menos uma pra começar a jogar.",
+  "accountPlatformOnboardingAction": "Selecionar plataformas",
   "@profilePlatformSettingsAction": {
     "placeholders": {
       "platform": {
@@ -854,59 +755,10 @@
     }
   },
   "profileWeekendLeagueTitle": "Champions",
-  "profileWeekendLeagueComputedLabel": "Registrado por partidas: {wins}–{losses}",
-  "@profileWeekendLeagueComputedLabel": {
-    "placeholders": {
-      "wins": {
-        "type": "int",
-        "example": "8"
-      },
-      "losses": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "profileWeekendLeagueManualLabel": "Resultado informado: {wins}–{losses}",
-  "@profileWeekendLeagueManualLabel": {
-    "placeholders": {
-      "wins": {
-        "type": "int",
-        "example": "13"
-      },
-      "losses": {
-        "type": "int",
-        "example": "2"
-      }
-    }
-  },
-  "profileWeekendLeagueEditAction": "Informar resultado",
   "profileWeekendLeagueClearAction": "Usar resultado das partidas",
   "profileWeekendLeagueSheetTitle": "Informar resultado",
   "profileWeekendLeagueWinsLabel": "Vitórias",
   "profileWeekendLeagueLossesLabel": "Derrotas",
-  "profileOnboardingTitle": "Adicione seu primeiro perfil",
-  "profileOnboardingMessage": "Cadastre a perfil que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.",
-  "profileOnboardingCreateAction": "Adicionar perfil",
-  "pendingMatchElencoLabel": "Perfil: {name}",
-  "@pendingMatchElencoLabel": {
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Lucksrei"
-      }
-    }
-  },
-  "historyElencoLabel": "Perfil: {name}",
-  "@historyElencoLabel": {
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "Lucksrei"
-      }
-    }
-  },
-  "accountProfilesRow": "Perfis",
   "rivalsDivisionDiv10": "Divisão 10",
   "rivalsDivisionDiv9": "Divisão 9",
   "rivalsDivisionDiv8": "Divisão 8",
@@ -919,31 +771,22 @@
   "rivalsDivisionDiv1": "Divisão 1",
   "rivalsDivisionElite": "Elite",
   "squadsSectionTitle": "Escalações",
-
   "squadBuilderSaved": "Salvo",
   "squadBuilderSaving": "Salvando…",
   "squadsEmptyTitle": "Nenhuma escalação configurada",
-
   "squadsEmptyMessage": "Crie uma escalação para colocar seus jogadores em campo. Você pode buscar partida mesmo sem uma.",
-
   "squadCreateAction": "Criar escalação",
-
   "squadCreateTitle": "Nova escalação",
-
   "squadCreateSubtitle": "Dê um nome e escolha a formação inicial.",
   "squadNameLabel": "Nome da escalação",
-
   "squadNameHint": "Ex.: Principal",
   "squadFormationLabel": "Formação",
   "squadRenameTitle": "Renomear escalação",
-
   "squadRenameAction": "Renomear",
   "squadSetDefaultAction": "Definir como padrão",
   "squadDefaultBadge": "Padrão",
   "squadArchiveAction": "Arquivar escalação",
-
   "squadArchiveConfirmTitle": "Arquivar escalação?",
-
   "squadArchiveConfirmMessage": "Ele sai da lista, mas o histórico das partidas jogadas com ele é mantido.",
   "squadBenchTitle": "Banco",
   "squadManagerTitle": "Técnico",
@@ -962,29 +805,20 @@
   "squadSlotRemoveAction": "Remover",
   "squadMoveHint": "Toque em outro slot para trocar.",
   "squadIncompleteLabel": "Escalação incompleta",
-
   "squadLabel": "Escalação",
-
-  "playAccountLabel": "Perfil",
   "playSquadEmpty": "Nenhuma escalação montada",
-
   "playSquadBuildAction": "Montar escalação",
-
   "playSquadEditAction": "Editar escalação",
-
   "squadNoneSelected": "Sem escalação",
-
   "squadFilterLeagueLabel": "Liga",
   "squadFilterNationLabel": "Nação",
   "squadFilterClearAction": "Limpar filtros",
   "errorSquadNotFound": "Escalação não encontrada.",
-
   "errorSquadNameInvalid": "Escolha um nome de 1 a 40 caracteres.",
   "errorSquadFormationInvalid": "Essa formação não está disponível.",
   "errorSquadSlotInvalid": "Essa posição não existe nesta formação.",
   "errorSquadCardPosition": "Esse jogador não atua nessa posição.",
   "errorSquadInUse": "Esta escalação está sendo usada em uma busca ativa.",
-
   "squadCompletionLabel": "{filled}/{total} titulares",
   "@squadCompletionLabel": {
     "placeholders": {
@@ -1039,7 +873,6 @@
   "squadClearAction": "Limpar escalação",
   "squadClearConfirmTitle": "Limpar escalação?",
   "squadClearConfirmMessage": "Isso remove todos os jogadores dos titulares, do banco e das reservas. A escalação em si não é apagada.",
-
   "squadFormationChangeConfirmTitle": "Trocar formação?",
   "squadFormationChangeConfirmMessage": "Seus jogadores serão reposicionados automaticamente. Ninguém é removido, mas alguém pode ficar fora de posição.",
   "squadFilterCompatibleLabel": "Compatíveis",
@@ -1070,36 +903,12 @@
   "errorGamePlayerNotInSquad": "Esse jogador não fez parte desta partida.",
   "errorGameNoSquadSnapshot": "Esta partida não tem escalação registrada.",
   "errorGameMatchNotFinished": "Finalize a partida antes de editar o resultado.",
-  "pendingMatchDetailsPromptTitle": "Adicionar detalhes da partida?",
-  "pendingMatchDetailsPromptMessage": "Você pode registrar gols e assistências por jogador agora ou depois, pelo Histórico.",
-  "pendingMatchDetailsPromptAddAction": "Adicionar agora",
-  "pendingMatchDetailsPromptSkipAction": "Agora não",
-  "matchDetailsTitle": "Detalhe da partida",
-  "matchDetailsResultLabel": "Resultado",
-  "matchDetailsScoreLabel": "Placar",
-  "matchDetailsNoResultMessage": "Sem resultado registrado.",
-  "matchDetailsEditResultAction": "Editar resultado",
-  "matchDetailsAddDetailsAction": "Adicionar gols e assistências",
-  "matchDetailsEditDetailsAction": "Editar gols e assistências",
-  "matchDetailsSquadSectionTitle": "Escalação",
-  "matchDetailsPlayerStatsTitle": "Gols e assistências",
-  "matchDetailsPlayerStatsEmptyMessage": "Nenhum gol ou assistência registrado nesta partida.",
-  "editMatchResultSheetTitle": "Editar resultado",
-  "editMatchResultSheetMessage": "Você pode corrigir o placar a qualquer momento, mesmo depois da partida encerrada.",
-  "editMatchResultSubmitAction": "Salvar resultado",
-  "playerStatsEditorTitle": "Gols e assistências",
-  "playerStatsEditorStartingLabel": "Titulares",
-  "playerStatsEditorBenchLabel": "Banco",
-  "playerStatsEditorSaveAction": "Salvar detalhes",
-  "statsGoalsLabel": "Gols",
-  "statsAssistsLabel": "Assistências",
   "statsWinsLabel": "Vitórias",
   "statsLossesLabel": "Derrotas",
   "recordAddWinTooltip": "Adicionar vitória",
   "recordAddLossTooltip": "Adicionar derrota",
   "recordRemoveWinTooltip": "Remover vitória",
   "recordRemoveLossTooltip": "Remover derrota",
-  "statsEmptyLeaderboardMessage": "Nenhum gol ou assistência registrado ainda.",
   "rivalsSectionTitle": "Rivals",
   "rivalsDetailTitle": "Rivals",
   "rivalsNoDivisionLabel": "Divisão ainda não informada",
@@ -1159,7 +968,7 @@
   "squadPrimaryLineupTitle": "Escalação Principal",
   "squadPrimaryLineupEditAction": "Editar escalação",
   "squadPrimaryLineupCreateAction": "Montar escalação",
-  "squadPrimaryLineupEmpty": "Você ainda não montou uma escalação para este Perfil.",
+  "squadPrimaryLineupEmpty": "Você ainda não montou sua escalação.",
   "squadOtherLineupsAction": "{count, plural, =1{Ver outra escalação} other{Ver outras {count} escalações}}",
   "@squadOtherLineupsAction": {
     "placeholders": {
@@ -1229,8 +1038,6 @@
   "publicProfileSlugUnavailable": "Este endereço já está em uso",
   "publicProfileSlugChecking": "Verificando…",
   "publicProfileSlugInvalid": "Endereço inválido",
-  "publicProfileAccountLabel": "Perfil pública",
-  "publicProfileAccountEmpty": "Nenhum perfil selecionado",
   "publicProfileToggleSquad": "Escalação Principal",
   "publicProfileToggleWeekendLeague": "Champions",
   "publicProfileToggleRivals": "Rivals",
@@ -1250,7 +1057,6 @@
   "publicProfileEnableFirstMessage": "Ative o perfil público para compartilhar sua escalação.",
   "publicProfileGoToSettingsAction": "Ir para Compartilhamento",
   "publicProfileEditSharingCta": "Editar compartilhamento",
-  "publicProfileNoAccountsHint": "Crie uma Perfil antes de compartilhar.",
   "errorPublicProfileInvalidSlug": "Endereço inválido. Use 3-24 letras minúsculas, números ou _.",
   "errorPublicProfileReservedSlug": "Este endereço é reservado, escolha outro.",
   "errorPublicProfileSlugTaken": "Este endereço já está em uso.",
@@ -1276,7 +1082,7 @@
   "errorSoleOwnerBlocksAccountDeletion": "Você é dono único de um time com outros integrantes. Remova os outros integrantes ou aguarde suporte a transferência de posse antes de excluir sua conta.",
   "accountLegalTitle": "Sobre e legal",
   "aboutTitle": "Sobre",
-  "aboutDescription": "Match Queue organiza a fila de busca de partida, Perfis e estatísticas do seu time de EA SPORTS FC.",
+  "aboutDescription": "Match Queue organiza a fila de busca de partida, escalações e estatísticas do seu time de EA SPORTS FC.",
   "privacyPolicyTitle": "Política de Privacidade",
   "termsOfUseTitle": "Termos de Uso",
   "legalUpdatedAt": "Atualizado em {date}",
@@ -1292,9 +1098,8 @@
   "deleteAccountTitle": "Excluir conta",
   "deleteAccountWarningTitle": "Esta ação é permanente",
   "deleteAccountWarningMessage": "Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.",
-  "deleteAccountConsequenceProfiles": "Todos os seus Perfis e a divisão de Rivals registrada",
+  "deleteAccountConsequenceAccountData": "Sua divisão de Rivals e suas plataformas",
   "deleteAccountConsequenceSquads": "Suas escalações",
-
   "deleteAccountConsequenceHistory": "Sua participação nos times de que você faz parte",
   "deleteAccountConsequenceStats": "Seu histórico e estatísticas pessoais de partidas",
   "deleteAccountConsequencePreferences": "Suas preferências de notificação e dispositivos registrados",
@@ -1310,23 +1115,8 @@
   },
   "deleteAccountConfirmWord": "EXCLUIR",
   "deleteAccountAction": "Excluir minha conta permanentemente",
-  "homeProfileEyebrow": "CONTA FC ATIVA",
-  "homeProfileSwitchAction": "Trocar",
-  "homeProfileNoTeams": "Ainda sem time",
-  "homeProfileTeamCount": "{count, plural, =1{Em 1 time} other{Em {count} times}}",
   "homeNoTeamTitle": "Entre em um time",
   "homeNoTeamMessage": "Buscar partida exige um time. Rivals e Champions você já pode usar.",
-  "@homeProfileTeamCount": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "pendingMatchSkipAction": "Não informar esta partida",
-  "pendingMatchSkipConfirmTitle": "Não informar o resultado?",
-  "pendingMatchSkipConfirmMessage": "A partida sai daqui sem contar como vitória nem derrota. Você pode buscar outra normalmente.",
   "historyResultNotInformed": "Resultado não informado",
   "weekendLeagueWeekPickerTitle": "Selecionar semana",
   "weekendLeagueChangeWeekAction": "Trocar",
@@ -1335,26 +1125,25 @@
   "controlNoTeamTitle": "Você precisa de um time",
   "controlNoTeamMessage": "A fila é do time. Entre em um ou crie o seu para começar a buscar.",
   "controlNoTeamAction": "Ver times",
-  "controlAccountNotLinkedMessage": "Crie ou vincule este perfil a algum time para poder buscar partidas.",
-  "controlGoToTeamsAction": "Ir para Times",
   "navRequests": "Convites",
-  "requestsPageTitle": "Solicitações",
   "requestsSegmentRequests": "Pedidos",
   "requestsSegmentInvites": "Convites",
-  "requestsEmptyRequestsTitle": "Nenhum pedido pendente",
-  "requestsEmptyRequestsMessage": "Pedidos de entrada nos times que você administra aparecem aqui.",
-  "requestsEmptyInvitesTitle": "Nenhum convite pendente",
-  "requestsEmptyInvitesMessage": "Convites que você receber de outros times aparecem aqui.",
+  "requestsEmptyAllTitle": "Nada pendente",
+  "requestsEmptyAllMessage": "Convites de outros times e pedidos pra entrar nos times que você administra aparecem aqui.",
   "requestsMemberCountLabel": "{count, plural, =1{1 membro} other{{count} membros}}",
   "@requestsMemberCountLabel": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "requestsJoinRequestWantsToJoin": "Quer entrar com {account}",
   "@requestsJoinRequestWantsToJoin": {
     "placeholders": {
-      "account": {"type": "String"}
+      "account": {
+        "type": "String"
+      }
     }
   },
   "requestsApproveAction": "Aprovar",
@@ -1369,14 +1158,12 @@
   "teamPublicRequestToJoinAction": "Pedir para entrar",
   "teamPublicRequestSentAction": "Solicitação enviada",
   "teamPublicRequestCancelAction": "Cancelar solicitação",
-  "teamPublicChooseAccountTitle": "Qual Perfil você quer vincular?",
-
   "teamPublicRequestSentMessage": "Pedido enviado. O dono do time vai revisar.",
   "teamPublicRequestCancelledMessage": "Solicitação cancelada.",
   "teamDetailInviteAction": "Convidar jogador",
   "teamInviteSheetTitle": "Convidar jogador",
-  "teamInviteSlugFieldLabel": "Nick ou código do perfil",
-  "teamInviteSlugFieldHint": "Digite o nome ou o código do perfil público do jogador",
+  "teamInviteSlugFieldLabel": "Nick ou código do perfil público",
+  "teamInviteSlugFieldHint": "Digite o nick ou o código do perfil público do jogador",
   "teamInviteSendAction": "Enviar convite",
   "teamInviteNotFoundMessage": "Nenhum perfil público encontrado.",
   "teamInviteSentMessage": "Convite enviado.",
@@ -1389,7 +1176,9 @@
   "teamMemberRemoveConfirmTitle": "Remover {name} do time?",
   "@teamMemberRemoveConfirmTitle": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "teamMemberRemoveConfirmMessage": "Essa pessoa deixa de fazer parte do time. O histórico dela é preservado.",
@@ -1418,40 +1207,8 @@
   "teamLogoRemoveAction": "Remover logo",
   "teamLogoRemoveConfirmTitle": "Remover a logo do time?",
   "teamLogoRemoveConfirmMessage": "O time volta a mostrar as iniciais no lugar da logo.",
-  "pendingMatchesCardTitle": "{count, plural, =1{1 partida sem resultado} other{{count} partidas sem resultado}}",
-  "pendingMatchesCardLatest": "Mais recente: {mode} · {date} às {time}",
-  "pendingMatchesOpenListAction": "Ver partidas",
-  "pendingMatchesDismissAllAction": "Não informar",
-  "pendingMatchesDismissAllTitle": "Não informar nenhuma?",
-  "pendingMatchesDismissAllMessage": "Todas saem da lista sem contar como vitória nem derrota.",
-  "pendingMatchesSheetTitle": "Partidas sem resultado",
-  "pendingMatchesSheetMessage": "Informe o que quiser. Deixar em branco não bloqueia nada.",
-  "pendingMatchesSkipOneAction": "Não informar",
-  "pendingMatchesAllClear": "Nenhuma partida pendente.",
-  "@pendingMatchesCardTitle": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "@pendingMatchesCardLatest": {
-    "placeholders": {
-      "mode": {
-        "type": "String"
-      },
-      "date": {
-        "type": "String"
-      },
-      "time": {
-        "type": "String"
-      }
-    }
-  },
   "errorWeekendLeagueLimit": "O Champions tem 15 partidas: vitórias e derrotas somadas não podem passar disso.",
   "squadNoneSelectedHint": "Escolha uma escalação para esta busca",
-
   "catalogCardsTitle": "Jogadores",
   "catalogCardsSearchLabel": "Buscar carta",
   "catalogCardsSearchHint": "Nome do jogador",
@@ -1478,7 +1235,6 @@
       }
     }
   },
-  "startShortcutPlayHint": "Escolha a perfil, o modo e entre na fila.",
   "startCatalogTitle": "Catálogo",
   "startCatalogCardsHint": "Explore as cartas do jogo.",
   "startCatalogClubsHint": "Clubes por overall médio.",
@@ -1492,7 +1248,6 @@
   "mechanicsPlaystylesHint": "Habilidades especiais de cada carta.",
   "mechanicsChemistryLabel": "Chemistry",
   "mechanicsChemistryHint": "Como a química da escalação funciona.",
-
   "mechanicsChemistryStylesLabel": "Chemistry Styles",
   "mechanicsChemistryStylesHint": "Estilos que reforçam atributos.",
   "mechanicsEvolutionsLabel": "Evolutions",
@@ -1684,7 +1439,11 @@
   "controlsDribblingIntroParagraph": "Cada jogador tem uma nota de Skill Moves (1 a 5 estrelas) que define quais desses movimentos ele consegue fazer. Comandos usam o analógico direito e são iguais em PlayStation e Xbox/PC.",
   "controlsDribblingStarWord": "{count, plural, =1{estrela} other{estrelas}}",
   "@controlsDribblingStarWord": {
-    "placeholders": {"count": {"type": "int"}}
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "controlsDribblingSkillName1": "Elástico simples pro lado",
   "controlsDribblingSkillControl1": "Segurar L1+R1 + direção",
@@ -1845,19 +1604,15 @@
   "evolutionsWhyNoListParagraph": "Os programas de Evolution mudam com frequência dentro do próprio ciclo de Ultimate Team, e não temos hoje uma fonte que acompanhe isso de forma confiável e atualizada. Preferimos explicar o conceito de verdade a mostrar uma lista estática se passando por informação ao vivo.",
   "managersBlockedTitle": "Ainda sem dado real",
   "managersBlockedMessage": "Hoje só existem registros de teste (nomes fictícios usados no seletor de técnico da escalação). Precisamos de uma fonte real de managers do FC 27 antes de mostrar isso como catálogo.",
-
   "consumablesBlockedTitle": "Ainda sem dado real",
   "consumablesBlockedMessage": "Chemistry Styles já tem sua própria seção em Mecânicas. Os demais consumíveis não existem no nosso catálogo hoje.",
   "errorSquadEditConflict": "Esta escalação foi alterada em outro dispositivo. Recarregue a versão mais recente antes de continuar.",
-
   "errorSquadDuplicatedPlayer": "O mesmo jogador não pode ocupar duas posições.",
   "errorSquadInvalidLineup": "Não foi possível salvar esta escalação.",
   "squadSaveAction": "Salvar",
   "squadSavedFeedback": "Escalação salva",
-
   "squadDiscardTitle": "Descartar alterações?",
   "squadDiscardMessage": "Existem alterações na escalação que ainda não foram salvas.",
-
   "squadDiscardKeep": "Continuar editando",
   "squadDiscardConfirm": "Descartar",
   "squadReloadAction": "Recarregar",
@@ -1866,7 +1621,6 @@
   "squadManagerLabel": "Técnico",
   "squadManagerEmpty": "Selecionar técnico",
   "squadShareAction": "Compartilhar escalação",
-
   "squadOverallLabel": "Overall",
   "squadChemistryLabel": "Química",
   "squadFormationDroppedPlayers": "{count, plural, =1{1 jogador saiu da escalação: não tem posição compatível na nova formação ({names}).} other{{count} jogadores saíram da escalação: não têm posição compatível na nova formação ({names}).}}",

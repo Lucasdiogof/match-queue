@@ -9,15 +9,15 @@ class SelectedTeamStore {
 
   static const String _keyPrefix = 'teams.last_selected.';
 
-  String _keyFor(String profileId) => '$_keyPrefix$profileId';
+  String _keyFor(String userId) => '$_keyPrefix$userId';
 
-  String? read(String profileId) {
-    final value = _preferences.getString(_keyFor(profileId));
+  String? read(String userId) {
+    final value = _preferences.getString(_keyFor(userId));
     return (value == null || value.isEmpty) ? null : value;
   }
 
-  Future<void> write(String profileId, String? teamId) async {
-    final key = _keyFor(profileId);
+  Future<void> write(String userId, String? teamId) async {
+    final key = _keyFor(userId);
     if (teamId == null || teamId.isEmpty) {
       await _preferences.remove(key);
     } else {

@@ -25,7 +25,6 @@ void main() {
             'team_tag': 'LUC',
             'team_logo_url': 'https://example.com/logo.png',
             'member_count': 7,
-            'fc_account_name': 'Luclown',
             'created_at': '2026-09-13T10:00:00Z',
           },
         ],
@@ -37,7 +36,6 @@ void main() {
             'requester_user_id': 'user-1',
             'requester_display_name': 'Lucas',
             'requester_avatar_url': null,
-            'fc_account_name': 'Pedro FC',
             'created_at': '2026-09-13T11:00:00Z',
           },
         ],
@@ -47,11 +45,9 @@ void main() {
       final invitation = inbox.invitationsReceived.single;
       expect(invitation.teamName, 'Lucksrei FC');
       expect(invitation.memberCount, 7);
-      expect(invitation.profileName, 'Luclown');
 
       final request = inbox.joinRequestsToReview.single;
       expect(request.requesterDisplayName, 'Lucas');
-      expect(request.profileName, 'Pedro FC');
     });
   });
 
@@ -72,13 +68,11 @@ void main() {
         'user_id': 'user-1',
         'display_name': 'Lucas',
         'avatar_url': null,
-        'fc_account_name': 'Luclown',
       });
 
       expect(preview.found, isTrue);
       expect(preview.userId, 'user-1');
       expect(preview.displayName, 'Lucas');
-      expect(preview.profileName, 'Luclown');
     });
   });
 }

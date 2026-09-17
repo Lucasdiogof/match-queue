@@ -2,99 +2,45 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/l10n/validation_l10n.dart';
+import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
-import 'package:fifa_queue/features/profiles/domain/entities/profile.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_cubit.dart';
-import 'package:fifa_queue/features/profiles/presentation/cubit/profiles_state.dart';
-import 'package:fifa_queue/features/profiles/presentation/widgets/create_profile_sheet.dart';
+import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
+import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_logo_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-Future<bool> showCreateTeamSheet(BuildContext context) async {
+/// Retorna o time criado (ou null se cancelado) e ja empurra pra dentro
+/// dele -- criar um time e ficar olhando pra lista de volta nao faz
+/// sentido, o dono quer estar dentro pra convidar gente/configurar.
+Future<Team?> showCreateTeamSheet(BuildContext context) async {
   final teamsCubit = context.read<TeamsCubit>();
-  final profilesCubit = context.read<ProfilesCubit>();
+  final accountCubit = context.read<AccountCubit>();
   teamsCubit.clearActionFailure();
-  final created = await showAppBottomSheet<bool>(
+  final team = await showAppBottomSheet<Team>(
     context: context,
     builder: (sheetContext) => MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<TeamsCubit>.value(value: teamsCubit),
-        BlocProvider<ProfilesCubit>.value(value: profilesCubit),
+        BlocProvider<AccountCubit>.value(value: accountCubit),
       ],
-      child: const _CreateTeamForm(),
+      child: const _TeamDetailsForm(),
     ),
   );
-  return created ?? false;
-}
-
-/// Time exige pelo menos um Perfil do dono: sem nenhum, o sheet mostra o
-/// convite pra criar o primeiro em vez do formulário -- nunca deixa criar
-/// um time "órfão" de Perfil.
-class _CreateTeamForm extends StatelessWidget {
-  const _CreateTeamForm();
-
-  @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<ProfilesCubit, ProfilesState>(
-        buildWhen: (previous, current) =>
-            previous.profiles != current.profiles ||
-            previous.status != current.status ||
-            previous.selectedProfileId != current.selectedProfileId,
-        builder: (context, fcState) {
-          if (fcState.status == ProfilesStatus.loading &&
-              !fcState.hasProfiles) {
-            return const AppBottomSheet(
-              child: SizedBox(height: 96, child: AppLoading.inline()),
-            );
-          }
-          if (!fcState.hasProfiles) {
-            return const _NeedsProfileBody();
-          }
-          return _TeamDetailsForm(
-            profiles: fcState.profiles,
-            selectedProfileId: fcState.selectedProfileId,
-          );
-        },
-      );
-}
-
-class _NeedsProfileBody extends StatelessWidget {
-  const _NeedsProfileBody();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return AppBottomSheet(
-      title: l10n.profileOnboardingTitle,
-      subtitle: l10n.profileOnboardingMessage,
-      actions: <Widget>[
-        AppButton(
-          label: l10n.profileOnboardingCreateAction,
-          icon: Icons.add,
-          onPressed: () => showCreateProfileSheet(context),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        AppButton.ghost(
-          label: l10n.actionClose,
-          expanded: true,
-          onPressed: () => Navigator.of(context).pop(false),
-        ),
-      ],
-      child: const SizedBox.shrink(),
-    );
+  if (team != null && context.mounted) {
+    await context.push(AppRoutes.teamDetailLocation(team.id));
   }
+  return team;
 }
 
+/// Nome, tag e logo -- o dono e sempre a conta autenticada, entao nao ha
+/// nada a escolher sobre "quem" cria o time.
 class _TeamDetailsForm extends StatefulWidget {
-  const _TeamDetailsForm({required this.profiles, this.selectedProfileId});
-
-  final List<Profile> profiles;
-  final String? selectedProfileId;
+  const _TeamDetailsForm();
 
   @override
   State<_TeamDetailsForm> createState() => _TeamDetailsFormState();
@@ -104,7 +50,6 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _tagController = TextEditingController();
-  late Set<String> _selectedProfileIds;
   PickedTeamLogo? _pickedLogo;
 
   @override
@@ -112,18 +57,6 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     super.initState();
     _nameController.addListener(_onChanged);
     _tagController.addListener(_onChanged);
-    // Um Perfil só: pré-selecionado (e a lista nem aparece, ver build).
-    // Vários: o Perfil ATIVO no momento já nasce marcado -- continua
-    // multi-seleção (dá pra adicionar outros), só não obriga quem já
-    // estava usando um Perfil específico a escolher do zero.
-    final activeId = widget.selectedProfileId;
-    _selectedProfileIds = widget.profiles.length == 1
-        ? <String>{widget.profiles.first.id}
-        : <String>{
-            if (activeId != null &&
-                widget.profiles.any((a) => a.id == activeId))
-              activeId,
-          };
   }
 
   @override
@@ -146,22 +79,24 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
-    if (_selectedProfileIds.isEmpty) {
-      return;
-    }
     final navigator = Navigator.of(context);
+    final l10n = context.l10n;
     final teamsCubit = context.read<TeamsCubit>();
-    final profilesCubit = context.read<ProfilesCubit>();
+    final displayName = context.read<AccountCubit>().state.displayName;
+    final normalizedName = AppValidators.normalizeTeamName(
+      _nameController.text,
+    );
+    // Nome e opcional: quem nao quiser digitar recebe um default derivado do
+    // proprio nome da conta, em vez de ser travado no formulario.
+    final name = normalizedName.isEmpty
+        ? l10n.teamDefaultName(displayName)
+        : normalizedName;
     final team = await teamsCubit.createTeam(
-      name: _nameController.text,
-      profileId: _selectedProfileIds.first,
+      name: name,
       tag: _tagController.text,
     );
     if (team == null) {
       return;
-    }
-    for (final profileId in _selectedProfileIds) {
-      await profilesCubit.linkToTeam(profileId: profileId, teamId: team.id);
     }
     final logo = _pickedLogo;
     if (logo != null) {
@@ -175,7 +110,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
       );
     }
     if (mounted) {
-      navigator.pop(true);
+      navigator.pop(team);
     }
   }
 
@@ -200,9 +135,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
             label: l10n.teamCreateAction,
             icon: Icons.add,
             isLoading: state.isSaving,
-            onPressed: state.isSaving || _selectedProfileIds.isEmpty
-                ? null
-                : _submit,
+            onPressed: state.isSaving ? null : _submit,
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton.ghost(
@@ -210,7 +143,7 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
             expanded: true,
             onPressed: state.isSaving
                 ? null
-                : () => Navigator.of(context).pop(false),
+                : () => Navigator.of(context).pop(),
           ),
         ],
         child: SingleChildScrollView(
@@ -251,8 +184,14 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
                   textInputAction: TextInputAction.next,
                   textCapitalization: TextCapitalization.words,
                   maxLength: AppValidators.teamNameMaxLength,
-                  validator: (value) =>
-                      AppValidators.teamName(value)?.message(l10n),
+                  // Opcional: em branco, _submit gera um default a partir do
+                  // nome da conta. So valida tamanho quando algo foi digitado.
+                  validator: (value) {
+                    if (AppValidators.normalizeTeamName(value ?? '').isEmpty) {
+                      return null;
+                    }
+                    return AppValidators.teamName(value)?.message(l10n);
+                  },
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 AppTextField(
@@ -271,34 +210,6 @@ class _TeamDetailsFormState extends State<_TeamDetailsForm> {
                   validator: (value) =>
                       AppValidators.teamTag(value)?.message(l10n),
                 ),
-                // Com um Perfil so nao ha escolha a fazer: a lista viraria
-                // um checkbox unico ja marcado, cuja unica utilidade seria
-                // desmarcar e travar o botao de criar. Ele entra no time
-                // direto (ver initState).
-                if (widget.profiles.length > 1) ...<Widget>[
-                  const SizedBox(height: AppSpacing.xl),
-                  Text(
-                    l10n.teamCreateProfilesSectionTitle,
-                    style: context.textStyles.labelSmall,
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  for (final profile in widget.profiles)
-                    CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(profile.name),
-                      value: _selectedProfileIds.contains(profile.id),
-                      onChanged: state.isSaving
-                          ? null
-                          : (checked) => setState(() {
-                              if (checked ?? false) {
-                                _selectedProfileIds.add(profile.id);
-                              } else {
-                                _selectedProfileIds.remove(profile.id);
-                              }
-                            }),
-                    ),
-                ],
               ],
             ),
           ),

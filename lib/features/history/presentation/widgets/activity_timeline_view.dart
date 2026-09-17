@@ -1,8 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:fifa_queue/core/navigation/app_routes.dart';
-import 'package:fifa_queue/features/game/domain/entities/game_result.dart';
 import 'package:fifa_queue/features/history/domain/entities/match_search_status.dart';
 import 'package:fifa_queue/features/history/domain/entities/stats_period.dart';
 import 'package:fifa_queue/features/history/domain/entities/team_activity_entry.dart';
@@ -11,10 +9,8 @@ import 'package:fifa_queue/features/history/presentation/cubit/activity_history_
 import 'package:fifa_queue/features/history/presentation/history_formatting.dart';
 import 'package:fifa_queue/features/history/presentation/widgets/filter_chip_row.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
-import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ActivityTimelineView extends StatefulWidget {
   const ActivityTimelineView({super.key});
@@ -102,62 +98,18 @@ class _ActivityFilters extends StatelessWidget {
             FilterChipRow(
               children: <Widget>[
                 AppChip(
-                  label: l10n.activityScopeAll,
-                  isSelected: state.scope == ActivityScope.all,
-                  onPressed: () => cubit.setScope(ActivityScope.all),
+                  label: l10n.historyStatusAll,
+                  isSelected: state.searchStatusFilter == null,
+                  onPressed: () => cubit.setSearchStatusFilter(null),
                 ),
-                AppChip(
-                  label: l10n.activityScopeGames,
-                  isSelected: state.scope == ActivityScope.games,
-                  onPressed: () => cubit.setScope(ActivityScope.games),
-                ),
-                AppChip(
-                  label: l10n.activityScopeSearches,
-                  isSelected: state.scope == ActivityScope.searches,
-                  onPressed: () => cubit.setScope(ActivityScope.searches),
-                ),
+                for (final status in MatchSearchStatus.values)
+                  AppChip(
+                    label: status.filterLabel(l10n),
+                    isSelected: state.searchStatusFilter == status,
+                    onPressed: () => cubit.setSearchStatusFilter(status),
+                  ),
               ],
             ),
-            if (state.scope == ActivityScope.games) ...<Widget>[
-              const SizedBox(height: AppSpacing.sm),
-              FilterChipRow(
-                children: <Widget>[
-                  AppChip(
-                    label: l10n.historyStatusAll,
-                    isSelected: state.gameResultFilter == null,
-                    onPressed: () => cubit.setGameResultFilter(null),
-                  ),
-                  AppChip(
-                    label: l10n.pendingMatchWinAction,
-                    isSelected: state.gameResultFilter == GameResult.win,
-                    onPressed: () => cubit.setGameResultFilter(GameResult.win),
-                  ),
-                  AppChip(
-                    label: l10n.pendingMatchLossAction,
-                    isSelected: state.gameResultFilter == GameResult.loss,
-                    onPressed: () => cubit.setGameResultFilter(GameResult.loss),
-                  ),
-                ],
-              ),
-            ],
-            if (state.scope == ActivityScope.searches) ...<Widget>[
-              const SizedBox(height: AppSpacing.sm),
-              FilterChipRow(
-                children: <Widget>[
-                  AppChip(
-                    label: l10n.historyStatusAll,
-                    isSelected: state.searchStatusFilter == null,
-                    onPressed: () => cubit.setSearchStatusFilter(null),
-                  ),
-                  for (final status in MatchSearchStatus.values)
-                    AppChip(
-                      label: status.filterLabel(l10n),
-                      isSelected: state.searchStatusFilter == status,
-                      onPressed: () => cubit.setSearchStatusFilter(status),
-                    ),
-                ],
-              ),
-            ],
           ],
         );
       },
@@ -201,12 +153,10 @@ class _ActivityRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final colors = context.colors;
     final e = entry;
 
     return AppCard(
       padding: const EdgeInsets.all(AppSpacing.md),
-      onTap: () => showActivityDetailSheet(context, e),
       child: Row(
         children: <Widget>[
           AppAvatar(
@@ -225,16 +175,9 @@ class _ActivityRow extends StatelessWidget {
                   style: context.textStyles.bodyLarge,
                 ),
                 const SizedBox(height: AppSpacing.xxs),
-                Text(switch (e) {
-                  GameHistoryEntry() => e.gameMode.label(l10n).toUpperCase(),
-                  SearchHistoryEntry() => e.gameMode.label(l10n).toUpperCase(),
-                }, style: context.textStyles.labelSmall),
-                const SizedBox(height: AppSpacing.xxs),
                 Text(
-                  _summary(l10n, e),
-                  style: context.textStyles.bodySmall?.copyWith(
-                    color: colors.textSecondary,
-                  ),
+                  e.gameMode.label(l10n).toUpperCase(),
+                  style: context.textStyles.labelSmall,
                 ),
               ],
             ),
@@ -243,7 +186,7 @@ class _ActivityRow extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              _StatusBadge(entry: e),
+              AppBadge(label: e.status.label(l10n), tone: e.status.tone),
               const SizedBox(height: AppSpacing.xxs),
               Text(
                 l10n.historyEntryTime(e.occurredAt.toLocal()),
@@ -254,58 +197,6 @@ class _ActivityRow extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _summary(AppLocalizations l10n, TeamActivityEntry entry) {
-    if (entry is GameHistoryEntry) {
-      if (entry.hasScore) {
-        return '${entry.goalsFor}–${entry.goalsAgainst}';
-      }
-      if (entry.result != null) {
-        return entry.result == GameResult.win
-            ? l10n.pendingMatchWinAction
-            : l10n.pendingMatchLossAction;
-      }
-      return l10n.activityNoResult;
-    }
-    final search = entry as SearchHistoryEntry;
-    return formatSearchDuration(search.durationSeconds);
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.entry});
-
-  final TeamActivityEntry entry;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return switch (entry) {
-      GameHistoryEntry(:final result) => AppBadge(
-        label: result == GameResult.win
-            ? l10n.pendingMatchWinAction
-            : result == GameResult.loss
-            ? l10n.pendingMatchLossAction
-            : l10n.activityNoResult,
-        // Nunca so cor: vitoria/derrota tambem se distinguem pelo icone
-        // (seta pra cima/baixo), acessivel a daltonismo.
-        icon: result == GameResult.win
-            ? Icons.arrow_upward
-            : result == GameResult.loss
-            ? Icons.arrow_downward
-            : Icons.remove,
-        tone: result == GameResult.win
-            ? AppBadgeTone.success
-            : result == GameResult.loss
-            ? AppBadgeTone.danger
-            : AppBadgeTone.neutral,
-      ),
-      SearchHistoryEntry(:final status) => AppBadge(
-        label: status.label(l10n),
-        tone: status.tone,
-      ),
-    };
   }
 }
 
@@ -339,145 +230,4 @@ class _ActivityError extends StatelessWidget {
       onRetry: () => context.read<ActivityHistoryCubit>().refresh(),
     );
   }
-}
-
-Future<void> showActivityDetailSheet(
-  BuildContext context,
-  TeamActivityEntry entry,
-) => showAppBottomSheet<void>(
-  context: context,
-  builder: (sheetContext) => _ActivityDetailSheet(entry: entry),
-);
-
-class _ActivityDetailSheet extends StatelessWidget {
-  const _ActivityDetailSheet({required this.entry});
-
-  final TeamActivityEntry entry;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final e = entry;
-
-    return AppBottomSheet(
-      title: e.displayName,
-      actions: <Widget>[
-        if (e is GameHistoryEntry && e.status != 'IN_MATCH') ...<Widget>[
-          AppButton(
-            label: l10n.matchDetailsTitle,
-            expanded: true,
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.push(AppRoutes.matchDetailLocation(e.id));
-            },
-          ),
-          const SizedBox(height: AppSpacing.sm),
-        ],
-        AppButton.ghost(
-          label: l10n.actionClose,
-          expanded: true,
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: switch (e) {
-          GameHistoryEntry() => <Widget>[
-            _DetailRow(
-              label: l10n.activityDetailMode,
-              value: e.gameMode.label(l10n),
-            ),
-            _DetailRow(
-              label: l10n.historyEntryDate(e.startedAt.toLocal()),
-              value: l10n.historyEntryTime(e.startedAt.toLocal()),
-            ),
-            _DetailRow(
-              label: l10n.activityDetailDuration,
-              value: formatSearchDuration(
-                e.occurredAt.difference(e.startedAt).inSeconds,
-              ),
-            ),
-            if (e.hasScore)
-              _DetailRow(
-                label: l10n.activityDetailScore,
-                value: '${e.goalsFor}–${e.goalsAgainst}',
-              )
-            else if (e.result != null)
-              _DetailRow(
-                label: l10n.activityDetailResult,
-                value: e.result == GameResult.win
-                    ? l10n.pendingMatchWinAction
-                    : l10n.pendingMatchLossAction,
-              ),
-            // Historico anterior a Etapa 9 nao tem elenco: a linha some em
-            // vez de mostrar vazio.
-            if (e.profileName != null)
-              _DetailRow(
-                label: l10n.activityDetailProfile,
-                value: e.profileName!,
-              ),
-            // Vem do snapshot da partida: partidas anteriores à Etapa 10 não
-            // têm squad e a linha simplesmente não aparece.
-            if (e.fcSquadName != null)
-              _DetailRow(
-                label: l10n.squadLabel,
-                value: e.fcFormationCode == null
-                    ? e.fcSquadName!
-                    : l10n.squadSummaryLabel(
-                        e.fcSquadName!,
-                        e.fcFormationCode!,
-                      ),
-              ),
-          ],
-          SearchHistoryEntry() => <Widget>[
-            _DetailRow(
-              label: l10n.activityDetailMode,
-              value: e.gameMode.label(l10n),
-            ),
-            _DetailRow(
-              label: l10n.historyEntryDate(e.startedAt.toLocal()),
-              value: l10n.historyEntryTime(e.startedAt.toLocal()),
-            ),
-            _DetailRow(
-              label: l10n.activityDetailDuration,
-              value: formatSearchDuration(e.durationSeconds),
-            ),
-            _DetailRow(
-              label: l10n.activityDetailStatus,
-              value: e.status.label(l10n),
-            ),
-            if (e.profileName != null)
-              _DetailRow(
-                label: l10n.activityDetailProfile,
-                value: e.profileName!,
-              ),
-          ],
-        },
-      ),
-    );
-  }
-}
-
-class _DetailRow extends StatelessWidget {
-  const _DetailRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          label,
-          style: context.textStyles.bodyMedium?.copyWith(
-            color: context.colors.textSecondary,
-          ),
-        ),
-        Text(value, style: context.textStyles.bodyMedium),
-      ],
-    ),
-  );
 }

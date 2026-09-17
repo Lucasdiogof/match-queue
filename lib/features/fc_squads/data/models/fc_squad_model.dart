@@ -191,7 +191,7 @@ class FcSquadModel {
     final formation = json['formation'];
     return FcSquadDetail(
       id: '${json['id']}',
-      profileId: '${json['fc_account_id']}',
+      userId: '${json['user_id']}',
       name: '${json['name']}',
       updatedAt: DateTime.tryParse('${json['updated_at']}')?.toUtc(),
       formation: formation is Map
@@ -241,7 +241,7 @@ class FcSquadModel {
         if (item is Map)
           FcSquadSummary(
             id: '${item['id']}',
-            profileId: '${item['fc_account_id']}',
+            userId: '${item['user_id']}',
             name: '${item['name']}',
             formationCode: '${item['formation_code']}',
             isDefault: item['is_default'] as bool? ?? false,

@@ -10,10 +10,7 @@ abstract interface class RequestsRemoteDataSource {
   /// Stream vazia se ninguem estiver autenticado.
   Stream<void> watchMyRequests();
 
-  Future<void> requestTeamJoin({
-    required String teamId,
-    required String profileId,
-  });
+  Future<void> requestTeamJoin(String teamId);
 
   Future<void> cancelTeamJoinRequest(String requestId);
 
@@ -30,7 +27,6 @@ abstract interface class RequestsRemoteDataSource {
   Future<void> respondTeamInvitation({
     required String invitationId,
     required bool accept,
-    String? profileId,
   });
 
   Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId);
@@ -50,15 +46,9 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
   }
 
   @override
-  Future<void> requestTeamJoin({
-    required String teamId,
-    required String profileId,
-  }) => _client.rpc<dynamic>(
+  Future<void> requestTeamJoin(String teamId) => _client.rpc<dynamic>(
     'request_team_join',
-    params: <String, dynamic>{
-      'p_team_id': teamId,
-      'p_fc_account_id': profileId,
-    },
+    params: <String, dynamic>{'p_team_id': teamId},
   );
 
   @override
@@ -108,13 +98,11 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
   Future<void> respondTeamInvitation({
     required String invitationId,
     required bool accept,
-    String? profileId,
   }) => _client.rpc<dynamic>(
     'respond_team_invitation',
     params: <String, dynamic>{
       'p_invitation_id': invitationId,
       'p_accept': accept,
-      'p_fc_account_id': profileId,
     },
   );
 
@@ -169,18 +157,13 @@ class SupabaseRequestsRemoteDataSource implements RequestsRemoteDataSource {
 
   @override
   Future<Map<String, dynamic>?> fetchMyPendingRequest(String teamId) async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) {
-      return null;
-    }
-    // user_id explicito mesmo com a RLS ja restringindo: a policy tambem
-    // libera leitura pra quem administra o time, e aqui so importa a
-    // PROPRIA solicitacao.
+    // Indice parcial unico (team_id, user_id) where status = 'PENDING':
+    // no maximo um pedido pendente por usuario em cada time.
     final row = await _client
         .from('team_join_requests')
         .select('id')
         .eq('team_id', teamId)
-        .eq('user_id', userId)
+        .eq('user_id', _client.auth.currentUser?.id ?? '')
         .eq('status', 'PENDING')
         .maybeSingle();
     return row;

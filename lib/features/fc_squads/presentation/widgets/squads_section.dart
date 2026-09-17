@@ -10,16 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-/// "Escalação Principal" no detalhe da Conta.
+/// "Escalação Principal" na tela de Conta.
 ///
-/// Uma Conta tem no máximo um Elenco ativo (índice único parcial em
+/// Cada usuário tem no máximo um Elenco ativo (índice único parcial em
 /// `is_active`, `list_fc_squads` já filtra por ele) — não há mais "outras
 /// escalações" a listar, então a tela vai direto de "sem elenco" para
 /// "montar" ou de "tem elenco" para "editar", sem gerenciador de lista.
 class SquadsSection extends StatelessWidget {
-  const SquadsSection({required this.profileId, super.key});
-
-  final String profileId;
+  const SquadsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +25,6 @@ class SquadsSection extends StatelessWidget {
 
     return BlocBuilder<FcSquadsCubit, FcSquadsState>(
       builder: (context, state) {
-        // Só mostra squads do elenco aberto: se o cubit ainda está com outra
-        // conta carregada, espera em vez de exibir dado alheio.
-        if (state.profileId != profileId) {
-          return const SizedBox.shrink();
-        }
-
         final primary = state.defaultSquad ?? state.squads.firstOrNull;
 
         return AppCard(

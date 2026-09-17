@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:fifa_queue/features/profiles/domain/entities/profile_stats.dart';
+import 'package:fifa_queue/features/account/domain/entities/account_stats.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_entry.dart';
 
 /// Agregado publico de partidas (W/L/gols) de um recorte -- mesmo formato
-/// que _fc_account_match_aggregate devolve, so que ja whitelisted pela RPC
+/// que a RPC publica devolve, ja whitelisted por ela
 /// publica antes de chegar aqui.
 class PublicMatchAggregate extends Equatable {
   const PublicMatchAggregate({
@@ -114,10 +114,7 @@ class PublicProfile extends Equatable {
     required this.found,
     this.displayName,
     this.avatarUrl,
-    this.profileId,
-    this.profileName,
     this.rivalsDivision,
-    this.stats,
     this.weekendLeague,
     this.weekendLeagueHistory = const <WeekendLeagueHistoryEntry>[],
     this.rivals,
@@ -130,17 +127,10 @@ class PublicProfile extends Equatable {
   final String? displayName;
   final String? avatarUrl;
 
-  /// So pra o proprio dono montar o link de "Editar compartilhamento" ao
-  /// visualizar o proprio perfil publico -- opaco pra qualquer outra pessoa,
-  /// que nao ganha nenhum acesso extra por ve-lo (ownership e sempre
-  /// revalidado nas RPCs de escrita).
-  final String? profileId;
-  final String? profileName;
   final String? rivalsDivision;
-  final PublicMatchAggregate? stats;
 
   /// Contador manual -- unica fonte que Rivals e Champions mostram hoje em
-  /// qualquer outra tela do app (ver Profile.weekendLeagueRecord).
+  /// qualquer outra tela do app (ver Account.weekendLeagueRecord).
   final ManualRecord? weekendLeague;
 
   /// Ultimas edicoes de Champions com placar, mais recente primeiro -- mesma
@@ -149,17 +139,12 @@ class PublicProfile extends Equatable {
   final ManualRecord? rivals;
   final PublicSquad? squad;
 
-  bool get hasAccount => profileName != null;
-
   @override
   List<Object?> get props => <Object?>[
     found,
     displayName,
     avatarUrl,
-    profileId,
-    profileName,
     rivalsDivision,
-    stats,
     weekendLeague,
     weekendLeagueHistory,
     rivals,

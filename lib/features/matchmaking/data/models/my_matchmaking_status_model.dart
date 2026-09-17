@@ -11,9 +11,8 @@ class MyMatchmakingSnapshotModel {
     final queueJson = json['queue'] as List<dynamic>? ?? const <dynamic>[];
 
     return MyMatchmakingSnapshot(
-      profileId: '${json['fc_account_id']}',
+      userId: '${json['user_id']}',
       teamId: '${json['team_id']}',
-      profileLinkedToTeam: json['account_linked_to_team'] as bool? ?? true,
       searchDurationSeconds: json['search_duration_seconds'] as int?,
       searching: searchingJson == null
           ? null
@@ -38,7 +37,6 @@ class MyMatchmakingSnapshotModel {
               displayName: '${blockingJson['display_name']}',
               avatarUrl: blockingJson['avatar_url'] as String?,
               expiresAt: DateTime.parse('${blockingJson['expires_at']}'),
-              profileName: blockingJson['fc_account_name'] as String?,
               gameMode: GameMode.tryFromKey(blockingJson['game_mode']),
             ),
       searchingElsewhere: elsewhereJson == null
@@ -54,10 +52,8 @@ class MyMatchmakingSnapshotModel {
             QueueEntry(
               position: entry['position'] as int? ?? 0,
               userId: '${entry['user_id']}',
-              profileId: entry['fc_account_id'] as String?,
               displayName: '${entry['display_name']}',
               avatarUrl: entry['avatar_url'] as String?,
-              profileName: entry['fc_account_name'] as String?,
               gameMode: GameMode.tryFromKey(entry['game_mode']),
               isMe: entry['is_me'] as bool? ?? false,
             ),

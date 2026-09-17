@@ -15,7 +15,7 @@ class PublicProfileViewCubit extends Cubit<PublicProfileViewState> {
     emit(const PublicProfileViewState());
     try {
       final profile = await _repository.fetchPublicProfile(identifier);
-      final isOwner = await _resolveIsOwner(profile.profileId);
+      final isOwner = profile.found && await _isMySlug(identifier);
       emit(
         PublicProfileViewState(
           status: profile.found
@@ -36,16 +36,19 @@ class PublicProfileViewCubit extends Cubit<PublicProfileViewState> {
   }
 
   /// So chama a propria configuracao quando ha sessao -- visitante anonimo
-  /// nunca dispara essa chamada extra. get_my_public_profile_settings ja
-  /// levanta FQ025 se a conta nao for do usuario logado, entao a chamada
-  /// so ter sucesso ja PROVA ownership -- nao precisa comparar slug.
-  Future<bool> _resolveIsOwner(String? profileId) async {
-    if (profileId == null || _authRepository.currentUser == null) {
+  /// nunca dispara essa chamada extra. get_my_public_profile_settings devolve
+  /// SEMPRE a linha do usuario logado, entao dono e quem tem exatamente este
+  /// slug. Isso e so pra decidir se mostra o atalho de editar: nenhum acesso
+  /// vem daqui, toda escrita revalida ownership na RPC.
+  Future<bool> _isMySlug(String identifier) async {
+    if (_authRepository.currentUser == null) {
       return false;
     }
     try {
-      await _repository.fetchMySettings(profileId);
-      return true;
+      final mine = await _repository.fetchMySettings();
+      final slug = mine.slug;
+      return slug != null &&
+          slug.toLowerCase() == identifier.trim().toLowerCase();
     } catch (_) {
       return false;
     }

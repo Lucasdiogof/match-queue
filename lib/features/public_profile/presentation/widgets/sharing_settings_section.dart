@@ -13,19 +13,15 @@ import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Perfil público de UMA conta FC -- [profileId] fixa qual desde a
-/// criação, sem seletor de conta na tela (cada conta tem o seu próprio).
+/// Configuração do perfil público do usuário logado -- uma por conta
+/// autenticada, sem seletor nenhum na tela.
 class SharingSettingsSection extends StatelessWidget {
-  const SharingSettingsSection({required this.profileId, super.key});
-
-  final String profileId;
+  const SharingSettingsSection({super.key});
 
   @override
   Widget build(BuildContext context) => BlocProvider<SharingSettingsCubit>(
-    create: (_) => SharingSettingsCubit(
-      getIt<PublicProfileRepository>(),
-      profileId: profileId,
-    )..load(),
+    create: (_) => SharingSettingsCubit(getIt<PublicProfileRepository>())
+      ..load(),
     child: const _SharingSettingsBody(),
   );
 }

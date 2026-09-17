@@ -50,17 +50,6 @@ extension TeamNameValidationErrorL10n on TeamNameValidationError {
   };
 }
 
-extension ProfileNameValidationErrorL10n on ProfileNameValidationError {
-  String message(AppLocalizations l10n) => switch (this) {
-    ProfileNameValidationError.empty => l10n.validationProfileNameRequired,
-    ProfileNameValidationError.tooShort => l10n.validationProfileNameTooShort(
-      AppValidators.profileNameMinLength,
-    ),
-    ProfileNameValidationError.tooLong => l10n.validationProfileNameTooLong(
-      AppValidators.profileNameMaxLength,
-    ),
-  };
-}
 
 extension PublicProfileSlugValidationErrorL10n
     on PublicProfileSlugValidationError {

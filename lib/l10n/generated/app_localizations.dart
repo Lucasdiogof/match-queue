@@ -286,18 +286,6 @@ abstract class AppLocalizations {
   /// **'Explore os clubes do catálogo FC27.'**
   String get controlDiscoverClubsSubtitle;
 
-  /// No description provided for @controlEmptyTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Pronto pra entrar em campo?'**
-  String get controlEmptyTitle;
-
-  /// No description provided for @controlEmptyMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escolha um perfil e um modo pra começar a buscar partida.'**
-  String get controlEmptyMessage;
-
   /// No description provided for @teamTitle.
   ///
   /// In pt, this message translates to:
@@ -1099,7 +1087,7 @@ abstract class AppLocalizations {
   /// No description provided for @accountLoadErrorTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Não foi possível carregar seu perfil'**
+  /// **'Não foi possível carregar sua conta'**
   String get accountLoadErrorTitle;
 
   /// No description provided for @accountMemberSince.
@@ -1150,16 +1138,10 @@ abstract class AppLocalizations {
   /// **'Dá para ajustar cores, logo e duração da busca depois.'**
   String get teamCreateSubtitle;
 
-  /// No description provided for @teamCreateProfilesSectionTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quais Perfis fazem parte deste time?'**
-  String get teamCreateProfilesSectionTitle;
-
   /// No description provided for @teamNameLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Nome do time'**
+  /// **'Nome do time (opcional)'**
   String get teamNameLabel;
 
   /// No description provided for @teamNameHint.
@@ -1167,6 +1149,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Falcons FC'**
   String get teamNameHint;
+
+  /// No description provided for @teamDefaultName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Time de {displayName}'**
+  String teamDefaultName(String displayName);
 
   /// No description provided for @teamTagLabel.
   ///
@@ -1222,18 +1210,6 @@ abstract class AppLocalizations {
   /// **'Perfil do jogador'**
   String get playerProfileTitle;
 
-  /// No description provided for @playerProfileAccountLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil'**
-  String get playerProfileAccountLabel;
-
-  /// No description provided for @playerProfileNoAccountMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Este jogador não tem um perfil vinculado a este time.'**
-  String get playerProfileNoAccountMessage;
-
   /// No description provided for @playerProfileSquadLabel.
   ///
   /// In pt, this message translates to:
@@ -1251,12 +1227,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'{count}/{total} titulares'**
   String playerProfileCompletenessLabel(int count, int total);
-
-  /// No description provided for @playerProfileSelectAccountTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Este jogador tem mais de um perfil neste time'**
-  String get playerProfileSelectAccountTitle;
 
   /// No description provided for @playerProfileWeekendLeagueEmptyMessage.
   ///
@@ -1462,11 +1432,11 @@ abstract class AppLocalizations {
   /// **'Você não tem permissão para gerenciar este time.'**
   String get errorTeamPermissionDenied;
 
-  /// No description provided for @errorTeamProfileMissing.
+  /// No description provided for @errorTeamAccountMissing.
   ///
   /// In pt, this message translates to:
-  /// **'Finalize seu perfil antes de criar um time.'**
-  String get errorTeamProfileMissing;
+  /// **'Sua conta ainda não foi criada. Tente entrar novamente.'**
+  String get errorTeamAccountMissing;
 
   /// No description provided for @errorInviteNotFound.
   ///
@@ -1714,18 +1684,6 @@ abstract class AppLocalizations {
   /// **'Você está buscando partida pelo Time {teamName}.'**
   String matchmakingSearchingElsewhereMessage(String teamName);
 
-  /// No description provided for @matchmakingNotLinkedMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Vincule este Perfil a este time para poder buscar partida.'**
-  String get matchmakingNotLinkedMessage;
-
-  /// No description provided for @matchmakingLinkAccountAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Vincular Perfil ao time'**
-  String get matchmakingLinkAccountAction;
-
   /// No description provided for @notificationsSectionTitle.
   ///
   /// In pt, this message translates to:
@@ -1867,7 +1825,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsCategoryRivalsHint.
   ///
   /// In pt, this message translates to:
-  /// **'Mudança de divisão de um perfil do time.'**
+  /// **'Mudança de divisão de um jogador do time.'**
   String get notificationsCategoryRivalsHint;
 
   /// No description provided for @notificationsCategoryRankings.
@@ -2024,18 +1982,6 @@ abstract class AppLocalizations {
     String teamName,
   );
 
-  /// No description provided for @historyTabMatches.
-  ///
-  /// In pt, this message translates to:
-  /// **'Partidas'**
-  String get historyTabMatches;
-
-  /// No description provided for @historyTabStats.
-  ///
-  /// In pt, this message translates to:
-  /// **'Estatísticas'**
-  String get historyTabStats;
-
   /// No description provided for @historyPeriodAll.
   ///
   /// In pt, this message translates to:
@@ -2114,66 +2060,6 @@ abstract class AppLocalizations {
   /// **'As buscas de partida do time aparecem aqui quando terminam.'**
   String get historyEmptyMessage;
 
-  /// No description provided for @activityScopeAll.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tudo'**
-  String get activityScopeAll;
-
-  /// No description provided for @activityScopeGames.
-  ///
-  /// In pt, this message translates to:
-  /// **'Jogos'**
-  String get activityScopeGames;
-
-  /// No description provided for @activityScopeSearches.
-  ///
-  /// In pt, this message translates to:
-  /// **'Buscas'**
-  String get activityScopeSearches;
-
-  /// No description provided for @activityNoResult.
-  ///
-  /// In pt, this message translates to:
-  /// **'Resultado não informado'**
-  String get activityNoResult;
-
-  /// No description provided for @activityDetailMode.
-  ///
-  /// In pt, this message translates to:
-  /// **'Modo'**
-  String get activityDetailMode;
-
-  /// No description provided for @activityDetailDuration.
-  ///
-  /// In pt, this message translates to:
-  /// **'Duração'**
-  String get activityDetailDuration;
-
-  /// No description provided for @activityDetailScore.
-  ///
-  /// In pt, this message translates to:
-  /// **'Placar'**
-  String get activityDetailScore;
-
-  /// No description provided for @activityDetailResult.
-  ///
-  /// In pt, this message translates to:
-  /// **'Resultado'**
-  String get activityDetailResult;
-
-  /// No description provided for @activityDetailStatus.
-  ///
-  /// In pt, this message translates to:
-  /// **'Status'**
-  String get activityDetailStatus;
-
-  /// No description provided for @activityDetailProfile.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil'**
-  String get activityDetailProfile;
-
   /// No description provided for @historyLoadErrorTitle.
   ///
   /// In pt, this message translates to:
@@ -2198,72 +2084,6 @@ abstract class AppLocalizations {
   /// **'{time}'**
   String historyEntryTime(DateTime time);
 
-  /// No description provided for @statsTotalSearches.
-  ///
-  /// In pt, this message translates to:
-  /// **'Buscas'**
-  String get statsTotalSearches;
-
-  /// No description provided for @statsMatchFound.
-  ///
-  /// In pt, this message translates to:
-  /// **'Encontradas'**
-  String get statsMatchFound;
-
-  /// No description provided for @statsCancelled.
-  ///
-  /// In pt, this message translates to:
-  /// **'Canceladas'**
-  String get statsCancelled;
-
-  /// No description provided for @statsExpired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Expiradas'**
-  String get statsExpired;
-
-  /// No description provided for @statsSuccessRate.
-  ///
-  /// In pt, this message translates to:
-  /// **'Taxa de sucesso'**
-  String get statsSuccessRate;
-
-  /// No description provided for @statsAvgDuration.
-  ///
-  /// In pt, this message translates to:
-  /// **'Duração média'**
-  String get statsAvgDuration;
-
-  /// No description provided for @statsPlayersTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Por jogador'**
-  String get statsPlayersTitle;
-
-  /// No description provided for @statsEmptyTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem dados no período'**
-  String get statsEmptyTitle;
-
-  /// No description provided for @statsEmptyMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Quando o time buscar partidas, as estatísticas aparecem aqui.'**
-  String get statsEmptyMessage;
-
-  /// No description provided for @statsLoadErrorTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não foi possível carregar as estatísticas'**
-  String get statsLoadErrorTitle;
-
-  /// No description provided for @statsPlayerSearches.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 busca} other{{count} buscas}}'**
-  String statsPlayerSearches(int count);
-
   /// No description provided for @gameModeSectionTitle.
   ///
   /// In pt, this message translates to:
@@ -2281,30 +2101,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Rivals'**
   String get gameModeDivisionRivals;
-
-  /// No description provided for @pendingMatchTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você tem uma partida sem resultado'**
-  String get pendingMatchTitle;
-
-  /// No description provided for @pendingMatchWinAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Vitória'**
-  String get pendingMatchWinAction;
-
-  /// No description provided for @pendingMatchLossAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Derrota'**
-  String get pendingMatchLossAction;
-
-  /// No description provided for @pendingMatchAddScoreAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar placar'**
-  String get pendingMatchAddScoreAction;
 
   /// No description provided for @finishMatchSheetTitle.
   ///
@@ -2366,243 +2162,11 @@ abstract class AppLocalizations {
   /// **'Em andamento'**
   String get weekendLeagueActiveBadge;
 
-  /// No description provided for @errorProfileNotFound.
+  /// No description provided for @errorAccountPlatformRequired.
   ///
   /// In pt, this message translates to:
-  /// **'Perfil não encontrado.'**
-  String get errorProfileNotFound;
-
-  /// No description provided for @errorProfileNotLinkedToTeam.
-  ///
-  /// In pt, this message translates to:
-  /// **'Este perfil não está vinculado a este time.'**
-  String get errorProfileNotLinkedToTeam;
-
-  /// No description provided for @errorProfileInvalidName.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe um nome de 2 a 40 caracteres.'**
-  String get errorProfileInvalidName;
-
-  /// No description provided for @errorProfileInvalidDivision.
-  ///
-  /// In pt, this message translates to:
-  /// **'Divisão inválida.'**
-  String get errorProfileInvalidDivision;
-
-  /// No description provided for @errorProfileInvalidPlatform.
-  ///
-  /// In pt, this message translates to:
-  /// **'Plataforma inválida.'**
-  String get errorProfileInvalidPlatform;
-
-  /// No description provided for @errorProfileNotLinkedToAnyTeam.
-  ///
-  /// In pt, this message translates to:
-  /// **'Este perfil não está vinculado a nenhum time.'**
-  String get errorProfileNotLinkedToAnyTeam;
-
-  /// No description provided for @validationProfileNameRequired.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe um nome para o perfil.'**
-  String get validationProfileNameRequired;
-
-  /// No description provided for @validationProfileNameTooShort.
-  ///
-  /// In pt, this message translates to:
-  /// **'O nome precisa ter pelo menos {min} caracteres.'**
-  String validationProfileNameTooShort(int min);
-
-  /// No description provided for @validationProfileNameTooLong.
-  ///
-  /// In pt, this message translates to:
-  /// **'O nome pode ter no máximo {max} caracteres.'**
-  String validationProfileNameTooLong(int max);
-
-  /// No description provided for @profileRequiredToSearch.
-  ///
-  /// In pt, this message translates to:
-  /// **'Crie ou selecione um perfil para buscar partida.'**
-  String get profileRequiredToSearch;
-
-  /// No description provided for @profileLinkCta.
-  ///
-  /// In pt, this message translates to:
-  /// **'Vincular {accountName} ao {teamName}'**
-  String profileLinkCta(
-    String accountName,
-    String teamName,
-    Object profileName,
-  );
-
-  /// No description provided for @profilesPageTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Meus Perfis'**
-  String get profilesPageTitle;
-
-  /// No description provided for @profilesPageSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Seus perfis de Ultimate Team'**
-  String get profilesPageSubtitle;
-
-  /// No description provided for @profilesEmptyTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você ainda não tem um perfil'**
-  String get profilesEmptyTitle;
-
-  /// No description provided for @profilesEmptyMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Crie um perfil para vincular a times e começar a buscar partidas.'**
-  String get profilesEmptyMessage;
-
-  /// No description provided for @profileCreateAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Criar perfil'**
-  String get profileCreateAction;
-
-  /// No description provided for @profileCreateTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Novo perfil'**
-  String get profileCreateTitle;
-
-  /// No description provided for @profileCreateSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dê um nome para identificar este perfil.'**
-  String get profileCreateSubtitle;
-
-  /// No description provided for @profileNameLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nome do perfil'**
-  String get profileNameLabel;
-
-  /// No description provided for @profileNameHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ex.: Perfil principal'**
-  String get profileNameHint;
-
-  /// No description provided for @profileRenameTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Renomear perfil'**
-  String get profileRenameTitle;
-
-  /// No description provided for @profileRenameAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Renomear'**
-  String get profileRenameAction;
-
-  /// No description provided for @profileArchiveAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Excluir perfil'**
-  String get profileArchiveAction;
-
-  /// No description provided for @profileArchiveConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Excluir perfil?'**
-  String get profileArchiveConfirmTitle;
-
-  /// No description provided for @profileArchiveConfirmMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'\"{name}\" some da lista e deixa de representar os times vinculados (o histórico é mantido). Se você for dono sozinho de algum time, ele também será excluído; se tiver mais gente, a posse passa automaticamente para outro membro.'**
-  String profileArchiveConfirmMessage(String name);
-
-  /// No description provided for @profileSwitchTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Trocar de perfil'**
-  String get profileSwitchTitle;
-
-  /// No description provided for @profileSwitchCreateAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'+ Criar novo perfil'**
-  String get profileSwitchCreateAction;
-
-  /// No description provided for @profileLinkedTeamsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Times'**
-  String get profileLinkedTeamsTitle;
-
-  /// No description provided for @profileLinkedTeamsEmpty.
-  ///
-  /// In pt, this message translates to:
-  /// **'Este perfil ainda não está vinculado a nenhum time.'**
-  String get profileLinkedTeamsEmpty;
-
-  /// No description provided for @profileSharingAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Compartilhamento'**
-  String get profileSharingAction;
-
-  /// No description provided for @profileAvatarChangeAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Alterar foto'**
-  String get profileAvatarChangeAction;
-
-  /// No description provided for @profileAvatarRemoveAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Remover foto'**
-  String get profileAvatarRemoveAction;
-
-  /// No description provided for @profileAvatarRemoveConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Remover a foto do perfil?'**
-  String get profileAvatarRemoveConfirmTitle;
-
-  /// No description provided for @profileAvatarRemoveConfirmMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'O perfil volta a mostrar as iniciais no lugar da foto.'**
-  String get profileAvatarRemoveConfirmMessage;
-
-  /// No description provided for @profileLinkTeamAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Vincular'**
-  String get profileLinkTeamAction;
-
-  /// No description provided for @profileUnlinkTeamAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sair do time'**
-  String get profileUnlinkTeamAction;
-
-  /// No description provided for @profileLeaveTeamConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sair do time?'**
-  String get profileLeaveTeamConfirmTitle;
-
-  /// No description provided for @profileLeaveTeamConfirmMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Esse perfil vai deixar de representar o Time {teamName}. Você pode vincular de novo quando quiser.'**
-  String profileLeaveTeamConfirmMessage(String teamName);
-
-  /// No description provided for @profileSettingsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Configurações'**
-  String get profileSettingsTitle;
+  /// **'Escolha pelo menos uma plataforma.'**
+  String get errorAccountPlatformRequired;
 
   /// No description provided for @profileDivisionTitle.
   ///
@@ -2622,53 +2186,53 @@ abstract class AppLocalizations {
   /// **'Sem divisão definida'**
   String get profileDivisionNone;
 
-  /// No description provided for @profilePlatformLabel.
+  /// No description provided for @accountPlatformLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Plataforma'**
-  String get profilePlatformLabel;
+  /// **'Plataformas'**
+  String get accountPlatformLabel;
 
-  /// No description provided for @profilePlatformPickerTitle.
+  /// No description provided for @accountPlatformPickerTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Selecionar plataforma'**
-  String get profilePlatformPickerTitle;
+  /// **'Onde você joga?'**
+  String get accountPlatformPickerTitle;
 
-  /// No description provided for @profilePlatformNone.
+  /// No description provided for @accountPlatformPickerSubtitle.
   ///
   /// In pt, this message translates to:
-  /// **'Sem plataforma definida'**
-  String get profilePlatformNone;
+  /// **'Escolha uma ou mais. A fila de partidas é por plataforma.'**
+  String get accountPlatformPickerSubtitle;
 
-  /// No description provided for @profilePlatformSettingsAction.
+  /// No description provided for @accountPlatformNone.
   ///
   /// In pt, this message translates to:
-  /// **'Plataforma: {platform}'**
-  String profilePlatformSettingsAction(String platform);
+  /// **'Nenhuma plataforma definida'**
+  String get accountPlatformNone;
+
+  /// No description provided for @accountPlatformOnboardingTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha sua plataforma'**
+  String get accountPlatformOnboardingTitle;
+
+  /// No description provided for @accountPlatformOnboardingMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A fila de partidas é por plataforma. Selecione pelo menos uma pra começar a jogar.'**
+  String get accountPlatformOnboardingMessage;
+
+  /// No description provided for @accountPlatformOnboardingAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecionar plataformas'**
+  String get accountPlatformOnboardingAction;
 
   /// No description provided for @profileWeekendLeagueTitle.
   ///
   /// In pt, this message translates to:
   /// **'Champions'**
   String get profileWeekendLeagueTitle;
-
-  /// No description provided for @profileWeekendLeagueComputedLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Registrado por partidas: {wins}–{losses}'**
-  String profileWeekendLeagueComputedLabel(int wins, int losses);
-
-  /// No description provided for @profileWeekendLeagueManualLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Resultado informado: {wins}–{losses}'**
-  String profileWeekendLeagueManualLabel(int wins, int losses);
-
-  /// No description provided for @profileWeekendLeagueEditAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informar resultado'**
-  String get profileWeekendLeagueEditAction;
 
   /// No description provided for @profileWeekendLeagueClearAction.
   ///
@@ -2693,42 +2257,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Derrotas'**
   String get profileWeekendLeagueLossesLabel;
-
-  /// No description provided for @profileOnboardingTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicione seu primeiro perfil'**
-  String get profileOnboardingTitle;
-
-  /// No description provided for @profileOnboardingMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Cadastre a perfil que você joga ou gerencia para participar de times, buscar partidas e acompanhar seu progresso.'**
-  String get profileOnboardingMessage;
-
-  /// No description provided for @profileOnboardingCreateAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar perfil'**
-  String get profileOnboardingCreateAction;
-
-  /// No description provided for @pendingMatchElencoLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil: {name}'**
-  String pendingMatchElencoLabel(String name);
-
-  /// No description provided for @historyElencoLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil: {name}'**
-  String historyElencoLabel(String name);
-
-  /// No description provided for @accountProfilesRow.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfis'**
-  String get accountProfilesRow;
 
   /// No description provided for @rivalsDivisionDiv10.
   ///
@@ -3011,12 +2539,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Escalação'**
   String get squadLabel;
-
-  /// No description provided for @playAccountLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil'**
-  String get playAccountLabel;
 
   /// No description provided for @playSquadEmpty.
   ///
@@ -3336,144 +2858,6 @@ abstract class AppLocalizations {
   /// **'Finalize a partida antes de editar o resultado.'**
   String get errorGameMatchNotFinished;
 
-  /// No description provided for @pendingMatchDetailsPromptTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar detalhes da partida?'**
-  String get pendingMatchDetailsPromptTitle;
-
-  /// No description provided for @pendingMatchDetailsPromptMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você pode registrar gols e assistências por jogador agora ou depois, pelo Histórico.'**
-  String get pendingMatchDetailsPromptMessage;
-
-  /// No description provided for @pendingMatchDetailsPromptAddAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar agora'**
-  String get pendingMatchDetailsPromptAddAction;
-
-  /// No description provided for @pendingMatchDetailsPromptSkipAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Agora não'**
-  String get pendingMatchDetailsPromptSkipAction;
-
-  /// No description provided for @matchDetailsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Detalhe da partida'**
-  String get matchDetailsTitle;
-
-  /// No description provided for @matchDetailsResultLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Resultado'**
-  String get matchDetailsResultLabel;
-
-  /// No description provided for @matchDetailsScoreLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Placar'**
-  String get matchDetailsScoreLabel;
-
-  /// No description provided for @matchDetailsNoResultMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem resultado registrado.'**
-  String get matchDetailsNoResultMessage;
-
-  /// No description provided for @matchDetailsEditResultAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Editar resultado'**
-  String get matchDetailsEditResultAction;
-
-  /// No description provided for @matchDetailsAddDetailsAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar gols e assistências'**
-  String get matchDetailsAddDetailsAction;
-
-  /// No description provided for @matchDetailsEditDetailsAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Editar gols e assistências'**
-  String get matchDetailsEditDetailsAction;
-
-  /// No description provided for @matchDetailsSquadSectionTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escalação'**
-  String get matchDetailsSquadSectionTitle;
-
-  /// No description provided for @matchDetailsPlayerStatsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Gols e assistências'**
-  String get matchDetailsPlayerStatsTitle;
-
-  /// No description provided for @matchDetailsPlayerStatsEmptyMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum gol ou assistência registrado nesta partida.'**
-  String get matchDetailsPlayerStatsEmptyMessage;
-
-  /// No description provided for @editMatchResultSheetTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Editar resultado'**
-  String get editMatchResultSheetTitle;
-
-  /// No description provided for @editMatchResultSheetMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Você pode corrigir o placar a qualquer momento, mesmo depois da partida encerrada.'**
-  String get editMatchResultSheetMessage;
-
-  /// No description provided for @editMatchResultSubmitAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvar resultado'**
-  String get editMatchResultSubmitAction;
-
-  /// No description provided for @playerStatsEditorTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Gols e assistências'**
-  String get playerStatsEditorTitle;
-
-  /// No description provided for @playerStatsEditorStartingLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Titulares'**
-  String get playerStatsEditorStartingLabel;
-
-  /// No description provided for @playerStatsEditorBenchLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Banco'**
-  String get playerStatsEditorBenchLabel;
-
-  /// No description provided for @playerStatsEditorSaveAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvar detalhes'**
-  String get playerStatsEditorSaveAction;
-
-  /// No description provided for @statsGoalsLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Gols'**
-  String get statsGoalsLabel;
-
-  /// No description provided for @statsAssistsLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Assistências'**
-  String get statsAssistsLabel;
-
   /// No description provided for @statsWinsLabel.
   ///
   /// In pt, this message translates to:
@@ -3509,12 +2893,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Remover derrota'**
   String get recordRemoveLossTooltip;
-
-  /// No description provided for @statsEmptyLeaderboardMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum gol ou assistência registrado ainda.'**
-  String get statsEmptyLeaderboardMessage;
 
   /// No description provided for @rivalsSectionTitle.
   ///
@@ -3663,7 +3041,7 @@ abstract class AppLocalizations {
   /// No description provided for @squadPrimaryLineupEmpty.
   ///
   /// In pt, this message translates to:
-  /// **'Você ainda não montou uma escalação para este Perfil.'**
+  /// **'Você ainda não montou sua escalação.'**
   String get squadPrimaryLineupEmpty;
 
   /// No description provided for @squadOtherLineupsAction.
@@ -3870,18 +3248,6 @@ abstract class AppLocalizations {
   /// **'Endereço inválido'**
   String get publicProfileSlugInvalid;
 
-  /// No description provided for @publicProfileAccountLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Perfil pública'**
-  String get publicProfileAccountLabel;
-
-  /// No description provided for @publicProfileAccountEmpty.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum perfil selecionado'**
-  String get publicProfileAccountEmpty;
-
   /// No description provided for @publicProfileToggleSquad.
   ///
   /// In pt, this message translates to:
@@ -3996,12 +3362,6 @@ abstract class AppLocalizations {
   /// **'Editar compartilhamento'**
   String get publicProfileEditSharingCta;
 
-  /// No description provided for @publicProfileNoAccountsHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Crie uma Perfil antes de compartilhar.'**
-  String get publicProfileNoAccountsHint;
-
   /// No description provided for @errorPublicProfileInvalidSlug.
   ///
   /// In pt, this message translates to:
@@ -4071,7 +3431,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutDescription.
   ///
   /// In pt, this message translates to:
-  /// **'Match Queue organiza a fila de busca de partida, Perfis e estatísticas do seu time de EA SPORTS FC.'**
+  /// **'Match Queue organiza a fila de busca de partida, escalações e estatísticas do seu time de EA SPORTS FC.'**
   String get aboutDescription;
 
   /// No description provided for @privacyPolicyTitle.
@@ -4116,11 +3476,11 @@ abstract class AppLocalizations {
   /// **'Ao excluir sua conta, você perde acesso a tudo o que está listado abaixo. Não é possível desfazer ou recuperar depois.'**
   String get deleteAccountWarningMessage;
 
-  /// No description provided for @deleteAccountConsequenceProfiles.
+  /// No description provided for @deleteAccountConsequenceAccountData.
   ///
   /// In pt, this message translates to:
-  /// **'Todos os seus Perfis e a divisão de Rivals registrada'**
-  String get deleteAccountConsequenceProfiles;
+  /// **'Sua divisão de Rivals e suas plataformas'**
+  String get deleteAccountConsequenceAccountData;
 
   /// No description provided for @deleteAccountConsequenceSquads.
   ///
@@ -4170,30 +3530,6 @@ abstract class AppLocalizations {
   /// **'Excluir minha conta permanentemente'**
   String get deleteAccountAction;
 
-  /// No description provided for @homeProfileEyebrow.
-  ///
-  /// In pt, this message translates to:
-  /// **'CONTA FC ATIVA'**
-  String get homeProfileEyebrow;
-
-  /// No description provided for @homeProfileSwitchAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Trocar'**
-  String get homeProfileSwitchAction;
-
-  /// No description provided for @homeProfileNoTeams.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ainda sem time'**
-  String get homeProfileNoTeams;
-
-  /// No description provided for @homeProfileTeamCount.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{Em 1 time} other{Em {count} times}}'**
-  String homeProfileTeamCount(int count);
-
   /// No description provided for @homeNoTeamTitle.
   ///
   /// In pt, this message translates to:
@@ -4205,24 +3541,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Buscar partida exige um time. Rivals e Champions você já pode usar.'**
   String get homeNoTeamMessage;
-
-  /// No description provided for @pendingMatchSkipAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informar esta partida'**
-  String get pendingMatchSkipAction;
-
-  /// No description provided for @pendingMatchSkipConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informar o resultado?'**
-  String get pendingMatchSkipConfirmTitle;
-
-  /// No description provided for @pendingMatchSkipConfirmMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'A partida sai daqui sem contar como vitória nem derrota. Você pode buscar outra normalmente.'**
-  String get pendingMatchSkipConfirmMessage;
 
   /// No description provided for @historyResultNotInformed.
   ///
@@ -4272,29 +3590,11 @@ abstract class AppLocalizations {
   /// **'Ver times'**
   String get controlNoTeamAction;
 
-  /// No description provided for @controlAccountNotLinkedMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Crie ou vincule este perfil a algum time para poder buscar partidas.'**
-  String get controlAccountNotLinkedMessage;
-
-  /// No description provided for @controlGoToTeamsAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ir para Times'**
-  String get controlGoToTeamsAction;
-
   /// No description provided for @navRequests.
   ///
   /// In pt, this message translates to:
   /// **'Convites'**
   String get navRequests;
-
-  /// No description provided for @requestsPageTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Solicitações'**
-  String get requestsPageTitle;
 
   /// No description provided for @requestsSegmentRequests.
   ///
@@ -4308,29 +3608,17 @@ abstract class AppLocalizations {
   /// **'Convites'**
   String get requestsSegmentInvites;
 
-  /// No description provided for @requestsEmptyRequestsTitle.
+  /// No description provided for @requestsEmptyAllTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Nenhum pedido pendente'**
-  String get requestsEmptyRequestsTitle;
+  /// **'Nada pendente'**
+  String get requestsEmptyAllTitle;
 
-  /// No description provided for @requestsEmptyRequestsMessage.
+  /// No description provided for @requestsEmptyAllMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Pedidos de entrada nos times que você administra aparecem aqui.'**
-  String get requestsEmptyRequestsMessage;
-
-  /// No description provided for @requestsEmptyInvitesTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhum convite pendente'**
-  String get requestsEmptyInvitesTitle;
-
-  /// No description provided for @requestsEmptyInvitesMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Convites que você receber de outros times aparecem aqui.'**
-  String get requestsEmptyInvitesMessage;
+  /// **'Convites de outros times e pedidos pra entrar nos times que você administra aparecem aqui.'**
+  String get requestsEmptyAllMessage;
 
   /// No description provided for @requestsMemberCountLabel.
   ///
@@ -4416,12 +3704,6 @@ abstract class AppLocalizations {
   /// **'Cancelar solicitação'**
   String get teamPublicRequestCancelAction;
 
-  /// No description provided for @teamPublicChooseAccountTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Qual Perfil você quer vincular?'**
-  String get teamPublicChooseAccountTitle;
-
   /// No description provided for @teamPublicRequestSentMessage.
   ///
   /// In pt, this message translates to:
@@ -4449,13 +3731,13 @@ abstract class AppLocalizations {
   /// No description provided for @teamInviteSlugFieldLabel.
   ///
   /// In pt, this message translates to:
-  /// **'Nick ou código do perfil'**
+  /// **'Nick ou código do perfil público'**
   String get teamInviteSlugFieldLabel;
 
   /// No description provided for @teamInviteSlugFieldHint.
   ///
   /// In pt, this message translates to:
-  /// **'Digite o nome ou o código do perfil público do jogador'**
+  /// **'Digite o nick ou o código do perfil público do jogador'**
   String get teamInviteSlugFieldHint;
 
   /// No description provided for @teamInviteSendAction.
@@ -4590,66 +3872,6 @@ abstract class AppLocalizations {
   /// **'O time volta a mostrar as iniciais no lugar da logo.'**
   String get teamLogoRemoveConfirmMessage;
 
-  /// No description provided for @pendingMatchesCardTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'{count, plural, =1{1 partida sem resultado} other{{count} partidas sem resultado}}'**
-  String pendingMatchesCardTitle(int count);
-
-  /// No description provided for @pendingMatchesCardLatest.
-  ///
-  /// In pt, this message translates to:
-  /// **'Mais recente: {mode} · {date} às {time}'**
-  String pendingMatchesCardLatest(String mode, String date, String time);
-
-  /// No description provided for @pendingMatchesOpenListAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ver partidas'**
-  String get pendingMatchesOpenListAction;
-
-  /// No description provided for @pendingMatchesDismissAllAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informar'**
-  String get pendingMatchesDismissAllAction;
-
-  /// No description provided for @pendingMatchesDismissAllTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informar nenhuma?'**
-  String get pendingMatchesDismissAllTitle;
-
-  /// No description provided for @pendingMatchesDismissAllMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Todas saem da lista sem contar como vitória nem derrota.'**
-  String get pendingMatchesDismissAllMessage;
-
-  /// No description provided for @pendingMatchesSheetTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Partidas sem resultado'**
-  String get pendingMatchesSheetTitle;
-
-  /// No description provided for @pendingMatchesSheetMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Informe o que quiser. Deixar em branco não bloqueia nada.'**
-  String get pendingMatchesSheetMessage;
-
-  /// No description provided for @pendingMatchesSkipOneAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informar'**
-  String get pendingMatchesSkipOneAction;
-
-  /// No description provided for @pendingMatchesAllClear.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma partida pendente.'**
-  String get pendingMatchesAllClear;
-
   /// No description provided for @errorWeekendLeagueLimit.
   ///
   /// In pt, this message translates to:
@@ -4775,12 +3997,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Todas'**
   String get filterAll;
-
-  /// No description provided for @startShortcutPlayHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escolha a perfil, o modo e entre na fila.'**
-  String get startShortcutPlayHint;
 
   /// No description provided for @startCatalogTitle.
   ///
