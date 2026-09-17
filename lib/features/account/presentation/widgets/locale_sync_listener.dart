@@ -10,7 +10,7 @@ import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dar
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Espelha o idioma efetivo para `profiles.locale` no backend, **só escrita**.
+/// Espelha o idioma efetivo para `users.locale` no backend, **só escrita**.
 ///
 /// Precedência: a preferência local (LocaleCubit) manda na UI; a cópia remota
 /// existe unicamente para o worker de push redigir a notificação no idioma

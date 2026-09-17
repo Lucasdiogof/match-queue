@@ -35,6 +35,19 @@ class _LoginPageState extends State<LoginPage> {
       AppValidators.password(_password.text) == null;
 
   @override
+  void initState() {
+    super.initState();
+    // Limpa qualquer falha deixada por outra tela de auth (ex.: erro de
+    // cadastro que sobrevive na navegação pro login, porque o cubit e
+    // compartilhado e so limpa a falha quando o usuario digita).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AuthCubit>().clearFailure();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _email.dispose();
     _password.dispose();
@@ -73,8 +86,14 @@ class _LoginPageState extends State<LoginPage> {
 
         return AuthFormScaffold(
           title: l10n.loginTitle,
-          backgroundImage: 'assets/brand/login_background.png',
-          contentAlignment: const Alignment(0, -0.85),
+          heroBackground: true,
+          // So aqui: o login e a unica tela onde a marca precisa subir --
+          // cadastro e recuperar senha continuam com o wordmark padrao do
+          // AuthFormScaffold.
+          wordmark: Transform.translate(
+            offset: const Offset(0, -70),
+            child: const MatchQueueWordmark(),
+          ),
           children: <Widget>[
             if (failure != null) ...<Widget>[
               AppBanner(

@@ -96,10 +96,6 @@ class _TeamPublicBody extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.md),
               Text(team.name ?? '', style: context.textStyles.headlineSmall),
-              if (team.tag != null) ...<Widget>[
-                const SizedBox(height: AppSpacing.xxs),
-                AppBadge(label: team.tag!),
-              ],
             ],
           ),
         ),

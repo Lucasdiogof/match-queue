@@ -600,20 +600,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teamNameHint => 'Falcons FC';
 
   @override
-  String teamDefaultName(String displayName) {
-    return '$displayName\'s Team';
-  }
-
-  @override
-  String get teamTagLabel => 'Tag (optional)';
-
-  @override
-  String get teamTagHint => 'FLC';
-
-  @override
-  String get teamTagHelper => '2 to 6 letters or digits';
-
-  @override
   String get teamCreateAction => 'Create team';
 
   @override
@@ -1321,69 +1307,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rivalsDivisionElite => 'Elite';
 
   @override
-  String get squadsSectionTitle => 'Squads';
-
-  @override
-  String get squadBuilderSaved => 'Saved';
-
-  @override
-  String get squadBuilderSaving => 'Saving…';
-
-  @override
-  String get squadsEmptyTitle => 'No squad yet';
-
-  @override
-  String get squadsEmptyMessage =>
-      'Create a squad to set up your lineup. You can still search for a match without one.';
-
-  @override
-  String get squadCreateAction => 'Create squad';
-
-  @override
-  String get squadCreateTitle => 'New squad';
-
-  @override
-  String get squadCreateSubtitle => 'Name it and pick a starting formation.';
-
-  @override
-  String get squadNameLabel => 'Squad name';
-
-  @override
-  String get squadNameHint => 'e.g. Main';
-
-  @override
   String get squadFormationLabel => 'Formation';
-
-  @override
-  String get squadRenameTitle => 'Rename squad';
-
-  @override
-  String get squadRenameAction => 'Rename';
-
-  @override
-  String get squadSetDefaultAction => 'Set as default';
-
-  @override
-  String get squadDefaultBadge => 'Default';
-
-  @override
-  String get squadArchiveAction => 'Archive squad';
-
-  @override
-  String get squadArchiveConfirmTitle => 'Archive squad?';
-
-  @override
-  String get squadArchiveConfirmMessage =>
-      'It leaves the list, but the history of matches played with it is kept.';
 
   @override
   String get squadBenchTitle => 'Bench';
 
   @override
   String get squadManagerTitle => 'Manager';
-
-  @override
-  String get squadManagerAddAction => 'Add manager';
 
   @override
   String get squadManagerRemoveAction => 'Remove manager';
@@ -1396,9 +1326,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get squadManagerPickNationFirst => 'Pick a country to see managers.';
-
-  @override
-  String get squadManagerNoneTitle => 'No manager';
 
   @override
   String get squadFormationPickerTitle => 'Choose formation';
@@ -1438,9 +1365,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playSquadEditAction => 'Edit squad';
-
-  @override
-  String get squadNoneSelected => 'No squad';
 
   @override
   String get squadFilterLeagueLabel => 'League';

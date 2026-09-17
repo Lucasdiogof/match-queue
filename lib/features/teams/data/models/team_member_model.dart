@@ -12,9 +12,10 @@ class TeamMemberModel {
   static const String columnRole = 'role';
   static const String columnJoinedAt = 'joined_at';
   static const String embeddedTeam = 'team';
-  /// Alias do embed PostgREST sobre a tabela `profiles` (a tabela do
+
+  /// Alias do embed PostgREST sobre a tabela `users` (a tabela do
   /// usuario no banco) -- nome de wire, nao o conceito removido.
-  static const String embeddedAccount = 'profile';
+  static const String embeddedAccount = 'account';
 
   static TeamMembership membershipFromJson(Map<String, dynamic> json) =>
       TeamMembership(

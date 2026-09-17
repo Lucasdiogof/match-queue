@@ -5,7 +5,6 @@ import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_state.dart';
-import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_name_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -56,9 +55,7 @@ class SquadsSection extends StatelessWidget {
                 AppButton.secondary(
                   label: l10n.squadPrimaryLineupCreateAction,
                   icon: Icons.add,
-                  onPressed: state.isSaving
-                      ? null
-                      : () => _create(context, state),
+                  onPressed: state.isSaving ? null : () => _create(context),
                 ),
               ] else ...<Widget>[
                 _PrimarySummary(squad: primary),
@@ -81,21 +78,17 @@ class SquadsSection extends StatelessWidget {
     );
   }
 
-  Future<void> _create(BuildContext context, FcSquadsState state) async {
-    final l10n = context.l10n;
+  // Sem nome nem formação a pedir: cria direto com o default (4-4-2) e já
+  // entra no builder, que é onde a formação se escolhe (ao vivo).
+  Future<void> _create(BuildContext context) async {
     final cubit = context.read<FcSquadsCubit>();
-    final result = await showSquadNameSheet(
-      context: context,
-      title: l10n.squadCreateTitle,
-      subtitle: l10n.squadCreateSubtitle,
-      formations: state.formations,
-    );
-    if (result == null || result.formationCode == null) {
+    final squad = await cubit.createSquad();
+    if (squad == null || !context.mounted) {
       return;
     }
-    await cubit.createSquad(
-      name: result.name,
-      formationCode: result.formationCode!,
+    await context.pushNamed(
+      AppRoutes.squadBuilder.name,
+      pathParameters: <String, String>{AppRoutes.squadIdParam: squad.id},
     );
   }
 }
@@ -114,18 +107,12 @@ class _PrimarySummary extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Flexible(
-              child: Text(
-                squad.name,
-                overflow: TextOverflow.ellipsis,
-                style: context.textStyles.titleMedium,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            AppBadge(label: squad.formationCode),
-          ],
+        // Um squad por usuário: não há nome pra distinguir de outro, então
+        // a formação já é o título -- é o dado que muda de fato.
+        Text(
+          squad.formationCode,
+          overflow: TextOverflow.ellipsis,
+          style: context.textStyles.titleMedium,
         ),
         const SizedBox(height: AppSpacing.sm),
         Wrap(

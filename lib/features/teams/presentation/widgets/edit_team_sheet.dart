@@ -6,12 +6,9 @@ import 'package:fifa_queue/core/validation/app_validators.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
-import 'package:fifa_queue/features/teams/presentation/widgets/create_team_sheet.dart'
-    show UpperCaseTextFormatter;
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_logo_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<bool> showEditTeamSheet(
@@ -46,23 +43,16 @@ class _EditTeamFormState extends State<_EditTeamForm> {
   late final TextEditingController _nameController = TextEditingController(
     text: widget.team.name,
   );
-  late final TextEditingController _tagController = TextEditingController(
-    text: widget.team.tag ?? '',
-  );
 
   @override
   void initState() {
     super.initState();
     _nameController.addListener(_onChanged);
-    _tagController.addListener(_onChanged);
   }
 
   @override
   void dispose() {
     _nameController
-      ..removeListener(_onChanged)
-      ..dispose();
-    _tagController
       ..removeListener(_onChanged)
       ..dispose();
     super.dispose();
@@ -78,12 +68,9 @@ class _EditTeamFormState extends State<_EditTeamForm> {
       return;
     }
     final navigator = Navigator.of(context);
-    final normalizedTag = AppValidators.normalizeTeamTag(_tagController.text);
     final saved = await context.read<TeamsCubit>().updateTeam(
       teamId: widget.team.id,
       name: _nameController.text,
-      tag: normalizedTag,
-      clearTag: normalizedTag == null,
     );
     if (saved && mounted) {
       navigator.pop(true);
@@ -153,28 +140,11 @@ class _EditTeamFormState extends State<_EditTeamForm> {
                   hintText: l10n.teamNameHint,
                   controller: _nameController,
                   enabled: !state.isSaving,
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   textCapitalization: TextCapitalization.words,
                   maxLength: AppValidators.teamNameMaxLength,
                   validator: (value) =>
                       AppValidators.teamName(value)?.message(l10n),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                AppTextField(
-                  label: l10n.teamTagLabel,
-                  hintText: l10n.teamTagHint,
-                  helperText: l10n.teamTagHelper,
-                  controller: _tagController,
-                  enabled: !state.isSaving,
-                  textInputAction: TextInputAction.done,
-                  textCapitalization: TextCapitalization.characters,
-                  maxLength: AppValidators.teamTagMaxLength,
-                  inputFormatters: <TextInputFormatter>[
-                    UpperCaseTextFormatter(),
-                    FilteringTextInputFormatter.allow(RegExp('[A-Z0-9]')),
-                  ],
-                  validator: (value) =>
-                      AppValidators.teamTag(value)?.message(l10n),
                 ),
               ],
             ),

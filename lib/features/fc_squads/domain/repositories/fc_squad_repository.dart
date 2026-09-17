@@ -19,10 +19,9 @@ abstract interface class FcSquadRepository {
     String? managerLeagueId,
   });
 
-  Future<FcSquadDetail> createSquad({
-    required String name,
-    required String formationCode,
-  });
+  /// Cria com formação padrão (4-4-2): sem nome nem formação a escolher --
+  /// a formação se muda depois, ao vivo, dentro do builder.
+  Future<FcSquadDetail> createSquad();
 
   Future<FcSquadDetail> renameSquad({
     required String squadId,

@@ -1150,30 +1150,6 @@ abstract class AppLocalizations {
   /// **'Falcons FC'**
   String get teamNameHint;
 
-  /// No description provided for @teamDefaultName.
-  ///
-  /// In pt, this message translates to:
-  /// **'Time de {displayName}'**
-  String teamDefaultName(String displayName);
-
-  /// No description provided for @teamTagLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tag (opcional)'**
-  String get teamTagLabel;
-
-  /// No description provided for @teamTagHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'FLC'**
-  String get teamTagHint;
-
-  /// No description provided for @teamTagHelper.
-  ///
-  /// In pt, this message translates to:
-  /// **'2 a 6 letras ou números'**
-  String get teamTagHelper;
-
   /// No description provided for @teamCreateAction.
   ///
   /// In pt, this message translates to:
@@ -2324,113 +2300,11 @@ abstract class AppLocalizations {
   /// **'Elite'**
   String get rivalsDivisionElite;
 
-  /// No description provided for @squadsSectionTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Escalações'**
-  String get squadsSectionTitle;
-
-  /// No description provided for @squadBuilderSaved.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvo'**
-  String get squadBuilderSaved;
-
-  /// No description provided for @squadBuilderSaving.
-  ///
-  /// In pt, this message translates to:
-  /// **'Salvando…'**
-  String get squadBuilderSaving;
-
-  /// No description provided for @squadsEmptyTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma escalação configurada'**
-  String get squadsEmptyTitle;
-
-  /// No description provided for @squadsEmptyMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Crie uma escalação para colocar seus jogadores em campo. Você pode buscar partida mesmo sem uma.'**
-  String get squadsEmptyMessage;
-
-  /// No description provided for @squadCreateAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Criar escalação'**
-  String get squadCreateAction;
-
-  /// No description provided for @squadCreateTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nova escalação'**
-  String get squadCreateTitle;
-
-  /// No description provided for @squadCreateSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dê um nome e escolha a formação inicial.'**
-  String get squadCreateSubtitle;
-
-  /// No description provided for @squadNameLabel.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nome da escalação'**
-  String get squadNameLabel;
-
-  /// No description provided for @squadNameHint.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ex.: Principal'**
-  String get squadNameHint;
-
   /// No description provided for @squadFormationLabel.
   ///
   /// In pt, this message translates to:
   /// **'Formação'**
   String get squadFormationLabel;
-
-  /// No description provided for @squadRenameTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Renomear escalação'**
-  String get squadRenameTitle;
-
-  /// No description provided for @squadRenameAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Renomear'**
-  String get squadRenameAction;
-
-  /// No description provided for @squadSetDefaultAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Definir como padrão'**
-  String get squadSetDefaultAction;
-
-  /// No description provided for @squadDefaultBadge.
-  ///
-  /// In pt, this message translates to:
-  /// **'Padrão'**
-  String get squadDefaultBadge;
-
-  /// No description provided for @squadArchiveAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Arquivar escalação'**
-  String get squadArchiveAction;
-
-  /// No description provided for @squadArchiveConfirmTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Arquivar escalação?'**
-  String get squadArchiveConfirmTitle;
-
-  /// No description provided for @squadArchiveConfirmMessage.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ele sai da lista, mas o histórico das partidas jogadas com ele é mantido.'**
-  String get squadArchiveConfirmMessage;
 
   /// No description provided for @squadBenchTitle.
   ///
@@ -2443,12 +2317,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Técnico'**
   String get squadManagerTitle;
-
-  /// No description provided for @squadManagerAddAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Adicionar técnico'**
-  String get squadManagerAddAction;
 
   /// No description provided for @squadManagerRemoveAction.
   ///
@@ -2473,12 +2341,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Escolha um país para ver os técnicos.'**
   String get squadManagerPickNationFirst;
-
-  /// No description provided for @squadManagerNoneTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem técnico'**
-  String get squadManagerNoneTitle;
 
   /// No description provided for @squadFormationPickerTitle.
   ///
@@ -2557,12 +2419,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Editar escalação'**
   String get playSquadEditAction;
-
-  /// No description provided for @squadNoneSelected.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sem escalação'**
-  String get squadNoneSelected;
 
   /// No description provided for @squadFilterLeagueLabel.
   ///

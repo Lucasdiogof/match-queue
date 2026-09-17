@@ -602,20 +602,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get teamNameHint => 'Falcons FC';
 
   @override
-  String teamDefaultName(String displayName) {
-    return 'Equipo de $displayName';
-  }
-
-  @override
-  String get teamTagLabel => 'Tag (opcional)';
-
-  @override
-  String get teamTagHint => 'FLC';
-
-  @override
-  String get teamTagHelper => '2 a 6 letras o números';
-
-  @override
   String get teamCreateAction => 'Crear equipo';
 
   @override
@@ -1330,70 +1316,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rivalsDivisionElite => 'Elite';
 
   @override
-  String get squadsSectionTitle => 'Plantillas';
-
-  @override
-  String get squadBuilderSaved => 'Guardado';
-
-  @override
-  String get squadBuilderSaving => 'Guardando…';
-
-  @override
-  String get squadsEmptyTitle => 'Ninguna plantilla configurada';
-
-  @override
-  String get squadsEmptyMessage =>
-      'Crea una plantilla para armar tu alineación. Puedes buscar partida incluso sin una.';
-
-  @override
-  String get squadCreateAction => 'Crear plantilla';
-
-  @override
-  String get squadCreateTitle => 'Nueva plantilla';
-
-  @override
-  String get squadCreateSubtitle =>
-      'Ponle un nombre y elige la formación inicial.';
-
-  @override
-  String get squadNameLabel => 'Nombre de la plantilla';
-
-  @override
-  String get squadNameHint => 'Ej.: Principal';
-
-  @override
   String get squadFormationLabel => 'Formación';
-
-  @override
-  String get squadRenameTitle => 'Renombrar plantilla';
-
-  @override
-  String get squadRenameAction => 'Renombrar';
-
-  @override
-  String get squadSetDefaultAction => 'Definir como predeterminado';
-
-  @override
-  String get squadDefaultBadge => 'Predeterminado';
-
-  @override
-  String get squadArchiveAction => 'Archivar plantilla';
-
-  @override
-  String get squadArchiveConfirmTitle => '¿Archivar plantilla?';
-
-  @override
-  String get squadArchiveConfirmMessage =>
-      'Sale de la lista, pero se mantiene el historial de partidas jugadas con él.';
 
   @override
   String get squadBenchTitle => 'Banquillo';
 
   @override
   String get squadManagerTitle => 'Entrenador';
-
-  @override
-  String get squadManagerAddAction => 'Añadir entrenador';
 
   @override
   String get squadManagerRemoveAction => 'Quitar entrenador';
@@ -1407,9 +1336,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get squadManagerPickNationFirst =>
       'Elige un país para ver los entrenadores.';
-
-  @override
-  String get squadManagerNoneTitle => 'Sin entrenador';
 
   @override
   String get squadFormationPickerTitle => 'Elegir formación';
@@ -1449,9 +1375,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get playSquadEditAction => 'Editar plantilla';
-
-  @override
-  String get squadNoneSelected => 'Sin plantilla';
 
   @override
   String get squadFilterLeagueLabel => 'Liga';

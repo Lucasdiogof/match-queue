@@ -11,7 +11,7 @@ abstract interface class AccountRepository {
 
   Future<Account> updateDisplayName(String displayName);
 
-  /// Escrita pura de `profiles.locale`, usada só para o worker de push saber
+  /// Escrita pura de `users.locale`, usada só para o worker de push saber
   /// em que idioma redigir a notificação. Nunca é lida de volta pelo app: a
   /// fonte da verdade do idioma na UI é a preferência local (LocaleCubit).
   Future<void> updateLocale(String localeTag);
