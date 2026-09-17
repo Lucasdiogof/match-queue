@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "fifa-queue"
-  }
+  },
+  "targets": {
+    "fifa-queue": {
+      "hosting": {
+        "main": [
+          "match-queue"
+        ],
+        "legacy": [
+          "fifa-queue"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
