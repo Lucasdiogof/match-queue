@@ -1358,9 +1358,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get squadLabel => 'Squad';
 
   @override
-  String get playSquadEmpty => 'No squad built yet';
-
-  @override
   String get playSquadBuildAction => 'Build squad';
 
   @override

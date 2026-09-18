@@ -776,7 +776,6 @@
   "squadMoveHint": "Tap another slot to swap.",
   "squadIncompleteLabel": "Incomplete squad",
   "squadLabel": "Squad",
-  "playSquadEmpty": "No squad built yet",
   "playSquadBuildAction": "Build squad",
   "playSquadEditAction": "Edit squad",
   "squadFilterLeagueLabel": "League",

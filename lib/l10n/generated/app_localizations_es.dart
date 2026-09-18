@@ -1367,9 +1367,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get squadLabel => 'Plantilla';
 
   @override
-  String get playSquadEmpty => 'Ninguna plantilla creada';
-
-  @override
   String get playSquadBuildAction => 'Crear plantilla';
 
   @override

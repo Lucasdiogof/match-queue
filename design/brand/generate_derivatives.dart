@@ -20,18 +20,18 @@ import 'package:image/image.dart' as img;
 
 const List<int> _white = [255, 255, 255];
 
-// Mesmo tom de fundo escuro do proprio app (AppColors.darkBackground) -- nao
-// um verde generico: e o pixel real que o app pinta atras de tudo no tema
-// escuro, entao a moldura do icone bate com a marca de verdade em vez de so
-// "parecer verde".
-const List<int> _iconDarkBg = [0x08, 0x0A, 0x09];
-
 const String _logoName =
     'logo_sem_fundo.png'; // squircle badge "MQ", transparente
 const String _escritoName =
     'logo_escrita.png'; // wordmark "MATCH QUEUE", ja transparente
-const String _splashName =
-    'logo_splash.png'; // splash pronta, ja achatada em fundo preto solido
+const String _iconArtName =
+    'logo_icon.png'; // icone PRONTO: quadrado arredondado preto + marca MQ
+
+// Fundo real da arte de icone, medido nela (nao escolhido no olho): e a cor
+// que o quadrado arredondado ja tem. Preencher a volta com exatamente esse
+// tom faz a borda arredondada da arte sumir dentro do canvas, que e o que
+// permite tratar uma arte JA arredondada como se fosse sangria total.
+const List<int> _iconArtBg = [0x13, 0x15, 0x16];
 
 late final String _brandDir;
 late final String _assetsDir;
@@ -68,6 +68,37 @@ img.Image _loadRgba(String name) => _decode('$_brandDir/$name');
 /// correspondente. contentFraction > 1 estoura de proposito pra fora da
 /// borda do canvas (sangria total) em vez de deixar margem, ja que e um
 /// icone e o SO mascara/recorta de qualquer jeito.
+/// Mesma ideia de [_padToSquare], mas o que sobra fica TRANSPARENTE em vez
+/// de preenchido: quem pinta o fundo e o consumidor (flutter_native_splash
+/// pinta a cor configurada por baixo). Com fundo transparente a arte
+/// funciona sobre qualquer cor, sem a emenda que uma arte achatada cria.
+img.Image _padToSquareTransparent(
+  img.Image imRgba,
+  int canvasSize,
+  double contentFraction,
+) {
+  final scale = (canvasSize * contentFraction) / imRgba.width;
+  final resized = img.copyResize(
+    imRgba,
+    width: (imRgba.width * scale).round(),
+    height: (imRgba.height * scale).round(),
+    interpolation: img.Interpolation.cubic,
+  );
+  final canvas = img.Image(
+    width: canvasSize,
+    height: canvasSize,
+    numChannels: 4,
+  );
+  img.fill(canvas, color: img.ColorRgba8(0, 0, 0, 0));
+  img.compositeImage(
+    canvas,
+    resized,
+    dstX: (canvasSize - resized.width) ~/ 2,
+    dstY: (canvasSize - resized.height) ~/ 2,
+  );
+  return canvas;
+}
+
 img.Image _padToSquare(
   img.Image im,
   int canvasSize,
@@ -95,38 +126,35 @@ img.Image _padToSquare(
   return canvas;
 }
 
-/// Mesmo resize-e-centraliza de [_padToSquare], mas sobre um canvas
-/// totalmente transparente -- para splash nativa, que pinta a propria cor de
-/// fundo por baixo (color/color_dark no pubspec.yaml) e mostraria uma borda
-/// visivel em volta de qualquer preenchimento solido que a gente adicionasse.
-img.Image _padToSquareTransparent(
-  img.Image imRgba,
-  int canvasSize,
-  double contentFraction,
-) {
-  final scale = (canvasSize * contentFraction) / imRgba.width;
-  final newW = (imRgba.width * scale).round();
-  final newH = (imRgba.height * scale).round();
-  final resized = img.copyResize(
-    imRgba,
-    width: newW,
-    height: newH,
-    interpolation: img.Interpolation.cubic,
-  );
-  final canvas = img.Image(
-    width: canvasSize,
-    height: canvasSize,
-    numChannels: 4,
-  );
-  img.fill(canvas, color: img.ColorRgba8(0, 0, 0, 0));
-  final offsetX = (canvasSize - newW) ~/ 2;
-  final offsetY = (canvasSize - newH) ~/ 2;
-  img.compositeImage(canvas, resized, dstX: offsetX, dstY: offsetY);
-  return canvas;
-}
 
 /// Recorta pro bounding box do conteudo visivel (alpha > limiar) + padding,
 /// sem alterar nenhum pixel.
+/// Recorta ao retangulo OPACO -- diferente de [_cropToAlphaBbox], que inclui
+/// tudo que tem qualquer alpha. A arte de icone vem com sombra projetada em
+/// volta do quadrado; manter a sombra deixaria uma auréola escura dentro do
+/// icone depois que a plataforma aplicar a propria mascara.
+img.Image _cropToOpaqueBbox(img.Image imRgba) {
+  var minX = imRgba.width, minY = imRgba.height, maxX = -1, maxY = -1;
+  for (var y = 0; y < imRgba.height; y++) {
+    for (var x = 0; x < imRgba.width; x++) {
+      if (imRgba.getPixel(x, y).a > 250) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+  if (maxX < minX) return imRgba;
+  return img.copyCrop(
+    imRgba,
+    x: minX,
+    y: minY,
+    width: maxX - minX + 1,
+    height: maxY - minY + 1,
+  );
+}
+
 img.Image _cropToAlphaBbox(img.Image imRgba, {int padding = 15}) {
   int minX = imRgba.width, minY = imRgba.height, maxX = 0, maxY = 0;
   var found = false;
@@ -215,52 +243,78 @@ void main() {
 
   // ---- Build-time-only sources (flutter_launcher_icons / flutter_native_splash) ----
 
+  // logo_icon.png ja E um icone pronto: quadrado arredondado, fundo preto
+  // texturizado, marca MQ e sombra projetada em volta. Por isso nao passa
+  // pelo mesmo caminho do badge transparente acima -- o que ele precisa e
+  // ser DESARREDONDADO, nao montado.
+  final iconArtRgba = _cropToOpaqueBbox(_loadRgba(_iconArtName));
+
   // Fonte geral do icone do app (iOS + Android legado + favicon/PWA web).
-  // iOS mascara/arredonda isso sozinho (nunca arredondar aqui) e nao mostra
-  // nenhuma cor de fundo fora da mascara, entao uma margem solida atras do
-  // badge apareceria como uma borda indesejada -- a margem propria de
-  // logo_sem_fundo.png e cortada estourando levemente pra fora da borda do
-  // canvas (sangria total) em vez de mantida como padding visivel.
-  final iconGeneralSource = _compositeOnColor(logoRgba, _iconDarkBg);
-  final iconGeneral = _padToSquare(iconGeneralSource, 1024, 1.08, _iconDarkBg);
+  //
+  // iOS aplica a propria mascara arredondada e ESPERA uma arte de sangria
+  // total, sem transparencia. A arte ja vem arredondada, entao o recorte
+  // acima joga fora a sombra e deixa o quadrado encostando nas 4 bordas do
+  // canvas: os cantos do canvas caem dentro do raio da arte, onde ela e
+  // transparente, e sao preenchidos com _iconArtBg -- a mesma cor do fundo
+  // dela.
+  //
+  // Sem sangria (1.0), de proposito. O arredondamento da arte mede 21,8% do
+  // lado e a mascara do iOS usa ~22,4% (medido com
+  // tool/inspect_icon_art.dart): a mascara corta POR FORA do aro da arte,
+  // entao ele desaparece sozinho -- nao ha arco duplo pra esconder. Sangrar
+  // aqui so recortava a arte fora de centro, porque o quadrado opaco nao e
+  // exatamente quadrado (1123x1111) e a escala de _padToSquare e pela
+  // largura.
+  final iconGeneralSource = _compositeOnColor(iconArtRgba, _iconArtBg);
+  final iconGeneral = _padToSquare(iconGeneralSource, 1024, 1.0, _iconArtBg);
   _savePng('$_generatedDir/icon_general_1024.png', iconGeneral);
 
-  // Foreground do icone adaptativo Android: TRANSPARENTE fora do desenho (o
-  // fundo escuro vem de adaptive_icon_background no pubspec.yaml, uma camada
-  // separada que o Android compoe atras desta -- preencher aqui seria um
-  // segundo fundo redundante). adaptive_icon_foreground_inset e 0 no
-  // pubspec.yaml, entao esse contentFraction e o UNICO controle de tamanho.
+  // Foreground do icone adaptativo Android.
+  //
+  // OPACO de sangria total, nao transparente: a arte nova nao e uma marca
+  // solta sobre fundo, e um icone inteiro. Separar a marca do fundo exigiria
+  // recortar o metal do preto, e o metal tem sombra escura propria no bisel
+  // -- qualquer recorte por luminancia comeria parte do desenho. Preenchendo
+  // a volta com _iconArtBg, a camada de baixo (adaptive_icon_background)
+  // nunca aparece e o launcher recorta a forma dele de um quadrado cheio,
+  // sem borda.
+  //
   // A "safe zone" garantida do Android e um CIRCULO de 66dp inscrito no
-  // canvas de 108dp (~61% do lado, nao 66% -- um bounding box quadrado de
-  // 66% de lado tem cantos que estouram esse circulo). logo_sem_fundo.png e
-  // um anel que quase toca a propria borda do bounding box nos 4 pontos
-  // cardeais, entao com contentFraction 0.66 esse anel ficava colado bem em
-  // cima da linha de corte do launcher -- lia como um risco/halo feio
-  // grudado na borda do icone em vez de um anel limpo. 0.55 dava folga real
-  // mas o anel ficava pequeno demais pra ler em 48dp (tamanho real na tela
-  // inicial); 0.62 e o meio-termo aceito -- ainda mais legivel que 0.55, com
-  // menos folga do que isso mas sem colar na borda como o 0.66 original.
-  // Resolve o tamanho, nao a legibilidade do traco fino em si -- isso exige
-  // arte nova (ver historico do rebrand).
-  final iconAdaptiveFg = _padToSquareTransparent(logoRgba, 1024, 0.62);
+  // canvas de 108dp -- 61,1% do lado. O que precisa caber nesse circulo e a
+  // DIAGONAL da caixa da marca, nao a largura dela: o MQ e uma caixa larga
+  // e baixa, e sao as pontas (o bico do M, a perna do Q) que encostam no
+  // corte primeiro. Medido com tool/inspect_icon_art.dart (densidade de
+  // pixels claros, ignorando 8% de borda pra nao contar o aro de brilho da
+  // arte): a marca e 76,3% x 43,3% do quadrado opaco, diagonal 87,7%.
+  //
+  //   0,611 / 0,877 = 0,70
+  //
+  // Por isso 0.70 e nao um numero redondo escolhido no olho. Conferido com
+  // tool/preview_adaptive_icon.dart, que recorta o circulo de verdade --
+  // em 0.85 as pontas do M cruzavam a linha.
+  final iconAdaptiveFg = _padToSquare(
+    _compositeOnColor(iconArtRgba, _iconArtBg),
+    1024,
+    0.70,
+    _iconArtBg,
+  );
   _savePng('$_generatedDir/icon_adaptive_fg_1024.png', iconAdaptiveFg);
 
-  // Fonte da splash nativa: logo_splash.png e uma arte pronta, ja achatada
-  // sobre fundo preto solido (ao contrario do resto -- nao e derivada do
-  // badge transparente aqui). Por isso NAO usa _padToSquareTransparent (que
-  // exige fundo transparente pro flutter_native_splash pintar por baixo): so
-  // redimensiona pro tamanho final. flutter_native_splash.color/color_dark
-  // no pubspec.yaml precisam bater com o preto solido desta arte
-  // (#000000), senao aparece uma borda visivel entre a imagem e o fundo da
-  // splash nativa.
-  final splashSource = _decode('$_brandDir/$_splashName');
-  final splashResized = img.copyResize(
-    splashSource,
-    width: 1024,
-    height: 1024,
-    interpolation: img.Interpolation.cubic,
-  );
-  _savePng('$_generatedDir/splash_source_1024.png', splashResized);
+  // Fonte da splash nativa: a MESMA arte do icone, com a transparencia
+  // dela preservada (sem _compositeOnColor). E o que permite a splash usar
+  // uma cor de fundo qualquer sem emenda -- flutter_native_splash pinta a
+  // cor por baixo e o badge assenta em cima.
+  //
+  // Antes daqui saia logo_splash.png, arte achatada sobre #000000 puro. Com
+  // fundo achatado a cor da splash e obrigada a ser exatamente o preto da
+  // arte, senao aparece um quadrado visivel em volta dela -- e essa arte
+  // ainda era a marca verde antiga, de antes do rebrand do icone.
+  //
+  // 0.62 deixa o badge ocupando pouco mais da metade da largura: numa tela
+  // de celular a splash e retrato, entao a largura e o lado curto e o badge
+  // precisa caber nela com folga.
+  final splashSource = _padToSquareTransparent(iconArtRgba, 1024, 0.62);
+  _savePng('$_generatedDir/splash_source_1024.png', splashSource);
 
   stdout.writeln('Generated:');
   for (final f

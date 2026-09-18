@@ -50,7 +50,7 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "design/brand/generated/icon_general_1024.png"
-  adaptive_icon_background: "#080A09"
+  adaptive_icon_background: "#131516"
   adaptive_icon_foreground: "design/brand/generated/icon_adaptive_fg_1024.png"
   # Default is 16: an extra shrink on top of whatever margin the foreground
   # PNG itself already has. Disabled so contentFraction in
@@ -61,17 +61,17 @@ flutter_launcher_icons:
   web:
     generate: true
     image_path: "design/brand/generated/icon_general_1024.png"
-    background_color: "#080A09"
-    theme_color: "#080A09"
+    background_color: "#101213"
+    theme_color: "#101213"
 
 flutter_native_splash:
-  color: "#000000"
+  color: "#101213"
   image: design/brand/generated/splash_source_1024.png
-  color_dark: "#000000"
+  color_dark: "#101213"
   image_dark: design/brand/generated/splash_source_1024.png
   android_12:
     image: design/brand/generated/splash_source_1024.png
-    color: "#000000"
+    color: "#101213"
     image_dark: design/brand/generated/splash_source_1024.png
-    color_dark: "#000000"
+    color_dark: "#101213"
   web: false

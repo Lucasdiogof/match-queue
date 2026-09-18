@@ -1361,9 +1361,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get squadLabel => 'Escalação';
 
   @override
-  String get playSquadEmpty => 'Nenhuma escalação montada';
-
-  @override
   String get playSquadBuildAction => 'Montar escalação';
 
   @override
