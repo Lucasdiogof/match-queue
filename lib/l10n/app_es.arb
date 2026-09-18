@@ -776,7 +776,6 @@
   "squadMoveHint": "Toca otro espacio para intercambiar.",
   "squadIncompleteLabel": "Plantilla incompleta",
   "squadLabel": "Plantilla",
-  "playSquadEmpty": "Ninguna plantilla creada",
   "playSquadBuildAction": "Crear plantilla",
   "playSquadEditAction": "Editar plantilla",
   "squadFilterLeagueLabel": "Liga",

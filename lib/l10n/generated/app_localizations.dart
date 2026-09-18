@@ -2402,12 +2402,6 @@ abstract class AppLocalizations {
   /// **'Escalação'**
   String get squadLabel;
 
-  /// No description provided for @playSquadEmpty.
-  ///
-  /// In pt, this message translates to:
-  /// **'Nenhuma escalação montada'**
-  String get playSquadEmpty;
-
   /// No description provided for @playSquadBuildAction.
   ///
   /// In pt, this message translates to:

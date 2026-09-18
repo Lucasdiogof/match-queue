@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Cor da janela do app enquanto a UI Flutter ainda nao desenhou o primeiro
+  frame. Fica num arquivo separado de colors.xml de proposito: aquele e
+  reescrito pelo flutter_launcher_icons a cada regeneracao de icone, e uma
+  cor posta la some sem aviso.
+
+  Mesmo valor da splash nativa (flutter_native_splash.color no pubspec.yaml)
+  -- sao superficies que aparecem em sequencia na abertura, e qualquer
+  diferenca entre elas aparece como um piscar de cor.
+-->
+<resources>
+    <color name="window_background">#101213</color>
+</resources>

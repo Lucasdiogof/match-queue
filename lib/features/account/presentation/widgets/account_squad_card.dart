@@ -1,4 +1,5 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/account/domain/entities/account.dart';
@@ -124,8 +125,11 @@ class _SquadRow extends StatelessWidget {
       // ainda permite varios (fc_squads nao tem unico por conta), entao aqui
       // mostramos o selecionado como "o" elenco e a lista completa continua
       // na tela da Conta. Fechar isso no dominio fica pra etapa funcional.
+      // Sem escalacao o card fica so com o rotulo e o botao: "Nenhuma
+      // escalacao montada" repetia, em palavras, o que o proprio botao
+      // "Montar escalacao" ja diz.
       final value = !hasCompleteSquad
-          ? l10n.playSquadEmpty
+          ? null
           : <String>[
               squad.formationCode,
               squad.overall == null
@@ -187,13 +191,32 @@ class _SquadRow extends StatelessWidget {
   // entra no builder, que é onde a formação se escolhe (ao vivo).
   Future<void> _createSquad(BuildContext context) async {
     final cubit = context.read<FcSquadsCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
+
     final squad = await cubit.createSquad();
-    if (squad == null || !context.mounted) {
+    if (squad != null) {
+      if (!context.mounted) {
+        return;
+      }
+      await context.pushNamed(
+        AppRoutes.squadBuilder.name,
+        pathParameters: <String, String>{AppRoutes.squadIdParam: squad.id},
+      );
       return;
     }
-    await context.pushNamed(
-      AppRoutes.squadBuilder.name,
-      pathParameters: <String, String>{AppRoutes.squadIdParam: squad.id},
+
+    // createSquad() devolve null tanto quando a RPC falha quanto quando ja
+    // havia uma criacao em voo. No primeiro caso o botao ficava MUDO: o
+    // usuario tocava, nada acontecia, e nada explicava por que. O erro
+    // agora aparece.
+    final failure = cubit.state.actionFailure;
+    if (failure == null) {
+      return;
+    }
+    cubit.clearActionFailure();
+    messenger.showSnackBar(
+      SnackBar(content: Text(failure.localizedMessage(l10n))),
     );
   }
 }
@@ -206,7 +229,10 @@ class _Field extends StatelessWidget {
   });
 
   final String label;
-  final String value;
+
+  /// Nulo quando nao ha o que dizer alem do rotulo -- a linha de valor
+  /// simplesmente nao existe, em vez de carregar um texto de "vazio".
+  final String? value;
   final bool isMuted;
 
   @override
@@ -225,17 +251,19 @@ class _Field extends StatelessWidget {
             letterSpacing: 1.2,
           ),
         ),
-        const SizedBox(height: AppSpacing.xxs),
-        Text(
-          value,
-          // Uma linha e elipse: nome de conta longo nao pode empurrar o
-          // card, e a tela precisa caber num Android pequeno.
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: context.textStyles.titleSmall?.copyWith(
-            color: isMuted ? colors.textSecondary : colors.textPrimary,
+        if (value != null) ...<Widget>[
+          const SizedBox(height: AppSpacing.xxs),
+          Text(
+            value!,
+            // Uma linha e elipse: nome de conta longo nao pode empurrar o
+            // card, e a tela precisa caber num Android pequeno.
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.textStyles.titleSmall?.copyWith(
+              color: isMuted ? colors.textSecondary : colors.textPrimary,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }

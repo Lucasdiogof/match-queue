@@ -31,6 +31,20 @@
 
   <title>Match Queue</title>
   <link rel="manifest" href="manifest.json">
+
+  <!--
+    Pintado ANTES do Flutter carregar. Sem isto o navegador mostra o branco
+    padrao ate o primeiro frame, que numa conexao lenta e um flash bem
+    visivel entre a pagina em branco e a UI escura do app. Mesma cor da
+    splash nativa e do windowBackground do Android.
+  -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #101213;
+    }
+  </style>
 </head>
 <body>
   <!--

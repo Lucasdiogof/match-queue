@@ -8,6 +8,8 @@ import 'package:fifa_queue/features/account/presentation/widgets/platform_onboar
 import 'package:fifa_queue/features/account/presentation/widgets/account_squad_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/rivals_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_card.dart';
+import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
+import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_section.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
@@ -171,8 +173,15 @@ class _ControlBody extends StatelessWidget {
                   const SizedBox(height: AppSpacing.lg),
                   MatchmakingSection(userId: account.id, teamId: team.id),
                   const SizedBox(height: AppSpacing.xl),
-                  const WeekendLeagueCard(),
-                  const RivalsCard(),
+                  // So o card do modo ESCOLHIDO. Mostrar os dois fazia a
+                  // dobra falar de uma competicao que o usuario nao vai
+                  // jogar agora -- e o seletor logo acima ja disse qual e.
+                  BlocBuilder<GameModeCubit, GameMode>(
+                    builder: (context, mode) => switch (mode) {
+                      GameMode.weekendLeague => const WeekendLeagueCard(),
+                      GameMode.divisionRivals => const RivalsCard(),
+                    },
+                  ),
                 ],
               );
             },
