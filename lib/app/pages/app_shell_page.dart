@@ -369,11 +369,12 @@ class _SideNavigation extends StatelessWidget {
     minWidth: AppSizing.navigationRailWidth,
     minExtendedWidth: AppSizing.navigationRailExtendedWidth,
     labelType: extended ? null : NavigationRailLabelType.all,
-    leading: Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-      child: extended
-          ? const BrandWordmark(height: 22)
-          : const BrandMark(size: BrandMarkSize.small),
+    leading: const Padding(
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
+      // O badge nos dois estados: a wordmark que ficava aqui no modo
+      // estendido era a arte cromada verde, de antes do rebrand, e nao ha
+      // versao nova dela. O badge ja carrega o MQ, entao nao sobra ambiguidade.
+      child: BrandMark(size: BrandMarkSize.small),
     ),
     destinations: <NavigationRailDestination>[
       for (final destination in destinations)

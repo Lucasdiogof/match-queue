@@ -1,7 +1,6 @@
 import 'package:fifa_queue/core/design_system/branding/brand_assets.dart';
 import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_radii.dart';
-import 'package:fifa_queue/core/design_system/tokens/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 enum BrandMarkSize { small, medium, large }
@@ -35,22 +34,15 @@ class BrandMark extends StatelessWidget {
     final colors = context.colors;
 
     if (logo != null) {
-      // A arte tem fundo branco solido (nao e um simbolo com alpha) --
-      // um badge arredondado com borda sutil deixa isso coerente tanto no
-      // tema claro quanto no escuro, em vez de um quadrado branco cru sobre
-      // fundo escuro.
+      // Sem ClipRRect nem borda: a arte ja e um badge fechado, com o proprio
+      // arredondamento e o proprio fundo, e os cantos dela chegam vazados.
+      // Recortar de novo somaria um segundo raio por cima do dela, e a borda
+      // desenharia um contorno que nao acompanha a curva da arte. O embrulho
+      // existia porque a arte anterior era um simbolo achatado sobre branco
+      // -- sem ele virava um quadrado branco cru no tema escuro.
       return Semantics(
         excludeSemantics: true,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(_radius),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(color: colors.borderSubtle),
-              borderRadius: BorderRadius.circular(_radius),
-            ),
-            child: Image.asset(logo, width: _side, height: _side),
-          ),
-        ),
+        child: Image.asset(logo, width: _side, height: _side),
       );
     }
 
@@ -76,61 +68,5 @@ class BrandMark extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class BrandWordmark extends StatelessWidget {
-  const BrandWordmark({this.style, this.height = 24, super.key});
-
-  final TextStyle? style;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    const wordmark = BrandAssets.wordmark;
-    if (wordmark != null) {
-      // A arte (cromada, contorno/glow claro) foi desenhada para fundo
-      // escuro -- em fundo claro o contorno some. As telas que exibem essa
-      // marca em destaque (splash, onboarding, cadastro) usam tema escuro
-      // por baixo dela em vez de tingir a imagem.
-      return Semantics(
-        label: BrandAssets.productName,
-        image: true,
-        child: ExcludeSemantics(child: Image.asset(wordmark, height: height)),
-      );
-    }
-
-    return Text(
-      BrandAssets.productName,
-      style: (style ?? context.textStyles.headlineSmall)?.copyWith(
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.4,
-        color: context.colors.textPrimary,
-      ),
-    );
-  }
-}
-
-class BrandLockup extends StatelessWidget {
-  const BrandLockup({
-    this.markSize = BrandMarkSize.medium,
-    this.axis = Axis.horizontal,
-    super.key,
-  });
-
-  final BrandMarkSize markSize;
-  final Axis axis;
-
-  @override
-  Widget build(BuildContext context) {
-    final children = <Widget>[
-      BrandMark(size: markSize),
-      const SizedBox(width: AppSpacing.md, height: AppSpacing.md),
-      const BrandWordmark(),
-    ];
-
-    return axis == Axis.horizontal
-        ? Row(mainAxisSize: MainAxisSize.min, children: children)
-        : Column(mainAxisSize: MainAxisSize.min, children: children);
   }
 }

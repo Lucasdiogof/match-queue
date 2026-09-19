@@ -14,7 +14,7 @@ class OnboardingPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const BrandLockup(markSize: BrandMarkSize.large, axis: Axis.vertical),
+          const BrandMark(size: BrandMarkSize.large),
           const SizedBox(height: AppSpacing.lg),
           Text(
             context.l10n.appTagline,

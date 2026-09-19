@@ -4,11 +4,11 @@ import 'package:fifa_queue/core/design_system/tokens/app_durations.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_typography.dart';
 import 'package:flutter/material.dart';
 
-/// Wordmark "MATCH / QUEUE" desenhado em código -- substitui a arte cromada
-/// (`assets/brand/wordmark.png`) nas telas de login e cadastro, que são onde
-/// a marca aparece grande e sozinha. Não mexe em [BrandAssets.wordmark] nem
-/// em [BrandWordmark]: splash, onboarding e o rail de navegação continuam
-/// usando a arte de sempre -- só o par login/cadastro trocou.
+/// Wordmark "MATCH / QUEUE" desenhado em código -- a única forma escrita da
+/// marca que existe hoje, usada nas telas de login e cadastro, que são onde
+/// ela aparece grande e sozinha. A arte cromada verde que vivia em
+/// `assets/brand/wordmark.png` saiu do app junto com o rebrand do ícone, e
+/// splash, onboarding e o rail de navegação passaram a mostrar só o badge.
 ///
 /// Tipografia primeiro, efeito depois (95%/5%, de propósito): duas linhas
 /// bem juntas em peso pesado, leve cisalhamento pro bloco inteiro, e só

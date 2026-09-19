@@ -18,12 +18,6 @@ import 'dart:io';
 
 import 'package:image/image.dart' as img;
 
-const List<int> _white = [255, 255, 255];
-
-const String _logoName =
-    'logo_sem_fundo.png'; // squircle badge "MQ", transparente
-const String _escritoName =
-    'logo_escrita.png'; // wordmark "MATCH QUEUE", ja transparente
 const String _iconArtName =
     'logo_icon.png'; // icone PRONTO: quadrado arredondado preto + marca MQ
 
@@ -155,27 +149,6 @@ img.Image _cropToOpaqueBbox(img.Image imRgba) {
   );
 }
 
-img.Image _cropToAlphaBbox(img.Image imRgba, {int padding = 15}) {
-  int minX = imRgba.width, minY = imRgba.height, maxX = 0, maxY = 0;
-  var found = false;
-  for (var y = 0; y < imRgba.height; y++) {
-    for (var x = 0; x < imRgba.width; x++) {
-      if (imRgba.getPixel(x, y).a > 20) {
-        found = true;
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
-      }
-    }
-  }
-  if (!found) return imRgba;
-  final x0 = (minX - padding).clamp(0, imRgba.width);
-  final y0 = (minY - padding).clamp(0, imRgba.height);
-  final x1 = (maxX + padding + 1).clamp(0, imRgba.width);
-  final y1 = (maxY + padding + 1).clamp(0, imRgba.height);
-  return img.copyCrop(imRgba, x: x0, y: y0, width: x1 - x0, height: y1 - y0);
-}
 
 void _savePng(String path, img.Image image) {
   File(path).writeAsBytesSync(img.encodePng(image));
@@ -192,62 +165,45 @@ void main() {
   Directory(_assetsDir).createSync(recursive: true);
   Directory(_generatedDir).createSync(recursive: true);
 
-  final escritoRgba = _loadRgba(_escritoName);
-  // logo_sem_fundo.png tem margem transparente desigual em volta do badge
-  // (a arte original nao chega com padding simetrico) -- centralizar o
-  // canvas bruto, como os passos abaixo faziam antes, centraliza a margem
-  // desigual junto e o badge sai perceptivelmente deslocado (ja aconteceu:
-  // icone da app e mark dentro do app visivelmente fora do centro). Recorta
-  // pro bounding box do conteudo primeiro, com a mesma funcao ja usada pro
-  // wordmark, para que todo derivado abaixo centralize o desenho de
-  // verdade, nao o canvas.
-  final logoRgba = _cropToAlphaBbox(_loadRgba(_logoName));
-  final logo = _compositeOnColor(logoRgba, _white);
+  // logo_icon.png ja E um icone pronto: quadrado arredondado, fundo preto
+  // texturizado, marca MQ e sombra projetada em volta. O recorte pelo opaco
+  // joga a sombra fora e deixa so o quadrado -- e ele alimenta TODOS os
+  // derivados de icone (runtime e build-time) daqui pra baixo.
+  final iconArtRgba = _cropToOpaqueBbox(_loadRgba(_iconArtName));
 
   // ---- Runtime assets (bundled via pubspec assets:) ----
 
-  // Icon mark usado inline pelo BrandMark (nav rail, splash widget, forms de
-  // auth). `logo` acima ja compoe o badge (recortado pro bounding box)
-  // sobre branco pro uso "white-card" (ver doc comment do proprio
-  // BrandMark). Reduzir pra 512 e mais que suficiente pra qualquer uso ate
-  // ~170dp numa tela 3x.
+  // Marca usada inline pelo BrandMark (nav rail, splash widget, telas de
+  // auth). TRANSPARENCIA PRESERVADA de proposito: a arte ja tem cantos
+  // arredondados proprios, entao os cantos precisam ficar vazados pra ela
+  // assentar em qualquer superficie. A arte anterior era um simbolo com
+  // alpha achatado sobre BRANCO, e por isso o BrandMark precisava embrulhar
+  // tudo num ClipRRect com borda -- sem isso aparecia um quadrado branco cru
+  // sobre fundo escuro. Com o badge novo esse embrulho vira um segundo
+  // arredondamento por cima do da arte, entao ele saiu de la.
+  //
+  // 512 basta pra qualquer uso ate ~170dp numa tela 3x.
   _savePng(
     '$_assetsDir/icon.png',
     img.copyResize(
-      logo,
+      iconArtRgba,
       width: 512,
       height: 512,
       interpolation: img.Interpolation.cubic,
     ),
   );
 
-  // Wordmark: logo_escrita.png ja chega com transparencia real -- so falta
-  // recortar a margem transparente sobrando e reduzir pro tamanho de uso
-  // real. O maior uso no app e BrandWordmark(height: 76) -- a ~228px em 3x
-  // DPR; reduzir pra ~3x esse uso aqui (build-time) evita que o Flutter
-  // reamostre por um fator grande a cada frame e esborre os tracos finos.
-  final escritoCropped = _cropToAlphaBbox(escritoRgba);
-  const targetH = 260;
-  final wordmarkScale = targetH / escritoCropped.height;
-  final wordmark = img.copyResize(
-    escritoCropped,
-    width: (escritoCropped.width * wordmarkScale).round(),
-    height: targetH,
-    interpolation: img.Interpolation.cubic,
-  );
-  _savePng('$_assetsDir/wordmark.png', wordmark);
+  // Sem wordmark.png: a arte "MATCH QUEUE" cromada verde saiu do app junto
+  // com o rebrand do icone, e nao ha versao nova dela. As telas de auth usam
+  // MatchQueueWordmark (desenhado em codigo); splash, onboarding e o rail de
+  // navegacao passaram a mostrar so o badge. logo_escrita.png continua em
+  // design/brand/ como arte historica, mas nao vira asset do bundle.
 
   // Sem splash.png separado: BrandAssets.splashMark e null de proposito (ver
   // seu doc comment) -- SplashPage compoe icon + wordmark ao vivo a partir
   // de assets/brand/icon.png e assets/brand/wordmark.png.
 
   // ---- Build-time-only sources (flutter_launcher_icons / flutter_native_splash) ----
-
-  // logo_icon.png ja E um icone pronto: quadrado arredondado, fundo preto
-  // texturizado, marca MQ e sombra projetada em volta. Por isso nao passa
-  // pelo mesmo caminho do badge transparente acima -- o que ele precisa e
-  // ser DESARREDONDADO, nao montado.
-  final iconArtRgba = _cropToOpaqueBbox(_loadRgba(_iconArtName));
 
   // Fonte geral do icone do app (iOS + Android legado + favicon/PWA web).
   //

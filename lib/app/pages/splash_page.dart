@@ -20,21 +20,12 @@ class _SplashContent extends StatelessWidget {
   const _SplashContent();
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => const Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      if (BrandAssets.hasSplashMark)
-        Semantics(
-          label: BrandAssets.productName,
-          image: true,
-          child: ExcludeSemantics(
-            child: Image.asset(BrandAssets.splashMark!, width: 220),
-          ),
-        )
-      else
-        const BrandLockup(markSize: BrandMarkSize.large, axis: Axis.vertical),
-      const SizedBox(height: AppSpacing.xxl),
-      const SizedBox(
+      BrandMark(size: BrandMarkSize.large),
+      SizedBox(height: AppSpacing.xxl),
+      SizedBox(
         width: 20,
         height: 20,
         child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black45),
