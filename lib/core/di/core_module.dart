@@ -6,6 +6,7 @@ import 'package:fifa_queue/core/observability/crash_reporter.dart';
 import 'package:fifa_queue/core/platform/invite_link_builder.dart';
 import 'package:fifa_queue/core/platform/public_profile_link_builder.dart';
 import 'package:fifa_queue/core/platform/share_service.dart';
+import 'package:fifa_queue/core/supabase/session_expired_signal.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +25,10 @@ void registerCoreModule(
     ..registerSingleton<SharedPreferences>(preferences)
     ..registerSingleton<CrashReporter>(LoggingCrashReporter(logger))
     ..registerSingleton<AnalyticsService>(LoggingAnalyticsService(logger))
-    ..registerSingleton<SupabaseErrorMapper>(const SupabaseErrorMapper())
+    ..registerSingleton<SessionExpiredSignal>(SessionExpiredSignal())
+    ..registerSingleton<SupabaseErrorMapper>(
+      SupabaseErrorMapper(sessionExpiredSignal: sl<SessionExpiredSignal>()),
+    )
     ..registerSingleton<ShareService>(const DeviceShareService())
     ..registerSingleton<InviteLinkBuilder>(InviteLinkBuilder(config))
     ..registerSingleton<PublicProfileLinkBuilder>(

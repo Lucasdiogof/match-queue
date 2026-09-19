@@ -1,15 +1,33 @@
 import 'dart:async';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
+import 'package:fifa_queue/core/supabase/session_expired_signal.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseErrorMapper {
-  const SupabaseErrorMapper();
+  const SupabaseErrorMapper({SessionExpiredSignal? sessionExpiredSignal})
+    : _sessionExpiredSignal = sessionExpiredSignal;
+
+  final SessionExpiredSignal? _sessionExpiredSignal;
 
   AppFailure map(Object error) {
+    final failure = _map(error);
+    if (failure is AuthFailure &&
+        failure.reason == AuthFailureReason.sessionExpired) {
+      _sessionExpiredSignal?.notify();
+    }
+    return failure;
+  }
+
+  AppFailure _map(Object error) {
     if (error is AppFailure) {
       return error;
+    }
+    if (error is AuthRetryableFetchException) {
+      // Falha de rede ao falar com o Auth (ex.: refresh sem internet) -- o
+      // token pode estar perfeito, entao nao e motivo pra deslogar.
+      return NetworkFailure(debugMessage: error.message);
     }
     if (error is AuthException) {
       return AuthFailure(
@@ -21,6 +39,12 @@ class SupabaseErrorMapper {
       return _fromPostgrest(error);
     }
     if (error is StorageException) {
+      if (error.statusCode == '401' || _looksLikeExpiredToken(error.message)) {
+        return AuthFailure(
+          reason: AuthFailureReason.sessionExpired,
+          debugMessage: error.message,
+        );
+      }
       return ServerFailure(debugMessage: error.message);
     }
     if (error is ClientException || _looksLikeTransportError(error)) {
@@ -30,6 +54,11 @@ class SupabaseErrorMapper {
       return TimeoutFailure(debugMessage: '$error');
     }
     return UnexpectedFailure(debugMessage: '$error');
+  }
+
+  bool _looksLikeExpiredToken(String message) {
+    final lower = message.toLowerCase();
+    return lower.contains('jwt') || lower.contains('refresh token');
   }
 
   bool _looksLikeTransportError(Object error) {
@@ -135,6 +164,9 @@ class SupabaseErrorMapper {
       };
 
   AuthFailureReason _authReasonFrom(AuthException error) {
+    if (error is AuthSessionMissingException) {
+      return AuthFailureReason.sessionExpired;
+    }
     switch (error.code) {
       case 'invalid_credentials':
       case 'invalid_grant':
@@ -154,6 +186,13 @@ class SupabaseErrorMapper {
       case 'over_request_rate_limit':
         return AuthFailureReason.tooManyRequests;
       default:
+        // Sem codigo conhecido: 401/403 ou token invalido na mensagem
+        // continua sendo sessao que nao vale mais, nao "erro desconhecido".
+        if (error.statusCode == '401' ||
+            error.statusCode == '403' ||
+            _looksLikeExpiredToken(error.message)) {
+          return AuthFailureReason.sessionExpired;
+        }
         return AuthFailureReason.unknown;
     }
   }
@@ -196,8 +235,14 @@ class SupabaseErrorMapper {
     switch (error.code) {
       case '23505':
         return ConflictFailure(debugMessage: error.message);
-      case '42501':
       case 'PGRST301':
+      case 'PGRST303':
+        // JWT expirado / claims invalidas: sessao, nao permissao.
+        return AuthFailure(
+          reason: AuthFailureReason.sessionExpired,
+          debugMessage: error.message,
+        );
+      case '42501':
         return PermissionFailure(debugMessage: error.message);
       case 'PGRST116':
         return NotFoundFailure(debugMessage: error.message);
