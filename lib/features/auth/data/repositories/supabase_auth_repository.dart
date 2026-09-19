@@ -62,6 +62,12 @@ class SupabaseAuthRepository implements AuthRepository {
       _guard(() => _dataSource.updatePassword(newPassword));
 
   @override
+  bool get isSessionExpiring => _dataSource.isSessionExpiring;
+
+  @override
+  Future<void> refreshSession() => _guard(_dataSource.refreshSession);
+
+  @override
   Future<void> signOut() => _guard(_dataSource.signOut);
 
   @override

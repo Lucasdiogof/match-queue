@@ -1,4 +1,5 @@
 import 'package:fifa_queue/core/config/app_config.dart';
+import 'package:fifa_queue/core/supabase/session_expired_signal.dart';
 import 'package:fifa_queue/core/supabase/supabase_error_mapper.dart';
 import 'package:fifa_queue/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:fifa_queue/features/auth/data/repositories/supabase_auth_repository.dart';
@@ -18,5 +19,10 @@ void registerAuthModule(GetIt sl, {required SupabaseClient supabaseClient}) {
         sl<SupabaseErrorMapper>(),
       ),
     )
-    ..registerLazySingleton<AuthCubit>(() => AuthCubit(sl<AuthRepository>()));
+    ..registerLazySingleton<AuthCubit>(
+      () => AuthCubit(
+        sl<AuthRepository>(),
+        sessionExpired: sl<SessionExpiredSignal>().stream,
+      ),
+    );
 }

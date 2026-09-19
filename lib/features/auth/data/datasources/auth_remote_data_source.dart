@@ -24,6 +24,10 @@ abstract interface class AuthRemoteDataSource {
 
   Future<void> updatePassword(String newPassword);
 
+  bool get isSessionExpiring;
+
+  Future<void> refreshSession();
+
   Future<void> signOut();
 
   Future<void> deleteAccount();
@@ -97,6 +101,21 @@ class SupabaseAuthRemoteDataSource implements AuthRemoteDataSource {
   @override
   Future<void> updatePassword(String newPassword) =>
       _auth.updateUser(UserAttributes(password: newPassword));
+
+  @override
+  bool get isSessionExpiring {
+    final expiresAt = _auth.currentSession?.expiresAt;
+    if (expiresAt == null) {
+      return false;
+    }
+    final nowSeconds = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    return expiresAt - nowSeconds < 60;
+  }
+
+  @override
+  Future<void> refreshSession() async {
+    await _auth.refreshSession();
+  }
 
   @override
   Future<void> signOut() => _auth.signOut();

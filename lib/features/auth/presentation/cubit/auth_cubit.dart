@@ -9,15 +9,70 @@ import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._repository) : super(const AuthState());
+  AuthCubit(this._repository, {Stream<void>? sessionExpired})
+    : _sessionExpired = sessionExpired,
+      super(const AuthState());
 
   final AuthRepository _repository;
+  final Stream<void>? _sessionExpired;
 
   StreamSubscription<AuthSnapshot>? _subscription;
+  StreamSubscription<void>? _sessionExpiredSubscription;
+  bool _recoveringSession = false;
 
   void initialize() {
     _applyUser(_repository.currentUser);
     _subscription ??= _repository.watchAuthState().listen(_applySnapshot);
+    _sessionExpiredSubscription ??= _sessionExpired?.listen(
+      (_) => unawaited(_recoverSession()),
+    );
+  }
+
+  /// Chamado ao voltar do segundo plano: renova o token so se ja venceu (ou
+  /// esta pra vencer), antes de o usuario tocar em algo e tomar erro.
+  Future<void> refreshSessionIfNeeded() async {
+    if (state.status != AuthStatus.authenticated ||
+        !_repository.isSessionExpiring) {
+      return;
+    }
+    await _recoverSession();
+  }
+
+  /// Tenta renovar a sessao uma vez. Sem internet nao faz nada (o token pode
+  /// estar bom); token invalido de verdade desloga e leva pro login com
+  /// aviso -- em vez de cada tela mostrar um erro generico.
+  Future<void> _recoverSession() async {
+    if (_recoveringSession || state.status != AuthStatus.authenticated) {
+      return;
+    }
+    _recoveringSession = true;
+    try {
+      await _repository.refreshSession();
+    } on NetworkFailure {
+      // sem rede: mantem a sessao, a proxima acao tenta de novo.
+    } on TimeoutFailure {
+      // idem.
+    } on AppFailure {
+      await _expireSession();
+    } finally {
+      _recoveringSession = false;
+    }
+  }
+
+  Future<void> _expireSession() async {
+    try {
+      await _repository.signOut();
+    } on AppFailure {
+      // O token ja nao vale; o que importa e limpar o estado local abaixo.
+    }
+    if (!isClosed) {
+      emit(
+        const AuthState(
+          status: AuthStatus.unauthenticated,
+          failure: AuthFailure(reason: AuthFailureReason.sessionExpired),
+        ),
+      );
+    }
   }
 
   Future<bool> signIn({required String email, required String password}) =>
@@ -162,6 +217,7 @@ class AuthCubit extends Cubit<AuthState> {
   @override
   Future<void> close() async {
     await _subscription?.cancel();
+    await _sessionExpiredSubscription?.cancel();
     await _repository.dispose();
     return super.close();
   }

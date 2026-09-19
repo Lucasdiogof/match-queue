@@ -23,6 +23,13 @@ abstract interface class AuthRepository {
 
   Future<void> signOut();
 
+  /// Sessao presente mas vencida ou a menos de um minuto de vencer.
+  bool get isSessionExpiring;
+
+  /// Renova o token. Falha de rede vira NetworkFailure (nao deve deslogar);
+  /// token realmente invalido vira AuthFailure.
+  Future<void> refreshSession();
+
   /// Apaga a conta do usuário autenticado (perfil, elencos, participação em
   /// times, dispositivos, notificações, perfil público) e o remove de
   /// `auth.users`. Irreversível.
