@@ -187,32 +187,52 @@ Deno.serve(async (req) => {
         (r) => FUTBIN_IMAGE_ID_PATTERN.exec(r.image ?? '')?.[1] === numericId,
       );
 
-      if (candidates.length === 1) {
-        const match = candidates[0];
-        price = parsePrice(platform === 'pc' ? match.price_pc : match.price_ps);
-      } else if (candidates.length > 1) {
-        // Um jogador com MAIS DE UMA carta (ex.: Barcola no PSG e no
-        // Liverpool) cai aqui: a imagem do Futbin traz o id do JOGADOR, nao
-        // o da carta, entao os dois resultados casam igual. O `find` antigo
-        // pegava o primeiro da lista -- e a carta do Liverpool acabava
-        // mostrando o preco da do PSG, sem nenhum sinal de que estava
-        // errado.
-        //
-        // Preco errado e pior que preco ausente: alguem compra ou vende em
-        // cima disso. Ate sabermos qual campo do provider separa uma carta
-        // da outra, devolve null e registra os candidatos crus no log --
-        // e desse log que sai o criterio de desempate.
+      // Um jogador com MAIS DE UMA carta (ex.: Barcola, no PSG e no
+      // Liverpool) casa varias vezes: a imagem do Futbin traz o id do
+      // JOGADOR, nao o da carta. Nao ha campo no payload que separe uma
+      // versao da outra -- mas ha um sinal de produto que separa: a versao
+      // ANTIGA fica com preco 0 e a que esta em circulacao tem preco de
+      // verdade. Entao o desempate e o proprio preco.
+      //
+      // Zero e ausencia de preco, nao um preco: o piso do mercado no FUT e
+      // de centenas de coins, entao 0 so aparece em carta fora de
+      // circulacao. Vale tambem pro caso de um candidato so -- uma carta
+      // velha sozinha devolve "sem preco", nao "custa 0".
+      const priced = candidates
+        .map((c) => ({
+          candidate: c,
+          value: parsePrice(platform === 'pc' ? c.price_pc : c.price_ps),
+        }))
+        .filter((x) => x.value != null && x.value > 0);
+
+      if (priced.length === 1) {
+        price = priced[0].value;
+      } else if (priced.length > 1) {
+        // Duas versoes em circulacao ao mesmo tempo: o sinal de preco nao
+        // separa mais, e escolher uma seria chutar. Preco errado e pior que
+        // preco ausente -- alguem compra ou vende em cima disso.
         console.log(
-          'futbin: multiplos candidatos para o mesmo id de jogador',
-          JSON.stringify({
-            cardId,
-            numericId,
-            playerName,
-            ourClub: cardRow?.club_name ?? null,
-            ourRating: cardRow?.rating ?? null,
-            candidates,
-          }),
+          'futbin: mais de um candidato COM preco',
+          JSON.stringify({ cardId, numericId, playerName, candidates }),
         );
+
+        // Grava tambem no banco: o log so existe no painel, e sem ler o
+        // payload nao da pra descobrir que campo separa as versoes (ver a
+        // migration 20261016102400). Falhar aqui nunca derruba a resposta.
+        const { error: diagError } = await serviceClient
+          .from('market_price_diagnostics')
+          .insert({
+            provider: 'FUTBIN',
+            card_id: cardId,
+            provider_numeric_id: numericId,
+            player_name: playerName,
+            our_club: cardRow?.club_name ?? null,
+            our_rating: cardRow?.rating ?? null,
+            candidates,
+          });
+        if (diagError) {
+          console.error('market_price_diagnostics write failed', diagError);
+        }
       }
     }
   } catch {
