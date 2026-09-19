@@ -17,5 +17,14 @@ class BrandAssets {
   /// icone do app precisar divergir da marca usada dentro do app.
   static const String? appIcon = 'assets/brand/icon.png';
 
+  /// Variante da marca para a SPLASH: a mesma arte, com a borda do placar
+  /// dissolvida (ver _dissolvePlateEdge em design/brand/generate_derivatives).
+  /// Diferente de [logo] de proposito -- o icone precisa da borda nitida,
+  /// que e o que o launcher mascara; a splash precisa dela dissolvida, senao
+  /// o placar aparece como um quadrado colado sobre a cor de fundo.
+  ///
+  /// String, nao String?: a splash nao tem fallback de monograma que preste.
+  static const String splashMark = 'assets/brand/splash_mark.png';
+
   static bool get hasLogo => logo != null;
 }
