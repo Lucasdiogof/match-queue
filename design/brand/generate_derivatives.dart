@@ -15,6 +15,7 @@
 // ja depende do Dart/Flutter SDK pra tudo, entao usar Python so pra esse
 // script era uma dependencia extra sem necessidade.
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:image/image.dart' as img;
 
@@ -66,6 +67,77 @@ img.Image _loadRgba(String name) => _decode('$_brandDir/$name');
 /// de preenchido: quem pinta o fundo e o consumidor (flutter_native_splash
 /// pinta a cor configurada por baixo). Com fundo transparente a arte
 /// funciona sobre qualquer cor, sem a emenda que uma arte achatada cria.
+/// Dissolve a borda do PLACAR da arte: o alpha vai a zero exatamente na
+/// borda do quadrado arredondado e sobe ate 1 a [fadeDepth] pixels dali pra
+/// dentro. A arte termina, entao, na propria textura dela, sem contorno.
+///
+/// Analitico, nao por desfoque de mascara. A arte chega recortada no
+/// quadrado opaco, ou seja, o placar preenche o canvas inteiro e nao sobra
+/// margem transparente pra uma mascara desfocada descer -- tentei assim
+/// primeiro e o alpha parava em 197 na borda, deixando o contorno de pe.
+/// Aqui a distancia ate a borda sai da equacao do retangulo arredondado
+/// (SDF), entao a rampa comeca cravada em zero.
+///
+/// Resolve duas medidas, as duas de tool/inspect_icon_edge.dart e
+/// tool/inspect_icon_base.dart:
+///   1. o aro de brilho da borda (lum 69 contra 15 da base, ~4,5x), que
+///      desenha o contorno mesmo com a cor de fundo casada;
+///   2. a vinheta propria do placar, que deixa os cantos mais escuros que o
+///      miolo -- por isso nenhuma cor chapada some com o retangulo.
+///
+/// [radiusFraction] e o raio dos cantos como fracao do lado (0.218 medido
+/// nesta arte).
+img.Image _dissolvePlateEdge(
+  img.Image src, {
+  required double radiusFraction,
+  required double fadeDepth,
+}) {
+  final w = src.width;
+  final h = src.height;
+  final halfW = w / 2;
+  final halfH = h / 2;
+  final radius = radiusFraction * (w < h ? w : h);
+
+  final out = img.Image(width: w, height: h, numChannels: 4);
+  for (var y = 0; y < h; y++) {
+    for (var x = 0; x < w; x++) {
+      final p = src.getPixel(x, y);
+
+      // SDF do retangulo arredondado centrado: negativo dentro.
+      final qx = (x + 0.5 - halfW).abs() - halfW + radius;
+      final qy = (y + 0.5 - halfH).abs() - halfH + radius;
+      final outsideX = qx > 0 ? qx : 0.0;
+      final outsideY = qy > 0 ? qy : 0.0;
+      final maxQ = qx > qy ? qx : qy;
+      final signed =
+          (maxQ < 0 ? maxQ : 0.0) +
+          _hypot(outsideX, outsideY) -
+          radius;
+      final inside = -signed;
+
+      // smoothstep de 0 ate fadeDepth: rampa em S, sem quina no comeco nem
+      // no fim, que e o que faz a transicao nao ter "linha".
+      var t = inside / fadeDepth;
+      if (t <= 0) {
+        t = 0;
+      } else if (t >= 1) {
+        t = 1;
+      } else {
+        t = t * t * (3 - 2 * t);
+      }
+
+      final a = (p.a.toInt() * t).round().clamp(0, 255);
+      out.setPixelRgba(x, y, p.r.toInt(), p.g.toInt(), p.b.toInt(), a);
+    }
+  }
+  return out;
+}
+
+double _hypot(double a, double b) {
+  if (a == 0 && b == 0) return 0;
+  return math.sqrt(a * a + b * b);
+}
+
 img.Image _padToSquareTransparent(
   img.Image imRgba,
   int canvasSize,
@@ -256,20 +328,46 @@ void main() {
   );
   _savePng('$_generatedDir/icon_adaptive_fg_1024.png', iconAdaptiveFg);
 
-  // Fonte da splash nativa: a MESMA arte do icone, com a transparencia
-  // dela preservada (sem _compositeOnColor). E o que permite a splash usar
-  // uma cor de fundo qualquer sem emenda -- flutter_native_splash pinta a
-  // cor por baixo e o badge assenta em cima.
+  // ---- Splash (nativa e a primeira tela Flutter) ----
   //
-  // Antes daqui saia logo_splash.png, arte achatada sobre #000000 puro. Com
-  // fundo achatado a cor da splash e obrigada a ser exatamente o preto da
-  // arte, senao aparece um quadrado visivel em volta dela -- e essa arte
-  // ainda era a marca verde antiga, de antes do rebrand do icone.
+  // A MESMA arte do icone, so que com a borda dissolvida: na splash o badge
+  // aparece sobre uma cor chapada, e o aro de brilho da arte desenhava um
+  // quadrado visivel "colado" no fundo. Ver _featherEdges pro numero medido.
   //
-  // 0.62 deixa o badge ocupando pouco mais da metade da largura: numa tela
-  // de celular a splash e retrato, entao a largura e o lado curto e o badge
-  // precisa caber nela com folga.
-  final splashSource = _padToSquareTransparent(iconArtRgba, 1024, 0.62);
+  // 135px de queda num placar de 1123px de lado: dissolve os 12% externos.
+  // Cobre com folga o aro (~6px) e a vinheta dos cantos, que e o que fazia o
+  // retangulo aparecer mesmo com a cor casada.
+  //
+  // O teto e 133px, a distancia entre a borda do placar e a marca (ela ocupa
+  // 76,3% da largura, medido). Em 135 a marca comeca com alpha 99,9%: a
+  // queda morre antes de encostar no desenho. Em 190 ela chegaria a 78% e
+  // estaria apagando a ponta do M -- por isso o numero nao e arbitrario.
+  final splashMarkArt = _dissolvePlateEdge(
+    iconArtRgba,
+    radiusFraction: 0.218,
+    fadeDepth: 135,
+  );
+
+  // Asset de runtime: a SplashPage do Flutter desenha ESTE arquivo, nao o
+  // assets/brand/icon.png. Os dois tem que ser diferentes de proposito -- o
+  // icone precisa da borda nitida (e o que o launcher mascara), a splash
+  // precisa dela dissolvida.
+  _savePng(
+    '$_assetsDir/splash_mark.png',
+    img.copyResize(
+      splashMarkArt,
+      width: 512,
+      height: 512,
+      interpolation: img.Interpolation.cubic,
+    ),
+  );
+
+  // Fonte da splash nativa. 0.70 no lugar de 0.62: a marca ficava pequena
+  // demais pro espaco, com muita area vazia em volta. O canvas de 1024 e
+  // renderizado a 256dp em toda densidade, entao 0.70 poe o badge a ~179dp
+  // -- o mesmo alvo que a SplashPage do Flutter mira, pra nao haver salto de
+  // tamanho quando o Flutter assume.
+  final splashSource = _padToSquareTransparent(splashMarkArt, 1024, 0.70);
   _savePng('$_generatedDir/splash_source_1024.png', splashSource);
 
   stdout.writeln('Generated:');

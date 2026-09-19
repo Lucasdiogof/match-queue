@@ -55,6 +55,23 @@ class AppColors {
 
   // ---------------------------------------------------------------- dark
 
+  /// Fundo da abertura: splash nativa (Android e iOS), primeira tela Flutter,
+  /// windowBackground do Android e a pagina web antes do Flutter carregar.
+  /// Todas essas superficies aparecem em sequencia, entao dividem UM valor --
+  /// qualquer divergencia entre elas vira um piscar de cor na abertura.
+  ///
+  /// Nao e um escuro escolhido no olho nem AppColors.darkBackground: e o tom
+  /// medio do FUNDO da propria arte da logo, medido com
+  /// tool/inspect_icon_base.dart sobre design/brand/logo_icon.png (media dos
+  /// pixels de luminancia <= 60, os que nao sao o metal). E o que faz a arte
+  /// terminar na cor da tela em vez de parecer um cartao colado em cima.
+  ///
+  /// Espelhado em: pubspec.yaml (flutter_native_splash e a secao web de
+  /// flutter_launcher_icons), android/.../values/window_background.xml,
+  /// ios/.../LaunchScreen.storyboard e web/index.html. Mudar aqui exige
+  /// mudar la -- sao arquivos que o Flutter nao le.
+  static const Color splashBackground = Color(0xFF121315);
+
   static const Color darkBackground = Color(0xFF0D0D0D);
   static const Color darkBackgroundRaised = Color(0xFF121212);
 
