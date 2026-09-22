@@ -1094,7 +1094,7 @@
   "controlNoTeamMessage": "A fila é do time. Entre em um ou crie o seu para começar a buscar.",
   "controlNoTeamAction": "Ver times",
   "navRequests": "Convites",
-  "requestsSegmentRequests": "Pedidos",
+  "requestsSegmentRequests": "Pedidos para entrar no seu time",
   "requestsSegmentInvites": "Convites",
   "requestsEmptyAllTitle": "Nada pendente",
   "requestsEmptyAllMessage": "Convites de outros times e pedidos pra entrar nos times que você administra aparecem aqui.",

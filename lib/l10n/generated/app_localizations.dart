@@ -3449,7 +3449,7 @@ abstract class AppLocalizations {
   /// No description provided for @requestsSegmentRequests.
   ///
   /// In pt, this message translates to:
-  /// **'Pedidos'**
+  /// **'Pedidos para entrar no seu time'**
   String get requestsSegmentRequests;
 
   /// No description provided for @requestsSegmentInvites.

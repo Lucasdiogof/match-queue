@@ -1094,7 +1094,7 @@
   "controlNoTeamMessage": "The queue belongs to the team. Join one or create yours to start searching.",
   "controlNoTeamAction": "See teams",
   "navRequests": "Invites",
-  "requestsSegmentRequests": "Requests",
+  "requestsSegmentRequests": "Requests to join your team",
   "requestsSegmentInvites": "Invites",
   "requestsEmptyAllTitle": "Nothing pending",
   "requestsEmptyAllMessage": "Team invites and join requests for teams you manage show up here.",

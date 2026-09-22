@@ -2007,7 +2007,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navRequests => 'Invites';
 
   @override
-  String get requestsSegmentRequests => 'Requests';
+  String get requestsSegmentRequests => 'Requests to join your team';
 
   @override
   String get requestsSegmentInvites => 'Invites';

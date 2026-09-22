@@ -1094,7 +1094,7 @@
   "controlNoTeamMessage": "La fila es del equipo. Entra en uno o crea el tuyo para empezar a buscar.",
   "controlNoTeamAction": "Ver equipos",
   "navRequests": "Invitaciones",
-  "requestsSegmentRequests": "Pedidos",
+  "requestsSegmentRequests": "Solicitudes para unirse a tu equipo",
   "requestsSegmentInvites": "Invitaciones",
   "requestsEmptyAllTitle": "Nada pendiente",
   "requestsEmptyAllMessage": "Las invitaciones de otros equipos y las solicitudes para entrar en los equipos que administras aparecen aquí.",

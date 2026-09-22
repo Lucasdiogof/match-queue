@@ -2009,7 +2009,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navRequests => 'Convites';
 
   @override
-  String get requestsSegmentRequests => 'Pedidos';
+  String get requestsSegmentRequests => 'Pedidos para entrar no seu time';
 
   @override
   String get requestsSegmentInvites => 'Convites';
