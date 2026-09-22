@@ -2017,7 +2017,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navRequests => 'Invitaciones';
 
   @override
-  String get requestsSegmentRequests => 'Pedidos';
+  String get requestsSegmentRequests => 'Solicitudes para unirse a tu equipo';
 
   @override
   String get requestsSegmentInvites => 'Invitaciones';

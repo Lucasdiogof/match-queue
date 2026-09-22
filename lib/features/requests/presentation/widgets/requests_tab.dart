@@ -127,12 +127,13 @@ class _JoinRequestCard extends StatelessWidget {
     final cubit = context.read<RequestsCubit>();
 
     return AppCard(
-      onTap: () => context.push(
-        AppRoutes.playerProfileLocation(
-          request.teamId,
-          request.requesterUserId,
-        ),
-      ),
+      // Sem onTap de propósito: quem pediu pra entrar ainda NÃO é membro do
+      // time, e get_team_member_profile (por trás da rota de perfil do
+      // jogador) exige isso -- tocar aqui sempre batia em "não tem permissão"
+      // (FQ012 mal traduzido pra "convite" por reaproveitar o mesmo código
+      // de erro). Sem um jeito seguro de mostrar mais do que já está no
+      // card (nome, foto, time) sem a pessoa ainda ser membro, o card fica
+      // só com os botões de Aprovar/Recusar interativos.
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
