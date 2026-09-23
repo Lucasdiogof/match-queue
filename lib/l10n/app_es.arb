@@ -441,7 +441,6 @@
   "errorMatchmakingAlreadyInOtherState": "Ya estás en otro estado de la cola.",
   "errorMatchmakingTeamInactive": "Este equipo está inactivo en este momento.",
   "errorMatchmakingNotInQueue": "No estás en la fila de este equipo.",
-  "errorMatchmakingNoActiveSearchToPrioritize": "Nadie está buscando partida por este equipo ahora.",
   "errorGameCooldown": "Espera un momento antes de buscar de nuevo.",
   "errorGameMatchNotFound": "Partida no encontrada.",
   "errorGameMatchAlreadyFinished": "Esta partida ya fue finalizada.",
@@ -500,8 +499,6 @@
   },
   "matchmakingExpiredTitle": "Se acabó el tiempo",
   "matchmakingExpiredMessage": "El tiempo de búsqueda se agotó y te sacaron de la cola. Podés buscar de nuevo cuando quieras.",
-  "matchmakingRequestPriorityAction": "Solicitar prioridad",
-  "matchmakingPriorityRequestedConfirmation": "Prioridad solicitada",
   "matchmakingSearchingElsewhereMessage": "Estás buscando partida por el Equipo {teamName}.",
   "@matchmakingSearchingElsewhereMessage": {
     "placeholders": {

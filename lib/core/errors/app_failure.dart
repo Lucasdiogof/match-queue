@@ -39,7 +39,6 @@ enum MatchmakingFailureReason {
   alreadyInOtherState,
   teamInactive,
   notInQueue,
-  noActiveSearchToPrioritize,
 }
 
 enum GameFailureReason {

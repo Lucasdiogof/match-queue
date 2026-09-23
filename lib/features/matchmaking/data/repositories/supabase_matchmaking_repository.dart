@@ -37,9 +37,9 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
 
   @override
   Future<MyMatchmakingSnapshot> cancelSearch() => _guard(() async {
-        final json = await _dataSource.cancelSearch();
-        return MyMatchmakingSnapshotModel.fromJson(json);
-      });
+    final json = await _dataSource.cancelSearch();
+    return MyMatchmakingSnapshotModel.fromJson(json);
+  });
 
   @override
   Future<MyMatchmakingSnapshot> leaveQueue({
@@ -52,15 +52,9 @@ class SupabaseMatchmakingRepository implements MatchmakingRepository {
 
   @override
   Future<MyMatchmakingSnapshot> reportMatchFound() => _guard(() async {
-        final json = await _dataSource.reportMatchFound();
-        return MyMatchmakingSnapshotModel.fromJson(json);
-      });
-
-  @override
-  Future<void> requestPriority({
-    required String teamId,
-    required GameMode mode,
-  }) => _guard(() => _dataSource.requestPriority(teamId, mode.key));
+    final json = await _dataSource.reportMatchFound();
+    return MyMatchmakingSnapshotModel.fromJson(json);
+  });
 
   Future<T> _guard<T>(Future<T> Function() action) async {
     try {

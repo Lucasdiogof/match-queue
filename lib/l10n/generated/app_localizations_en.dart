@@ -816,10 +816,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorMatchmakingNotInQueue => 'You are not in this team\'s queue.';
 
   @override
-  String get errorMatchmakingNoActiveSearchToPrioritize =>
-      'No one is searching for this team right now.';
-
-  @override
   String get errorGameCooldown => 'Wait a bit before searching again.';
 
   @override
@@ -910,12 +906,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get matchmakingExpiredMessage =>
       'Your search timed out and you were removed from the queue. You can search again whenever you want.';
-
-  @override
-  String get matchmakingRequestPriorityAction => 'Request priority';
-
-  @override
-  String get matchmakingPriorityRequestedConfirmation => 'Priority requested';
 
   @override
   String matchmakingSearchingElsewhereMessage(String teamName) {

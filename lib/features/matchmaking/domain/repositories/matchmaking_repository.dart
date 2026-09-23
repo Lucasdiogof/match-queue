@@ -33,10 +33,4 @@ abstract interface class MatchmakingRepository {
   });
 
   Future<MyMatchmakingSnapshot> reportMatchFound();
-
-  /// So um pedido humano: nunca altera fila, busca, lock ou titular.
-  Future<void> requestPriority({
-    required String teamId,
-    required GameMode mode,
-  });
 }

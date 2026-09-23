@@ -49,10 +49,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     final generation = ++_loadGeneration;
     emit(state.copyWith(status: MatchmakingStatus.loading, clearFailure: true));
     try {
-      var snapshot = await _repository.getMyStatus(
-        teamId: teamId,
-        mode: mode,
-      );
+      var snapshot = await _repository.getMyStatus(teamId: teamId, mode: mode);
       if (_isStale(generation)) {
         return;
       }
@@ -71,10 +68,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         if (_isStale(generation)) {
           return;
         }
-        snapshot = await _repository.getMyStatus(
-          teamId: teamId,
-          mode: mode,
-        );
+        snapshot = await _repository.getMyStatus(teamId: teamId, mode: mode);
         if (_isStale(generation)) {
           return;
         }
@@ -161,12 +155,8 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     return ok;
   }
 
-  Future<bool> leaveQueue() => _runAction(
-    () => _repository.leaveQueue(
-      teamId: teamId,
-      mode: mode,
-    ),
-  );
+  Future<bool> leaveQueue() =>
+      _runAction(() => _repository.leaveQueue(teamId: teamId, mode: mode));
 
   Future<bool> matchFound() async {
     final ok = await _runAction(() => _repository.reportMatchFound());
@@ -182,28 +172,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
   void _setCooldown(DateTime endsAt) {
     emit(state.copyWith(cooldownEndsAt: endsAt));
     unawaited(_cooldownStore.write(userId, teamId, mode.key, endsAt));
-  }
-
-  Future<bool> requestPriority() async {
-    if (state.isActionPending) {
-      return false;
-    }
-    emit(state.copyWith(isActionPending: true, clearFailure: true));
-    try {
-      await _repository.requestPriority(
-        teamId: teamId,
-        mode: mode,
-      );
-      if (!isClosed) {
-        emit(state.copyWith(isActionPending: false, priorityRequestSent: true));
-      }
-      return true;
-    } on AppFailure catch (failure) {
-      if (!isClosed) {
-        emit(state.copyWith(isActionPending: false, failure: failure));
-      }
-      return false;
-    }
   }
 
   void _subscribe() {
@@ -332,8 +300,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
     final wasQueued = state.snapshot?.myStatus == MyMatchmakingStatus.queued;
     final isNowSearching = snapshot.myStatus == MyMatchmakingStatus.searching;
     final promoted = wasQueued && isNowSearching;
-    final changedSearch =
-        state.snapshot?.searching?.sessionId != snapshot.searching?.sessionId;
 
     emit(
       state.copyWith(
@@ -346,10 +312,6 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
             ? state.promotionNonce + 1
             : state.promotionNonce,
         expiredNonce: expired ? state.expiredNonce + 1 : state.expiredNonce,
-        // A confirmacao de "prioridade solicitada" so vale enquanto a MESMA
-        // busca continua ativa -- uma busca nova (mesmo que a mesma conta)
-        // pode receber outro pedido de prioridade.
-        priorityRequestSent: changedSearch ? false : state.priorityRequestSent,
         clearFailure: true,
       ),
     );
@@ -389,12 +351,7 @@ class MatchmakingCubit extends Cubit<MatchmakingState> {
         ),
       );
     } else if (snapshot != null && snapshot.isQueuedByMe) {
-      unawaited(
-        _repository.leaveQueue(
-          teamId: teamId,
-          mode: mode,
-        ),
-      );
+      unawaited(_repository.leaveQueue(teamId: teamId, mode: mode));
     }
     return super.close();
   }

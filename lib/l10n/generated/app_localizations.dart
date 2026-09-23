@@ -1480,12 +1480,6 @@ abstract class AppLocalizations {
   /// **'Você não está na fila deste time.'**
   String get errorMatchmakingNotInQueue;
 
-  /// No description provided for @errorMatchmakingNoActiveSearchToPrioritize.
-  ///
-  /// In pt, this message translates to:
-  /// **'Ninguém está buscando partida por este time agora.'**
-  String get errorMatchmakingNoActiveSearchToPrioritize;
-
   /// No description provided for @errorGameCooldown.
   ///
   /// In pt, this message translates to:
@@ -1641,18 +1635,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'O tempo de busca acabou e você foi removido da fila. Pode buscar de novo quando quiser.'**
   String get matchmakingExpiredMessage;
-
-  /// No description provided for @matchmakingRequestPriorityAction.
-  ///
-  /// In pt, this message translates to:
-  /// **'Solicitar prioridade'**
-  String get matchmakingRequestPriorityAction;
-
-  /// No description provided for @matchmakingPriorityRequestedConfirmation.
-  ///
-  /// In pt, this message translates to:
-  /// **'Prioridade solicitada'**
-  String get matchmakingPriorityRequestedConfirmation;
 
   /// No description provided for @matchmakingSearchingElsewhereMessage.
   ///

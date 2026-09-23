@@ -19,8 +19,6 @@ abstract interface class MatchmakingRemoteDataSource {
   Future<Map<String, dynamic>> leaveQueue(String teamId, String gameMode);
 
   Future<Map<String, dynamic>> reportMatchFound();
-
-  Future<void> requestPriority(String teamId, String gameMode);
 }
 
 class SupabaseMatchmakingRemoteDataSource
@@ -39,10 +37,7 @@ class SupabaseMatchmakingRemoteDataSource
   ) async {
     final response = await _client.rpc<dynamic>(
       'get_my_matchmaking_status',
-      params: <String, dynamic>{
-        'p_team_id': teamId,
-        'p_game_mode': gameMode,
-      },
+      params: <String, dynamic>{'p_team_id': teamId, 'p_game_mode': gameMode},
     );
     return Map<String, dynamic>.from(response as Map);
   }
@@ -71,26 +66,13 @@ class SupabaseMatchmakingRemoteDataSource
   @override
   Future<Map<String, dynamic>> leaveQueue(String teamId, String gameMode) =>
       _call('leave_match_search_queue', <String, dynamic>{
-    'p_team_id': teamId,
-    'p_game_mode': gameMode,
-  });
-
-  @override
-  Future<Map<String, dynamic>> reportMatchFound() => _call(
-    'report_match_found_and_start_game',
-    const <String, dynamic>{},
-  );
-
-  @override
-  Future<void> requestPriority(String teamId, String gameMode) async {
-    await _client.rpc<dynamic>(
-      'request_match_search_priority',
-      params: <String, dynamic>{
         'p_team_id': teamId,
         'p_game_mode': gameMode,
-      },
-    );
-  }
+      });
+
+  @override
+  Future<Map<String, dynamic>> reportMatchFound() =>
+      _call('report_match_found_and_start_game', const <String, dynamic>{});
 
   /// Postgres Changes em public.team_matchmaking_revisions, filtrado pelo
   /// time. A tabela nao carrega estado nenhum -- so "o time X mudou" -- e a
