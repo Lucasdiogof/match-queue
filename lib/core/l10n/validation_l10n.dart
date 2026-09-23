@@ -50,7 +50,6 @@ extension TeamNameValidationErrorL10n on TeamNameValidationError {
   };
 }
 
-
 extension PublicProfileSlugValidationErrorL10n
     on PublicProfileSlugValidationError {
   String message(AppLocalizations l10n) => switch (this) {
