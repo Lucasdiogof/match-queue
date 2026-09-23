@@ -20,7 +20,6 @@ class MatchmakingState extends Equatable {
     this.connection = MatchmakingConnection.connecting,
     this.promotionNonce = 0,
     this.expiredNonce = 0,
-    this.priorityRequestSent = false,
     this.serverOffset = Duration.zero,
     this.cooldownEndsAt,
   });
@@ -51,11 +50,6 @@ class MatchmakingState extends Equatable {
   /// mesmo tocou.
   final int expiredNonce;
 
-  /// Confirmacao local de "prioridade solicitada" (item 14): fica true ate
-  /// a proxima vez que a tela carregar/trocar de busca -- so uma
-  /// confirmacao de toque, nunca estado do servidor.
-  final bool priorityRequestSent;
-
   /// Diferenca entre o relogio do servidor e o do aparelho, calculada a
   /// cada snapshot novo. A UI soma isso a DateTime.now() para saber "que
   /// horas o servidor acha que sao agora" sem precisar consultar a rede a
@@ -80,7 +74,6 @@ class MatchmakingState extends Equatable {
     MatchmakingConnection? connection,
     int? promotionNonce,
     int? expiredNonce,
-    bool? priorityRequestSent,
     Duration? serverOffset,
     DateTime? cooldownEndsAt,
     bool clearCooldown = false,
@@ -93,7 +86,6 @@ class MatchmakingState extends Equatable {
     connection: connection ?? this.connection,
     promotionNonce: promotionNonce ?? this.promotionNonce,
     expiredNonce: expiredNonce ?? this.expiredNonce,
-    priorityRequestSent: priorityRequestSent ?? this.priorityRequestSent,
     serverOffset: serverOffset ?? this.serverOffset,
     cooldownEndsAt: clearCooldown
         ? null
@@ -110,7 +102,6 @@ class MatchmakingState extends Equatable {
     connection,
     promotionNonce,
     expiredNonce,
-    priorityRequestSent,
     serverOffset,
     cooldownEndsAt,
   ];

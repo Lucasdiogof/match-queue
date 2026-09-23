@@ -41,13 +41,12 @@ class NotificationRouter {
     'RIVALS_DIVISION_CHANGED',
   };
 
-  /// YOUR_TURN e PRIORITY_REQUESTED sempre levam pro Jogar, na busca ativa
-  /// daquele time (item 24 do pedido de fila por time); SEARCH_EXPIRING/
-  /// SEARCH_EXPIRED tambem -- e o mesmo destino natural, so nunca tinha uma
-  /// rota dedicada antes desta etapa.
+  /// YOUR_TURN sempre leva pro Jogar, na busca ativa daquele time (item 24
+  /// do pedido de fila por time); SEARCH_EXPIRING/SEARCH_EXPIRED tambem -- e
+  /// o mesmo destino natural, so nunca tinha uma rota dedicada antes desta
+  /// etapa.
   static const Set<String> _matchmakingTypes = <String>{
     'YOUR_TURN',
-    'PRIORITY_REQUESTED',
     'SEARCH_EXPIRING',
     'SEARCH_EXPIRED',
   };

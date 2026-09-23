@@ -1,0 +1,20 @@
+-- Remove o recurso "solicitar prioridade" (pedir pro time avisar quem esta
+-- buscando pra dar preferencia). Produto decidiu tirar de vez -- ninguem mais
+-- pode disparar esse pedido a partir daqui, de nenhum build do app (novo ou
+-- antigo, ja que a RPC deixa de existir).
+--
+-- Fica pra tras, de proposito, sem tentar limpar:
+-- - O valor 'PRIORITY_REQUESTED' em public.notification_type: Postgres nao
+--   permite remover valor de enum sem recriar o tipo inteiro (reindexaria
+--   toda tabela que o usa) -- risco desproporcional a um valor que so passa
+--   a nao ser mais gerado.
+-- - A coluna notification_preferences.priority_requested_enabled: preferencia
+--   de quem ja tinha desligado/ligado, inofensiva orfa, sem leitura nem
+--   escrita depois desta migration.
+-- - O branch 'PRIORITY_REQUESTED' dentro de _notification_allowed: morto,
+--   nunca mais alcancado (nada mais enfileira esse tipo), mas remexer no
+--   corpo da funcao por um branch morto nao vale o risco numa funcao
+--   security definer usada por todo o resto do fluxo de notificacao.
+--
+-- Idempotente: "drop function if exists" por assinatura, nao recria nada.
+drop function if exists public.request_match_search_priority(uuid, text);

@@ -373,23 +373,6 @@ class _IdleCardState extends State<_IdleCard> {
             isLoading: widget.state.isActionPending,
             onPressed: busy ? null : _onStartPressed,
           ),
-          if (blocking != null) ...<Widget>[
-            const SizedBox(height: AppSpacing.sm),
-            if (widget.state.priorityRequestSent)
-              AppBanner(
-                tone: AppBannerTone.neutral,
-                message: l10n.matchmakingPriorityRequestedConfirmation,
-              )
-            else
-              AppButton.secondary(
-                label: l10n.matchmakingRequestPriorityAction,
-                icon: Icons.priority_high,
-                isLoading: widget.state.isActionPending,
-                onPressed: busy
-                    ? null
-                    : () => context.read<MatchmakingCubit>().requestPriority(),
-              ),
-          ],
         ],
       ),
     );

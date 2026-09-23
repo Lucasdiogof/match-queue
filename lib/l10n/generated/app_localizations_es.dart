@@ -823,10 +823,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'No estás en la fila de este equipo.';
 
   @override
-  String get errorMatchmakingNoActiveSearchToPrioritize =>
-      'Nadie está buscando partida por este equipo ahora.';
-
-  @override
   String get errorGameCooldown => 'Espera un momento antes de buscar de nuevo.';
 
   @override
@@ -915,12 +911,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get matchmakingExpiredMessage =>
       'El tiempo de búsqueda se agotó y te sacaron de la cola. Podés buscar de nuevo cuando quieras.';
-
-  @override
-  String get matchmakingRequestPriorityAction => 'Solicitar prioridad';
-
-  @override
-  String get matchmakingPriorityRequestedConfirmation => 'Prioridad solicitada';
 
   @override
   String matchmakingSearchingElsewhereMessage(String teamName) {
