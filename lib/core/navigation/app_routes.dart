@@ -208,5 +208,4 @@ class AppRoutes {
       location.startsWith('/u/');
 
   static String publicProfileLocation(String identifier) => '/u/$identifier';
-
 }

@@ -10,7 +10,6 @@ enum TeamNameValidationError { empty, tooShort, tooLong }
 
 enum TeamTagValidationError { tooShort, tooLong, invalidCharacters }
 
-
 enum PublicProfileSlugValidationError {
   empty,
   tooShort,
