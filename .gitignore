@@ -45,8 +45,8 @@ app.*.map.json
 /android/app/release
 
 # FIFA Queue
-env/*.json
-!env/*.example.json
+env/**/*.json
+!env/**/*.example.json
 *.env
 .env*
 !.env.example

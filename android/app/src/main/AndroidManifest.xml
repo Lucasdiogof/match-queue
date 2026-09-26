@@ -28,13 +28,15 @@
             </intent-filter>
 
             <!-- Callback do Supabase Auth (recuperacao de senha). Scheme
-                 proprio, nao depende de dominio. -->
+                 proprio, nao depende de dominio. authCallbackScheme vem do
+                 productFlavor (build.gradle.kts): cada jogo usa seu
+                 proprio applicationId como scheme, nunca o de outro flavor. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:scheme="com.lucasdiogof.fifaqueue"
+                    android:scheme="${authCallbackScheme}"
                     android:host="auth-callback"/>
             </intent-filter>
 
@@ -43,7 +45,15 @@
                  por navegador. android:autoVerify dispara a verificacao do
                  assetlinks.json (docs/deep_links.md) na instalacao. Filtro
                  separado do scheme proprio de proposito: autoVerify so deve
-                 ir com data https/host reais. -->
+                 ir com data https/host reais.
+                 PENDENTE multi-game: este filtro hoje compila em QUALQUER
+                 flavor (inclusive efootball). Como o eFootball ainda nao tem
+                 dominio proprio decidido, ele nao esta verificado no
+                 assetlinks.json de lucksrei.com: na pratica autoVerify so
+                 vai "pegar" para o flavor eaFc. Antes de publicar o eFootball
+                 de verdade, mover este bloco para um AndroidManifest.xml
+                 exclusivo do flavor eaFc (android/app/src/eaFc/), assim que
+                 o dominio do eFootball for decidido. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

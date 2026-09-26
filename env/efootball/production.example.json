@@ -1,0 +1,11 @@
+{
+  "ENVIRONMENT": "production",
+  "APP_GAME": "efootball",
+  "APP_URL_SCHEME": "com.lucasdiogof.matchqueue.efootball",
+  "APP_BACKEND_GAME": "efootball",
+  "SUPABASE_URL": "https://<project-ref-efootball>.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "<publishable-key-efootball>",
+  "APP_LINK_HOST": "<dominio-a-definir>",
+  "FIREBASE_ENABLED": false,
+  "VERBOSE_LOGGING": false
+}

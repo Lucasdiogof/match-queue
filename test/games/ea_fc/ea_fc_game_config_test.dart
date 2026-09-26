@@ -14,11 +14,29 @@ void main() {
     expect(capabilities.playStyles, isTrue);
     expect(capabilities.chemistry, isTrue);
     expect(capabilities.evolutions, isTrue);
+    expect(capabilities.controlsGuide, isTrue);
   });
 
   test('EA FC declara Champions e Rivals como game modes', () {
     final codes = eaFcGameConfig.gameModes.map((mode) => mode.code);
 
     expect(codes, containsAll(<String>['WEEKEND_LEAGUE', 'DIVISION_RIVALS']));
+  });
+
+  test('EA FC espera o scheme real já usado hoje em produção', () {
+    expect(eaFcGameConfig.expectedUrlScheme, 'com.lucasdiogof.fifaqueue');
+  });
+
+  test('EA FC espera o applicationId/bundle id real de hoje', () {
+    expect(eaFcGameConfig.expectedPackageIdentifiers, <String>{
+      'com.lucasdiogof.fifaqueue',
+    });
+  });
+
+  test('EA FC já conhece o ref do seu projeto Supabase', () {
+    expect(
+      eaFcGameConfig.expectedSupabaseProjectRef,
+      'lteujeclnhmurcewurkg',
+    );
   });
 }

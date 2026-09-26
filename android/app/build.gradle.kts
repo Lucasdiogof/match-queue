@@ -36,13 +36,32 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.lucasdiogof.fifaqueue"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    // Fundacao flavor-based multi-game (commit c8df926): cada jogo e um
+    // productFlavor com applicationId proprio. "eaFc" e o app atual, ja na
+    // App Store -- seu applicationId nao mudou. "efootball" e o proximo
+    // flavor, ainda sem Supabase/Firebase proprios (ver docs/game_flavors.md);
+    // builda mas so fica utilizavel de verdade depois que esse backend for
+    // provisionado.
+    flavorDimensions += "game"
+    productFlavors {
+        create("eaFc") {
+            dimension = "game"
+            applicationId = "com.lucasdiogof.fifaqueue"
+            manifestPlaceholders["authCallbackScheme"] = "com.lucasdiogof.fifaqueue"
+        }
+        create("efootball") {
+            dimension = "game"
+            applicationId = "com.lucasdiogof.matchqueue.efootball"
+            manifestPlaceholders["authCallbackScheme"] = "com.lucasdiogof.matchqueue.efootball"
+        }
     }
 
     signingConfigs {

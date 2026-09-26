@@ -89,8 +89,13 @@ supabase/
 ```bash
 flutter pub get
 cp env/development.example.json env/development.json
-flutter run --dart-define-from-file=env/development.json
+flutter run --flavor eaFc --dart-define-from-file=env/development.json --dart-define=APP_GAME=ea_fc
 ```
+
+Desde a fundação multi-game (commit `c8df926`), Android/iOS têm productFlavors
+de verdade e `--flavor eaFc` passou a ser obrigatório para rodar/buildar o
+app (o EA FC continua sendo o único jogo publicado; o applicationId/bundle
+id dele não mudou). Web não usa `--flavor`.
 
 Sem credenciais Supabase o app **abre normalmente em development**: o
 `SupabaseInitializer` avisa no log e os repositórios locais
@@ -109,8 +114,8 @@ flutter gen-l10n
 dart format .
 flutter run -d chrome --web-port=5000 --dart-define-from-file=env/development.json
 flutter build web --release --dart-define-from-file=env/production.json
-flutter build apk --release --dart-define-from-file=env/production.json
-flutter build ipa --release --dart-define-from-file=env/production.json
+flutter build apk --release --flavor eaFc --dart-define-from-file=env/production.json --dart-define=APP_GAME=ea_fc
+flutter build ipa --release --flavor eaFc --dart-define-from-file=env/production.json --dart-define=APP_GAME=ea_fc
 ```
 
 ## Environments

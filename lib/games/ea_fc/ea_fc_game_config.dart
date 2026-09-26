@@ -21,6 +21,7 @@ const GameConfig eaFcGameConfig = GameConfig(
     playStyles: true,
     chemistry: true,
     evolutions: true,
+    controlsGuide: true,
   ),
   gameModes: <GameModeDescriptor>[
     GameModeDescriptor(
@@ -30,4 +31,7 @@ const GameConfig eaFcGameConfig = GameConfig(
     ),
     GameModeDescriptor(code: 'DIVISION_RIVALS', name: 'Rivals', isRanked: true),
   ],
+  expectedUrlScheme: 'com.lucasdiogof.fifaqueue',
+  expectedPackageIdentifiers: <String>{'com.lucasdiogof.fifaqueue'},
+  expectedSupabaseProjectRef: 'lteujeclnhmurcewurkg',
 );
