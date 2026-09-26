@@ -77,9 +77,19 @@ existiria nada de diferente pra incluir além do que já está inline.
 
 ## Firebase (Android + iOS + Dart)
 
-Firebase continua compartilhado como infraestrutura (FCM + Crashlytics),
-mas **cada jogo precisa do próprio app registrado** dentro do mesmo projeto
-Firebase (`fifa-queue`), nunca reaproveitando o app de outro jogo:
+**Decisão fixada** (2026-09-26): Firebase é **1 projeto único** (`fifa-queue`)
+compartilhado por todos os jogos, com **1 app Android + 1 app iOS por jogo**
+registrados dentro dele — nunca um projeto Firebase por jogo. Isso é
+diferente do Supabase (que é 1 projeto **totalmente separado** por jogo).
+Motivo: Firebase aqui só serve FCM + Crashlytics, sem Analytics/Firestore/
+Auth — nada que precise de isolamento por projeto; um único console pra
+gerenciar quota/billing/IAM dos 4 jogos é mais simples, e cada jogo mesmo
+assim tem seu próprio service account/app id, então push de um jogo nunca
+mistura com o de outro. Mesmo padrão usado no Fan Hub (Firebase
+centralizado com N apps, Supabase separado por clube).
+
+**Cada jogo precisa do próprio app registrado** dentro desse projeto Firebase
+único, nunca reaproveitando o app de outro jogo:
 
 - **Nível Dart (proteção real)**: `Firebase.initializeApp()` não usa
   `DefaultFirebaseOptions.currentPlatform` fixo — usa
