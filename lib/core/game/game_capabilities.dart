@@ -15,6 +15,7 @@ class GameCapabilities extends Equatable {
     required this.playStyles,
     required this.chemistry,
     required this.evolutions,
+    required this.controlsGuide,
   });
 
   final bool teams;
@@ -27,6 +28,11 @@ class GameCapabilities extends Equatable {
   final bool chemistry;
   final bool evolutions;
 
+  /// Guias de mecânica (drible, passe, finalização, defesa) -- hoje
+  /// conteúdo fixo do EA FC em `lib/features/mechanics/controls`, não algo
+  /// que outro jogo herda automaticamente.
+  final bool controlsGuide;
+
   @override
   List<Object?> get props => <Object?>[
     teams,
@@ -38,5 +44,6 @@ class GameCapabilities extends Equatable {
     playStyles,
     chemistry,
     evolutions,
+    controlsGuide,
   ];
 }

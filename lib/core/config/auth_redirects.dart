@@ -1,15 +1,15 @@
 class AuthRedirects {
   const AuthRedirects._();
 
-  static const String mobileScheme = 'com.lucasdiogof.fifaqueue';
-  static const String mobileCallback = '$mobileScheme://auth-callback';
   static const String passwordResetPath = '/reset-password';
 
   static String passwordReset({
     required bool isWeb,
     required Uri currentUri,
+    required String mobileScheme,
     String appLinkHost = '',
   }) {
+    final mobileCallback = '$mobileScheme://auth-callback';
     if (!isWeb) {
       return mobileCallback;
     }

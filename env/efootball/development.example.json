@@ -1,6 +1,8 @@
 {
   "ENVIRONMENT": "development",
-  "APP_BACKEND_GAME": "ea_fc",
+  "APP_GAME": "efootball",
+  "APP_URL_SCHEME": "com.lucasdiogof.matchqueue.efootball",
+  "APP_BACKEND_GAME": "efootball",
   "SUPABASE_URL": "",
   "SUPABASE_PUBLISHABLE_KEY": "",
   "APP_LINK_HOST": "",

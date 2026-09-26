@@ -19,6 +19,12 @@ void main() {
       expect(game.key, GameFlavorKey.eaFc);
     });
 
+    test('APP_GAME=efootball resolve para eFootball', () {
+      final game = resolveActiveGame('efootball');
+
+      expect(game.key, GameFlavorKey.efootball);
+    });
+
     test(
       'APP_GAME desconhecido falha em vez de cair silenciosamente pra EA FC',
       () {
@@ -27,7 +33,8 @@ void main() {
     );
 
     test('APP_GAME de jogo conhecido mas sem flavor real ainda falha', () {
-      expect(() => resolveActiveGame('efootball'), throwsStateError);
+      expect(() => resolveActiveGame('ufl'), throwsStateError);
+      expect(() => resolveActiveGame('goals'), throwsStateError);
     });
   });
 }

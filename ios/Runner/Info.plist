@@ -61,10 +61,10 @@
 				<key>CFBundleTypeRole</key>
 				<string>Editor</string>
 				<key>CFBundleURLName</key>
-				<string>com.lucasdiogof.fifaqueue</string>
+				<string>$(AUTH_CALLBACK_SCHEME)</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<string>com.lucasdiogof.fifaqueue</string>
+					<string>$(AUTH_CALLBACK_SCHEME)</string>
 				</array>
 			</dict>
 		</array>

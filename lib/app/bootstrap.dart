@@ -7,6 +7,8 @@ import 'package:fifa_queue/app/startup_failure_app.dart';
 import 'package:fifa_queue/core/config/app_config.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/firebase/firebase_bootstrap.dart';
+import 'package:fifa_queue/core/game/assert_game_matches_config.dart';
+import 'package:fifa_queue/core/game/assert_native_package_matches_config.dart';
 import 'package:fifa_queue/core/game/resolve_active_game.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
@@ -23,6 +25,7 @@ import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> bootstrap() async {
@@ -47,6 +50,17 @@ Future<void> bootstrap() async {
         FlutterError.presentError(details);
       };
 
+      // Guard cross-flavor mais forte que o de baixo: o package/bundle id
+      // NATIVO (decidido no build Android/iOS, fora do alcance de qualquer
+      // dart-define) precisa bater com o jogo que APP_GAME resolveu. Só
+      // roda em Android/iOS -- Web/desktop não tem esse conceito.
+      if (!kIsWeb &&
+          (defaultTargetPlatform == TargetPlatform.android ||
+              defaultTargetPlatform == TargetPlatform.iOS)) {
+        final packageInfo = await PackageInfo.fromPlatform();
+        assertNativePackageMatchesGame(gameConfig, packageInfo.packageName);
+      }
+
       if (!config.isUsable) {
         logger.error(
           'Configuração obrigatória ausente: '
@@ -55,6 +69,11 @@ Future<void> bootstrap() async {
         runApp(StartupFailureApp(missingKeys: config.missingRequiredKeys));
         return;
       }
+
+      // Guard cross-flavor: com credenciais reais presentes, garante que
+      // elas realmente pertencem ao jogo que este build resolveu (nunca o
+      // env de outro flavor entrando por engano no comando de build).
+      assertGameMatchesConfig(gameConfig, config);
 
       final preferences = await SharedPreferences.getInstance();
       final SupabaseClient supabaseClient = await SupabaseInitializer(
@@ -70,9 +89,11 @@ Future<void> bootstrap() async {
             WidgetsBinding.instance.platformDispatcher.locale,
             AppLocales.supported,
           );
-      final firebaseAvailability = await FirebaseBootstrap(
-        logger,
-      ).initialize(config, locale: effectiveLocale);
+      final firebaseAvailability = await FirebaseBootstrap(logger).initialize(
+        config,
+        game: gameConfig.key,
+        locale: effectiveLocale,
+      );
 
       await registerDependencies(
         config: config,

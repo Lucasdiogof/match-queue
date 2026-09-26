@@ -94,6 +94,7 @@ class SupabaseAuthRemoteDataSource implements AuthRemoteDataSource {
     redirectTo: AuthRedirects.passwordReset(
       isWeb: kIsWeb,
       currentUri: Uri.base,
+      mobileScheme: _config.appUrlScheme,
       appLinkHost: _config.appLinkHost,
     ),
   );

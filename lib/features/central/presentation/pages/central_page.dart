@@ -1,4 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
+import 'package:fifa_queue/core/di/injector.dart';
+import 'package:fifa_queue/core/game/game_config.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
@@ -39,6 +41,7 @@ class _CentralBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final capabilities = getIt<GameConfig>().capabilities;
 
     // Unico dado desta tela que pode ficar "preso" (ex.: primeiro fetch do
     // boot que nao completou) e o de AccountCubit, pro card de
@@ -73,101 +76,122 @@ class _CentralBody extends StatelessWidget {
               );
             },
           ),
-          _SectionLabel(text: l10n.centralSectionCatalog),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _BigEntryCard(
-                  icon: Icons.style_outlined,
-                  label: l10n.catalogCardsTitle,
-                  description: l10n.startCatalogCardsHint,
-                  onTap: () => context.push(AppRoutes.cardsCatalog.path),
+          // Todo o conteudo abaixo (catalogo de cartas/clubes, mecanicas,
+          // guias de controle) e especifico do EA FC -- jogos sem essas
+          // capabilities (ex.: eFootball) simplesmente nao veem a secao,
+          // em vez de um card levando a uma feature que nao existe la.
+          if (capabilities.cards) ...<Widget>[
+            _SectionLabel(text: l10n.centralSectionCatalog),
+            const SizedBox(height: AppSpacing.md),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: _BigEntryCard(
+                    icon: Icons.style_outlined,
+                    label: l10n.catalogCardsTitle,
+                    description: l10n.startCatalogCardsHint,
+                    onTap: () => context.push(AppRoutes.cardsCatalog.path),
+                  ),
                 ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: _BigEntryCard(
+                    icon: Icons.shield_outlined,
+                    label: l10n.catalogClubsTitle,
+                    description: l10n.startCatalogClubsHint,
+                    onTap: () => context.push(AppRoutes.clubsCatalog.path),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.xl),
+          ],
+          if (capabilities.playStyles ||
+              capabilities.chemistry ||
+              capabilities.evolutions) ...<Widget>[
+            _SectionLabel(text: l10n.centralSectionMechanics),
+            const SizedBox(height: AppSpacing.md),
+            if (capabilities.playStyles) ...<Widget>[
+              _ListEntryRow(
+                icon: Icons.auto_awesome_outlined,
+                label: l10n.mechanicsPlaystylesLabel,
+                description: l10n.mechanicsPlaystylesHint,
+                onTap: () => context.push(AppRoutes.playstyles.path),
               ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _BigEntryCard(
-                  icon: Icons.shield_outlined,
-                  label: l10n.catalogClubsTitle,
-                  description: l10n.startCatalogClubsHint,
-                  onTap: () => context.push(AppRoutes.clubsCatalog.path),
-                ),
+              const SizedBox(height: AppSpacing.sm),
+            ],
+            if (capabilities.chemistry) ...<Widget>[
+              _ListEntryRow(
+                icon: Icons.science_outlined,
+                label: l10n.mechanicsChemistryLabel,
+                description: l10n.mechanicsChemistryHint,
+                onTap: () => context.push(AppRoutes.chemistry.path),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _ListEntryRow(
+                icon: Icons.bolt_outlined,
+                label: l10n.mechanicsChemistryStylesLabel,
+                description: l10n.mechanicsChemistryStylesHint,
+                onTap: () => context.push(AppRoutes.chemistryStyles.path),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+            ],
+            if (capabilities.evolutions) ...<Widget>[
+              _ListEntryRow(
+                icon: Icons.trending_up_outlined,
+                label: l10n.mechanicsEvolutionsLabel,
+                description: l10n.mechanicsEvolutionsHint,
+                onTap: () => context.push(AppRoutes.evolutions.path),
               ),
             ],
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          _SectionLabel(text: l10n.centralSectionMechanics),
-          const SizedBox(height: AppSpacing.md),
-          _ListEntryRow(
-            icon: Icons.auto_awesome_outlined,
-            label: l10n.mechanicsPlaystylesLabel,
-            description: l10n.mechanicsPlaystylesHint,
-            onTap: () => context.push(AppRoutes.playstyles.path),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          _ListEntryRow(
-            icon: Icons.science_outlined,
-            label: l10n.mechanicsChemistryLabel,
-            description: l10n.mechanicsChemistryHint,
-            onTap: () => context.push(AppRoutes.chemistry.path),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          _ListEntryRow(
-            icon: Icons.bolt_outlined,
-            label: l10n.mechanicsChemistryStylesLabel,
-            description: l10n.mechanicsChemistryStylesHint,
-            onTap: () => context.push(AppRoutes.chemistryStyles.path),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          _ListEntryRow(
-            icon: Icons.trending_up_outlined,
-            label: l10n.mechanicsEvolutionsLabel,
-            description: l10n.mechanicsEvolutionsHint,
-            onTap: () => context.push(AppRoutes.evolutions.path),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          _SectionLabel(text: l10n.centralSectionControls),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _CompactEntryCard(
-                  icon: Icons.sports_soccer_outlined,
-                  label: l10n.controlsDribblingLabel,
-                  onTap: () => context.push(AppRoutes.controlsDribbling.path),
+            const SizedBox(height: AppSpacing.xl),
+          ],
+          if (capabilities.controlsGuide) ...<Widget>[
+            _SectionLabel(text: l10n.centralSectionControls),
+            const SizedBox(height: AppSpacing.md),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: _CompactEntryCard(
+                    icon: Icons.sports_soccer_outlined,
+                    label: l10n.controlsDribblingLabel,
+                    onTap: () =>
+                        context.push(AppRoutes.controlsDribbling.path),
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _CompactEntryCard(
-                  icon: Icons.swap_horiz,
-                  label: l10n.controlsPassingLabel,
-                  onTap: () => context.push(AppRoutes.controlsPassing.path),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: _CompactEntryCard(
+                    icon: Icons.swap_horiz,
+                    label: l10n.controlsPassingLabel,
+                    onTap: () => context.push(AppRoutes.controlsPassing.path),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _CompactEntryCard(
-                  icon: Icons.adjust_outlined,
-                  label: l10n.controlsShootingLabel,
-                  onTap: () => context.push(AppRoutes.controlsShooting.path),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: _CompactEntryCard(
+                    icon: Icons.adjust_outlined,
+                    label: l10n.controlsShootingLabel,
+                    onTap: () =>
+                        context.push(AppRoutes.controlsShooting.path),
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _CompactEntryCard(
-                  icon: Icons.shield_moon_outlined,
-                  label: l10n.controlsDefendingLabel,
-                  onTap: () => context.push(AppRoutes.controlsDefending.path),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: _CompactEntryCard(
+                    icon: Icons.shield_moon_outlined,
+                    label: l10n.controlsDefendingLabel,
+                    onTap: () =>
+                        context.push(AppRoutes.controlsDefending.path),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ],
       ),
     );
