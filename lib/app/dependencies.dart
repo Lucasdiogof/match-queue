@@ -2,6 +2,7 @@ import 'package:fifa_queue/core/config/app_config.dart';
 import 'package:fifa_queue/core/di/core_module.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/firebase/firebase_bootstrap.dart';
+import 'package:fifa_queue/core/game/game_config.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/features/auth/auth_module.dart';
 import 'package:fifa_queue/features/fc_squads/fc_squads_module.dart';
@@ -20,6 +21,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> registerDependencies({
   required AppConfig config,
+  required GameConfig gameConfig,
   required AppLogger logger,
   required SharedPreferences preferences,
   required SupabaseClient supabaseClient,
@@ -28,6 +30,7 @@ Future<void> registerDependencies({
   registerCoreModule(
     getIt,
     config: config,
+    gameConfig: gameConfig,
     logger: logger,
     preferences: preferences,
     supabaseClient: supabaseClient,

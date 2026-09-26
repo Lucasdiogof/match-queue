@@ -1,5 +1,6 @@
 import 'package:fifa_queue/core/config/app_config.dart';
 import 'package:fifa_queue/core/di/injector.dart';
+import 'package:fifa_queue/core/game/game_config.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/observability/analytics_service.dart';
 import 'package:fifa_queue/core/observability/crash_reporter.dart';
@@ -15,12 +16,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void registerCoreModule(
   GetIt sl, {
   required AppConfig config,
+  required GameConfig gameConfig,
   required AppLogger logger,
   required SharedPreferences preferences,
   required SupabaseClient supabaseClient,
 }) {
   sl
     ..registerSingleton<AppConfig>(config)
+    ..registerSingleton<GameConfig>(gameConfig)
     ..registerSingleton<AppLogger>(logger)
     ..registerSingleton<SharedPreferences>(preferences)
     ..registerSingleton<CrashReporter>(LoggingCrashReporter(logger))

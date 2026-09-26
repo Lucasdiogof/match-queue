@@ -7,6 +7,7 @@ import 'package:fifa_queue/app/startup_failure_app.dart';
 import 'package:fifa_queue/core/config/app_config.dart';
 import 'package:fifa_queue/core/di/injector.dart';
 import 'package:fifa_queue/core/firebase/firebase_bootstrap.dart';
+import 'package:fifa_queue/core/game/resolve_active_game.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/core/navigation/url_strategy/url_strategy.dart';
@@ -26,6 +27,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> bootstrap() async {
   final config = AppConfig.fromEnvironment();
+  final gameConfig = resolveActiveGame();
   final logger = _createLogger(config);
   final crashReporter = LoggingCrashReporter(logger);
 
@@ -74,6 +76,7 @@ Future<void> bootstrap() async {
 
       await registerDependencies(
         config: config,
+        gameConfig: gameConfig,
         logger: logger,
         preferences: preferences,
         supabaseClient: supabaseClient,
