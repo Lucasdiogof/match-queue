@@ -10,11 +10,23 @@ void main() {
     );
   });
 
+  test('eFootball resolve as FirebaseOptions do app já registrado', () {
+    expect(
+      () => GameFirebaseOptions.forGame(GameFlavorKey.efootball),
+      returnsNormally,
+    );
+  });
+
   test(
-    'eFootball falha alto e cedo em vez de herdar options de outro jogo',
+    'jogo sem app Firebase registrado falha alto e cedo em vez de herdar '
+    'options de outro jogo',
     () {
       expect(
-        () => GameFirebaseOptions.forGame(GameFlavorKey.efootball),
+        () => GameFirebaseOptions.forGame(GameFlavorKey.ufl),
+        throwsUnsupportedError,
+      );
+      expect(
+        () => GameFirebaseOptions.forGame(GameFlavorKey.goals),
         throwsUnsupportedError,
       );
     },
