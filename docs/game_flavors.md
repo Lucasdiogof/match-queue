@@ -81,62 +81,58 @@ Firebase continua compartilhado como infraestrutura (FCM + Crashlytics),
 mas **cada jogo precisa do próprio app registrado** dentro do mesmo projeto
 Firebase (`fifa-queue`), nunca reaproveitando o app de outro jogo:
 
-- **Nível Dart (proteção real)**: `Firebase.initializeApp()` deixou de usar
-  `DefaultFirebaseOptions.currentPlatform` (fixo no app do EA FC) e passou a
-  usar `GameFirebaseOptions.forGame(gameConfig.key)`
-  (`lib/core/firebase/game_firebase_options.dart`). Hoje só o EA FC tem
-  `FirebaseOptions` reais; eFootball (e qualquer outro flavor sem app
-  registrado) lança `UnsupportedError` com uma mensagem explícita — o erro é
-  capturado pelo mesmo try/catch que já existia (push é convenience, nunca
-  derruba o app), então o efeito prático é "Firebase fica `unconfigured`
-  para esse flavor até alguém registrar o app e atualizar
-  `GameFirebaseOptions`", visível no log, nunca um Firebase inicializado
-  com credenciais de outro jogo.
-- **Nível Android (build-time)**: o plugin Gradle `google-services` exige um
-  client casando com o `applicationId` de cada variante dentro de
-  `android/app/google-services.json`. Hoje só o EA FC tem client — build do
-  flavor `efootball` falha em `processEfootballDebugGoogleServices` até
-  alguém adicionar o app Android do eFootball nesse projeto Firebase e
-  substituir o `google-services.json` (que passa a ter os dois clients).
-- **Nível iOS**: `ios/Runner/GoogleService-Info.plist` continua único (o do
-  EA FC) e é empacotado em qualquer flavor que buildar, inclusive
-  `efootball`. `Firebase.initializeApp(options: ...)` usa as
-  `FirebaseOptions` explícitas do Dart (não lê o plist em runtime), então
-  isso **não bloqueia esta fundação** e **não faz o eFootball inicializar
-  com o app Firebase do EA FC** (quem decide isso é o `GameFirebaseOptions`
-  acima). Mas o plist errado dentro do bundle não é neutro pra sempre:
-  ferramentas/build phases do Firebase e do Crashlytics (upload de símbolos,
-  Google App ID, configuração auxiliar) podem depender dele fora do caminho
-  `Firebase.initializeApp`. Por isso:
-  - eFootball **continua sem Firebase funcional** até isso ser resolvido;
-  - **antes de qualquer release/TestFlight real do eFootball** é
-    obrigatório registrar o app Firebase iOS próprio dele e definir uma
-    estratégia flavor-specific pro plist/options (arquivo próprio + build
-    phase, ou equivalente) — não adiar isso pra depois do primeiro build de
-    distribuição;
+- **Nível Dart (proteção real)**: `Firebase.initializeApp()` não usa
+  `DefaultFirebaseOptions.currentPlatform` fixo — usa
+  `GameFirebaseOptions.forGame(gameConfig.key)`
+  (`lib/core/firebase/game_firebase_options.dart`), que despacha pro app
+  Firebase certo por jogo: `ea_fc.DefaultFirebaseOptions` (gerado pelo
+  FlutterFire CLI) ou `EfootballFirebaseOptions`
+  (`lib/games/efootball/efootball_firebase_options.dart`, valores extraídos
+  manualmente dos arquivos baixados do Firebase Console — apiKey/appId por
+  jogo, nunca reaproveitados entre eles). Jogo sem app Firebase registrado
+  (UFL/GOALS por enquanto) lança `UnsupportedError` explícito em vez de
+  herdar options de outro jogo.
+- **Nível Android (build-time) — ✅ resolvido em 2026-09-26**: os 2 apps
+  Android (EA FC + eFootball) estão registrados no mesmo projeto Firebase
+  `fifa-queue`; `android/app/google-services.json` já tem os dois clients.
+  `flutter build apk --flavor efootball` builda normalmente.
+- **Nível iOS (Dart) — ✅ resolvido em 2026-09-26**: app iOS do eFootball
+  registrado no Firebase Console (mesmo projeto), `EfootballFirebaseOptions`
+  já tem os valores reais dele. `GameFirebaseOptions.forGame` nunca mistura
+  isso com o app do EA FC.
+- **Nível iOS (arquivo nativo) — ainda pendente**: `ios/Runner/GoogleService-Info.plist`
+  continua único no repo (o do EA FC) e é empacotado em qualquer flavor que
+  buildar, inclusive `efootball`. Isso **não afeta `Firebase.initializeApp`**
+  (que usa as `FirebaseOptions` explícitas do Dart acima, não lê o plist em
+  runtime) e **não é bloqueio pra esta fundação**, mas o plist errado dentro
+  do bundle não é neutro pra sempre — ferramentas/build phases do Firebase e
+  do Crashlytics (upload de símbolos, Google App ID, configuração auxiliar)
+  podem depender dele fora do caminho `Firebase.initializeApp`. Por isso:
+  - **antes de qualquer release/TestFlight real do eFootball** é obrigatório
+    definir uma estratégia flavor-specific pro `GoogleService-Info.plist`
+    nativo (arquivo próprio por flavor + build phase, ou equivalente) — não
+    adiar isso pra depois do primeiro build de distribuição;
   - o eFootball **nunca pode ser publicado** carregando, mesmo que só
-    fisicamente dentro do bundle, a configuração Firebase do EA FC.
+    fisicamente dentro do bundle, o plist do EA FC.
 
-### O que registrar no Firebase Console (ação manual, fora do código)
+### Apps Firebase registrados (2026-09-26)
 
-Dentro do projeto **`fifa-queue`** existente:
+Dentro do projeto **`fifa-queue`**:
 
-1. **Add app → Android**
-   - package name: `com.lucasdiogof.matchqueue.efootball`
-   - nickname sugerido: `Match Queue - eFootball (Android)`
-   - baixar o `google-services.json` resultante (ele passa a ter os clients
-     do EA FC + eFootball juntos) e substituir
-     `android/app/google-services.json`.
-2. **Add app → iOS**
-   - Bundle ID: `com.lucasdiogof.matchqueue.efootball`
-   - nickname sugerido: `Match Queue - eFootball (iOS)`
-   - baixar o `GoogleService-Info.plist` e guardar (ainda não colocar no
-     lugar do atual — isso é um passo separado, de tornar o iOS
-     flavor-aware pra Firebase, ainda não feito nesta fundação).
+| Plataforma | Bundle/package | App ID Firebase |
+|---|---|---|
+| Android EA FC | `com.lucasdiogof.fifaqueue` | `1:927848400584:android:440f5130571f0b4af187fd` |
+| Android eFootball | `com.lucasdiogof.matchqueue.efootball` | `1:927848400584:android:7a07e89557b50579f187fd` |
+| iOS EA FC | `com.lucasdiogof.fifaqueue` | `1:927848400584:ios:c43993856e4893bef187fd` |
+| iOS eFootball | `com.lucasdiogof.matchqueue.efootball` | `1:927848400584:ios:f4790db0cb90c8d2f187fd` |
 
-Depois disso, rodar `flutterfire configure` (ou editar manualmente) pra
-adicionar as `FirebaseOptions` do eFootball em
-`lib/core/firebase/game_firebase_options.dart`.
+Se precisar registrar um app novo (UFL/GOALS no futuro): Firebase Console →
+projeto `fifa-queue` → Add app → preencher package/bundle id → baixar
+`google-services.json` (Android, substitui o atual, ele acumula todos os
+clients) ou `GoogleService-Info.plist` (iOS, guardar à parte) → extrair
+`apiKey`/`appId`/etc. pra um novo `<jogo>_firebase_options.dart` seguindo o
+padrão de `efootball_firebase_options.dart` → registrar em
+`GameFirebaseOptions.forGame`.
 
 ## Supabase por flavor
 
