@@ -13,7 +13,9 @@ import 'package:image/image.dart' as img;
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    stderr.writeln('uso: dart run tool/inspect_icon_edge.dart <arte.png> [aneis]');
+    stderr.writeln(
+      'uso: dart run tool/inspect_icon_edge.dart <arte.png> [aneis]',
+    );
     exitCode = 64;
     return;
   }
@@ -86,7 +88,8 @@ void main(List<String> args) {
     final mg = (g / n).round();
     final mb = (b / n).round();
     final lum = 0.2126 * mr + 0.7152 * mg + 0.0722 * mb;
-    final hex = '#${mr.toRadixString(16).padLeft(2, '0')}'
+    final hex =
+        '#${mr.toRadixString(16).padLeft(2, '0')}'
         '${mg.toRadixString(16).padLeft(2, '0')}'
         '${mb.toRadixString(16).padLeft(2, '0')}';
     stdout.writeln(

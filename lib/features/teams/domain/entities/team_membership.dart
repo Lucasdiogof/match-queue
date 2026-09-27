@@ -12,18 +12,14 @@ class TeamMembership extends Equatable {
   });
 
   final String teamId;
+
   /// Identidade da membership no banco (team_members.user_id).
   final String userId;
   final TeamRole role;
   final DateTime joinedAt;
 
   @override
-  List<Object?> get props => <Object?>[
-    teamId,
-    userId,
-    role,
-    joinedAt,
-  ];
+  List<Object?> get props => <Object?>[teamId, userId, role, joinedAt];
 }
 
 class TeamMember extends Equatable {
@@ -33,8 +29,6 @@ class TeamMember extends Equatable {
   final Account account;
 
   String get userId => membership.userId;
-
-
 
   TeamRole get role => membership.role;
 

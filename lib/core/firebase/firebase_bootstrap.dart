@@ -71,9 +71,7 @@ class FirebaseBootstrap {
     }
 
     try {
-      await Firebase.initializeApp(
-        options: GameFirebaseOptions.forGame(game),
-      );
+      await Firebase.initializeApp(options: GameFirebaseOptions.forGame(game));
       // Precisa existir ANTES do primeiro push chegar: se a primeira
       // notificação for entregue antes do canal existir, o Android (8+) a
       // descarta em silêncio em vez de criar um canal padrão.

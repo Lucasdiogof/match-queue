@@ -72,10 +72,14 @@ const int _defaultConcurrency = 6;
 Future<void> main(List<String> args) async {
   final options = _Options.parse(args);
   final baseUrl = Platform.environment['SUPABASE_URL'];
-  final secretKey = Platform.environment['SUPABASE_SECRET_KEY'] ??
+  final secretKey =
+      Platform.environment['SUPABASE_SECRET_KEY'] ??
       Platform.environment['SUPABASE_SERVICE_ROLE_KEY'];
 
-  if (baseUrl == null || baseUrl.isEmpty || secretKey == null || secretKey.isEmpty) {
+  if (baseUrl == null ||
+      baseUrl.isEmpty ||
+      secretKey == null ||
+      secretKey.isEmpty) {
     stderr.writeln(
       'SUPABASE_URL e SUPABASE_SECRET_KEY (ou o fallback legado '
       'SUPABASE_SERVICE_ROLE_KEY) precisam estar no ambiente.',
@@ -142,8 +146,7 @@ Future<void> main(List<String> args) async {
 
       stats.found += found.length;
       stats.missing += missing.length;
-      stats.transient +=
-          results.length - found.length - missing.length;
+      stats.transient += results.length - found.length - missing.length;
       stats.processed += results.length;
 
       stdout.writeln(
@@ -206,7 +209,11 @@ Future<_ProbeResult> _probe(http.Client client, _Card card) async {
   } on TimeoutException {
     return _ProbeResult(card, _Outcome.transient, detail: 'timeout');
   } catch (error) {
-    return _ProbeResult(card, _Outcome.transient, detail: '${error.runtimeType}');
+    return _ProbeResult(
+      card,
+      _Outcome.transient,
+      detail: '${error.runtimeType}',
+    );
   }
 }
 
@@ -221,8 +228,10 @@ void _report(_Stats stats, Stopwatch stopwatch, _Options options) {
     ..writeln('  verificadas       : ${stats.processed}')
     ..writeln('  com artwork       : ${stats.found}')
     ..writeln('  sem artwork       : ${stats.missing}')
-    ..writeln('  erro transitorio  : ${stats.transient}'
-        '${stats.transient > 0 ? '  (seguem na fila)' : ''}');
+    ..writeln(
+      '  erro transitorio  : ${stats.transient}'
+      '${stats.transient > 0 ? '  (seguem na fila)' : ''}',
+    );
   if (total > 0) {
     stdout.writeln(
       '  taxa de cobertura : '
@@ -302,10 +311,10 @@ class _Database {
   final String _secretKey;
 
   Map<String, String> get _headers => <String, String>{
-        'apikey': _secretKey,
-        'Authorization': 'Bearer $_secretKey',
-        'Content-Type': 'application/json',
-      };
+    'apikey': _secretKey,
+    'Authorization': 'Bearer $_secretKey',
+    'Content-Type': 'application/json',
+  };
 
   /// Cartas ATIVAS ainda nao verificadas, com o playerId do jogador.
   ///

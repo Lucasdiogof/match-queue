@@ -14,7 +14,6 @@ PublicSharingSettings publicSharingSettingsFromJson(
   showStats: json['show_stats'] as bool? ?? true,
 );
 
-
 PublicSquadStarter _starterFromJson(Map<String, dynamic> json) =>
     PublicSquadStarter(
       slotCode: '${json['slot_code']}',

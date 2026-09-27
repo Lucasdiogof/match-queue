@@ -106,22 +106,19 @@ void main() {
     },
   );
 
-  test(
-    'SUPABASE_URL do projeto certo do EA FC passa a checagem de ref',
-    () {
-      expect(
-        () => assertGameMatchesConfig(
-          eaFcGameConfig,
-          _config(
-            scheme: 'com.lucasdiogof.fifaqueue',
-            backendGame: 'ea_fc',
-            supabaseUrl: 'https://lteujeclnhmurcewurkg.supabase.co',
-          ),
+  test('SUPABASE_URL do projeto certo do EA FC passa a checagem de ref', () {
+    expect(
+      () => assertGameMatchesConfig(
+        eaFcGameConfig,
+        _config(
+          scheme: 'com.lucasdiogof.fifaqueue',
+          backendGame: 'ea_fc',
+          supabaseUrl: 'https://lteujeclnhmurcewurkg.supabase.co',
         ),
-        returnsNormally,
-      );
-    },
-  );
+      ),
+      returnsNormally,
+    );
+  });
 
   test(
     'eFootball ainda não tem project ref conhecido -- checagem 3 não roda',

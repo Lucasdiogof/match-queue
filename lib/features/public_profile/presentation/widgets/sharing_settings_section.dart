@@ -20,8 +20,8 @@ class SharingSettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider<SharingSettingsCubit>(
-    create: (_) => SharingSettingsCubit(getIt<PublicProfileRepository>())
-      ..load(),
+    create: (_) =>
+        SharingSettingsCubit(getIt<PublicProfileRepository>())..load(),
     child: const _SharingSettingsBody(),
   );
 }

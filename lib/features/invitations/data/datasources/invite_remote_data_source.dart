@@ -33,9 +33,7 @@ class SupabaseInviteRemoteDataSource implements InviteRemoteDataSource {
     final response = await _client
         .rpc<dynamic>(
           'join_team_by_invite',
-          params: <String, dynamic>{
-            'p_code': code,
-          },
+          params: <String, dynamic>{'p_code': code},
         )
         .single();
     return Map<String, dynamic>.from(response as Map);

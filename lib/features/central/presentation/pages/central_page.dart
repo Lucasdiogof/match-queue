@@ -155,8 +155,7 @@ class _CentralBody extends StatelessWidget {
                   child: _CompactEntryCard(
                     icon: Icons.sports_soccer_outlined,
                     label: l10n.controlsDribblingLabel,
-                    onTap: () =>
-                        context.push(AppRoutes.controlsDribbling.path),
+                    onTap: () => context.push(AppRoutes.controlsDribbling.path),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -176,8 +175,7 @@ class _CentralBody extends StatelessWidget {
                   child: _CompactEntryCard(
                     icon: Icons.adjust_outlined,
                     label: l10n.controlsShootingLabel,
-                    onTap: () =>
-                        context.push(AppRoutes.controlsShooting.path),
+                    onTap: () => context.push(AppRoutes.controlsShooting.path),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -185,8 +183,7 @@ class _CentralBody extends StatelessWidget {
                   child: _CompactEntryCard(
                     icon: Icons.shield_moon_outlined,
                     label: l10n.controlsDefendingLabel,
-                    onTap: () =>
-                        context.push(AppRoutes.controlsDefending.path),
+                    onTap: () => context.push(AppRoutes.controlsDefending.path),
                   ),
                 ),
               ],

@@ -42,10 +42,7 @@ abstract interface class TeamRemoteDataSource {
 
   Future<Map<String, dynamic>> getPublicTeam(String teamId);
 
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  });
+  Future<void> removeMember({required String teamId, required String userId});
 
   Future<void> setMemberRole({
     required String teamId,
@@ -80,9 +77,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   SupabaseQueryBuilder get _teams => _client.from(TeamModel.table);
 
   @override
-  Future<List<Map<String, dynamic>>> fetchMyMemberships(
-    String userId,
-  ) async {
+  Future<List<Map<String, dynamic>>> fetchMyMemberships(String userId) async {
     final rows = await _members
         .select(
           '${TeamMemberModel.columnRole}, '
@@ -208,16 +203,14 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
   }
 
   @override
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  }) => _client.rpc<dynamic>(
-    'remove_team_member',
-    params: <String, dynamic>{
-      'p_team_id': teamId,
-      'p_target_user_id': userId,
-    },
-  );
+  Future<void> removeMember({required String teamId, required String userId}) =>
+      _client.rpc<dynamic>(
+        'remove_team_member',
+        params: <String, dynamic>{
+          'p_team_id': teamId,
+          'p_target_user_id': userId,
+        },
+      );
 
   @override
   Future<void> setMemberRole({
@@ -239,10 +232,7 @@ class SupabaseTeamRemoteDataSource implements TeamRemoteDataSource {
     required String userId,
   }) => _client.rpc<dynamic>(
     'transfer_team_ownership',
-    params: <String, dynamic>{
-      'p_team_id': teamId,
-      'p_target_user_id': userId,
-    },
+    params: <String, dynamic>{'p_team_id': teamId, 'p_target_user_id': userId},
   );
 
   static const String _logoBucket = 'team-logos';

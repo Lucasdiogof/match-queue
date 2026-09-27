@@ -15,20 +15,17 @@ class WeekendLeagueCard extends StatelessWidget {
   const WeekendLeagueCard({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AccountCubit, AccountState>(
-        buildWhen: (previous, current) =>
-            
-            previous.account != current.account,
-        builder: (context, state) {
-          final event = state.account?.weekendLeagueEvent;
-          final account = state.account;
-          if (event == null || account == null) {
-            return const SizedBox.shrink();
-          }
-          return _WeekendLeagueCardBody(event: event, account: account);
-        },
-      );
+  Widget build(BuildContext context) => BlocBuilder<AccountCubit, AccountState>(
+    buildWhen: (previous, current) => previous.account != current.account,
+    builder: (context, state) {
+      final event = state.account?.weekendLeagueEvent;
+      final account = state.account;
+      if (event == null || account == null) {
+        return const SizedBox.shrink();
+      }
+      return _WeekendLeagueCardBody(event: event, account: account);
+    },
+  );
 }
 
 class _WeekendLeagueCardBody extends StatelessWidget {

@@ -110,9 +110,8 @@ class _PublicProfileBodyState extends State<_PublicProfileBody> {
                     AppButton.secondary(
                       label: l10n.publicProfileEditSharingCta,
                       icon: Icons.settings_outlined,
-                      onPressed: () => context.push(
-                        AppRoutes.accountSharing.path,
-                      ),
+                      onPressed: () =>
+                          context.push(AppRoutes.accountSharing.path),
                     ),
                     const SizedBox(height: AppSpacing.lg),
                   ],

@@ -110,9 +110,7 @@ img.Image _dissolvePlateEdge(
       final outsideY = qy > 0 ? qy : 0.0;
       final maxQ = qx > qy ? qx : qy;
       final signed =
-          (maxQ < 0 ? maxQ : 0.0) +
-          _hypot(outsideX, outsideY) -
-          radius;
+          (maxQ < 0 ? maxQ : 0.0) + _hypot(outsideX, outsideY) - radius;
       final inside = -signed;
 
       // smoothstep de 0 ate fadeDepth: rampa em S, sem quina no comeco nem
@@ -192,7 +190,6 @@ img.Image _padToSquare(
   return canvas;
 }
 
-
 /// Recorta pro bounding box do conteudo visivel (alpha > limiar) + padding,
 /// sem alterar nenhum pixel.
 /// Recorta ao retangulo OPACO -- diferente de [_cropToAlphaBbox], que inclui
@@ -220,7 +217,6 @@ img.Image _cropToOpaqueBbox(img.Image imRgba) {
     height: maxY - minY + 1,
   );
 }
-
 
 void _savePng(String path, img.Image image) {
   File(path).writeAsBytesSync(img.encodePng(image));
