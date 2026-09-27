@@ -186,7 +186,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         contentType: contentType,
       );
       emit(state.copyWith(isSaving: false));
-      return updateTeam(teamId: teamId, logoUrl: logoUrl);
+      return await updateTeam(teamId: teamId, logoUrl: logoUrl);
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(state.copyWith(isSaving: false, actionFailure: failure));
@@ -205,7 +205,7 @@ class TeamsCubit extends Cubit<TeamsState> {
     try {
       await _repository.deleteTeamLogoFile(teamId);
       emit(state.copyWith(isSaving: false));
-      return updateTeam(teamId: teamId, clearLogoUrl: true);
+      return await updateTeam(teamId: teamId, clearLogoUrl: true);
     } on AppFailure catch (failure) {
       if (!isClosed) {
         emit(state.copyWith(isSaving: false, actionFailure: failure));
