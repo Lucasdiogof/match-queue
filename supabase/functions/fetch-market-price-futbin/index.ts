@@ -22,9 +22,10 @@
 // viram null de verdade.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
+import { withCors } from '../_shared/cors.ts';
+import { normalizeMarketPlatform } from '../_shared/market_platform.ts';
 
 const CACHE_TTL_MS = 60 * 60 * 1000;
-const DEFAULT_PLATFORM = 'ps';
 const PARSEBOT_SCRAPER_BASE =
   'https://api.parse.bot/scraper/21963078-8a17-40ff-a896-9b0b0ec3e828';
 const FUTBIN_IMAGE_ID_PATTERN = /\/players\/(\d+)\.png/;
@@ -94,7 +95,7 @@ function parsePrice(raw: string | undefined): number | null {
   return Math.round(value);
 }
 
-Deno.serve(async (req) => {
+Deno.serve(withCors(async (req) => {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405 });
   }
@@ -115,7 +116,7 @@ Deno.serve(async (req) => {
   if (!cardId) {
     return new Response(JSON.stringify({ error: 'missing cardId' }), { status: 400 });
   }
-  const platform = body.platform ?? DEFAULT_PLATFORM;
+  const platform = normalizeMarketPlatform(body.platform);
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
@@ -172,6 +173,30 @@ Deno.serve(async (req) => {
       }),
       { headers: { 'Content-Type': 'application/json' } },
     );
+  }
+
+  // Cache-miss = credito pago. Teto por usuario (migration 20261021100100);
+  // estourou, responde "sem preco" como quando o provider esta fora do ar.
+  // Erro na propria checagem (ex.: migration ainda nao aplicada) nao derruba
+  // a feature: loga e segue como antes do limite existir.
+  const { data: userData } = await callerClient.auth.getUser();
+  const userId = userData?.user?.id;
+  let quotaExceeded = !userId;
+  if (userId) {
+    const { data: allowed, error: quotaError } = await serviceClient.rpc(
+      'consume_market_price_quota',
+      { p_user_id: userId },
+    );
+    if (quotaError) {
+      console.error('consume_market_price_quota failed', quotaError);
+    } else {
+      quotaExceeded = allowed !== true;
+    }
+  }
+  if (quotaExceeded) {
+    return new Response(JSON.stringify({ success: true, price: null }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   const playerName = (cardRow?.common_name as string | null) || (cardRow?.player_name as string);
@@ -263,4 +288,4 @@ Deno.serve(async (req) => {
     }),
     { headers: { 'Content-Type': 'application/json' } },
   );
-});
+}));

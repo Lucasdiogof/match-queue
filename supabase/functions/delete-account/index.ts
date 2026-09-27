@@ -22,8 +22,9 @@
 // cancelar/anonimizar/deletar e um no-op seguro.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
+import { withCors } from '../_shared/cors.ts';
 
-Deno.serve(async (req) => {
+Deno.serve(withCors(async (req) => {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405 });
   }
@@ -74,4 +75,4 @@ Deno.serve(async (req) => {
   return new Response(JSON.stringify({ success: true }), {
     headers: { 'Content-Type': 'application/json' },
   });
-});
+}));

@@ -20,9 +20,10 @@
 // ja e select-authenticated via RLS, nao precisa de privilegio extra.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
+import { withCors } from '../_shared/cors.ts';
+import { normalizeMarketPlatform } from '../_shared/market_platform.ts';
 
 const FUTNEXT_TIMEOUT_MS = 8000;
-const DEFAULT_PLATFORM = 'ps';
 
 interface RequestBody {
   cardId?: string;
@@ -35,7 +36,7 @@ interface FutNextEntry {
   updatedAt: number;
 }
 
-Deno.serve(async (req) => {
+Deno.serve(withCors(async (req) => {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405 });
   }
@@ -56,7 +57,7 @@ Deno.serve(async (req) => {
   if (!cardId) {
     return new Response(JSON.stringify({ error: 'missing cardId' }), { status: 400 });
   }
-  const platform = body.platform ?? DEFAULT_PLATFORM;
+  const platform = normalizeMarketPlatform(body.platform);
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
@@ -129,4 +130,4 @@ Deno.serve(async (req) => {
     }),
     { headers: { 'Content-Type': 'application/json' } },
   );
-});
+}));
