@@ -19,10 +19,5 @@ class InviteTargetPreview extends Equatable {
   final String? avatarUrl;
 
   @override
-  List<Object?> get props => <Object?>[
-    found,
-    userId,
-    displayName,
-    avatarUrl,
-  ];
+  List<Object?> get props => <Object?>[found, userId, displayName, avatarUrl];
 }

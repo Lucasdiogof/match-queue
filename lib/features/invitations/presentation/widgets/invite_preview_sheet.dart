@@ -49,8 +49,7 @@ class _InvitePreviewSheetBody extends StatelessWidget {
                   child: _Content(
                     state: state,
                     isAuthenticated: authState.isAuthenticated,
-                    onJoin: () =>
-                        context.read<InviteResolutionCubit>().join(),
+                    onJoin: () => context.read<InviteResolutionCubit>().join(),
                     onOpenTeam: () =>
                         _pop(context, InviteSheetOutcome.joinedOrOpened),
                     onNotNow: () => _pop(context, InviteSheetOutcome.dismissed),

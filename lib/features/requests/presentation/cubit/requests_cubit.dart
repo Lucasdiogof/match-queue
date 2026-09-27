@@ -64,10 +64,8 @@ class RequestsCubit extends Cubit<RequestsState> {
 
   Future<void> acceptInvitation(String invitationId) => _runAction(
     invitationId,
-    () => _repository.respondInvitation(
-      invitationId: invitationId,
-      accept: true,
-    ),
+    () =>
+        _repository.respondInvitation(invitationId: invitationId, accept: true),
   );
 
   Future<void> declineInvitation(String invitationId) => _runAction(

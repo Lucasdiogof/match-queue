@@ -14,9 +14,7 @@ class SupabasePublicProfileRepository implements PublicProfileRepository {
   @override
   Future<PublicSharingSettings> fetchMySettings() async {
     try {
-      return publicSharingSettingsFromJson(
-        await _dataSource.getMySettings(),
-      );
+      return publicSharingSettingsFromJson(await _dataSource.getMySettings());
     } catch (error) {
       throw _errorMapper.map(error);
     }

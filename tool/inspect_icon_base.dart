@@ -12,7 +12,9 @@ import 'package:image/image.dart' as img;
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    stderr.writeln('uso: dart run tool/inspect_icon_base.dart <arte.png> [lumMax]');
+    stderr.writeln(
+      'uso: dart run tool/inspect_icon_base.dart <arte.png> [lumMax]',
+    );
     exitCode = 64;
     return;
   }
@@ -51,7 +53,8 @@ void main(List<String> args) {
   }
 
   lums.sort();
-  double pct(double q) => lums[(lums.length * q).clamp(0, lums.length - 1).toInt()];
+  double pct(double q) =>
+      lums[(lums.length * q).clamp(0, lums.length - 1).toInt()];
 
   String hexOf(int rr, int gg, int bb) =>
       '#${rr.toRadixString(16).padLeft(2, '0')}'
@@ -64,7 +67,9 @@ void main(List<String> args) {
   stdout.writeln('');
   stdout.writeln('percentis de luminancia do fundo:');
   for (final q in <double>[0.05, 0.25, 0.50, 0.75, 0.95]) {
-    stdout.writeln('  p${(q * 100).round().toString().padLeft(2)}  ${pct(q).toStringAsFixed(1)}');
+    stdout.writeln(
+      '  p${(q * 100).round().toString().padLeft(2)}  ${pct(q).toStringAsFixed(1)}',
+    );
   }
 
   // Cor mediana de verdade: recolhe os pixels cuja luminancia cai perto da
@@ -86,7 +91,9 @@ void main(List<String> args) {
     }
   }
   if (n2 > 0) {
-    final cr = (r2 / n2).round(), cg = (g2 / n2).round(), cb = (b2 / n2).round();
+    final cr = (r2 / n2).round(),
+        cg = (g2 / n2).round(),
+        cb = (b2 / n2).round();
     stdout.writeln('');
     stdout.writeln(
       'tom mediano: rgb($cr, $cg, $cb) = ${hexOf(cr, cg, cb)}  (n=$n2)',

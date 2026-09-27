@@ -32,8 +32,10 @@ void main(List<String> args) {
   final input = options['in'] ?? 'tool/data/ea_ratings.json';
   final output = options['out'] ?? 'tool/data/backfill_player_images.sql';
 
-  final raw = jsonDecode(File(input).readAsStringSync()) as Map<String, dynamic>;
-  final items = (raw['items'] as List<dynamic>).whereType<Map<String, dynamic>>();
+  final raw =
+      jsonDecode(File(input).readAsStringSync()) as Map<String, dynamic>;
+  final items = (raw['items'] as List<dynamic>)
+      .whereType<Map<String, dynamic>>();
 
   final rows = <String>[];
   var semAvatar = 0;
@@ -50,7 +52,9 @@ void main(List<String> args) {
   final buffer = StringBuffer()
     ..writeln('-- Backfill de fc_player_cards.player_image_url.')
     ..writeln('-- Gerado por tool/backfill_player_images.dart a partir de')
-    ..writeln('-- $input (fonte: ${raw['source']}, baixado em ${raw['fetched_at']}).')
+    ..writeln(
+      '-- $input (fonte: ${raw['source']}, baixado em ${raw['fetched_at']}).',
+    )
     ..writeln('--')
     ..writeln('-- Uma transacao so: ou entra tudo, ou nada.')
     ..writeln('begin;')

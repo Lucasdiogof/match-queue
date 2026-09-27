@@ -162,12 +162,8 @@ class SupabaseTeamRepository implements TeamRepository {
   });
 
   @override
-  Future<void> removeMember({
-    required String teamId,
-    required String userId,
-  }) => _guard(
-    () => _dataSource.removeMember(teamId: teamId, userId: userId),
-  );
+  Future<void> removeMember({required String teamId, required String userId}) =>
+      _guard(() => _dataSource.removeMember(teamId: teamId, userId: userId));
 
   @override
   Future<void> setMemberRole({

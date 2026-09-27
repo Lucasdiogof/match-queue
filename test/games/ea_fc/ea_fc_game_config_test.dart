@@ -34,9 +34,6 @@ void main() {
   });
 
   test('EA FC já conhece o ref do seu projeto Supabase', () {
-    expect(
-      eaFcGameConfig.expectedSupabaseProjectRef,
-      'lteujeclnhmurcewurkg',
-    );
+    expect(eaFcGameConfig.expectedSupabaseProjectRef, 'lteujeclnhmurcewurkg');
   });
 }

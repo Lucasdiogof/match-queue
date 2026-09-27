@@ -89,11 +89,9 @@ Future<void> bootstrap() async {
             WidgetsBinding.instance.platformDispatcher.locale,
             AppLocales.supported,
           );
-      final firebaseAvailability = await FirebaseBootstrap(logger).initialize(
-        config,
-        game: gameConfig.key,
-        locale: effectiveLocale,
-      );
+      final firebaseAvailability = await FirebaseBootstrap(
+        logger,
+      ).initialize(config, game: gameConfig.key, locale: effectiveLocale);
 
       await registerDependencies(
         config: config,

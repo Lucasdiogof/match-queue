@@ -17,18 +17,15 @@ void main() {
     );
   });
 
-  test(
-    'jogo sem app Firebase registrado falha alto e cedo em vez de herdar '
-    'options de outro jogo',
-    () {
-      expect(
-        () => GameFirebaseOptions.forGame(GameFlavorKey.ufl),
-        throwsUnsupportedError,
-      );
-      expect(
-        () => GameFirebaseOptions.forGame(GameFlavorKey.goals),
-        throwsUnsupportedError,
-      );
-    },
-  );
+  test('jogo sem app Firebase registrado falha alto e cedo em vez de herdar '
+      'options de outro jogo', () {
+    expect(
+      () => GameFirebaseOptions.forGame(GameFlavorKey.ufl),
+      throwsUnsupportedError,
+    );
+    expect(
+      () => GameFirebaseOptions.forGame(GameFlavorKey.goals),
+      throwsUnsupportedError,
+    );
+  });
 }

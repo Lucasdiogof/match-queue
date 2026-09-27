@@ -68,8 +68,16 @@ void main(List<String> args) {
 
   // Cor de fundo: media dos pixels opacos escuros perto do centro-topo, onde
   // a arte nao tem marca -- evita puxar a media pro cinza do metal.
-  for (var y = (im.height * 0.06).round(); y < (im.height * 0.18).round(); y++) {
-    for (var x = (im.width * 0.35).round(); x < (im.width * 0.65).round(); x++) {
+  for (
+    var y = (im.height * 0.06).round();
+    y < (im.height * 0.18).round();
+    y++
+  ) {
+    for (
+      var x = (im.width * 0.35).round();
+      x < (im.width * 0.65).round();
+      x++
+    ) {
       final p = im.getPixel(x, y);
       if (p.a.toInt() > 250) {
         bgR += p.r;
@@ -172,7 +180,8 @@ void main(List<String> args) {
   ]) {
     final p = im.getPixel(canto[1] as int, canto[2] as int);
     final r = p.r.toInt(), g = p.g.toInt(), b = p.b.toInt();
-    final hex = '#${r.toRadixString(16).padLeft(2, '0')}'
+    final hex =
+        '#${r.toRadixString(16).padLeft(2, '0')}'
         '${g.toRadixString(16).padLeft(2, '0')}'
         '${b.toRadixString(16).padLeft(2, '0')}';
     stdout.writeln('canto ${canto[0]}: $hex (alpha ${p.a.toInt()})');
@@ -182,7 +191,8 @@ void main(List<String> args) {
     final r = (bgR / bgCount).round();
     final g = (bgG / bgCount).round();
     final b = (bgB / bgCount).round();
-    final hex = '#${r.toRadixString(16).padLeft(2, '0')}'
+    final hex =
+        '#${r.toRadixString(16).padLeft(2, '0')}'
         '${g.toRadixString(16).padLeft(2, '0')}'
         '${b.toRadixString(16).padLeft(2, '0')}';
     stdout.writeln('fundo   : rgb($r, $g, $b) = $hex');
