@@ -110,20 +110,21 @@ centralizado com N apps, Supabase separado por clube).
   registrado no Firebase Console (mesmo projeto), `EfootballFirebaseOptions`
   já tem os valores reais dele. `GameFirebaseOptions.forGame` nunca mistura
   isso com o app do EA FC.
-- **Nível iOS (arquivo nativo) — ainda pendente**: `ios/Runner/GoogleService-Info.plist`
-  continua único no repo (o do EA FC) e é empacotado em qualquer flavor que
-  buildar, inclusive `efootball`. Isso **não afeta `Firebase.initializeApp`**
-  (que usa as `FirebaseOptions` explícitas do Dart acima, não lê o plist em
-  runtime) e **não é bloqueio pra esta fundação**, mas o plist errado dentro
-  do bundle não é neutro pra sempre — ferramentas/build phases do Firebase e
-  do Crashlytics (upload de símbolos, Google App ID, configuração auxiliar)
-  podem depender dele fora do caminho `Firebase.initializeApp`. Por isso:
-  - **antes de qualquer release/TestFlight real do eFootball** é obrigatório
-    definir uma estratégia flavor-specific pro `GoogleService-Info.plist`
-    nativo (arquivo próprio por flavor + build phase, ou equivalente) — não
-    adiar isso pra depois do primeiro build de distribuição;
-  - o eFootball **nunca pode ser publicado** carregando, mesmo que só
-    fisicamente dentro do bundle, o plist do EA FC.
+- **Nível iOS (arquivo nativo) — ✅ resolvido**: um `GoogleService-Info.plist`
+  por bundle id, em `ios/Runner/Firebase/<PRODUCT_BUNDLE_IDENTIFIER>/`
+  (`com.lucasdiogof.fifaqueue` e `com.lucasdiogof.matchqueue.efootball`).
+  Os arquivos continuam **fora do git** (`.gitignore`), um por checkout.
+  - O plist saiu da fase *Resources*. A build phase
+    `Copy GoogleService-Info.plist` copia o do bundle id do target para o
+    `.app` e **falha o build** se o arquivo não existir ou se o `BUNDLE_ID`
+    dentro dele não for o do target: o eFootball não tem como sair com o
+    plist do EA FC.
+  - O upload de símbolos do Crashlytics usa
+    `--build-configuration="${CONFIGURATION}"`; o `firebase.json` mapeia as 6
+    configurações (`Debug/Release/Profile` × EA FC/eFootball) para o app certo.
+  - `flutterfire configure` grava no caminho novo (`fileOutput`).
+  - Regressão coberta por
+    `test/games/efootball/efootball_ios_firebase_native_config_test.dart`.
 
 ### Apps Firebase registrados (2026-09-26)
 
