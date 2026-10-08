@@ -1,90 +1,139 @@
-# Match Queue
+<p align="center">
+  <img src="assets/brand/icon.png" width="112" alt="Match Queue app icon">
+</p>
 
-Coordena quem, dentro de um mesmo time de EA SPORTS FC / Clubs, está
-autorizado a procurar partida naquele momento — para que dois companheiros
-nunca busquem ao mesmo tempo e acabem caindo um contra o outro.
+<h1 align="center">Match Queue</h1>
 
-Apenas um jogador fica em `SEARCHING`. Os demais entram numa fila ordenada e
-assumem a busca automaticamente quando o jogador da vez encontra partida,
-cancela ou tem o tempo expirado.
+<p align="center">
+  Real-time matchmaking queue and team tools for competitive EA SPORTS FC players.
+</p>
 
-> **Estado atual: Etapas 1–14 concluídas.** Autenticação, times, convites,
-> matchmaking multi-time com fila e timer server-authoritative, Realtime,
-> push/FCM, partidas com placar e resultado, Contas/Elencos, Squad Builder
-> com overall e química, e o dashboard esportivo do Time (ranking,
-> artilharia, assistências, Weekend League, Rivals e atividade).
->
-> **Retomando o desenvolvimento?** Comece por
-> [`docs/handoff.md`](docs/handoff.md) — estado, convenções, armadilhas
-> conhecidas e o que está pendente.
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white" alt="Flutter">
+  <img src="https://img.shields.io/badge/Dart-0175C2?logo=dart&logoColor=white" alt="Dart">
+  <img src="https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white" alt="Supabase">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Firebase_Cloud_Messaging-DD2C00?logo=firebase&logoColor=white" alt="Firebase Cloud Messaging">
+</p>
 
-## Plataformas
+<p align="center">
+  <b>English</b> · <a href="README.pt-BR.md">Português</a> · <a href="README.es.md">Español</a>
+</p>
 
-Android, iOS e Flutter Web a partir da mesma base. Nenhum serviço específico
-de plataforma é inicializado indiscriminadamente: url strategy usa import
-condicional e Firebase não é inicializado enquanto não houver projeto.
+---
 
-Bundle / application ID: `com.lucasdiogof.fifaqueue`.
+Match Queue helps a team of players who share a game mode (Champions or Rivals) avoid searching at the same time and ending up matched against each other. Only one member of a team searches at a time; the others wait in an ordered queue and take over automatically when it is their turn. Around that queue, the app adds team management, a card catalog, a squad builder, game guides and market prices.
 
-## Stack
+## Availability
 
-| Camada | Ferramenta |
+<a href="https://apps.apple.com/br/app/match-queue/id6810790338"><img src="https://img.shields.io/badge/Available_on_the-App_Store-000000?logo=apple&logoColor=white" alt="Available on the App Store"></a>
+
+- **iOS**: published on the App Store.
+- **Android** and **Web (PWA)**: built from the same codebase.
+- **Languages**: English, Portuguese (Brazil) and Spanish.
+
+## Screenshots
+
+### From queue to match
+
+<table>
+<tr><td align="center" valign="top"><img src="docs/screenshots/en/play.webp" width="220" alt="Play tab with platform, squad, Champions or Rivals mode and a button to search for a match"><br><sub><b>Play</b></sub></td><td align="center" valign="top"><img src="docs/screenshots/en/queue-search.webp" width="220" alt="Searching for a match with a countdown timer and Cancel and Found it buttons"><br><sub><b>Searching for a match</b></sub></td><td align="center" valign="top"><img src="docs/screenshots/en/teams-explore.webp" width="220" alt="Teams tab with the list of teams to explore"><br><sub><b>Teams</b></sub></td></tr>
+<tr><td align="center" valign="top"><img src="docs/screenshots/en/team-detail.webp" width="220" alt="Root team detail with 3 players, an Invite player button and the member list with Owner, Manager and Player roles"><br><sub><b>Team</b></sub></td></tr>
+</table>
+
+### Central and Market
+
+<table>
+<tr><td align="center" valign="top"><img src="docs/screenshots/en/central.webp" width="220" alt="Central with the player and club catalog and mechanics guides"><br><sub><b>Central</b></sub></td><td align="center" valign="top"><img src="docs/screenshots/en/players.webp" width="220" alt="Player catalog with search and category filters"><br><sub><b>Players</b></sub></td><td align="center" valign="top"><img src="docs/screenshots/en/player-detail.webp" width="220" alt="Player detail with card, alternative positions and attributes"><br><sub><b>Card detail</b></sub></td></tr>
+<tr><td align="center" valign="top"><img src="docs/screenshots/en/market.webp" width="220" alt="Card detail with the current market price for consoles and PC"><br><sub><b>Market</b></sub></td><td align="center" valign="top"><img src="docs/screenshots/en/account.webp" width="220" alt="Account screen with appearance, language and notification preferences, privacy policy and terms of use"><br><sub><b>Account</b></sub></td></tr>
+</table>
+
+## Features
+
+**Matchmaking**
+- Real-time search queue per team and game mode (Champions or Rivals), with platform and squad picked before searching.
+- One active search at a time: while one member is `SEARCHING`, the others are `QUEUED` in order.
+- Automatic promotion: when the current searcher finds a match, cancels or times out, the next member in line starts searching.
+- Server-side timer with automatic expiration of stale searches, and a cooldown after each search.
+- "Match found" flow that moves the team into the match and records the result.
+- Search and match history per team and per account.
+
+**Teams**
+- Create, explore and join teams; public team pages.
+- Member roles (owner, manager and player), including ownership transfer.
+- Invitations by code and shareable invite links (`/join/:inviteCode`) that survive the sign-in flow, plus join requests.
+- Team dashboard with ranking, top scorers, assists, Champions and Rivals results, and recent activity.
+
+**Central: catalog and guides**
+- Player and card catalog with search by name and category filters, covering men's and women's football.
+- Card detail: attributes, alternative positions, weak foot and skill moves.
+- Clubs, managers, PlayStyles, chemistry styles, Evolutions and consumables.
+- Controls guides for dribbling (Skill Moves by star rating), passing, shooting and defending.
+
+**Squad Builder**
+- One squad per account, with formations, a pitch view and a position-aware player picker.
+- Overall and chemistry calculated by the same rules on the server and in the draft preview.
+- Atomic save, so a squad is never stored half-validated.
+
+**Market**
+- Current card price per platform, with the date of the last update, and a favorites list.
+
+**Account**
+- Email sign-in, profile, shareable public profile, appearance (light/dark), language and notification preferences.
+- Push notifications and an in-app notification center with an unread badge.
+- Self-service account deletion.
+
+## Architecture
+
+Matchmaking has to stay consistent while many clients act at the same time, so **the server is the only authority**. The app asks and observes; it never decides who is searching.
+
+- **RPC-only access to queue state.** The search session and queue tables have Row Level Security enabled and no client policies. Every change goes through `security definer` RPCs (`request_match_search`, `cancel_match_search`, `report_match_found`, …) that validate membership and state.
+- **Locking.** Transaction-scoped Postgres advisory locks serialize matchmaking per team and per user, so a user cannot search for two teams at once and concurrent requests cannot create two active searches.
+- **Session expiration.** Expired searches are closed lazily by any RPC that touches the team and periodically by a `pg_cron` job, which also promotes the next member in the queue.
+- **Idempotency.** Repeated calls (retries, double taps, rebuilt screens) return the current state instead of creating duplicates. Squad creation and other writes follow the same rule.
+- **Realtime as a signal, not as state.** Clients subscribe through Supabase Realtime to a per-team revision counter that only members can read. An event only means "something changed"; the client then re-reads the official state from `get_team_matchmaking_state`. Duplicate, late or out-of-order events are harmless, and a periodic refresh works as a polling fallback.
+- **Transactional outbox for notifications.** Notification events are written to an outbox inside the same transaction as the state change. An Edge Function delivers them to Firebase Cloud Messaging, triggered right away by `pg_net` and backed by a one-minute cron. If delivery is down, matchmaking stays correct and pushes are only delayed.
+- **Edge Functions** for account deletion, notification delivery and market prices. The price provider sits behind a function, so it can be replaced or disabled without a new app build.
+- **Deep links.** Invite and public profile links use App Links / Universal Links on mobile and path-based URLs on the web.
+
+The Flutter app follows a feature-first Clean Architecture (domain, data, presentation), with Cubits for state, `get_it` for dependency injection and `go_router` with authentication guards.
+
+## Tech stack
+
+| Layer | Technology |
 | --- | --- |
-| UI | Flutter 3.44 / Dart 3.12 |
-| Estado | `flutter_bloc` (Cubit) |
-| DI | `get_it` |
-| Navegação | `go_router` |
-| Backend | Supabase (Auth, PostgreSQL, RLS; Realtime/RPC/Storage previstos) |
-| Persistência local | `shared_preferences` |
-| i18n | `flutter_localizations` + ARB (`gen-l10n`) |
-| CI | Codemagic (`codemagic.yaml`) |
+| App | Flutter, Dart |
+| State | `flutter_bloc` (Cubit) |
+| DI / Routing | `get_it`, `go_router` |
+| Backend | Supabase: Auth, PostgreSQL, RLS, RPCs, Realtime, Storage, Edge Functions (Deno), `pg_cron` |
+| Push | Firebase Cloud Messaging |
+| Localization | `flutter_localizations` + ARB (`gen-l10n`) |
+| Web hosting | Firebase Hosting |
+| CI | Codemagic |
+| Tests | `flutter_test`, pgTAP |
 
-Firebase (FCM, Crashlytics, Analytics) está previsto e desacoplado, mas
-**não** foi adicionado como dependência.
-
-## Arquitetura
-
-Clean Architecture com organização *feature-first*. Regras de dependência e
-decisões em [`docs/architecture.md`](docs/architecture.md).
+## Project structure
 
 ```
 lib/
-├── app/                        composition root
-│   ├── app.dart                MaterialApp.router + providers + listeners
-│   ├── bootstrap.dart          config → serviços → DI → runApp
-│   ├── dependencies.dart       registro de todos os módulos
-│   ├── router/app_router.dart  montagem do GoRouter + guards
-│   └── pages/                  splash, shell responsivo, rota inválida
-│
-├── core/
-│   ├── config/                 AppEnvironment, AppConfig, AuthRedirects
-│   ├── design_system/          tokens, theme, branding, layout, componentes
-│   ├── di/                     getIt, SessionScope, core module
-│   ├── errors/                 AppFailure (sealed, Dart puro)
-│   ├── firebase/               FirebaseBootstrap (no-op consciente)
-│   ├── l10n/                   AppLocales, context.l10n, mapeadores de erro
-│   ├── logging/                AppLogger + LogSanitizer
-│   ├── navigation/             AppRoutes, refresh stream, url strategy
-│   ├── observability/          CrashReporter, AnalyticsService
-│   ├── supabase/               SupabaseInitializer, SupabaseErrorMapper
-│   └── validation/             AppValidators (e-mail, senha, display name)
-│
-├── features/
-│   ├── auth/                   login, cadastro, recuperação, reset
-│   ├── profile/                leitura e edição do profile
-│   ├── settings/               tema e idioma persistidos
-│   ├── invitations/            convite pendente + /join/:inviteCode
-│   └── home/ teams/ history/ onboarding/   placeholders
-│
-├── shared/widgets/
-└── l10n/                       app_pt.arb, app_en.arb, app_es.arb
+├── app/            composition root: bootstrap, DI, router, shell
+├── core/           config, design system, errors, l10n, logging, navigation, Supabase
+├── features/       auth, matchmaking, teams, invitations, requests, history,
+│                   central, mechanics, fc_squads, market, notifications,
+│                   public_profile, account, settings, legal, onboarding
+├── games/          per-game configuration (build flavors)
+├── shared/         reusable widgets
+└── l10n/           app_en.arb, app_pt.arb, app_es.arb
 
 supabase/
-├── config.toml
-└── migrations/                 schema versionado
+├── migrations/     versioned schema, RLS policies and RPCs
+├── functions/      Edge Functions
+└── tests/          pgTAP and SQL fixtures
 ```
 
-## Como executar
+## Running locally
+
+Requirements: Flutter (stable channel) and, for a real backend, a Supabase project.
 
 ```bash
 flutter pub get
@@ -92,203 +141,29 @@ cp env/development.example.json env/development.json
 flutter run --flavor eaFc --dart-define-from-file=env/development.json --dart-define=APP_GAME=ea_fc
 ```
 
-Desde a fundação multi-game (commit `c8df926`), Android/iOS têm productFlavors
-de verdade e `--flavor eaFc` passou a ser obrigatório para rodar/buildar o
-app (o EA FC continua sendo o único jogo publicado; o applicationId/bundle
-id dele não mudou). Web não usa `--flavor`.
+On the web, `--flavor` is not used:
 
-Sem credenciais Supabase o app **abre normalmente em development**: o
-`SupabaseInitializer` avisa no log e os repositórios locais
-(`LocalAuthRepository`, `LocalProfileRepository`) assumem o lugar dos reais.
-As telas de login e cadastro são as mesmas — as contas criadas ficam só na
-memória do dispositivo, e a tela de login mostra um aviso dizendo isso.
+```bash
+flutter run -d chrome --dart-define-from-file=env/development.json
+```
 
-Para conectar a um projeto Supabase de verdade, siga
-[`docs/supabase_setup.md`](docs/supabase_setup.md).
-
-### Comandos úteis
+Without Supabase credentials, the app still opens in development mode with local in-memory repositories. To connect a real project, see [`docs/supabase_setup.md`](docs/supabase_setup.md).
 
 ```bash
 flutter analyze
-flutter gen-l10n
-dart format .
-flutter run -d chrome --web-port=5000 --dart-define-from-file=env/development.json
-flutter build web --release --dart-define-from-file=env/production.json
-flutter build apk --release --flavor eaFc --dart-define-from-file=env/production.json --dart-define=APP_GAME=ea_fc
-flutter build ipa --release --flavor eaFc --dart-define-from-file=env/production.json --dart-define=APP_GAME=ea_fc
+flutter test
 ```
 
-## Environments
+## Project status
 
-Três ambientes: `development`, `staging`, `production`, resolvidos em
-`AppConfig.fromEnvironment()` a partir de `dart-define` — nunca de valores
-hardcoded.
+Published on the App Store and in active development. The codebase also contains early groundwork for supporting a second game through build flavors.
 
-| Chave | Uso |
-| --- | --- |
-| `ENVIRONMENT` | `development` \| `staging` \| `production` |
-| `SUPABASE_URL` | URL do projeto Supabase |
-| `SUPABASE_PUBLISHABLE_KEY` | chave publicável (aceita `SUPABASE_ANON_KEY` como fallback legado) |
-| `APP_LINK_HOST` | host dos deep links, quando houver domínio |
-| `FIREBASE_ENABLED` | liga o bootstrap do Firebase (hoje ainda no-op) |
-| `VERBOSE_LOGGING` | nível de log |
+## License
 
-Os `env/*.json` são ignorados pelo git; só os `*.example.json` são
-versionados. No Codemagic os valores vêm de *environment variable groups*.
+No open-source license is granted. The source code is visible as part of a portfolio; all rights are reserved.
 
-Em `staging` e `production`, configuração ausente é erro: o app sobe o
-`StartupFailureApp` dizendo exatamente quais chaves faltam. Em `development`,
-é tolerada.
+Match Queue is an independent product with no affiliation with EA. EA SPORTS FC and the names and images of players and clubs belong to their respective owners.
 
-## Supabase
+## About
 
-Schema versionado em `supabase/migrations/`. Detalhes de tabelas, trigger,
-RLS e fluxos em [`docs/database.md`](docs/database.md); passo a passo de
-configuração em [`docs/supabase_setup.md`](docs/supabase_setup.md).
-
-Resumo do que existe:
-
-- `public.profiles` — identidade pública do jogador, 1:1 com `auth.users`.
-  **Sem e-mail**: ele continua no Auth, e o app o lê da própria sessão.
-- `public.handle_new_user()` + trigger em `auth.users` — cria o profile
-  usando `raw_user_meta_data->>'display_name'`, com fallbacks e sem nunca
-  abortar o signup.
-- RLS self-only: o usuário lê, cria e atualiza apenas a própria linha. Sem
-  policy de delete (cascade a partir de `auth.users`) e sem acesso `anon`.
-
-A **service role key nunca entra no app Flutter**.
-
-## Autenticação
-
-E-mail e senha via Supabase Auth, **sem confirmação de e-mail** — o cadastro
-cria a sessão na hora. Se essa configuração estiver ligada por engano no
-Dashboard, o app não finge que autenticou: mostra a mensagem pedindo a
-confirmação em vez de deixar o usuário num limbo.
-
-| Tela | Rota |
-| --- | --- |
-| Login | `/login` |
-| Cadastro (nome, e-mail, senha, confirmação) | `/signup` |
-| Esqueci minha senha | `/forgot-password` |
-| Definir nova senha | `/reset-password` |
-
-Regras: senha com no mínimo 8 caracteres, nome entre 2 e 32 caracteres (os
-mesmos limites existem como constraint no banco). A resposta da recuperação
-de senha é sempre neutra, exista a conta ou não, para não permitir
-enumeração de e-mails cadastrados.
-
-Nenhuma mensagem crua do Supabase chega à UI: `SupabaseErrorMapper` traduz
-para `AppFailure` e `AppFailureL10n` traduz para texto localizado.
-
-## Navegação
-
-```
-/                       splash / resolução de sessão
-/login
-/signup
-/forgot-password
-/reset-password
-/onboarding
-/join/:inviteCode       público, aceita usuário não autenticado
-/app/
-├── home                Buscar
-├── team                Time
-├── history             Histórico
-└── profile             Perfil
-```
-
-O guard vive no `redirect` do go_router e reage ao `AuthCubit` via
-`refreshListenable`:
-
-- não autenticado em rota protegida → `/login`;
-- autenticado em `/login` ou `/signup` → `/app/home`;
-- sessão de recuperação de senha ativa → `/reset-password`, e só sai de lá
-  depois que a senha for salva;
-- `/join/:inviteCode` continua aberto para não autenticados.
-
-A área autenticada usa `StatefulShellRoute.indexedStack` com quatro branches
-e navegação que troca de forma conforme a largura: `NavigationBar` no mobile,
-`NavigationRail` no tablet e rail estendido no desktop.
-
-## Deep links
-
-`/join/:inviteCode` já existe, é acessível sem autenticação e o convite é
-persistido com TTL de 24h caso o usuário ainda não esteja logado — sendo
-retomado automaticamente após o login.
-
-A recuperação de senha usa um scheme próprio
-(`com.lucasdiogof.fifaqueue://auth-callback`) e por isso funciona no mobile
-hoje, sem domínio. App Links (Android) e Universal Links (iOS) para o convite
-continuam dependendo de um domínio: passo a passo em
-[`docs/deep_links.md`](docs/deep_links.md).
-
-## Localization
-
-PT-BR, EN e ES via ARB + `gen-l10n` (`l10n.yaml` → `lib/l10n/generated/`),
-uso via `context.l10n.chave`. Todo texto novo — telas, validações, erros e
-mensagens de sucesso — existe nos três idiomas.
-
-**Todo placeholder declara `@placeholders` explicitamente**: sem isso o
-`gen-l10n` ordena os parâmetros alfabeticamente em vez da ordem do texto e
-troca valores em silêncio.
-
-O idioma segue o dispositivo quando suportado; fallback para inglês
-(`AppLocales.fallback`). O usuário pode fixar um idioma no Perfil, e a
-escolha é persistida.
-
-## Tema
-
-Light/Dark/System, persistido pelo `ThemeCubit`. Tokens em
-`core/design_system/tokens/`; cores semânticas em `AppSemanticColors`, um
-`ThemeExtension` acessível por `context.colors`.
-
-A identidade é preto e branco. Cor só aparece com significado: verde sucesso,
-amarelo atenção, vermelho erro — e nunca sozinha: todo estado semântico vem
-acompanhado de ícone e texto.
-
-| Token | Dark | Light |
-| --- | --- | --- |
-| background | `#090909` | `#F6F6F7` |
-| surface | `#111111` | `#FFFFFF` |
-| surface elevated | `#181818` | `#FFFFFF` |
-| primary | `#FFFFFF` | `#0A0A0A` |
-
-## Responsividade
-
-Mobile (`< 600`), tablet (`< 1024`) e desktop (`>= 1024`), em
-`AppBreakpoints`. Ferramentas: `context.screenSize`, `context.responsive`,
-`ResponsiveLayout`, `AppContentContainer` (`.narrow` / `.form`) e
-`AppScaffold`.
-
-As telas de autenticação usam `AppContentContainer.form` (440px) centrado
-vertical e horizontalmente, então no desktop são um cartão de formulário — e
-não uma tela de celular esticada.
-
-## Branding
-
-**A logo definitiva não foi criada.** O app usa um monograma `MQ` e o
-wordmark textual `Match Queue`, ambos gerados em código, e tudo passa por
-`BrandAssets` — trocar logo, wordmark, ícone e splash é editar um arquivo.
-Ver [`docs/branding.md`](docs/branding.md).
-
-## Testes
-
-Ainda não há testes, por decisão explícita. O código foi escrito para ser
-testável depois: domínio isolado, repositórios atrás de interfaces
-(com implementações locais que servem de fake pronto), validadores puros,
-Cubits pequenos e nenhuma lógica dentro de Widget.
-
-## Próximos passos
-
-1. **Etapa 3** — times, membros e criação do primeiro time (`teams`,
-   `team_members`, papéis OWNER/ADMIN/PLAYER) e a policy de leitura de
-   profiles por companheiro de time.
-2. Convite por link ponta a ponta + domínio + App Links / Universal Links.
-3. Fila e matchmaking com RPC transacional garantindo um único `SEARCHING`.
-4. Timer com `started_at` / `expires_at` vindos do backend.
-5. Realtime nas mudanças de fila.
-6. Histórico e eventos de sessão.
-7. Upload de avatar (Storage).
-8. Firebase: FCM, Crashlytics, Analytics.
-9. Etapa dedicada a testes, auditoria e qualidade.
-10. Codemagic com signing e publicação.
+Built by Lucas Diogo França. Case study: [lucksrei.com/projects/match-queue](https://lucksrei.com/projects/match-queue/)
