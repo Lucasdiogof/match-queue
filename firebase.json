@@ -44,6 +44,24 @@
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/Firebase/com.lucasdiogof.fifaqueue/GoogleService-Info.plist"
           },
+          "Debug-eaFc": {
+            "projectId": "fifa-queue",
+            "appId": "1:927848400584:ios:c43993856e4893bef187fd",
+            "uploadDebugSymbols": true,
+            "fileOutput": "ios/Runner/Firebase/com.lucasdiogof.fifaqueue/GoogleService-Info.plist"
+          },
+          "Release-eaFc": {
+            "projectId": "fifa-queue",
+            "appId": "1:927848400584:ios:c43993856e4893bef187fd",
+            "uploadDebugSymbols": true,
+            "fileOutput": "ios/Runner/Firebase/com.lucasdiogof.fifaqueue/GoogleService-Info.plist"
+          },
+          "Profile-eaFc": {
+            "projectId": "fifa-queue",
+            "appId": "1:927848400584:ios:c43993856e4893bef187fd",
+            "uploadDebugSymbols": true,
+            "fileOutput": "ios/Runner/Firebase/com.lucasdiogof.fifaqueue/GoogleService-Info.plist"
+          },
           "Debug-efootball": {
             "projectId": "fifa-queue",
             "appId": "1:927848400584:ios:f4790db0cb90c8d2f187fd",
