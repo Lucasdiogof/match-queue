@@ -9,9 +9,8 @@ import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._repository, {Stream<void>? sessionExpired})
-    : _sessionExpired = sessionExpired,
-      super(const AuthState());
+  AuthCubit(this._repository, {this._sessionExpired})
+    : super(const AuthState());
 
   final AuthRepository _repository;
   final Stream<void>? _sessionExpired;

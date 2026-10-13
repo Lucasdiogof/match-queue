@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 const AuthUser _testUser = AuthUser(id: 'u1', email: 'a@b.com');
 
 class _FakeAuthRepository implements AuthRepository {
-  _FakeAuthRepository({AuthUser? user = _testUser}) : _user = user;
+  _FakeAuthRepository({this._user = _testUser});
 
   AuthUser? _user;
   final StreamController<AuthSnapshot> _stream =

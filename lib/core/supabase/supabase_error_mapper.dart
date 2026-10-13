@@ -6,8 +6,7 @@ import 'package:http/http.dart' show ClientException;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseErrorMapper {
-  const SupabaseErrorMapper({SessionExpiredSignal? sessionExpiredSignal})
-    : _sessionExpiredSignal = sessionExpiredSignal;
+  const SupabaseErrorMapper({this._sessionExpiredSignal});
 
   final SessionExpiredSignal? _sessionExpiredSignal;
 
