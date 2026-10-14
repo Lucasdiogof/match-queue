@@ -1,7 +1,4 @@
-import 'package:fifa_queue/core/config/app_config.dart';
-import 'package:fifa_queue/core/config/auth_redirects.dart';
 import 'package:fifa_queue/core/errors/app_failure.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
@@ -22,6 +19,11 @@ abstract interface class AuthRemoteDataSource {
 
   Future<void> sendPasswordReset(String email);
 
+  Future<void> verifyRecoveryCode({
+    required String email,
+    required String code,
+  });
+
   Future<void> updatePassword(String newPassword);
 
   bool get isSessionExpiring;
@@ -34,12 +36,11 @@ abstract interface class AuthRemoteDataSource {
 }
 
 class SupabaseAuthRemoteDataSource implements AuthRemoteDataSource {
-  const SupabaseAuthRemoteDataSource(this._client, this._config);
+  const SupabaseAuthRemoteDataSource(this._client);
 
   static const String displayNameMetadataKey = 'display_name';
 
   final SupabaseClient _client;
-  final AppConfig _config;
 
   GoTrueClient get _auth => _client.auth;
 
@@ -89,15 +90,19 @@ class SupabaseAuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> sendPasswordReset(String email) => _auth.resetPasswordForEmail(
-    email,
-    redirectTo: AuthRedirects.passwordReset(
-      isWeb: kIsWeb,
-      currentUri: Uri.base,
-      mobileScheme: _config.appUrlScheme,
-      appLinkHost: _config.appLinkHost,
-    ),
-  );
+  Future<void> sendPasswordReset(String email) =>
+      _auth.resetPasswordForEmail(email);
+
+  /// Troca o codigo de 6 digitos do e-mail por uma sessao de recuperacao. O
+  /// GoTrue emite `AuthChangeEvent.passwordRecovery`, que leva o router a
+  /// `/reset-password`. Sem redirect/PKCE/deep link.
+  @override
+  Future<void> verifyRecoveryCode({
+    required String email,
+    required String code,
+  }) async {
+    await _auth.verifyOTP(type: OtpType.recovery, email: email, token: code);
+  }
 
   @override
   Future<void> updatePassword(String newPassword) =>

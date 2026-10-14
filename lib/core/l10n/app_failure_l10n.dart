@@ -23,6 +23,7 @@ extension AppFailureL10n on AppFailure {
       AuthFailureReason.emailConfirmationRequired =>
         l10n.errorEmailConfirmationRequired,
       AuthFailureReason.tooManyRequests => l10n.errorTooManyRequests,
+      AuthFailureReason.invalidRecoveryCode => l10n.errorInvalidRecoveryCode,
       AuthFailureReason.unknown => l10n.errorAuthUnknown,
     },
     TeamFailure(:final reason) => switch (reason) {

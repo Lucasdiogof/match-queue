@@ -32,8 +32,10 @@ foram criados (mesmo pra EA FC). Web não usa `--flavor`.
 
 ## Scheme do callback do Supabase Auth (`AUTH_CALLBACK_SCHEME` / `APP_URL_SCHEME`)
 
-Cada jogo tem seu próprio scheme de deep link para o callback de
-recuperação de senha (`<scheme>://auth-callback`). Hoje, por coincidência
+Cada jogo tem seu próprio scheme de deep link (`<scheme>://auth-callback`).
+A recuperação de senha **não usa mais** esse callback (agora é por código de
+6 dígitos digitado no app — ver `docs/database.md`); o scheme segue
+registrado e validado por `assertGameMatchesConfig`. Hoje, por coincidência
 histórica, o scheme do EA FC é literalmente igual ao seu bundle id
 (`com.lucasdiogof.fifaqueue`) — mas os dois conceitos são **independentes**:
 
@@ -48,8 +50,7 @@ histórica, o scheme do EA FC é literalmente igual ao seu bundle id
   `android:scheme="${authCallbackScheme}"` no `AndroidManifest.xml`.
 - **Dart**: `APP_URL_SCHEME` (dart-define, lido em `AppConfig.appUrlScheme`).
   Ausente = mantém o valor atual do EA FC (retrocompatibilidade com builds
-  existentes). Usado por `AuthRedirects.passwordReset` pra montar o
-  `redirectTo` do Supabase.
+  existentes). Hoje só alimenta o guard cross-flavor abaixo.
 - **Guard cross-flavor**: `GameConfig.expectedUrlScheme` +
   `assertGameMatchesConfig()` (chamado no `bootstrap()`) comparam o
   `APP_URL_SCHEME` resolvido em runtime contra o valor esperado pro jogo que

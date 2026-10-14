@@ -431,17 +431,17 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get forgotPasswordMessage =>
-      'Informe o e-mail da sua conta e enviaremos o link para criar uma nova senha.';
+      'Informe o e-mail da sua conta e enviaremos um código de 6 dígitos para criar uma nova senha.';
 
   @override
   String get forgotPasswordAction => 'Enviar instruções';
 
   @override
-  String get forgotPasswordSentTitle => 'Confira seu e-mail';
+  String get forgotPasswordSentTitle => 'Digite o código';
 
   @override
   String get forgotPasswordSentMessage =>
-      'Se houver uma conta associada a este e-mail, você vai receber as instruções para redefinir a senha.';
+      'Se houver uma conta com este e-mail, enviamos um código de 6 dígitos. Digite-o abaixo.';
 
   @override
   String get forgotPasswordBackToLogin => 'Voltar para o login';
@@ -450,13 +450,31 @@ class AppLocalizationsPt extends AppLocalizations {
   String get forgotPasswordResend => 'Reenviar';
 
   @override
-  String get forgotPasswordNotReceived => 'Não recebeu o e-mail?';
+  String get forgotPasswordNotReceived => 'Não recebeu o código?';
 
   @override
   String get forgotPasswordResending => 'Reenviando...';
 
   @override
-  String get forgotPasswordResendSuccess => 'E-mail reenviado.';
+  String get forgotPasswordResendSuccess => 'Código reenviado.';
+
+  @override
+  String get errorInvalidRecoveryCode =>
+      'Código inválido ou expirado. Confira o código ou peça um novo.';
+
+  @override
+  String get forgotPasswordCodeLabel => 'Código de 6 dígitos';
+
+  @override
+  String get forgotPasswordCodeAction => 'Confirmar código';
+
+  @override
+  String get forgotPasswordCodeInvalid => 'Digite os 6 dígitos do código.';
+
+  @override
+  String forgotPasswordResendIn(int seconds) {
+    return 'Reenviar em ${seconds}s';
+  }
 
   @override
   String get resetPasswordTitle => 'Definir nova senha';
@@ -475,11 +493,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get resetPasswordSuccess => 'Senha atualizada. Bem-vindo de volta.';
 
   @override
-  String get resetPasswordInvalidTitle => 'Link expirado ou inválido';
+  String get resetPasswordInvalidTitle => 'Código expirado ou inválido';
 
   @override
   String get resetPasswordInvalidMessage =>
-      'Peça um novo link de recuperação para definir sua senha.';
+      'Peça um novo código de recuperação para definir sua senha.';
 
   @override
   String get validationEmailRequired => 'Informe seu e-mail.';

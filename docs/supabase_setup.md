@@ -91,7 +91,20 @@ Se "Confirm email" ficar ligado por engano, o app não finge que autenticou:
 `AuthFailureReason.emailConfirmationRequired` e a tela de cadastro mostra a
 mensagem pedindo a confirmação. Isso serve de alarme de configuração errada.
 
+### Authentication → Emails (recuperação de senha por código)
+
+A recuperação de senha usa um **código de 6 dígitos**, sem link. Em cada projeto
+(EA FC e eFootball):
+
+1. *Authentication → Emails → Templates → Reset Password*: cole o HTML de
+   `supabase/templates/recovery_eafc.html` (ou `recovery_efootball.html`) e use
+   o assunto `Seu código de recuperação — Match Queue (<jogo>)`. O corpo só tem
+   `{{ .Token }}` — nada de `{{ .ConfirmationURL }}`.
+2. *Authentication → Providers → Email → Email OTP Length*: **6**.
+
 ### Authentication → URL Configuration
+
+(Não é mais necessário para a recuperação de senha; segue valendo para o resto.)
 
 | Campo | Valor |
 | --- | --- |

@@ -19,6 +19,13 @@ abstract interface class AuthRepository {
 
   Future<void> sendPasswordReset(String email);
 
+  /// Valida o codigo de 6 digitos enviado por e-mail e abre a sessao de
+  /// recuperacao (emite passwordRecovery em [watchAuthState]).
+  Future<void> verifyRecoveryCode({
+    required String email,
+    required String code,
+  });
+
   Future<void> updatePassword(String newPassword);
 
   Future<void> signOut();

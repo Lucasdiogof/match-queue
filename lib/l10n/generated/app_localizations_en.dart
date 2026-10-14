@@ -431,17 +431,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPasswordMessage =>
-      'Enter your account email and we will send the link to create a new password.';
+      'Enter your account email and we will send a 6-digit code to create a new password.';
 
   @override
   String get forgotPasswordAction => 'Send instructions';
 
   @override
-  String get forgotPasswordSentTitle => 'Check your email';
+  String get forgotPasswordSentTitle => 'Enter the code';
 
   @override
   String get forgotPasswordSentMessage =>
-      'If there is an account for this email, you will receive the instructions to reset your password.';
+      'If there is an account with this email, we sent a 6-digit code. Enter it below.';
 
   @override
   String get forgotPasswordBackToLogin => 'Back to sign in';
@@ -450,13 +450,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPasswordResend => 'Resend';
 
   @override
-  String get forgotPasswordNotReceived => 'Didn\'t get the email?';
+  String get forgotPasswordNotReceived => 'Didn\'t get the code?';
 
   @override
   String get forgotPasswordResending => 'Resending...';
 
   @override
-  String get forgotPasswordResendSuccess => 'Email resent.';
+  String get forgotPasswordResendSuccess => 'Code resent.';
+
+  @override
+  String get errorInvalidRecoveryCode =>
+      'Invalid or expired code. Check the code or request a new one.';
+
+  @override
+  String get forgotPasswordCodeLabel => '6-digit code';
+
+  @override
+  String get forgotPasswordCodeAction => 'Confirm code';
+
+  @override
+  String get forgotPasswordCodeInvalid => 'Enter the 6 digits of the code.';
+
+  @override
+  String forgotPasswordResendIn(int seconds) {
+    return 'Resend in ${seconds}s';
+  }
 
   @override
   String get resetPasswordTitle => 'Set a new password';
@@ -475,11 +493,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetPasswordSuccess => 'Password updated. Welcome back.';
 
   @override
-  String get resetPasswordInvalidTitle => 'Expired or invalid link';
+  String get resetPasswordInvalidTitle => 'Expired or invalid code';
 
   @override
   String get resetPasswordInvalidMessage =>
-      'Request a new recovery link to set your password.';
+      'Request a new recovery code to set your password.';
 
   @override
   String get validationEmailRequired => 'Enter your email.';

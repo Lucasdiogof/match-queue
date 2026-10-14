@@ -8,6 +8,7 @@ enum AuthFailureReason {
   sessionExpired,
   emailConfirmationRequired,
   tooManyRequests,
+  invalidRecoveryCode,
   unknown,
 }
 

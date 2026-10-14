@@ -42,6 +42,28 @@ class _FakeAuthRepository implements AuthRepository {
     }
   }
 
+  Object? verifyError;
+  final List<({String email, String code})> verifyCalls =
+      <({String email, String code})>[];
+
+  @override
+  Future<void> verifyRecoveryCode({
+    required String email,
+    required String code,
+  }) async {
+    verifyCalls.add((email: email, code: code));
+    final error = verifyError;
+    if (error != null) {
+      throw error;
+    }
+    _stream.add(
+      const AuthSnapshot(
+        event: AuthSessionEvent.passwordRecovery,
+        user: _testUser,
+      ),
+    );
+  }
+
   @override
   Future<void> signOut() async {
     signOutCalls++;
@@ -176,6 +198,40 @@ void main() {
 
       expect(cubit.state.status, AuthStatus.unauthenticated);
       expect(cubit.state.failure, isA<AuthFailure>());
+    });
+  });
+
+  group('verifyRecoveryCode (codigo de 6 digitos)', () {
+    test('codigo valido normaliza e-mail e abre a recuperacao', () async {
+      final ok = await cubit.verifyRecoveryCode(
+        email: '  A@B.com ',
+        code: ' 123456 ',
+      );
+      await _settle();
+
+      expect(ok, isTrue);
+      expect(repository.verifyCalls.single.email, 'a@b.com');
+      expect(repository.verifyCalls.single.code, '123456');
+      expect(cubit.state.isPasswordRecovery, isTrue);
+      expect(cubit.state.failure, isNull);
+    });
+
+    test('codigo invalido vira falha e nao abre a recuperacao', () async {
+      repository.verifyError = const AuthFailure(
+        reason: AuthFailureReason.invalidRecoveryCode,
+      );
+
+      final ok = await cubit.verifyRecoveryCode(
+        email: 'a@b.com',
+        code: '000000',
+      );
+
+      expect(ok, isFalse);
+      expect(cubit.state.isPasswordRecovery, isFalse);
+      expect(
+        (cubit.state.failure! as AuthFailure).reason,
+        AuthFailureReason.invalidRecoveryCode,
+      );
     });
   });
 }

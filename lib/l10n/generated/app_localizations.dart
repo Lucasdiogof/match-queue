@@ -865,7 +865,7 @@ abstract class AppLocalizations {
   /// No description provided for @forgotPasswordMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Informe o e-mail da sua conta e enviaremos o link para criar uma nova senha.'**
+  /// **'Informe o e-mail da sua conta e enviaremos um código de 6 dígitos para criar uma nova senha.'**
   String get forgotPasswordMessage;
 
   /// No description provided for @forgotPasswordAction.
@@ -877,13 +877,13 @@ abstract class AppLocalizations {
   /// No description provided for @forgotPasswordSentTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Confira seu e-mail'**
+  /// **'Digite o código'**
   String get forgotPasswordSentTitle;
 
   /// No description provided for @forgotPasswordSentMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Se houver uma conta associada a este e-mail, você vai receber as instruções para redefinir a senha.'**
+  /// **'Se houver uma conta com este e-mail, enviamos um código de 6 dígitos. Digite-o abaixo.'**
   String get forgotPasswordSentMessage;
 
   /// No description provided for @forgotPasswordBackToLogin.
@@ -901,7 +901,7 @@ abstract class AppLocalizations {
   /// No description provided for @forgotPasswordNotReceived.
   ///
   /// In pt, this message translates to:
-  /// **'Não recebeu o e-mail?'**
+  /// **'Não recebeu o código?'**
   String get forgotPasswordNotReceived;
 
   /// No description provided for @forgotPasswordResending.
@@ -913,8 +913,38 @@ abstract class AppLocalizations {
   /// No description provided for @forgotPasswordResendSuccess.
   ///
   /// In pt, this message translates to:
-  /// **'E-mail reenviado.'**
+  /// **'Código reenviado.'**
   String get forgotPasswordResendSuccess;
+
+  /// No description provided for @errorInvalidRecoveryCode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código inválido ou expirado. Confira o código ou peça um novo.'**
+  String get errorInvalidRecoveryCode;
+
+  /// No description provided for @forgotPasswordCodeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get forgotPasswordCodeLabel;
+
+  /// No description provided for @forgotPasswordCodeAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar código'**
+  String get forgotPasswordCodeAction;
+
+  /// No description provided for @forgotPasswordCodeInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite os 6 dígitos do código.'**
+  String get forgotPasswordCodeInvalid;
+
+  /// No description provided for @forgotPasswordResendIn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reenviar em {seconds}s'**
+  String forgotPasswordResendIn(int seconds);
 
   /// No description provided for @resetPasswordTitle.
   ///
@@ -949,13 +979,13 @@ abstract class AppLocalizations {
   /// No description provided for @resetPasswordInvalidTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Link expirado ou inválido'**
+  /// **'Código expirado ou inválido'**
   String get resetPasswordInvalidTitle;
 
   /// No description provided for @resetPasswordInvalidMessage.
   ///
   /// In pt, this message translates to:
-  /// **'Peça um novo link de recuperação para definir sua senha.'**
+  /// **'Peça um novo código de recuperação para definir sua senha.'**
   String get resetPasswordInvalidMessage;
 
   /// No description provided for @validationEmailRequired.

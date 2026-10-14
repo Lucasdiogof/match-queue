@@ -24,6 +24,26 @@ void main() {
     expect((failure as AuthFailure).reason, AuthFailureReason.sessionExpired);
   }
 
+  test(
+    'codigo de recuperacao errado (403 otp_expired) nao e sessao expirada',
+    () async {
+      final failure = mapper.map(
+        const AuthException(
+          'Token has expired or is invalid',
+          statusCode: '403',
+          code: 'otp_expired',
+        ),
+      );
+      await pump();
+
+      expect(
+        (failure as AuthFailure).reason,
+        AuthFailureReason.invalidRecoveryCode,
+      );
+      expect(notifications, 0);
+    },
+  );
+
   group('sessao expirada', () {
     test('AuthException 401 sem codigo', () {
       expectSessionExpired(const AuthException('x', statusCode: '401'));

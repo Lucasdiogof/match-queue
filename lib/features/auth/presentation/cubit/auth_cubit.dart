@@ -98,6 +98,16 @@ class AuthCubit extends Cubit<AuthState> {
     () => _repository.sendPasswordReset(AppValidators.normalizeEmail(email)),
   );
 
+  Future<bool> verifyRecoveryCode({
+    required String email,
+    required String code,
+  }) => _run(
+    () => _repository.verifyRecoveryCode(
+      email: AppValidators.normalizeEmail(email),
+      code: code.trim(),
+    ),
+  );
+
   Future<bool> updatePassword(String newPassword) async {
     final succeeded = await _run(() => _repository.updatePassword(newPassword));
     if (succeeded && !isClosed) {

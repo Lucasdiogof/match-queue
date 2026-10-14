@@ -58,6 +58,12 @@ class SupabaseAuthRepository implements AuthRepository {
       _guard(() => _dataSource.sendPasswordReset(email));
 
   @override
+  Future<void> verifyRecoveryCode({
+    required String email,
+    required String code,
+  }) => _guard(() => _dataSource.verifyRecoveryCode(email: email, code: code));
+
+  @override
   Future<void> updatePassword(String newPassword) =>
       _guard(() => _dataSource.updatePassword(newPassword));
 

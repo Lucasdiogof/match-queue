@@ -13,8 +13,8 @@ infraestrutura de domínio/hosting, que depende de um domínio definido.
 | Persistência do convite pendente | `LocalPendingInviteRepository` (TTL de 24h) |
 | Retomada após login | `PendingInviteListener` no `builder` do `MaterialApp.router` |
 | URLs sem `#` no Web | `usePathUrlStrategy()` via import condicional |
-| Callback de recuperação de senha | `com.lucasdiogof.fifaqueue://auth-callback` registrado no Android e no iOS |
-| `APP_LINK_HOST` | **`lucksrei.com`** — já configurado em `env/production.json`. O código já usa esse valor (`InviteLinkBuilder`, `PublicProfileLinkBuilder`, `AuthRedirects`) sempre que presente; o que falta é só a configuração nativa (manifest/entitlements) e publicar os dois arquivos `.well-known/*` no domínio |
+| Recuperação de senha | Por código de 6 dígitos no app (sem deep link). O scheme `com.lucasdiogof.fifaqueue://auth-callback` segue registrado, sem uso |
+| `APP_LINK_HOST` | **`lucksrei.com`** — já configurado em `env/production.json`. O código já usa esse valor (`InviteLinkBuilder`, `PublicProfileLinkBuilder`) sempre que presente; o que falta é só a configuração nativa (manifest/entitlements) e publicar os dois arquivos `.well-known/*` no domínio |
 | Android App Links | **Config nativa PRONTA (Etapa 21B)** — intent-filter `autoVerify` já no `AndroidManifest.xml`. Falta só **NEEDS WEBSITE**: publicar `assetlinks.json` no Cloudflare Pages |
 | iOS Universal Links | **NEEDS WEBSITE + macOS** — conteúdo pronto abaixo, nada publicado ainda; capability configurada no Xcode (ver `docs/ios_release_mac.md`, passo 14) |
 
@@ -37,8 +37,7 @@ abre /join/X7K2P9
 ## O que falta configurar, agora que `lucksrei.com` está decidido
 
 `APP_LINK_HOST=lucksrei.com` já está em `env/production.json` — o
-código Dart (`InviteLinkBuilder`, `PublicProfileLinkBuilder`,
-`AuthRedirects`) já passa a gerar `https://lucksrei.com/join/...` e
+código Dart (`InviteLinkBuilder`, `PublicProfileLinkBuilder`) já passa a gerar `https://lucksrei.com/join/...` e
 `https://lucksrei.com/u/...` automaticamente em builds que usem esse
 env file, **sem precisar de mudança de código**. O que falta é 100%
 config nativa (manifest Android / capability iOS) e publicação no
@@ -140,32 +139,7 @@ nesta sessão — só documentado, por instrução explícita.
 
 ## Recuperação de senha
 
-Esse é o único deep link que já funciona ponta a ponta hoje, porque não
-depende de domínio: usa um scheme próprio derivado do bundle id.
-
-`AuthRedirects.passwordReset` escolhe o destino:
-
-| Plataforma | `redirectTo` |
-| --- | --- |
-| Web sem `APP_LINK_HOST` | `<origin>/reset-password` |
-| Web com `APP_LINK_HOST` | `https://<host>/reset-password` |
-| Android / iOS | `com.lucasdiogof.fifaqueue://auth-callback` |
-
-O scheme está registrado em dois lugares:
-
-- `android/app/src/main/AndroidManifest.xml` — `intent-filter` com
-  `android:scheme="com.lucasdiogof.fifaqueue"` e `android:host="auth-callback"`.
-- `ios/Runner/Info.plist` — `CFBundleURLTypes`.
-
-No mobile quem processa a URL é o próprio `supabase_flutter` (via
-`app_links`), não o go_router: ele troca o código pela sessão e emite
-`AuthChangeEvent.passwordRecovery`. O `AuthCubit` transforma isso em
-`AuthState.isPasswordRecovery` e o `redirect` do router força
-`/reset-password`.
-
-Na Web o caminho é duplo de propósito: o evento de recuperação leva à tela,
-mas a própria URL de redirect já **é** `/reset-password`, então mesmo que o
-evento não chegue o usuário cai na tela certa com a sessão válida.
-
-Todos os redirects precisam estar na allowlist de *Authentication → URL
-Configuration* do Supabase — ver [`supabase_setup.md`](supabase_setup.md).
+Não usa deep link: o e-mail traz um código de 6 dígitos que a pessoa digita no
+app (`verifyOTP`), então não há redirect, PKCE nem allowlist envolvida. O
+scheme `com.lucasdiogof.fifaqueue://auth-callback` continua registrado no
+Android/iOS, mas hoje nenhum fluxo de auth o utiliza. Ver `docs/database.md`.

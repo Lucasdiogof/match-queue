@@ -99,8 +99,14 @@ leitura por time entra junto com a tabela que a define.
 | **login** | `signInWithPassword` → sessão → mesmo caminho de profile |
 | **logout** | `signOut` → `AuthCubit` volta para `unauthenticated` → `ProfileCubit.clear()` → guard do router leva para `/login` |
 | **restore session** | `Supabase.initialize` recupera a sessão antes do `runApp`; `AuthCubit.initialize()` lê `currentUser` de forma síncrona, então o app já monta resolvido e nunca pisca Login antes da Home |
-| **forgot password** | `resetPasswordForEmail` com `redirectTo` calculado por `AuthRedirects` — na Web `<origin>/reset-password`, no mobile `com.lucasdiogof.fifaqueue://auth-callback`. A UI responde sempre com a mesma mensagem neutra, exista a conta ou não |
-| **reset password** | O link devolve uma sessão de recuperação; `AuthChangeEvent.passwordRecovery` vira `AuthState.isPasswordRecovery`, o guard força `/reset-password`, e `updateUser(password:)` grava a nova senha e limpa a flag |
+| **forgot password** | `resetPasswordForEmail(email)` **sem `redirectTo`** — o e-mail traz só um código de 6 dígitos (`{{ .Token }}`), sem link/PKCE/deep link. A folha de recuperação pede o código e reenvia com espera de 60 s. A UI responde sempre com a mesma mensagem neutra, exista a conta ou não |
+| **verify code** | `auth.verifyOTP(type: OtpType.recovery, email, token)` troca o código por uma sessão de recuperação; código errado/expirado vira `AuthFailureReason.invalidRecoveryCode` (`otp_expired`) |
+| **reset password** | `AuthChangeEvent.passwordRecovery` (emitido pelo `verifyOTP`) vira `AuthState.isPasswordRecovery`, o guard força `/reset-password`, e `updateUser(password:)` grava a nova senha e limpa a flag |
+
+Template do e-mail de recuperação (um por projeto Supabase, só o código):
+`supabase/templates/recovery_eafc.html` e `recovery_efootball.html`, colados em
+*Authentication → Emails → Templates → Reset Password*. O comprimento do OTP
+(*Authentication → Providers → Email → Email OTP Length*) deve ser **6**.
 
 ## O que ainda não existe
 

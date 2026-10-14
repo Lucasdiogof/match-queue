@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
@@ -7,6 +9,7 @@ import 'package:fifa_queue/core/validation/field_touch.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> showForgotPasswordSheet(BuildContext context) {
@@ -38,11 +41,22 @@ class _ForgotPasswordSheetBodyState extends State<_ForgotPasswordSheetBody> {
   String _sentEmail = '';
   bool _resending = false;
   bool _resendDone = false;
+  final TextEditingController _code = TextEditingController();
+  bool _codeSubmitted = false;
+  int _cooldown = 0;
+  Timer? _cooldownTimer;
+
+  static const int _codeLength = 6;
+  static const int _resendCooldownSeconds = 60;
+
+  bool get _codeComplete => _code.text.length == _codeLength;
 
   bool get _canSubmit => AppValidators.email(_email.text) == null;
 
   @override
   void dispose() {
+    _cooldownTimer?.cancel();
+    _code.dispose();
     _email.dispose();
     super.dispose();
   }
@@ -69,11 +83,45 @@ class _ForgotPasswordSheetBodyState extends State<_ForgotPasswordSheetBody> {
         _sent = true;
         _sentEmail = email;
       });
+      _startCooldown();
+    }
+  }
+
+  void _startCooldown() {
+    _cooldownTimer?.cancel();
+    setState(() => _cooldown = _resendCooldownSeconds);
+    _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted || _cooldown <= 1) {
+        timer.cancel();
+        if (mounted) {
+          setState(() => _cooldown = 0);
+        }
+        return;
+      }
+      setState(() => _cooldown--);
+    });
+  }
+
+  Future<void> _verifyCode() async {
+    setState(() => _codeSubmitted = true);
+    if (!_codeComplete) {
+      return;
+    }
+    FocusScope.of(context).unfocus();
+    final navigator = Navigator.of(context);
+    final succeeded = await context.read<AuthCubit>().verifyRecoveryCode(
+      email: _sentEmail,
+      code: _code.text,
+    );
+    if (succeeded && mounted) {
+      // A sessao de recuperacao emite passwordRecovery e o router leva a
+      // /reset-password; so falta fechar a folha.
+      navigator.pop();
     }
   }
 
   Future<void> _resend() async {
-    if (_resending) {
+    if (_resending || _cooldown > 0) {
       return;
     }
     setState(() {
@@ -90,6 +138,10 @@ class _ForgotPasswordSheetBodyState extends State<_ForgotPasswordSheetBody> {
       _resending = false;
       _resendDone = succeeded;
     });
+    if (succeeded) {
+      _code.clear();
+      _startCooldown();
+    }
   }
 
   @override
@@ -156,36 +208,72 @@ class _ForgotPasswordSheetBodyState extends State<_ForgotPasswordSheetBody> {
   Widget _buildConfirmation(BuildContext context) {
     final l10n = context.l10n;
 
-    return Column(
+    return BlocBuilder<AuthCubit, AuthState>(
       key: const ValueKey<String>('confirmation'),
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        _SheetHeader(
-          icon: Icons.mark_email_read_outlined,
-          title: l10n.forgotPasswordSentTitle,
-          description: l10n.forgotPasswordSentMessage,
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          _sentEmail,
-          textAlign: TextAlign.center,
-          style: context.textStyles.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w700,
+      builder: (context, state) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          _SheetHeader(
+            icon: Icons.mark_email_read_outlined,
+            title: l10n.forgotPasswordSentTitle,
+            description: l10n.forgotPasswordSentMessage,
           ),
-        ),
-        const SizedBox(height: AppSpacing.xl),
-        AppButton(
-          label: l10n.actionClose,
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        _ResendAction(
-          resending: _resending,
-          done: _resendDone,
-          onResend: _resend,
-        ),
-      ],
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            _sentEmail,
+            textAlign: TextAlign.center,
+            style: context.textStyles.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          if (state.failure != null) ...<Widget>[
+            AppBanner(
+              tone: AppBannerTone.danger,
+              message: state.failure!.localizedMessage(l10n),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+          ],
+          AppTextField(
+            label: l10n.forgotPasswordCodeLabel,
+            controller: _code,
+            enabled: !state.isSubmitting,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            autofillHints: const <String>[AutofillHints.oneTimeCode],
+            prefixIcon: Icons.pin_outlined,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(_codeLength),
+            ],
+            errorText: _codeSubmitted && !_codeComplete
+                ? l10n.forgotPasswordCodeInvalid
+                : null,
+            onChanged: (_) {
+              context.read<AuthCubit>().clearFailure();
+              setState(() => _resendDone = false);
+            },
+            onSubmitted: (_) => _verifyCode(),
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          AppButton(
+            label: l10n.forgotPasswordCodeAction,
+            isLoading: state.isSubmitting && !_resending,
+            onPressed: _codeComplete && !state.isSubmitting
+                ? _verifyCode
+                : null,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          _ResendAction(
+            resending: _resending,
+            done: _resendDone,
+            cooldown: _cooldown,
+            onResend: _resend,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -241,11 +329,13 @@ class _ResendAction extends StatelessWidget {
   const _ResendAction({
     required this.resending,
     required this.done,
+    required this.cooldown,
     required this.onResend,
   });
 
   final bool resending;
   final bool done;
+  final int cooldown;
   final VoidCallback onResend;
 
   @override
@@ -253,6 +343,18 @@ class _ResendAction extends StatelessWidget {
     final l10n = context.l10n;
     final colors = context.colors;
 
+    if (cooldown > 0) {
+      return Text(
+        done
+            ? '${l10n.forgotPasswordResendSuccess} '
+                  '${l10n.forgotPasswordResendIn(cooldown)}'
+            : l10n.forgotPasswordResendIn(cooldown),
+        textAlign: TextAlign.center,
+        style: context.textStyles.bodySmall?.copyWith(
+          color: colors.textSecondary,
+        ),
+      );
+    }
     if (done) {
       return Text(
         l10n.forgotPasswordResendSuccess,
