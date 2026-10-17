@@ -486,7 +486,12 @@ Future<void> main(List<String> args) async {
       rarity: col('rarity'),
       cardType: col('card_type'),
       playerImageUrl: col('player_image_url'),
-      cardImageUrl: col('card_image_url') ?? col('player_image_url'),
+      // O recorte do jogador NAO e a carta pronta. Fontes que so entregam
+      // componentes (ex.: FCData) usam --no-card-image-fallback para que
+      // card_image_url so seja preenchido quando a carta de fato existir.
+      cardImageUrl: options.noCardImageFallback
+          ? col('card_image_url')
+          : (col('card_image_url') ?? col('player_image_url')),
       clubName: clubName,
       leagueName: leagueName,
       nationName: nationName,
@@ -624,6 +629,7 @@ class _Args {
     required this.fullCatalog,
     required this.batchSize,
     this.sourceUrl,
+    this.noCardImageFallback = false,
   });
 
   final String filePath;
@@ -635,6 +641,7 @@ class _Args {
   final bool fullCatalog;
   final int batchSize;
   final String? sourceUrl;
+  final bool noCardImageFallback;
 
   static _Args parse(List<String> args) {
     String? filePath;
@@ -645,6 +652,7 @@ class _Args {
     String? mapPath;
     var dryRun = false;
     var fullCatalog = false;
+    var noCardImageFallback = false;
     var batchSize = 500;
     String? sourceUrl;
 
@@ -672,6 +680,8 @@ class _Args {
         dryRun = true;
       } else if (arg == '--full-catalog') {
         fullCatalog = true;
+      } else if (arg == '--no-card-image-fallback') {
+        noCardImageFallback = true;
       }
     }
 
@@ -679,7 +689,8 @@ class _Args {
       stderr.writeln(
         'Uso: dart run tool/sync_fc_cards.dart --file=<path> '
         '[--provider=...] [--game-version=...] [--format=csv|json] '
-        '[--map=...] [--dry-run] [--full-catalog] [--batch-size=N]\n'
+        '[--map=...] [--dry-run] [--full-catalog] [--batch-size=N] '
+        '[--no-card-image-fallback]\n'
         '(--csv=<path> continua aceito como forma antiga, equivalente a '
         '--file=<path> --format=csv)\n'
         '--full-catalog autoriza desativar (is_active=false) cartas do '
@@ -714,6 +725,7 @@ class _Args {
       fullCatalog: fullCatalog,
       batchSize: batchSize,
       sourceUrl: sourceUrl,
+      noCardImageFallback: noCardImageFallback,
     );
   }
 }

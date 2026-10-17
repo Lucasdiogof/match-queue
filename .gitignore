@@ -88,3 +88,5 @@ docs/final_data/output/
 
 # FVM Version Cache
 .fvm/
+# Crawls locais de catalogo (dados de terceiros, nunca versionar)
+tmp/
