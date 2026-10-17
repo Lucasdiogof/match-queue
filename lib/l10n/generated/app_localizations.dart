@@ -2060,6 +2060,12 @@ abstract class AppLocalizations {
   /// **'Não foi possível carregar o histórico'**
   String get historyLoadErrorTitle;
 
+  /// No description provided for @historyLoadMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar mais'**
+  String get historyLoadMore;
+
   /// No description provided for @playOfflineBanner.
   ///
   /// In pt, this message translates to:
@@ -2095,12 +2101,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ainda não há dados salvos neste aparelho. Conecte-se à internet e tente de novo.'**
   String get playOfflineEmptyMessage;
-
-  /// No description provided for @historyLoadMore.
-  ///
-  /// In pt, this message translates to:
-  /// **'Carregar mais'**
-  String get historyLoadMore;
 
   /// No description provided for @marketLoadMore.
   ///

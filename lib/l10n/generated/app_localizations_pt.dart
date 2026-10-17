@@ -1174,6 +1174,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get historyLoadErrorTitle => 'Não foi possível carregar o histórico';
 
   @override
+  String get historyLoadMore => 'Carregar mais';
+
+  @override
   String playOfflineBanner(String time) {
     return 'Sem conexão. Mostrando dados salvos. Última atualização: $time';
   }
@@ -1187,16 +1190,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get playOnlineOnlyTitle => 'Buscar partida precisa de conexão';
 
   @override
-  String get playOnlineOnlyMessage => 'Conecte-se à internet para buscar partidas e ver a fila. Seus dados salvos continuam disponíveis.';
+  String get playOnlineOnlyMessage =>
+      'Conecte-se à internet para buscar partidas e ver a fila. Seus dados salvos continuam disponíveis.';
 
   @override
   String get playOfflineEmptyTitle => 'Sem conexão';
 
   @override
-  String get playOfflineEmptyMessage => 'Ainda não há dados salvos neste aparelho. Conecte-se à internet e tente de novo.';
-
-  @override
-  String get historyLoadMore => 'Carregar mais';
+  String get playOfflineEmptyMessage =>
+      'Ainda não há dados salvos neste aparelho. Conecte-se à internet e tente de novo.';
 
   @override
   String get marketLoadMore => 'Carregar mais';
