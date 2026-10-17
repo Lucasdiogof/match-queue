@@ -2060,6 +2060,42 @@ abstract class AppLocalizations {
   /// **'Não foi possível carregar o histórico'**
   String get historyLoadErrorTitle;
 
+  /// No description provided for @playOfflineBanner.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem conexão. Mostrando dados salvos. Última atualização: {time}'**
+  String playOfflineBanner(String time);
+
+  /// No description provided for @playStaleBanner.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível atualizar agora. Última atualização: {time}'**
+  String playStaleBanner(String time);
+
+  /// No description provided for @playOnlineOnlyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar partida precisa de conexão'**
+  String get playOnlineOnlyTitle;
+
+  /// No description provided for @playOnlineOnlyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conecte-se à internet para buscar partidas e ver a fila. Seus dados salvos continuam disponíveis.'**
+  String get playOnlineOnlyMessage;
+
+  /// No description provided for @playOfflineEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem conexão'**
+  String get playOfflineEmptyTitle;
+
+  /// No description provided for @playOfflineEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há dados salvos neste aparelho. Conecte-se à internet e tente de novo.'**
+  String get playOfflineEmptyMessage;
+
   /// No description provided for @historyLoadMore.
   ///
   /// In pt, this message translates to:

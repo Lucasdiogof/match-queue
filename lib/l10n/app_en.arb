@@ -677,6 +677,28 @@
   "historyEmptyMessage": "The team's match searches show up here once they finish.",
   "historyLoadErrorTitle": "We could not load the history",
   "historyLoadMore": "Load more",
+  "playOfflineBanner": "No connection. Showing saved data. Last updated: {time}",
+  "@playOfflineBanner": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "15/10 20:47"
+      }
+    }
+  },
+  "playStaleBanner": "Could not refresh right now. Last updated: {time}",
+  "@playStaleBanner": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "15/10 20:47"
+      }
+    }
+  },
+  "playOnlineOnlyTitle": "Finding a match needs a connection",
+  "playOnlineOnlyMessage": "Connect to the internet to find matches and see the queue. Your saved data is still available.",
+  "playOfflineEmptyTitle": "No connection",
+  "playOfflineEmptyMessage": "There is no saved data on this device yet. Connect to the internet and try again.",
   "marketLoadMore": "Load more",
   "historyEntryDate": "{date}",
   "@historyEntryDate": {

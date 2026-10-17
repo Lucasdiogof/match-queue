@@ -1174,6 +1174,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyLoadErrorTitle => 'We could not load the history';
 
   @override
+  String playOfflineBanner(String time) {
+    return 'No connection. Showing saved data. Last updated: $time';
+  }
+
+  @override
+  String playStaleBanner(String time) {
+    return 'Could not refresh right now. Last updated: $time';
+  }
+
+  @override
+  String get playOnlineOnlyTitle => 'Finding a match needs a connection';
+
+  @override
+  String get playOnlineOnlyMessage => 'Connect to the internet to find matches and see the queue. Your saved data is still available.';
+
+  @override
+  String get playOfflineEmptyTitle => 'No connection';
+
+  @override
+  String get playOfflineEmptyMessage => 'There is no saved data on this device yet. Connect to the internet and try again.';
+
+  @override
   String get historyLoadMore => 'Load more';
 
   @override

@@ -677,6 +677,28 @@
   "historyEmptyMessage": "Las búsquedas de partido del equipo aparecen aquí cuando terminan.",
   "historyLoadErrorTitle": "No fue posible cargar el historial",
   "historyLoadMore": "Cargar más",
+  "playOfflineBanner": "Sin conexión. Mostrando datos guardados. Última actualización: {time}",
+  "@playOfflineBanner": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "15/10 20:47"
+      }
+    }
+  },
+  "playStaleBanner": "No se pudo actualizar ahora. Última actualización: {time}",
+  "@playStaleBanner": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "15/10 20:47"
+      }
+    }
+  },
+  "playOnlineOnlyTitle": "Buscar partida requiere conexión",
+  "playOnlineOnlyMessage": "Conéctate a internet para buscar partidas y ver la cola. Tus datos guardados siguen disponibles.",
+  "playOfflineEmptyTitle": "Sin conexión",
+  "playOfflineEmptyMessage": "Aún no hay datos guardados en este dispositivo. Conéctate a internet e inténtalo de nuevo.",
   "marketLoadMore": "Cargar más",
   "historyEntryDate": "{date}",
   "@historyEntryDate": {
