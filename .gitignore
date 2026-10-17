@@ -90,3 +90,4 @@ docs/final_data/output/
 .fvm/
 # Crawls locais de catalogo (dados de terceiros, nunca versionar)
 tmp/
+.wrangler/

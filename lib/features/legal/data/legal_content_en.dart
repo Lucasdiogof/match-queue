@@ -8,7 +8,7 @@ const String _nonAffiliationEn =
     'third-party brand.';
 
 const LegalDocument kPrivacyPolicyEn = LegalDocument(
-  updatedAt: '2026-09-17',
+  updatedAt: '2026-10-17',
   nonAffiliationDisclaimer: _nonAffiliationEn,
   sections: <LegalSection>[
     LegalSection(
@@ -52,7 +52,9 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
           'and Firebase (push notifications and crash reporting). These '
           'providers process data on our behalf under their own security '
           'policies and are not allowed to use your data for their own '
-          'purposes.',
+          'purposes. In the web version, Cloudflare delivers the app files '
+          'and receives technical network data from the visit (such as IP '
+          'address and time); Firebase is not used on the web.',
     ),
     LegalSection(
       title: '4. Why we use your data',

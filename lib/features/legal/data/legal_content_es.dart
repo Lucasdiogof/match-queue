@@ -8,7 +8,7 @@ const String _nonAffiliationEs =
     'fútbol ni marca de terceros.';
 
 const LegalDocument kPrivacyPolicyEs = LegalDocument(
-  updatedAt: '2026-09-17',
+  updatedAt: '2026-10-17',
   nonAffiliationDisclaimer: _nonAffiliationEs,
   sections: <LegalSection>[
     LegalSection(
@@ -53,7 +53,9 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
           'API) y Firebase (notificaciones push y reporte de errores). '
           'Estos proveedores procesan datos en nuestro nombre, siguiendo '
           'sus propias políticas de seguridad, y no pueden usar tus datos '
-          'para fines propios.',
+          'para fines propios. En la versión web, Cloudflare entrega los '
+          'archivos de la aplicación y recibe datos técnicos de red de la '
+          'visita (como dirección IP y hora); Firebase no se usa en la web.',
     ),
     LegalSection(
       title: '4. Para qué usamos tus datos',
