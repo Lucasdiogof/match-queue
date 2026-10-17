@@ -21,3 +21,11 @@ Padrão: `Lucasdiogof/lucksrei-web-template`. Estado: **preparado, não publicad
 1. Autorização de DNS (`matchqueue.lucksrei.com`).
 2. Se houver confirmação de cadastro por link na web: cadastrar só `https://matchqueue.lucksrei.com/` nas Redirect URLs do projeto Supabase do EA FC (**não alterado**). A recuperação por código não precisa de redirect.
 3. Confirmar SMTP custom no Supabase (embutido = 2 e-mails/hora).
+
+## Ambiente de teste e deploy (2026-10-17)
+- Teste publicado em https://matchqueue-web.lucasdiogo1234.workers.dev (Worker `matchqueue-web`, versão d83ea02c). Smoke estrito passou (raiz, assets, `/privacy`, `/terms`, `/join/:code`, `/u/:id`, headers).
+- QA em Chrome real: login em ~1,5 s, `/privacy` em ~0,5 s, convite inexistente mostra "Convite não encontrado"; 0 erros de console, 0 respostas 4xx/5xx.
+- **Convites na web:** o `env/production.json` tem `APP_LINK_HOST=lucksrei.com`; usado na web geraria links para o site institucional. O workflow usa o segredo `WEB_ENV_JSON` (cópia do JSON de produção com `APP_LINK_HOST=matchqueue.lucksrei.com`), então os links de convite apontam para o domínio do app.
+- Workflows: `deploy-web.yml` (gate `AUTO_DEPLOY`, Wrangler 4, smoke) e `rollback-web.yml`. Segredos: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `WEB_ENV_JSON` (só nomes). `AUTO_DEPLOY` **não** foi definido (ação do dono).
+- Domínio `matchqueue.lucksrei.com`: rota ainda comentada em `wrangler.jsonc`; ativar junto com a Site URL/Redirect URL do Supabase do projeto (`https://matchqueue.lucksrei.com/`).
+- Login, recuperação por código e Realtime **não testados** (exigem conta).
