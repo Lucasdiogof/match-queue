@@ -29,3 +29,8 @@ Padrão: `Lucasdiogof/lucksrei-web-template`. Estado: **preparado, não publicad
 - Workflows: `deploy-web.yml` (gate `AUTO_DEPLOY`, Wrangler 4, smoke) e `rollback-web.yml`. Segredos: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `WEB_ENV_JSON` (só nomes). `AUTO_DEPLOY` **não** foi definido (ação do dono).
 - Domínio `matchqueue.lucksrei.com`: rota ainda comentada em `wrangler.jsonc`; ativar junto com a Site URL/Redirect URL do Supabase do projeto (`https://matchqueue.lucksrei.com/`).
 - Login, recuperação por código e Realtime **não testados** (exigem conta).
+
+## Verificação independente (2026-10-17, noite)
+- Smoke estrito do template (`scripts/smoke-test.sh`, agora igual ao `lucksrei-web-template`) contra `https://matchqueue-web.lucasdiogo1234.workers.dev`: **passou** (HTML, `flutter_bootstrap.js`, `main.dart.js` 4,4 MB como JavaScript, `manifest.json`, `version.json` 1.0.3+8, rotas `/login /privacy /terms /join/:code /u/:id` com fallback de SPA, headers `x-content-type-options`, HSTS, `x-frame-options`, `referrer-policy`).
+- Navegador: `/login`, `/privacy` (inclusive 375 px), `/terms` e `/join/TESTE123` ("Convite não encontrado") renderizam; 0 erros de console, todas as requisições 200.
+- O workflow passou a checar só a URL viva (`workers.dev`) e as rotas profundas; `matchqueue.lucksrei.com` volta ao `SMOKE_URLS` quando a rota de domínio for ativada (antes disso o smoke falharia por DNS inexistente).
