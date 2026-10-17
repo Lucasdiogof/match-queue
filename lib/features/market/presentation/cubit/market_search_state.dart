@@ -19,6 +19,8 @@ class MarketSearchState extends Equatable {
     this.query = '',
     this.cards = const <PlayerCard>[],
     this.favoriteCardIds = const <String>{},
+    this.hasMore = false,
+    this.isLoadingMore = false,
     this.failure,
   });
 
@@ -29,6 +31,8 @@ class MarketSearchState extends Equatable {
   /// Ids favoritados, carregado uma vez e atualizado localmente ao
   /// favoritar/desfavoritar -- evita round-trip extra por resultado.
   final Set<String> favoriteCardIds;
+  final bool hasMore;
+  final bool isLoadingMore;
   final AppFailure? failure;
 
   MarketSearchState copyWith({
@@ -36,6 +40,8 @@ class MarketSearchState extends Equatable {
     String? query,
     List<PlayerCard>? cards,
     Set<String>? favoriteCardIds,
+    bool? hasMore,
+    bool? isLoadingMore,
     AppFailure? failure,
     bool clearFailure = false,
   }) => MarketSearchState(
@@ -43,6 +49,8 @@ class MarketSearchState extends Equatable {
     query: query ?? this.query,
     cards: cards ?? this.cards,
     favoriteCardIds: favoriteCardIds ?? this.favoriteCardIds,
+    hasMore: hasMore ?? this.hasMore,
+    isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     failure: clearFailure ? null : (failure ?? this.failure),
   );
 
@@ -52,6 +60,8 @@ class MarketSearchState extends Equatable {
     query,
     cards,
     favoriteCardIds,
+    hasMore,
+    isLoadingMore,
     failure,
   ];
 }

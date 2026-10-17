@@ -677,6 +677,7 @@
   "historyEmptyMessage": "Las búsquedas de partido del equipo aparecen aquí cuando terminan.",
   "historyLoadErrorTitle": "No fue posible cargar el historial",
   "historyLoadMore": "Cargar más",
+  "marketLoadMore": "Cargar más",
   "historyEntryDate": "{date}",
   "@historyEntryDate": {
     "placeholders": {

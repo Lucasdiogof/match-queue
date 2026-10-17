@@ -2066,6 +2066,12 @@ abstract class AppLocalizations {
   /// **'Carregar mais'**
   String get historyLoadMore;
 
+  /// No description provided for @marketLoadMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar mais'**
+  String get marketLoadMore;
+
   /// No description provided for @historyEntryDate.
   ///
   /// In pt, this message translates to:

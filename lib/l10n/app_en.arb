@@ -677,6 +677,7 @@
   "historyEmptyMessage": "The team's match searches show up here once they finish.",
   "historyLoadErrorTitle": "We could not load the history",
   "historyLoadMore": "Load more",
+  "marketLoadMore": "Load more",
   "historyEntryDate": "{date}",
   "@historyEntryDate": {
     "placeholders": {

@@ -44,6 +44,13 @@ class MarketCardTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: context.textStyles.titleSmall,
                 ),
+                if (card.clubName != null && card.clubName!.isNotEmpty)
+                  Text(
+                    card.clubName!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.textStyles.bodySmall,
+                  ),
                 const SizedBox(height: AppSpacing.xs),
                 Wrap(
                   spacing: AppSpacing.xs,
@@ -54,6 +61,8 @@ class MarketCardTile extends StatelessWidget {
                           '${l10n.squadCardDetailRatingLabel} ${card.rating}',
                     ),
                     AppBadge(label: card.primaryPosition),
+                    if (card.cardType != null && card.cardType!.isNotEmpty)
+                      AppBadge(label: card.cardType!),
                   ],
                 ),
               ],

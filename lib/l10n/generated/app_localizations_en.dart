@@ -1177,6 +1177,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyLoadMore => 'Load more';
 
   @override
+  String get marketLoadMore => 'Load more';
+
+  @override
   String historyEntryDate(DateTime date) {
     final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
     final String dateString = dateDateFormat.format(date);

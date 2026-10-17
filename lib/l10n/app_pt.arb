@@ -678,6 +678,7 @@
   "historyEmptyMessage": "As buscas de partida do time aparecem aqui quando terminam.",
   "historyLoadErrorTitle": "Não foi possível carregar o histórico",
   "historyLoadMore": "Carregar mais",
+  "marketLoadMore": "Carregar mais",
   "historyEntryDate": "{date}",
   "@historyEntryDate": {
     "placeholders": {

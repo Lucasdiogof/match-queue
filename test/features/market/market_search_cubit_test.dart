@@ -13,9 +13,14 @@ class _FakeCatalogRepository implements PlayerCardCatalogRepository {
     items: <PlayerCard>[],
     hasMore: false,
   );
+  final List<PlayerCardPage> pages = <PlayerCardPage>[];
+  final List<PlayerCardQuery> queries = <PlayerCardQuery>[];
 
   @override
-  Future<PlayerCardPage> searchCards(PlayerCardQuery query) async => page;
+  Future<PlayerCardPage> searchCards(PlayerCardQuery query) async {
+    queries.add(query);
+    return pages.isEmpty ? page : pages.removeAt(0);
+  }
 
   @override
   Future<PlayerCard?> getCard(String id) async => null;
@@ -65,7 +70,51 @@ class _FakeFavoritesRepository implements MarketFavoritesRepository {
   }
 }
 
+PlayerCard _card(String id, {String? cardType}) => PlayerCard(
+  id: id,
+  provider: 'TEST',
+  playerName: 'Same Player',
+  rating: 90,
+  primaryPosition: 'ST',
+  alternativePositions: const <String>[],
+  cardType: cardType,
+);
+
 void main() {
+  group('MarketSearchCubit pagination', () {
+    test('loadMore appends the next page and keeps distinct cards of one '
+        'player', () async {
+      final catalog = _FakeCatalogRepository();
+      final cubit = MarketSearchCubit(catalog, _FakeFavoritesRepository());
+      addTearDown(cubit.close);
+      catalog.pages
+        ..add(
+          PlayerCardPage(
+            items: <PlayerCard>[_card('a'), _card('b', cardType: 'TOTW')],
+            hasMore: true,
+          ),
+        )
+        ..add(
+          PlayerCardPage(
+            items: <PlayerCard>[_card('b', cardType: 'TOTW'), _card('c')],
+            hasMore: false,
+          ),
+        );
+
+      cubit.search('same');
+      await Future<void>.delayed(
+        MarketSearchCubit.searchDebounce + const Duration(milliseconds: 50),
+      );
+      expect(cubit.state.hasMore, isTrue);
+
+      await cubit.loadMore();
+
+      expect(cubit.state.cards.map((card) => card.id), <String>['a', 'b', 'c']);
+      expect(cubit.state.hasMore, isFalse);
+      expect(catalog.queries.last.offset, MarketSearchCubit.pageLimit);
+    });
+  });
+
   group('MarketSearchCubit.toggleFavorite', () {
     late _FakeCatalogRepository catalogRepository;
     late _FakeFavoritesRepository favoritesRepository;

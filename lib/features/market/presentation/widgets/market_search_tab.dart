@@ -58,10 +58,20 @@ class MarketSearchTab extends StatelessWidget {
                   horizontal: AppSpacing.lg,
                   vertical: AppSpacing.sm,
                 ),
-                itemCount: state.cards.length,
+                itemCount: state.cards.length + (state.hasMore ? 1 : 0),
                 separatorBuilder: (_, _) =>
                     const SizedBox(height: AppSpacing.sm),
                 itemBuilder: (context, index) {
+                  if (index >= state.cards.length) {
+                    return AppButton.ghost(
+                      label: l10n.marketLoadMore,
+                      expanded: true,
+                      isLoading: state.isLoadingMore,
+                      onPressed: state.isLoadingMore
+                          ? null
+                          : context.read<MarketSearchCubit>().loadMore,
+                    );
+                  }
                   final card = state.cards[index];
                   final isFavorite = state.favoriteCardIds.contains(card.id);
                   return MarketCardTile(

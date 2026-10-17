@@ -27,6 +27,7 @@ class MarketSearchCubit extends Cubit<MarketSearchState> {
 
   Timer? _debounce;
   int _generation = 0;
+  PlayerCardQuery? _lastQuery;
 
   Future<void> loadFavoriteIds() async {
     try {
@@ -52,6 +53,8 @@ class MarketSearchCubit extends Cubit<MarketSearchState> {
           state.copyWith(
             status: MarketSearchStatus.initial,
             cards: const <PlayerCard>[],
+            hasMore: false,
+            isLoadingMore: false,
             clearFailure: true,
           ),
         );
@@ -71,18 +74,20 @@ class MarketSearchCubit extends Cubit<MarketSearchState> {
       state.copyWith(status: MarketSearchStatus.loading, clearFailure: true),
     );
     try {
-      final page = await _catalogRepository.searchCards(
-        PlayerCardQuery(query: query, limit: pageLimit),
-      );
+      final request = PlayerCardQuery(query: query, limit: pageLimit);
+      final page = await _catalogRepository.searchCards(request);
       if (isClosed || generation != _generation) {
         return;
       }
+      _lastQuery = request;
       emit(
         state.copyWith(
           status: page.items.isEmpty
               ? MarketSearchStatus.noResults
               : MarketSearchStatus.ready,
           cards: page.items,
+          hasMore: page.hasMore,
+          isLoadingMore: false,
         ),
       );
     } on AppFailure catch (failure) {
@@ -90,6 +95,47 @@ class MarketSearchCubit extends Cubit<MarketSearchState> {
         emit(
           state.copyWith(status: MarketSearchStatus.failure, failure: failure),
         );
+      }
+    }
+  }
+
+  /// Proxima pagina da busca atual. Uma pessoa pode ter varias cartas
+  /// (versao base, TOTW, eventos...): a identidade de uma carta e o id dela,
+  /// nunca o nome, entao so descartamos ids que ja estao na lista.
+  Future<void> loadMore() async {
+    final lastQuery = _lastQuery;
+    if (lastQuery == null ||
+        !state.hasMore ||
+        state.isLoadingMore ||
+        state.status != MarketSearchStatus.ready) {
+      return;
+    }
+    final generation = _generation;
+    emit(state.copyWith(isLoadingMore: true, clearFailure: true));
+    final nextQuery = lastQuery.nextPage();
+    try {
+      final page = await _catalogRepository.searchCards(nextQuery);
+      if (isClosed || generation != _generation) {
+        return;
+      }
+      _lastQuery = nextQuery;
+      final knownIds = state.cards.map((card) => card.id).toSet();
+      emit(
+        state.copyWith(
+          cards: <PlayerCard>[
+            ...state.cards,
+            for (final card in page.items)
+              if (!knownIds.contains(card.id)) card,
+          ],
+          hasMore: page.hasMore,
+          isLoadingMore: false,
+        ),
+      );
+    } on AppFailure catch (failure) {
+      if (!isClosed && generation == _generation) {
+        // Mantem a lista ja carregada; o botao "Carregar mais" continua e
+        // serve de nova tentativa.
+        emit(state.copyWith(isLoadingMore: false, failure: failure));
       }
     }
   }
