@@ -41,6 +41,19 @@ jobs:
         run: |
           mkdir -p env
           printf '%s' "$WEB_ENV_JSON" > env/web.json
+      - name: Stub lib/firebase_options.dart when absent (gitignored; the web build never initializes Firebase)
+        run: |
+          [ -f lib/firebase_options.dart ] && exit 0
+          cat > lib/firebase_options.dart <<'DART'
+          // CI stub for web builds: the real file is gitignored and Firebase is skipped on the web (kIsWeb).
+          import 'package:firebase_core/firebase_core.dart';
+
+          class DefaultFirebaseOptions {
+            static FirebaseOptions get currentPlatform =>
+                throw UnsupportedError('Firebase is not used on the web build');
+          }
+          DART
+          sed -i 's/^          //' lib/firebase_options.dart
       - run: flutter build web --release $FLUTTER_WEB_FLAGS --dart-define-from-file=env/web.json
       - run: bash scripts/check-bundle-secrets.sh build/web
       - uses: cloudflare/wrangler-action@v3
