@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:fifa_queue/core/errors/app_failure.dart';
+import 'package:fifa_queue/features/account/data/account_cache_store.dart';
+import 'package:fifa_queue/features/account/domain/entities/account.dart';
 import 'package:fifa_queue/features/account/domain/entities/platform.dart';
 import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/account/domain/repositories/account_repository.dart';
@@ -6,22 +10,54 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountCubit extends Cubit<AccountState> {
-  AccountCubit(this._repository) : super(const AccountState());
+  AccountCubit(this._repository, {AccountCacheStore? cacheStore})
+    : _cacheStore = cacheStore,
+      super(const AccountState());
 
   final AccountRepository _repository;
+  final AccountCacheStore? _cacheStore;
 
-  Future<void> load({required String fallbackDisplayName}) async {
-    emit(state.copyWith(status: AccountStatus.loading, clearFailure: true));
+  /// [userId] habilita o cache local: se a ultima conta carregada com
+  /// sucesso for dessa mesma pessoa, ela aparece na hora e e revalidada em
+  /// seguida. Sem [userId] o comportamento e o de sempre (sem cache).
+  Future<void> load({
+    required String fallbackDisplayName,
+    String? userId,
+  }) async {
+    final cached = state.account == null && userId != null
+        ? _cacheStore?.read(userId)
+        : null;
+    if (cached != null) {
+      emit(
+        AccountState(
+          status: AccountStatus.ready,
+          account: cached.value,
+          cachedAt: cached.savedAt,
+        ),
+      );
+    } else {
+      emit(state.copyWith(status: AccountStatus.loading, clearFailure: true));
+    }
     try {
       final account = await _repository.ensureMyAccount(
         fallbackDisplayName: fallbackDisplayName,
       );
       if (!isClosed) {
         emit(AccountState(status: AccountStatus.ready, account: account));
+        unawaited(_saveToCache(account));
       }
     } on AppFailure catch (failure) {
       if (!isClosed) {
-        emit(state.copyWith(status: AccountStatus.failure, failure: failure));
+        // Com dado em cache a tela continua util: so registra a falha para
+        // ela poder avisar que os dados nao foram atualizados.
+        emit(
+          state.copyWith(
+            status: state.account == null
+                ? AccountStatus.failure
+                : AccountStatus.ready,
+            failure: failure,
+          ),
+        );
       }
     }
   }
@@ -30,7 +66,15 @@ class AccountCubit extends Cubit<AccountState> {
     try {
       final account = await _repository.fetchMyAccount();
       if (!isClosed && account != null) {
-        emit(state.copyWith(status: AccountStatus.ready, account: account));
+        emit(
+          state.copyWith(
+            status: AccountStatus.ready,
+            account: account,
+            clearCachedAt: true,
+            clearFailure: true,
+          ),
+        );
+        unawaited(_saveToCache(account));
       }
     } on AppFailure {
       // Silencioso de proposito: refresh nunca deve derrubar uma tela que
@@ -47,6 +91,7 @@ class AccountCubit extends Cubit<AccountState> {
       final account = await _repository.updateDisplayName(displayName);
       if (!isClosed) {
         emit(AccountState(status: AccountStatus.ready, account: account));
+        unawaited(_saveToCache(account));
       }
       return true;
     } on AppFailure catch (failure) {
@@ -159,5 +204,24 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  void clear() => emit(const AccountState());
+  void clear() {
+    unawaited(_clearCache());
+    emit(const AccountState());
+  }
+
+  Future<void> _saveToCache(Account account) async {
+    try {
+      await _cacheStore?.write(account);
+    } on Object {
+      // Cache e so otimizacao: falhar em gravar nunca pode afetar a tela.
+    }
+  }
+
+  Future<void> _clearCache() async {
+    try {
+      await _cacheStore?.clear();
+    } on Object {
+      // Idem: sem cache, so perde-se a abertura offline.
+    }
+  }
 }

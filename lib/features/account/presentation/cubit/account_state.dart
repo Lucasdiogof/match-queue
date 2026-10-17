@@ -10,12 +10,19 @@ class AccountState extends Equatable {
     this.account,
     this.failure,
     this.isSaving = false,
+    this.cachedAt,
   });
 
   final AccountStatus status;
   final Account? account;
   final AppFailure? failure;
   final bool isSaving;
+
+  /// Preenchido enquanto [account] veio do cache local e ainda nao foi
+  /// revalidado no servidor; e a data da ultima atualizacao bem-sucedida.
+  final DateTime? cachedAt;
+
+  bool get isFromCache => cachedAt != null;
 
   bool get isReady => status == AccountStatus.ready && account != null;
 
@@ -36,13 +43,22 @@ class AccountState extends Equatable {
     AppFailure? failure,
     bool clearFailure = false,
     bool? isSaving,
+    DateTime? cachedAt,
+    bool clearCachedAt = false,
   }) => AccountState(
     status: status ?? this.status,
     account: clearAccount ? null : (account ?? this.account),
     failure: clearFailure ? null : (failure ?? this.failure),
     isSaving: isSaving ?? this.isSaving,
+    cachedAt: clearCachedAt ? null : (cachedAt ?? this.cachedAt),
   );
 
   @override
-  List<Object?> get props => <Object?>[status, account, failure, isSaving];
+  List<Object?> get props => <Object?>[
+    status,
+    account,
+    failure,
+    isSaving,
+    cachedAt,
+  ];
 }

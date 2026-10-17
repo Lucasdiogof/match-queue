@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fifa_queue/core/errors/app_failure.dart';
 import 'package:fifa_queue/features/teams/data/selected_team_store.dart';
+import 'package:fifa_queue/features/teams/data/teams_cache_store.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_membership.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team_role.dart';
@@ -11,12 +13,18 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TeamsCubit extends Cubit<TeamsState> {
-  TeamsCubit(this._repository, this._createTeam, this._selectedTeamStore)
-    : super(const TeamsState());
+  TeamsCubit(
+    this._repository,
+    this._createTeam,
+    this._selectedTeamStore, {
+    TeamsCacheStore? cacheStore,
+  }) : _cacheStore = cacheStore,
+       super(const TeamsState());
 
   final TeamRepository _repository;
   final CreateTeam _createTeam;
   final SelectedTeamStore _selectedTeamStore;
+  final TeamsCacheStore? _cacheStore;
 
   String? _userId;
 
@@ -30,7 +38,27 @@ class TeamsCubit extends Cubit<TeamsState> {
       return;
     }
 
-    emit(TeamsState(status: TeamsStatus.loading, userId: userId));
+    final cached = _cacheStore?.read(userId);
+    if (cached != null) {
+      // Mostra os times da ultima vez ja, sem spinner; a revalidacao abaixo
+      // troca pelo dado fresco ou, se falhar, mantem este com aviso.
+      final cachedTeams = cached.value;
+      final persisted = _selectedTeamStore.read(userId);
+      final selectedId = cachedTeams.any((team) => team.id == persisted)
+          ? persisted
+          : (cachedTeams.isEmpty ? null : cachedTeams.first.id);
+      emit(
+        TeamsState(
+          status: TeamsStatus.ready,
+          userId: userId,
+          teams: cachedTeams,
+          selectedTeamId: selectedId,
+          cachedAt: cached.savedAt,
+        ),
+      );
+    } else {
+      emit(TeamsState(status: TeamsStatus.loading, userId: userId));
+    }
     try {
       final teams = await _repository.fetchMyTeams(userId: userId);
       if (isClosed || state.userId != userId) {
@@ -44,8 +72,10 @@ class TeamsCubit extends Cubit<TeamsState> {
           selectedTeamId: selectedId,
           clearSelectedTeamId: selectedId == null,
           clearFailure: true,
+          clearCachedAt: true,
         ),
       );
+      unawaited(_saveToCache(userId, teams));
       if (selectedId != null) {
         await _loadMembers(selectedId);
       } else {
@@ -59,8 +89,24 @@ class TeamsCubit extends Cubit<TeamsState> {
       }
     } on AppFailure catch (failure) {
       if (!isClosed && state.userId == userId) {
-        emit(state.copyWith(status: TeamsStatus.failure, failure: failure));
+        // Com times em cache a tela segue util; so registra a falha.
+        emit(
+          state.copyWith(
+            status: state.isFromCache
+                ? TeamsStatus.ready
+                : TeamsStatus.failure,
+            failure: failure,
+          ),
+        );
       }
+    }
+  }
+
+  Future<void> _saveToCache(String userId, List<UserTeam> teams) async {
+    try {
+      await _cacheStore?.write(userId, teams);
+    } on Object {
+      // Cache e so otimizacao: falhar em gravar nunca pode afetar a tela.
     }
   }
 
@@ -290,6 +336,10 @@ class TeamsCubit extends Cubit<TeamsState> {
 
   void clear() {
     _userId = null;
+    final cacheStore = _cacheStore;
+    if (cacheStore != null) {
+      unawaited(cacheStore.clear().catchError((Object _) {}));
+    }
     emit(const TeamsState());
   }
 

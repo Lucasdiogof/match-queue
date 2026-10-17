@@ -88,6 +88,7 @@ class _AccountSection extends StatelessWidget {
                   onPressed: () => context.read<AccountCubit>().load(
                     fallbackDisplayName:
                         context.read<AuthCubit>().state.user?.shortName ?? '',
+                    userId: context.read<AuthCubit>().state.user?.id,
                   ),
                 ),
               ],

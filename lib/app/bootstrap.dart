@@ -113,7 +113,10 @@ Future<void> bootstrap() async {
         // *SessionListener reagindo a AccountCubit -- ambos dependem da conta
         // ja resolvida, e ela so fica conhecida depois deste load.
         unawaited(
-          accountCubit.load(fallbackDisplayName: restoredUser.shortName),
+          accountCubit.load(
+            fallbackDisplayName: restoredUser.shortName,
+            userId: restoredUser.id,
+          ),
         );
       }
 

@@ -20,7 +20,12 @@ class AccountSessionListener extends StatelessWidget {
       final accountCubit = context.read<AccountCubit>();
       final user = state.user;
       if (state.isAuthenticated && user != null) {
-        unawaited(accountCubit.load(fallbackDisplayName: user.shortName));
+        unawaited(
+          accountCubit.load(
+            fallbackDisplayName: user.shortName,
+            userId: user.id,
+          ),
+        );
       } else {
         accountCubit.clear();
       }

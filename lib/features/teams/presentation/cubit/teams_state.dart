@@ -18,6 +18,7 @@ class TeamsState extends Equatable {
     this.membersFailure,
     this.actionFailure,
     this.isSaving = false,
+    this.cachedAt,
   });
 
   final TeamsStatus status;
@@ -33,6 +34,12 @@ class TeamsState extends Equatable {
   final AppFailure? membersFailure;
   final AppFailure? actionFailure;
   final bool isSaving;
+
+  /// Preenchido enquanto [teams] veio do cache local e ainda nao foi
+  /// revalidado no servidor; e a data da ultima atualizacao bem-sucedida.
+  final DateTime? cachedAt;
+
+  bool get isFromCache => cachedAt != null;
 
   bool get isLoading => status == TeamsStatus.loading;
 
@@ -71,6 +78,8 @@ class TeamsState extends Equatable {
     AppFailure? actionFailure,
     bool clearActionFailure = false,
     bool? isSaving,
+    DateTime? cachedAt,
+    bool clearCachedAt = false,
   }) => TeamsState(
     status: status ?? this.status,
     userId: clearUserId ? null : (userId ?? this.userId),
@@ -88,6 +97,7 @@ class TeamsState extends Equatable {
         ? null
         : (actionFailure ?? this.actionFailure),
     isSaving: isSaving ?? this.isSaving,
+    cachedAt: clearCachedAt ? null : (cachedAt ?? this.cachedAt),
   );
 
   @override
@@ -102,5 +112,6 @@ class TeamsState extends Equatable {
     membersFailure,
     actionFailure,
     isSaving,
+    cachedAt,
   ];
 }
