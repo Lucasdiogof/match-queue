@@ -66,6 +66,7 @@ class PlayerCardQuery extends Equatable {
   PlayerCardQuery nextPage() => PlayerCardQuery(
     query: query,
     position: position,
+    positions: positions,
     limit: limit,
     offset: offset + limit,
     minRating: minRating,
