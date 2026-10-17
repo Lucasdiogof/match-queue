@@ -185,8 +185,6 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
   /// "salvar assim mesmo".
   Future<void> reloadAfterConflict() => load();
 
-  // -------------------------------------------------------------- mutacoes
-
   void assignCard({required String slotCode, required PlayerCard card}) {
     final draft = state.draft;
     if (draft == null) {
@@ -293,8 +291,6 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
     _schedulePreview();
   }
 
-  // --------------------------------------------------------------- preview
-
   void _schedulePreview() {
     _previewDebounce?.cancel();
     final draft = state.draft;
@@ -348,8 +344,6 @@ class SquadBuilderCubit extends Cubit<SquadBuilderState> {
   /// resposta atrasada nao vence o rascunho atual.
   @visibleForTesting
   Future<void> debugPreviewNow() => _runPreview();
-
-  // ------------------------------------------------------------------ save
 
   Future<bool> save() async {
     final draft = state.draft;

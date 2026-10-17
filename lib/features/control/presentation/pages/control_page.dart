@@ -63,22 +63,21 @@ class _ControlBody extends StatelessWidget {
   final UserTeam? selected;
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AccountCubit, AccountState>(
-        buildWhen: (previous, current) =>
-            previous.status != current.status ||
-            previous.account != current.account ||
-            previous.failure != current.failure ||
-            previous.cachedAt != current.cachedAt,
-        builder: (context, accountState) => _ResumeRevalidator(
-          enabled:
-              _isStale(accountState) ||
-              (accountState.account == null &&
-                  accountState.status == AccountStatus.failure),
-          onResume: () => _revalidate(context, stale: true),
-          child: _buildContent(context, accountState),
-        ),
-      );
+  Widget build(BuildContext context) => BlocBuilder<AccountCubit, AccountState>(
+    buildWhen: (previous, current) =>
+        previous.status != current.status ||
+        previous.account != current.account ||
+        previous.failure != current.failure ||
+        previous.cachedAt != current.cachedAt,
+    builder: (context, accountState) => _ResumeRevalidator(
+      enabled:
+          _isStale(accountState) ||
+          (accountState.account == null &&
+              accountState.status == AccountStatus.failure),
+      onResume: () => _revalidate(context, stale: true),
+      child: _buildContent(context, accountState),
+    ),
+  );
 
   /// Os dados mostrados vieram do cache local e a ultima tentativa de
   /// atualizar falhou -- e o que separa "carregando" de "sem conexao".
@@ -292,9 +291,7 @@ class _StaleDataBanner extends StatelessWidget {
     final savedAt = accountState.cachedAt ?? teamsState.cachedAt;
     final time = savedAt == null
         ? '-'
-        : DateFormat.yMd(
-            l10n.localeName,
-          ).add_Hm().format(savedAt.toLocal());
+        : DateFormat.yMd(l10n.localeName).add_Hm().format(savedAt.toLocal());
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -334,15 +331,9 @@ class _OnlineOnlyCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            l10n.playOnlineOnlyTitle,
-            style: context.textStyles.titleSmall,
-          ),
+          Text(l10n.playOnlineOnlyTitle, style: context.textStyles.titleSmall),
           const SizedBox(height: AppSpacing.xs),
-          Text(
-            l10n.playOnlineOnlyMessage,
-            style: context.textStyles.bodySmall,
-          ),
+          Text(l10n.playOnlineOnlyMessage, style: context.textStyles.bodySmall),
           const SizedBox(height: AppSpacing.md),
           AppButton.secondary(
             label: l10n.actionRetry,

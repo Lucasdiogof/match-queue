@@ -90,13 +90,19 @@ void main() {
       catalog.pages
         ..add(
           PlayerCardPage(
-            items: <PlayerCard>[_card('a'), _card('b', cardType: 'TOTW')],
+            items: <PlayerCard>[
+              _card('a'),
+              _card('b', cardType: 'TOTW'),
+            ],
             hasMore: true,
           ),
         )
         ..add(
           PlayerCardPage(
-            items: <PlayerCard>[_card('b', cardType: 'TOTW'), _card('c')],
+            items: <PlayerCard>[
+              _card('b', cardType: 'TOTW'),
+              _card('c'),
+            ],
             hasMore: false,
           ),
         );

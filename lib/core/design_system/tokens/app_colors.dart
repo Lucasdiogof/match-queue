@@ -23,8 +23,6 @@ class AppColors {
   static const Color pureWhite = Color(0xFFFFFFFF);
   static const Color pureBlack = Color(0xFF000000);
 
-  // ---------------------------------------------------------------- marca
-
   static const Color fcGreen = Color(0xFF39E27D);
   static const Color fcGreenStrong = Color(0xFF19C967);
   static const Color fcGreenSoft = Color(0xFF8EF0B5);
@@ -36,8 +34,6 @@ class AppColors {
   static const Color fcPurple = Color(0xFF7C4DFF);
   static const Color fcPurpleStrong = Color(0xFF6237E8);
   static const Color fcPurpleSoft = Color(0xFFB7A0FF);
-
-  // --------------------------------------------------------- competitivo
 
   static const Color gold = Color(0xFFD8B45A);
   static const Color goldBright = Color(0xFFF1D27A);
@@ -52,8 +48,6 @@ class AppColors {
   static const Color rivalsBlack = Color(0xFF11100D);
   static const Color rivalsGraphite = Color(0xFF252319);
   static const Color rivalsGold = Color(0xFFC9A447);
-
-  // ---------------------------------------------------------------- dark
 
   /// Fundo da abertura: splash nativa (Android e iOS), primeira tela Flutter,
   /// windowBackground do Android e a pagina web antes do Flutter carregar.
@@ -93,8 +87,6 @@ class AppColors {
 
   static const Color darkOverlay = Color(0xC9000000);
 
-  // --------------------------------------------------------------- light
-
   static const Color lightBackground = Color(0xFFF4F6F4);
   static const Color lightBackgroundRaised = Color(0xFFF8FAF8);
 
@@ -114,8 +106,6 @@ class AppColors {
   static const Color lightTextTertiary = Color(0xFF858E87);
 
   static const Color lightOverlay = Color(0x66000000);
-
-  // ------------------------------------------------------------ semantica
 
   static const Color darkSuccess = Color(0xFF43DC83);
   static const Color darkWarning = Color(0xFFF0C45B);

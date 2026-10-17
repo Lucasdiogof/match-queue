@@ -241,7 +241,6 @@ class _FieldPainter extends CustomPainter {
       paint,
     );
 
-    // Meio de campo
     canvas.drawLine(
       Offset(rect.left, rect.center.dy),
       Offset(rect.right, rect.center.dy),

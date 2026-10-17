@@ -17,9 +17,8 @@ class TeamsCubit extends Cubit<TeamsState> {
     this._repository,
     this._createTeam,
     this._selectedTeamStore, {
-    TeamsCacheStore? cacheStore,
-  }) : _cacheStore = cacheStore,
-       super(const TeamsState());
+    this._cacheStore,
+  }) : super(const TeamsState());
 
   final TeamRepository _repository;
   final CreateTeam _createTeam;
@@ -92,9 +91,7 @@ class TeamsCubit extends Cubit<TeamsState> {
         // Com times em cache a tela segue util; so registra a falha.
         emit(
           state.copyWith(
-            status: state.isFromCache
-                ? TeamsStatus.ready
-                : TeamsStatus.failure,
+            status: state.isFromCache ? TeamsStatus.ready : TeamsStatus.failure,
             failure: failure,
           ),
         );

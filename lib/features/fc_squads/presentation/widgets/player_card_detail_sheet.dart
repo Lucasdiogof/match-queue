@@ -227,15 +227,6 @@ class _PlayerCardDetailBody extends StatelessWidget {
                 ),
               ),
             ],
-            // "Outras versões" (item 27): PlayerCard.player (FcPlayer) já
-            // existe desde a Etapa 12, mas nenhuma consulta/listagem de
-            // outras cartas do mesmo atleta foi implementada aqui -- é só a
-            // preparação visual pedida, escondida até existir dado real
-            // para mostrar (produção roda com catálogo vazio hoje).
-            // TODO(etapa-futura): listar outras cartas de card.player!.id
-            // via uma RPC nova (ex. search_fc_player_cards com filtro por
-            // fc_player_id) quando o catálogo real tiver múltiplas versões
-            // do mesmo jogador.
             if (_kShowOtherPlayerVersions && card.player != null) ...<Widget>[
               const SizedBox(height: AppSpacing.lg),
               _Section(

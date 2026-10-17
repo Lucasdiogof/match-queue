@@ -10,9 +10,8 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountCubit extends Cubit<AccountState> {
-  AccountCubit(this._repository, {AccountCacheStore? cacheStore})
-    : _cacheStore = cacheStore,
-      super(const AccountState());
+  AccountCubit(this._repository, {this._cacheStore})
+    : super(const AccountState());
 
   final AccountRepository _repository;
   final AccountCacheStore? _cacheStore;
