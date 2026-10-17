@@ -358,6 +358,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorWeakPassword => 'Choose a stronger password.';
 
   @override
+  String get errorSamePassword =>
+      'The new password must be different from your current one.';
+
+  @override
   String get errorUserNotFound => 'Account not found.';
 
   @override

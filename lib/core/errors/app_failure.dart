@@ -4,6 +4,7 @@ enum AuthFailureReason {
   invalidCredentials,
   emailAlreadyRegistered,
   weakPassword,
+  samePassword,
   userNotFound,
   sessionExpired,
   emailConfirmationRequired,

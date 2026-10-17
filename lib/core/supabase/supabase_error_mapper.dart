@@ -174,6 +174,8 @@ class SupabaseErrorMapper {
         return AuthFailureReason.emailAlreadyRegistered;
       case 'weak_password':
         return AuthFailureReason.weakPassword;
+      case 'same_password':
+        return AuthFailureReason.samePassword;
       case 'user_not_found':
         return AuthFailureReason.userNotFound;
       case 'session_not_found':

@@ -44,6 +44,18 @@ void main() {
     },
   );
 
+  test('senha igual a anterior (422 same_password) tem motivo proprio', () {
+    final failure = mapper.map(
+      const AuthException(
+        'New password should be different from the old password.',
+        statusCode: '422',
+        code: 'same_password',
+      ),
+    );
+
+    expect((failure as AuthFailure).reason, AuthFailureReason.samePassword);
+  });
+
   group('sessao expirada', () {
     test('AuthException 401 sem codigo', () {
       expectSessionExpired(const AuthException('x', statusCode: '401'));

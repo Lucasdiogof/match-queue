@@ -359,6 +359,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get errorWeakPassword => 'Escolha uma senha mais forte.';
 
   @override
+  String get errorSamePassword =>
+      'A nova senha precisa ser diferente da senha atual.';
+
+  @override
   String get errorUserNotFound => 'Conta não encontrada.';
 
   @override

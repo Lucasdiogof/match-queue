@@ -736,6 +736,12 @@ abstract class AppLocalizations {
   /// **'Escolha uma senha mais forte.'**
   String get errorWeakPassword;
 
+  /// No description provided for @errorSamePassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'A nova senha precisa ser diferente da senha atual.'**
+  String get errorSamePassword;
+
   /// No description provided for @errorUserNotFound.
   ///
   /// In pt, this message translates to:

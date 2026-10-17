@@ -157,6 +157,7 @@
   "errorInvalidCredentials": "Correo o contraseña incorrectos.",
   "errorEmailAlreadyRegistered": "Este correo ya está registrado.",
   "errorWeakPassword": "Elige una contraseña más fuerte.",
+  "errorSamePassword": "La nueva contraseña debe ser diferente de la actual.",
   "errorUserNotFound": "Cuenta no encontrada.",
   "errorSessionExpired": "Tu sesión expiró. Entra de nuevo.",
   "errorEmailConfirmationRequired": "Enviamos un enlace de confirmación a tu correo. Confírmalo para entrar.",

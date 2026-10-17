@@ -18,6 +18,7 @@ extension AppFailureL10n on AppFailure {
       AuthFailureReason.emailAlreadyRegistered =>
         l10n.errorEmailAlreadyRegistered,
       AuthFailureReason.weakPassword => l10n.errorWeakPassword,
+      AuthFailureReason.samePassword => l10n.errorSamePassword,
       AuthFailureReason.userNotFound => l10n.errorUserNotFound,
       AuthFailureReason.sessionExpired => l10n.errorSessionExpired,
       AuthFailureReason.emailConfirmationRequired =>
