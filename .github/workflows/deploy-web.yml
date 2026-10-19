@@ -16,8 +16,7 @@ env:
   FLUTTER_VERSION: "3.47.4"        # pin to the version the app is developed with
   APP_DIR: "."                      # folder with pubspec.yaml and wrangler.jsonc (OrbiJob: app)
   FLUTTER_WEB_FLAGS: ""             # e.g. --no-web-resources-cdn
-  # Only live URLs: add https://matchqueue.lucksrei.com here when the custom-domain route in wrangler.jsonc is enabled.
-  SMOKE_URLS: "https://matchqueue-web.lucasdiogo1234.workers.dev"
+  SMOKE_URLS: "https://matchqueue.lucksrei.com https://matchqueue-web.lucasdiogo1234.workers.dev"
   SMOKE_ROUTES: "/login /privacy /terms /join/smoke-check /u/smoke-check"  # SPA deep links that must fall back to index.html
 jobs:
   deploy:
