@@ -26,7 +26,7 @@ const String _iconArtName =
 // que o quadrado arredondado ja tem. Preencher a volta com exatamente esse
 // tom faz a borda arredondada da arte sumir dentro do canvas, que e o que
 // permite tratar uma arte JA arredondada como se fosse sangria total.
-const List<int> _iconArtBg = [0x13, 0x15, 0x16];
+const List<int> _iconArtBg = [0x04, 0x0C, 0x09];
 
 late final String _brandDir;
 late final String _assetsDir;

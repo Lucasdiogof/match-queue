@@ -51,7 +51,7 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "design/brand/generated/icon_general_1024.png"
-  adaptive_icon_background: "#131516"
+  adaptive_icon_background: "#040C09"
   adaptive_icon_foreground: "design/brand/generated/icon_adaptive_fg_1024.png"
   # Default is 16: an extra shrink on top of whatever margin the foreground
   # PNG itself already has. Disabled so contentFraction in
