@@ -1,6 +1,6 @@
 import 'package:fifa_queue/features/legal/domain/legal_document.dart';
 
-const String kSupportEmail = 'lucasdiogo1234@gmail.com';
+const String kSupportEmail = 'marketing@lucksrei.com';
 const String kResponsibleParty = 'Lucas Diogo Franca (CNPJ 54.868.173/0001-55)';
 
 const String _nonAffiliationPt =
