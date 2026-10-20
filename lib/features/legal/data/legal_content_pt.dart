@@ -9,7 +9,7 @@ const String _nonAffiliationPt =
     'marca de terceiros.';
 
 const LegalDocument kPrivacyPolicyPt = LegalDocument(
-  updatedAt: '2026-10-17',
+  updatedAt: '2026-10-22',
   nonAffiliationDisclaimer: _nonAffiliationPt,
   sections: <LegalSection>[
     LegalSection(
@@ -22,29 +22,27 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
     LegalSection(
       title: '2. Quais dados coletamos',
       body:
-          'Coletamos apenas o necessário para o app funcionar:\n\n'
-          '• Dados de conta: e-mail e senha (armazenada de forma segura '
-          'pelo provedor de autenticação, nunca em texto simples).\n'
-          '• Perfil da conta: seu nome de exibição, foto de avatar (se '
-          'você enviar uma), a(s) plataforma(s) em que você joga e sua '
-          'divisão de Rivals.\n'
-          '• Identificadores internos: um ID único gerado para você, e um '
-          'para cada Time que você cria ou participa.\n'
-          '• Escalação: o elenco que você monta (jogadores, técnico e '
-          'formação).\n'
-          '• Times: nome, tag e histórico de atividade dos times dos quais '
-          'você participa.\n'
-          '• Dados de busca de partida: buscas de partida, filas e '
-          'histórico de busca (se você encontrou partida ou cancelou, e '
-          'quando) seus e do seu time.\n'
-          '• Registros de Weekend League e Rivals: contagem de '
-          'vitórias/derrotas que você mesmo informa.\n'
-          '• Token de notificação push (Firebase Cloud Messaging), se você '
-          'permitir notificações.\n'
-          '• Perfil público: se você ativar essa opção nas configurações, '
-          'escolhe um endereço público; o link exibe seu nome, e você '
-          'decide individualmente se ele também mostra sua escalação, '
-          'divisão de Rivals, registro de Weekend League e estatísticas.',
+          'Coletamos apenas o necessário para o app funcionar:\n\n• '
+          'Dados de conta: e-mail e senha (armazenada de forma segura '
+          'pelo provedor de autenticação, nunca em texto simples).\n• '
+          'Perfil da conta: seu nome de exibição, a(s) plataforma(s) em '
+          'que você joga e sua divisão de Rivals.\n• Identificadores '
+          'internos: um ID único gerado para você, e um para cada Time '
+          'que você cria ou participa.\n• Escalação: o elenco que você '
+          'monta (jogadores, técnico e formação).\n• Times: nome, tag, '
+          'imagem da logo (se o dono do time enviar uma) e histórico de '
+          'atividade dos times dos quais você participa.\n• Favoritos do '
+          'mercado: os jogadores que você marca como favoritos.\n• Dados '
+          'de busca de partida: buscas de partida, filas e histórico de '
+          'busca (se você encontrou partida ou cancelou, e quando) seus '
+          'e do seu time.\n• Registros de Weekend League e Rivals: '
+          'contagem de vitórias/derrotas que você mesmo informa.\n• '
+          'Token de notificação push (Firebase Cloud Messaging), se você '
+          'permitir notificações.\n• Perfil público: se você ativar essa '
+          'opção nas configurações, escolhe um endereço público; o link '
+          'exibe seu nome, e você decide individualmente se ele também '
+          'mostra sua escalação, divisão de Rivals, registro de Weekend '
+          'League e estatísticas.',
     ),
     LegalSection(
       title: '3. Provedores que usamos',
@@ -91,14 +89,17 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
       title: '7. Exclusão de conta',
       body:
           'Você pode excluir sua conta a qualquer momento em Conta → '
-          'Excluir minha conta. A exclusão remove sua conta, escalação, '
-          'participação em times, dispositivos registrados, preferências '
-          'de notificação e perfil público. Se você for o '
-          'único integrante de um time que criou, o time inteiro é '
-          'removido; se houver outros integrantes, a exclusão só é '
-          'permitida depois que você deixar de ser o único dono (ex.: '
-          'promovendo/removendo outros membros pelas ferramentas '
-          'disponíveis). Essa ação é permanente e não pode ser desfeita.',
+          'Excluir minha conta ou, se não tiver mais acesso ao app, '
+          'pedir por e-mail ($kSupportEmail). A exclusão remove seu '
+          'login, perfil, escalações, registros de Weekend League e '
+          'Rivals, favoritos do mercado, dispositivos registrados, '
+          'preferências e notificações, convites e pedidos de entrada, '
+          'buscas ativas e perfil público. Se você for o único '
+          'integrante de um time, o time inteiro é removido, com a '
+          'imagem da logo. Se o time tiver outros integrantes, você sai '
+          'e a posse passa para o integrante mais antigo. O histórico de '
+          'partidas e buscas do time permanece sem identificar você. '
+          'Essa ação é permanente e não pode ser desfeita.',
     ),
     LegalSection(
       title: '8. Compartilhamento de dados',
@@ -112,12 +113,12 @@ const LegalDocument kPrivacyPolicyPt = LegalDocument(
       title: '9. Seus direitos',
       body:
           'Você pode, a qualquer momento: acessar e editar seu nome de '
-          'exibição e sua foto de avatar pelo próprio app; ativar ou '
-          'desativar seu perfil público e escolher quais informações ele '
-          'exibe (a escalação, a divisão de Rivals, o registro de '
-          'Weekend League e as estatísticas); e excluir sua conta e os '
-          'dados associados a ela. Para qualquer outra solicitação sobre '
-          'seus dados, entre em contato pelo $kSupportEmail.',
+          'exibição pelo próprio app; ativar ou desativar seu perfil '
+          'público e escolher quais informações ele exibe (a escalação, '
+          'a divisão de Rivals, o registro de Weekend League e as '
+          'estatísticas); e excluir sua conta e os dados associados a '
+          'ela. Para qualquer outra solicitação sobre seus dados, entre '
+          'em contato pelo $kSupportEmail.',
     ),
     LegalSection(
       title: '10. Menores de idade',

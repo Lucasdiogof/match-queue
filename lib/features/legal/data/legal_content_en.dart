@@ -8,7 +8,7 @@ const String _nonAffiliationEn =
     'third-party brand.';
 
 const LegalDocument kPrivacyPolicyEn = LegalDocument(
-  updatedAt: '2026-10-17',
+  updatedAt: '2026-10-22',
   nonAffiliationDisclaimer: _nonAffiliationEn,
   sections: <LegalSection>[
     LegalSection(
@@ -21,29 +21,25 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '2. What data we collect',
       body:
-          'We only collect what the app needs to work:\n\n'
-          '• Account data: email and password (stored securely by our '
-          'authentication provider, never in plain text).\n'
-          '• Account profile: your display name, avatar photo (if you '
-          'upload one), the platform(s) you play on, and your Rivals '
-          'division.\n'
-          '• Internal identifiers: a unique ID generated for you, and one '
-          'for each Team you create or join.\n'
+          'We only collect what the app needs to work:\n\n• Account '
+          'data: email and password (stored securely by our '
+          'authentication provider, never in plain text).\n• Account '
+          'profile: your display name, the platform(s) you play on, and '
+          'your Rivals division.\n• Internal identifiers: a unique ID '
+          'generated for you, and one for each Team you create or join.\n'
           '• Squad: the lineup you build (players, manager, and '
-          'formation).\n'
-          '• Teams: name, tag, and activity history of the teams you '
-          'belong to.\n'
-          '• Match search data: match searches, queues, and search '
-          'history (whether you found a match or cancelled, and when) for '
-          'you and your team.\n'
-          '• Weekend League and Rivals records: win/loss counts you enter '
-          'yourself.\n'
-          '• Push notification token (Firebase Cloud Messaging), if you '
-          'allow notifications.\n'
-          '• Public profile: if you turn this on in settings, you choose '
-          'a public address; the link shows your name, and you '
-          'individually decide whether it also shows your squad, Rivals '
-          'division, Weekend League record, and stats.',
+          'formation).\n• Teams: name, tag, logo image (if the team '
+          'owner uploads one), and activity history of the teams you '
+          'belong to.\n• Market favorites: the players you mark as '
+          'favorites.\n• Match search data: match searches, queues, and '
+          'search history (whether you found a match or cancelled, and '
+          'when) for you and your team.\n• Weekend League and Rivals '
+          'records: win/loss counts you enter yourself.\n• Push '
+          'notification token (Firebase Cloud Messaging), if you allow '
+          'notifications.\n• Public profile: if you turn this on in '
+          'settings, you choose a public address; the link shows your '
+          'name, and you individually decide whether it also shows your '
+          'squad, Rivals division, Weekend League record, and stats.',
     ),
     LegalSection(
       title: '3. Providers we use',
@@ -87,12 +83,17 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
       title: '7. Account deletion',
       body:
           'You can delete your account at any time under Account → '
-          'Delete my account. Deletion removes your account, squad, team '
-          'memberships, registered devices, notification preferences, and '
-          'public profile. If you are the sole member of '
-          'a team you created, the whole team is removed; if there are '
-          'other members, deletion is only allowed once you are no longer '
-          'the sole owner. This action is permanent and cannot be undone.',
+          'Delete my account or, if you no longer have access to the '
+          'app, request it by e-mail ($kSupportEmail). Deletion removes '
+          'your sign-in, profile, squads, Weekend League and Rivals '
+          'records, market favorites, registered devices, notification '
+          'preferences and notifications, invitations and join requests, '
+          'active searches and public profile. If you are the only '
+          'member of a team, the whole team is removed, including its '
+          'logo image. If the team has other members, you leave and '
+          'ownership passes to the longest-standing member. The team\'s '
+          'match and search history stays without identifying you. This '
+          'action is permanent and cannot be undone.',
     ),
     LegalSection(
       title: '8. Data sharing',
@@ -105,12 +106,12 @@ const LegalDocument kPrivacyPolicyEn = LegalDocument(
     LegalSection(
       title: '9. Your rights',
       body:
-          'You can, at any time: access and edit your display name and '
-          'avatar photo from within the app; turn your public profile on '
-          'or off and choose what it shows (squad, Rivals division, '
-          'Weekend League record, and stats); and delete your account and '
-          'its associated data. For any other request about your data, '
-          'contact us at $kSupportEmail.',
+          'You can, at any time: access and edit your display name from '
+          'within the app; turn your public profile on or off and choose '
+          'what it shows (squad, Rivals division, Weekend League record, '
+          'and stats); and delete your account and its associated data. '
+          'For any other request about your data, contact us at '
+          '$kSupportEmail.',
     ),
     LegalSection(
       title: '10. Children',

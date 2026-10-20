@@ -8,7 +8,7 @@ const String _nonAffiliationEs =
     'fútbol ni marca de terceros.';
 
 const LegalDocument kPrivacyPolicyEs = LegalDocument(
-  updatedAt: '2026-10-17',
+  updatedAt: '2026-10-22',
   nonAffiliationDisclaimer: _nonAffiliationEs,
   sections: <LegalSection>[
     LegalSection(
@@ -21,30 +21,28 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
     LegalSection(
       title: '2. Qué datos recopilamos',
       body:
-          'Solo recopilamos lo necesario para que la app funcione:\n\n'
-          '• Datos de cuenta: correo electrónico y contraseña '
-          '(almacenada de forma segura por el proveedor de autenticación, '
-          'nunca en texto plano).\n'
-          '• Perfil de la cuenta: tu nombre visible, foto de avatar (si '
-          'subes una), la(s) plataforma(s) en la(s) que juegas y tu '
-          'división de Rivals.\n'
-          '• Identificadores internos: un ID único generado para ti, y '
-          'uno para cada Equipo que crees o al que te unas.\n'
+          'Solo recopilamos lo necesario para que la app funcione:\n\n• '
+          'Datos de cuenta: correo electrónico y contraseña (almacenada '
+          'de forma segura por el proveedor de autenticación, nunca en '
+          'texto plano).\n• Perfil de la cuenta: tu nombre visible, '
+          'la(s) plataforma(s) en la(s) que juegas y tu división de '
+          'Rivals.\n• Identificadores internos: un ID único generado '
+          'para ti, y uno para cada Equipo que crees o al que te unas.\n'
           '• Alineación: el equipo que armas (jugadores, técnico y '
-          'formación).\n'
-          '• Equipos: nombre, etiqueta e historial de actividad de los '
-          'equipos a los que perteneces.\n'
-          '• Datos de búsqueda de partida: búsquedas de partida, colas e '
-          'historial de búsqueda (si encontraste partida o cancelaste, y '
-          'cuándo) tuyos y de tu equipo.\n'
-          '• Registros de Weekend League y Rivals: conteo de victorias/'
-          'derrotas que tú mismo ingresas.\n'
-          '• Token de notificación push (Firebase Cloud Messaging), si '
-          'permites notificaciones.\n'
-          '• Perfil público: si activas esta opción en la configuración, '
-          'eliges una dirección pública; el enlace muestra tu nombre, y '
-          'decides individualmente si también muestra tu alineación, '
-          'división de Rivals, registro de Weekend League y estadísticas.',
+          'formación).\n• Equipos: nombre, etiqueta, imagen del logo (si '
+          'el dueño del equipo sube una) e historial de actividad de los '
+          'equipos a los que perteneces.\n• Favoritos del mercado: los '
+          'jugadores que marcas como favoritos.\n• Datos de búsqueda de '
+          'partida: búsquedas de partida, colas e historial de búsqueda '
+          '(si encontraste partida o cancelaste, y cuándo) tuyos y de tu '
+          'equipo.\n• Registros de Weekend League y Rivals: conteo de '
+          'victorias/derrotas que tú mismo ingresas.\n• Token de '
+          'notificación push (Firebase Cloud Messaging), si permites '
+          'notificaciones.\n• Perfil público: si activas esta opción en '
+          'la configuración, eliges una dirección pública; el enlace '
+          'muestra tu nombre, y decides individualmente si también '
+          'muestra tu alineación, división de Rivals, registro de '
+          'Weekend League y estadísticas.',
     ),
     LegalSection(
       title: '3. Proveedores que usamos',
@@ -90,13 +88,18 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
       title: '7. Eliminación de cuenta',
       body:
           'Puedes eliminar tu cuenta en cualquier momento en Cuenta → '
-          'Eliminar mi cuenta. La eliminación borra tu cuenta, alineación, '
-          'membresías de equipo, dispositivos registrados, preferencias '
-          'de notificación y perfil público. Si '
-          'eres el único integrante de un equipo que creaste, se elimina '
-          'todo el equipo; si hay otros integrantes, la eliminación solo '
-          'se permite una vez que dejes de ser el único dueño. Esta '
-          'acción es permanente y no se puede deshacer.',
+          'Eliminar mi cuenta o, si ya no tienes acceso a la app, '
+          'pedirlo por correo ($kSupportEmail). La eliminación borra tu '
+          'acceso, perfil, alineaciones, registros de Weekend League y '
+          'Rivals, favoritos del mercado, dispositivos registrados, '
+          'preferencias y notificaciones, invitaciones y solicitudes de '
+          'ingreso, búsquedas activas y perfil público. Si eres el único '
+          'integrante de un equipo, se elimina todo el equipo, incluida '
+          'la imagen del logo. Si el equipo tiene otros integrantes, '
+          'sales y la propiedad pasa al integrante más antiguo. El '
+          'historial de partidas y búsquedas del equipo permanece sin '
+          'identificarte. Esta acción es permanente y no se puede '
+          'deshacer.',
     ),
     LegalSection(
       title: '8. Compartición de datos',
@@ -110,13 +113,12 @@ const LegalDocument kPrivacyPolicyEs = LegalDocument(
       title: '9. Tus derechos',
       body:
           'Puedes, en cualquier momento: acceder y editar tu nombre '
-          'visible y tu foto de avatar desde la propia app; activar '
-          'o desactivar tu perfil '
+          'visible desde la propia app; activar o desactivar tu perfil '
           'público y elegir qué muestra (la alineación, la división de '
           'Rivals, el registro de Weekend League y las estadísticas); y '
-          'eliminar tu cuenta y los datos '
-          'asociados a ella. Para cualquier otra solicitud sobre tus '
-          'datos, contáctanos en $kSupportEmail.',
+          'eliminar tu cuenta y los datos asociados a ella. Para '
+          'cualquier otra solicitud sobre tus datos, contáctanos en '
+          '$kSupportEmail.',
     ),
     LegalSection(
       title: '10. Menores de edad',
