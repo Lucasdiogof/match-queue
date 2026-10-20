@@ -1149,7 +1149,7 @@
   "requestsInvitationAcceptedMessage": "Invitación aceptada.",
   "requestsInvitationRejectedMessage": "Invitación rechazada.",
   "requestsLoadErrorTitle": "No se pudieron cargar las solicitudes",
-  "teamPublicRequestToJoinAction": "Pedir para entrar",
+  "teamPublicRequestToJoinAction": "Solicitar unirme",
   "teamPublicRequestSentAction": "Solicitud enviada",
   "teamPublicRequestCancelAction": "Cancelar solicitud",
   "teamPublicRequestSentMessage": "Solicitud enviada. El dueño del equipo la va a revisar.",

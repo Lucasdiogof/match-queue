@@ -2112,7 +2112,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get requestsLoadErrorTitle => 'No se pudieron cargar las solicitudes';
 
   @override
-  String get teamPublicRequestToJoinAction => 'Pedir para entrar';
+  String get teamPublicRequestToJoinAction => 'Solicitar unirme';
 
   @override
   String get teamPublicRequestSentAction => 'Solicitud enviada';
