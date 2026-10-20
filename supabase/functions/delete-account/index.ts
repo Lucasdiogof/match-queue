@@ -50,6 +50,15 @@ Deno.serve(withCors(async (req) => {
   }
   const userId = userData.user.id;
 
+  // Times que esta conta vai dissolver (dono unico, sem outros membros): o
+  // arquivo da logo fica no Storage, que o cascade do banco nao alcanca.
+  // Client de service role so para esta leitura e para o remove() abaixo.
+  const adminClient = createClient(
+    supabaseUrl,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+  );
+  const soloTeamIds = await soloOwnedTeamIds(adminClient, userId);
+
   const { error: rpcError } = await callerClient.rpc('delete_my_account');
   if (rpcError) {
     // FQ044 (owner solo de time com outros membros) e o unico caso
@@ -61,12 +70,10 @@ Deno.serve(withCors(async (req) => {
     );
   }
 
+  await removeDissolvedTeamLogos(adminClient, soloTeamIds);
+
   // Unica etapa que exige privilegio: remover o usuario de auth.users.
-  // Client separado, service role, nunca exposto ao Flutter.
-  const adminClient = createClient(
-    supabaseUrl,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-  );
+  // Client de service role, nunca exposto ao Flutter.
   const { error: deleteError } = await adminClient.auth.admin.deleteUser(userId);
   if (deleteError) {
     return new Response(JSON.stringify({ error: deleteError.message }), { status: 500 });
@@ -76,3 +83,48 @@ Deno.serve(withCors(async (req) => {
     headers: { 'Content-Type': 'application/json' },
   });
 }));
+
+// Times em que a conta e OWNER e o unico membro -- exatamente os que
+// delete_my_account() dissolve.
+async function soloOwnedTeamIds(
+  // deno-lint-ignore no-explicit-any
+  admin: any,
+  userId: string,
+): Promise<string[]> {
+  const { data: owned } = await admin
+    .from('team_members')
+    .select('team_id')
+    .eq('user_id', userId)
+    .eq('role', 'OWNER');
+  const solo: string[] = [];
+  for (const row of owned ?? []) {
+    const { count } = await admin
+      .from('team_members')
+      .select('user_id', { count: 'exact', head: true })
+      .eq('team_id', row.team_id);
+    if (count === 1) solo.push(row.team_id as string);
+  }
+  return solo;
+}
+
+// Melhor esforco: a conta ja foi preparada, entao uma falha aqui so deixa
+// uma imagem orfa e nunca impede a exclusao. Remove so os times que de fato
+// deixaram de existir. Caminho fixo '<team_id>/logo.<ext>' (ver
+// team_remote_data_source.dart), a extensao depende do formato enviado.
+async function removeDissolvedTeamLogos(
+  // deno-lint-ignore no-explicit-any
+  admin: any,
+  teamIds: string[],
+): Promise<void> {
+  if (teamIds.length === 0) return;
+  try {
+    const { data: stillThere } = await admin.from('teams').select('id').in('id', teamIds);
+    const alive = new Set((stillThere ?? []).map((t) => t.id as string));
+    const paths = teamIds
+      .filter((id) => !alive.has(id))
+      .flatMap((id) => ['jpg', 'png', 'webp'].map((ext) => `${id}/logo.${ext}`));
+    if (paths.length) await admin.storage.from('team-logos').remove(paths);
+  } catch (_) {
+    // ignorado de proposito (ver acima)
+  }
+}
