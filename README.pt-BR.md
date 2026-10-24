@@ -29,7 +29,8 @@ O Match Queue ajuda um time de jogadores que dividem o mesmo modo de jogo (Champ
 <a href="https://apps.apple.com/br/app/match-queue/id6810790338"><img src="https://img.shields.io/badge/Dispon%C3%ADvel_na-App_Store-000000?logo=apple&logoColor=white" alt="Disponível na App Store"></a>
 
 - **iOS**: publicado na App Store.
-- **Android** e **Web (PWA)**: gerados a partir da mesma base de código.
+- **Web (PWA)**: [matchqueue.lucksrei.com](https://matchqueue.lucksrei.com).
+- **Android**: gerado a partir da mesma base de código, ainda fora do Google Play.
 - **Idiomas**: inglês, português (Brasil) e espanhol.
 
 ## Telas
@@ -82,6 +83,7 @@ O Match Queue ajuda um time de jogadores que dividem o mesmo modo de jogo (Champ
 - Login por e-mail, perfil, perfil público compartilhável, aparência (claro/escuro), idioma e preferências de notificação.
 - Notificações push e central de notificações no app, com contador de não lidas.
 - Exclusão de conta pelo próprio usuário.
+- Abertura offline: conta, times e a aba Jogar mostram os últimos dados salvos com o aviso de "sem conexão"; o matchmaking continua só online.
 
 ## Arquitetura
 
@@ -108,7 +110,7 @@ O app Flutter segue Clean Architecture organizada por feature (domain, data, pre
 | Backend | Supabase: Auth, PostgreSQL, RLS, RPCs, Realtime, Storage, Edge Functions (Deno), `pg_cron` |
 | Push | Firebase Cloud Messaging |
 | Localização | `flutter_localizations` + ARB (`gen-l10n`) |
-| Hospedagem web | Firebase Hosting |
+| Hospedagem web | Cloudflare Workers (static assets) |
 | CI | Codemagic |
 | Testes | `flutter_test`, pgTAP |
 
