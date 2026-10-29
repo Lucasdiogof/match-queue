@@ -103,8 +103,8 @@ leitura por time entra junto com a tabela que a define.
 | **verify code** | `auth.verifyOTP(type: OtpType.recovery, email, token)` troca o código por uma sessão de recuperação; código errado/expirado vira `AuthFailureReason.invalidRecoveryCode` (`otp_expired`) |
 | **reset password** | `AuthChangeEvent.passwordRecovery` (emitido pelo `verifyOTP`) vira `AuthState.isPasswordRecovery`, o guard força `/reset-password`, e `updateUser(password:)` grava a nova senha e limpa a flag |
 
-Template do e-mail de recuperação (um por projeto Supabase, só o código):
-`supabase/templates/recovery_eafc.html` e `recovery_efootball.html`, colados em
+Template do e-mail de recuperação (só o código):
+`supabase/templates/recovery_eafc.html`, colado em
 *Authentication → Emails → Templates → Reset Password*. O comprimento do OTP
 (*Authentication → Providers → Email → Email OTP Length*) deve ser **6**.
 

@@ -8,7 +8,6 @@ class AppConfig extends Equatable {
     required this.supabasePublishableKey,
     required this.appLinkHost,
     required this.appUrlScheme,
-    required this.backendGame,
     required this.firebaseEnabled,
     required this.verboseLogging,
   });
@@ -18,15 +17,8 @@ class AppConfig extends Equatable {
   );
   static const String _anonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
-  // Default = applicationId/bundle id do flavor EA FC. Builds existentes
-  // (sem APP_URL_SCHEME no env) continuam resolvendo pro mesmo scheme de
-  // sempre; um novo flavor de jogo define o dele no próprio env/*.json.
+  // Default = applicationId/bundle id do app.
   static const String _defaultUrlScheme = 'com.lucasdiogof.fifaqueue';
-
-  // Idem, mas para de qual jogo o env/Supabase carregado diz que É --
-  // ausente (env antigo, sem essa chave) = EA FC, o único que existia até
-  // esta fundação.
-  static const String _defaultBackendGame = 'ea_fc';
 
   static AppConfig fromEnvironment() {
     final environment = AppEnvironment.resolve();
@@ -41,10 +33,6 @@ class AppConfig extends Equatable {
         'APP_URL_SCHEME',
         defaultValue: _defaultUrlScheme,
       ),
-      backendGame: const String.fromEnvironment(
-        'APP_BACKEND_GAME',
-        defaultValue: _defaultBackendGame,
-      ),
       firebaseEnabled: const bool.fromEnvironment('FIREBASE_ENABLED'),
       verboseLogging: const bool.fromEnvironment(
         'VERBOSE_LOGGING',
@@ -58,12 +46,6 @@ class AppConfig extends Equatable {
   final String supabasePublishableKey;
   final String appLinkHost;
   final String appUrlScheme;
-
-  /// Qual jogo o env carregado DIZ que é (`APP_BACKEND_GAME`) -- não é o
-  /// jogo resolvido pelo `APP_GAME`/`GameConfig`, é o env do backend em si
-  /// se autodeclarando. Serve só pro guard `assertGameMatchesConfig`
-  /// comparar os dois; nada mais lê este campo diretamente.
-  final String backendGame;
 
   final bool firebaseEnabled;
   final bool verboseLogging;
@@ -87,7 +69,6 @@ class AppConfig extends Equatable {
     supabasePublishableKey,
     appLinkHost,
     appUrlScheme,
-    backendGame,
     firebaseEnabled,
     verboseLogging,
   ];

@@ -3,7 +3,7 @@
 Padrão: `Lucasdiogof/lucksrei-web-template`. Estado: **preparado, não publicado** (nenhum Worker `matchqueue-web` criado, sem DNS).
 
 - Arquivos: `wrangler.jsonc` (Worker `matchqueue-web`, só assets; rota `matchqueue.lucksrei.com` comentada), `web/_headers`, `scripts/*.sh`.
-- Build (flavor EA FC, o padrão da web): `bash scripts/build-web.sh env/production.json` (`env/*.json` é gitignored). A web não usa Firebase (`kIsWeb` pula a inicialização).
+- Build: `bash scripts/build-web.sh env/production.json` (`env/*.json` é gitignored). A web não usa Firebase (`kIsWeb` pula a inicialização).
 - Deploy manual: `bash scripts/deploy-web.sh env/production.json`. Rollback: `npx wrangler rollback <id> --name matchqueue-web`.
 - Sem deploy automático (nenhum secret criado). O Codemagic atual só roda qualidade (Linux) no push e um `web-preview` manual.
 - As rotas públicas `/privacy`, `/terms` e `/u/:identifier` funcionam sem sessão e foram verificadas no `wrangler dev` local (200 com fallback de SPA).

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:fifa_queue/core/config/app_config.dart';
-import 'package:fifa_queue/core/firebase/game_firebase_options.dart';
-import 'package:fifa_queue/core/game/game_flavor_key.dart';
+import 'package:fifa_queue/firebase_options.dart';
 import 'package:fifa_queue/core/logging/app_logger.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations_en.dart';
@@ -54,7 +53,6 @@ class FirebaseBootstrap {
 
   Future<FirebaseAvailability> initialize(
     AppConfig config, {
-    required GameFlavorKey game,
     Locale locale = const Locale('en'),
   }) async {
     if (!config.firebaseEnabled) {
@@ -71,7 +69,9 @@ class FirebaseBootstrap {
     }
 
     try {
-      await Firebase.initializeApp(options: GameFirebaseOptions.forGame(game));
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       // Precisa existir ANTES do primeiro push chegar: se a primeira
       // notificação for entregue antes do canal existir, o Android (8+) a
       // descarta em silêncio em vez de criar um canal padrão.

@@ -123,7 +123,6 @@ lib/
 ├── features/       auth, matchmaking, teams, invitations, requests, history,
 │                   central, mechanics, fc_squads, market, notifications,
 │                   public_profile, account, settings, legal, onboarding
-├── games/          per-game configuration (build flavors)
 ├── shared/         reusable widgets
 └── l10n/           app_en.arb, app_pt.arb, app_es.arb
 
@@ -140,10 +139,10 @@ Requirements: Flutter (stable channel) and, for a real backend, a Supabase proje
 ```bash
 flutter pub get
 cp env/development.example.json env/development.json
-flutter run --flavor eaFc --dart-define-from-file=env/development.json --dart-define=APP_GAME=ea_fc
+flutter run --dart-define-from-file=env/development.json
 ```
 
-On the web, `--flavor` is not used:
+On the web:
 
 ```bash
 flutter run -d chrome --dart-define-from-file=env/development.json
@@ -158,7 +157,7 @@ flutter test
 
 ## Project status
 
-Published on the App Store and in active development. The codebase also contains early groundwork for supporting a second game through build flavors.
+Published on the App Store and in active development.
 
 ## License
 

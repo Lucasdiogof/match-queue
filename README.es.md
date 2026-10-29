@@ -123,7 +123,6 @@ lib/
 ├── features/       auth, matchmaking, teams, invitations, requests, history,
 │                   central, mechanics, fc_squads, market, notifications,
 │                   public_profile, account, settings, legal, onboarding
-├── games/          configuración por juego (build flavors)
 ├── shared/         widgets reutilizables
 └── l10n/           app_en.arb, app_pt.arb, app_es.arb
 
@@ -140,10 +139,10 @@ Requisitos: Flutter (canal stable) y, para un backend real, un proyecto de Supab
 ```bash
 flutter pub get
 cp env/development.example.json env/development.json
-flutter run --flavor eaFc --dart-define-from-file=env/development.json --dart-define=APP_GAME=ea_fc
+flutter run --dart-define-from-file=env/development.json
 ```
 
-En la web no se usa `--flavor`:
+En la web:
 
 ```bash
 flutter run -d chrome --dart-define-from-file=env/development.json
@@ -158,7 +157,7 @@ flutter test
 
 ## Estado del proyecto
 
-Publicada en la App Store y en desarrollo activo. El código también incluye la base inicial para soportar un segundo juego mediante build flavors.
+Publicada en la App Store y en desarrollo activo.
 
 ## Licencia
 

@@ -1,6 +1,5 @@
 {
   "ENVIRONMENT": "development",
-  "APP_BACKEND_GAME": "ea_fc",
   "SUPABASE_URL": "",
   "SUPABASE_PUBLISHABLE_KEY": "",
   "APP_LINK_HOST": "",
