@@ -23,7 +23,7 @@ if (hasKeystoreProperties) {
 
 android {
     namespace = "com.lucasdiogof.fifaqueue"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = maxOf(flutter.compileSdkVersion, 37) // plugins (permission_handler, flutter_local_notifications, androidx.core 1.19) exigem 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
