@@ -8,7 +8,7 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_avatar.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_logo_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<bool> showEditTeamSheet(

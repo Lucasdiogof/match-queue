@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/card_placeholder_asset.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A carta de um jogador, no formato de carta mesmo -- rating e posicao no
 /// topo, nome, e a faixa de atributos embaixo.

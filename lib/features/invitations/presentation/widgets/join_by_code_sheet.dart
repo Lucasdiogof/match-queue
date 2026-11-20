@@ -2,7 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/invitations/domain/entities/pending_invite.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> showJoinByCodeSheet(BuildContext context) =>

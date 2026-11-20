@@ -15,7 +15,7 @@ import 'package:fifa_queue/features/matchmaking/presentation/cubit/game_mode_cub
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_cubit.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/cubit/matchmaking_state.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/matchmaking_timer_ring.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Fundo texturizado das telas do shell. Deliberadamente barato: um
 /// [CustomPainter] com halo radial, linhas diagonais e grão bem esparso,

@@ -4,7 +4,7 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/lineup_draft.dart'
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/squad_builder_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/manager_card_placeholder_asset.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/manager_picker_sheet.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Cardzinho do técnico, sobreposto no canto inferior direito do campo.

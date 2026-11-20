@@ -8,7 +8,7 @@ import 'package:fifa_queue/core/platform/share_service.dart';
 import 'package:fifa_queue/features/invitations/domain/repositories/invite_repository.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/invite_management_cubit.dart';
 import 'package:fifa_queue/features/invitations/presentation/cubit/invite_management_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InviteSection extends StatelessWidget {

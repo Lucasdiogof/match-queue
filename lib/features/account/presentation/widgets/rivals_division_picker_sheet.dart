@@ -3,7 +3,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/account/presentation/widgets/rivals_division_l10n.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> showRivalsDivisionPickerSheet({

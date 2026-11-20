@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/mechanics/presentation/widgets/guide_widgets.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Guia de passe: comandos reais do FC 27, resumido a partir de pesquisa
 /// (FIFPlay), nunca copiado literalmente. Botões em si (✕, △, □, A, Y, X...)

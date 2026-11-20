@@ -10,7 +10,7 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dar
 import 'package:fifa_queue/features/requests/domain/repositories/requests_repository.dart';
 import 'package:fifa_queue/features/teams/domain/entities/team.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

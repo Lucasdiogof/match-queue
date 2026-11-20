@@ -44,7 +44,7 @@ import 'package:fifa_queue/features/teams/presentation/pages/team_detail_page.da
 import 'package:fifa_queue/features/teams/presentation/pages/team_public_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/team_settings_page.dart';
 import 'package:fifa_queue/features/teams/presentation/pages/teams_list_page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {

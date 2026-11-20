@@ -10,7 +10,7 @@ import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_ca
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_detail_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Catalogo de cartas para consulta -- explicitamente NAO e o picker do
 /// Squad Builder: aqui tocar numa carta abre o detalhe, nunca seleciona nada

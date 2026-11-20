@@ -12,7 +12,7 @@ import 'package:fifa_queue/features/notifications/presentation/cubit/notificatio
 import 'package:fifa_queue/features/notifications/presentation/notification_destination_resolver.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_tile.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotificationsInboxPage extends StatelessWidget {

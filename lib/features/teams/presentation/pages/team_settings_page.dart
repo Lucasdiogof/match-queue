@@ -9,7 +9,7 @@ import 'package:fifa_queue/features/teams/presentation/cubit/teams_state.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/edit_team_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_duration.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/team_role_l10n.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TeamSettingsPage extends StatelessWidget {

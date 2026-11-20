@@ -8,7 +8,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/mechanics/domain/playstyle_catalog.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 /// Lista de PlayStyles: catálogo (nome/categoria) é conteúdo estático

@@ -2,7 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/account/domain/entities/platform.dart';
 import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Multi-selecao: quem joga no PC e no console marca os dois e aparece nas

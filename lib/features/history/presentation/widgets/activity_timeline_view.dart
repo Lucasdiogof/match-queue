@@ -9,7 +9,7 @@ import 'package:fifa_queue/features/history/presentation/cubit/activity_history_
 import 'package:fifa_queue/features/history/presentation/history_formatting.dart';
 import 'package:fifa_queue/features/history/presentation/widgets/filter_chip_row.dart';
 import 'package:fifa_queue/features/matchmaking/presentation/widgets/game_mode_selector.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActivityTimelineView extends StatefulWidget {

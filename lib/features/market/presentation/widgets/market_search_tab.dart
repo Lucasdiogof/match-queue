@@ -6,7 +6,7 @@ import 'package:fifa_queue/features/market/presentation/cubit/market_search_stat
 import 'package:fifa_queue/features/market/presentation/widgets/market_card_sheet.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_card_tile.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_price_section.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Aba Mercado: busca explicita, nunca lista nada por padrao (pedido do

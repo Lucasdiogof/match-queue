@@ -8,7 +8,7 @@ import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_f
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_field.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/share_capture.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Compartilhar o Elenco como imagem.
 ///

@@ -6,7 +6,7 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:fifa_queue/features/account/presentation/pages/weekend_league_detail_page.dart';
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_event.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Contextual ao Elenco selecionado (Etapa 9) -- o record mostrado troca

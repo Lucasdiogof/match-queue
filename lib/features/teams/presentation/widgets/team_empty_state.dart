@@ -2,7 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/invitations/presentation/widgets/join_by_code_sheet.dart';
 import 'package:fifa_queue/features/teams/presentation/widgets/create_team_sheet.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class TeamEmptyState extends StatelessWidget {
   const TeamEmptyState({this.message, super.key});

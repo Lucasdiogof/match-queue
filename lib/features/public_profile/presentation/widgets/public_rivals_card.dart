@@ -3,7 +3,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/account/domain/entities/rivals_division.dart';
 import 'package:fifa_queue/features/account/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Mesmo card de Rivals do perfil de um companheiro de time, so que
 /// alimentado pelo payload PUBLICO (divisao + record manual). Divisao

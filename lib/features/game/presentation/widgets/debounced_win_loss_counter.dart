@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/win_loss_counter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Wrapper com estado local + debounce sobre [WinLossCounter].
 ///

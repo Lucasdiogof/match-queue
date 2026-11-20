@@ -9,7 +9,7 @@ import 'package:fifa_queue/features/market/domain/repositories/market_price_repo
 import 'package:fifa_queue/features/market/presentation/cubit/market_price_cubit.dart';
 import 'package:fifa_queue/features/market/presentation/cubit/market_price_state.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_card_tile.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 

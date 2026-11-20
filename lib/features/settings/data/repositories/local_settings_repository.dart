@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/features/settings/domain/repositories/settings_repository.dart';
-import 'package:flutter/material.dart' show ThemeMode;
+import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:flutter/widgets.dart' show Locale;
 import 'package:shared_preferences/shared_preferences.dart';
 

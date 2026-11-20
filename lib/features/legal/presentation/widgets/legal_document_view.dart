@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/legal/domain/legal_document.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Corpo compartilhado por Privacidade e Termos -- só o título da página e
 /// o conteúdo mudam entre as duas.

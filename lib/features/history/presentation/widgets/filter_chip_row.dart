@@ -1,5 +1,5 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Uma linha de [AppChip]s com altura fixa e scroll horizontal quando nao
 /// cabem -- em vez de um [Wrap] que quebra linha e desalinha a toolbar de

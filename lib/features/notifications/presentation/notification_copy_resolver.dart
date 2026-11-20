@@ -3,7 +3,7 @@ import 'package:fifa_queue/features/account/presentation/widgets/rivals_division
 import 'package:fifa_queue/features/notifications/domain/entities/app_notification.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/notification_category.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Titulo/corpo nunca vem pronto do backend (item 70): title_key + params
 /// sao resolvidos aqui, o mesmo padrao de l10n usado no resto do app. Um

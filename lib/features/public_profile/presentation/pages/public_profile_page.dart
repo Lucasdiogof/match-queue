@@ -13,7 +13,7 @@ import 'package:fifa_queue/features/public_profile/presentation/widgets/profile_
 import 'package:fifa_queue/features/public_profile/presentation/widgets/public_rivals_card.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/share_capture.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/squad_share_card.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

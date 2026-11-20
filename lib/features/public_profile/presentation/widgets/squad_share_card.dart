@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/public_profile/domain/entities/public_profile.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Template visual da escalação (formação, titulares, overall, química).
 /// So titulares nesta V1 -- banco fica fora do card publico (mesma decisao

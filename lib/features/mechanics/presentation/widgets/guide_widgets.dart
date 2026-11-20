@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Blocos reutilizáveis pras telas de conteúdo estático de Mecânicas e
 /// Controles -- só leitura, sem estado, sem chamada de rede.

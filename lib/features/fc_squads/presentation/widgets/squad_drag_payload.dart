@@ -3,7 +3,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_squad.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Carga do drag: de onde a carta está saindo. O destino nunca precisa
 /// declarar nada de si mesmo -- quem recebe o drop já sabe seu próprio

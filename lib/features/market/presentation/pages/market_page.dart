@@ -7,7 +7,7 @@ import 'package:fifa_queue/features/market/presentation/cubit/market_favorites_c
 import 'package:fifa_queue/features/market/presentation/cubit/market_search_cubit.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_favorites_tab.dart';
 import 'package:fifa_queue/features/market/presentation/widgets/market_search_tab.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Mercado: consulta de preco de carta (aba Mercado, busca explicita, nunca

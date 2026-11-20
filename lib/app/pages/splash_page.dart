@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/design_system/branding/brand_assets.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 /// Primeira tela que o Flutter desenha, imediatamente depois da splash

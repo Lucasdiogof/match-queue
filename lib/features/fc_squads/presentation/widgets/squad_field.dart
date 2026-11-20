@@ -6,7 +6,7 @@ import 'package:fifa_queue/features/fc_squads/domain/entities/formation.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_drag_payload.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/squad_player_card.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Campo mais alto que largo, pro card caber sem encostar no vizinho.
 /// Compartilhada com [cardWidthForFormation] (escala do eixo Y) e com o

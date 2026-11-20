@@ -6,7 +6,7 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:fifa_queue/features/account/presentation/pages/rivals_detail_page.dart';
 import 'package:fifa_queue/features/account/presentation/widgets/rivals_division_l10n.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Resumo de Division Rivals na Home (gameplay flows refresh, item 6) --

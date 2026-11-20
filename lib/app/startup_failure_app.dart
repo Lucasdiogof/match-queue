@@ -3,7 +3,7 @@ import 'package:fifa_queue/core/design_system/theme/app_theme.dart';
 import 'package:fifa_queue/core/l10n/app_locales.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class StartupFailureApp extends StatelessWidget {
   const StartupFailureApp({required this.missingKeys, super.key});
@@ -17,7 +17,7 @@ class StartupFailureApp extends StatelessWidget {
     theme: AppTheme.light,
     darkTheme: AppTheme.dark,
     supportedLocales: AppLocales.supported,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    localizationsDelegates: [AppLocalizations.delegate, ...GlobalMaterialLocalizations.delegates],
     localeResolutionCallback: (deviceLocale, supportedLocales) =>
         AppLocales.resolve(deviceLocale, supportedLocales),
     home: Builder(

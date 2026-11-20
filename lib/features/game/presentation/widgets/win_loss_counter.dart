@@ -1,5 +1,5 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Placar como contador manual: numero grande com "+" e "−" para ajustar,
 /// um por coluna (vitorias/derrotas). Sem digitar nada -- um toque de cada vez.

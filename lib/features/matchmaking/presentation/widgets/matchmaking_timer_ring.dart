@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/matchmaking/domain/entities/game_mode.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Paletas fixas por modo, pedidas explicitamente com hex exatos -- nao os
 /// tokens champions*/rivals* do design system (mais escuros/dessaturados,

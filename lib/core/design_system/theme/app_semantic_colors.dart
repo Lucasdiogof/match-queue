@@ -1,5 +1,5 @@
 import 'package:fifa_queue/core/design_system/tokens/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 @immutable
 class AppSemanticColors extends ThemeExtension<AppSemanticColors> {

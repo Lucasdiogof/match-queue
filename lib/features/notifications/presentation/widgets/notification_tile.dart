@@ -2,7 +2,7 @@ import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/notifications/domain/entities/app_notification.dart';
 import 'package:fifa_queue/features/notifications/presentation/notification_copy_resolver.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class NotificationTile extends StatelessWidget {
   const NotificationTile({

@@ -3,7 +3,7 @@ import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dar
 import 'package:fifa_queue/core/design_system/tokens/app_radii.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_sizing.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_spacing.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AppErrorState extends StatelessWidget {
   const AppErrorState({

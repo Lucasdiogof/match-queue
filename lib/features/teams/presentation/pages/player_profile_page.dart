@@ -11,7 +11,7 @@ import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_c
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_history_card.dart';
 import 'package:fifa_queue/features/teams/domain/entities/player_profile.dart';
 import 'package:fifa_queue/features/teams/domain/repositories/team_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Perfil publico de um jogador do MESMO time (Etapa 11, Parte B). Read
 /// model server-side novo -- nunca mostra historico de busca, buscas

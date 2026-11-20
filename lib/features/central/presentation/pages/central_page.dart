@@ -5,7 +5,7 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dar
 import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
 import 'package:fifa_queue/features/account/presentation/widgets/platform_onboarding_card.dart';
 import 'package:fifa_queue/features/notifications/presentation/widgets/notification_bell_button.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

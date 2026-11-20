@@ -10,7 +10,7 @@ import 'package:fifa_queue/features/public_profile/domain/repositories/public_pr
 import 'package:fifa_queue/features/public_profile/presentation/cubit/sharing_settings_cubit.dart';
 import 'package:fifa_queue/features/public_profile/presentation/cubit/sharing_settings_state.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Configuração do perfil público do usuário logado -- uma por conta

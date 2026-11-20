@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/public_profile/presentation/widgets/sharing_settings_section.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class PublicProfileSettingsPage extends StatelessWidget {
   const PublicProfileSettingsPage({super.key});

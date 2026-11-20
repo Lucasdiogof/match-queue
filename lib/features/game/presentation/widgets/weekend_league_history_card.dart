@@ -4,7 +4,7 @@ import 'package:fifa_queue/features/game/domain/entities/weekend_league_history_
 import 'package:fifa_queue/features/game/domain/entities/weekend_league_rank.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/competitive_mode_card.dart';
 import 'package:fifa_queue/features/game/presentation/widgets/weekend_league_rank_l10n.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class WeekendLeagueHistoryCard extends StatefulWidget {
   const WeekendLeagueHistoryCard({required this.history, super.key});

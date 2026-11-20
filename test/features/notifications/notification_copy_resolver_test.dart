@@ -4,7 +4,7 @@ import 'package:fifa_queue/features/notifications/presentation/notification_copy
 import 'package:fifa_queue/l10n/generated/app_localizations_en.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations_es.dart';
 import 'package:fifa_queue/l10n/generated/app_localizations_pt.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 AppNotification _n(String key, [Map<String, dynamic> params = const {}]) =>

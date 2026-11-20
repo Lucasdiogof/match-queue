@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/design_system/theme/app_theme.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// O bug original era "A RenderFlex overflowed by 0.403 pixels on the right"

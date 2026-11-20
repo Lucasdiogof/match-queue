@@ -5,7 +5,7 @@ import 'package:fifa_queue/core/navigation/app_routes.dart';
 import 'package:fifa_queue/features/requests/domain/entities/requests_inbox.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_cubit.dart';
 import 'package:fifa_queue/features/requests/presentation/cubit/requests_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

@@ -7,7 +7,7 @@ import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_f
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/player_picker_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/catalog_picker_sheet.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Escolha de carta para um slot. [positionCode] nulo é banco (sem filtro).

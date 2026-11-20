@@ -2,7 +2,7 @@ import 'package:fifa_queue/core/design_system/branding/brand_assets.dart';
 import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_durations.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_typography.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Wordmark "MATCH / QUEUE" desenhado em código -- a única forma escrita da
 /// marca que existe hoje, usada nas telas de login e cadastro, que são onde

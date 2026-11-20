@@ -21,7 +21,7 @@ import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dar
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
 import 'package:fifa_queue/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> bootstrap() async {

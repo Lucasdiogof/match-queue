@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/design_system/theme/theme_context_extensions.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_sizing.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_spacing.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 class AppTextField extends StatelessWidget {

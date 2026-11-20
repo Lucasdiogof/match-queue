@@ -13,7 +13,7 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:fifa_queue/features/account/presentation/widgets/edit_display_name_sheet.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:fifa_queue/features/settings/presentation/cubit/theme_cubit.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

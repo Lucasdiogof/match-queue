@@ -3,7 +3,7 @@ import 'package:fifa_queue/core/l10n/app_failure_l10n.dart';
 import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fifa_queue/features/auth/presentation/cubit/auth_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Fluxo de exclusão de conta -- irreversível de propósito, então exige que

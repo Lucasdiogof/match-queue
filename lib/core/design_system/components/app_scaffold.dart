@@ -1,6 +1,6 @@
 import 'package:fifa_queue/core/design_system/layout/app_responsive.dart';
 import 'package:fifa_queue/core/design_system/tokens/app_breakpoints.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({

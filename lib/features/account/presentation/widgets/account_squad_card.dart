@@ -8,7 +8,7 @@ import 'package:fifa_queue/features/account/presentation/cubit/account_state.dar
 import 'package:fifa_queue/features/account/presentation/widgets/platform_picker_sheet.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_cubit.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/cubit/fc_squads_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

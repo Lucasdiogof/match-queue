@@ -5,7 +5,7 @@ import 'package:fifa_queue/core/l10n/validation_l10n.dart';
 import 'package:fifa_queue/core/validation/app_validators.dart';
 import 'package:fifa_queue/features/account/presentation/cubit/account_cubit.dart';
 import 'package:fifa_queue/features/account/presentation/cubit/account_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<bool> showEditDisplayNameSheet({

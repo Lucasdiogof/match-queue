@@ -1,7 +1,7 @@
 import 'package:fifa_queue/core/design_system/design_system.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/player_card.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/widgets/player_card_face.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Detalhe de carta do Mercado -- deliberadamente mais enxuto que o detalhe
 /// completo do Squad Builder (showPlayerCardDetailSheet): aqui o motivo de

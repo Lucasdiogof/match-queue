@@ -6,7 +6,7 @@ import 'package:fifa_queue/core/l10n/l10n_extensions.dart';
 import 'package:fifa_queue/features/fc_squads/domain/entities/fc_manager.dart';
 import 'package:fifa_queue/features/fc_squads/domain/repositories/player_card_catalog_repository.dart';
 import 'package:fifa_queue/features/fc_squads/presentation/pages/cards_catalog_page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Resumo do clube + suas cartas. O corpo e a [CardsCatalogView] presa a
 /// este clube por id -- busca, filtros e paginacao ja resolvidos la, sem uma

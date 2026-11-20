@@ -1,5 +1,5 @@
 import 'package:fifa_queue/core/design_system/theme/app_semantic_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 extension AppThemeX on BuildContext {
   ThemeData get theme => Theme.of(this);
